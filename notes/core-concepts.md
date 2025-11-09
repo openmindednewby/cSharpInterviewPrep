@@ -106,6 +106,8 @@ var topSymbols = recentOrders
 - **Memory-friendly pipeline:** Combine `Span<T>` + LINQ alternatives (`ArrayPool<T>`, `ValueTask`) when optimizing allocations.
 
 ## Architecture & Patterns
+
+- [Arhcitecture-&-patterins-examples.md](./sub-notes/Arhcitecture-&-patterins-examples.md)
 - **SOLID:**
   - *Single Responsibility:* Keep classes focused; e.g., split order validation from execution.
   - *Open/Closed:* Extend via interfaces/inheritance; plug new execution channels without touching existing code.
@@ -113,7 +115,11 @@ var topSymbols = recentOrders
   - *Interface Segregation:* Prefer fine-grained service contracts (e.g., `IPriceFeed`, `ITradeExecutor`).
   - *Dependency Inversion:* Depend on abstractions; mention DI containers.
 - **Patterns to Highlight:** Strategy (switching trading logic), Observer (market data broadcast), Factory (creating platform-specific handlers), CQRS (command/query split for trading ops), Decorator (enriching services with logging/caching).
-- **Clean Architecture:** Emphasize domain-driven layers, application services, and infrastructure adapters.
+  - [Decorator Pattern](./sub-notes/Decorator%20Pattern.md) And **Decorator** wraps services with cross-cutting features like logging, caching, and retry without touching core logic.
+  - [Factory Pattern](./sub-notes/Factory%20Pattern.md) The **Factory** pattern instantiates platform-specific executors like MT4/MT5.
+  - [Observer Pattern](./sub-notes/Observer%20Pattern.md) The **Observer** pattern pushes ticks to multiple subscribers like charts and risk systems.
+  - [CQRS Pattern](./sub-notes/CQRS%20Pattern.md) **CQRS** splits commands like ‘PlaceOrder’ from queries like ‘GetOrder’.
+  - [Strategy Pattern](./sub-notes/Strategy%20Pattern.md) The **Strategy** pattern lets me swap trading logic dynamically (e.g., aggressive vs passive).
 
 ## ASP.NET Core & Service Design
 - **Pipeline:** Middleware order, short-circuiting, exception handling, logging. Mention custom middleware for correlation IDs.

@@ -23,7 +23,7 @@ Focus on quickly refreshing the concepts you must articulate clearly.
 - Practice explaining: *“What happens when an awaited method throws?”*
 
 ### 1.2 OOP, SOLID, and Patterns (10 minutes)
-- Review the **Architecture & Patterns** section in [Core Notes](notes/core-concepts.md#architecture--patterns).
+- Review the **Architecture & Patterns** section in [Core Notes](notes/core-concepts.md#architecture--patterns)
 - For each SOLID principle, jot a one-sentence definition plus an example from your experience.
 - Choose two patterns (e.g., Strategy, Observer) and prep how they apply to extensible trading modules.
 
