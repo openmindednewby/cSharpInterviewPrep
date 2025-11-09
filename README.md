@@ -40,3 +40,24 @@ Each phase in the plan links back to notes and practice prompts, so you never lo
 ```
 
 Good luck—you’ve got this! 🚀
+
+TODO SORTED LISTS AND EXAPLANATIONS 
+
+TODO
+
+| Lifetime      | Description                                              | Common Registration                 |
+| ------------- | -------------------------------------------------------- | ----------------------------------- |
+| **Transient** | A new instance is created **every time** it’s requested. | `AddTransient<IService, Service>()` |
+| **Scoped**    | One instance per **HTTP request (scope)**.               | `AddScoped<IService, Service>()`    |
+| **Singleton** | One instance for the **entire application lifetime**.    | `AddSingleton<IService, Service>()` |
+
+
+TODO
+
+FIFO queues
+
+TODO IDispose
+
+TODO Force garbage collection of all generations
+
+TODO Explain reflection
