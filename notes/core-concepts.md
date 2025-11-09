@@ -28,8 +28,14 @@ Use these snapshots alongside the [prep plan](../prep-plan.md). Each section inc
 ```
 
 ### CLR & Garbage Collector (GC)
-- **Generational model:** Short-lived objects die young (Gen 0/1), long-lived promote to Gen 2. Large Object Heap (LOH) stores objects > 85 KB.
-- **Server vs workstation GC:** Server GC uses dedicated background threads per core—great for ASP.NET services. Workstation GC favors desktop responsiveness.
+
+- [CLR & Garbage Collector (GC)](./sub-notes/CLR%20&%20Garbage%20Collector%20(GC).md)
+- [CLR & Garbage Collector (GC) Practical Example](./sub-notes/CLR%20&%20Garbage%20Collector%20(GC)%20Practical%20Example.md)
+- [struct vs class when to use which.md](./sub-notes/struct%20vs%20class%20when%20to%20use%20which.md)
+- [struct vs class questions and answers.md](./sub-notes/struct%20vs%20class%20questions%20and%20answers.md)
+
+- **Generational model:** Short-lived objects die young (Gen 0/1), long-lived promote to Gen 2. Large Object Heap (LOH) stores objects > 85 KB. [NET Generational Garbage Collection (GC) Deep Dive.md](./sub-notes/NET%20Generational%20Garbage%20Collection%20(GC)%20Deep%20Dive.md)
+- **Server vs workstation GC:** Server GC uses dedicated background threads per core—great for ASP.NET services. Workstation GC favors desktop responsiveness. [Server vs Workstation GC.md](./sub-notes/Server vs Workstation GC.md)
 - **Allocation discipline:** Reduce allocations in hot paths (e.g., reuse buffers, pool objects, prefer `Span<T>`/`Memory<T>` to avoid copying).
 - **`Span<T>` usage:** Operates on stack or native memory without allocations—perfect for parsing protocol frames or slicing arrays. Remember `Span<T>` is stack-only; use `Memory<T>` for async boundaries.
 - **Diagram:**
