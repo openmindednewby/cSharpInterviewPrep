@@ -33,6 +33,8 @@ Use these snapshots alongside the [prep plan](../prep-plan.md). Each section inc
 - [CLR & Garbage Collector (GC) Practical Example](./sub-notes/CLR%20&%20Garbage%20Collector%20(GC)%20Practical%20Example.md)
 - [struct vs class when to use which.md](./sub-notes/struct%20vs%20class%20when%20to%20use%20which.md)
 - [struct vs class questions and answers.md](./sub-notes/struct%20vs%20class%20questions%20and%20answers.md)
+- [`IDisposable` & Deterministic Cleanup](./sub-notes/IDisposable%20Patterns.md)
+- [Forcing Garbage Collection (Rarely Needed)](./sub-notes/Forcing%20Garbage%20Collection.md)
 
 - **Generational model:** Short-lived objects die young (Gen 0/1), long-lived promote to Gen 2. Large Object Heap (LOH) stores objects > 85 KB. [NET Generational Garbage Collection (GC) Deep Dive.md](./sub-notes/NET%20Generational%20Garbage%20Collection%20(GC)%20Deep%20Dive.md)
 - **Server vs workstation GC:** Server GC uses dedicated background threads per core—great for ASP.NET services. Workstation GC favors desktop responsiveness. [Server vs Workstation GC.md](./sub-notes/Server vs Workstation GC.md)
@@ -46,11 +48,13 @@ Gen0 ──► Gen1 ──► Gen2 ──► LOH
 ```
 
 ### Async/Await Deep Dive
-- **State machine transformation:** The compiler rewrites `async` methods into a struct-based state machine that awaits continuations.
-- **Context capture:** UI/ASP.NET SynchronizationContext captures by default. Use `ConfigureAwait(false)` in libraries/background work to avoid deadlocks.
-- **Exception propagation:** Exceptions bubble through the returned `Task`; always await to observe them.
-- **Deadlock scenario:** Blocking on `task.Result` inside a context that disallows re-entry (e.g., UI thread) stalls the continuation.
-- **Lock** Ensures mutual exclusion — only one thread executes the critical section at a time.
+- [Async/Await Deep Dive reference](./sub-notes/Async%20Await%20Deep%20Dive.md)
+- **State machine transformation:** The compiler rewrites `async` methods into a struct-based state machine that awaits continuations. Local variables become fields, so keep them light.
+- **Context capture:** UI/ASP.NET SynchronizationContext captures by default. Use `ConfigureAwait(false)` in libraries/background work to avoid deadlocks and excess marshaling.
+- **Exception propagation:** Exceptions bubble through the returned `Task`; always await to observe them. For fire-and-forget work, capture exceptions via continuations or hosted services.
+- **Deadlock scenario:** Blocking on `task.Result` inside a context that disallows re-entry (e.g., UI thread) stalls the continuation—keep the call chain async end-to-end.
+- **Lock coordination:** `lock` is synchronous. Use `SemaphoreSlim`/`AsyncLock` when awaiting inside critical sections.
+- **Fan-out patterns:** Use `Task.WhenAll`/`Task.WhenAny` to parallelize I/O and accept `CancellationToken` all the way through.
 - **I/O-bound gains:** Use `await` for database calls, HTTP requests—threads return to the pool while awaiting.
 - **Example:**
 
@@ -64,6 +68,11 @@ public async Task<Order> PlaceAsync(OrderRequest request)
                               .ConfigureAwait(false);
 }
 ```
+
+### Reflection Basics
+- [Reflection Overview](./sub-notes/Reflection%20Overview.md)
+- **When to reach for it:** Discover handlers, apply attributes, build dynamic proxies or serializers.
+- **Performance tip:** Cache `PropertyInfo`/`MethodInfo` lookups or emit delegates to avoid repeated reflection overhead.
 
 ### Value vs Reference Types
 - **Stack vs heap:** Value types (`struct`, `record struct`) live inline; reference types allocate on the heap.
@@ -90,6 +99,9 @@ Managed Heap
 - **`IEnumerable<T>` vs `IQueryable<T>`:** `IQueryable<T>` builds an expression tree for remote providers (EF Core). Avoid running client-side filters inadvertently.
 - **Materialization:** Use `ToList()`/`ToArray()` when you need a snapshot (e.g., before caching or multi-pass traversal).
 - **Avoid multiple enumeration:** Cache results with `var list = source.ToList();` if you'll iterate twice.
+- [Sorted Collections & Interview Talking Points](./sub-notes/Sorted%20Collections%20Interview%20Notes.md)
+- [Sorting Algorithms Interview Primer](./sub-notes/Sorting%20Algorithms.md)
+- [FIFO Queues in .NET](./sub-notes/FIFO%20Queues%20in%20.NET.md)
 - **Example:**
 
 ```csharp
@@ -124,7 +136,7 @@ var topSymbols = recentOrders
 
 ## ASP.NET Core & Service Design
 - **Pipeline:** Middleware order, short-circuiting, exception handling, logging. Mention custom middleware for correlation IDs.
-- **Dependency Injection:** Service lifetimes—singleton (stateless), scoped (per request), transient (lightweight). Know pitfalls of capturing scoped services in singletons.
+- **Dependency Injection:** Service lifetimes—singleton (stateless), scoped (per request), transient (lightweight). Know pitfalls of capturing scoped services in singletons. [Dependency Injection Lifetimes at a Glance](./sub-notes/Dependency%20Injection%20Lifetimes.md)
 - **Controllers & Minimal APIs:** Choosing between them, versioning strategies, attribute routing.
 - **Resilience:** Use Polly for retries/circuit breakers, `HttpClientFactory` to avoid socket exhaustion, health checks, and structured logging.
 
