@@ -311,19 +311,25 @@
 
 1. **Rolling 7-day trade volume**
    - **SQL:**
-     ```sql
-     SELECT instrument_id,
-            trade_timestamp::date AS trade_date,
-            SUM(volume) AS daily_volume,
-            SUM(SUM(volume)) OVER (
-                PARTITION BY instrument_id
-                ORDER BY trade_timestamp::date
-                ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
-            ) AS rolling_7d_volume
-     FROM trades
-     GROUP BY instrument_id, trade_timestamp::date
-     ORDER BY instrument_id, trade_date;
-     ```
+    ```sql
+    WITH daily AS (
+        SELECT instrument_id,
+               trade_timestamp::date AS trade_date,
+               SUM(volume) AS daily_volume
+        FROM trades
+        GROUP BY instrument_id, trade_timestamp::date
+    )
+    SELECT instrument_id,
+           trade_date,
+           daily_volume,
+           SUM(daily_volume) OVER (
+               PARTITION BY instrument_id
+               ORDER BY trade_date
+               ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+           ) AS rolling_7d_volume
+    FROM daily
+    ORDER BY instrument_id, trade_date;
+    ```
    - **Use when:** Need rolling metrics in SQL.
    - **Avoid when:** Database lacks window functions—use app-side aggregation.
 
