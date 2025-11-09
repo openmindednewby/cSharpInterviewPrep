@@ -50,6 +50,7 @@ Gen0 ──► Gen1 ──► Gen2 ──► LOH
 - **Context capture:** UI/ASP.NET SynchronizationContext captures by default. Use `ConfigureAwait(false)` in libraries/background work to avoid deadlocks.
 - **Exception propagation:** Exceptions bubble through the returned `Task`; always await to observe them.
 - **Deadlock scenario:** Blocking on `task.Result` inside a context that disallows re-entry (e.g., UI thread) stalls the continuation.
+- **Lock** Ensures mutual exclusion — only one thread executes the critical section at a time.
 - **I/O-bound gains:** Use `await` for database calls, HTTP requests—threads return to the pool while awaiting.
 - **Example:**
 
