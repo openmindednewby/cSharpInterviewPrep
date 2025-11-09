@@ -5,11 +5,99 @@ Use these snapshots alongside the [prep plan](../prep-plan.md). Each section inc
 ---
 
 ## Runtime & Language Essentials
-- **.NET Core vs .NET Framework:** Cross-platform, improved performance, self-contained deployments, side-by-side versioning. Mention Kestrel, GC enhancements, and trimming for services.
-- **CLR & GC:** Generational GC, LOH, server vs workstation modes. Explain how to reduce allocations and when to use `Span<T>`.
-- **Async/Await:** State machine generation, context capture, `ConfigureAwait(false)` for libraries, exception propagation via `Task`. Be ready to discuss deadlocks and the benefits of I/O-bound async.
-- **Value vs Reference Types:** Stack vs heap semantics, boxing/unboxing costs, use `struct` for small immutable data. Mention `record struct` for value semantics.
-- **Collections & LINQ:** Deferred execution, `IEnumerable` vs `IQueryable`, avoiding multiple enumerations, and when to materialize with `ToList()`.
+
+### .NET Core vs .NET Framework
+- **Platform reach:** .NET Core/.NET (5+) is cross-platform and ships a self-contained runtime. .NET Framework stays Windows-only and upgrades via the OS.
+- **Deployment model:** Publish as framework-dependent or self-contained. Self-contained bundles the runtime so each service can run side-by-side (`dotnet publish -r linux-x64 --self-contained`).
+- **Performance tooling:**
+  - **Kestrel** is the default cross-platform web server—highlight HTTPS, HTTP/2, and libuv/socket transport choices.
+  - **GC improvements** (background server GC, heap compaction modes) arrive first in .NET Core.
+  - **Trimming** and ReadyToRun images shrink microservices and speed cold starts.
+- **When to pick which:** Keep legacy WinForms/WPF on .NET Framework; new services, cloud workloads, or containerized apps go with .NET.
+- **Example:** Containerized pricing API published as self-contained for deterministic runtime, while legacy back-office WinForms app remains on .NET Framework 4.8.
+
+```
+            ┌────────────────────┐
+            │   .NET Framework   │  Windows only, machine-wide
+            └────────────────────┘
+                     ▲
+                     │
+            ┌────────────────────┐
+            │   .NET (Core)      │  Cross-platform, per-app runtime
+            └────────────────────┘
+```
+
+### CLR & Garbage Collector (GC)
+- **Generational model:** Short-lived objects die young (Gen 0/1), long-lived promote to Gen 2. Large Object Heap (LOH) stores objects > 85 KB.
+- **Server vs workstation GC:** Server GC uses dedicated background threads per core—great for ASP.NET services. Workstation GC favors desktop responsiveness.
+- **Allocation discipline:** Reduce allocations in hot paths (e.g., reuse buffers, pool objects, prefer `Span<T>`/`Memory<T>` to avoid copying).
+- **`Span<T>` usage:** Operates on stack or native memory without allocations—perfect for parsing protocol frames or slicing arrays. Remember `Span<T>` is stack-only; use `Memory<T>` for async boundaries.
+- **Diagram:**
+
+```
+Gen0 ──► Gen1 ──► Gen2 ──► LOH
+ small    medium   long     massive arrays/strings
+```
+
+### Async/Await Deep Dive
+- **State machine transformation:** The compiler rewrites `async` methods into a struct-based state machine that awaits continuations.
+- **Context capture:** UI/ASP.NET SynchronizationContext captures by default. Use `ConfigureAwait(false)` in libraries/background work to avoid deadlocks.
+- **Exception propagation:** Exceptions bubble through the returned `Task`; always await to observe them.
+- **Deadlock scenario:** Blocking on `task.Result` inside a context that disallows re-entry (e.g., UI thread) stalls the continuation.
+- **I/O-bound gains:** Use `await` for database calls, HTTP requests—threads return to the pool while awaiting.
+- **Example:**
+
+```csharp
+public async Task<Order> PlaceAsync(OrderRequest request)
+{
+    using var activity = _activitySource.StartActivity("PlaceOrder");
+    var quote = await _pricingClient.GetQuoteAsync(request.Symbol)
+                                     .ConfigureAwait(false);
+    return await _orderGateway.ExecuteAsync(request with { Price = quote })
+                              .ConfigureAwait(false);
+}
+```
+
+### Value vs Reference Types
+- **Stack vs heap:** Value types (`struct`, `record struct`) live inline; reference types allocate on the heap.
+- **Boxing/unboxing:** Converting a value type to `object` boxes; avoid in hot loops (e.g., use generic collections over `ArrayList`).
+- **When to use structs:** Keep them small (<16 bytes), immutable, and logically represent a single value (e.g., `PriceTick` with `decimal Bid`/`Ask`).
+- **`record struct`:** Offers value semantics with concise syntax and generated equality members.
+- **Heap vs stack visualization:**
+
+```
+Stack Frame
+┌─────────────────────┐
+│ PriceTick tick;     │◄─ value copied
+└─────────────────────┘
+
+Managed Heap
+┌─────────────────────┐
+│ Order order ─────┐  │◄─ reference points here
+│   Id = 42        │  │
+└──────────────────┴──┘
+```
+
+### Collections & LINQ
+- **Deferred execution:** Query operators (e.g., `Where`, `Select`) defer work until enumerated. Beware of multiple iterations.
+- **`IEnumerable<T>` vs `IQueryable<T>`:** `IQueryable<T>` builds an expression tree for remote providers (EF Core). Avoid running client-side filters inadvertently.
+- **Materialization:** Use `ToList()`/`ToArray()` when you need a snapshot (e.g., before caching or multi-pass traversal).
+- **Avoid multiple enumeration:** Cache results with `var list = source.ToList();` if you'll iterate twice.
+- **Example:**
+
+```csharp
+var recentOrders = await _dbContext.Orders
+    .Where(o => o.ExecutedAt >= cutoff)
+    .OrderByDescending(o => o.ExecutedAt)
+    .Take(100)
+    .ToListAsync(); // materialize once before logging & response
+
+var topSymbols = recentOrders
+    .GroupBy(o => o.Symbol)
+    .Select(g => new { Symbol = g.Key, Volume = g.Sum(o => o.Quantity) });
+```
+
+- **Memory-friendly pipeline:** Combine `Span<T>` + LINQ alternatives (`ArrayPool<T>`, `ValueTask`) when optimizing allocations.
 
 ## Architecture & Patterns
 - **SOLID:**
