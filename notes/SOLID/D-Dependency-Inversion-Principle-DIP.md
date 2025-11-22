@@ -1,5 +1,7 @@
 ## **D — Dependency Inversion Principle (DIP)**
 
+![alt text](image.png)
+
 > “High-level modules should not depend on low-level modules. Both should depend on abstractions. Abstractions should not depend on details. Details should depend on abstractions.”
 
 The Dependency Inversion Principle shifts coupling away from concrete implementations toward stable abstractions (interfaces or abstract classes). This reduces the ripple effect when implementation details change and makes code easier to test and extend.
