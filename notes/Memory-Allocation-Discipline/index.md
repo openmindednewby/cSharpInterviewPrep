@@ -1,4 +1,4 @@
-# 🧠 Allocation Discipline in .NET — Deep Dive
+# 🧠 Memory Allocation Discipline in .NET — Deep Dive
 
 ---
 
