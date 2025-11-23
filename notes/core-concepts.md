@@ -47,6 +47,14 @@ Gen0 ──► Gen1 ──► Gen2 ──► LOH
  small    medium   long     massive arrays/strings
 ```
 
+### Type Choices — `class`, `record`, `struct`, `static` (where & why)
+
+The detailed guidance for choosing `class`, `record`, `struct`, and `static` types has been moved to a dedicated sub-note for easier maintenance and reuse:
+
+- [Type Choices — `class`, `record`, `struct`, `static` (where & why)](./sub-notes/types.md)
+
+If you'd like the content kept inline instead, I can revert this change; otherwise the sub-note is ready for expansion.
+
 ### Async/Await Deep Dive
 - [Async/Await Deep Dive reference](./sub-notes/Async%20Await%20Deep%20Dive.md)
 - **State machine transformation:** The compiler rewrites `async` methods into a struct-based state machine that awaits continuations. Local variables become fields, so keep them light.
