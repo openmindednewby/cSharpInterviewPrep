@@ -9,8 +9,9 @@ namespace Application.MappingProfiles
 {
     public class LeaveTypeProfile : Profile
     {
-        public LeaveTypeProfile() { 
+        public LeaveTypeProfile() {
             CreateMap<LeaveTypeDto, LeaveType>().ReverseMap();
+            CreateMap<LeaveType, LeaveTypeDetailsDto>();
         }
     }
 }
