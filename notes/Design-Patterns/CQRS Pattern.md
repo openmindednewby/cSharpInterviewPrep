@@ -1,5 +1,5 @@
 # ⚙️ 4️⃣ CQRS Pattern — *Command/Query split for trading operations*
-
+![CQRS-Pattern](CQRS-Pattern.png)
 > Separate **commands** (change system state) from **queries** (read state).
 
 ---
