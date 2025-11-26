@@ -1,4 +1,5 @@
 ﻿using Application.Contracts.Persistence;
+using Application.Exceptions;
 using AutoMapper;
 using MediatR;
 using System;
@@ -19,6 +20,9 @@ namespace Application.Features.LeaveType.Queries.GetAllLeaveTypes
         public async Task<LeaveTypeDetailsDto> Handle(GetLeaveTypesDetailsQuery request, CancellationToken cancellationToken)
         {
             var leaveTypes = await _leaveTypeRepository.GetByIdAsync(request.Id);
+            if(leaveTypes == null) {
+                throw new NotFoundException(nameof(LeaveType), request.Id);
+            }
             var data = _mapper.Map<LeaveTypeDetailsDto>(leaveTypes);
 
             return data;
