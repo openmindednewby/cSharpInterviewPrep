@@ -105,3 +105,27 @@ Use these notes to articulate how you design and execute tests that protect perf
 ---
 
 Keep these patterns close to the code you ship—optimize for speed, determinism, and confidence without slowing delivery.
+
+---
+
+## Questions & Answers
+
+**Q: How do you prevent performance regressions from slipping through unit tests?**
+
+A: Keep micro-benchmarks in BenchmarkDotNet projects, but add lightweight latency guards to hot-path unit tests (e.g., `ShouldBeLessThan` on critical methods) and fail builds on meaningful percentile shifts in CI metrics exports. Use deterministic data builders to avoid noisy allocations that mask regressions.
+
+**Q: What is your approach to testing high-availability scenarios in integration tests?**
+
+A: Exercise failure modes intentionally: kill containers, drop network connections, or poison queue messages using Testcontainers hooks. Assert that retries, circuit breakers, and bulkheads recover within error budgets, and verify observability signals (logs/metrics/traces) show the expected degradation and recovery steps.
+
+**Q: How do you keep integration tests parallelizable without flakiness?**
+
+A: Use unique resource identifiers (database names, queue topics, blob prefixes) per test run, isolate shared state through fixtures, and ensure teardown cleans resources. Mark collection fixtures to avoid serial bottlenecks and rely on containerized dependencies to avoid cross-test interference.
+
+**Q: When is it appropriate to include chaos testing in CI?**
+
+A: Run minimal chaos probes (like restarting a dependency once) on main-branch merges to catch regressions early, but reserve heavier scenarios (multi-node failovers, prolonged network partitions) for nightly or pre-release pipelines to balance feedback speed with stability.
+
+**Q: How do you validate observability instrumentation through tests?**
+
+A: Attach in-memory exporters for OpenTelemetry during integration tests, trigger key user journeys, and assert on emitted spans/metrics/logs (names, attributes, and error flags). This ensures dashboards and alerts stay trustworthy without requiring external telemetry backends.
