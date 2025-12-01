@@ -30,11 +30,14 @@ Use these notes to articulate how you design and execute tests that protect perf
       [InlineData(50, 25, 25)]
       public async Task GivenBalance_WhenWithdraw_ThenBalanceUpdated(decimal starting, decimal debit, decimal expected)
       {
+          // Arrange
           _store.Setup(s => s.GetAsync("id", It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new Account("id", starting));
 
+          // Act
           await _sut.WithdrawAsync("id", debit, CancellationToken.None);
 
+          // Assert
           _store.Verify(s => s.SaveAsync(It.Is<Account>(a => a.Balance == expected), It.IsAny<CancellationToken>()));
           _sut.LastLatencyMs.ShouldBeLessThan(5); // Cheap guardrail for perf-sensitive code paths
       }
