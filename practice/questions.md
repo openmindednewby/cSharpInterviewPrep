@@ -144,6 +144,8 @@ Use these to rehearse typical coding test prompts. Aim to talk through complexit
 
 1. **Async REST fan-out with cancellation and timeout**
 
+   *Question (real-life style):* "You have to hit three quote endpoints in parallel and bail out if any call takes longer than 3 seconds, while still honoring upstream cancellation. Return only non-null quotes. Sketch the method you'd drop into the pricing client."
+
 ```csharp
 public static async Task<IReadOnlyList<Quote>> FetchQuotesAsync(HttpClient client, CancellationToken cancellationToken)
 {
@@ -163,6 +165,8 @@ public static async Task<IReadOnlyList<Quote>> FetchQuotesAsync(HttpClient clien
 Notes: Use `CancellationTokenSource.CreateLinkedTokenSource` to respect upstream cancellation. Consider wrapping each call with `Try/Finally` or `Task.WhenAny` if partial failures should be tolerated instead of throwing.
 
 2. **LRU cache for price lookups**
+
+   *Question (real-life style):* "Implement an in-memory LRU cache (single-threaded is fine) for up to N price lookups with O(1) `Put`/`TryGet`. Show the class you would hand to another team to reuse in a console app."
 
 ```csharp
 public sealed class LruCache<TKey, TValue>
@@ -215,6 +219,8 @@ Notes: `Put` and `TryGet` are O(1). Thread-safety can be added with `SemaphoreSl
 
 3. **Concurrent producer/consumer pipeline for order enrichment**
 
+   *Question (real-life style):* "We ingest orders into a channel and need to enrich them via an async call before publishing. Write the enrichment pipeline so it can fan out work and push enriched orders to the outbound channel." 
+
 ```csharp
 public static async Task StartEnrichmentPipeline(Channel<Order> inbound, Func<Order, Task<Order>> enrich, Channel<Order> outbound)
 {
@@ -233,6 +239,8 @@ Notes: Use `Channel.CreateBounded<Order>(capacity)` to add backpressure. For str
 
 4. **SQL: find latest fill per order**
 
+   *Question (real-life style):* "Given a `fills` table with `order_id`, `fill_price`, and `filled_at`, write a query that returns only the most recent fill per order for a compliance report."
+
 ```sql
 SELECT DISTINCT ON (order_id) order_id, fill_price, filled_at
 FROM fills
@@ -242,6 +250,8 @@ ORDER BY order_id, filled_at DESC;
 Notes: `DISTINCT ON` is PostgreSQL-specific; in SQL Server, use `ROW_NUMBER() OVER (PARTITION BY order_id ORDER BY filled_at DESC)` and filter on `ROW_NUMBER = 1`.
 
 5. **Minimal API health endpoint with dependency injection**
+
+   *Question (real-life style):* "Expose a `/health` endpoint in a minimal API that reports `200` when a price feed is connected, otherwise `503`. Keep the composition root small and use DI for the feed implementation."
 
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
@@ -258,6 +268,8 @@ await app.RunAsync();
 Notes: Mapping the health check keeps the app’s composition root small. Consider adding `UseHealthChecks` or custom readiness/liveness probes for Kubernetes deployments.
 
 6. **Secure parameterized data access to prevent SQL injection**
+
+   *Question (real-life style):* "Refactor a repository method that currently concatenates `accountId` into SQL. Show a safe, parameterized implementation that streams results asynchronously." 
 
 ```csharp
 public async Task<IReadOnlyList<Order>> GetOrdersAsync(
@@ -291,6 +303,8 @@ Notes: Always bind parameters instead of string interpolation to avoid SQL injec
 
 7. **JWT authentication with audience validation and clock skew control**
 
+   *Question (real-life style):* "You need to secure an API with JWT bearer auth. Configure validation to lock issuer/audience, tighten clock skew, and require a symmetric signing key from configuration. What does the startup code look like?"
+
 ```csharp
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -313,6 +327,8 @@ Notes: Tighten `ClockSkew` to reduce replay windows, ensure HTTPS-only transport
 
 8. **Performance: span-based parsing to reduce allocations**
 
+   *Question (real-life style):* "We parse numeric quantities from protocol buffers and want to avoid string allocations. Implement a span-based parser that returns `-1` on invalid input." 
+
 ```csharp
 public static int ParseQuantity(ReadOnlySpan<char> span)
 {
@@ -330,6 +346,8 @@ public static int ParseQuantity(ReadOnlySpan<char> span)
 Notes: Using `ReadOnlySpan<char>` avoids string allocations when parsing slices from protocol buffers or HTTP headers. Consider `int.TryParse(ReadOnlySpan<char>, NumberStyles, IFormatProvider, out int)` for built-in validation and benchmark with BenchmarkDotNet to confirm gains.
 
 9. **Performance: async streaming to lower memory footprint**
+
+   *Question (real-life style):* "Show how you would stream trades from an HTTP endpoint without buffering the whole payload, yielding trades as they arrive and honoring cancellation." 
 
 ```csharp
 public static async IAsyncEnumerable<Trade> StreamTradesAsync(
