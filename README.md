@@ -6,8 +6,9 @@ Welcome! This repository packs everything you need for a focused two-hour prepar
 1. **Start with the [Two-Hour Plan](prep-plan.md)** – follow it step-by-step.
 2. **Review the [Core Notes](notes/core-concepts.md)** whenever you hit a topic in the plan.
 3. **Drill the [Practice Questions](practice/questions.md)** as directed in the plan.
-4. **Consult the [Resource Links](resources.md)** for deeper dives or quick refreshers.
-5. **Wrap up with the [Final Interview Checklist](checklists/final-checklist.md)** 15 minutes before the call.
+4. **Use the [C# and System Design Question Bank](practice/csharp-system-design-questions.md)** for rapid-fire recall and story prep.
+5. **Consult the [Resource Links](resources.md)** for deeper dives or quick refreshers.
+6. **Wrap up with the [Final Interview Checklist](checklists/final-checklist.md)** 15 minutes before the call.
 
 > ⏱️ **Total time required:** 2 hours of focused study + 15-minute final check.
 
@@ -33,7 +34,8 @@ Each phase in the plan links back to notes and practice prompts, so you never lo
 ├── notes
 │   └── core-concepts.md          # Condensed explanations and reminders
 ├── practice
-│   └── questions.md              # Coding, architecture, and behavioral drills
+│   ├── questions.md              # Coding, architecture, and behavioral drills
+│   └── csharp-system-design-questions.md # Rapid-fire C# and system design prompts
 ├── resources.md                  # Curated links for last-minute refreshers
 └── checklists
     └── final-checklist.md        # 15-minute pre-interview rundown
