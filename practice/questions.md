@@ -138,4 +138,232 @@ If you need to use a scoped service from a singleton, resolve scoped instances u
 
 ---
 
+## Code Assessment Questions & Answers (with snippets)
+
+Use these to rehearse typical coding test prompts. Aim to talk through complexity trade-offs and add small notes about edge cases.
+
+1. **Async REST fan-out with cancellation and timeout**
+
+   *Question (real-life style):* "You have to hit three quote endpoints in parallel and bail out if any call takes longer than 3 seconds, while still honoring upstream cancellation. Return only non-null quotes. Sketch the method you'd drop into the pricing client."
+
+```csharp
+public static async Task<IReadOnlyList<Quote>> FetchQuotesAsync(HttpClient client, CancellationToken cancellationToken)
+{
+    using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+    cts.CancelAfter(TimeSpan.FromSeconds(3));
+
+    var endpoints = new[] {"prices/eurusd", "prices/gbpusd", "prices/usdjpy"};
+    var tasks = endpoints.Select(e => client.GetFromJsonAsync<Quote>(e, cts.Token)).ToArray();
+
+    var results = await Task.WhenAll(tasks);
+    return results!
+        .Where(q => q is not null)
+        .ToArray();
+}
+```
+
+Notes: Use `CancellationTokenSource.CreateLinkedTokenSource` to respect upstream cancellation. Consider wrapping each call with `Try/Finally` or `Task.WhenAny` if partial failures should be tolerated instead of throwing.
+
+2. **LRU cache for price lookups**
+
+   *Question (real-life style):* "Implement an in-memory LRU cache (single-threaded is fine) for up to N price lookups with O(1) `Put`/`TryGet`. Show the class you would hand to another team to reuse in a console app."
+
+```csharp
+public sealed class LruCache<TKey, TValue>
+{
+    private readonly int _capacity;
+    private readonly Dictionary<TKey, LinkedListNode<(TKey Key, TValue Value)>> _map = new();
+    private readonly LinkedList<(TKey Key, TValue Value)> _list = new();
+
+    public LruCache(int capacity) => _capacity = capacity;
+
+    public void Put(TKey key, TValue value)
+    {
+        if (_map.TryGetValue(key, out var node))
+        {
+            node.Value = (key, value);
+            _list.Remove(node);
+            _list.AddFirst(node);
+            return;
+        }
+
+        if (_map.Count == _capacity)
+        {
+            var toRemove = _list.Last!;
+            _map.Remove(toRemove.Value.Key);
+            _list.RemoveLast();
+        }
+
+        var newNode = new LinkedListNode<(TKey, TValue)>((key, value));
+        _list.AddFirst(newNode);
+        _map[key] = newNode;
+    }
+
+    public bool TryGet(TKey key, out TValue value)
+    {
+        if (_map.TryGetValue(key, out var node))
+        {
+            _list.Remove(node);
+            _list.AddFirst(node);
+            value = node.Value.Value;
+            return true;
+        }
+
+        value = default!;
+        return false;
+    }
+}
+```
+
+Notes: `Put` and `TryGet` are O(1). Thread-safety can be added with `SemaphoreSlim` for async scenarios or `lock` for synchronous use.
+
+3. **Concurrent producer/consumer pipeline for order enrichment**
+
+   *Question (real-life style):* "We ingest orders into a channel and need to enrich them via an async call before publishing. Write the enrichment pipeline so it can fan out work and push enriched orders to the outbound channel." 
+
+```csharp
+public static async Task StartEnrichmentPipeline(Channel<Order> inbound, Func<Order, Task<Order>> enrich, Channel<Order> outbound)
+{
+    await foreach (var order in inbound.Reader.ReadAllAsync())
+    {
+        _ = Task.Run(async () =>
+        {
+            var enriched = await enrich(order);
+            await outbound.Writer.WriteAsync(enriched);
+        });
+    }
+}
+```
+
+Notes: Use `Channel.CreateBounded<Order>(capacity)` to add backpressure. For stricter ordering, await tasks or use `Parallel.ForEachAsync` with `MaxDegreeOfParallelism`.
+
+4. **SQL: find latest fill per order**
+
+   *Question (real-life style):* "Given a `fills` table with `order_id`, `fill_price`, and `filled_at`, write a query that returns only the most recent fill per order for a compliance report."
+
+```sql
+SELECT DISTINCT ON (order_id) order_id, fill_price, filled_at
+FROM fills
+ORDER BY order_id, filled_at DESC;
+```
+
+Notes: `DISTINCT ON` is PostgreSQL-specific; in SQL Server, use `ROW_NUMBER() OVER (PARTITION BY order_id ORDER BY filled_at DESC)` and filter on `ROW_NUMBER = 1`.
+
+5. **Minimal API health endpoint with dependency injection**
+
+   *Question (real-life style):* "Expose a `/health` endpoint in a minimal API that reports `200` when a price feed is connected, otherwise `503`. Keep the composition root small and use DI for the feed implementation."
+
+```csharp
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddSingleton<IPriceFeed, PriceFeed>();
+var app = builder.Build();
+
+app.MapGet("/health", (IPriceFeed feed) => feed.IsConnected
+    ? Results.Ok(new { status = "ok" })
+    : Results.StatusCode(StatusCodes.Status503ServiceUnavailable));
+
+await app.RunAsync();
+```
+
+Notes: Mapping the health check keeps the app’s composition root small. Consider adding `UseHealthChecks` or custom readiness/liveness probes for Kubernetes deployments.
+
+6. **Secure parameterized data access to prevent SQL injection**
+
+   *Question (real-life style):* "Refactor a repository method that currently concatenates `accountId` into SQL. Show a safe, parameterized implementation that streams results asynchronously." 
+
+```csharp
+public async Task<IReadOnlyList<Order>> GetOrdersAsync(
+    SqlConnection connection,
+    int accountId,
+    CancellationToken cancellationToken)
+{
+    const string sql = "SELECT order_id, symbol, qty, status FROM dbo.Orders WHERE account_id = @AccountId";
+
+    await using var cmd = new SqlCommand(sql, connection);
+    cmd.Parameters.Add(new SqlParameter("@AccountId", SqlDbType.Int) { Value = accountId });
+
+    await using var reader = await cmd.ExecuteReaderAsync(cancellationToken);
+    var orders = new List<Order>();
+    while (await reader.ReadAsync(cancellationToken))
+    {
+        orders.Add(new Order
+        {
+            Id = reader.GetInt32(0),
+            Symbol = reader.GetString(1),
+            Quantity = reader.GetDecimal(2),
+            Status = reader.GetString(3)
+        });
+    }
+
+    return orders;
+}
+```
+
+Notes: Always bind parameters instead of string interpolation to avoid SQL injection. Use least-privileged SQL logins and timeouts to limit blast radius, and validate `accountId` ranges before querying.
+
+7. **JWT authentication with audience validation and clock skew control**
+
+   *Question (real-life style):* "You need to secure an API with JWT bearer auth. Configure validation to lock issuer/audience, tighten clock skew, and require a symmetric signing key from configuration. What does the startup code look like?"
+
+```csharp
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = "https://issuer.example.com",
+            ValidateAudience = true,
+            ValidAudience = "trading-api",
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.FromMinutes(1),
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:SigningKey"]))
+        };
+    });
+```
+
+Notes: Tighten `ClockSkew` to reduce replay windows, ensure HTTPS-only transport, and rotate signing keys. Add `RequireAuthorization()` on sensitive endpoints and propagate correlation IDs for audit logs.
+
+8. **Performance: span-based parsing to reduce allocations**
+
+   *Question (real-life style):* "We parse numeric quantities from protocol buffers and want to avoid string allocations. Implement a span-based parser that returns `-1` on invalid input." 
+
+```csharp
+public static int ParseQuantity(ReadOnlySpan<char> span)
+{
+    // Expects numeric ASCII; returns -1 for invalid input.
+    int value = 0;
+    foreach (var ch in span)
+    {
+        if ((uint)(ch - '0') > 9) return -1;
+        value = unchecked(value * 10 + (ch - '0'));
+    }
+    return value;
+}
+```
+
+Notes: Using `ReadOnlySpan<char>` avoids string allocations when parsing slices from protocol buffers or HTTP headers. Consider `int.TryParse(ReadOnlySpan<char>, NumberStyles, IFormatProvider, out int)` for built-in validation and benchmark with BenchmarkDotNet to confirm gains.
+
+9. **Performance: async streaming to lower memory footprint**
+
+   *Question (real-life style):* "Show how you would stream trades from an HTTP endpoint without buffering the whole payload, yielding trades as they arrive and honoring cancellation." 
+
+```csharp
+public static async IAsyncEnumerable<Trade> StreamTradesAsync(
+    HttpClient client,
+    [EnumeratorCancellation] CancellationToken cancellationToken)
+{
+    await using var stream = await client.GetStreamAsync("trades/stream", cancellationToken);
+    await foreach (var trade in JsonSerializer.DeserializeAsyncEnumerable<Trade>(stream, cancellationToken: cancellationToken))
+    {
+        if (trade is not null)
+            yield return trade;
+    }
+}
+```
+
+Notes: Streaming deserialization prevents buffering large payloads. Combine with `HttpClientFactory` for connection reuse and set `MaxResponseContentBufferSize` when buffering is unavoidable. Add defensive cancellation to avoid stuck I/O.
+
+
 
