@@ -15,6 +15,11 @@ Use these notes to explain how you design resilient, low-overhead logging pipeli
 - **Structured logger:** Serilog or Seq sink for JSON; use message-template placeholders (`{OrderId}`) instead of string interpolation.
 - **OpenTelemetry:** Export traces/logs/metrics consistently; include W3C trace/context propagation headers.
 - **Shipping:** Centralize via OTLP/HTTP, gRPC, or Kafka; avoid writing to local disk in containers except for bootstrap/debug.
+- **NLog context:**
+  - **Where it shines:** Mature ecosystem with **rich target support** (file, database, email, Azure Log Analytics), high-performance async targets, and **flexible routing/layouts** for multi-tenant or blue/green rollouts.
+  - **Advantages:** Simple XML/JSON configuration, fast text file output, built-in filtering/rules, and battle-tested community extensions. Great when you need to fan out to multiple sinks without custom code.
+  - **Trade-offs:** Configuration can become verbose, JSON structure requires explicit layouts, and mixing NLog APIs with `ILogger` can create duplicate pipelines. Prefer running NLog **behind `Microsoft.Extensions.Logging`** via the NLog provider to keep a single abstraction and leverage dependency injection.
+  - **Operational note:** Keep targets async, set `overflowAction="Discard"` or sampling for noisy rules, and set per-environment config (dev = verbose file, prod = centralized structured logs) through `NLog.config` transforms.
 
 ## Patterns to Prefer
 - **Message templates over interpolation:** `logger.LogInformation("Processed {Count} items", count);` avoids unnecessary string formatting when disabled.
@@ -86,6 +91,14 @@ app.Run();
 - **PII controls:** Classify fields and redact at the edge; log tokens/credentials only in secure staging with strict retention.
 - **Deployment safety:** Use configuration-driven sinks/levels; favor hot-reloadable changes (appsettings, feature flags) over redeploys.
 - **Alerting:** Alert on error-rate deltas, burst of dropped events, and missing heartbeats rather than raw log volume.
+- **What to log (and not):**
+  - **Log:** Request/response envelope metadata (not bodies) for public APIs, dependency outcomes (latency/status/retries), domain milestones (order accepted/settled), security-relevant events (authn/z decisions), and **drop reason** when sampling/discarding.
+  - **Avoid:** Large payloads, secrets, personal data, high-cardinality values (raw GUID lists), and repetitive success spam in hot loops. Summarize counts instead.
+  - **Environments:**
+    - **Local/dev:** Enable `Debug/Trace`, file/console targets, and payload logging only with synthetic data.
+    - **Staging:** Mirror production sinks/levels; allow short-term `Debug` with sampling for reproductions.
+    - **Production:** Default to `Information` for business events and `Warning/Error` for issues; enable `Debug/Trace` only via time-bound flags with sampling to protect throughput and cost.
+  - **Performance guardrails:** Keep hot-path logging off by default, prefer structured summaries, and set per-rule rate limits so troubleshooting toggles don't DOS the service.
 
 ## Sample Diagnostic Pattern (Resilient HTTP Client)
 ```csharp
