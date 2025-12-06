@@ -155,7 +155,7 @@ var topSymbols = recentOrders
 - **Security:** OAuth2/JWT, refresh tokens, rate limiting, data encryption in transit and at rest.
 
 ## Messaging & Distributed Coordination
-- **RabbitMQ:** Broker-based, supports routing (fanout, topic, direct). Use for work queues, acknowledgements, durable queues.
+- **RabbitMQ:** Broker-based AMQP with routing (fanout/topic/direct), acknowledgements, and durable queues. See [RabbitMQ Deep Dive](./sub-notes/RabbitMQ.md) for operational notes, pros/cons, and .NET usage.
 - **ZeroMQ:** Lightweight socket library without broker; great for high-throughput, but requires you to manage topology/reliability.
 - **Delivery Guarantees:**
   - *At-most-once:* Fast, risk of data loss.
