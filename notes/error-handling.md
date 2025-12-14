@@ -148,3 +148,13 @@ public sealed record NotFound;
   - **A:** Stable error codes, actionable messages, explicit `retryable` hints, and sample remediation steps so clients can automate retries or fallbacks.
 - **Q:** How do you avoid exception cost in hot paths?
   - **A:** Prefer guard clauses and result types, pre-validate inputs, avoid throwing for predictable states, and use exception filters to keep catch blocks narrow.
+- **Q:** When do you choose graceful degradation over hard failure?
+  - **A:** If the dependency is non-critical or you can safely serve stale data, fall back to caches, simplified logic, or partial responses (e.g., show cached recommendations). For critical flows (payments, compliance), fail fast to prevent bad states. Always instrument fallbacks so you know when you’re degraded.
+- **Q:** What’s your approach to cancellation and timeouts in async services?
+  - **A:** Flow `CancellationToken` through all async APIs, set per-dependency timeouts (Polly `TimeoutPolicy` or `HttpClient` timeouts), and treat `OperationCanceledException` as a signal to stop work quickly. Combine with load shedding so saturated servers free threads instead of hanging.
+- **Q:** How do you centralize error handling in ASP.NET Core?
+  - **A:** Configure the exception handler middleware + `ProblemDetails` to translate unhandled exceptions into consistent payloads, add filters for domain exceptions, and wrap them with correlation IDs. This keeps controllers thin and ensures every failure path returns structured diagnostics.
+- **Q:** How do you validate resilience policies before production?
+  - **A:** Use integration tests and chaos drills that inject latency, drop connections, and spike errors while asserting on retry counts, circuit breaker transitions, and emitted metrics/logs. Automated fault injection ensures policies fire as expected and keeps runbooks current.
+- **Q:** How do you enforce idempotency across retries or duplicate messages?
+  - **A:** Include idempotency keys (request IDs, message IDs), use database upserts or stored procedure guards, and track processed messages in an inbox/outbox table. Consumers check for prior processing before mutating state so at-least-once delivery doesn’t double charge or double execute.

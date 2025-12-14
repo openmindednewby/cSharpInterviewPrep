@@ -200,3 +200,53 @@ var topSymbols = recentOrders
 ---
 
 Keep this cheat sheet nearby as you run through the plan. Update with your own notes if you have time.
+
+## Questions & Answers
+
+**Q: When would you choose .NET (Core/5+) over .NET Framework for a service?**
+
+A: Default to .NET for any new cross-platform, containerized, or cloud workload because you gain side-by-side deployments, self-contained publishing, trimming, and the latest GC/runtime improvements. Stick with .NET Framework only when you have heavy WinForms/WPF dependencies or Windows-only vendors you cannot port yet.
+
+**Q: How do framework-dependent and self-contained deployments change runtime management?**
+
+A: Framework-dependent deployments rely on the target machine’s installed runtime, which keeps packages smaller but couples you to host patch cadence. Self-contained deployments bundle the runtime/version with the app (`dotnet publish -r linux-x64 --self-contained`), increasing size but guaranteeing deterministic behavior and enabling multiple runtime versions per box—ideal for microservices.
+
+**Q: Can you explain the generational GC model and when to tune it?**
+
+A: The CLR splits the heap into Gen0/Gen1/Gen2 plus the LOH (>85 KB). Short-lived allocations collect in Gen0 and promote when they survive; long-lived objects reside in Gen2/LOH. Tuning usually means enabling server GC for ASP.NET workloads, pinning GC heaps per processor group, or activating background compaction for LOH fragmentation. Manual collections are almost never needed; instead fix allocation pressure (pool buffers, use `Span<T>`).
+
+**Q: What criteria guide you in choosing between `class`, `struct`, `record`, or `record struct`?**
+
+A: Use `class` for reference semantics, inheritance, or large/mutable state. Choose `record` when you need concise immutable reference types with value-based equality (DTOs, commands). Reach for `struct`/`record struct` for tiny (≤16 bytes), immutable value types that must live inline to avoid allocations (e.g., `PriceTick`). Avoid large mutable structs since they copy by value and can hurt perf.
+
+**Q: How does the async/await state machine affect design choices?**
+
+A: Each `async` method compiles into a struct-based state machine that captures locals as fields and resumes via continuations. That means extra allocations when you capture the context. Use `ConfigureAwait(false)` in library/background code to skip marshaling to SynchronizationContext, avoid blocking on `Task.Result` to prevent deadlocks, and prefer async-friendly coordination primitives (`SemaphoreSlim`, channels).
+
+**Q: When do you rely on `Span<T>`/`Memory<T>` and what are the constraints?**
+
+A: Use `Span<T>` for high-throughput parsing, slicing, and buffer pooling because it can project stack/heap/native memory without copying. It’s stack-only and cannot escape async boundaries, so wrap it in `Memory<T>` or `ReadOnlyMemory<T>` when you need to store it or await between operations. Combine with `ArrayPool<T>` or pipelines to minimize GC pressure.
+
+**Q: How do you avoid accidental boxing and heap churn with value types?**
+
+A: Stick to generic collections (`List<T>`, `Dictionary<TKey,TValue>`), avoid storing value types as `object`, and pass them by `in` reference when appropriate. When you need polymorphism, consider `record struct` + interfaces or type-safe discriminated unions rather than boxing.
+
+**Q: What pitfalls come with ASP.NET Core DI lifetimes?**
+
+A: Capturing a scoped service in a singleton causes cross-request state leakage and race conditions. Register lightweight, stateless services as transient; stateful caches/policies as singleton; and request-bound dependencies (DbContext, HttpClient handlers) as scoped. If you need scoped data inside singletons, flow it explicitly (e.g., `IHttpContextAccessor`, `IOptionsSnapshot`) or restructure dependencies.
+
+**Q: How do you design resilient outbound calls in .NET services?**
+
+A: Wrap HTTP/DB/broker calls with `HttpClientFactory` (typed clients), Polly policies for retries/circuit breakers/timeouts, and structured logging/metrics. Honor `CancellationToken`, propagate correlation IDs, and keep idempotency keys so at-least-once delivery doesn’t create duplicates. Use `Task.WhenAll` for fan-out, but cap concurrency via `SemaphoreSlim` to avoid exhausting sockets.
+
+**Q: What strategies ensure messaging idempotency and delivery guarantees?**
+
+A: For at-least-once systems like RabbitMQ/Kafka, include message IDs, dedupe tables, or optimistic concurrency checks so replays are safe. Prefer outbox/inbox patterns to bridge DB + queue consistency, and design consumers to handle duplicates (upserts, `INSERT ... ON CONFLICT`). Exactly-once semantics are simulated through idempotent consumers plus dedupe storage—not by relying on the broker alone.
+
+**Q: How do you articulate trade-offs between SQL and NoSQL from these notes?**
+
+A: SQL gives strict schema, ACID transactions, mature indexing, and complex queries (window functions). Use it for core trading entities where referential integrity matters. NoSQL (MongoDB, Redis) shines for flexible schemas, caching, and high-throughput document access, but you design for access patterns and enforce consistency in code. Often you pair them—SQL as source of truth, Redis for hot caches—with cache-aside and TTL discipline.
+
+**Q: What’s unique about integrating with MT4/MT5 from .NET?**
+
+A: MT4/5 expose broker APIs requiring bridge services for order routing and market-data streaming. Emphasize managing session lifecycles, low-latency tick handling, resilience to broker disconnects, and compliance logging. A typical solution ingests ticks, normalizes them, publishes over RabbitMQ, and exposes aggregated data via ASP.NET Core APIs with strict SLAs.

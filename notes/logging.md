@@ -162,3 +162,15 @@ public class InventoryClient
   - **A:** Propagate W3C trace context, attach span IDs to log scopes, export via OpenTelemetry so logs/metrics/traces share correlation IDs.
 - **Q:** What patterns help during incident response?
   - **A:** Toggle verbose levels via config, enable sampling to capture representative failures, and use structured events with consistent keys for quick querying.
+- **Q:** Why run Serilog or NLog behind `Microsoft.Extensions.Logging` instead of using them directly? 
+  - **A:** The facade lets ASP.NET Core, EF Core, and custom services share the same pipeline and DI story. Providers (Serilog/NLog) plug in via `AddSerilog()`/`AddNLog()`, so you avoid duplicate configuration, keep scopes consistent, and can swap sinks without touching app code.
+- **Q:** How do you keep correlation data consistent across APIs, queues, and workers?
+  - **A:** Wrap each request/message in a logger scope containing `CorrelationId`, tenant, region, and trace/span IDs. Forward these fields on outbound HTTP/messaging headers so downstream services enrich their scopes too, creating an unbroken chain for querying dashboards.
+- **Q:** When would you favor synchronous logging and how do you mitigate its risk?
+  - **A:** Only for small local dev tooling or early startup when async infrastructure isn’t ready. Even then, keep messages tiny and avoid blocking network calls. In production, always switch to async/buffered sinks with drop policies to shield request threads.
+- **Q:** How do you tune OpenTelemetry or OTLP exporters for logging?
+  - **A:** Batch records (tens-hundreds per batch), tune `FlushInterval` to balance latency and throughput, and size the export queue to absorb bursts. Watch metrics for dropped spans/logs and adjust `MaxConcurrency` or sampling rates accordingly.
+- **Q:** How do you verify logging instrumentation in CI?
+  - **A:** Use in-memory sinks/exporters during integration tests, execute key scenarios, and assert on emitted event names, scopes, and structured fields. This catches schema regressions or missing context before they hit observability platforms.
+- **Q:** How do you control log level explosions when temporarily enabling `Debug` or `Trace`?
+  - **A:** Flip levels via config/feature flags with TTLs, scope the change to specific categories, and combine with sampling or rate limiting. Always capture the reason in runbooks so toggles are reverted quickly and storage cost stays predictable.

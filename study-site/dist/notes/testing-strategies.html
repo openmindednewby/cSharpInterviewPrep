@@ -15,7 +15,7 @@
       window.__studyTheme = initial;
     })();
   </script>
-  <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="stylesheet" href="..\assets/styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -82,7 +82,7 @@
     </nav>
     <main class="content">
       <article class="card">
-        <div class="breadcrumbs">notes/testing-strategies.md</div>
+        <div class="breadcrumbs">notes\testing-strategies.md</div>
         <h2>Testing Strategies</h2>
         <div class="toc-label">Rapid overview</div>
         <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#testing-strategies-for-high-performance-highly-available-systems">Testing Strategies for High-Performance, Highly Available Systems</a></li><li class="level-2"><a href="#unit-tests">Unit Tests</a></li><li class="level-2"><a href="#integration-tests">Integration Tests</a></li><li class="level-2"><a href="#cross-cutting-testing-practices">Cross-Cutting Testing Practices</a></li><li class="level-2"><a href="#when-discussing-in-an-interview">When Discussing in an Interview</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
@@ -122,6 +122,16 @@
 <p>A: Run minimal chaos probes (like restarting a dependency once) on main-branch merges to catch regressions early, but reserve heavier scenarios (multi-node failovers, prolonged network partitions) for nightly or pre-release pipelines to balance feedback speed with stability.</p>
 <p><strong>Q: How do you validate observability instrumentation through tests?</strong></p>
 <p>A: Attach in-memory exporters for OpenTelemetry during integration tests, trigger key user journeys, and assert on emitted spans/metrics/logs (names, attributes, and error flags). This ensures dashboards and alerts stay trustworthy without requiring external telemetry backends.</p>
+<p><strong>Q: How do you keep the test pyramid healthy for high-performance services?</strong></p>
+<p>A: Push most coverage into deterministic unit tests, use focused integration tests for DI/middleware/wiring, and reserve a handful of end-to-end tests for golden paths. That keeps feedback fast while still exercising resilience features like retries and telemetry in realistic environments.</p>
+<p><strong>Q: Where do contract tests fit into your integration strategy?</strong></p>
+<p>A: Use consumer-driven contract tests for HTTP/gRPC/messaging boundaries. They validate payload shapes and behavior without spinning up the entire dependency graph, giving you rapid feedback whenever a producer changes schemas or status codes.</p>
+<p><strong>Q: How do you keep test data realistic without becoming brittle?</strong></p>
+<p>A: Centralize builders/AutoFixture customizations so payload size/shape mirrors production, randomize optional fields to catch null-handling bugs, and snapshot baseline objects when you need explicit comparisons. Builders live next to the domain so updates ripple automatically.</p>
+<p><strong>Q: How do you enforce deterministic time and randomness in tests?</strong></p>
+<p>A: Abstract clock/random dependencies (<code>ISystemClock</code>, deterministic <code>Random</code> seeds) and inject test doubles that you can fast-forward. Avoid <code>DateTime.UtcNow</code> or <code>Guid.NewGuid()</code> inside tests; use deterministic sequences so assertions stay stable and failures are reproducible.</p>
+<p><strong>Q: What’s your CI strategy for mixing fast and slow test suites?</strong></p>
+<p>A: Run unit tests + lightweight integration tests on every PR to keep cycle times low. Schedule heavier suites (full container stacks, chaos scenarios, long-running benchmarks) nightly or before releases, and promote artifacts/logs to speed triage when they fail.</p>
       </article>
     </main>
   </div>

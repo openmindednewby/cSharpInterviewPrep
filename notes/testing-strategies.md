@@ -132,3 +132,23 @@ A: Run minimal chaos probes (like restarting a dependency once) on main-branch m
 **Q: How do you validate observability instrumentation through tests?**
 
 A: Attach in-memory exporters for OpenTelemetry during integration tests, trigger key user journeys, and assert on emitted spans/metrics/logs (names, attributes, and error flags). This ensures dashboards and alerts stay trustworthy without requiring external telemetry backends.
+
+**Q: How do you keep the test pyramid healthy for high-performance services?**
+
+A: Push most coverage into deterministic unit tests, use focused integration tests for DI/middleware/wiring, and reserve a handful of end-to-end tests for golden paths. That keeps feedback fast while still exercising resilience features like retries and telemetry in realistic environments.
+
+**Q: Where do contract tests fit into your integration strategy?**
+
+A: Use consumer-driven contract tests for HTTP/gRPC/messaging boundaries. They validate payload shapes and behavior without spinning up the entire dependency graph, giving you rapid feedback whenever a producer changes schemas or status codes.
+
+**Q: How do you keep test data realistic without becoming brittle?**
+
+A: Centralize builders/AutoFixture customizations so payload size/shape mirrors production, randomize optional fields to catch null-handling bugs, and snapshot baseline objects when you need explicit comparisons. Builders live next to the domain so updates ripple automatically.
+
+**Q: How do you enforce deterministic time and randomness in tests?**
+
+A: Abstract clock/random dependencies (`ISystemClock`, deterministic `Random` seeds) and inject test doubles that you can fast-forward. Avoid `DateTime.UtcNow` or `Guid.NewGuid()` inside tests; use deterministic sequences so assertions stay stable and failures are reproducible.
+
+**Q: What’s your CI strategy for mixing fast and slow test suites?**
+
+A: Run unit tests + lightweight integration tests on every PR to keep cycle times low. Schedule heavier suites (full container stacks, chaos scenarios, long-running benchmarks) nightly or before releases, and promote artifacts/logs to speed triage when they fail.
