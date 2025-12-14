@@ -212,12 +212,12 @@ function buildTemplate({ title, navHtml, tocHtml, contentHtml, meta }) {
 </html>`;
 }
 
-function navList(groups) {
+function navList(groups, basePrefix = '.') {
   const sectionHtml = groups.map((group) => {
     const items = group.items
       .slice()
       .sort((a, b) => a.title.localeCompare(b.title))
-      .map((file) => `<li><a href="${file.href}">${file.title}</a></li>`)
+      .map((file) => `<li><a href="${path.posix.join(basePrefix, file.href)}">${file.title}</a></li>`)
       .join('');
     return `<div class="sidebar-group">
       <h3>${group.label}</h3>
@@ -232,8 +232,8 @@ function computeOutputPath(file) {
   const safeRel = relativeDir === '.' ? '' : relativeDir.replace(/\\/g, '/');
   const targetDir = path.join(outputRoot, relativeDir);
   const fileName = `${path.basename(file.sourcePath, '.md')}.html`;
-  // Use root-relative links so navigation works from nested pages
-  const href = path.posix.join('/', safeRel, fileName);
+  // Store hrefs relative to the output root so we can build page-relative links later
+  const href = path.posix.join(safeRel || '.', fileName);
   return { targetDir, outFile: path.join(targetDir, fileName), href };
 }
 
@@ -274,9 +274,10 @@ async function buildFile(file, navGroups) {
   await ensureDir(targetDir);
 
   const assetBase = path.relative(targetDir, path.join(outputRoot, 'assets')) || '.';
+  const navBase = path.relative(targetDir, outputRoot) || '.';
   const template = buildTemplate({
     title,
-    navHtml: navList(navGroups),
+    navHtml: navList(navGroups, navBase),
     tocHtml,
     contentHtml: html,
     meta: {
