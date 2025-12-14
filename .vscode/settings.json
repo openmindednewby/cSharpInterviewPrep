@@ -1,0 +1,43 @@
+{
+  // GitHub Copilot Settings
+  "github.copilot.enable": {
+    "*": true,
+    "yaml": true,
+    "plaintext": true,
+    "markdown": true
+  },
+
+  // Copilot instructions - automatically include universal instructions
+  "github.copilot.chat.codeGeneration.instructions": [
+    {
+      "file": "UNIVERSAL-CSHARP-AI-INSTRUCTIONS.md"
+    }
+  ],
+
+  // Context files that Copilot should always consider
+  "github.copilot.chat.contextFiles": [
+    "UNIVERSAL-CSHARP-AI-INSTRUCTIONS.md",
+    ".github/copilot-instructions.md"
+  ],
+
+  // C# specific settings
+  "dotnet.defaultSolution": "exampleSolutions/TrevoirWilliamsCourseCompleted/HR.LeaveManagement.Clean.sln",
+
+  // Editor settings for C#
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.organizeImports": "explicit"
+  },
+
+  "[csharp]": {
+    "editor.defaultFormatter": "ms-dotnettools.csharp",
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true
+  },
+
+  // IntelliSense settings
+  "omnisharp.enableEditorConfigSupport": true,
+  "omnisharp.enableRoslynAnalyzers": true,
+  "dotnet.completion.showCompletionItemsFromUnimportedNamespaces": true
+}
