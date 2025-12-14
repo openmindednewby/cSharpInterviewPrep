@@ -185,12 +185,22 @@ function formatGroupLabel(labelParts) {
 function buildTemplate({ title, navHtml, tocHtml, contentHtml, meta }) {
   const description = `Senior .NET study guide for ${title}`;
   return `<!DOCTYPE html>
-<html lang="en" data-theme="midnight">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="${description}" />
   <title>${title} | C# Interview Prep Cheat Sheet</title>
+  <script>
+    (() => {
+      const supported = ['midnight', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const fallback = 'light';
+      const initial = supported.includes(saved) ? saved : fallback;
+      document.documentElement.dataset.theme = initial;
+      window.__studyTheme = initial;
+    })();
+  </script>
   <link rel="stylesheet" href="${meta.assetBase}/styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -238,10 +248,9 @@ function buildTemplate({ title, navHtml, tocHtml, contentHtml, meta }) {
     (() => {
       const select = document.getElementById('theme-select');
       const supported = ['midnight', 'light', 'dark'];
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       const saved = sessionStorage.getItem('study-theme');
-      const fallback = prefersDark ? 'dark' : 'midnight';
-      const initial = supported.includes(saved) ? saved : fallback;
+      const fallback = 'light';
+      const initial = supported.includes(saved) ? saved : (window.__studyTheme || fallback);
       document.documentElement.dataset.theme = initial;
       if (select) {
         select.value = initial;
@@ -350,11 +359,21 @@ async function buildIndex(navGroups) {
   }).join('');
 
   const html = `<!DOCTYPE html>
-<html lang="en" data-theme="midnight">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Study Portal | C# Interview Prep</title>
+  <script>
+    (() => {
+      const supported = ['midnight', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const fallback = 'light';
+      const initial = supported.includes(saved) ? saved : fallback;
+      document.documentElement.dataset.theme = initial;
+      window.__studyTheme = initial;
+    })();
+  </script>
   <link rel="stylesheet" href="./assets/styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -387,10 +406,9 @@ async function buildIndex(navGroups) {
     (() => {
       const select = document.getElementById('theme-select');
       const supported = ['midnight', 'light', 'dark'];
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       const saved = sessionStorage.getItem('study-theme');
-      const fallback = prefersDark ? 'dark' : 'midnight';
-      const initial = supported.includes(saved) ? saved : fallback;
+      const fallback = 'light';
+      const initial = supported.includes(saved) ? saved : (window.__studyTheme || fallback);
       document.documentElement.dataset.theme = initial;
       if (select) {
         select.value = initial;
