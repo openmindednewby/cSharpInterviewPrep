@@ -169,7 +169,7 @@ function titleFromFilename(filePath) {
 function buildTemplate({ title, navHtml, tocHtml, contentHtml, meta }) {
   const description = `Senior .NET study guide for ${title}`;
   return `<!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="midnight">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -187,7 +187,17 @@ function buildTemplate({ title, navHtml, tocHtml, contentHtml, meta }) {
       <h1>Senior .NET Study Portal</h1>
       <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
     </div>
-    <div class="badge">Fast recall</div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="midnight">Current</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
   </header>
   <div class="layout">
     <nav class="sidebar">
@@ -208,6 +218,26 @@ function buildTemplate({ title, navHtml, tocHtml, contentHtml, meta }) {
     </main>
   </div>
   <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['midnight', 'light', 'dark'];
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const saved = localStorage.getItem('study-theme');
+      const fallback = prefersDark ? 'dark' : 'midnight';
+      const initial = supported.includes(saved) ? saved : fallback;
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          localStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+  </script>
 </body>
 </html>`;
 }
@@ -304,7 +334,7 @@ async function buildIndex(navGroups) {
   }).join('');
 
   const html = `<!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="midnight">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -321,12 +351,42 @@ async function buildIndex(navGroups) {
       <h1>Senior .NET Study Portal</h1>
       <p class="subtitle">All notes & practice questions compiled into a deployable cheat sheet.</p>
     </div>
-    <div class="badge">Built from Markdown</div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="midnight">Current</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Built from Markdown</div>
+    </div>
   </header>
   <main class="content-grid">
     ${cards}
   </main>
   <footer class="footer">Generate with <code>npm run build</code>. Content lives in the root Markdown files.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['midnight', 'light', 'dark'];
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const saved = localStorage.getItem('study-theme');
+      const fallback = prefersDark ? 'dark' : 'midnight';
+      const initial = supported.includes(saved) ? saved : fallback;
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          localStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+  </script>
 </body>
 </html>`;
 
