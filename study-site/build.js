@@ -232,7 +232,8 @@ function computeOutputPath(file) {
   const safeRel = relativeDir === '.' ? '' : relativeDir.replace(/\\/g, '/');
   const targetDir = path.join(outputRoot, relativeDir);
   const fileName = `${path.basename(file.sourcePath, '.md')}.html`;
-  const href = path.posix.join(safeRel, fileName);
+  // Use root-relative links so navigation works from nested pages
+  const href = path.posix.join('/', safeRel, fileName);
   return { targetDir, outFile: path.join(targetDir, fileName), href };
 }
 
