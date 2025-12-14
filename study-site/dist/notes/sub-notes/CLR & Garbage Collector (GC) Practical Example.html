@@ -4,7 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Senior .NET study guide for CLR & Garbage Collector (GC) Practical Example" />
+  <meta name="theme-color" content="#0f172a" />
   <title>CLR & Garbage Collector (GC) Practical Example | C# Interview Prep Cheat Sheet</title>
+  <link rel="manifest" href="../../assets/manifest.webmanifest" />
   <script>
     (() => {
       const supported = ['midnight', 'light', 'dark'];
@@ -15,7 +17,7 @@
       window.__studyTheme = initial;
     })();
   </script>
-  <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="../../assets/styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -44,48 +46,81 @@
       <div class="sidebar-section">
         <h2>Navigation</h2>
         <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
-        <div class="nav-groups"><div class="sidebar-group">
-      <h3>Notes</h3>
-      <ul><li><a href="..\../notes/core-concepts.html">Core Concepts</a></li><li><a href="..\../notes/error-handling.html">Error Handling</a></li><li><a href="..\../notes/logging.html">Logging</a></li><li><a href="..\../notes/testing-strategies.html">Testing Strategies</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Notes / Automapper</h3>
-      <ul><li><a href="..\../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Notes / Clean Architecture</h3>
-      <ul><li><a href="..\../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Notes / Design Patterns</h3>
-      <ul><li><a href="..\../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a href="..\../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a href="..\../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a href="..\../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a href="..\../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a href="..\../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Notes / DRY</h3>
-      <ul><li><a href="..\../notes/DRY/index.html">DRY</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Notes / FluentValidation</h3>
-      <ul><li><a href="..\../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Notes / Memory Allocation Discipline</h3>
-      <ul><li><a href="..\../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a href="..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a href="..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Notes / SOLID</h3>
-      <ul><li><a href="..\../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a href="..\../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a href="..\../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a href="..\../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a href="..\../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a href="..\../notes/SOLID/index.html">SOLID</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Notes / Sub Notes</h3>
-      <ul><li><a href="..\../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a href="..\../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a href="..\../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a href="..\../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a href="..\../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a href="..\../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a href="..\../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a href="..\../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a href="..\../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a href="..\../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a href="..\../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a href="..\../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a href="..\../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a href="..\../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a href="..\../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a href="..\../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a href="..\../notes/sub-notes/types.html">Types</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Practice</h3>
-      <ul><li><a href="..\../practice/answers.html">Answers</a></li><li><a href="..\../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a href="..\../practice/questions.html">Questions</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Practice / Real Exam Questions Answers</h3>
-      <ul><li><a href="..\../practice/real exam questions answers/replace int without variable.html">Replace Int Without Variable</a></li><li><a href="..\../practice/real exam questions answers/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li></ul>
-    </div></div>
+        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group" data-group="notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="../../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="../../notes/logging.html">Logging</a></li><li><a class="nav-link" href="../../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="../../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="../../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="../../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="../../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="../../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../notes/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a class="nav-link" href="../../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a class="nav-link" href="../../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a class="nav-link" href="../../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a class="nav-link" href="../../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a class="nav-link" href="../../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a class="nav-link" href="../../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a class="nav-link" href="../../notes/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group is-open" data-group="notes-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
+        <span>Notes / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="../../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a class="nav-link" href="../../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a class="nav-link" href="../../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a class="nav-link active" href="../../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a class="nav-link" href="../../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a class="nav-link" href="../../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a class="nav-link" href="../../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a class="nav-link" href="../../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a class="nav-link" href="../../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a class="nav-link" href="../../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a class="nav-link" href="../../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a class="nav-link" href="../../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a class="nav-link" href="../../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a class="nav-link" href="../../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a class="nav-link" href="../../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a class="nav-link" href="../../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a class="nav-link" href="../../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../practice/answers.html">Answers</a></li><li><a class="nav-link" href="../../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="../../practice/questions.html">Questions</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-real-exam-questions-answers">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Real Exam Questions Answers</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../practice/real exam questions answers/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="../../practice/real exam questions answers/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li></ul>
+    </div></div></div>
       </div>
     </nav>
     <main class="content">
       <article class="card">
-        <div class="breadcrumbs">notes\sub-notes\CLR & Garbage Collector (GC) Practical Example.md</div>
+        <div class="breadcrumbs">notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.md</div>
         <h2>CLR & Garbage Collector (GC) Practical Example</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-2"><a href="#goal">⚡ GOAL</a></li><li class="level-2"><a href="#1-the-scenario">🧩 1. The scenario</a></li><li class="level-2"><a href="#2-the-c-code">💻 2. The C# code</a></li><li class="level-2"><a href="#3-what-to-highlight-in-the-interview">🧠 3. What to highlight in the interview</a></li><li class="level-2"><a href="#4-practice-questions-you-can-expect">🔍 4. Practice questions you can expect</a></li><li class="level-2"><a href="#5-optional-5-min-extension-counter-check">🧩 5. Optional 5-min extension: Counter check</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
+        <div class="toc"><ul class="toc-list"><li class="level-2"><a href="#goal">⚡ GOAL</a></li><li class="level-2"><a href="#1-the-scenario">🧩 1. The scenario</a></li><li class="level-2"><a href="#2-the-c-code">💻 2. The C# code</a></li><li class="level-2"><a href="#3-what-to-highlight-in-the-interview">🧠 3. What to highlight in the interview</a></li><li class="level-2"><a href="#4-practice-questions-you-can-expect">🔍 4. Practice questions you can expect</a></li><li class="level-2"><a href="#5-optional-5-min-extension-counter-check">🧩 5. Optional 5-min extension: Counter check</a></li></ul></div>
         <h2 id="goal">⚡ GOAL</h2>
 <p>Parse and process a stream of <strong>price tick data</strong> efficiently, <strong>without allocating</strong>, <strong>without creating new strings</strong>, and <strong>with GC-friendly design</strong>.</p>
 <p>---</p>
@@ -199,28 +234,6 @@ class Program
 <p>That’s your <strong>evidence</strong> you’ve optimized allocations correctly.</p>
 <p>---</p>
 <p>Would you like me to follow up with a <strong>bonus version using <code>System.IO.Pipelines</code></strong> — the way you’d implement this in a real HFM-style backend (async, streaming, zero-copy)? That’s often a <strong>senior-level differentiator question</strong>.</p>
-<p>---</p>
-<h2 id="questions-answers">Questions & Answers</h2>
-<p><strong>Q: How does this parser minimize allocations?</strong></p>
-<p>A: It uses <code>ReadOnlySpan&lt;byte&gt;</code> to slice the input buffer, <code>Utf8Parser</code> to parse primitives directly from bytes, and <code>ArrayPool&lt;byte&gt;</code> to reuse buffers, leaving only one small string allocation per tick.</p>
-<p><strong>Q: Why is <code>Utf8Parser</code> preferred here?</strong></p>
-<p>A: It avoids converting byte segments into strings before parsing numbers, eliminating temporary allocations and respecting culture-invariant formats ideal for market data.</p>
-<p><strong>Q: How do you process partial messages with this approach?</strong></p>
-<p>A: Maintain leftover spans between reads or use <code>System.IO.Pipelines</code>, which handles split frames by giving you <code>ReadOnlySequence&lt;byte&gt;</code> to process once a newline delimiter appears.</p>
-<p><strong>Q: How would you adapt this for asynchronous sockets?</strong></p>
-<p>A: Swap buffer handling for <code>PipeReader</code>/<code>PipeWriter</code>, consume <code>ReadOnlySequence&lt;byte&gt;</code> segments, and use <code>Memory&lt;byte&gt;</code> to cross <code>await</code> boundaries safely while keeping parsing logic identical.</p>
-<p><strong>Q: What GC metrics confirm success?</strong></p>
-<p>A: <code>Gen0 GC Count</code> stays low relative to throughput, <code>Gen2 GC Count</code> remains near zero, and <code>Allocated Bytes/sec</code> is minimal. Use <code>dotnet-counters</code> to observe these while the parser runs.</p>
-<p><strong>Q: How do you reuse symbol strings to avoid per-message allocations?</strong></p>
-<p>A: Maintain a dictionary of interned symbols or use <code>ReadOnlyMemory&lt;byte&gt;</code> pointing to shared symbol tables, so repeated symbols reuse references instead of allocating new strings.</p>
-<p><strong>Q: What happens if you allocate 100 KB buffers per message?</strong></p>
-<p>A: They land on the LOH, leading to fragmentation and long Gen2 pauses. Renting from <code>ArrayPool&lt;byte&gt;</code> avoids repeated LOH allocations.</p>
-<p><strong>Q: How do you handle parsing failures?</strong></p>
-<p>A: Check the boolean return from <code>Utf8Parser.TryParse</code> and decide whether to drop/log the tick or route it to a poison queue. Avoid throwing in the hot path to keep allocation-free behavior.</p>
-<p><strong>Q: Can you pool <code>Tick</code> instances too?</strong></p>
-<p>A: Yes—use <code>ObjectPool&lt;Tick&gt;</code> or a struct pool if you need to reuse containers. Ensure pooled objects are reset before reuse to avoid leaking data.</p>
-<p><strong>Q: How would you extend this to publish to RabbitMQ/Kafka?</strong></p>
-<p>A: Serialize ticks using <code>IBufferWriter&lt;byte&gt;</code> or spans to keep serialization allocation-free, then push to the broker client that supports span-friendly APIs.</p>
       </article>
     </main>
   </div>
@@ -243,6 +256,55 @@ class Program
         });
       }
     })();
+    (() => {
+      const groups = document.querySelectorAll('.sidebar-group');
+      if (!groups.length) return;
+      const storageKey = 'study-open-groups';
+      const saved = sessionStorage.getItem(storageKey);
+      const openFromStorage = new Set(saved ? JSON.parse(saved) : []);
+
+      const activeLink = document.querySelector('.nav-link.active');
+      const activeGroup = activeLink?.closest('.sidebar-group');
+      if (activeGroup?.dataset.group) {
+        openFromStorage.add(activeGroup.dataset.group);
+      }
+
+      const syncStorage = () => {
+        const openIds = Array.from(document.querySelectorAll('.sidebar-group.is-open'))
+          .map((group) => group.dataset.group)
+          .filter(Boolean);
+        sessionStorage.setItem(storageKey, JSON.stringify(openIds));
+      };
+
+      const setExpanded = (group, expanded) => {
+        const header = group.querySelector('.sidebar-group__header');
+        const list = group.querySelector('.sidebar-group__items');
+        group.classList.toggle('is-open', expanded);
+        header?.setAttribute('aria-expanded', expanded);
+        if (list) {
+          list.hidden = !expanded;
+        }
+      };
+
+      groups.forEach((group) => {
+        const shouldOpen = openFromStorage.has(group.dataset.group);
+        setExpanded(group, shouldOpen);
+        const header = group.querySelector('.sidebar-group__header');
+        header?.addEventListener('click', () => {
+          const next = !group.classList.contains('is-open');
+          setExpanded(group, next);
+          syncStorage();
+        });
+      });
+    })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swPath = '../../service-worker.js';
+        navigator.serviceWorker.register(swPath).catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
   </script>
 </body>
 </html>

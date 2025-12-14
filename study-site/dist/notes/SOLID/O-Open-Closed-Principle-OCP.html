@@ -4,7 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Senior .NET study guide for O Open Closed Principle OCP" />
+  <meta name="theme-color" content="#0f172a" />
   <title>O Open Closed Principle OCP | C# Interview Prep Cheat Sheet</title>
+  <link rel="manifest" href="../../assets/manifest.webmanifest" />
   <script>
     (() => {
       const supported = ['midnight', 'light', 'dark'];
@@ -15,7 +17,7 @@
       window.__studyTheme = initial;
     })();
   </script>
-  <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="../../assets/styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -44,48 +46,81 @@
       <div class="sidebar-section">
         <h2>Navigation</h2>
         <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
-        <div class="nav-groups"><div class="sidebar-group">
-      <h3>Notes</h3>
-      <ul><li><a href="..\../notes/core-concepts.html">Core Concepts</a></li><li><a href="..\../notes/error-handling.html">Error Handling</a></li><li><a href="..\../notes/logging.html">Logging</a></li><li><a href="..\../notes/testing-strategies.html">Testing Strategies</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Notes / Automapper</h3>
-      <ul><li><a href="..\../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Notes / Clean Architecture</h3>
-      <ul><li><a href="..\../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Notes / Design Patterns</h3>
-      <ul><li><a href="..\../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a href="..\../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a href="..\../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a href="..\../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a href="..\../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a href="..\../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Notes / DRY</h3>
-      <ul><li><a href="..\../notes/DRY/index.html">DRY</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Notes / FluentValidation</h3>
-      <ul><li><a href="..\../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Notes / Memory Allocation Discipline</h3>
-      <ul><li><a href="..\../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a href="..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a href="..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Notes / SOLID</h3>
-      <ul><li><a href="..\../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a href="..\../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a href="..\../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a href="..\../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a href="..\../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a href="..\../notes/SOLID/index.html">SOLID</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Notes / Sub Notes</h3>
-      <ul><li><a href="..\../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a href="..\../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a href="..\../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a href="..\../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a href="..\../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a href="..\../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a href="..\../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a href="..\../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a href="..\../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a href="..\../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a href="..\../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a href="..\../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a href="..\../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a href="..\../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a href="..\../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a href="..\../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a href="..\../notes/sub-notes/types.html">Types</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Practice</h3>
-      <ul><li><a href="..\../practice/answers.html">Answers</a></li><li><a href="..\../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a href="..\../practice/questions.html">Questions</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Practice / Real Exam Questions Answers</h3>
-      <ul><li><a href="..\../practice/real exam questions answers/replace int without variable.html">Replace Int Without Variable</a></li><li><a href="..\../practice/real exam questions answers/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li></ul>
-    </div></div>
+        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group" data-group="notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="../../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="../../notes/logging.html">Logging</a></li><li><a class="nav-link" href="../../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="../../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="../../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="../../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="../../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="../../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../notes/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a class="nav-link" href="../../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a class="nav-link" href="../../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
+    </div><div class="sidebar-group is-open" data-group="notes-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
+        <span>Notes / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="../../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a class="nav-link" href="../../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a class="nav-link" href="../../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a class="nav-link active" href="../../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a class="nav-link" href="../../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a class="nav-link" href="../../notes/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a class="nav-link" href="../../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a class="nav-link" href="../../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a class="nav-link" href="../../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a class="nav-link" href="../../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a class="nav-link" href="../../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a class="nav-link" href="../../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a class="nav-link" href="../../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a class="nav-link" href="../../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a class="nav-link" href="../../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a class="nav-link" href="../../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a class="nav-link" href="../../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a class="nav-link" href="../../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a class="nav-link" href="../../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a class="nav-link" href="../../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a class="nav-link" href="../../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a class="nav-link" href="../../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../practice/answers.html">Answers</a></li><li><a class="nav-link" href="../../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="../../practice/questions.html">Questions</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-real-exam-questions-answers">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Real Exam Questions Answers</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../practice/real exam questions answers/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="../../practice/real exam questions answers/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li></ul>
+    </div></div></div>
       </div>
     </nav>
     <main class="content">
       <article class="card">
-        <div class="breadcrumbs">notes\SOLID\O-Open-Closed-Principle-OCP.md</div>
+        <div class="breadcrumbs">notes/SOLID/O-Open-Closed-Principle-OCP.md</div>
         <h2>O Open Closed Principle OCP</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-2"><a href="#o-openclosed-principle-ocp">**O — Open/Closed Principle (OCP)**</a></li><li class="level-3"><a href="#example-new-trade-execution-channels">✅ Example: New trade execution channels</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
+        <div class="toc"><ul class="toc-list"><li class="level-2"><a href="#o-openclosed-principle-ocp">**O — Open/Closed Principle (OCP)**</a></li><li class="level-3"><a href="#example-new-trade-execution-channels">✅ Example: New trade execution channels</a></li></ul></div>
         <h2 id="o-openclosed-principle-ocp"><strong>O — Open/Closed Principle (OCP)</strong></h2>
 <blockquote><p>“Software entities should be open for extension but closed for modification.”</p></blockquote>
 <p>You should add new behavior <strong>without editing existing code</strong>.</p>
@@ -114,28 +149,6 @@ public class TradeService
     public void Execute(Order order) =&gt; _executor.Execute(order);
 }</code></pre>
 <p>✅ Adding a new trading platform (like cTrader or FIX API) just means creating another <code>ITradeExecutor</code> implementation — no code modification, only <strong>extension</strong>.</p>
-<p>---</p>
-<h2 id="questions-answers">Questions & Answers</h2>
-<p><strong>Q: How do you ensure new features don’t require modifying existing classes?</strong></p>
-<p>A: Depend on abstractions and register new implementations via DI. Use patterns like Strategy or Decorator so new behavior plugs in without touching existing code.</p>
-<p><strong>Q: What signals an OCP violation?</strong></p>
-<p>A: If every new platform or workflow requires editing the same switch statement or base class, you’re modifying existing code instead of extending via new types.</p>
-<p><strong>Q: How do feature flags interact with OCP?</strong></p>
-<p>A: Feature flags can select between implementations at runtime without modifying code. Register both paths and toggle via configuration, respecting OCP.</p>
-<p><strong>Q: How do you balance OCP with readability?</strong></p>
-<p>A: Don’t over-abstract. Introduce extension points only when change pressure exists. Keep base abstractions small so extensions remain straightforward.</p>
-<p><strong>Q: How does OCP apply to APIs?</strong></p>
-<p>A: Version APIs instead of changing contracts. Add new endpoints or fields while keeping existing behavior untouched to avoid breaking clients.</p>
-<p><strong>Q: What tooling helps enforce OCP?</strong></p>
-<p>A: Architecture tests verifying dependencies, code analyzers warning on large switch statements, and DI/registration conventions that encourage extending via new classes.</p>
-<p><strong>Q: How do templates or generics aid OCP?</strong></p>
-<p>A: Generics let you inject behavior (e.g., <code>IRepository&lt;T&gt;</code>) without rewriting code for each type. Base functionality stays closed; new types extend usage.</p>
-<p><strong>Q: How do you vet extension points for security/compliance?</strong></p>
-<p>A: Document allowed extensions, run threat modeling on new implementations, and add automated tests to ensure they honor validation/risk rules like existing types.</p>
-<p><strong>Q: Can configuration count as “extension”?</strong></p>
-<p>A: If behavior is data-driven (rules engine, config-based workflows), adding entries might be enough. Ensure validation guards keep config changes safe.</p>
-<p><strong>Q: How does OCP help with plugin architectures?</strong></p>
-<p>A: Plugins implement known interfaces and register themselves. The host never changes; you drop in new assemblies to extend behavior safely.</p>
       </article>
     </main>
   </div>
@@ -158,6 +171,55 @@ public class TradeService
         });
       }
     })();
+    (() => {
+      const groups = document.querySelectorAll('.sidebar-group');
+      if (!groups.length) return;
+      const storageKey = 'study-open-groups';
+      const saved = sessionStorage.getItem(storageKey);
+      const openFromStorage = new Set(saved ? JSON.parse(saved) : []);
+
+      const activeLink = document.querySelector('.nav-link.active');
+      const activeGroup = activeLink?.closest('.sidebar-group');
+      if (activeGroup?.dataset.group) {
+        openFromStorage.add(activeGroup.dataset.group);
+      }
+
+      const syncStorage = () => {
+        const openIds = Array.from(document.querySelectorAll('.sidebar-group.is-open'))
+          .map((group) => group.dataset.group)
+          .filter(Boolean);
+        sessionStorage.setItem(storageKey, JSON.stringify(openIds));
+      };
+
+      const setExpanded = (group, expanded) => {
+        const header = group.querySelector('.sidebar-group__header');
+        const list = group.querySelector('.sidebar-group__items');
+        group.classList.toggle('is-open', expanded);
+        header?.setAttribute('aria-expanded', expanded);
+        if (list) {
+          list.hidden = !expanded;
+        }
+      };
+
+      groups.forEach((group) => {
+        const shouldOpen = openFromStorage.has(group.dataset.group);
+        setExpanded(group, shouldOpen);
+        const header = group.querySelector('.sidebar-group__header');
+        header?.addEventListener('click', () => {
+          const next = !group.classList.contains('is-open');
+          setExpanded(group, next);
+          syncStorage();
+        });
+      });
+    })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swPath = '../../service-worker.js';
+        navigator.serviceWorker.register(swPath).catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
   </script>
 </body>
 </html>

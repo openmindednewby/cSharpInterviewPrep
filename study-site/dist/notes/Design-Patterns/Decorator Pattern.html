@@ -4,7 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Senior .NET study guide for Decorator Pattern" />
+  <meta name="theme-color" content="#0f172a" />
   <title>Decorator Pattern | C# Interview Prep Cheat Sheet</title>
+  <link rel="manifest" href="../../assets/manifest.webmanifest" />
   <script>
     (() => {
       const supported = ['midnight', 'light', 'dark'];
@@ -15,7 +17,7 @@
       window.__studyTheme = initial;
     })();
   </script>
-  <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="../../assets/styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -44,48 +46,81 @@
       <div class="sidebar-section">
         <h2>Navigation</h2>
         <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
-        <div class="nav-groups"><div class="sidebar-group">
-      <h3>Notes</h3>
-      <ul><li><a href="..\../notes/core-concepts.html">Core Concepts</a></li><li><a href="..\../notes/error-handling.html">Error Handling</a></li><li><a href="..\../notes/logging.html">Logging</a></li><li><a href="..\../notes/testing-strategies.html">Testing Strategies</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Notes / Automapper</h3>
-      <ul><li><a href="..\../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Notes / Clean Architecture</h3>
-      <ul><li><a href="..\../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Notes / Design Patterns</h3>
-      <ul><li><a href="..\../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a href="..\../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a href="..\../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a href="..\../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a href="..\../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a href="..\../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Notes / DRY</h3>
-      <ul><li><a href="..\../notes/DRY/index.html">DRY</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Notes / FluentValidation</h3>
-      <ul><li><a href="..\../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Notes / Memory Allocation Discipline</h3>
-      <ul><li><a href="..\../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a href="..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a href="..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Notes / SOLID</h3>
-      <ul><li><a href="..\../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a href="..\../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a href="..\../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a href="..\../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a href="..\../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a href="..\../notes/SOLID/index.html">SOLID</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Notes / Sub Notes</h3>
-      <ul><li><a href="..\../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a href="..\../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a href="..\../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a href="..\../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a href="..\../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a href="..\../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a href="..\../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a href="..\../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a href="..\../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a href="..\../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a href="..\../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a href="..\../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a href="..\../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a href="..\../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a href="..\../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a href="..\../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a href="..\../notes/sub-notes/types.html">Types</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Practice</h3>
-      <ul><li><a href="..\../practice/answers.html">Answers</a></li><li><a href="..\../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a href="..\../practice/questions.html">Questions</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Practice / Real Exam Questions Answers</h3>
-      <ul><li><a href="..\../practice/real exam questions answers/replace int without variable.html">Replace Int Without Variable</a></li><li><a href="..\../practice/real exam questions answers/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li></ul>
-    </div></div>
+        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group" data-group="notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="../../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="../../notes/logging.html">Logging</a></li><li><a class="nav-link" href="../../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group is-open" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
+        <span>Notes / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="../../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link active" href="../../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="../../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="../../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="../../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="../../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../notes/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a class="nav-link" href="../../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a class="nav-link" href="../../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a class="nav-link" href="../../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a class="nav-link" href="../../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a class="nav-link" href="../../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a class="nav-link" href="../../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a class="nav-link" href="../../notes/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a class="nav-link" href="../../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a class="nav-link" href="../../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a class="nav-link" href="../../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a class="nav-link" href="../../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a class="nav-link" href="../../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a class="nav-link" href="../../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a class="nav-link" href="../../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a class="nav-link" href="../../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a class="nav-link" href="../../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a class="nav-link" href="../../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a class="nav-link" href="../../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a class="nav-link" href="../../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a class="nav-link" href="../../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a class="nav-link" href="../../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a class="nav-link" href="../../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a class="nav-link" href="../../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../practice/answers.html">Answers</a></li><li><a class="nav-link" href="../../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="../../practice/questions.html">Questions</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-real-exam-questions-answers">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Real Exam Questions Answers</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../practice/real exam questions answers/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="../../practice/real exam questions answers/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li></ul>
+    </div></div></div>
       </div>
     </nav>
     <main class="content">
       <article class="card">
-        <div class="breadcrumbs">notes\Design-Patterns\Decorator Pattern.md</div>
+        <div class="breadcrumbs">notes/Design-Patterns/Decorator Pattern.md</div>
         <h2>Decorator Pattern</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#5-decorator-pattern-add-logging-caching-retries-dynamically">⚙️ 5️⃣ Decorator Pattern — *Add logging, caching, retries dynamically*</a></li><li class="level-3"><a href="#example-logging-caching-decorators-for-an-api-service">🧩 Example — Logging + Caching decorators for an API service</a></li><li class="level-1"><a href="#bonus-how-these-patterns-fit-together-in-a-trading-system">🧱 BONUS: How these patterns fit together (in a trading system)</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#5-decorator-pattern-add-logging-caching-retries-dynamically">⚙️ 5️⃣ Decorator Pattern — *Add logging, caching, retries dynamically*</a></li><li class="level-3"><a href="#example-logging-caching-decorators-for-an-api-service">🧩 Example — Logging + Caching decorators for an API service</a></li><li class="level-1"><a href="#bonus-how-these-patterns-fit-together-in-a-trading-system">🧱 BONUS: How these patterns fit together (in a trading system)</a></li></ul></div>
         <h1 id="5-decorator-pattern-add-logging-caching-retries-dynamically">⚙️ 5️⃣ Decorator Pattern — <em>Add logging, caching, retries dynamically</em></h1>
 <blockquote><p>Wrap existing services with additional behavior without changing them.</p></blockquote>
 <p>---</p>
@@ -154,27 +189,6 @@ Console.WriteLine(service.GetPrice(&quot;EURUSD&quot;)); // second call cached</
 <h1 id="bonus-how-these-patterns-fit-together-in-a-trading-system">🧱 BONUS: How these patterns fit together (in a trading system)</h1>
 <p>| Concern                        | Pattern       | Purpose                                | | ------------------------------ | ------------- | -------------------------------------- | | Different execution algorithms | <strong>Strategy</strong>  | Swap trading logic dynamically         | | Market data distribution       | <strong>Observer</strong>  | Publish ticks to multiple consumers    | | Platform creation              | <strong>Factory</strong>   | Choose MT4/MT5/FIX handler dynamically | | Read/write separation          | <strong>CQRS</strong>      | Separate trading commands from queries | | Cross-cutting features         | <strong>Decorator</strong> | Add logging, caching, retries safely   |</p>
 <p>---</p>
-<h2 id="questions-answers">Questions & Answers</h2>
-<p><strong>Q: Why use decorators instead of inheritance for cross-cutting behavior?</strong></p>
-<p>A: Decorators wrap existing implementations at runtime without modifying classes or exploding inheritance hierarchies. They preserve the original behavior and let you compose features like logging, caching, and retries in any order.</p>
-<p><strong>Q: How do you wire decorators with ASP.NET Core DI?</strong></p>
-<p>A: Register the core implementation and then use <code>services.Decorate&lt;IPriceService, LoggingPriceService&gt;();</code> (via Scrutor) or manual factory delegates to wrap dependencies in the desired order.</p>
-<p><strong>Q: How do decorators interact with async services?</strong></p>
-<p>A: Implement <code>Task</code>-returning methods and ensure decorators await the inner call, adding behavior before/after. For example, a retry decorator can wrap <code>await _inner.ExecuteAsync(...)</code> in Polly policies.</p>
-<p><strong>Q: How do you prevent duplicate decoration?</strong></p>
-<p>A: Centralize registration so each service gets decorated once. Use DI scanning rules or tests to ensure there’s a single decorator pipeline per service type.</p>
-<p><strong>Q: When does the decorator pattern become overkill?</strong></p>
-<p>A: If you only need a single concern (e.g., logging) or behavior is global (middleware), decorators might be unnecessary. Use them when behaviors vary per service or must be combined flexibly.</p>
-<p><strong>Q: How does decorator order affect behavior?</strong></p>
-<p>A: Order matters—logging outside caching sees all calls, while caching outside logging hides repeated hits. Be intentional about stacking order and document expectations.</p>
-<p><strong>Q: How do you share state between decorators?</strong></p>
-<p>A: Pass shared dependencies (e.g., metrics registry) into each decorator via DI, or include context objects in method parameters so decorators can enrich them without coupling.</p>
-<p><strong>Q: Can decorators modify return types?</strong></p>
-<p>A: They should adhere to the same interface, but they can wrap results (e.g., attach metadata) or transform responses before returning. Keep transformations predictable so callers aren’t surprised.</p>
-<p><strong>Q: How do you unit test decorators?</strong></p>
-<p>A: Provide a fake inner service and assert the decorator calls it and adds the expected behavior (logging, caching, etc.). Since decorators depend on the same interface, tests remain simple.</p>
-<p><strong>Q: How do decorators compare to middleware?</strong></p>
-<p>A: Middleware operates at the application pipeline level (HTTP). Decorators operate at service boundaries, allowing fine-grained per-service behavior and reusability outside web pipelines.</p>
       </article>
     </main>
   </div>
@@ -197,6 +211,55 @@ Console.WriteLine(service.GetPrice(&quot;EURUSD&quot;)); // second call cached</
         });
       }
     })();
+    (() => {
+      const groups = document.querySelectorAll('.sidebar-group');
+      if (!groups.length) return;
+      const storageKey = 'study-open-groups';
+      const saved = sessionStorage.getItem(storageKey);
+      const openFromStorage = new Set(saved ? JSON.parse(saved) : []);
+
+      const activeLink = document.querySelector('.nav-link.active');
+      const activeGroup = activeLink?.closest('.sidebar-group');
+      if (activeGroup?.dataset.group) {
+        openFromStorage.add(activeGroup.dataset.group);
+      }
+
+      const syncStorage = () => {
+        const openIds = Array.from(document.querySelectorAll('.sidebar-group.is-open'))
+          .map((group) => group.dataset.group)
+          .filter(Boolean);
+        sessionStorage.setItem(storageKey, JSON.stringify(openIds));
+      };
+
+      const setExpanded = (group, expanded) => {
+        const header = group.querySelector('.sidebar-group__header');
+        const list = group.querySelector('.sidebar-group__items');
+        group.classList.toggle('is-open', expanded);
+        header?.setAttribute('aria-expanded', expanded);
+        if (list) {
+          list.hidden = !expanded;
+        }
+      };
+
+      groups.forEach((group) => {
+        const shouldOpen = openFromStorage.has(group.dataset.group);
+        setExpanded(group, shouldOpen);
+        const header = group.querySelector('.sidebar-group__header');
+        header?.addEventListener('click', () => {
+          const next = !group.classList.contains('is-open');
+          setExpanded(group, next);
+          syncStorage();
+        });
+      });
+    })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swPath = '../../service-worker.js';
+        navigator.serviceWorker.register(swPath).catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
   </script>
 </body>
 </html>

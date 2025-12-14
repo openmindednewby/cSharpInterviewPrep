@@ -4,7 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Senior .NET study guide for Observer Pattern" />
+  <meta name="theme-color" content="#0f172a" />
   <title>Observer Pattern | C# Interview Prep Cheat Sheet</title>
+  <link rel="manifest" href="../../assets/manifest.webmanifest" />
   <script>
     (() => {
       const supported = ['midnight', 'light', 'dark'];
@@ -15,7 +17,7 @@
       window.__studyTheme = initial;
     })();
   </script>
-  <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="../../assets/styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -44,48 +46,81 @@
       <div class="sidebar-section">
         <h2>Navigation</h2>
         <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
-        <div class="nav-groups"><div class="sidebar-group">
-      <h3>Notes</h3>
-      <ul><li><a href="..\../notes/core-concepts.html">Core Concepts</a></li><li><a href="..\../notes/error-handling.html">Error Handling</a></li><li><a href="..\../notes/logging.html">Logging</a></li><li><a href="..\../notes/testing-strategies.html">Testing Strategies</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Notes / Automapper</h3>
-      <ul><li><a href="..\../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Notes / Clean Architecture</h3>
-      <ul><li><a href="..\../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Notes / Design Patterns</h3>
-      <ul><li><a href="..\../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a href="..\../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a href="..\../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a href="..\../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a href="..\../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a href="..\../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Notes / DRY</h3>
-      <ul><li><a href="..\../notes/DRY/index.html">DRY</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Notes / FluentValidation</h3>
-      <ul><li><a href="..\../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Notes / Memory Allocation Discipline</h3>
-      <ul><li><a href="..\../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a href="..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a href="..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Notes / SOLID</h3>
-      <ul><li><a href="..\../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a href="..\../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a href="..\../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a href="..\../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a href="..\../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a href="..\../notes/SOLID/index.html">SOLID</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Notes / Sub Notes</h3>
-      <ul><li><a href="..\../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a href="..\../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a href="..\../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a href="..\../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a href="..\../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a href="..\../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a href="..\../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a href="..\../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a href="..\../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a href="..\../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a href="..\../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a href="..\../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a href="..\../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a href="..\../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a href="..\../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a href="..\../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a href="..\../notes/sub-notes/types.html">Types</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Practice</h3>
-      <ul><li><a href="..\../practice/answers.html">Answers</a></li><li><a href="..\../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a href="..\../practice/questions.html">Questions</a></li></ul>
-    </div><div class="sidebar-group">
-      <h3>Practice / Real Exam Questions Answers</h3>
-      <ul><li><a href="..\../practice/real exam questions answers/replace int without variable.html">Replace Int Without Variable</a></li><li><a href="..\../practice/real exam questions answers/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li></ul>
-    </div></div>
+        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group" data-group="notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="../../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="../../notes/logging.html">Logging</a></li><li><a class="nav-link" href="../../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group is-open" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
+        <span>Notes / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="../../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="../../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="../../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="../../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link active" href="../../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="../../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../notes/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a class="nav-link" href="../../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a class="nav-link" href="../../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a class="nav-link" href="../../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a class="nav-link" href="../../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a class="nav-link" href="../../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a class="nav-link" href="../../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a class="nav-link" href="../../notes/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a class="nav-link" href="../../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a class="nav-link" href="../../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a class="nav-link" href="../../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a class="nav-link" href="../../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a class="nav-link" href="../../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a class="nav-link" href="../../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a class="nav-link" href="../../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a class="nav-link" href="../../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a class="nav-link" href="../../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a class="nav-link" href="../../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a class="nav-link" href="../../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a class="nav-link" href="../../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a class="nav-link" href="../../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a class="nav-link" href="../../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a class="nav-link" href="../../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a class="nav-link" href="../../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../practice/answers.html">Answers</a></li><li><a class="nav-link" href="../../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="../../practice/questions.html">Questions</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-real-exam-questions-answers">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Real Exam Questions Answers</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../../practice/real exam questions answers/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="../../practice/real exam questions answers/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li></ul>
+    </div></div></div>
       </div>
     </nav>
     <main class="content">
       <article class="card">
-        <div class="breadcrumbs">notes\Design-Patterns\Observer Pattern.md</div>
+        <div class="breadcrumbs">notes/Design-Patterns/Observer Pattern.md</div>
         <h2>Observer Pattern</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#2-observer-pattern-market-data-broadcast">⚙️ 2️⃣ Observer Pattern — *Market data broadcast*</a></li><li class="level-3"><a href="#example-pricefeed-with-multiple-subscribers">🧩 Example — PriceFeed with multiple subscribers</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#2-observer-pattern-market-data-broadcast">⚙️ 2️⃣ Observer Pattern — *Market data broadcast*</a></li><li class="level-3"><a href="#example-pricefeed-with-multiple-subscribers">🧩 Example — PriceFeed with multiple subscribers</a></li></ul></div>
         <h1 id="2-observer-pattern-market-data-broadcast">⚙️ 2️⃣ Observer Pattern — <em>Market data broadcast</em></h1>
 <blockquote><p>Let multiple subscribers react to market data updates in real-time.</p></blockquote>
 <p>---</p>
@@ -139,27 +174,6 @@ feed.Publish(new Tick { Symbol = &quot;GBPUSD&quot;, Bid = 1.2520, Ask = 1.2522 
 <p>✅ <strong>Why it matters:</strong></p>
 <ul><li>Perfect for <strong>real-time streaming</strong> (price feeds, notifications, updates).</li><li>Loose coupling between publisher and subscribers.</li><li>Scales to multiple observers (UI, loggers, analytics, etc.).</li></ul>
 <p>---</p>
-<h2 id="questions-answers">Questions & Answers</h2>
-<p><strong>Q: When do you reach for the Observer pattern in .NET systems?</strong></p>
-<p>A: Whenever multiple components need to react to the same event stream—market ticks, order fills, health changes—without tight coupling. It decouples publishers from subscribers so you can add/remove listeners without touching producers.</p>
-<p><strong>Q: How does Observer compare to pub/sub messaging?</strong></p>
-<p>A: Observer is in-process and synchronous (events raised inside the same app), while pub/sub uses brokers for cross-process communication. Start with Observer for local notifications; graduate to brokers (RabbitMQ, Kafka) for distributed systems.</p>
-<p><strong>Q: How do you prevent event handlers from crashing the publisher?</strong></p>
-<p>A: Wrap subscriber invocations in try/catch, run them asynchronously, or use mediator pipelines that isolate failures. Consider <code>IObservable&lt;T&gt;</code> + Rx to provide built-in error handling semantics.</p>
-<p><strong>Q: How do you unsubscribe to avoid memory leaks?</strong></p>
-<p>A: Keep references to event handlers and detach them (<code>feed.OnTick -= handler</code>). With <code>IObservable&lt;T&gt;</code>, dispose the subscription. In DI scenarios, use weak references or lifetime-managed subscriptions.</p>
-<p><strong>Q: When would you use <code>IObservable&lt;T&gt;</code>/Reactive Extensions instead of custom events?</strong></p>
-<p>A: When you need advanced operators (buffering, throttling, filtering) or asynchronous streams. Rx provides a richer API and backpressure controls.</p>
-<p><strong>Q: How do you scale observers across services?</strong></p>
-<p>A: Push ticks to a message broker (RabbitMQ topics, Kafka) and let downstream services subscribe. The Observer concept still applies, but the transport ensures durability and fan-out across machines.</p>
-<p><strong>Q: How do you ensure observers don’t block the publisher?</strong></p>
-<p>A: Execute callbacks on thread pool tasks, channels, or use asynchronous event handlers returning <code>Task</code>. Alternatively, push events into bounded queues so slow consumers don’t back up producers.</p>
-<p><strong>Q: What patterns pair well with Observer?</strong></p>
-<p>A: Combine with Strategy (different reaction logic per subscriber), Decorator (add logging around event handling), or CQRS (publish domain events that feed read models).</p>
-<p><strong>Q: How do you test observers?</strong></p>
-<p>A: Subscribe fake handlers or use spies to capture events, then assert they received the expected sequence when the publisher produces certain ticks.</p>
-<p><strong>Q: How do you handle ordering guarantees?</strong></p>
-<p>A: Document whether observers receive events in publish order; if ordering matters, process events synchronously per subscriber or use ordered queues. For distributed observers, leverage partitions/keys to maintain order.</p>
       </article>
     </main>
   </div>
@@ -182,6 +196,55 @@ feed.Publish(new Tick { Symbol = &quot;GBPUSD&quot;, Bid = 1.2520, Ask = 1.2522 
         });
       }
     })();
+    (() => {
+      const groups = document.querySelectorAll('.sidebar-group');
+      if (!groups.length) return;
+      const storageKey = 'study-open-groups';
+      const saved = sessionStorage.getItem(storageKey);
+      const openFromStorage = new Set(saved ? JSON.parse(saved) : []);
+
+      const activeLink = document.querySelector('.nav-link.active');
+      const activeGroup = activeLink?.closest('.sidebar-group');
+      if (activeGroup?.dataset.group) {
+        openFromStorage.add(activeGroup.dataset.group);
+      }
+
+      const syncStorage = () => {
+        const openIds = Array.from(document.querySelectorAll('.sidebar-group.is-open'))
+          .map((group) => group.dataset.group)
+          .filter(Boolean);
+        sessionStorage.setItem(storageKey, JSON.stringify(openIds));
+      };
+
+      const setExpanded = (group, expanded) => {
+        const header = group.querySelector('.sidebar-group__header');
+        const list = group.querySelector('.sidebar-group__items');
+        group.classList.toggle('is-open', expanded);
+        header?.setAttribute('aria-expanded', expanded);
+        if (list) {
+          list.hidden = !expanded;
+        }
+      };
+
+      groups.forEach((group) => {
+        const shouldOpen = openFromStorage.has(group.dataset.group);
+        setExpanded(group, shouldOpen);
+        const header = group.querySelector('.sidebar-group__header');
+        header?.addEventListener('click', () => {
+          const next = !group.classList.contains('is-open');
+          setExpanded(group, next);
+          syncStorage();
+        });
+      });
+    })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swPath = '../../service-worker.js';
+        navigator.serviceWorker.register(swPath).catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
   </script>
 </body>
 </html>
