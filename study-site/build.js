@@ -166,15 +166,41 @@ function titleFromFilename(filePath) {
     .replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
+function titleFromPath(filePath) {
+  const baseName = path.basename(filePath, path.extname(filePath));
+  if (baseName.toLowerCase() === 'index') {
+    const parent = path.basename(path.dirname(filePath));
+    return titleFromFilename(parent);
+  }
+  return titleFromFilename(filePath);
+}
+
+function formatGroupLabel(labelParts) {
+  return labelParts
+    .filter(Boolean)
+    .map((part) => titleFromFilename(part))
+    .join(' / ');
+}
+
 function buildTemplate({ title, navHtml, tocHtml, contentHtml, meta }) {
   const description = `Senior .NET study guide for ${title}`;
   return `<!DOCTYPE html>
-<html lang="en" data-theme="midnight">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="${description}" />
   <title>${title} | C# Interview Prep Cheat Sheet</title>
+  <script>
+    (() => {
+      const supported = ['midnight', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const fallback = 'light';
+      const initial = supported.includes(saved) ? saved : fallback;
+      document.documentElement.dataset.theme = initial;
+      window.__studyTheme = initial;
+    })();
+  </script>
   <link rel="stylesheet" href="${meta.assetBase}/styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -222,10 +248,9 @@ function buildTemplate({ title, navHtml, tocHtml, contentHtml, meta }) {
     (() => {
       const select = document.getElementById('theme-select');
       const supported = ['midnight', 'light', 'dark'];
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const saved = localStorage.getItem('study-theme');
-      const fallback = prefersDark ? 'dark' : 'midnight';
-      const initial = supported.includes(saved) ? saved : fallback;
+      const saved = sessionStorage.getItem('study-theme');
+      const fallback = 'light';
+      const initial = supported.includes(saved) ? saved : (window.__studyTheme || fallback);
       document.documentElement.dataset.theme = initial;
       if (select) {
         select.value = initial;
@@ -233,7 +258,7 @@ function buildTemplate({ title, navHtml, tocHtml, contentHtml, meta }) {
           const value = event.target.value;
           const next = supported.includes(value) ? value : fallback;
           document.documentElement.dataset.theme = next;
-          localStorage.setItem('study-theme', next);
+          sessionStorage.setItem('study-theme', next);
         });
       }
     })();
@@ -334,11 +359,21 @@ async function buildIndex(navGroups) {
   }).join('');
 
   const html = `<!DOCTYPE html>
-<html lang="en" data-theme="midnight">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Study Portal | C# Interview Prep</title>
+  <script>
+    (() => {
+      const supported = ['midnight', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const fallback = 'light';
+      const initial = supported.includes(saved) ? saved : fallback;
+      document.documentElement.dataset.theme = initial;
+      window.__studyTheme = initial;
+    })();
+  </script>
   <link rel="stylesheet" href="./assets/styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -371,10 +406,9 @@ async function buildIndex(navGroups) {
     (() => {
       const select = document.getElementById('theme-select');
       const supported = ['midnight', 'light', 'dark'];
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const saved = localStorage.getItem('study-theme');
-      const fallback = prefersDark ? 'dark' : 'midnight';
-      const initial = supported.includes(saved) ? saved : fallback;
+      const saved = sessionStorage.getItem('study-theme');
+      const fallback = 'light';
+      const initial = supported.includes(saved) ? saved : (window.__studyTheme || fallback);
       document.documentElement.dataset.theme = initial;
       if (select) {
         select.value = initial;
@@ -382,7 +416,7 @@ async function buildIndex(navGroups) {
           const value = event.target.value;
           const next = supported.includes(value) ? value : fallback;
           document.documentElement.dataset.theme = next;
-          localStorage.setItem('study-theme', next);
+          sessionStorage.setItem('study-theme', next);
         });
       }
     })();
@@ -412,20 +446,32 @@ async function main() {
     allFiles.push(...await collectMarkdownFiles(src.source, src.key));
   }
 
-  const navGroups = contentSources.map((group) => ({
-    label: group.label,
-    items: [],
-  }));
+  const sourceByKey = new Map(contentSources.map((src) => [src.key, src]));
+  const navGroupsMap = new Map();
 
   const filesWithOutputs = allFiles.map((file) => {
-    const title = titleFromFilename(file.sourcePath);
+    const source = sourceByKey.get(file.key);
+    const title = titleFromPath(file.sourcePath);
     const output = computeOutputPath(file);
-    const group = navGroups.find((g) => g.label.toLowerCase() === file.key.toLowerCase());
-    if (group) {
-      group.items.push({ title, href: output.href });
+    const relativeDir = path.dirname(path.relative(source.source, file.sourcePath));
+    const labelParts = [source.label];
+    if (relativeDir && relativeDir !== '.') {
+      labelParts.push(...relativeDir.split(path.sep));
     }
+    const groupLabel = formatGroupLabel(labelParts);
+    if (!navGroupsMap.has(groupLabel)) {
+      navGroupsMap.set(groupLabel, { label: groupLabel, items: [] });
+    }
+    navGroupsMap.get(groupLabel).items.push({ title, href: output.href });
     return { ...file, title, output };
   });
+
+  const navGroups = Array.from(navGroupsMap.values())
+    .map((group) => ({
+      ...group,
+      items: group.items.sort((a, b) => a.title.localeCompare(b.title)),
+    }))
+    .sort((a, b) => a.label.localeCompare(b.label));
 
   for (const file of filesWithOutputs) {
     await buildFile(file, navGroups);
