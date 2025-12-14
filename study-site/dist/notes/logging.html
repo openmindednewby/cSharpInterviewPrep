@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="midnight">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for Logging" />
+  <title>Logging | C# Interview Prep Cheat Sheet</title>
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="midnight">Current</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="nav-groups"><div class="sidebar-group">
+      <h3>Notes</h3>
+      <ul><li><a href="../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a href="../notes/Automapper/AutoMapper.html">AutoMapper</a></li><li><a href="../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a href="../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a href="../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a href="../notes/core-concepts.html">Core Concepts</a></li><li><a href="../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a href="../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a href="../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a href="../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a href="../notes/error-handling.html">Error Handling</a></li><li><a href="../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a href="../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a href="../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li><li><a href="../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a href="../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a href="../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a href="../notes/Clean-Architecture/index.html">Index</a></li><li><a href="../notes/DRY/index.html">Index</a></li><li><a href="../notes/Memory-Allocation-Discipline/index.html">Index</a></li><li><a href="../notes/SOLID/index.html">Index</a></li><li><a href="../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a href="../notes/logging.html">Logging</a></li><li><a href="../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a href="../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a href="../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li><li><a href="../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a href="../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a href="../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a href="../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a href="../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a href="../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a href="../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a href="../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a href="../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a href="../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a href="../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li><li><a href="../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a href="../notes/testing-strategies.html">Testing Strategies</a></li><li><a href="../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group">
+      <h3>Practice</h3>
+      <ul><li><a href="../practice/answers.html">Answers</a></li><li><a href="../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a href="../practice/questions.html">Questions</a></li><li><a href="../practice/real exam questions answers/replace int without variable.html">Replace Int Without Variable</a></li><li><a href="../practice/real exam questions answers/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li></ul>
+    </div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">notes/logging.md</div>
+        <h2>Logging</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#logging-in-net-10-for-high-performance-highly-available-systems">Logging in .NET 10 for High-Performance, Highly Available Systems</a></li><li class="level-2"><a href="#principles-and-goals">Principles and Goals</a></li><li class="level-2"><a href="#recommended-stack">Recommended Stack</a></li><li class="level-2"><a href="#patterns-to-prefer">Patterns to Prefer</a></li><li class="level-2"><a href="#configuration-example-minimal-api">Configuration Example (Minimal API)</a></li><li class="level-2"><a href="#high-performance-techniques">High-Performance Techniques</a></li><li class="level-2"><a href="#operational-best-practices">Operational Best Practices</a></li><li class="level-2"><a href="#sample-diagnostic-pattern-resilient-http-client">Sample Diagnostic Pattern (Resilient HTTP Client)</a></li><li class="level-2"><a href="#sample-interview-qa">Sample Interview Q&A</a></li></ul></div>
+        <h1 id="logging-in-net-10-for-high-performance-highly-available-systems">Logging in .NET 10 for High-Performance, Highly Available Systems</h1>
+<p>Use these notes to explain how you design resilient, low-overhead logging pipelines for .NET 10 services. Emphasize structured data, predictable latency, and operability under load.</p>
+<p>---</p>
+<h2 id="principles-and-goals">Principles and Goals</h2>
+<ul><li><strong>Observability first:</strong> Capture structured events (no free-form strings) with fields for correlation IDs, tenant, region, and service version.</li><li><strong>Consistency across tiers:</strong> Standardize <code>ILogger</code> scopes and message templates so API, workers, and background jobs emit comparable fields.</li><li><strong>Backpressure-aware:</strong> Protect the app by sampling noisy events (e.g., debug traces) and using bounded queues for async sinks.</li><li><strong>Fail-safe:</strong> Logging must never block request completion; prefer drop-and-alert over throttling callers.</li></ul>
+<h2 id="recommended-stack">Recommended Stack</h2>
+<ul><li><strong>Microsoft.Extensions.Logging</strong> as the facade for framework integrations.</li><li><strong>Structured logger:</strong> Serilog or Seq sink for JSON; use message-template placeholders (<code>{OrderId}</code>) instead of string interpolation.</li><li><strong>OpenTelemetry:</strong> Export traces/logs/metrics consistently; include W3C trace/context propagation headers.</li><li><strong>Shipping:</strong> Centralize via OTLP/HTTP, gRPC, or Kafka; avoid writing to local disk in containers except for bootstrap/debug.</li><li><strong>NLog context:</strong></li><li><strong>Where it shines:</strong> Mature ecosystem with <strong>rich target support</strong> (file, database, email, Azure Log Analytics), high-performance async targets, and <strong>flexible routing/layouts</strong> for multi-tenant or blue/green rollouts.</li><li><strong>Advantages:</strong> Simple XML/JSON configuration, fast text file output, built-in filtering/rules, and battle-tested community extensions. Great when you need to fan out to multiple sinks without custom code.</li><li><strong>Trade-offs:</strong> Configuration can become verbose, JSON structure requires explicit layouts, and mixing NLog APIs with <code>ILogger</code> can create duplicate pipelines. Prefer running NLog <strong>behind <code>Microsoft.Extensions.Logging</code></strong> via the NLog provider to keep a single abstraction and leverage dependency injection.</li><li><strong>Operational note:</strong> Keep targets async, set <code>overflowAction=&quot;Discard&quot;</code> or sampling for noisy rules, and set per-environment config (dev = verbose file, prod = centralized structured logs) through <code>NLog.config</code> transforms.</li></ul>
+<h2 id="patterns-to-prefer">Patterns to Prefer</h2>
+<ul><li><strong>Message templates over interpolation:</strong> <code>logger.LogInformation(&quot;Processed {Count} items&quot;, count);</code> avoids unnecessary string formatting when disabled.</li><li><strong>Enriched scopes:</strong> Wrap requests with <code>using var scope = logger.BeginScope(new { CorrelationId = traceId, Tenant = tenant });</code> so child logs inherit fields.</li><li><strong>Categorized loggers:</strong> Request typed loggers per class (<code>ILogger&lt;CheckoutHandler&gt;</code>) for filters and metrics alignment.</li><li><strong>Level hygiene:</strong></li><li><code>Critical/Error</code>: actionable failures only.</li><li><code>Warning</code>: degradation/path to failure.</li><li><code>Information</code>: business milestones.</li><li><code>Debug/Trace</code>: development and short-term diagnostics; gate behind config.</li><li><strong>Async/buffered sinks:</strong> Use non-blocking background queues with bounded capacity; drop oldest or sample when full.</li><li><strong>Health/availability focus:</strong> Emit heartbeats and dependency outcome events (latency, status, retries) to support SLO dashboards.</li></ul>
+<h2 id="configuration-example-minimal-api">Configuration Example (Minimal API)</h2>
+<pre class="hljs"><code>var builder = WebApplication.CreateBuilder(args);
+
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole(options =&gt;
+{
+    options.IncludeScopes = true;
+    options.TimestampFormat = &quot;yyyy-MM-ddTHH:mm:ss.fffZ &quot;;
+});
+
+builder.Services.AddOpenTelemetry()
+    .WithTracing(trace =&gt; trace
+        .AddAspNetCoreInstrumentation()
+        .AddHttpClientInstrumentation()
+        .AddSource(&quot;Orders&quot;))
+    .WithMetrics(metrics =&gt; metrics
+        .AddRuntimeInstrumentation())
+    .WithLogging(logging =&gt; logging
+        .AddConsoleExporter());
+
+var app = builder.Build();
+
+app.MapPost(&quot;/orders&quot;, async (
+    ILogger&lt;Program&gt; logger,
+    HttpContext context) =&gt;
+{
+    using var scope = logger.BeginScope(new
+    {
+        CorrelationId = context.TraceIdentifier,
+        Tenant = context.Request.Headers[&quot;X-Tenant&quot;].FirstOrDefault() ?? &quot;unknown&quot;
+    });
+
+    logger.LogInformation(&quot;Received order request from {Tenant}&quot;);
+
+    // Simulate work
+    await Task.Delay(10);
+
+    logger.LogInformation(&quot;Order accepted&quot;, DateTimeOffset.UtcNow);
+    return Results.Accepted();
+});
+
+app.Run();</code></pre>
+<h2 id="high-performance-techniques">High-Performance Techniques</h2>
+<ul><li><strong>Avoid allocations:</strong> Prefer value types for high-frequency metrics; avoid <code>string</code> concatenation in hot paths.</li><li><strong>Batch and flush strategically:</strong> Batch OTLP/HTTP exports; tune <code>MaxBatchSize</code> and <code>FlushInterval</code> to keep p99 latency stable.</li><li><strong>Guard noisy paths:</strong> Add feature flags for trace/debug logs in critical loops; enable temporarily for investigations.</li><li><strong>Pre-allocate logger scopes:</strong> Reuse static state where possible; avoid dynamic object creation for unchanged fields.</li><li><strong>Tune buffers:</strong> Size async channels based on peak RPS and expected burst size; expose metrics for dropped events.</li></ul>
+<h2 id="operational-best-practices">Operational Best Practices</h2>
+<ul><li><strong>Correlate everything:</strong> Propagate trace/span IDs across HTTP, messaging, and background jobs.</li><li><strong>Schema discipline:</strong> Maintain a central log schema (event name, category, correlation, tenant, outcome, duration).</li><li><strong>PII controls:</strong> Classify fields and redact at the edge; log tokens/credentials only in secure staging with strict retention.</li><li><strong>Deployment safety:</strong> Use configuration-driven sinks/levels; favor hot-reloadable changes (appsettings, feature flags) over redeploys.</li><li><strong>Alerting:</strong> Alert on error-rate deltas, burst of dropped events, and missing heartbeats rather than raw log volume.</li><li><strong>What to log (and not):</strong></li><li><strong>Log:</strong> Request/response envelope metadata (not bodies) for public APIs, dependency outcomes (latency/status/retries), domain milestones (order accepted/settled), security-relevant events (authn/z decisions), and <strong>drop reason</strong> when sampling/discarding.</li><li><strong>Avoid:</strong> Large payloads, secrets, personal data, high-cardinality values (raw GUID lists), and repetitive success spam in hot loops. Summarize counts instead.</li><li><strong>Environments:</strong></li><li><strong>Local/dev:</strong> Enable <code>Debug/Trace</code>, file/console targets, and payload logging only with synthetic data.</li><li><strong>Staging:</strong> Mirror production sinks/levels; allow short-term <code>Debug</code> with sampling for reproductions.</li><li><strong>Production:</strong> Default to <code>Information</code> for business events and <code>Warning/Error</code> for issues; enable <code>Debug/Trace</code> only via time-bound flags with sampling to protect throughput and cost.</li><li><strong>Performance guardrails:</strong> Keep hot-path logging off by default, prefer structured summaries, and set per-rule rate limits so troubleshooting toggles don't DOS the service.</li></ul>
+<h2 id="sample-diagnostic-pattern-resilient-http-client">Sample Diagnostic Pattern (Resilient HTTP Client)</h2>
+<pre class="hljs"><code>public class InventoryClient
+{
+    private static readonly EventId FetchInventory = new(1001, nameof(FetchAsync));
+    private readonly HttpClient _httpClient;
+    private readonly ILogger&lt;InventoryClient&gt; _logger;
+
+    public InventoryClient(HttpClient httpClient, ILogger&lt;InventoryClient&gt; logger)
+    {
+        _httpClient = httpClient;
+        _logger = logger;
+    }
+
+    public async Task&lt;InventoryResponse?&gt; FetchAsync(string sku, CancellationToken ct)
+    {
+        using var scope = _logger.BeginScope(new { Sku = sku });
+
+        _logger.LogInformation(FetchInventory, &quot;Fetching inventory&quot;);
+
+        try
+        {
+            var response = await _httpClient.GetAsync($&quot;/inventory/{sku}&quot;, ct);
+            var body = await response.Content.ReadAsStringAsync(ct);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                _logger.LogWarning(&quot;Inventory lookup failed with {StatusCode} and body length {Length}&quot;,
+                    (int)response.StatusCode, body.Length);
+                return null;
+            }
+
+            _logger.LogInformation(&quot;Inventory fetched successfully in {ElapsedMs} ms&quot;,
+                response.Headers.GetValues(&quot;X-ElapsedMs&quot;).FirstOrDefault());
+
+            return JsonSerializer.Deserialize&lt;InventoryResponse&gt;(body);
+        }
+        catch (OperationCanceledException) when (ct.IsCancellationRequested)
+        {
+            _logger.LogWarning(&quot;Inventory fetch canceled by caller&quot;);
+            throw;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, &quot;Unexpected failure during inventory fetch&quot;);
+            throw;
+        }
+    }
+}</code></pre>
+<h2 id="sample-interview-qa">Sample Interview Q&A</h2>
+<ul><li><strong>Q:</strong> How do you prevent logging from degrading throughput?</li><li><strong>A:</strong> Use async/buffered sinks with bounded capacity, sample debug/trace logs, and rely on message templates to avoid string allocations when the level is disabled.</li><li><strong>Q:</strong> What do you log to support SLOs in a multi-tenant service?</li><li><strong>A:</strong> Log per-request correlation IDs, tenant, region, outcome, duration, and retry counts; emit heartbeats and dependency statuses for dashboards.</li><li><strong>Q:</strong> How do you handle sensitive data in logs?</li><li><strong>A:</strong> Apply a schema with field-level classification, default to redaction, and restrict sinks/retention for sensitive environments; validate with automated scanners.</li><li><strong>Q:</strong> How do you integrate logging with tracing?</li><li><strong>A:</strong> Propagate W3C trace context, attach span IDs to log scopes, export via OpenTelemetry so logs/metrics/traces share correlation IDs.</li><li><strong>Q:</strong> What patterns help during incident response?</li><li><strong>A:</strong> Toggle verbose levels via config, enable sampling to capture representative failures, and use structured events with consistent keys for quick querying.</li></ul>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['midnight', 'light', 'dark'];
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const saved = localStorage.getItem('study-theme');
+      const fallback = prefersDark ? 'dark' : 'midnight';
+      const initial = supported.includes(saved) ? saved : fallback;
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          localStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

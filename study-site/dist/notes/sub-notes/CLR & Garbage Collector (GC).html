@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="midnight">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for CLR & Garbage Collector (GC)" />
+  <title>CLR & Garbage Collector (GC) | C# Interview Prep Cheat Sheet</title>
+  <link rel="stylesheet" href="../../assets/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="midnight">Current</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="nav-groups"><div class="sidebar-group">
+      <h3>Notes</h3>
+      <ul><li><a href="../../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a href="../../notes/Automapper/AutoMapper.html">AutoMapper</a></li><li><a href="../../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a href="../../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a href="../../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a href="../../notes/core-concepts.html">Core Concepts</a></li><li><a href="../../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a href="../../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a href="../../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a href="../../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a href="../../notes/error-handling.html">Error Handling</a></li><li><a href="../../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a href="../../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a href="../../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li><li><a href="../../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a href="../../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a href="../../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a href="../../notes/Clean-Architecture/index.html">Index</a></li><li><a href="../../notes/DRY/index.html">Index</a></li><li><a href="../../notes/Memory-Allocation-Discipline/index.html">Index</a></li><li><a href="../../notes/SOLID/index.html">Index</a></li><li><a href="../../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a href="../../notes/logging.html">Logging</a></li><li><a href="../../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a href="../../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a href="../../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li><li><a href="../../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a href="../../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a href="../../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a href="../../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a href="../../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a href="../../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a href="../../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a href="../../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a href="../../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a href="../../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a href="../../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li><li><a href="../../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a href="../../notes/testing-strategies.html">Testing Strategies</a></li><li><a href="../../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group">
+      <h3>Practice</h3>
+      <ul><li><a href="../../practice/answers.html">Answers</a></li><li><a href="../../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a href="../../practice/questions.html">Questions</a></li><li><a href="../../practice/real exam questions answers/replace int without variable.html">Replace Int Without Variable</a></li><li><a href="../../practice/real exam questions answers/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li></ul>
+    </div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">notes/sub-notes/CLR & Garbage Collector (GC).md</div>
+        <h2>CLR & Garbage Collector (GC)</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#clr-garbage-collector-gc-deep-but-practical">CLR & Garbage Collector (GC) — Deep but Practical</a></li><li class="level-2"><a href="#1-heap-layout-generations-what-actually-happens">1) Heap layout & generations (what actually happens)</a></li><li class="level-2"><a href="#2-gc-flavors-latency-modes-pick-the-right-one">2) GC flavors & latency modes (pick the right one)</a></li><li class="level-2"><a href="#3-allocation-discipline-the-1-lever-you-control">3) Allocation discipline (the #1 lever you control)</a></li><li class="level-2"><a href="#4-spant-memoryt-zero-alloc-parsing-slicing">4) `Span<T>` / `Memory<T>` (zero-alloc parsing & slicing)</a></li><li class="level-2"><a href="#5-finalization-disposal-handles-dont-leak">5) Finalization, disposal & handles (don’t leak)</a></li><li class="level-2"><a href="#6-diagnostics-how-you-prove-it">6) Diagnostics (how you prove it)</a></li><li class="level-2"><a href="#7-tuning-knobs-what-to-adjust-when">7) Tuning knobs (what to adjust when)</a></li><li class="level-2"><a href="#8-async-threading-interactions-common-pitfalls">8) Async & threading interactions (common pitfalls)</a></li><li class="level-2"><a href="#9-quick-dodont-checklist-interview-ready">9) Quick do/don’t checklist (interview-ready)</a></li><li class="level-2"><a href="#one-minute-explain-it-like-a-senior-answer">One-minute “explain it like a senior” answer</a></li></ul></div>
+        <h1 id="clr-garbage-collector-gc-deep-but-practical">CLR & Garbage Collector (GC) — Deep but Practical</h1>
+<h2 id="1-heap-layout-generations-what-actually-happens">1) Heap layout & generations (what actually happens)</h2>
+<ul><li><strong>Two main heaps:</strong></li></ul>
+<ul><li><strong>SOH (Small Object Heap):</strong> most objects. Split into <strong>Gen0</strong>, <strong>Gen1</strong>, <strong>Gen2</strong>.</li><li><strong>LOH (Large Object Heap):</strong> objects <strong>≥ ~85,000 bytes</strong> (arrays/large strings). Allocating on LOH skips Gen0/Gen1.</li><li><strong>Promotion rule:</strong> survive a collection → promoted (Gen0 → Gen1 → Gen2). Long-lived objects end up in Gen2.</li><li><strong>Segments:</strong> The GC manages memory in <strong>segments</strong> (ephemeral segments hold Gen0/Gen1). Collections reclaim from the youngest gen that’s “full enough”.</li><li><strong>Compaction:</strong> SOH is compacted by default (reduces fragmentation). <strong>LOH is not compacted by default</strong>; it can fragment—there is an opt-in compaction knob (see tuning).</li></ul>
+<p><strong>Mental model</strong></p>
+<pre class="hljs"><code>Stack → short-lived refs
+         │
+         ▼
+ Gen0 ──► Gen1 ──► Gen2        LOH (≥ ~85 KB)
+ small     medium   long        massive arrays/strings
+ (compacts) (compacts) (compacts)   (not by default)</code></pre>
+<h2 id="2-gc-flavors-latency-modes-pick-the-right-one">2) GC flavors & latency modes (pick the right one)</h2>
+<ul><li><strong>Server vs Workstation GC</strong></li><li><strong>Server GC:</strong> one dedicated GC thread <strong>per core</strong>, larger segments, throughput-optimized. Best for <strong>ASP.NET Core / services</strong>.</li><li><strong>Workstation GC:</strong> aims for desktop responsiveness (WPF/WinForms/dev tools).</li><li>Check via <code>GCSettings.IsServerGC</code>. In containers, .NET is <strong>container-aware</strong>; set env vars to tune (see §7).</li><li><strong>Concurrent/Background GC</strong></li><li>Background (Gen2) collections run concurrently with the app; Gen0/Gen1 are still stop-the-world but short.</li><li><strong>Latency modes</strong> (<code>GCSettings.LatencyMode</code>)</li><li><strong>Batch:</strong> max throughput, longer pauses OK (default on server GC during blocking GCs).</li><li><strong>Interactive:</strong> balanced (workstation default).</li><li><strong>SustainedLowLatency:</strong> fewer Gen2 collections; use around latency-sensitive windows.</li><li><strong>NoGCRegion:</strong> ask GC to <strong>avoid any collections</strong> while you do a critical operation—must pre-reserve memory (<code>GC.TryStartNoGCRegion(...)</code>). Fails if you allocate more than reserved or cause LOH pressure.</li></ul>
+<h2 id="3-allocation-discipline-the-1-lever-you-control">3) Allocation discipline (the #1 lever you control)</h2>
+<ul><li><strong>Avoid allocations in hot paths:</strong> every avoidable allocation is one less Gen0 pressure spike.</li></ul>
+<ul><li>Reuse buffers (<strong><code>ArrayPool&lt;T&gt;</code></strong>, <strong><code>IMemoryOwner&lt;T&gt;</code></strong>), cache common arrays, and prefer <strong><code>StringBuilder</code></strong> for concatenation in loops.</li><li>Be mindful with LINQ in tight loops (iterator/lambda allocations); favor hand-written loops where perf matters.</li><li>Use <code>struct</code> for tiny, immutable value types that are frequently created; <strong>don’t</strong> make them huge (copy cost) or mutable (defensive copies).</li><li>Prefer <strong><code>ValueTask</code></strong> over <code>Task</code> for sync-completing async methods to reduce allocations.</li><li><strong>Pinned objects</strong> (e.g., for interop) <strong>impede compaction</strong>; pin rarely and briefly (copy to a staging buffer if needed).</li><li><strong>Strings:</strong> avoid excessive substringing/slicing that creates new strings; parse with spans, or use <code>ReadOnlyMemory&lt;char&gt;</code>.</li></ul>
+<h2 id="4-spant-memoryt-zero-alloc-parsing-slicing">4) <code>Span&lt;T&gt;</code> / <code>Memory&lt;T&gt;</code> (zero-alloc parsing & slicing)</h2>
+<ul><li><strong><code>Span&lt;T&gt;</code></strong> is a <strong><code>ref struct</code></strong> that can point to <strong>stack</strong>, <strong>array</strong>, <strong>native</strong>, or <strong>unmanaged</strong> memory without allocating.</li></ul>
+<ul><li>Great for <strong>protocol frame parsing</strong>, <strong>ASCII/UTF8 decoding</strong>, <strong>CSV/JSON tokenization</strong>, and <strong>binary</strong> manipulations.</li><li><strong>Zero allocations</strong> for slicing: <code>span = span.Slice(offset, length)</code>.</li><li><strong>Restrictions:</strong> cannot be boxed, captured by closures, stored in fields of reference types, or used across <code>await</code>/iterator boundaries (stack-bound).</li><li><strong><code>ReadOnlySpan&lt;T&gt;</code></strong> for read-only views (e.g., over <code>string</code> via <code>AsSpan()</code>).</li><li><strong><code>Memory&lt;T&gt;</code>/<code>ReadOnlyMemory&lt;T&gt;</code></strong>: heap-safe counterpart you can <strong>store and pass across async</strong> boundaries. Use when you need to <strong>persist</strong> a view or <strong>await</strong>.</li><li><strong>Buffers & pools:</strong></li></ul>
+<ul><li>Acquire with <code>ArrayPool&lt;T&gt;.Shared.Rent(n)</code> → get <strong><code>T[]</code></strong>; present it as <code>Memory&lt;T&gt;</code>/<code>Span&lt;T&gt;</code>; return it with <code>Return</code>.</li><li>For pipelines or I/O heavy paths, consider <strong><code>System.IO.Pipelines</code></strong> which surfaces spans/memory natively.</li></ul>
+<p><strong>Interview tie-in (MT4/MT5 / market data):</strong> Parsing tick/quote frames from sockets: read into a pooled buffer → slice using <code>Span&lt;byte&gt;</code> → parse fields with <code>BinaryPrimitives</code>/<code>Utf8Parser</code> → avoid intermediate strings → map to structs → publish.</p>
+<h2 id="5-finalization-disposal-handles-dont-leak">5) Finalization, disposal & handles (don’t leak)</h2>
+<ul><li><strong><code>IDisposable</code> pattern:</strong> free <strong>unmanaged resources</strong> deterministically (<code>using</code>/<code>await using</code>). Prefer <strong><code>SafeHandle</code></strong> over raw IntPtr in finalizers.</li><li><strong>Finalizers:</strong> expensive. Object enters <strong>F-reachable</strong> queue; requires <strong>at least one extra GC</strong> to clean. Keep finalizable objects minimal and lightweight.</li><li><strong><code>using</code></strong> is your friend—especially around sockets/streams where LOH buffers could be held inadvertently.</li></ul>
+<h2 id="6-diagnostics-how-you-prove-it">6) Diagnostics (how you prove it)</h2>
+<ul><li><strong>Counters:</strong> <code>dotnet-counters monitor System.Runtime</code> (GC Heap Size, Gen0/1/2 Count, % Time in GC).</li><li><strong>Traces:</strong> <code>dotnet-trace</code>, <strong>PerfView</strong>, Windows <strong>ETW</strong>, or <strong>dotnet-gcdump</strong> to analyze object graphs and hot types.</li><li><strong>AspNetCore:</strong> enable event source providers for request rates + GC to correlate pauses with traffic.</li></ul>
+<p>A crisp story to tell:</p>
+<blockquote><p>“We saw frequent Gen2s during peak quotes. Using counters we correlated high LOH allocations from JSON serialization. We switched to <code>Utf8JsonReader</code> + pooled buffers, cut LOH churn by 80%, Gen2 frequency dropped 5×, p95 latency improved from 120 ms to 35 ms.”</p></blockquote>
+<h2 id="7-tuning-knobs-what-to-adjust-when">7) Tuning knobs (what to adjust when)</h2>
+<ul><li><strong>Enable Server GC</strong> for services: env var <code>DOTNET_GCServer=1</code> (usually default in ASP.NET Core).</li><li><strong>Heap limits in containers:</strong></li></ul>
+<p>Use <strong>sparingly</strong> during maintenance windows; it’s a <strong>blocking</strong> full GC.</p>
+<ul><li><code>DOTNET_GCHeapHardLimit</code> / <code>DOTNET_GCHeapHardLimitPercent</code> to cap; or rely on container-aware defaults (Core 3.0+).</li><li><strong>LOH compaction:</strong> <code>GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce; GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);</code></li><li><strong>Latency windows:</strong></li></ul>
+<ul><li>Before a critical burst (e.g., market open): <code>GC.TryStartNoGCRegion(...)</code> with enough headroom; <code>GC.EndNoGCRegion()</code> after.</li><li>Or <code>SustainedLowLatency</code> around time-sensitive processing (expect more memory use).</li></ul>
+<h2 id="8-async-threading-interactions-common-pitfalls">8) Async & threading interactions (common pitfalls)</h2>
+<ul><li><strong>Async hot paths</strong> allocate continuations; use <code>ValueTask</code> when appropriate, and <strong>avoid async</strong> if the path completes synchronously.</li><li><strong>Thread safety vs allocations:</strong> prefer <strong><code>ConcurrentDictionary</code></strong> sparingly; in very hot paths use sharded locks or lock-free patterns.</li><li><strong>Backpressure:</strong> when deserializing streams at line-rate, use pipelines to <strong>avoid intermediate buffers</strong> and enforce backpressure.</li></ul>
+<h2 id="9-quick-dodont-checklist-interview-ready">9) Quick do/don’t checklist (interview-ready)</h2>
+<p><strong>Do</strong></p>
+<ul><li>Pool large arrays and reuse buffers.</li><li>Parse with <code>Span&lt;T&gt;</code>/<code>Utf8JsonReader</code> instead of allocating substrings/<code>JObject</code>.</li><li>Measure with counters/traces before changing GC settings.</li><li>Prefer Server GC for services; confirm in prod.</li></ul>
+<p><strong>Don’t</strong></p>
+<ul><li>Pin big objects for long (crushes compaction).</li><li>Sprinkle LINQ/closures in micro-paths.</li><li>Force <code>GC.Collect()</code> routinely (it <strong>hurts</strong> overall throughput).</li><li>Leave finalizers doing heavy work.</li></ul>
+<p>---</p>
+<h2 id="one-minute-explain-it-like-a-senior-answer">One-minute “explain it like a senior” answer</h2>
+<blockquote><p>“.NET uses a <strong>generational GC</strong>: most objects die young in <strong>Gen0/Gen1</strong>, long-lived objects are promoted to <strong>Gen2</strong>; very large allocations go to the <strong>LOH</strong>, which isn’t compacted by default. For services we run <strong>Server GC</strong> to maximize throughput with background Gen2 collections. We keep <strong>allocation pressure</strong> low in hot paths—pool buffers, use <strong><code>Span&lt;T&gt;</code></strong> for zero-alloc parsing, and use <strong><code>Memory&lt;T&gt;</code></strong> across async boundaries. We monitor <strong>GC counters</strong> to spot excessive Gen2/LOH activity. If fragmentation creeps into LOH we schedule a one-off compaction. We only tweak latency modes for short, critical windows and never force collections in steady state.”</p></blockquote>
+<p>If you want, I can give you a <strong>10-minute hands-on drill</strong>: a tiny price-tick parser using <code>Span&lt;byte&gt;</code>, <code>ArrayPool&lt;byte&gt;</code>, and counters you can discuss live.</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['midnight', 'light', 'dark'];
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const saved = localStorage.getItem('study-theme');
+      const fallback = prefersDark ? 'dark' : 'midnight';
+      const initial = supported.includes(saved) ? saved : fallback;
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          localStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

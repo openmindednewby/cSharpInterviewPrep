@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="midnight">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for Struct Vs Class When To Use Which" />
+  <title>Struct Vs Class When To Use Which | C# Interview Prep Cheat Sheet</title>
+  <link rel="stylesheet" href="../../assets/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="midnight">Current</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="nav-groups"><div class="sidebar-group">
+      <h3>Notes</h3>
+      <ul><li><a href="../../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a href="../../notes/Automapper/AutoMapper.html">AutoMapper</a></li><li><a href="../../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a href="../../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a href="../../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a href="../../notes/core-concepts.html">Core Concepts</a></li><li><a href="../../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a href="../../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a href="../../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a href="../../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a href="../../notes/error-handling.html">Error Handling</a></li><li><a href="../../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a href="../../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a href="../../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li><li><a href="../../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a href="../../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a href="../../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a href="../../notes/Clean-Architecture/index.html">Index</a></li><li><a href="../../notes/DRY/index.html">Index</a></li><li><a href="../../notes/Memory-Allocation-Discipline/index.html">Index</a></li><li><a href="../../notes/SOLID/index.html">Index</a></li><li><a href="../../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a href="../../notes/logging.html">Logging</a></li><li><a href="../../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a href="../../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a href="../../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li><li><a href="../../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a href="../../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a href="../../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a href="../../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a href="../../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a href="../../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a href="../../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a href="../../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a href="../../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a href="../../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a href="../../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li><li><a href="../../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a href="../../notes/testing-strategies.html">Testing Strategies</a></li><li><a href="../../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group">
+      <h3>Practice</h3>
+      <ul><li><a href="../../practice/answers.html">Answers</a></li><li><a href="../../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a href="../../practice/questions.html">Questions</a></li><li><a href="../../practice/real exam questions answers/replace int without variable.html">Replace Int Without Variable</a></li><li><a href="../../practice/real exam questions answers/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li></ul>
+    </div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">notes/sub-notes/struct vs class when to use which.md</div>
+        <h2>Struct Vs Class When To Use Which</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-2"><a href="#conceptual-summary">🧠 Conceptual Summary</a></li><li class="level-2"><a href="#practical-explanation-how-clr-handles-them">⚙️ Practical Explanation (How CLR Handles Them)</a></li><li class="level-3"><a href="#struct">🧩 `struct`</a></li><li class="level-3"><a href="#class">🧩 `class`</a></li><li class="level-2"><a href="#performance-and-design-implications">⚡ Performance and Design Implications</a></li><li class="level-3"><a href="#when-to-use-struct">✅ When to use `struct`</a></li><li class="level-3"><a href="#when-not-to-use-struct">🚫 When NOT to use `struct`</a></li><li class="level-3"><a href="#boxing-and-hidden-allocations">⚠️ Boxing and Hidden Allocations</a></li><li class="level-2"><a href="#real-world-example-hfm-context">🧩 Real-World Example (HFM context)</a></li><li class="level-2"><a href="#memory-visualization">🧩 Memory Visualization</a></li><li class="level-2"><a href="#senior-level-20-second-summary-how-to-answer-in-interview">🎯 Senior-level 20-second summary (how to answer in interview)</a></li><li class="level-1"><a href="#memory-behavior-struct-vs-class">🧩 Memory Behavior: `struct` vs `class`</a></li><li class="level-2"><a href="#1-basic-memory-layout">1️⃣ Basic memory layout</a></li><li class="level-2"><a href="#2-assignment-behavior">2️⃣ Assignment behavior</a></li><li class="level-3"><a href="#struct-value-type">✅ Struct (value type)</a></li><li class="level-3"><a href="#class-reference-type">✅ Class (reference type)</a></li><li class="level-2"><a href="#3-struct-inside-a-class-inline-layout">3️⃣ Struct inside a class (inline layout)</a></li><li class="level-2"><a href="#4-passing-to-methods">4️⃣ Passing to methods</a></li><li class="level-2"><a href="#5-heap-fragmentation-and-gc-difference">5️⃣ Heap fragmentation and GC difference</a></li><li class="level-2"><a href="#6-summary-diagram">6️⃣ ⚙️ Summary Diagram</a></li><li class="level-2"><a href="#quick-whiteboard-pitch-for-your-interview">🧠 Quick “whiteboard pitch” for your interview</a></li></ul></div>
+        <h2 id="conceptual-summary">🧠 Conceptual Summary</h2>
+<p>| Feature                    | <strong><code>struct</code></strong>                                                                  | <strong><code>class</code></strong>                                       | | -------------------------- | ----------------------------------------------------------------------------- | ------------------------------------------------- | | <strong>Type category</strong>          | Value type                                                                    | Reference type                                    | | <strong>Memory allocation</strong>      | Stored <strong>inline</strong> (stack, or inside another object)                           | Stored on <strong>heap</strong>, referenced via pointer        | | <strong>Default behavior</strong>       | Copied by <strong>value</strong> (creates a full copy)                                     | Copied by <strong>reference</strong> (points to same object)   | | <strong>Nullability</strong>            | Cannot be <code>null</code> (unless <code>Nullable&lt;T&gt;</code>)                                       | Can be <code>null</code>                                     | | <strong>Inheritance</strong>            | Cannot inherit from another struct or class; only from <code>ValueType</code>            | Supports inheritance and polymorphism             | | <strong>Interfaces</strong>             | Can implement interfaces                                                      | Can implement interfaces and base classes         | | <strong>Default constructor</strong>    | Cannot define a custom parameterless constructor (C# 10 adds limited support) | Can freely define constructors                    | | <strong>Finalizer / Destructor</strong> | Not supported                                                                 | Supported                                         | | <strong>GC behavior</strong>            | Usually short-lived, reclaimed when out of scope                              | Managed by the <strong>Garbage Collector</strong>              | | <strong>Boxing / Unboxing</strong>      | Converting to/from object/interface causes allocation                         | No boxing/unboxing issues                         | | <strong>Thread safety</strong>          | Safer for small immutable data                                                | Reference types require synchronization if shared |</p>
+<p>---</p>
+<h2 id="practical-explanation-how-clr-handles-them">⚙️ Practical Explanation (How CLR Handles Them)</h2>
+<h3 id="struct">🧩 <code>struct</code></h3>
+<ul><li>Lives <strong>inline</strong> — if it’s a local variable, it’s on the <strong>stack</strong>; if it’s a field in another object, it’s inside that object’s memory layout.</li><li>When passed to a method, <strong>a full copy is made</strong> (unless passed by <code>ref</code> or <code>in</code>).</li><li>Ideal for <strong>small, immutable, lightweight data</strong> — e.g., coordinates, ticks, prices, GUIDs.</li></ul>
+<p><strong>Example:</strong></p>
+<pre class="hljs"><code>struct Point
+{
+    public int X;
+    public int Y;
+}</code></pre>
+<p>Each <code>Point</code> lives inline — no GC pressure.</p>
+<p>---</p>
+<h3 id="class">🧩 <code>class</code></h3>
+<ul><li>Lives on the <strong>managed heap</strong>. Variables hold a <strong>reference (pointer)</strong> to the actual object.</li><li>Passed around by reference, so multiple variables can point to the same instance.</li><li>Managed by the <strong>Garbage Collector</strong>.</li></ul>
+<p><strong>Example:</strong></p>
+<pre class="hljs"><code>class Order
+{
+    public string Symbol { get; set; }
+    public double Price { get; set; }
+}</code></pre>
+<p>Each <code>Order</code> allocation hits the heap and is tracked by the GC.</p>
+<p>---</p>
+<h2 id="performance-and-design-implications">⚡ Performance and Design Implications</h2>
+<h3 id="when-to-use-struct">✅ When to use <code>struct</code></h3>
+<p>Use when:</p>
+<ul><li>The object is <strong>small (≤ 16 bytes typically)</strong>.</li><li>It’s <strong>immutable</strong>.</li><li>You’ll create <strong>many</strong> of them (e.g., millions per second) and want <strong>no GC overhead</strong>.</li><li>Value semantics make sense (copying creates independence).</li></ul>
+<p><strong>Example (trading context):</strong></p>
+<pre class="hljs"><code>readonly struct Tick
+{
+    public string Symbol { get; }
+    public double Bid { get; }
+    public double Ask { get; }
+}</code></pre>
+<p>Each <code>Tick</code> represents an immutable market data point. Perfect as a <code>struct</code>.</p>
+<p>---</p>
+<h3 id="when-not-to-use-struct">🚫 When NOT to use <code>struct</code></h3>
+<p>Avoid when:</p>
+<ul><li>It’s large (lots of fields) → copying becomes expensive.</li><li>You need polymorphism, inheritance, or shared references.</li><li>You mutate the same instance in multiple places.</li></ul>
+<p>---</p>
+<h3 id="boxing-and-hidden-allocations">⚠️ Boxing and Hidden Allocations</h3>
+<p>When a struct is treated as an <code>object</code> or cast to an interface, it gets <strong>boxed</strong> — copied onto the heap.</p>
+<pre class="hljs"><code>struct Point { public int X, Y; }
+
+object obj = new Point(); // BOXED: allocates on heap
+Point p = (Point)obj;     // UNBOXED: copy back to stack</code></pre>
+<p>So: <strong>value types are not automatically zero-GC</strong> — you must use them carefully.</p>
+<p>---</p>
+<h2 id="real-world-example-hfm-context">🧩 Real-World Example (HFM context)</h2>
+<p>If you’re processing <strong>millions of tick messages</strong> per second:</p>
+<ul><li>Use a <code>struct</code> (or <code>readonly struct</code>) for individual ticks (lightweight, immutable).</li><li>Use a <code>class</code> for services and entities that manage state, like <code>OrderBook</code>, <code>TradeSession</code>, or <code>CacheManager</code>.</li></ul>
+<p><strong>Example:</strong></p>
+<pre class="hljs"><code>readonly struct Tick
+{
+    public string Symbol { get; init; }
+    public double Bid { get; init; }
+    public double Ask { get; init; }
+}
+
+class PriceFeedProcessor
+{
+    private readonly List&lt;Tick&gt; _ticks = new();
+
+    public void OnTick(Tick tick) =&gt; _ticks.Add(tick);
+}</code></pre>
+<p>---</p>
+<h2 id="memory-visualization">🧩 Memory Visualization</h2>
+<pre class="hljs"><code>Stack:
+ ├─ Tick t1 { X=1, Y=2 }   (struct: inline)
+ ├─ Tick t2 = t1 (copied!)
+ └─ Order ref ─┐
+               ▼
+Heap:
+ └─ { Symbol=&quot;EURUSD&quot;, Price=1.0734 }  (class: heap object)</code></pre>
+<p>---</p>
+<h2 id="senior-level-20-second-summary-how-to-answer-in-interview">🎯 Senior-level 20-second summary (how to answer in interview)</h2>
+<blockquote><p>“A struct is a <strong>value type</strong>, stored inline and copied by value — great for <strong>small, immutable data</strong> and <strong>reducing GC pressure</strong>. A class is a <strong>reference type</strong>, stored on the heap, supporting <strong>inheritance and polymorphism</strong>. Structs avoid GC but can cost more to copy if large, and boxing them defeats their advantage. In low-latency systems, we often use small structs like <code>Tick</code> or <code>Point</code> to keep memory tight and predictable.”</p></blockquote>
+<p>---</p>
+<p>Would you like me to give you <strong>5 advanced interview questions</strong> around <code>struct</code> vs <code>class</code> (with answers), the kind HFM might use to test your understanding of <strong>memory, GC, and performance</strong>?</p>
+<p>Excellent — this visual explanation will make your answer <strong>stand out instantly</strong> in a senior-level C# interview (especially at HFM, where they care about performance, GC, and data flow).</p>
+<p>Let’s walk through it step by step, from memory layout to how structs and classes behave under assignment and method calls.</p>
+<p>---</p>
+<h1 id="memory-behavior-struct-vs-class">🧩 Memory Behavior: <code>struct</code> vs <code>class</code></h1>
+<h2 id="1-basic-memory-layout">1️⃣ Basic memory layout</h2>
+<pre class="hljs"><code>┌──────────────────────────────┐
+│          Stack               │
+│ ┌─────────────────────────┐  │
+│ │ int x = 10;             │  │
+│ │ Point p = {X=1,Y=2};    │  │  ← Struct (value type)
+│ └─────────────────────────┘  │
+│   (lives inline here)        │
+│                              │
+│ ┌─────────────────────────┐  │
+│ │ Order o ────────────────┼──┼──► Heap
+│ └─────────────────────────┘  │
+└──────────────────────────────┘
+
+┌──────────────────────────────┐
+│           Heap               │
+│ ┌─────────────────────────┐  │
+│ │ Order { Id=1, Price=99 }│  │  ← Class (reference type)
+│ └─────────────────────────┘  │
+└──────────────────────────────┘</code></pre>
+<p><strong>Explanation:</strong></p>
+<ul><li><strong>Struct (<code>Point</code>)</strong> is stored <strong>directly on the stack</strong> or inline within another object.</li><li><strong>Class (<code>Order</code>)</strong> is stored on the <strong>heap</strong>; variables on the stack hold a <em>reference</em> (pointer) to it.</li></ul>
+<p>---</p>
+<h2 id="2-assignment-behavior">2️⃣ Assignment behavior</h2>
+<h3 id="struct-value-type">✅ Struct (value type)</h3>
+<pre class="hljs"><code>Point a = new Point { X = 1, Y = 2 };
+Point b = a;    // copy!
+b.X = 99;
+Console.WriteLine(a.X); // 1 (a unaffected)</code></pre>
+<p><strong>Memory:</strong></p>
+<pre class="hljs"><code>Stack:
+ a { X=1, Y=2 }
+ b { X=99, Y=2 }   ← completely separate copy</code></pre>
+<ul><li>Structs are <strong>copied by value</strong>.</li><li>Each variable has its <strong>own independent copy</strong>.</li><li>No heap allocation → no GC pressure.</li></ul>
+<p>---</p>
+<h3 id="class-reference-type">✅ Class (reference type)</h3>
+<pre class="hljs"><code>Order o1 = new Order { Id = 1, Price = 99 };
+Order o2 = o1;  // copy reference!
+o2.Price = 120;
+Console.WriteLine(o1.Price); // 120</code></pre>
+<p><strong>Memory:</strong></p>
+<pre class="hljs"><code>Stack:
+ o1 ─┐
+ o2 ─┘──► Heap: { Id=1, Price=120 }</code></pre>
+<ul><li>Classes are <strong>copied by reference</strong> — both variables point to the same heap object.</li><li>Modifying one affects the other.</li></ul>
+<p>---</p>
+<h2 id="3-struct-inside-a-class-inline-layout">3️⃣ Struct inside a class (inline layout)</h2>
+<pre class="hljs"><code>class Trade
+{
+    public string Symbol;
+    public Point Position;
+}</code></pre>
+<p><strong>Memory:</strong></p>
+<pre class="hljs"><code>Heap: Trade
+ ├─ Symbol → &quot;EURUSD&quot;   (heap reference)
+ └─ Position { X=10, Y=20 }  (inline in Trade object)</code></pre>
+<p><strong>Insight:</strong> Even though the struct is inside a class (on heap), its <strong>fields are embedded inline</strong> — not separate allocations. This reduces pointer indirection and helps cache locality.</p>
+<p>---</p>
+<h2 id="4-passing-to-methods">4️⃣ Passing to methods</h2>
+<pre class="hljs"><code>void Move(Point p) { p.X += 10; } // copy!
+void MoveRef(ref Point p) { p.X += 10; } // modifies original</code></pre>
+<p><strong>Memory visualization:</strong></p>
+<pre class="hljs"><code>By value (copy):
+ Caller: a { X=1 }
+ Method: p { X=1 } → modified to X=11 (copy destroyed)
+
+By ref:
+ Caller: a { X=1 }
+ Method: p ─┐
+             └─ modifies same memory → X=11 persists</code></pre>
+<p>💡 <strong>Interview tip:</strong></p>
+<blockquote><p>“Structs are copied on method calls unless passed by <code>ref</code> or <code>in</code>. Large structs should be passed by <code>in</code> to avoid copy overhead — especially in tight loops or latency-critical code.”</p></blockquote>
+<p>---</p>
+<h2 id="5-heap-fragmentation-and-gc-difference">5️⃣ Heap fragmentation and GC difference</h2>
+<pre class="hljs"><code>Structs:
+[Stack]
+[Stack frame destroyed → data gone instantly]
+→ No GC involvement.
+
+Classes:
+[Heap]
+[Objects live until unreachable]
+→ GC scans and collects them (Gen0→Gen1→Gen2)</code></pre>
+<p><strong>Key insight:</strong></p>
+<ul><li>Structs vanish when they go out of scope → <strong>predictable lifetime</strong>.</li><li>Classes depend on GC cycles → <strong>non-deterministic</strong> reclamation.</li><li>Overusing classes in a high-frequency path (like market ticks) causes <strong>GC churn and pauses</strong>.</li></ul>
+<p>---</p>
+<h2 id="6-summary-diagram">6️⃣ ⚙️ Summary Diagram</h2>
+<pre class="hljs"><code>STRUCT (Value Type)
+ ┌──────────────┐
+ │ Inline Data  │
+ ├──────────────┤
+ │ Copied on =  │
+ ├──────────────┤
+ │ No GC        │
+ ├──────────────┤
+ │ Pass by ref  │
+ └──────────────┘
+     ↓
+  Great for small immutable data
+
+CLASS (Reference Type)
+ ┌──────────────┐
+ │ Heap Object  │
+ ├──────────────┤
+ │ Copied ref   │
+ ├──────────────┤
+ │ Managed by GC│
+ ├──────────────┤
+ │ Supports OOP │
+ └──────────────┘
+     ↓
+  Great for shared mutable state</code></pre>
+<p>---</p>
+<h2 id="quick-whiteboard-pitch-for-your-interview">🧠 Quick “whiteboard pitch” for your interview</h2>
+<blockquote><p>“Structs are value types — stored inline, copied by value, no GC involvement, ideal for small immutable data like ticks or coordinates. Classes are reference types — heap-allocated, reference-based, and managed by GC. I use structs where I want predictable lifetimes and zero allocations; classes when I need shared, long-lived state or polymorphism.”</p></blockquote>
+<p>---</p>
+<p>Would you like me to now create a <strong>visual of memory layout with stack/heap arrows</strong> (an actual diagram you could memorize or even sketch during the interview)? It would show <code>struct</code>, <code>class</code>, and mixed cases (struct-in-class, class-in-struct) clearly.</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['midnight', 'light', 'dark'];
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const saved = localStorage.getItem('study-theme');
+      const fallback = prefersDark ? 'dark' : 'midnight';
+      const initial = supported.includes(saved) ? saved : fallback;
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          localStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="midnight">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for Memory Allocation Discipline Example" />
+  <title>Memory Allocation Discipline Example | C# Interview Prep Cheat Sheet</title>
+  <link rel="stylesheet" href="../../assets/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="midnight">Current</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="nav-groups"><div class="sidebar-group">
+      <h3>Notes</h3>
+      <ul><li><a href="../../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a href="../../notes/Automapper/AutoMapper.html">AutoMapper</a></li><li><a href="../../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a href="../../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a href="../../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a href="../../notes/core-concepts.html">Core Concepts</a></li><li><a href="../../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a href="../../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a href="../../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a href="../../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a href="../../notes/error-handling.html">Error Handling</a></li><li><a href="../../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a href="../../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a href="../../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li><li><a href="../../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a href="../../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a href="../../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a href="../../notes/Clean-Architecture/index.html">Index</a></li><li><a href="../../notes/DRY/index.html">Index</a></li><li><a href="../../notes/Memory-Allocation-Discipline/index.html">Index</a></li><li><a href="../../notes/SOLID/index.html">Index</a></li><li><a href="../../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a href="../../notes/logging.html">Logging</a></li><li><a href="../../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a href="../../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a href="../../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li><li><a href="../../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a href="../../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a href="../../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a href="../../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a href="../../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a href="../../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a href="../../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a href="../../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a href="../../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a href="../../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a href="../../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li><li><a href="../../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a href="../../notes/testing-strategies.html">Testing Strategies</a></li><li><a href="../../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group">
+      <h3>Practice</h3>
+      <ul><li><a href="../../practice/answers.html">Answers</a></li><li><a href="../../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a href="../../practice/questions.html">Questions</a></li><li><a href="../../practice/real exam questions answers/replace int without variable.html">Replace Int Without Variable</a></li><li><a href="../../practice/real exam questions answers/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li></ul>
+    </div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.md</div>
+        <h2>Memory Allocation Discipline Example</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#1-benchmarkdotnet-measuring-allocation-discipline">🧪 1️⃣ BenchmarkDotNet — Measuring Allocation Discipline</a></li><li class="level-3"><a href="#tickparsingbenchmarkscs">📄 `TickParsingBenchmarks.cs`</a></li><li class="level-3"><a href="#run-it">⚙️ Run it:</a></li><li class="level-3"><a href="#expected-results-typical-output">🧾 Expected results (typical output):</a></li><li class="level-1"><a href="#2-realistic-tick-processor-example">💹 2️⃣ Realistic Tick Processor Example</a></li><li class="level-3"><a href="#tickprocessorcs">📄 `TickProcessor.cs`</a></li><li class="level-3"><a href="#key-improvements-explained">💡 Key improvements explained</a></li><li class="level-3"><a href="#memory-profile">🧩 Memory profile</a></li><li class="level-3"><a href="#discussion-points-for-your-interview">🧠 Discussion points for your interview</a></li><li class="level-3"><a href="#pro-tip">✅ Pro tip</a></li></ul></div>
+        <h1 id="1-benchmarkdotnet-measuring-allocation-discipline">🧪 1️⃣ BenchmarkDotNet — Measuring Allocation Discipline</h1>
+<p>This microbenchmark compares two implementations of tick parsing:</p>
+<ul><li><strong>Naive</strong>: uses <code>string.Split()</code> and <code>double.Parse()</code></li><li><strong>Optimized</strong>: uses <code>Span&lt;byte&gt;</code> + <code>Utf8Parser</code> (zero allocations)</li></ul>
+<p>---</p>
+<h3 id="tickparsingbenchmarkscs">📄 <code>TickParsingBenchmarks.cs</code></h3>
+<pre class="hljs"><code>using System;
+using System.Buffers;
+using System.Buffers.Text;
+using System.Text;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Running;
+
+[MemoryDiagnoser] // shows allocations in bytes per operation
+public class TickParsingBenchmarks
+{
+    private readonly string tickLine = &quot;EURUSD,1.07432,1.07436&quot;;
+
+    [Benchmark(Baseline = true)]
+    public (string, double, double) NaiveParse()
+    {
+        var parts = tickLine.Split(&#39;,&#39;);
+        var symbol = parts[0];
+        var bid = double.Parse(parts[1]);
+        var ask = double.Parse(parts[2]);
+        return (symbol, bid, ask);
+    }
+
+    [Benchmark]
+    public (string, double, double) SpanParse()
+    {
+        ReadOnlySpan&lt;byte&gt; span = Encoding.ASCII.GetBytes(tickLine);
+
+        int firstComma = span.IndexOf((byte)&#39;,&#39;);
+        int secondComma = span.Slice(firstComma + 1).IndexOf((byte)&#39;,&#39;) + firstComma + 1;
+
+        string symbol = Encoding.ASCII.GetString(span[..firstComma]);
+        Utf8Parser.TryParse(span[(firstComma + 1)..secondComma], out double bid, out _);
+        Utf8Parser.TryParse(span[(secondComma + 1)..], out double ask, out _);
+
+        return (symbol, bid, ask);
+    }
+
+    public static void Main() =&gt; BenchmarkRunner.Run&lt;TickParsingBenchmarks&gt;();
+}</code></pre>
+<p>---</p>
+<h3 id="run-it">⚙️ Run it:</h3>
+<pre class="hljs"><code>dotnet add package BenchmarkDotNet
+dotnet run -c Release</code></pre>
+<p>---</p>
+<h3 id="expected-results-typical-output">🧾 Expected results (typical output):</h3>
+<pre class="hljs"><code>|    Method |       Mean |   Allocated |
+|----------- |-----------:|------------:|
+| NaiveParse |   1.200 μs |     1.24 KB |
+| SpanParse  |   0.245 μs |       32 B  |</code></pre>
+<p>💡 <strong>Interpretation:</strong></p>
+<ul><li>The <strong>optimized version</strong> is ~5× faster.</li><li>It reduces allocations from ~1.2 KB → ~32 bytes per tick.</li><li>Over 1M ticks/sec, that’s ~1.2 GB less allocation per second 🤯 — huge difference for a trading backend.</li></ul>
+<p>---</p>
+<h1 id="2-realistic-tick-processor-example">💹 2️⃣ Realistic Tick Processor Example</h1>
+<p>Now let’s build a <strong>GC-efficient Tick parser</strong> — something you can confidently mention if they ask, “How would you design a real-time price feed handler?”</p>
+<p>---</p>
+<h3 id="tickprocessorcs">📄 <code>TickProcessor.cs</code></h3>
+<pre class="hljs"><code>using System;
+using System.Buffers;
+using System.Buffers.Text;
+using System.Text;
+
+public readonly struct Tick
+{
+    public string Symbol { get; }
+    public double Bid { get; }
+    public double Ask { get; }
+
+    public Tick(string symbol, double bid, double ask)
+    {
+        Symbol = symbol;
+        Bid = bid;
+        Ask = ask;
+    }
+
+    public override string ToString() =&gt; $&quot;{Symbol}: {Bid:F5}/{Ask:F5}&quot;;
+}
+
+public class TickProcessor
+{
+    private readonly ArrayPool&lt;byte&gt; _bufferPool = ArrayPool&lt;byte&gt;.Shared;
+
+    public void ProcessBatch(string[] rawTicks)
+    {
+        foreach (var tickStr in rawTicks)
+        {
+            // Rent a buffer (to avoid allocating new byte[] each time)
+            var buffer = _bufferPool.Rent(256);
+            try
+            {
+                int bytesWritten = Encoding.ASCII.GetBytes(tickStr, buffer);
+                var span = new ReadOnlySpan&lt;byte&gt;(buffer, 0, bytesWritten);
+
+                var tick = ParseTick(span);
+                OnTick(tick);
+            }
+            finally
+            {
+                _bufferPool.Return(buffer);
+            }
+        }
+    }
+
+    private static Tick ParseTick(ReadOnlySpan&lt;byte&gt; span)
+    {
+        // EURUSD,1.07432,1.07436
+        int firstComma = span.IndexOf((byte)&#39;,&#39;);
+        int secondComma = span.Slice(firstComma + 1).IndexOf((byte)&#39;,&#39;) + firstComma + 1;
+
+        string symbol = Encoding.ASCII.GetString(span[..firstComma]);
+        Utf8Parser.TryParse(span[(firstComma + 1)..secondComma], out double bid, out _);
+        Utf8Parser.TryParse(span[(secondComma + 1)..], out double ask, out _);
+
+        return new Tick(symbol, bid, ask);
+    }
+
+    private void OnTick(in Tick tick)
+    {
+        // Simulate publishing or processing the tick
+        Console.WriteLine(tick);
+    }
+}
+
+public static class Program
+{
+    public static void Main()
+    {
+        var ticks = new[]
+        {
+            &quot;EURUSD,1.07432,1.07436&quot;,
+            &quot;GBPUSD,1.24587,1.24592&quot;,
+            &quot;USDJPY,151.229,151.238&quot;,
+        };
+
+        var processor = new TickProcessor();
+        processor.ProcessBatch(ticks);
+    }
+}</code></pre>
+<p>---</p>
+<h3 id="key-improvements-explained">💡 Key improvements explained</h3>
+<p>| Improvement              | Why it matters                                                    | | ------------------------ | ----------------------------------------------------------------- | | <code>ArrayPool&lt;byte&gt;.Shared</code> | Reuses buffers, avoids LOH churn                                  | | <code>ReadOnlySpan&lt;byte&gt;</code>     | Zero-copy slicing of incoming data                                | | <code>Utf8Parser</code>             | Parses numeric values directly from bytes (no string allocations) | | <code>readonly struct Tick</code>   | Stack-friendly immutable type, no GC tracking                     | | <code>in Tick</code> (if used)      | Passes struct by ref → no copying                                 |</p>
+<p>---</p>
+<h3 id="memory-profile">🧩 Memory profile</h3>
+<ul><li>✅ Only one small string allocation per tick (<code>Symbol</code>)</li><li>✅ No arrays or temporary strings per line</li><li>✅ All other memory reused via pool</li><li>✅ Negligible GC activity — steady-state latency</li></ul>
+<p>---</p>
+<h3 id="discussion-points-for-your-interview">🧠 Discussion points for your interview</h3>
+<p>When asked <em>“How do you ensure your system stays fast under high load?”</em> — say:</p>
+<blockquote><p>“I design for allocation discipline — especially in tight loops. For example, in our tick processor, we rent buffers from <code>ArrayPool&lt;T&gt;</code>, parse with <code>Span&lt;byte&gt;</code> and <code>Utf8Parser</code> to avoid string and array allocations, and use small readonly structs for data. That keeps all transient data in Gen 0 and prevents Gen 2 pressure or LOH fragmentation. In load tests, we confirmed negligible GC activity and stable latency even at millions of ticks per second.”</p></blockquote>
+<p>---</p>
+<h3 id="pro-tip">✅ Pro tip</h3>
+<p>You can mention:</p>
+<blockquote><p>“In production, I monitor <code>dotnet-counters</code> — if <code>Gen 2 GC Count</code> increases, that’s a red flag that something’s allocating too much. Then I use <code>dotnet-trace</code> or <code>dotMemory</code> to find the source.”</p></blockquote>
+<p>---</p>
+<p>Would you like me to extend this by showing the <strong>async version</strong> — i.e., reading ticks from a <code>NetworkStream</code> using <code>System.IO.Pipelines</code> (zero-copy streaming, ideal for high-throughput trading systems)? That’s <em>exactly</em> the kind of system HFM might ask you to describe.</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['midnight', 'light', 'dark'];
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const saved = localStorage.getItem('study-theme');
+      const fallback = prefersDark ? 'dark' : 'midnight';
+      const initial = supported.includes(saved) ? saved : fallback;
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          localStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "name": "csharp-interview-study-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static study site generator for the C# interview prep notes and practice questions.",
+  "scripts": {
+    "build": "node build.js"
+  },
+  "dependencies": {}
+}

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="midnight">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for CLR & Garbage Collector (GC) Practical Example" />
+  <title>CLR & Garbage Collector (GC) Practical Example | C# Interview Prep Cheat Sheet</title>
+  <link rel="stylesheet" href="../../assets/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="midnight">Current</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="nav-groups"><div class="sidebar-group">
+      <h3>Notes</h3>
+      <ul><li><a href="../../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a href="../../notes/Automapper/AutoMapper.html">AutoMapper</a></li><li><a href="../../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a href="../../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a href="../../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a href="../../notes/core-concepts.html">Core Concepts</a></li><li><a href="../../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a href="../../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a href="../../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a href="../../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a href="../../notes/error-handling.html">Error Handling</a></li><li><a href="../../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a href="../../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a href="../../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li><li><a href="../../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a href="../../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a href="../../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a href="../../notes/Clean-Architecture/index.html">Index</a></li><li><a href="../../notes/DRY/index.html">Index</a></li><li><a href="../../notes/Memory-Allocation-Discipline/index.html">Index</a></li><li><a href="../../notes/SOLID/index.html">Index</a></li><li><a href="../../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a href="../../notes/logging.html">Logging</a></li><li><a href="../../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a href="../../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a href="../../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li><li><a href="../../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a href="../../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a href="../../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a href="../../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a href="../../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a href="../../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a href="../../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a href="../../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a href="../../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a href="../../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a href="../../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li><li><a href="../../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a href="../../notes/testing-strategies.html">Testing Strategies</a></li><li><a href="../../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group">
+      <h3>Practice</h3>
+      <ul><li><a href="../../practice/answers.html">Answers</a></li><li><a href="../../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a href="../../practice/questions.html">Questions</a></li><li><a href="../../practice/real exam questions answers/replace int without variable.html">Replace Int Without Variable</a></li><li><a href="../../practice/real exam questions answers/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li></ul>
+    </div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.md</div>
+        <h2>CLR & Garbage Collector (GC) Practical Example</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-2"><a href="#goal">⚡ GOAL</a></li><li class="level-2"><a href="#1-the-scenario">🧩 1. The scenario</a></li><li class="level-2"><a href="#2-the-c-code">💻 2. The C# code</a></li><li class="level-2"><a href="#3-what-to-highlight-in-the-interview">🧠 3. What to highlight in the interview</a></li><li class="level-2"><a href="#4-practice-questions-you-can-expect">🔍 4. Practice questions you can expect</a></li><li class="level-2"><a href="#5-optional-5-min-extension-counter-check">🧩 5. Optional 5-min extension: Counter check</a></li></ul></div>
+        <h2 id="goal">⚡ GOAL</h2>
+<p>Parse and process a stream of <strong>price tick data</strong> efficiently, <strong>without allocating</strong>, <strong>without creating new strings</strong>, and <strong>with GC-friendly design</strong>.</p>
+<p>---</p>
+<h2 id="1-the-scenario">🧩 1. The scenario</h2>
+<p>You receive a TCP stream of bytes like this:</p>
+<pre class="hljs"><code>EURUSD,1.07432,1.07436
+GBPUSD,1.24587,1.24592</code></pre>
+<p>You need to:</p>
+<ol><li>Parse each line into fields (symbol, bid, ask)</li><li>Convert to typed data (<code>struct Tick</code>)</li><li>Reuse buffers instead of new allocations</li><li>Avoid string allocations except for the final symbol if needed</li></ol>
+<p>---</p>
+<h2 id="2-the-c-code">💻 2. The C# code</h2>
+<pre class="hljs"><code>using System;
+using System.Buffers;
+using System.Buffers.Text;
+using System.Text;
+
+struct Tick
+{
+    public string Symbol { get; init; }
+    public double Bid { get; init; }
+    public double Ask { get; init; }
+}
+
+class TickParser
+{
+    private readonly ArrayPool&lt;byte&gt; _pool = ArrayPool&lt;byte&gt;.Shared;
+
+    public Tick Parse(ReadOnlySpan&lt;byte&gt; line)
+    {
+        // EURUSD,1.07432,1.07436
+        int firstComma = line.IndexOf((byte)&#39;,&#39;);
+        int secondComma = line.Slice(firstComma + 1).IndexOf((byte)&#39;,&#39;) + firstComma + 1;
+
+        // symbol bytes -&gt; string (only one allocation)
+        string symbol = Encoding.ASCII.GetString(line[..firstComma]);
+
+        // Parse Bid
+        Utf8Parser.TryParse(line[(firstComma + 1)..secondComma], out double bid, out _);
+
+        // Parse Ask
+        Utf8Parser.TryParse(line[(secondComma + 1)..], out double ask, out _);
+
+        return new Tick { Symbol = symbol, Bid = bid, Ask = ask };
+    }
+
+    public void ProcessBatch(byte[] data)
+    {
+        var span = new ReadOnlySpan&lt;byte&gt;(data);
+        while (true)
+        {
+            int newline = span.IndexOf((byte)&#39;\n&#39;);
+            if (newline == -1) break;
+            var line = span[..newline];
+            var tick = Parse(line);
+            // Do something: e.g., publish to queue
+            Console.WriteLine($&quot;{tick.Symbol}: {tick.Bid} / {tick.Ask}&quot;);
+            span = span[(newline + 1)..];
+        }
+    }
+
+    public void Run()
+    {
+        byte[] buffer = _pool.Rent(1024);
+        try
+        {
+            string sample = &quot;EURUSD,1.07432,1.07436\nGBPUSD,1.24587,1.24592\n&quot;;
+            int bytes = Encoding.ASCII.GetBytes(sample, buffer);
+            ProcessBatch(buffer.AsSpan(0, bytes).ToArray());
+        }
+        finally
+        {
+            _pool.Return(buffer);
+        }
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        var parser = new TickParser();
+        parser.Run();
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="3-what-to-highlight-in-the-interview">🧠 3. What to highlight in the interview</h2>
+<p><strong>Memory-efficient design:</strong></p>
+<ul><li>Uses <strong><code>ReadOnlySpan&lt;byte&gt;</code></strong> to slice input lines → no string splits or temporary arrays.</li><li><strong><code>Utf8Parser</code></strong> parses directly from bytes into doubles → no string allocations.</li><li><strong><code>ArrayPool&lt;byte&gt;</code></strong> reuses buffers → avoids per-message allocation pressure on Gen0.</li><li>Only <strong>one small string allocation per line</strong> (<code>Symbol</code>), which could also be interned or replaced by a dictionary of symbols in a real system.</li></ul>
+<p><strong>GC impact:</strong></p>
+<ul><li>Minimal Gen0 churn; no Gen1/Gen2 or LOH allocations.</li><li>Perfect candidate for <strong>low-latency message processing</strong> (market data, trade events).</li><li>If you wrap this in an async TCP stream, you’d use <strong><code>Memory&lt;byte&gt;</code></strong> instead of <code>Span&lt;byte&gt;</code> to cross <code>await</code> boundaries safely.</li></ul>
+<p><strong>Potential improvements to mention:</strong></p>
+<ul><li>Pool parsed <code>Tick</code> objects if needed (e.g., <code>ObjectPool&lt;Tick&gt;</code> or reuse structs).</li><li>Replace symbol string allocation with a symbol lookup table.</li><li>Integrate with <strong>System.IO.Pipelines</strong> for streaming input.</li></ul>
+<p>---</p>
+<h2 id="4-practice-questions-you-can-expect">🔍 4. Practice questions you can expect</h2>
+<p>→ Because it slices existing memory without allocating.</p>
+<ul><li><em>“Why is <code>Span&lt;T&gt;</code> faster than using <code>Split</code> or <code>string.Substring()</code>?”</em></li></ul>
+<p>→ It reuses buffers, drastically reducing GC pressure in high-throughput systems.</p>
+<ul><li><em>“Why use <code>ArrayPool&lt;byte&gt;</code> instead of <code>new byte[]</code>?”</em></li></ul>
+<p>→ No, because <code>Span&lt;T&gt;</code> is stack-only. Use <code>Memory&lt;T&gt;</code> instead.</p>
+<ul><li><em>“Can you use <code>Span&lt;T&gt;</code> inside an async method?”</em></li></ul>
+<p>→ These short-lived spans die in <strong>Gen0</strong>, never get promoted — ideal for throughput.</p>
+<ul><li><em>“What generation would this data typically live in?”</em></li></ul>
+<p>→ It goes on the <strong>Large Object Heap (LOH)</strong>, which isn’t compacted by default and can fragment memory.</p>
+<ul><li><em>“What happens if we allocate a 100 KB buffer?”</em></li></ul>
+<p>---</p>
+<h2 id="5-optional-5-min-extension-counter-check">🧩 5. Optional 5-min extension: Counter check</h2>
+<p>If you have .NET SDK, run:</p>
+<pre class="hljs"><code>dotnet-counters monitor System.Runtime</code></pre>
+<p>Then run your parser. Watch:</p>
+<ul><li><code>Gen0 GC Count</code> barely increases</li><li><code>Gen2 GC Count</code> stays at 0</li><li><code>Allocated Bytes/sec</code> minimal</li></ul>
+<p>That’s your <strong>evidence</strong> you’ve optimized allocations correctly.</p>
+<p>---</p>
+<p>Would you like me to follow up with a <strong>bonus version using <code>System.IO.Pipelines</code></strong> — the way you’d implement this in a real HFM-style backend (async, streaming, zero-copy)? That’s often a <strong>senior-level differentiator question</strong>.</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['midnight', 'light', 'dark'];
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const saved = localStorage.getItem('study-theme');
+      const fallback = prefersDark ? 'dark' : 'midnight';
+      const initial = supported.includes(saved) ? saved : fallback;
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          localStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="midnight">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for Types" />
+  <title>Types | C# Interview Prep Cheat Sheet</title>
+  <link rel="stylesheet" href="../../assets/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="midnight">Current</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="nav-groups"><div class="sidebar-group">
+      <h3>Notes</h3>
+      <ul><li><a href="../../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a href="../../notes/Automapper/AutoMapper.html">AutoMapper</a></li><li><a href="../../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a href="../../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a href="../../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a href="../../notes/core-concepts.html">Core Concepts</a></li><li><a href="../../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a href="../../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a href="../../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a href="../../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a href="../../notes/error-handling.html">Error Handling</a></li><li><a href="../../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a href="../../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a href="../../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li><li><a href="../../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a href="../../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a href="../../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a href="../../notes/Clean-Architecture/index.html">Index</a></li><li><a href="../../notes/DRY/index.html">Index</a></li><li><a href="../../notes/Memory-Allocation-Discipline/index.html">Index</a></li><li><a href="../../notes/SOLID/index.html">Index</a></li><li><a href="../../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a href="../../notes/logging.html">Logging</a></li><li><a href="../../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a href="../../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a href="../../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li><li><a href="../../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a href="../../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a href="../../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a href="../../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a href="../../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a href="../../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a href="../../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a href="../../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a href="../../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a href="../../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a href="../../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li><li><a href="../../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a href="../../notes/testing-strategies.html">Testing Strategies</a></li><li><a href="../../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group">
+      <h3>Practice</h3>
+      <ul><li><a href="../../practice/answers.html">Answers</a></li><li><a href="../../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a href="../../practice/questions.html">Questions</a></li><li><a href="../../practice/real exam questions answers/replace int without variable.html">Replace Int Without Variable</a></li><li><a href="../../practice/real exam questions answers/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li></ul>
+    </div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">notes/sub-notes/types.md</div>
+        <h2>Types</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-3"><a href="#type-choices-class-record-struct-static-where-why">Type Choices — `class`, `record`, `struct`, `static` (where & why)</a></li><li class="level-3"><a href="#practical-guidance-trade-offs">Practical guidance & trade-offs</a></li><li class="level-3"><a href="#quick-examples">Quick examples</a></li></ul></div>
+        <h3 id="type-choices-class-record-struct-static-where-why">Type Choices — <code>class</code>, <code>record</code>, <code>struct</code>, <code>static</code> (where & why)</h3>
+<p>Choosing the right kind of type affects memory layout, equality semantics, mutability, and API contracts. Use these rules of thumb when designing models and DTOs:</p>
+<ul><li><code>class</code> (reference type):</li><li>Use for objects with identity, lifecycle, or potentially large mutable state (e.g., domain entities, services).</li><li>Instances are allocated on the heap; assignments copy references, not state.</li><li>Good when you want shared mutable state or polymorphism (virtual methods, inheritance).</li><li>Example: <code>public class Order { public int Id; public decimal Amount; }</code></li></ul>
+<ul><li><code>struct</code> (value type):</li><li>Use for small, immutable, copy-by-value types that represent a single value (e.g., <code>Price</code>, <code>Coordinate</code>).</li><li>Avoid large structs (copying cost) or mutable structs (surprising semantics when boxed or assigned).</li><li>Prefer <code>readonly struct</code> for immutable value semantics.</li><li>Example: <code>public readonly struct Price { public decimal Amount { get; } }</code></li></ul>
+<ul><li><code>record</code> (reference-record, C# 9+):</li><li>Use when you want concise immutable data carriers with value-based equality and non-destructive mutation (<code>with</code> expressions).</li><li>Ideal for DTOs, messages, and snapshots where equality by content is helpful.</li><li>Records are reference types by default (there is also <code>record struct</code> for value semantics).</li><li>Example: <code>public record OrderDto(int Id, string Symbol, decimal Amount);</code></li></ul>
+<ul><li><code>record struct</code> (C# 10+):</li><li>Combines record conveniences (auto equality, <code>with</code>) with value-type semantics — useful for small immutable value objects where structural equality is desired.</li></ul>
+<ul><li><code>static</code> classes / members:</li><li>Use <code>static</code> classes for stateless helpers, extension method containers, and singletons without state.</li><li><code>static</code> members belong to the type rather than instances; no instantiation possible.</li><li>Be cautious: <code>static</code> mutable state is effectively global and introduces thread-safety concerns.</li><li>Example: <code>public static class Email { public static void Send(...) { ... } }</code></li></ul>
+<h3 id="practical-guidance-trade-offs">Practical guidance & trade-offs</h3>
+<ul><li>Prefer <code>record</code> for DTOs and immutable data transfer where content equality is useful.</li><li>Prefer <code>class</code> for domain entities that have an identity (database ID) and lifecycle; they usually need to be mutable or proxied by ORMs.</li><li>Use <code>struct</code>/<code>record struct</code> for very small value objects (e.g., <code>PriceTick</code>, <code>Timestamp</code>) to avoid heap allocation when copying is cheap.</li><li>Favour immutability for simple data carriers — it reduces shared-state bugs and simplifies reasoning, especially across threads.</li><li>Avoid mutable singletons or <code>static</code> mutable fields; prefer injected, testable services with clear lifetimes.</li></ul>
+<h3 id="quick-examples">Quick examples</h3>
+<pre class="hljs"><code>// record for DTO
+public record OrderDto(int Id, string Symbol, decimal Amount);
+
+// class for entity
+public class Order
+{
+    public int Id { get; set; }
+    public decimal Amount { get; set; }
+}
+
+// small readonly struct for value
+public readonly struct PriceTick
+{
+    public decimal Bid { get; }
+    public decimal Ask { get; }
+    public PriceTick(decimal bid, decimal ask) =&gt; (Bid, Ask) = (bid, ask);
+}
+
+// static helper
+public static class MathHelpers { public static decimal RoundPrice(decimal p) =&gt; Math.Round(p, 5); }</code></pre>
+<p>If you'd like, I can link this file from <code>core-concepts.md</code> and/or expand it with interview bullet points for quick review.</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['midnight', 'light', 'dark'];
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const saved = localStorage.getItem('study-theme');
+      const fallback = prefersDark ? 'dark' : 'midnight';
+      const initial = supported.includes(saved) ? saved : fallback;
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          localStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

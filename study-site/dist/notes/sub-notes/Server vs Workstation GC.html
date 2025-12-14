@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="midnight">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for Server Vs Workstation GC" />
+  <title>Server Vs Workstation GC | C# Interview Prep Cheat Sheet</title>
+  <link rel="stylesheet" href="../../assets/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="midnight">Current</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="nav-groups"><div class="sidebar-group">
+      <h3>Notes</h3>
+      <ul><li><a href="../../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a href="../../notes/Automapper/AutoMapper.html">AutoMapper</a></li><li><a href="../../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a href="../../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a href="../../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a href="../../notes/core-concepts.html">Core Concepts</a></li><li><a href="../../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a href="../../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a href="../../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a href="../../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a href="../../notes/error-handling.html">Error Handling</a></li><li><a href="../../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a href="../../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a href="../../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li><li><a href="../../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a href="../../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a href="../../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a href="../../notes/Clean-Architecture/index.html">Index</a></li><li><a href="../../notes/DRY/index.html">Index</a></li><li><a href="../../notes/Memory-Allocation-Discipline/index.html">Index</a></li><li><a href="../../notes/SOLID/index.html">Index</a></li><li><a href="../../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a href="../../notes/logging.html">Logging</a></li><li><a href="../../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a href="../../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a href="../../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li><li><a href="../../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a href="../../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a href="../../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a href="../../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a href="../../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a href="../../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a href="../../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a href="../../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a href="../../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a href="../../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a href="../../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li><li><a href="../../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a href="../../notes/testing-strategies.html">Testing Strategies</a></li><li><a href="../../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group">
+      <h3>Practice</h3>
+      <ul><li><a href="../../practice/answers.html">Answers</a></li><li><a href="../../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a href="../../practice/questions.html">Questions</a></li><li><a href="../../practice/real exam questions answers/replace int without variable.html">Replace Int Without Variable</a></li><li><a href="../../practice/real exam questions answers/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li></ul>
+    </div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">notes/sub-notes/Server vs Workstation GC.md</div>
+        <h2>Server Vs Workstation GC</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#what-they-are-in-practice">What they are (in practice)</a></li><li class="level-1"><a href="#how-they-actually-run">How they actually run</a></li><li class="level-2"><a href="#server-gc">Server GC</a></li><li class="level-2"><a href="#workstation-gc">Workstation GC</a></li><li class="level-1"><a href="#latency-modes-apply-to-both-flavors">Latency & modes (apply to both flavors)</a></li><li class="level-1"><a href="#container-hosting-notes-very-relevant-today">Container & hosting notes (very relevant today)</a></li><li class="level-1"><a href="#choosing-the-right-one-simple-rules">Choosing the right one (simple rules)</a></li><li class="level-1"><a href="#tuning-checklist-for-a-tradingback-office-service">Tuning checklist for a trading/back-office service</a></li><li class="level-1"><a href="#pitfalls-gotchas-the-senior-bits">Pitfalls & gotchas (the “senior” bits)</a></li><li class="level-1"><a href="#answers-you-can-give-quickly">Answers you can give quickly</a></li></ul></div>
+        <h1 id="what-they-are-in-practice">What they are (in practice)</h1>
+<p>| Aspect                  | <strong>Server GC</strong>                                       | <strong>Workstation GC</strong>                                   | | ----------------------- | --------------------------------------------------- | ---------------------------------------------------- | | Goal                    | <strong>Throughput</strong> for multi-core servers               | <strong>Responsiveness</strong> for desktop/interactive apps      | | Threads                 | <strong>1 GC thread per logical core</strong> (+ background GC)  | <strong>1 GC thread total</strong> (+ background GC)              | | Segment sizes           | <strong>Larger</strong> heap segments → fewer GCs, longer pauses | <strong>Smaller</strong> segments → more frequent, shorter pauses | | Compaction              | Parallel, wide                                      | Serial, narrower                                     | | Default in ASP.NET Core | Usually <strong>enabled</strong>                                 | Not typical                                          | | Best for                | Web APIs, services, batch jobs, high QPS            | WPF/WinForms, tools, dev utilities                   |</p>
+<blockquote><p>Quick check at runtime:</p></blockquote>
+<pre class="hljs"><code>Console.WriteLine(System.Runtime.GCSettings.IsServerGC); // true = Server GC</code></pre>
+<p>---</p>
+<h1 id="how-they-actually-run">How they actually run</h1>
+<h2 id="server-gc">Server GC</h2>
+<ul><li>On startup, CLR <strong>creates one GC worker per core</strong>. During a blocking GC, all managed threads hit a safepoint; GC workers run <strong>in parallel</strong> to mark/compact.</li><li><strong>Background (concurrent) Gen2</strong> collections run alongside the app. Gen0/Gen1 are still short stop-the-world.</li><li><strong>Bigger segments</strong> (ephemeral & Gen2) reduce GC frequency under high allocation rates (typical on APIs parsing JSON, serializing, buffering).</li><li>Pauses can be <strong>longer</strong>, but total <strong>% time in GC</strong> is usually <strong>lower</strong>, boosting throughput.</li></ul>
+<h2 id="workstation-gc">Workstation GC</h2>
+<ul><li>Designed to <strong>feel snappy</strong> on a single user’s machine.</li><li>Smaller segments → <strong>more frequent, shorter</strong> GCs.</li><li>Background GC also exists, but there’s <strong>no parallel army</strong> of GC workers per core.</li></ul>
+<p>---</p>
+<h1 id="latency-modes-apply-to-both-flavors">Latency & modes (apply to both flavors)</h1>
+<ul><li><strong>Background GC</strong> (Gen2) is on by default; it overlaps some GC work with your app.</li><li><strong>Latency modes</strong> via <code>GCSettings.LatencyMode</code>:</li></ul>
+<ul><li><code>Interactive</code> (balance; default for workstation).</li><li><code>Batch</code> (maximize throughput; longer pauses OK—common with server GC).</li><li><code>SustainedLowLatency</code> (reduce Gen2 frequency; good around critical windows).</li><li><code>NoGCRegion</code> (attempt zero collections during a critical section—must pre-reserve memory; avoid if you’ll hit LOH or exceed reservation).</li></ul>
+<p>Example:</p>
+<pre class="hljs"><code>using System.Runtime;
+GCSettings.LatencyMode = GCLatencyMode.SustainedLowLatency;</code></pre>
+<p>---</p>
+<h1 id="container-hosting-notes-very-relevant-today">Container & hosting notes (very relevant today)</h1>
+<ul><li>.NET is <strong>container-aware</strong>: CPU/memory limits influence GC heuristics.</li><li><strong>Environment toggles</strong>:</li></ul>
+<ul><li><code>DOTNET_GCServer=1</code> (or legacy <code>COMPlus_GCServer=1</code>) → Server GC on.</li><li>Heap caps: <code>DOTNET_GCHeapHardLimit</code> or <code>%</code> variant to avoid over-commit.</li><li>If you CPU-cap a container (e.g., <code>--cpus=2</code>), Server GC will create GC workers according to the limit, not host machine total (Core 3.0+).</li><li>Small microservices with very tight limits sometimes perform <strong>better with Workstation GC</strong> (fewer GC worker threads contending). Measure.</li></ul>
+<p>---</p>
+<h1 id="choosing-the-right-one-simple-rules">Choosing the right one (simple rules)</h1>
+<p>Use <strong>Server GC</strong> when:</p>
+<ul><li>ASP.NET Core APIs / gRPC / background services on multi-core hosts.</li><li>High allocation rates (serialization, buffers, streams).</li><li>You prioritize <strong>throughput</strong> and can tolerate slightly longer pauses.</li></ul>
+<p>Use <strong>Workstation GC</strong> when:</p>
+<ul><li>UI/desktop apps where <strong>interaction latency</strong> matters.</li><li>Tiny sandboxed processes with strict CPU quotas (1 vCPU) where Server GC parallelism provides little benefit.</li></ul>
+<p>---</p>
+<h1 id="tuning-checklist-for-a-tradingback-office-service">Tuning checklist for a trading/back-office service</h1>
+<ol><li><strong>Ensure Server GC</strong> in production:</li></ol>
+<ul><li>Set <code>DOTNET_GCServer=1</code> in env or project runtimeconfig.</li><li>Verify with <code>GCSettings.IsServerGC</code>.</li></ul>
+<ol><li><strong>Watch LOH churn</strong> (≥ 85 KB allocations): pool large buffers (<code>ArrayPool&lt;T&gt;</code>), stream with <code>System.IO.Pipelines</code>, use <code>Utf8JsonReader</code>.</li><li><strong>Latency windows</strong> (market open/rollover):</li></ol>
+<ul><li>Temporarily set <code>SustainedLowLatency</code> or carefully use <code>NoGCRegion</code>.</li></ul>
+<ol><li><strong>Measure, don’t guess</strong>:</li></ol>
+<ul><li><code>dotnet-counters monitor System.Runtime</code></li><li>Key signals: <strong>Gen2 GC Count</strong> (should be rare), <strong>% Time in GC</strong> (low single digits), <strong>Allocated Bytes/sec</strong> (track spikes).</li></ul>
+<ol><li><strong>Avoid manual <code>GC.Collect()</code></strong> in steady state—only for controlled maintenance (e.g., one-off LOH compaction during off-peak).</li></ol>
+<p>---</p>
+<h1 id="pitfalls-gotchas-the-senior-bits">Pitfalls & gotchas (the “senior” bits)</h1>
+<ul><li><strong>Server GC isn’t always faster</strong> if your service is CPU-starved (1 core) or allocation-light. Validate with load tests.</li><li><strong>Background Gen2 is not free</strong>: if promotion pressure is high (many objects reaching Gen2), you’ll still see noticeable pauses. Reduce promotions by:</li></ul>
+<ul><li>Shortening object lifetimes (don’t cache what you don’t need).</li><li>Pooling and reusing (buffers, parsers).</li><li><strong>Pinned memory</strong> (interop) prevents compaction; pin briefly or copy into a staging buffer to keep the SOH healthy.</li><li><strong>LOH fragmentation</strong> grows pause times over days/weeks. If you must allocate ≥85 KB often, <strong>restructure to chunk</strong> (e.g., 64 KB + 32 KB) or reuse pooled slabs.</li></ul>
+<p>---</p>
+<h1 id="answers-you-can-give-quickly">Answers you can give quickly</h1>
+<p><strong>Q:</strong> <em>Why is Server GC better for ASP.NET services?</em> <strong>A:</strong> “It uses parallel GC workers per core and larger segments, so collections are less frequent and total GC time is lower. That boosts throughput under high allocation rates typical for APIs.”</p>
+<p><strong>Q:</strong> <em>When might Workstation GC be preferable on a server?</em> <strong>A:</strong> “Very small, CPU-constrained processes—e.g., 1 vCPU containers—where Server GC’s parallelism offers little benefit and shorter workstation pauses feel better. But I’d measure both.”</p>
+<p><strong>Q:</strong> <em>How do you confirm and monitor this in prod?</em> <strong>A:</strong> “<code>GCSettings.IsServerGC</code> at startup, and <code>dotnet-counters</code>/App Insights to watch Gen2 counts, % time in GC, and allocation rate. If Gen2 climbs or LOH grows, we pool buffers and reduce promotions.”</p>
+<p>---</p>
+<p>If you want, I can give you a <strong>30-second script</strong> you can say verbatim when they ask “Server vs Workstation GC—when and why?”</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['midnight', 'light', 'dark'];
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const saved = localStorage.getItem('study-theme');
+      const fallback = prefersDark ? 'dark' : 'midnight';
+      const initial = supported.includes(saved) ? saved : fallback;
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          localStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

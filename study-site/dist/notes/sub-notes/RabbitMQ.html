@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="midnight">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for RabbitMQ" />
+  <title>RabbitMQ | C# Interview Prep Cheat Sheet</title>
+  <link rel="stylesheet" href="../../assets/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="midnight">Current</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="nav-groups"><div class="sidebar-group">
+      <h3>Notes</h3>
+      <ul><li><a href="../../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a href="../../notes/Automapper/AutoMapper.html">AutoMapper</a></li><li><a href="../../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a href="../../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a href="../../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a href="../../notes/core-concepts.html">Core Concepts</a></li><li><a href="../../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a href="../../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a href="../../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a href="../../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a href="../../notes/error-handling.html">Error Handling</a></li><li><a href="../../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a href="../../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a href="../../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li><li><a href="../../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a href="../../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a href="../../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a href="../../notes/Clean-Architecture/index.html">Index</a></li><li><a href="../../notes/DRY/index.html">Index</a></li><li><a href="../../notes/Memory-Allocation-Discipline/index.html">Index</a></li><li><a href="../../notes/SOLID/index.html">Index</a></li><li><a href="../../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a href="../../notes/logging.html">Logging</a></li><li><a href="../../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a href="../../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a href="../../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li><li><a href="../../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a href="../../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a href="../../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a href="../../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a href="../../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a href="../../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a href="../../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a href="../../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a href="../../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a href="../../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a href="../../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li><li><a href="../../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a href="../../notes/testing-strategies.html">Testing Strategies</a></li><li><a href="../../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group">
+      <h3>Practice</h3>
+      <ul><li><a href="../../practice/answers.html">Answers</a></li><li><a href="../../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a href="../../practice/questions.html">Questions</a></li><li><a href="../../practice/real exam questions answers/replace int without variable.html">Replace Int Without Variable</a></li><li><a href="../../practice/real exam questions answers/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li></ul>
+    </div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">notes/sub-notes/RabbitMQ.md</div>
+        <h2>RabbitMQ</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#rabbitmq-deep-dive-interview-on-call-ready">RabbitMQ Deep Dive (Interview & On-Call Ready)</a></li><li class="level-2"><a href="#what-rabbitmq-is-for">What RabbitMQ Is For</a></li><li class="level-2"><a href="#core-building-blocks">Core Building Blocks</a></li><li class="level-2"><a href="#designing-for-reliability-throughput">Designing for Reliability & Throughput</a></li><li class="level-2"><a href="#how-to-use-it-from-net-rabbitmqclient">How to Use It from .NET (RabbitMQ.Client)</a></li><li class="level-3"><a href="#consumer-async-eventingbasicconsumer">Consumer (Async EventingBasicConsumer)</a></li><li class="level-2"><a href="#operational-playbook-what-to-say-in-an-interview">Operational Playbook (What to Say in an Interview)</a></li><li class="level-2"><a href="#pros">Pros</a></li><li class="level-2"><a href="#cons">Cons</a></li><li class="level-2"><a href="#quick-usage-checklist-on-the-job">Quick Usage Checklist (On the Job)</a></li></ul></div>
+        <h1 id="rabbitmq-deep-dive-interview-on-call-ready">RabbitMQ Deep Dive (Interview & On-Call Ready)</h1>
+<h2 id="what-rabbitmq-is-for">What RabbitMQ Is For</h2>
+<ul><li><strong>Brokered messaging</strong> with rich routing (direct, fanout, topic, headers) and per-message acknowledgements.</li><li>Excellent for <strong>work queues</strong>, <strong>event fan-out</strong>, <strong>request/response over AMQP</strong>, and <strong>asynchronous integration</strong> between services.</li><li>Shines when you need <strong>durability</strong> (persisted queues/exchanges), <strong>flow control</strong> (prefetch/QoS), and <strong>operational tooling</strong> (management UI/CLI).</li></ul>
+<h2 id="core-building-blocks">Core Building Blocks</h2>
+<ul><li><strong>Exchanges</strong> route messages to queues based on type:</li><li><em>Direct:</em> Exact routing key match (work queues, point-to-point commands).</li><li><em>Topic:</em> Pattern-based routing with wildcards; great for multi-tenant/event streams (e.g., <code>trades.usd.nyse</code>).</li><li><em>Fanout:</em> Broadcast to all bound queues (cache invalidation, notifications).</li><li><em>Headers:</em> Route via headers (rare; use when routing key isn’t enough).</li><li><strong>Queues</strong> hold messages; define durability and exclusivity per use case.</li><li><strong>Bindings</strong> connect exchanges to queues with routing keys/patterns.</li><li><strong>Consumers</strong> subscribe to queues and <strong>ack</strong> messages after successful processing.</li><li><strong>Dead-letter exchanges (DLX)</strong> capture rejected/expired messages for inspection or retry policies.</li></ul>
+<h2 id="designing-for-reliability-throughput">Designing for Reliability & Throughput</h2>
+<ul><li><strong>Durable queues + persistent messages:</strong> <code>durable: true</code> queues and <code>IBasicProperties.Persistent = true</code> survive broker restarts.</li><li><strong>Publisher confirms:</strong> Use <code>ConfirmSelect</code> + <code>WaitForConfirmsOrDie</code> (or async confirms) to ensure the broker received and persisted the publish.</li><li><strong>Consumer acknowledgements:</strong> Manual <code>BasicAck</code>/<code>BasicNack</code> lets you avoid losing work; pair with <strong>idempotent handlers</strong> to tolerate redelivery.</li><li><strong>Prefetch/QoS:</strong> Set <code>BasicQos(prefetchCount: N)</code> to avoid overwhelming consumers and to enable fair dispatch.</li><li><strong>Ordering:</strong> RabbitMQ preserves per-queue order; multiple consumers can reorder. Keep a single consumer per queue if strict ordering matters.</li><li><strong>Retries:</strong> Prefer <strong>delayed queues</strong> or <strong>dead-letter routing</strong> to a retry queue with backoff instead of immediate requeue loops.</li><li><strong>Idempotency & dedupe:</strong> Use message IDs + idempotent writes (upserts), or an outbox table feeding RabbitMQ to ensure at-least-once delivery without duplication.</li></ul>
+<h2 id="how-to-use-it-from-net-rabbitmqclient">How to Use It from .NET (RabbitMQ.Client)</h2>
+<pre class="hljs"><code>var factory = new ConnectionFactory
+{
+    HostName = &quot;rabbitmq&quot;, // or URI via Uri property
+    DispatchConsumersAsync = true,
+    UserName = &quot;app&quot;, Password = &quot;secret&quot;
+};
+using var connection = factory.CreateConnection();
+using var channel = connection.CreateModel();
+channel.ExchangeDeclare(&quot;orders&quot;, ExchangeType.Topic, durable: true);
+channel.QueueDeclare(&quot;orders.matching&quot;, durable: true, exclusive: false, autoDelete: false);
+channel.QueueBind(&quot;orders.matching&quot;, &quot;orders&quot;, routingKey: &quot;order.*&quot;);
+channel.BasicQos(prefetchSize: 0, prefetchCount: 50, global: false);
+
+var body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(command));
+var props = channel.CreateBasicProperties();
+props.Persistent = true; // durable message
+channel.BasicPublish(&quot;orders&quot;, routingKey: &quot;order.new&quot;, basicProperties: props, body: body);</code></pre>
+<h3 id="consumer-async-eventingbasicconsumer">Consumer (Async EventingBasicConsumer)</h3>
+<pre class="hljs"><code>var consumer = new AsyncEventingBasicConsumer(channel);
+consumer.Received += async (sender, ea) =&gt;
+{
+    var payload = Encoding.UTF8.GetString(ea.Body.ToArray());
+    await handler.HandleAsync(payload, ea.BasicProperties.MessageId);
+    channel.BasicAck(ea.DeliveryTag, multiple: false);
+};
+channel.BasicConsume(&quot;orders.matching&quot;, autoAck: false, consumer: consumer);</code></pre>
+<blockquote><p><strong>Tip:</strong> Wrap the channel in a <strong>Hosted Service</strong> and expose health checks (e.g., check connection + passive queue declare) for Kubernetes.</p></blockquote>
+<h2 id="operational-playbook-what-to-say-in-an-interview">Operational Playbook (What to Say in an Interview)</h2>
+<ul><li><strong>Provisioning:</strong> Use <strong>classic queues</strong> for general workloads; <strong>quorum queues</strong> for HA and strong durability (RAFT-based) at the cost of memory/IO.</li><li><strong>Observability:</strong> Turn on the management plugin; monitor <strong>queue depth</strong>, <strong>unacked count</strong>, <strong>connection churn</strong>, and <strong>consumer utilization</strong>.</li><li><strong>Back-pressure:</strong> Control publishers with confirms + timeouts; throttle consumers via prefetch and CPU-aware worker scaling.</li><li><strong>Security:</strong> Use TLS, per-vhost credentials, and minimal permissions; rotate credentials and enable LDAP/OIDC if offered by ops.</li><li><strong>Schema & compatibility:</strong> Version message contracts; use headers for schema versioning and keep handlers backward compatible.</li><li><strong>Disaster recovery:</strong> Mirror (quorum) queues across nodes; test failover and ensure producers handle <code>IConnection</code>/<code>IModel</code> recreation.</li></ul>
+<h2 id="pros">Pros</h2>
+<ul><li>Mature <strong>AMQP 0-9-1</strong> broker with rich routing and plugins (delayed messages, tracing, shovel/federation).</li><li><strong>Operationally friendly</strong>: management UI, CLI (<code>rabbitmqctl</code>, <code>rabbitmq-diagnostics</code>), easy local dev via Docker.</li><li>Strong <strong>durability options</strong> (quorum queues, publisher confirms) and <strong>fine-grained flow control</strong> (prefetch/QoS).</li><li>Great <strong>polyglot support</strong> and client libraries, including first-class .NET support.</li></ul>
+<h2 id="cons">Cons</h2>
+<ul><li><strong>Throughput</strong> lower than partitioned logs like Kafka; not ideal for massive immutable event streams.</li><li><strong>Ordering</strong> only per queue; multiple consumers or requeueing can reorder messages.</li><li><strong>Backpressure</strong> requires careful tuning (prefetch, confirms); naive <code>autoAck</code> leads to drops on consumer crash.</li><li><strong>Cluster complexity:</strong> Quorum queues use more memory/IO; network partitions can require operator intervention.</li></ul>
+<h2 id="quick-usage-checklist-on-the-job">Quick Usage Checklist (On the Job)</h2>
+<ul><li>Declare exchanges/queues in code at startup with explicit durability flags.</li><li>Enable <strong>publisher confirms</strong> and retry publishes with exponential backoff.</li><li>Use <strong>manual acks</strong> + <strong>prefetch</strong> sized to the handler’s latency.</li><li>Keep handlers <strong>idempotent</strong>; store a processed message ID or use database upserts.</li><li>Route failures to a <strong>DLX</strong> with alerting; inspect DLQ metrics regularly.</li><li>Version payloads and keep consumers <strong>backward compatible</strong> during rollouts.</li><li>Add <strong>health checks</strong> for connection + passive declare to catch topology drift early.</li></ul>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['midnight', 'light', 'dark'];
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const saved = localStorage.getItem('study-theme');
+      const fallback = prefersDark ? 'dark' : 'midnight';
+      const initial = supported.includes(saved) ? saved : fallback;
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          localStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
