@@ -85,7 +85,7 @@
         <div class="breadcrumbs">notes\Design-Patterns\Decorator Pattern.md</div>
         <h2>Decorator Pattern</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#5-decorator-pattern-add-logging-caching-retries-dynamically">⚙️ 5️⃣ Decorator Pattern — *Add logging, caching, retries dynamically*</a></li><li class="level-3"><a href="#example-logging-caching-decorators-for-an-api-service">🧩 Example — Logging + Caching decorators for an API service</a></li><li class="level-1"><a href="#bonus-how-these-patterns-fit-together-in-a-trading-system">🧱 BONUS: How these patterns fit together (in a trading system)</a></li></ul></div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#5-decorator-pattern-add-logging-caching-retries-dynamically">⚙️ 5️⃣ Decorator Pattern — *Add logging, caching, retries dynamically*</a></li><li class="level-3"><a href="#example-logging-caching-decorators-for-an-api-service">🧩 Example — Logging + Caching decorators for an API service</a></li><li class="level-1"><a href="#bonus-how-these-patterns-fit-together-in-a-trading-system">🧱 BONUS: How these patterns fit together (in a trading system)</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
         <h1 id="5-decorator-pattern-add-logging-caching-retries-dynamically">⚙️ 5️⃣ Decorator Pattern — <em>Add logging, caching, retries dynamically</em></h1>
 <blockquote><p>Wrap existing services with additional behavior without changing them.</p></blockquote>
 <p>---</p>
@@ -154,6 +154,27 @@ Console.WriteLine(service.GetPrice(&quot;EURUSD&quot;)); // second call cached</
 <h1 id="bonus-how-these-patterns-fit-together-in-a-trading-system">🧱 BONUS: How these patterns fit together (in a trading system)</h1>
 <p>| Concern                        | Pattern       | Purpose                                | | ------------------------------ | ------------- | -------------------------------------- | | Different execution algorithms | <strong>Strategy</strong>  | Swap trading logic dynamically         | | Market data distribution       | <strong>Observer</strong>  | Publish ticks to multiple consumers    | | Platform creation              | <strong>Factory</strong>   | Choose MT4/MT5/FIX handler dynamically | | Read/write separation          | <strong>CQRS</strong>      | Separate trading commands from queries | | Cross-cutting features         | <strong>Decorator</strong> | Add logging, caching, retries safely   |</p>
 <p>---</p>
+<h2 id="questions-answers">Questions & Answers</h2>
+<p><strong>Q: Why use decorators instead of inheritance for cross-cutting behavior?</strong></p>
+<p>A: Decorators wrap existing implementations at runtime without modifying classes or exploding inheritance hierarchies. They preserve the original behavior and let you compose features like logging, caching, and retries in any order.</p>
+<p><strong>Q: How do you wire decorators with ASP.NET Core DI?</strong></p>
+<p>A: Register the core implementation and then use <code>services.Decorate&lt;IPriceService, LoggingPriceService&gt;();</code> (via Scrutor) or manual factory delegates to wrap dependencies in the desired order.</p>
+<p><strong>Q: How do decorators interact with async services?</strong></p>
+<p>A: Implement <code>Task</code>-returning methods and ensure decorators await the inner call, adding behavior before/after. For example, a retry decorator can wrap <code>await _inner.ExecuteAsync(...)</code> in Polly policies.</p>
+<p><strong>Q: How do you prevent duplicate decoration?</strong></p>
+<p>A: Centralize registration so each service gets decorated once. Use DI scanning rules or tests to ensure there’s a single decorator pipeline per service type.</p>
+<p><strong>Q: When does the decorator pattern become overkill?</strong></p>
+<p>A: If you only need a single concern (e.g., logging) or behavior is global (middleware), decorators might be unnecessary. Use them when behaviors vary per service or must be combined flexibly.</p>
+<p><strong>Q: How does decorator order affect behavior?</strong></p>
+<p>A: Order matters—logging outside caching sees all calls, while caching outside logging hides repeated hits. Be intentional about stacking order and document expectations.</p>
+<p><strong>Q: How do you share state between decorators?</strong></p>
+<p>A: Pass shared dependencies (e.g., metrics registry) into each decorator via DI, or include context objects in method parameters so decorators can enrich them without coupling.</p>
+<p><strong>Q: Can decorators modify return types?</strong></p>
+<p>A: They should adhere to the same interface, but they can wrap results (e.g., attach metadata) or transform responses before returning. Keep transformations predictable so callers aren’t surprised.</p>
+<p><strong>Q: How do you unit test decorators?</strong></p>
+<p>A: Provide a fake inner service and assert the decorator calls it and adds the expected behavior (logging, caching, etc.). Since decorators depend on the same interface, tests remain simple.</p>
+<p><strong>Q: How do decorators compare to middleware?</strong></p>
+<p>A: Middleware operates at the application pipeline level (HTTP). Decorators operate at service boundaries, allowing fine-grained per-service behavior and reusability outside web pipelines.</p>
       </article>
     </main>
   </div>

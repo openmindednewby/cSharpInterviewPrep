@@ -72,3 +72,47 @@ public static int[] CountingSort(int[] source, int maxValue)
 - **Real-world usage:** .NET uses introspective sort for arrays/lists; SQL Server uses variations of merge/hash sorts for query plans.
 
 Practice describing algorithm choices tailored to finance/trading data structures like order books and time-series snapshots.
+
+---
+
+## Questions & Answers
+
+**Q: When would you pick insertion sort in production?**
+
+A: For tiny datasets or nearly sorted inputs (e.g., maintaining a small sorted window). It’s simple, cache-friendly, and used inside hybrid algorithms for small partitions.
+
+**Q: Why is quicksort’s worst case `O(n²)` and how does .NET avoid it?**
+
+A: Poor pivot choices cause unbalanced partitions. .NET’s introsort switches from quicksort to heapsort when recursion depth exceeds a threshold, guaranteeing `O(n log n)`.
+
+**Q: What makes merge sort stable?**
+
+A: It combines sorted halves without swapping equal elements out of order, preserving the original relative order—critical for multi-key sorts.
+
+**Q: When is counting sort better than comparison sorts?**
+
+A: When the key range (`k`) is small relative to `n` (e.g., rating 0-100). It runs in `O(n+k)` and is stable, making it ideal for bucketed enums or ASCII data.
+
+**Q: What’s the trade-off between heap sort and merge sort?**
+
+A: Heap sort is in-place with `O(1)` extra space but not stable. Merge sort is stable but needs `O(n)` auxiliary storage. Choose based on stability requirements vs memory constraints.
+
+**Q: How do you keep an order book sorted efficiently?**
+
+A: Use a balanced tree (`SortedDictionary`, `SortedSet`) or a heap for top-k operations; for full snapshots, maintain sorted arrays and apply incremental updates with binary insertions.
+
+**Q: How does radix sort work for integers?**
+
+A: It processes digits (LSB or MSB) using counting sort per digit, achieving linear time for fixed-width integers. It’s stable and non-comparison-based.
+
+**Q: What’s the complexity of bucket sort and when is it optimal?**
+
+A: Average `O(n)` when inputs are uniformly distributed. Useful for hashing floats into buckets (e.g., histogram of trade sizes) before sorting within buckets.
+
+**Q: Why is stability important for multi-key sorts?**
+
+A: It preserves relative ordering of equal keys, allowing sequential sorting by secondary keys without losing primary-order guarantees.
+
+**Q: How do you parallelize sorting in .NET?**
+
+A: Split data into chunks, sort in parallel via `Parallel.For` or PLINQ, then merge. For huge arrays, consider `Array.Sort` for baseline and only parallelize when CPU resources justify the overhead.

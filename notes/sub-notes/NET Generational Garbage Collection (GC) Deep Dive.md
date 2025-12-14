@@ -220,3 +220,47 @@ ArrayPool<byte>.Shared.Return(buffer);
 
 Would you like me to show you a **diagram of the generational heap** — with arrows showing object lifecycles (Gen0→Gen1→Gen2→LOH) and what happens during collections?
 It’s one of the best ways to visualize promotions and GC compaction.
+
+---
+
+## Questions & Answers
+
+**Q: Why does .NET use a generational GC design?**
+
+A: Because most objects die young. Generational collection optimizes for this by collecting Gen0 frequently (cheap) and Gen2 rarely, reducing pause times.
+
+**Q: What triggers promotion between generations?**
+
+A: Surviving a collection promotes objects to the next generation. Gen0 survivors go to Gen1; Gen1 survivors go to Gen2. LOH allocations skip to a separate heap.
+
+**Q: When do Gen2 collections occur?**
+
+A: When Gen2 fills, system memory pressure rises, or you force a full GC. They’re expensive, so minimizing promotions reduces their frequency.
+
+**Q: How does the LOH differ from the SOH?**
+
+A: LOH holds objects ≥85 KB, isn’t compacted by default, and is only collected during Gen2 GCs. Excessive LOH allocations cause fragmentation and long pauses.
+
+**Q: How can you keep objects in Gen0?**
+
+A: Reduce lifetimes (e.g., avoid caching everything), reuse buffers, and design streaming pipelines where data lives briefly before being discarded.
+
+**Q: What’s the role of pinned objects?**
+
+A: Pins prevent the GC from moving objects during compaction, potentially fragmenting memory. Pin sparingly and for short durations.
+
+**Q: How do you monitor generational activity?**
+
+A: Use `dotnet-counters`, PerfView, or EventPipe to track Gen0/1/2 counts, induced vs background collections, and % time in GC.
+
+**Q: Why avoid manual `GC.Collect()`?**
+
+A: It forces full collections, negating the GC’s adaptive heuristics and causing unnecessary pauses. Let the runtime decide except for diagnostic scenarios.
+
+**Q: How do spans/pools interact with GC generations?**
+
+A: They reduce allocations, keeping more work in Gen0 or on the stack, preventing promotions and LOH allocations.
+
+**Q: How do you explain generational GC quickly to interviewers?**
+
+A: Emphasize the generational hypothesis, heap layout, promotion rules, LOH behavior, and how allocation discipline keeps the GC efficient.

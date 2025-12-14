@@ -85,7 +85,7 @@
         <div class="breadcrumbs">notes\Design-Patterns\Strategy Pattern.md</div>
         <h2>Strategy Pattern</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#1-strategy-pattern-switching-trading-logic-at-runtime">⚙️ 1️⃣ Strategy Pattern — *Switching trading logic at runtime*</a></li><li class="level-3"><a href="#example-switching-between-aggressive-and-passive-strategies">🧩 Example — Switching between Aggressive and Passive strategies</a></li></ul></div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#1-strategy-pattern-switching-trading-logic-at-runtime">⚙️ 1️⃣ Strategy Pattern — *Switching trading logic at runtime*</a></li><li class="level-3"><a href="#example-switching-between-aggressive-and-passive-strategies">🧩 Example — Switching between Aggressive and Passive strategies</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
         <h1 id="1-strategy-pattern-switching-trading-logic-at-runtime">⚙️ 1️⃣ Strategy Pattern — <em>Switching trading logic at runtime</em></h1>
 <blockquote><p>Encapsulate different trading algorithms or execution strategies under a common interface.</p></blockquote>
 <p>---</p>
@@ -127,6 +127,27 @@ trader.Trade(order); // can switch strategy dynamically</code></pre>
 <p>✅ <strong>Why it matters:</strong></p>
 <ul><li>Switch trading behaviors (aggressive, passive, hedging) dynamically.</li><li>Avoids <code>if/else</code> hell.</li><li>New strategies plug in easily without code modification.</li></ul>
 <p>---</p>
+<h2 id="questions-answers">Questions & Answers</h2>
+<p><strong>Q: When do you apply the Strategy pattern?</strong></p>
+<p>A: When behavior varies by configuration, tenant, or runtime data (e.g., aggressive vs passive execution) and you want to encapsulate algorithms behind a shared interface instead of branching all over the codebase.</p>
+<p><strong>Q: How do you select a strategy at runtime?</strong></p>
+<p>A: Inject a factory that chooses the correct <code>ITradeStrategy</code> based on market conditions, order metadata, or feature flags. Strategies can be swapped via DI or resolved dynamically.</p>
+<p><strong>Q: How does Strategy differ from State?</strong></p>
+<p>A: Strategy changes behavior per request/order; State models transitions over time. Strategy is stateless and pluggable, whereas State encapsulates transitions inside the object.</p>
+<p><strong>Q: How do you unit test strategies?</strong></p>
+<p>A: Instantiate each strategy with fake dependencies and assert their behavior independently. Tests stay small because the interface isolates algorithms from the rest of the system.</p>
+<p><strong>Q: What happens when strategy selection itself becomes complex?</strong></p>
+<p>A: Combine Strategy with Factory or Specification. The factory encapsulates selection logic; strategies stay focused on execution.</p>
+<p><strong>Q: How do you prevent strategy explosion?</strong></p>
+<p>A: Group related variations via configuration or policy objects, and extract shared behavior into base classes or decorators. Only add new strategies when behavior genuinely differs.</p>
+<p><strong>Q: Can strategies maintain state?</strong></p>
+<p>A: They should be stateless or encapsulate state tightly (e.g., cached calculations). For long-lived state machines, consider the State pattern or per-order context objects passed into strategies.</p>
+<p><strong>Q: How does dependency injection help?</strong></p>
+<p>A: Register strategies and inject them via constructor or keyed services, enabling easy swapping in tests and runtime. Feature flags can toggle which strategy is resolved.</p>
+<p><strong>Q: How do strategies interact with telemetry?</strong></p>
+<p>A: Decorate strategies or wrap them with interceptors to log execution time and outcomes. This keeps telemetry consistent regardless of which strategy executed.</p>
+<p><strong>Q: What’s the performance impact?</strong></p>
+<p>A: Minimal—just an extra virtual call. The clarity and extensibility gained typically outweigh the small overhead, especially compared to complex branching logic.</p>
       </article>
     </main>
   </div>

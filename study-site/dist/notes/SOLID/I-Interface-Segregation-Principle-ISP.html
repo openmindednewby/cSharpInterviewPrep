@@ -85,7 +85,7 @@
         <div class="breadcrumbs">notes\SOLID\I-Interface-Segregation-Principle-ISP.md</div>
         <h2>I Interface Segregation Principle ISP</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-2"><a href="#i-interface-segregation-principle-isp">**I — Interface Segregation Principle (ISP)**</a></li><li class="level-3"><a href="#bad-example">❌ Bad example:</a></li><li class="level-3"><a href="#good-example">✅ Good example:</a></li></ul></div>
+        <div class="toc"><ul class="toc-list"><li class="level-2"><a href="#i-interface-segregation-principle-isp">**I — Interface Segregation Principle (ISP)**</a></li><li class="level-3"><a href="#bad-example">❌ Bad example:</a></li><li class="level-3"><a href="#good-example">✅ Good example:</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
         <h2 id="i-interface-segregation-principle-isp"><strong>I — Interface Segregation Principle (ISP)</strong></h2>
 <blockquote><p>“Clients should not be forced to depend on methods they do not use.”</p></blockquote>
 <h3 id="bad-example">❌ Bad example:</h3>
@@ -103,6 +103,28 @@ public interface INotifier { void SendNotification(); }</code></pre>
 <p>💡 <strong>In trading:</strong></p>
 <ul><li><code>IPriceFeed</code> for market data</li><li><code>ITradeExecutor</code> for execution</li><li><code>IRiskService</code> for validation</li></ul>
 <p>You can plug each service independently into different workflows.</p>
+<p>---</p>
+<h2 id="questions-answers">Questions & Answers</h2>
+<p><strong>Q: How does ISP improve system evolvability?</strong></p>
+<p>A: Narrow interfaces reduce the blast radius of changes. Updating <code>ITradeExecutor</code> doesn’t force unrelated services (like notifications) to recompile or implement dummy methods.</p>
+<p><strong>Q: What’s a sign you need ISP?</strong></p>
+<p>A: Clients implementing “not required” methods or throwing <code>NotSupportedException</code>. Interfaces with dozens of members or mixed responsibilities are prime candidates.</p>
+<p><strong>Q: How does ISP relate to microservices?</strong></p>
+<p>A: External contracts should expose purpose-built endpoints, not monolithic APIs. Clients consume only what they need, reducing coupling and versioning risks.</p>
+<p><strong>Q: How do interface segregations interact with DI?</strong></p>
+<p>A: DI allows registering multiple interfaces per class. For example, a service implementing both <code>ITradeExecutor</code> and <code>IRiskService</code> can be resolved through whichever interface the consumer needs.</p>
+<p><strong>Q: How do you avoid explosion of tiny interfaces?</strong></p>
+<p>A: Segregate by cohesive responsibilities, not per method. Keep interfaces meaningful and group operations that change together.</p>
+<p><strong>Q: How does ISP benefit testing?</strong></p>
+<p>A: Smaller interfaces mean simpler mocks/stubs. Tests focus on the behavior under test without faking unrelated members.</p>
+<p><strong>Q: Can versioning break ISP?</strong></p>
+<p>A: Adding methods to a fat interface forces consumers to adapt. With segregated interfaces, you can introduce new interfaces or extension methods without breaking existing ones.</p>
+<p><strong>Q: How do you enforce ISP in reviews?</strong></p>
+<p>A: Ask “which clients need each member?” and require justification for multi-purpose interfaces. NetArchTest or custom analyzers can flag interfaces exceeding size thresholds.</p>
+<p><strong>Q: How does ISP apply to domain events?</strong></p>
+<p>A: Publish separate events per concern instead of mega-events containing everything. Consumers subscribe only to relevant payloads, mirroring ISP.</p>
+<p><strong>Q: How does ISP help with performance?</strong></p>
+<p>A: Clients avoid referencing heavy dependencies they don't use (e.g., price feeds requiring streaming libs). This reduces memory footprint and simplifies deployment.</p>
       </article>
     </main>
   </div>

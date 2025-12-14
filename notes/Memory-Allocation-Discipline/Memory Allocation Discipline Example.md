@@ -216,3 +216,47 @@ You can mention:
 
 Would you like me to extend this by showing the **async version** — i.e., reading ticks from a `NetworkStream` using `System.IO.Pipelines` (zero-copy streaming, ideal for high-throughput trading systems)?
 That’s *exactly* the kind of system HFM might ask you to describe.
+
+---
+
+## Questions & Answers
+
+**Q: What does the benchmark prove when comparing `Split` vs `Span` parsing?**
+
+A: It shows the optimized implementation is faster and uses dramatically fewer allocations (tens of bytes vs kilobytes per tick). That reduction scales to gigabytes saved per second in production.
+
+**Q: Why is `Utf8Parser` preferred over `double.Parse` here?**
+
+A: `Utf8Parser` operates directly on byte spans, avoiding string allocations and culture-dependent parsing. It’s ideal for fixed-format protocols and keeps parsing allocation-free.
+
+**Q: How does renting buffers from `ArrayPool<byte>` help batch processing?**
+
+A: Each tick lines uses the same reusable buffer instead of creating a new byte array. Returning the buffer keeps the LOH clean and ensures steady-state memory usage regardless of batch size.
+
+**Q: Why make `Tick` a `readonly struct`?**
+
+A: It keeps the data inline, prevents accidental mutation, and avoids heap allocations when passing ticks around. Combined with `in Tick` parameters, we avoid copies even for frequent calls.
+
+**Q: What’s the benefit of `in Tick` on the `OnTick` method?**
+
+A: It passes the struct by readonly reference, eliminating defensive copies for large structs and preserving immutability guarantees without GC cost.
+
+**Q: How would you extend this pattern for multi-threaded processing?**
+
+A: Use channels or `System.Threading.Channels` to fan out parsed ticks, but keep parsed structs allocation-free. Each consumer should reuse buffers or work with spans until serialization boundaries.
+
+**Q: How do you verify there are no hidden allocations?**
+
+A: Run the benchmark with `MemoryDiagnoser`, inspect ETW events, or instrument code with `GC.GetAllocatedBytesForCurrentThread()` to ensure the optimized method stays within expected allocation budgets.
+
+**Q: What happens if you forget to return buffers to the pool?**
+
+A: The pool will grow and eventually allocate new arrays, defeating the purpose and potentially causing memory leaks. Always return inside `finally` blocks to ensure deterministic cleanup.
+
+**Q: How can you adapt this sample for binary protocols?**
+
+A: Replace ASCII parsing with direct span slicing over binary fields, using `BinaryPrimitives` or custom parsing logic; the same pooling and span principles apply.
+
+**Q: How do you integrate this with logging or metrics without reintroducing allocations?**
+
+A: Emit structured logs with message templates, avoid string concatenation, and aggregate metrics using counters/gauges. When necessary, log summaries rather than per-tick details to keep the hot path clean.

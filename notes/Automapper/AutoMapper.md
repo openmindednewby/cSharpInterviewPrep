@@ -112,3 +112,47 @@ var dtos = dbContext.Orders
 ---
 
 If you want, I can add a short `README.md` showing how to add the NuGet package and include a minimal `Program.cs` example wiring AutoMapper in an ASP.NET Core app.
+
+---
+
+## Questions & Answers
+
+**Q: When is AutoMapper a good fit vs hand-written mapping?**
+
+A: Use AutoMapper when mappings are mostly 1:1 and you want centralized profiles plus query projections. If mappings involve conditional branching, heavy domain logic, or large object graphs where clarity matters, hand-written mapping is safer.
+
+**Q: How do profiles improve maintainability?**
+
+A: Profiles group mapping configuration per aggregate or feature, keeping conventions together and discoverable. They can be scanned automatically via `AddAutoMapper`, ensuring new mappings only require adding a profile class.
+
+**Q: What’s the benefit of `.ProjectTo<T>()` with EF Core?**
+
+A: It translates mapping expressions into SQL so the database returns DTO-shaped data directly, eliminating extra materialization and reducing memory usage in the API layer.
+
+**Q: How do you customize property names that don’t match?**
+
+A: Use `.ForMember(dest => dest.Property, opt => opt.MapFrom(src => src.OtherName))` or `.ForPath` for nested members. AutoMapper falls back to conventions for matching names but explicit configuration handles mismatches cleanly.
+
+**Q: How do you avoid runtime mapping errors?**
+
+A: Call `mapper.ConfigurationProvider.AssertConfigurationIsValid()` during startup/tests, and enable `CreateMissingTypeMaps = false` so AutoMapper throws configuration errors early.
+
+**Q: What are best practices for DI registration?**
+
+A: Register profiles via `services.AddAutoMapper(typeof(SomeProfile))` or assembly scanning. Inject `IMapper` where needed; avoid static mapper instances so you respect scoped dependencies in custom value resolvers.
+
+**Q: How do you handle mapping collections efficiently?**
+
+A: Map queryables using `.ProjectTo<T>()` to avoid per-item mapping in memory. For in-memory collections, `IMapper.Map<IEnumerable<Dest>>(source)` reuses configuration and executes efficiently without additional setup.
+
+**Q: Can AutoMapper handle complex value conversions like formatting currency?**
+
+A: Yes, via `ForMember(...).ConvertUsing(...)`, custom value resolvers, or type converters. Keep heavy logic in domain services; use converters for presentation formatting or simple transforms (e.g., decimal to string).
+
+**Q: How do you map inheritance hierarchies?**
+
+A: Configure `Include`/`IncludeBase` to map derived types and ensure discriminators map to correct DTOs. AutoMapper can project derived types so long as the EF model supports it.
+
+**Q: How do you test mappings?**
+
+A: Instantiate the mapper configuration in tests, call `AssertConfigurationIsValid()`, and perform sample `Map`/`ProjectTo` calls on fixture data to ensure custom resolvers behave as intended.

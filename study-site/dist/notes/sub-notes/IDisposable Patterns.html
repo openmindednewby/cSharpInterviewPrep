@@ -85,7 +85,7 @@
         <div class="breadcrumbs">notes\sub-notes\IDisposable Patterns.md</div>
         <h2>IDisposable Patterns</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#idisposable-deterministic-cleanup">`IDisposable` & Deterministic Cleanup</a></li></ul></div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#idisposable-deterministic-cleanup">`IDisposable` & Deterministic Cleanup</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
         <h1 id="idisposable-deterministic-cleanup"><code>IDisposable</code> & Deterministic Cleanup</h1>
 <ul><li>Implement <code>IDisposable</code> when you own unmanaged resources (file handles, sockets, DB connections) or wrap disposables.</li><li>Pattern:</li></ul>
 <pre class="hljs"><code>public sealed class PriceFeed : IDisposable
@@ -108,6 +108,28 @@
 }</code></pre>
 <ul><li><strong>Usage:</strong> Wrap with <code>using</code>/<code>await using</code> so cleanup runs even on exceptions.</li></ul>
 <pre class="hljs"><code>await using var connection = await _dbFactory.CreateConnectionAsync();</code></pre>
+<p>---</p>
+<h2 id="questions-answers">Questions & Answers</h2>
+<p><strong>Q: When should a class implement <code>IDisposable</code>?</strong></p>
+<p>A: When it owns unmanaged resources or wraps objects that implement <code>IDisposable</code> (streams, DbContexts, timers) and must release them deterministically.</p>
+<p><strong>Q: Why call <code>GC.SuppressFinalize(this)</code>?</strong></p>
+<p>A: It prevents the GC from invoking the finalizer once you’ve disposed the object, saving an extra GC cycle and improving performance.</p>
+<p><strong>Q: How do you dispose async resources?</strong></p>
+<p>A: Implement <code>IAsyncDisposable</code> and use <code>await using</code> to asynchronously release resources like pooled connections or streams.</p>
+<p><strong>Q: What happens if you forget to dispose?</strong></p>
+<p>A: Resources leak—sockets stay open, file handles remain locked, and finalizers eventually run, adding GC pressure. In services, this can lead to outages.</p>
+<p><strong>Q: How do you handle multiple disposals safely?</strong></p>
+<p>A: Guard with an <code>_disposed</code> flag, throw <code>ObjectDisposedException</code> when methods run after disposal, and make <code>Dispose</code> idempotent.</p>
+<p><strong>Q: When do you need a finalizer?</strong></p>
+<p>A: Rarely—only when you wrap unmanaged resources without safe handles. Prefer <code>SafeHandle</code> + <code>IDisposable</code> instead of writing finalizers yourself.</p>
+<p><strong>Q: How do you dispose child services resolved from DI scopes?</strong></p>
+<p>A: The scope disposes services when it ends. Don’t capture scoped services beyond scope lifetime; create scopes per operation if needed.</p>
+<p><strong>Q: How do you unit test disposal behavior?</strong></p>
+<p>A: Use <code>Mock&lt;IDisposable&gt;</code> to verify <code>Dispose</code> is called, or check resource state (e.g., timer disposed). For async disposal, assert tasks complete and resources release handles.</p>
+<p><strong>Q: What’s the difference between <code>DisposeAsync</code> and <code>Dispose</code>?</strong></p>
+<p>A: <code>DisposeAsync</code> returns a <code>ValueTask</code> and awaits asynchronous cleanup. <code>Dispose</code> runs synchronously. Implement both when supporting async resource release but ensure <code>Dispose</code> calls <code>DisposeAsync().GetAwaiter().GetResult()</code> if needed.</p>
+<p><strong>Q: How does <code>using</code> translate in IL?</strong></p>
+<p>A: It compiles to a try/finally block where <code>Dispose</code> is invoked in the finally clause, guaranteeing cleanup even if exceptions occur.</p>
       </article>
     </main>
   </div>

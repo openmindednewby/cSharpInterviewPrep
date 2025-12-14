@@ -199,6 +199,50 @@ public static class Program
 
 When they ask “How would you handle a continuous high-volume data stream efficiently?”:
 
+---
+
+## Questions & Answers
+
+**Q: Why choose `System.IO.Pipelines` over raw `Stream` APIs?**
+
+A: Pipelines manage pooled buffers, handle partial reads, and support zero-copy parsing via `ReadOnlySequence<T>`, drastically reducing allocations and simplifying producer/consumer coordination for high-volume streams.
+
+**Q: How do `ReadOnlySequence<T>` and `Span<T>` interact in this sample?**
+
+A: `ReadOnlySequence<T>` represents potentially multi-segment buffers from the pipeline. For simple cases, you use `line.FirstSpan` to get a contiguous `Span<T>`; otherwise, you can copy segments or use `SequenceReader<T>` to parse without copying.
+
+**Q: Why run `FillPipeAsync` and `ReadPipeAsync` concurrently?**
+
+A: It decouples I/O from parsing, letting each stage run at its own pace. The pipe provides backpressure so writers pause when readers lag, preventing unbounded memory growth.
+
+**Q: How do you ensure the parser handles partial messages?**
+
+A: The code searches for newline separators with `PositionOf`, only consuming complete messages. Partial lines remain in the buffer until more data arrives, avoiding premature consumption.
+
+**Q: What’s the GC profile of this pipeline-based approach?**
+
+A: Aside from immutable symbol strings, there are no per-tick allocations—buffers come from the pipe’s pool, `Utf8Parser` works on spans, and structs stay on the stack. GC activity remains negligible even under heavy load.
+
+**Q: How would you extend this example for TLS/SSL sockets?**
+
+A: Wrap the network stream (e.g., `SslStream`) but keep using pipelines. The pipe sits on top of any stream; as long as you feed decrypted bytes, the parsing logic remains the same.
+
+**Q: How do you shut down gracefully?**
+
+A: When the stream closes, `ReadAsync` returns 0, so the writer completes. The reader loop detects `result.IsCompleted`, finishes processing remaining data, and completes the reader to release resources.
+
+**Q: How can you integrate this with message brokers?**
+
+A: Replace `OnTick` with publisher code that writes to RabbitMQ/Kafka using pooled producers, ensuring you serialize ticks without allocations (e.g., using `IBufferWriter<byte>` to write to message bodies).
+
+**Q: What safeguards prevent slow consumers from OOMing the process?**
+
+A: Set bounded pipe limits or apply flow control by awaiting `_pipe.Writer.FlushAsync()`; pipelines use backpressure to throttle producers when readers fall behind.
+
+**Q: How do you test this pipeline logic?**
+
+A: Use `Pipe` directly in tests with synthetic data, or feed a `MemoryStream` as shown. Assert on parsed ticks and monitor `GC.GetAllocatedBytesForCurrentThread()` to verify allocation behavior.
+
 > “I’d use `System.IO.Pipelines` for reading from the socket directly into pooled memory segments.
 > Then, using `Span<byte>` and `Utf8Parser`, I’d parse ticks inline — zero-copy.
 > Since `Pipelines` reuses buffers internally, the GC stays quiet, and the system scales linearly with load.

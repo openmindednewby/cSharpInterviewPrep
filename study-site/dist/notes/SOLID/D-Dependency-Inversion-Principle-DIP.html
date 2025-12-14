@@ -85,7 +85,7 @@
         <div class="breadcrumbs">notes\SOLID\D-Dependency-Inversion-Principle-DIP.md</div>
         <h2>D Dependency Inversion Principle DIP</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-2"><a href="#d-dependency-inversion-principle-dip">**D — Dependency Inversion Principle (DIP)**</a></li><li class="level-3"><a href="#bad-example-high-level-depends-on-low-level-concrete-types">❌ Bad example (high-level depends on low-level concrete types)</a></li><li class="level-3"><a href="#good-example-depend-on-abstractions-constructor-injection">✅ Good example (depend on abstractions — constructor injection)</a></li><li class="level-3"><a href="#notes-on-usage-and-patterns">Notes on usage and patterns</a></li><li class="level-3"><a href="#dip-benefits">DIP benefits</a></li></ul></div>
+        <div class="toc"><ul class="toc-list"><li class="level-2"><a href="#d-dependency-inversion-principle-dip">**D — Dependency Inversion Principle (DIP)**</a></li><li class="level-3"><a href="#bad-example-high-level-depends-on-low-level-concrete-types">❌ Bad example (high-level depends on low-level concrete types)</a></li><li class="level-3"><a href="#good-example-depend-on-abstractions-constructor-injection">✅ Good example (depend on abstractions — constructor injection)</a></li><li class="level-3"><a href="#notes-on-usage-and-patterns">Notes on usage and patterns</a></li><li class="level-3"><a href="#dip-benefits">DIP benefits</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
         <h2 id="d-dependency-inversion-principle-dip"><strong>D — Dependency Inversion Principle (DIP)</strong></h2>
 <p>!<a href="image.png">alt text</a></p>
 <blockquote><p>“High-level modules should not depend on low-level modules. Both should depend on abstractions. Abstractions should not depend on details. Details should depend on abstractions.”</p></blockquote>
@@ -132,6 +132,28 @@ public class OrderService
 <ul><li><strong>Prefer constructor injection</strong> for mandatory dependencies — it makes required collaborators explicit and easy to test.</li><li><strong>Use interfaces or abstract base classes</strong> to define stable contracts for behavior. Keep these contracts small and focused.</li><li><strong>Inversion of Control (IoC) / DI containers</strong> can wire concrete implementations to abstractions at composition root, keeping production wiring out of business classes.</li><li><strong>Avoid service-locators</strong> embedded inside classes — they hide dependencies and complicate testing.</li></ul>
 <h3 id="dip-benefits">DIP benefits</h3>
 <ul><li>Decouples high-level policy from low-level details.</li><li>Makes unit testing trivial by allowing replacement with fakes/mocks.</li><li>Improves flexibility to change implementations (datastores, external APIs) without touching business code.</li></ul>
+<p>---</p>
+<h2 id="questions-answers">Questions & Answers</h2>
+<p><strong>Q: How does DIP differ from simple dependency injection?</strong></p>
+<p>A: DIP is the principle (depend on abstractions). Dependency injection is a technique to supply those abstractions at runtime. You can inject dependencies manually or via a container, but DIP guides the design.</p>
+<p><strong>Q: What is the composition root, and why is it important?</strong></p>
+<p>A: It’s the startup/wiring area where concrete implementations are composed. Keeping all bindings there ensures the rest of the system depends only on abstractions, honoring DIP.</p>
+<p><strong>Q: How does DIP help with testing?</strong></p>
+<p>A: You can swap real implementations with mocks/stubs when classes depend on interfaces. Tests instantiate high-level modules with fake collaborators, keeping them fast and deterministic.</p>
+<p><strong>Q: When should you avoid introducing an interface?</strong></p>
+<p>A: If there’s only one implementation with no foreseeable variation, an interface may add noise. Start with concrete classes and extract interfaces when change pressure or testing needs arise.</p>
+<p><strong>Q: How does DIP interact with plug-in architectures?</strong></p>
+<p>A: Plugins implement shared abstractions and register themselves. The host app depends only on the abstraction, so new plugins drop in without code changes.</p>
+<p><strong>Q: How do you keep abstractions stable?</strong></p>
+<p>A: Define them in higher-level projects (Domain/Application) and keep them small. Avoid leaking infrastructure concerns (SQL-specific types) into the interface.</p>
+<p><strong>Q: What’s wrong with service locators?</strong></p>
+<p>A: They invert control but hide dependencies, making testing harder and violating SRP. Constructor injection makes dependencies explicit and honors DIP.</p>
+<p><strong>Q: How do you manage lifetimes when using DIP?</strong></p>
+<p>A: Use DI containers to manage transient/scoped/singleton lifetimes. Ensure high-level modules don’t own disposal of low-level resources—they rely on the container/composition root.</p>
+<p><strong>Q: How does DIP help with feature toggles?</strong></p>
+<p>A: You can register different implementations based on configuration (e.g., mock gateway vs real) without touching consuming code.</p>
+<p><strong>Q: How do you enforce DIP in architecture?</strong></p>
+<p>A: Use project references to ensure inner layers define interfaces while outer layers implement them. Architecture tests (NetArchTest) can verify that domain projects don’t depend on infrastructure assemblies.</p>
       </article>
     </main>
   </div>

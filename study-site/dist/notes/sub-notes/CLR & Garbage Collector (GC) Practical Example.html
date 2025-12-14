@@ -85,7 +85,7 @@
         <div class="breadcrumbs">notes\sub-notes\CLR & Garbage Collector (GC) Practical Example.md</div>
         <h2>CLR & Garbage Collector (GC) Practical Example</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-2"><a href="#goal">⚡ GOAL</a></li><li class="level-2"><a href="#1-the-scenario">🧩 1. The scenario</a></li><li class="level-2"><a href="#2-the-c-code">💻 2. The C# code</a></li><li class="level-2"><a href="#3-what-to-highlight-in-the-interview">🧠 3. What to highlight in the interview</a></li><li class="level-2"><a href="#4-practice-questions-you-can-expect">🔍 4. Practice questions you can expect</a></li><li class="level-2"><a href="#5-optional-5-min-extension-counter-check">🧩 5. Optional 5-min extension: Counter check</a></li></ul></div>
+        <div class="toc"><ul class="toc-list"><li class="level-2"><a href="#goal">⚡ GOAL</a></li><li class="level-2"><a href="#1-the-scenario">🧩 1. The scenario</a></li><li class="level-2"><a href="#2-the-c-code">💻 2. The C# code</a></li><li class="level-2"><a href="#3-what-to-highlight-in-the-interview">🧠 3. What to highlight in the interview</a></li><li class="level-2"><a href="#4-practice-questions-you-can-expect">🔍 4. Practice questions you can expect</a></li><li class="level-2"><a href="#5-optional-5-min-extension-counter-check">🧩 5. Optional 5-min extension: Counter check</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
         <h2 id="goal">⚡ GOAL</h2>
 <p>Parse and process a stream of <strong>price tick data</strong> efficiently, <strong>without allocating</strong>, <strong>without creating new strings</strong>, and <strong>with GC-friendly design</strong>.</p>
 <p>---</p>
@@ -199,6 +199,28 @@ class Program
 <p>That’s your <strong>evidence</strong> you’ve optimized allocations correctly.</p>
 <p>---</p>
 <p>Would you like me to follow up with a <strong>bonus version using <code>System.IO.Pipelines</code></strong> — the way you’d implement this in a real HFM-style backend (async, streaming, zero-copy)? That’s often a <strong>senior-level differentiator question</strong>.</p>
+<p>---</p>
+<h2 id="questions-answers">Questions & Answers</h2>
+<p><strong>Q: How does this parser minimize allocations?</strong></p>
+<p>A: It uses <code>ReadOnlySpan&lt;byte&gt;</code> to slice the input buffer, <code>Utf8Parser</code> to parse primitives directly from bytes, and <code>ArrayPool&lt;byte&gt;</code> to reuse buffers, leaving only one small string allocation per tick.</p>
+<p><strong>Q: Why is <code>Utf8Parser</code> preferred here?</strong></p>
+<p>A: It avoids converting byte segments into strings before parsing numbers, eliminating temporary allocations and respecting culture-invariant formats ideal for market data.</p>
+<p><strong>Q: How do you process partial messages with this approach?</strong></p>
+<p>A: Maintain leftover spans between reads or use <code>System.IO.Pipelines</code>, which handles split frames by giving you <code>ReadOnlySequence&lt;byte&gt;</code> to process once a newline delimiter appears.</p>
+<p><strong>Q: How would you adapt this for asynchronous sockets?</strong></p>
+<p>A: Swap buffer handling for <code>PipeReader</code>/<code>PipeWriter</code>, consume <code>ReadOnlySequence&lt;byte&gt;</code> segments, and use <code>Memory&lt;byte&gt;</code> to cross <code>await</code> boundaries safely while keeping parsing logic identical.</p>
+<p><strong>Q: What GC metrics confirm success?</strong></p>
+<p>A: <code>Gen0 GC Count</code> stays low relative to throughput, <code>Gen2 GC Count</code> remains near zero, and <code>Allocated Bytes/sec</code> is minimal. Use <code>dotnet-counters</code> to observe these while the parser runs.</p>
+<p><strong>Q: How do you reuse symbol strings to avoid per-message allocations?</strong></p>
+<p>A: Maintain a dictionary of interned symbols or use <code>ReadOnlyMemory&lt;byte&gt;</code> pointing to shared symbol tables, so repeated symbols reuse references instead of allocating new strings.</p>
+<p><strong>Q: What happens if you allocate 100 KB buffers per message?</strong></p>
+<p>A: They land on the LOH, leading to fragmentation and long Gen2 pauses. Renting from <code>ArrayPool&lt;byte&gt;</code> avoids repeated LOH allocations.</p>
+<p><strong>Q: How do you handle parsing failures?</strong></p>
+<p>A: Check the boolean return from <code>Utf8Parser.TryParse</code> and decide whether to drop/log the tick or route it to a poison queue. Avoid throwing in the hot path to keep allocation-free behavior.</p>
+<p><strong>Q: Can you pool <code>Tick</code> instances too?</strong></p>
+<p>A: Yes—use <code>ObjectPool&lt;Tick&gt;</code> or a struct pool if you need to reuse containers. Ensure pooled objects are reset before reuse to avoid leaking data.</p>
+<p><strong>Q: How would you extend this to publish to RabbitMQ/Kafka?</strong></p>
+<p>A: Serialize ticks using <code>IBufferWriter&lt;byte&gt;</code> or spans to keep serialization allocation-free, then push to the broker client that supports span-friendly APIs.</p>
       </article>
     </main>
   </div>

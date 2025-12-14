@@ -85,7 +85,7 @@
         <div class="breadcrumbs">notes\sub-notes\CLR & Garbage Collector (GC).md</div>
         <h2>CLR & Garbage Collector (GC)</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#clr-garbage-collector-gc-deep-but-practical">CLR & Garbage Collector (GC) — Deep but Practical</a></li><li class="level-2"><a href="#1-heap-layout-generations-what-actually-happens">1) Heap layout & generations (what actually happens)</a></li><li class="level-2"><a href="#2-gc-flavors-latency-modes-pick-the-right-one">2) GC flavors & latency modes (pick the right one)</a></li><li class="level-2"><a href="#3-allocation-discipline-the-1-lever-you-control">3) Allocation discipline (the #1 lever you control)</a></li><li class="level-2"><a href="#4-spant-memoryt-zero-alloc-parsing-slicing">4) `Span<T>` / `Memory<T>` (zero-alloc parsing & slicing)</a></li><li class="level-2"><a href="#5-finalization-disposal-handles-dont-leak">5) Finalization, disposal & handles (don’t leak)</a></li><li class="level-2"><a href="#6-diagnostics-how-you-prove-it">6) Diagnostics (how you prove it)</a></li><li class="level-2"><a href="#7-tuning-knobs-what-to-adjust-when">7) Tuning knobs (what to adjust when)</a></li><li class="level-2"><a href="#8-async-threading-interactions-common-pitfalls">8) Async & threading interactions (common pitfalls)</a></li><li class="level-2"><a href="#9-quick-dodont-checklist-interview-ready">9) Quick do/don’t checklist (interview-ready)</a></li><li class="level-2"><a href="#one-minute-explain-it-like-a-senior-answer">One-minute “explain it like a senior” answer</a></li></ul></div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#clr-garbage-collector-gc-deep-but-practical">CLR & Garbage Collector (GC) — Deep but Practical</a></li><li class="level-2"><a href="#1-heap-layout-generations-what-actually-happens">1) Heap layout & generations (what actually happens)</a></li><li class="level-2"><a href="#2-gc-flavors-latency-modes-pick-the-right-one">2) GC flavors & latency modes (pick the right one)</a></li><li class="level-2"><a href="#3-allocation-discipline-the-1-lever-you-control">3) Allocation discipline (the #1 lever you control)</a></li><li class="level-2"><a href="#4-spant-memoryt-zero-alloc-parsing-slicing">4) `Span<T>` / `Memory<T>` (zero-alloc parsing & slicing)</a></li><li class="level-2"><a href="#5-finalization-disposal-handles-dont-leak">5) Finalization, disposal & handles (don’t leak)</a></li><li class="level-2"><a href="#6-diagnostics-how-you-prove-it">6) Diagnostics (how you prove it)</a></li><li class="level-2"><a href="#7-tuning-knobs-what-to-adjust-when">7) Tuning knobs (what to adjust when)</a></li><li class="level-2"><a href="#8-async-threading-interactions-common-pitfalls">8) Async & threading interactions (common pitfalls)</a></li><li class="level-2"><a href="#9-quick-dodont-checklist-interview-ready">9) Quick do/don’t checklist (interview-ready)</a></li><li class="level-2"><a href="#one-minute-explain-it-like-a-senior-answer">One-minute “explain it like a senior” answer</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
         <h1 id="clr-garbage-collector-gc-deep-but-practical">CLR & Garbage Collector (GC) — Deep but Practical</h1>
 <h2 id="1-heap-layout-generations-what-actually-happens">1) Heap layout & generations (what actually happens)</h2>
 <ul><li><strong>Two main heaps:</strong></li></ul>
@@ -129,6 +129,28 @@
 <h2 id="one-minute-explain-it-like-a-senior-answer">One-minute “explain it like a senior” answer</h2>
 <blockquote><p>“.NET uses a <strong>generational GC</strong>: most objects die young in <strong>Gen0/Gen1</strong>, long-lived objects are promoted to <strong>Gen2</strong>; very large allocations go to the <strong>LOH</strong>, which isn’t compacted by default. For services we run <strong>Server GC</strong> to maximize throughput with background Gen2 collections. We keep <strong>allocation pressure</strong> low in hot paths—pool buffers, use <strong><code>Span&lt;T&gt;</code></strong> for zero-alloc parsing, and use <strong><code>Memory&lt;T&gt;</code></strong> across async boundaries. We monitor <strong>GC counters</strong> to spot excessive Gen2/LOH activity. If fragmentation creeps into LOH we schedule a one-off compaction. We only tweak latency modes for short, critical windows and never force collections in steady state.”</p></blockquote>
 <p>If you want, I can give you a <strong>10-minute hands-on drill</strong>: a tiny price-tick parser using <code>Span&lt;byte&gt;</code>, <code>ArrayPool&lt;byte&gt;</code>, and counters you can discuss live.</p>
+<p>---</p>
+<h2 id="questions-answers">Questions & Answers</h2>
+<p><strong>Q: What are the primary heaps managed by the CLR GC?</strong></p>
+<p>A: The Small Object Heap (Gen0, Gen1, Gen2) for most allocations and the Large Object Heap (LOH) for objects ≥ ~85 KB. LOH skips Gen0/1 and isn’t compacted by default.</p>
+<p><strong>Q: When would you enable Server GC vs Workstation GC?</strong></p>
+<p>A: Server GC is ideal for ASP.NET/services because it uses per-core GC threads and larger segments for throughput. Workstation GC suits desktop apps needing responsiveness.</p>
+<p><strong>Q: How do you reduce Gen2 collections?</strong></p>
+<p>A: Lower allocation pressure (pool buffers, reuse objects), fix leaks, and avoid promoting long-lived caches unnecessarily. Monitor <code>Gen 2 GC Count</code> and LOH allocations.</p>
+<p><strong>Q: What is <code>NoGCRegion</code> and when should you use it?</strong></p>
+<p>A: It temporarily disables GC by pre-reserving memory for critical sections (e.g., market open). Use sparingly; exceeding the reserved size or hitting LOH allocations ends it prematurely.</p>
+<p><strong>Q: How do you minimize LOH fragmentation?</strong></p>
+<p>A: Avoid frequent large allocations, reuse arrays via <code>ArrayPool&lt;T&gt;</code>, and schedule <code>GCLargeObjectHeapCompactionMode.CompactOnce</code> only during maintenance windows.</p>
+<p><strong>Q: Why is forcing <code>GC.Collect()</code> usually a bad idea?</strong></p>
+<p>A: It induces full, blocking collections that hurt throughput. Let the GC decide when to collect unless you’re in a very specific maintenance scenario.</p>
+<p><strong>Q: How do spans/memory types impact GC?</strong></p>
+<p>A: <code>Span&lt;T&gt;</code>/<code>Memory&lt;T&gt;</code> enable zero-copy operations, reducing allocations that would otherwise add pressure on Gen0/1. They help keep critical paths GC-neutral.</p>
+<p><strong>Q: Which diagnostics do you rely on to understand GC behavior?</strong></p>
+<p>A: <code>dotnet-counters</code> (Allocated Bytes/sec, % Time in GC), <code>dotnet-trace</code>, PerfView, and <code>dotnet-gcdump</code> to inspect heap composition and collection frequency.</p>
+<p><strong>Q: How do you tune GC in containers?</strong></p>
+<p>A: Use container-aware defaults (.NET 6+), but override with <code>DOTNET_GCHeapHardLimit</code> or <code>DOTNET_GCHeapHardLimitPercent</code> for strict caps. Ensure CPU/memory limits align with GC thread counts.</p>
+<p><strong>Q: How do latency modes affect runtime behavior?</strong></p>
+<p>A: Modes like <code>SustainedLowLatency</code> reduce Gen2 frequency at the cost of higher memory usage. <code>Batch</code> maximizes throughput but tolerates longer pauses. Choose based on workload requirements.</p>
       </article>
     </main>
   </div>

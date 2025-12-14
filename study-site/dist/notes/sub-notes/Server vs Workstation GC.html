@@ -85,7 +85,7 @@
         <div class="breadcrumbs">notes\sub-notes\Server vs Workstation GC.md</div>
         <h2>Server Vs Workstation GC</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#what-they-are-in-practice">What they are (in practice)</a></li><li class="level-1"><a href="#how-they-actually-run">How they actually run</a></li><li class="level-2"><a href="#server-gc">Server GC</a></li><li class="level-2"><a href="#workstation-gc">Workstation GC</a></li><li class="level-1"><a href="#latency-modes-apply-to-both-flavors">Latency & modes (apply to both flavors)</a></li><li class="level-1"><a href="#container-hosting-notes-very-relevant-today">Container & hosting notes (very relevant today)</a></li><li class="level-1"><a href="#choosing-the-right-one-simple-rules">Choosing the right one (simple rules)</a></li><li class="level-1"><a href="#tuning-checklist-for-a-tradingback-office-service">Tuning checklist for a trading/back-office service</a></li><li class="level-1"><a href="#pitfalls-gotchas-the-senior-bits">Pitfalls & gotchas (the “senior” bits)</a></li><li class="level-1"><a href="#answers-you-can-give-quickly">Answers you can give quickly</a></li></ul></div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#what-they-are-in-practice">What they are (in practice)</a></li><li class="level-1"><a href="#how-they-actually-run">How they actually run</a></li><li class="level-2"><a href="#server-gc">Server GC</a></li><li class="level-2"><a href="#workstation-gc">Workstation GC</a></li><li class="level-1"><a href="#latency-modes-apply-to-both-flavors">Latency & modes (apply to both flavors)</a></li><li class="level-1"><a href="#container-hosting-notes-very-relevant-today">Container & hosting notes (very relevant today)</a></li><li class="level-1"><a href="#choosing-the-right-one-simple-rules">Choosing the right one (simple rules)</a></li><li class="level-1"><a href="#tuning-checklist-for-a-tradingback-office-service">Tuning checklist for a trading/back-office service</a></li><li class="level-1"><a href="#pitfalls-gotchas-the-senior-bits">Pitfalls & gotchas (the “senior” bits)</a></li><li class="level-1"><a href="#answers-you-can-give-quickly">Answers you can give quickly</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
         <h1 id="what-they-are-in-practice">What they are (in practice)</h1>
 <p>| Aspect                  | <strong>Server GC</strong>                                       | <strong>Workstation GC</strong>                                   | | ----------------------- | --------------------------------------------------- | ---------------------------------------------------- | | Goal                    | <strong>Throughput</strong> for multi-core servers               | <strong>Responsiveness</strong> for desktop/interactive apps      | | Threads                 | <strong>1 GC thread per logical core</strong> (+ background GC)  | <strong>1 GC thread total</strong> (+ background GC)              | | Segment sizes           | <strong>Larger</strong> heap segments → fewer GCs, longer pauses | <strong>Smaller</strong> segments → more frequent, shorter pauses | | Compaction              | Parallel, wide                                      | Serial, narrower                                     | | Default in ASP.NET Core | Usually <strong>enabled</strong>                                 | Not typical                                          | | Best for                | Web APIs, services, batch jobs, high QPS            | WPF/WinForms, tools, dev utilities                   |</p>
 <blockquote><p>Quick check at runtime:</p></blockquote>
@@ -133,6 +133,28 @@ GCSettings.LatencyMode = GCLatencyMode.SustainedLowLatency;</code></pre>
 <p><strong>Q:</strong> <em>How do you confirm and monitor this in prod?</em> <strong>A:</strong> “<code>GCSettings.IsServerGC</code> at startup, and <code>dotnet-counters</code>/App Insights to watch Gen2 counts, % time in GC, and allocation rate. If Gen2 climbs or LOH grows, we pool buffers and reduce promotions.”</p>
 <p>---</p>
 <p>If you want, I can give you a <strong>30-second script</strong> you can say verbatim when they ask “Server vs Workstation GC—when and why?”</p>
+<p>---</p>
+<h2 id="questions-answers">Questions & Answers</h2>
+<p><strong>Q: How do you switch between Server and Workstation GC?</strong></p>
+<p>A: Set <code>DOTNET_GCServer=1</code> (or configure in runtimeconfig) for Server GC. Without it, Workstation GC is used by default for desktop apps. Always verify with <code>GCSettings.IsServerGC</code>.</p>
+<p><strong>Q: Why is Server GC ideal for web APIs?</strong></p>
+<p>A: It creates a GC worker per core and uses larger segments, reducing collection frequency and keeping throughput high under heavy allocation workloads common in APIs.</p>
+<p><strong>Q: When would Workstation GC outperform Server GC?</strong></p>
+<p>A: In small, CPU-limited containers or interactive desktop apps where shorter individual pauses matter more than raw throughput. Always measure both modes.</p>
+<p><strong>Q: Do latency modes differ between Server and Workstation GC?</strong></p>
+<p>A: Both support <code>GCSettings.LatencyMode</code> options (Interactive, Batch, SustainedLowLatency, NoGCRegion). Choose based on workload, not GC flavor.</p>
+<p><strong>Q: How does containerization affect GC choice?</strong></p>
+<p>A: .NET respects container CPU/memory limits when sizing GC segments and threads. If you limit CPUs, Server GC creates fewer worker threads accordingly.</p>
+<p><strong>Q: How do you monitor GC mode effectiveness?</strong></p>
+<p>A: Track <code>% Time in GC</code>, Gen2 counts, and LOH size via <code>dotnet-counters</code> or App Insights. Compare metrics when toggling between modes to justify the configuration.</p>
+<p><strong>Q: Can you mix modes within the same process?</strong></p>
+<p>A: No. GC mode is a process-wide setting configured at startup. You can’t run Server GC for some components and Workstation GC for others.</p>
+<p><strong>Q: How do pinned objects behave under each mode?</strong></p>
+<p>A: Pinning affects compaction regardless of GC mode. However, Server GC’s larger segments mean fragmentation can be more noticeable if you pin frequently.</p>
+<p><strong>Q: Does background GC behave differently between modes?</strong></p>
+<p>A: Server GC runs background Gen2 collections in parallel. Workstation GC also supports background GC but with fewer worker threads, so concurrency benefits are smaller.</p>
+<p><strong>Q: What’s your quick pitch comparing the two?</strong></p>
+<p>A: “Server GC maximizes throughput on multi-core servers via parallel collections; Workstation GC prioritizes responsiveness with shorter pauses. Choose based on workload and validate with GC metrics.”</p>
       </article>
     </main>
   </div>

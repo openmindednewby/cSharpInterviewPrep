@@ -103,3 +103,47 @@ public async Task<Order> PlaceAsync(OrderRequest request, CancellationToken canc
 - Mention tooling: `dotnet-trace`, `EventPipe`, and the **Tasks** view in Visual Studio for diagnosing hung awaits.
 
 Keep this page handy to answer deep-dive follow-ups confidently.
+
+---
+
+## Questions & Answers
+
+**Q: What happens under the hood when you mark a method `async`?**
+
+A: The compiler generates a struct implementing `IAsyncStateMachine`. Locals become fields, `await` points split into states, and continuations resume via `MoveNext`. Understanding this helps avoid capturing large objects or struct copies.
+
+**Q: Why does `ConfigureAwait(false)` matter in library code?**
+
+A: It prevents continuations from posting back to captured contexts (UI, legacy ASP.NET), reducing deadlock risk and unnecessary context switches. Libraries should default to `false`; apps decide when context capture is needed.
+
+**Q: How do you avoid deadlocks when mixing sync and async code?**
+
+A: Keep the entire call chain async, don’t block on `.Result` or `.Wait()`, and use `ConfigureAwait(false)` inside lower layers so continuations can resume on the thread pool.
+
+**Q: When should you use `ValueTask`?**
+
+A: When an async method often completes synchronously (e.g., cache hits) and you want to avoid allocating a `Task`. Only expose `ValueTask` sparingly; consumers must await it immediately or convert to `Task`.
+
+**Q: How do you coordinate exclusive access in async code?**
+
+A: Use `SemaphoreSlim`, `AsyncLock`, or channels. Never `await` inside a `lock` statement because it can deadlock; the compiler forbids it.
+
+**Q: How are exceptions handled in async methods?**
+
+A: They’re captured on the returned `Task`. Await to observe them; otherwise, they surface as unobserved task exceptions. For fire-and-forget, attach continuations or use hosted services to log failures.
+
+**Q: What’s the difference between I/O-bound and CPU-bound async work?**
+
+A: I/O-bound tasks release threads while waiting for external operations, improving scalability. CPU-bound work still needs threads; push it to `Task.Run` or dedicated workers to keep request threads free.
+
+**Q: How do you monitor asynchronous operations in production?**
+
+A: Use distributed tracing, `EventSource`/`EventPipe`, `dotnet-trace`, or Visual Studio’s Tasks view. Instrument awaited calls with activity IDs and correlate them to metrics/logs.
+
+**Q: How do you pass cancellation effectively?**
+
+A: Accept `CancellationToken` parameters, honor them in loops, and forward them to all awaited calls. Check `ct.ThrowIfCancellationRequested()` where appropriate to exit quickly.
+
+**Q: How can `Task.WhenAll` improve performance?**
+
+A: It allows parallel execution of independent async operations, awaiting once rather than sequentially. Always handle aggregated exceptions and consider throttling to avoid saturating dependencies.

@@ -65,3 +65,47 @@ Now `OrderService` depends only on `IOrderRepository`. You can provide any imple
 - Makes unit testing trivial by allowing replacement with fakes/mocks.
 - Improves flexibility to change implementations (datastores, external APIs) without touching business code.
 
+---
+
+## Questions & Answers
+
+**Q: How does DIP differ from simple dependency injection?**
+
+A: DIP is the principle (depend on abstractions). Dependency injection is a technique to supply those abstractions at runtime. You can inject dependencies manually or via a container, but DIP guides the design.
+
+**Q: What is the composition root, and why is it important?**
+
+A: It’s the startup/wiring area where concrete implementations are composed. Keeping all bindings there ensures the rest of the system depends only on abstractions, honoring DIP.
+
+**Q: How does DIP help with testing?**
+
+A: You can swap real implementations with mocks/stubs when classes depend on interfaces. Tests instantiate high-level modules with fake collaborators, keeping them fast and deterministic.
+
+**Q: When should you avoid introducing an interface?**
+
+A: If there’s only one implementation with no foreseeable variation, an interface may add noise. Start with concrete classes and extract interfaces when change pressure or testing needs arise.
+
+**Q: How does DIP interact with plug-in architectures?**
+
+A: Plugins implement shared abstractions and register themselves. The host app depends only on the abstraction, so new plugins drop in without code changes.
+
+**Q: How do you keep abstractions stable?**
+
+A: Define them in higher-level projects (Domain/Application) and keep them small. Avoid leaking infrastructure concerns (SQL-specific types) into the interface.
+
+**Q: What’s wrong with service locators?**
+
+A: They invert control but hide dependencies, making testing harder and violating SRP. Constructor injection makes dependencies explicit and honors DIP.
+
+**Q: How do you manage lifetimes when using DIP?**
+
+A: Use DI containers to manage transient/scoped/singleton lifetimes. Ensure high-level modules don’t own disposal of low-level resources—they rely on the container/composition root.
+
+**Q: How does DIP help with feature toggles?**
+
+A: You can register different implementations based on configuration (e.g., mock gateway vs real) without touching consuming code.
+
+**Q: How do you enforce DIP in architecture?**
+
+A: Use project references to ensure inner layers define interfaces while outer layers implement them. Architecture tests (NetArchTest) can verify that domain projects don’t depend on infrastructure assemblies.
+

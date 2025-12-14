@@ -85,7 +85,7 @@
         <div class="breadcrumbs">notes\sub-notes\Sorting Algorithms.md</div>
         <h2>Sorting Algorithms</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#sorting-algorithms-interview-primer">Sorting Algorithms Interview Primer</a></li><li class="level-2"><a href="#comparison-sorts">Comparison Sorts</a></li><li class="level-2"><a href="#non-comparison-sorts">Non-Comparison Sorts</a></li><li class="level-2"><a href="#talking-points">Talking Points</a></li></ul></div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#sorting-algorithms-interview-primer">Sorting Algorithms Interview Primer</a></li><li class="level-2"><a href="#comparison-sorts">Comparison Sorts</a></li><li class="level-2"><a href="#non-comparison-sorts">Non-Comparison Sorts</a></li><li class="level-2"><a href="#talking-points">Talking Points</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
         <h1 id="sorting-algorithms-interview-primer">Sorting Algorithms Interview Primer</h1>
 <p>Use this sheet to describe trade-offs quickly and reference C# examples when whiteboarding or coding live.</p>
 <h2 id="comparison-sorts">Comparison Sorts</h2>
@@ -132,6 +132,28 @@ public static void QuickSort(Span&lt;int&gt; data)
 <h2 id="talking-points">Talking Points</h2>
 <ul><li><strong>Stability</strong> matters for multi-key sorts (e.g., primary key price, secondary key timestamp).</li><li><strong>Space vs time:</strong> Highlight why merge sort is stable but allocates, while heap sort saves memory but reorders equals.</li><li><strong>Parallel sorting:</strong> Mention <code>Array.ParallelSort</code> (planned) or PLINQ + <code>OrderBy</code> trade-offs.</li><li><strong>Real-world usage:</strong> .NET uses introspective sort for arrays/lists; SQL Server uses variations of merge/hash sorts for query plans.</li></ul>
 <p>Practice describing algorithm choices tailored to finance/trading data structures like order books and time-series snapshots.</p>
+<p>---</p>
+<h2 id="questions-answers">Questions & Answers</h2>
+<p><strong>Q: When would you pick insertion sort in production?</strong></p>
+<p>A: For tiny datasets or nearly sorted inputs (e.g., maintaining a small sorted window). It’s simple, cache-friendly, and used inside hybrid algorithms for small partitions.</p>
+<p><strong>Q: Why is quicksort’s worst case <code>O(n²)</code> and how does .NET avoid it?</strong></p>
+<p>A: Poor pivot choices cause unbalanced partitions. .NET’s introsort switches from quicksort to heapsort when recursion depth exceeds a threshold, guaranteeing <code>O(n log n)</code>.</p>
+<p><strong>Q: What makes merge sort stable?</strong></p>
+<p>A: It combines sorted halves without swapping equal elements out of order, preserving the original relative order—critical for multi-key sorts.</p>
+<p><strong>Q: When is counting sort better than comparison sorts?</strong></p>
+<p>A: When the key range (<code>k</code>) is small relative to <code>n</code> (e.g., rating 0-100). It runs in <code>O(n+k)</code> and is stable, making it ideal for bucketed enums or ASCII data.</p>
+<p><strong>Q: What’s the trade-off between heap sort and merge sort?</strong></p>
+<p>A: Heap sort is in-place with <code>O(1)</code> extra space but not stable. Merge sort is stable but needs <code>O(n)</code> auxiliary storage. Choose based on stability requirements vs memory constraints.</p>
+<p><strong>Q: How do you keep an order book sorted efficiently?</strong></p>
+<p>A: Use a balanced tree (<code>SortedDictionary</code>, <code>SortedSet</code>) or a heap for top-k operations; for full snapshots, maintain sorted arrays and apply incremental updates with binary insertions.</p>
+<p><strong>Q: How does radix sort work for integers?</strong></p>
+<p>A: It processes digits (LSB or MSB) using counting sort per digit, achieving linear time for fixed-width integers. It’s stable and non-comparison-based.</p>
+<p><strong>Q: What’s the complexity of bucket sort and when is it optimal?</strong></p>
+<p>A: Average <code>O(n)</code> when inputs are uniformly distributed. Useful for hashing floats into buckets (e.g., histogram of trade sizes) before sorting within buckets.</p>
+<p><strong>Q: Why is stability important for multi-key sorts?</strong></p>
+<p>A: It preserves relative ordering of equal keys, allowing sequential sorting by secondary keys without losing primary-order guarantees.</p>
+<p><strong>Q: How do you parallelize sorting in .NET?</strong></p>
+<p>A: Split data into chunks, sort in parallel via <code>Parallel.For</code> or PLINQ, then merge. For huge arrays, consider <code>Array.Sort</code> for baseline and only parallelize when CPU resources justify the overhead.</p>
       </article>
     </main>
   </div>

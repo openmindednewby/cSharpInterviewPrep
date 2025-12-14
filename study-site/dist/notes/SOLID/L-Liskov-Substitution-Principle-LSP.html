@@ -85,7 +85,7 @@
         <div class="breadcrumbs">notes\SOLID\L-Liskov-Substitution-Principle-LSP.md</div>
         <h2>L Liskov Substitution Principle LSP</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-2"><a href="#l-liskov-substitution-principle-lsp">**L — Liskov Substitution Principle (LSP)**</a></li><li class="level-3"><a href="#bad-example">❌ Bad example:</a></li><li class="level-3"><a href="#good-example">✅ Good example:</a></li></ul></div>
+        <div class="toc"><ul class="toc-list"><li class="level-2"><a href="#l-liskov-substitution-principle-lsp">**L — Liskov Substitution Principle (LSP)**</a></li><li class="level-3"><a href="#bad-example">❌ Bad example:</a></li><li class="level-3"><a href="#good-example">✅ Good example:</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
         <h2 id="l-liskov-substitution-principle-lsp"><strong>L — Liskov Substitution Principle (LSP)</strong></h2>
 <blockquote><p>“Derived classes should be substitutable for their base classes.”</p></blockquote>
 <p>Derived classes must behave consistently with their base abstraction.</p>
@@ -112,6 +112,28 @@ public class InstantOrder : Order
 }
 public class MarketOrder : ICancelableOrder { public void Cancel() { /* ... */ } }</code></pre>
 <p>💡 <strong>In trading systems:</strong> If you design a <code>Strategy</code> base class, ensure all derived strategies behave consistently and safely under the same interface.</p>
+<p>---</p>
+<h2 id="questions-answers">Questions & Answers</h2>
+<p><strong>Q: How do you detect LSP violations?</strong></p>
+<p>A: When derived types throw or ignore base contract requirements (e.g., methods not supported) or when client code needs <code>is</code> checks before calling base members. Unit tests failing when swapping implementations are another sign.</p>
+<p><strong>Q: How does LSP relate to API compatibility?</strong></p>
+<p>A: New API versions must remain substitutable for clients expecting older behavior. Breaking contract expectations (return types, error codes) violates LSP-like guarantees.</p>
+<p><strong>Q: How can preconditions/postconditions break LSP?</strong></p>
+<p>A: Derived classes shouldn’t strengthen preconditions (require extra setup) nor weaken postconditions (provide less result). Keep invariants consistent with the base definition.</p>
+<p><strong>Q: When should you refactor inheritance into composition?</strong></p>
+<p>A: If derived classes must disable base behavior or add flags to avoid inherited logic, switch to composition/strategies. This keeps contracts honest and avoids LSP pitfalls.</p>
+<p><strong>Q: How do you test for LSP compliance?</strong></p>
+<p>A: Create contract tests that run against the base interface and execute them for every implementation. If any fail, the type isn’t substitutable.</p>
+<p><strong>Q: Does LSP apply to generics or covariance?</strong></p>
+<p>A: Yes—ensure generic constraints and variance don't allow incompatible substitutions that break runtime behavior (e.g., returning base types where derived specifics are expected).</p>
+<p><strong>Q: How does LSP affect exception handling?</strong></p>
+<p>A: Derived classes should not introduce new unchecked exceptions for operations the base class promised to handle. Keep the failure semantics consistent.</p>
+<p><strong>Q: How does LSP influence serialization/deserialization?</strong></p>
+<p>A: When polymorphic types are serialized, derived classes must adhere to expected schema so consumers can deserialize using the base contract without surprises.</p>
+<p><strong>Q: What design smell indicates an LSP issue?</strong></p>
+<p>A: Methods in base types throwing <code>NotImplementedException</code> in derived classes, or <code>switch</code> statements on type codes. These indicate the hierarchy is mis-modeled.</p>
+<p><strong>Q: How does LSP tie into SOLID overall?</strong></p>
+<p>A: Without LSP, OCP fails—extensions break existing clients. Ensuring substitutability keeps abstractions reliable and enables safe extension.</p>
       </article>
     </main>
   </div>

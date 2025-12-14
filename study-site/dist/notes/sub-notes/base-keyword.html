@@ -85,7 +85,7 @@
         <div class="breadcrumbs">notes\sub-notes\base-keyword.md</div>
         <h2>Base Keyword</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#using-base-in-c-immediate-base-class-explained">Using `base` in C# — immediate base class explained</a></li><li class="level-3"><a href="#what-immediate-base-class-refers-to">✅ **What “immediate base class” refers to**</a></li><li class="level-3"><a href="#example">📌 Example</a></li><li class="level-3"><a href="#why-immediate-base-class">📌 Why "immediate" base class?</a></li><li class="level-3"><a href="#summary">✔ Summary</a></li></ul></div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#using-base-in-c-immediate-base-class-explained">Using `base` in C# — immediate base class explained</a></li><li class="level-3"><a href="#what-immediate-base-class-refers-to">✅ **What “immediate base class” refers to**</a></li><li class="level-3"><a href="#example">📌 Example</a></li><li class="level-3"><a href="#why-immediate-base-class">📌 Why "immediate" base class?</a></li><li class="level-3"><a href="#summary">✔ Summary</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
         <h1 id="using-base-in-c-immediate-base-class-explained">Using <code>base</code> in C# — immediate base class explained</h1>
 <p>In object-oriented programming (especially in <strong>C#</strong>), the keyword <strong><code>base</code></strong> is used inside a derived class to refer to its <strong>immediate parent (base) class</strong>.</p>
 <p>Here’s what that means, clearly and simply:</p>
@@ -128,6 +128,28 @@ class Dog : Animal
 <ul><li><strong><code>base</code> = direct parent class of the current class</strong></li><li>Used to access overridden or hidden members of the parent class</li><li>Also used to call parent class constructors</li></ul>
 <p>---</p>
 <p>If you want, I can also explain how <code>base</code> differs from <code>this</code>, or how it’s used in constructors.</p>
+<p>---</p>
+<h2 id="questions-answers">Questions & Answers</h2>
+<p><strong>Q: What does <code>base</code> reference inside a derived class?</strong></p>
+<p>A: The immediate parent class—not grandparents. In a chain <code>Animal → Mammal → Dog</code>, <code>base</code> inside <code>Dog</code> refers to <code>Mammal</code>.</p>
+<p><strong>Q: When do you need to call a base constructor explicitly?</strong></p>
+<p>A: When the base class lacks a parameterless constructor or you must initialize base state with specific arguments. Use <code>: base(args)</code> in the derived constructor.</p>
+<p><strong>Q: How does <code>base</code> differ from <code>this</code>?</strong></p>
+<p>A: <code>this</code> refers to the current instance (including overridden members). <code>base</code> lets you access the base implementation, bypassing overrides in the derived class.</p>
+<p><strong>Q: Can you access private members via <code>base</code>?</strong></p>
+<p>A: No. <code>base</code> respects access modifiers. You can call protected/internal members exposed by the base class.</p>
+<p><strong>Q: When might you call <code>base.Method()</code> inside an override?</strong></p>
+<p>A: When you want to extend base behavior rather than replace it entirely—e.g., log additional data before or after invoking the base implementation.</p>
+<p><strong>Q: What happens if the base implementation throws?</strong></p>
+<p>A: Exceptions propagate like any method call; wrap <code>base</code> calls in try/catch only when you can handle failures meaningfully.</p>
+<p><strong>Q: Can interfaces have a <code>base</code> equivalent?</strong></p>
+<p>A: No. <code>base</code> only applies to classes/structs. Interfaces support default implementations in C# 8+, but you don’t call them via <code>base</code>.</p>
+<p><strong>Q: How do you reference the base indexer?</strong></p>
+<p>A: Within a derived class, you can call <code>base[index]</code> to use the parent’s indexer when overriding.</p>
+<p><strong>Q: What about virtual properties or events?</strong></p>
+<p>A: Use <code>base.Property</code> or <code>base.Event</code> to interact with the parent’s implementation when overriding getters/setters or event accessors.</p>
+<p><strong>Q: How does <code>base</code> behave in multiple inheritance?</strong></p>
+<p>A: C# classes don’t support multiple inheritance, so <code>base</code> is always unambiguous. With interfaces, you implement each separately; no <code>base</code> keyword exists for them.</p>
       </article>
     </main>
   </div>

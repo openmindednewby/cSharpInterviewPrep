@@ -87,3 +87,45 @@ Console.WriteLine(service.GetPrice("EURUSD")); // second call cached
 | Cross-cutting features         | **Decorator** | Add logging, caching, retries safely   |
 
 ---
+
+## Questions & Answers
+
+**Q: Why use decorators instead of inheritance for cross-cutting behavior?**
+
+A: Decorators wrap existing implementations at runtime without modifying classes or exploding inheritance hierarchies. They preserve the original behavior and let you compose features like logging, caching, and retries in any order.
+
+**Q: How do you wire decorators with ASP.NET Core DI?**
+
+A: Register the core implementation and then use `services.Decorate<IPriceService, LoggingPriceService>();` (via Scrutor) or manual factory delegates to wrap dependencies in the desired order.
+
+**Q: How do decorators interact with async services?**
+
+A: Implement `Task`-returning methods and ensure decorators await the inner call, adding behavior before/after. For example, a retry decorator can wrap `await _inner.ExecuteAsync(...)` in Polly policies.
+
+**Q: How do you prevent duplicate decoration?**
+
+A: Centralize registration so each service gets decorated once. Use DI scanning rules or tests to ensure there’s a single decorator pipeline per service type.
+
+**Q: When does the decorator pattern become overkill?**
+
+A: If you only need a single concern (e.g., logging) or behavior is global (middleware), decorators might be unnecessary. Use them when behaviors vary per service or must be combined flexibly.
+
+**Q: How does decorator order affect behavior?**
+
+A: Order matters—logging outside caching sees all calls, while caching outside logging hides repeated hits. Be intentional about stacking order and document expectations.
+
+**Q: How do you share state between decorators?**
+
+A: Pass shared dependencies (e.g., metrics registry) into each decorator via DI, or include context objects in method parameters so decorators can enrich them without coupling.
+
+**Q: Can decorators modify return types?**
+
+A: They should adhere to the same interface, but they can wrap results (e.g., attach metadata) or transform responses before returning. Keep transformations predictable so callers aren’t surprised.
+
+**Q: How do you unit test decorators?**
+
+A: Provide a fake inner service and assert the decorator calls it and adds the expected behavior (logging, caching, etc.). Since decorators depend on the same interface, tests remain simple.
+
+**Q: How do decorators compare to middleware?**
+
+A: Middleware operates at the application pipeline level (HTTP). Decorators operate at service boundaries, allowing fine-grained per-service behavior and reusability outside web pipelines.

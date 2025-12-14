@@ -166,3 +166,47 @@ That’s your **evidence** you’ve optimized allocations correctly.
 
 Would you like me to follow up with a **bonus version using `System.IO.Pipelines`** — the way you’d implement this in a real HFM-style backend (async, streaming, zero-copy)?
 That’s often a **senior-level differentiator question**.
+
+---
+
+## Questions & Answers
+
+**Q: How does this parser minimize allocations?**
+
+A: It uses `ReadOnlySpan<byte>` to slice the input buffer, `Utf8Parser` to parse primitives directly from bytes, and `ArrayPool<byte>` to reuse buffers, leaving only one small string allocation per tick.
+
+**Q: Why is `Utf8Parser` preferred here?**
+
+A: It avoids converting byte segments into strings before parsing numbers, eliminating temporary allocations and respecting culture-invariant formats ideal for market data.
+
+**Q: How do you process partial messages with this approach?**
+
+A: Maintain leftover spans between reads or use `System.IO.Pipelines`, which handles split frames by giving you `ReadOnlySequence<byte>` to process once a newline delimiter appears.
+
+**Q: How would you adapt this for asynchronous sockets?**
+
+A: Swap buffer handling for `PipeReader`/`PipeWriter`, consume `ReadOnlySequence<byte>` segments, and use `Memory<byte>` to cross `await` boundaries safely while keeping parsing logic identical.
+
+**Q: What GC metrics confirm success?**
+
+A: `Gen0 GC Count` stays low relative to throughput, `Gen2 GC Count` remains near zero, and `Allocated Bytes/sec` is minimal. Use `dotnet-counters` to observe these while the parser runs.
+
+**Q: How do you reuse symbol strings to avoid per-message allocations?**
+
+A: Maintain a dictionary of interned symbols or use `ReadOnlyMemory<byte>` pointing to shared symbol tables, so repeated symbols reuse references instead of allocating new strings.
+
+**Q: What happens if you allocate 100 KB buffers per message?**
+
+A: They land on the LOH, leading to fragmentation and long Gen2 pauses. Renting from `ArrayPool<byte>` avoids repeated LOH allocations.
+
+**Q: How do you handle parsing failures?**
+
+A: Check the boolean return from `Utf8Parser.TryParse` and decide whether to drop/log the tick or route it to a poison queue. Avoid throwing in the hot path to keep allocation-free behavior.
+
+**Q: Can you pool `Tick` instances too?**
+
+A: Yes—use `ObjectPool<Tick>` or a struct pool if you need to reuse containers. Ensure pooled objects are reset before reuse to avoid leaking data.
+
+**Q: How would you extend this to publish to RabbitMQ/Kafka?**
+
+A: Serialize ticks using `IBufferWriter<byte>` or spans to keep serialization allocation-free, then push to the broker client that supports span-friendly APIs.

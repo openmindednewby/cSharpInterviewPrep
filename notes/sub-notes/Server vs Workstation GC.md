@@ -124,3 +124,47 @@ Use **Workstation GC** when:
 ---
 
 If you want, I can give you a **30-second script** you can say verbatim when they ask “Server vs Workstation GC—when and why?”
+
+---
+
+## Questions & Answers
+
+**Q: How do you switch between Server and Workstation GC?**
+
+A: Set `DOTNET_GCServer=1` (or configure in runtimeconfig) for Server GC. Without it, Workstation GC is used by default for desktop apps. Always verify with `GCSettings.IsServerGC`.
+
+**Q: Why is Server GC ideal for web APIs?**
+
+A: It creates a GC worker per core and uses larger segments, reducing collection frequency and keeping throughput high under heavy allocation workloads common in APIs.
+
+**Q: When would Workstation GC outperform Server GC?**
+
+A: In small, CPU-limited containers or interactive desktop apps where shorter individual pauses matter more than raw throughput. Always measure both modes.
+
+**Q: Do latency modes differ between Server and Workstation GC?**
+
+A: Both support `GCSettings.LatencyMode` options (Interactive, Batch, SustainedLowLatency, NoGCRegion). Choose based on workload, not GC flavor.
+
+**Q: How does containerization affect GC choice?**
+
+A: .NET respects container CPU/memory limits when sizing GC segments and threads. If you limit CPUs, Server GC creates fewer worker threads accordingly.
+
+**Q: How do you monitor GC mode effectiveness?**
+
+A: Track `% Time in GC`, Gen2 counts, and LOH size via `dotnet-counters` or App Insights. Compare metrics when toggling between modes to justify the configuration.
+
+**Q: Can you mix modes within the same process?**
+
+A: No. GC mode is a process-wide setting configured at startup. You can’t run Server GC for some components and Workstation GC for others.
+
+**Q: How do pinned objects behave under each mode?**
+
+A: Pinning affects compaction regardless of GC mode. However, Server GC’s larger segments mean fragmentation can be more noticeable if you pin frequently.
+
+**Q: Does background GC behave differently between modes?**
+
+A: Server GC runs background Gen2 collections in parallel. Workstation GC also supports background GC but with fewer worker threads, so concurrency benefits are smaller.
+
+**Q: What’s your quick pitch comparing the two?**
+
+A: “Server GC maximizes throughput on multi-core servers via parallel collections; Workstation GC prioritizes responsiveness with shorter pauses. Choose based on workload and validate with GC metrics.”

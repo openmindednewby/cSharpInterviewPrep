@@ -85,7 +85,7 @@
         <div class="breadcrumbs">notes\Design-Patterns\Factory Pattern.md</div>
         <h2>Factory Pattern</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#3-factory-pattern-creating-platform-specific-handlers">⚙️ 3️⃣ Factory Pattern — *Creating platform-specific handlers*</a></li><li class="level-3"><a href="#example-trading-platform-executor-factory">🧩 Example — Trading platform executor factory</a></li></ul></div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#3-factory-pattern-creating-platform-specific-handlers">⚙️ 3️⃣ Factory Pattern — *Creating platform-specific handlers*</a></li><li class="level-3"><a href="#example-trading-platform-executor-factory">🧩 Example — Trading platform executor factory</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
         <h1 id="3-factory-pattern-creating-platform-specific-handlers">⚙️ 3️⃣ Factory Pattern — <em>Creating platform-specific handlers</em></h1>
 <blockquote><p>Centralize creation of objects (like API handlers or executors) based on configuration or environment.</p></blockquote>
 <p>---</p>
@@ -124,6 +124,27 @@ executor.Execute(new Order { Symbol = &quot;USDJPY&quot;, Amount = 5000 });</cod
 <p>✅ <strong>Why it matters:</strong></p>
 <ul><li>Simplifies platform switching (MT4, MT5, FIX, cTrader).</li><li>New platforms require no refactor — just a new class and switch entry.</li></ul>
 <p>---</p>
+<h2 id="questions-answers">Questions & Answers</h2>
+<p><strong>Q: When should you use a Factory pattern in .NET services?</strong></p>
+<p>A: When object creation depends on runtime context (config, tenant, instrument) and you want to isolate creation logic from consumers. Factories prevent scattered <code>new</code> calls and keep construction consistent.</p>
+<p><strong>Q: How does DI interact with factories?</strong></p>
+<p>A: You can register implementations in DI and inject <code>Func&lt;Key, ITradeExecutor&gt;</code> or an <code>IExecutorFactory</code> that resolves services by key. This keeps factories composable with scoped dependencies.</p>
+<p><strong>Q: How do you avoid giant switch statements as platforms grow?</strong></p>
+<p>A: Use a dictionary of delegates, reflection-based registration, or DI <code>IServiceProvider</code> lookups keyed by platform. Alternatively, combine with the Strategy pattern so each executor registers itself.</p>
+<p><strong>Q: What’s the benefit of abstract factories?</strong></p>
+<p>A: When you need to create families of related objects (e.g., executor + validator + serializer per platform), an abstract factory ensures compatible components are produced together.</p>
+<p><strong>Q: How do factories aid testing?</strong></p>
+<p>A: Tests can inject fake factories returning mock executors, isolating code under test without hitting real integrations. It also simplifies verifying that the correct executor is chosen for a scenario.</p>
+<p><strong>Q: How do you handle configuration-driven factories?</strong></p>
+<p>A: Load mappings from configuration or feature flags, then let the factory instantiate types via DI. This enables runtime toggles (e.g., route VIP tenants to a premium executor) without code changes.</p>
+<p><strong>Q: When is the factory pattern overkill?</strong></p>
+<p>A: When only two concrete types exist and creation logic is trivial. Start simple, and introduce a factory once switching logic repeats or needs shared validation/logging.</p>
+<p><strong>Q: How do you ensure factories remain SRP-compliant?</strong></p>
+<p>A: Keep them focused on creation. Any orchestration, validation, or logging should be delegated to other components or decorators so factories don't become god objects.</p>
+<p><strong>Q: Can factories return async results?</strong></p>
+<p>A: Yes—define methods returning <code>Task&lt;T&gt;</code> if creation involves I/O (e.g., pulling secrets). Just ensure callers understand the lifecycle and avoid blocking <code>.Result</code>.</p>
+<p><strong>Q: How do you register factories in DI?</strong></p>
+<p>A: Register each concrete type and a factory delegate: <code>services.AddTransient&lt;ExecutorFactory&gt;();</code> or <code>services.AddSingleton&lt;Func&lt;string, ITradeExecutor&gt;&gt;(provider =&gt; key =&gt; provider.GetRequiredKeyedService&lt;ITradeExecutor&gt;(key));</code>.</p>
       </article>
     </main>
   </div>

@@ -121,3 +121,47 @@ A crisp story to tell:
 > “.NET uses a **generational GC**: most objects die young in **Gen0/Gen1**, long-lived objects are promoted to **Gen2**; very large allocations go to the **LOH**, which isn’t compacted by default. For services we run **Server GC** to maximize throughput with background Gen2 collections. We keep **allocation pressure** low in hot paths—pool buffers, use **`Span<T>`** for zero-alloc parsing, and use **`Memory<T>`** across async boundaries. We monitor **GC counters** to spot excessive Gen2/LOH activity. If fragmentation creeps into LOH we schedule a one-off compaction. We only tweak latency modes for short, critical windows and never force collections in steady state.”
 
 If you want, I can give you a **10-minute hands-on drill**: a tiny price-tick parser using `Span<byte>`, `ArrayPool<byte>`, and counters you can discuss live.
+
+---
+
+## Questions & Answers
+
+**Q: What are the primary heaps managed by the CLR GC?**
+
+A: The Small Object Heap (Gen0, Gen1, Gen2) for most allocations and the Large Object Heap (LOH) for objects ≥ ~85 KB. LOH skips Gen0/1 and isn’t compacted by default.
+
+**Q: When would you enable Server GC vs Workstation GC?**
+
+A: Server GC is ideal for ASP.NET/services because it uses per-core GC threads and larger segments for throughput. Workstation GC suits desktop apps needing responsiveness.
+
+**Q: How do you reduce Gen2 collections?**
+
+A: Lower allocation pressure (pool buffers, reuse objects), fix leaks, and avoid promoting long-lived caches unnecessarily. Monitor `Gen 2 GC Count` and LOH allocations.
+
+**Q: What is `NoGCRegion` and when should you use it?**
+
+A: It temporarily disables GC by pre-reserving memory for critical sections (e.g., market open). Use sparingly; exceeding the reserved size or hitting LOH allocations ends it prematurely.
+
+**Q: How do you minimize LOH fragmentation?**
+
+A: Avoid frequent large allocations, reuse arrays via `ArrayPool<T>`, and schedule `GCLargeObjectHeapCompactionMode.CompactOnce` only during maintenance windows.
+
+**Q: Why is forcing `GC.Collect()` usually a bad idea?**
+
+A: It induces full, blocking collections that hurt throughput. Let the GC decide when to collect unless you’re in a very specific maintenance scenario.
+
+**Q: How do spans/memory types impact GC?**
+
+A: `Span<T>`/`Memory<T>` enable zero-copy operations, reducing allocations that would otherwise add pressure on Gen0/1. They help keep critical paths GC-neutral.
+
+**Q: Which diagnostics do you rely on to understand GC behavior?**
+
+A: `dotnet-counters` (Allocated Bytes/sec, % Time in GC), `dotnet-trace`, PerfView, and `dotnet-gcdump` to inspect heap composition and collection frequency.
+
+**Q: How do you tune GC in containers?**
+
+A: Use container-aware defaults (.NET 6+), but override with `DOTNET_GCHeapHardLimit` or `DOTNET_GCHeapHardLimitPercent` for strict caps. Ensure CPU/memory limits align with GC thread counts.
+
+**Q: How do latency modes affect runtime behavior?**
+
+A: Modes like `SustainedLowLatency` reduce Gen2 frequency at the cost of higher memory usage. `Batch` maximizes throughput but tolerates longer pauses. Choose based on workload requirements.

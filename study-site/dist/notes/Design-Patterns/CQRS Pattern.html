@@ -85,7 +85,7 @@
         <div class="breadcrumbs">notes\Design-Patterns\CQRS Pattern.md</div>
         <h2>CQRS Pattern</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#4-cqrs-pattern-commandquery-split-for-trading-operations">⚙️ 4️⃣ CQRS Pattern — *Command/Query split for trading operations*</a></li><li class="level-3"><a href="#example-placeorder-command-vs-getorder-query">🧩 Example — PlaceOrder (Command) vs GetOrder (Query)</a></li></ul></div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#4-cqrs-pattern-commandquery-split-for-trading-operations">⚙️ 4️⃣ CQRS Pattern — *Command/Query split for trading operations*</a></li><li class="level-3"><a href="#example-placeorder-command-vs-getorder-query">🧩 Example — PlaceOrder (Command) vs GetOrder (Query)</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
         <h1 id="4-cqrs-pattern-commandquery-split-for-trading-operations">⚙️ 4️⃣ CQRS Pattern — <em>Command/Query split for trading operations</em></h1>
 <p>!<a href="CQRS-Pattern.png">CQRS-Pattern</a></p>
 <blockquote><p>Separate <strong>commands</strong> (change system state) from <strong>queries</strong> (read state).</p></blockquote>
@@ -134,6 +134,27 @@ var queryHandler = new OrderQueryHandler();
 <p>✅ <strong>Why it matters:</strong></p>
 <ul><li>Commands → mutate state (place/cancel order).</li><li>Queries → fetch data (get portfolio, prices).</li><li>Enables <strong>scalability</strong> (separate read/write services) and <strong>event sourcing</strong> (audit trading actions).</li></ul>
 <p>---</p>
+<h2 id="questions-answers">Questions & Answers</h2>
+<p><strong>Q: Why split commands and queries in a trading platform?</strong></p>
+<p>A: It allows optimizing writes (placing trades, cancelling orders) separately from reads (dashboards, risk reports). Each side scales independently, and commands can enforce invariants while queries use denormalized projections for speed.</p>
+<p><strong>Q: How does CQRS relate to MediatR in .NET?</strong></p>
+<p>A: MediatR naturally models CQRS—commands and queries implement <code>IRequest&lt;T&gt;</code> handled by dedicated handlers. Pipeline behaviors add validation, logging, or retries without mixing concerns.</p>
+<p><strong>Q: Do commands ever return values?</strong></p>
+<p>A: Prefer returning void or minimal identifiers, encouraging clients to query for the latest state separately. This keeps commands focused on side effects and simplifies testing.</p>
+<p><strong>Q: How do you keep read models updated?</strong></p>
+<p>A: Use domain events or the outbox pattern to publish changes that projection handlers consume. They update materialized views, caches, or search indexes asynchronously.</p>
+<p><strong>Q: How does CQRS enable event sourcing?</strong></p>
+<p>A: Commands append events to a store. Queries rebuild state or read from projections fed by those events. This provides a complete audit trail for compliance-heavy domains.</p>
+<p><strong>Q: When is CQRS overkill?</strong></p>
+<p>A: For small services with simple CRUD needs, splitting handlers adds complexity. Start simple and adopt CQRS when read/write workloads diverge or when you need auditability and segregation.</p>
+<p><strong>Q: How do you enforce validation and authorization?</strong></p>
+<p>A: Apply behaviors or decorators on the command pipeline to run validators and authorization checks pre-handler. Queries can apply read-specific policies separately.</p>
+<p><strong>Q: How does CQRS aid scaling databases?</strong></p>
+<p>A: Commands can target a write-optimized store (e.g., SQL with strict constraints) while queries hit read replicas or NoSQL caches tuned for fast lookups. This reduces contention and lock waits.</p>
+<p><strong>Q: How do you test CQRS handlers?</strong></p>
+<p>A: Unit test commands with mocked dependencies to assert events or repository calls. Integration test queries against seed data or projections to ensure mapping and filtering work as expected.</p>
+<p><strong>Q: How do you handle consistency between reads and writes?</strong></p>
+<p>A: Accept eventual consistency for views, communicate lag expectations, and provide read-your-writes mechanisms when necessary (e.g., direct query fallback or wait-for-projection acknowledgments).</p>
       </article>
     </main>
   </div>

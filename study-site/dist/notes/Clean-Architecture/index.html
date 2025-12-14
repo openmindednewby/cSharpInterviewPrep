@@ -85,7 +85,7 @@
         <div class="breadcrumbs">notes\Clean-Architecture\index.md</div>
         <h2>Clean Architecture</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#3-clean-architecture-layered-design-for-trading-systems">🧱 3️⃣ Clean Architecture — Layered Design for Trading Systems</a></li><li class="level-3"><a href="#layers-overview">🏗️ Layers Overview</a></li><li class="level-3"><a href="#example-in-a-trading-context">Example in a Trading Context</a></li><li class="level-4"><a href="#domain-layer">🧩 Domain Layer</a></li><li class="level-4"><a href="#application-layer">🧩 Application Layer</a></li><li class="level-4"><a href="#infrastructure-layer">🧩 Infrastructure Layer</a></li><li class="level-4"><a href="#presentation-layer">🧩 Presentation Layer</a></li><li class="level-3"><a href="#how-it-all-connects">⚙️ How it all connects</a></li></ul></div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#3-clean-architecture-layered-design-for-trading-systems">🧱 3️⃣ Clean Architecture — Layered Design for Trading Systems</a></li><li class="level-3"><a href="#layers-overview">🏗️ Layers Overview</a></li><li class="level-3"><a href="#example-in-a-trading-context">Example in a Trading Context</a></li><li class="level-4"><a href="#domain-layer">🧩 Domain Layer</a></li><li class="level-4"><a href="#application-layer">🧩 Application Layer</a></li><li class="level-4"><a href="#infrastructure-layer">🧩 Infrastructure Layer</a></li><li class="level-4"><a href="#presentation-layer">🧩 Presentation Layer</a></li><li class="level-3"><a href="#how-it-all-connects">⚙️ How it all connects</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
         <h1 id="3-clean-architecture-layered-design-for-trading-systems">🧱 3️⃣ Clean Architecture — Layered Design for Trading Systems</h1>
 <p>!<a href="image.png">alt text</a></p>
 <p>Clean Architecture (from Uncle Bob) organizes your system into <strong>layers</strong> that isolate business logic from infrastructure.</p>
@@ -154,6 +154,27 @@ public class OrdersController : ControllerBase
 <blockquote><p>“Dependencies always point inward — nothing in domain depends on outer layers.”</p></blockquote>
 <p>This separation makes your system <strong>testable, extensible, and resilient to change</strong>.</p>
 <p>---</p>
+<h2 id="questions-answers">Questions & Answers</h2>
+<p><strong>Q: What problem does Clean Architecture solve in a trading backend?</strong></p>
+<p>A: It isolates business invariants (domain) from volatile infrastructure (MT4 bridges, databases, queues). That way, compliance or pricing rules can evolve independently of transport/protocol changes, improving testability and longevity.</p>
+<p><strong>Q: How do dependencies flow between layers?</strong></p>
+<p>A: They always point inward: Presentation → Application → Domain, an Infrastructure → Application/Domain via abstractions. Outer layers depend on interfaces defined closer to the domain so high-level policy doesn't reference implementation details.</p>
+<p><strong>Q: Where do MediatR handlers and validators belong?</strong></p>
+<p>A: They live in the Application layer because they orchestrate use cases. Handlers depend on domain abstractions and infrastructure contracts, but they shouldn't contain transport or framework-specific code beyond orchestration.</p>
+<p><strong>Q: How do you keep Infrastructure replaceable?</strong></p>
+<p>A: Define interfaces (repositories, message gateways) inside the Application/Domain layers and implement them in Infrastructure. Register implementations via DI so you can swap SQL for Cosmos, or RabbitMQ for Kafka, without touching business logic.</p>
+<p><strong>Q: When would you introduce a shared kernel or cross-cutting project?</strong></p>
+<p>A: Only for concepts shared across bounded contexts (e.g., identity, currency). Keep it tiny and stable. Everything else should stay in each feature's domain to avoid reintroducing tight coupling.</p>
+<p><strong>Q: How do you test Application-layer use cases?</strong></p>
+<p>A: Mock Infrastructure dependencies behind interfaces and test handlers/services directly. Since the Application layer has no UI/DB concerns, unit tests stay deterministic and focus on orchestration, validation, and domain invariants.</p>
+<p><strong>Q: What belongs in the Domain layer vs Application?</strong></p>
+<p>A: Domain contains entities, value objects, domain services, aggregates, and events—the core business rules. Application coordinates those rules in use cases, orchestrating repositories, external services, and transactions.</p>
+<p><strong>Q: How do you handle cross-cutting concerns like logging or caching?</strong></p>
+<p>A: Apply decorators or pipeline behaviors (e.g., MediatR behaviors, middleware) in outer layers. They wrap use cases without polluting domain logic, keeping Clean Architecture boundaries intact.</p>
+<p><strong>Q: How does Clean Architecture interact with CQRS?</strong></p>
+<p>A: Commands and queries fit naturally into the Application layer as separate handlers. Read models can use dedicated infrastructure (e.g., optimized query stores) while writes go through domain entities and aggregates.</p>
+<p><strong>Q: When would you relax strict layering?</strong></p>
+<p>A: Only when profiling shows a clear performance bottleneck and you've validated that bypassing a layer (e.g., read-only projections accessing Infrastructure directly) won't compromise maintainability. Even then, document the decision and keep dependencies pointing inward.</p>
       </article>
     </main>
   </div>

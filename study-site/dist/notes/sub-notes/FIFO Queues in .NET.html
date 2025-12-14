@@ -85,7 +85,7 @@
         <div class="breadcrumbs">notes\sub-notes\FIFO Queues in .NET.md</div>
         <h2>FIFO Queues In .NET</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#fifo-queues-in-net">FIFO Queues in .NET</a></li></ul></div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#fifo-queues-in-net">FIFO Queues in .NET</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
         <h1 id="fifo-queues-in-net">FIFO Queues in .NET</h1>
 <ul><li><strong>Definition:</strong> <em>First-In, First-Out</em> data structure where the earliest enqueued item is dequeued first.</li><li><strong>API Surface:</strong> Use <code>Queue&lt;T&gt;</code> for in-memory work, <code>Channel&lt;T&gt;</code> for async producers/consumers, and <code>ConcurrentQueue&lt;T&gt;</code> in multi-threaded scenarios.</li></ul>
 <pre class="hljs"><code>var orders = new Queue&lt;Order&gt;();
@@ -97,6 +97,28 @@ while (orders.TryDequeue(out var next))
     await _executionService.ExecuteAsync(next);
 }</code></pre>
 <blockquote><p>⚙️ <strong>Threading Tip:</strong> Prefer <code>Channel&lt;T&gt;</code> or <code>System.Threading.Channels</code> when you need async waiting rather than spin-checking a <code>Queue&lt;T&gt;</code>.</p></blockquote>
+<p>---</p>
+<h2 id="questions-answers">Questions & Answers</h2>
+<p><strong>Q: When should you use <code>Queue&lt;T&gt;</code> vs <code>ConcurrentQueue&lt;T&gt;</code>?</strong></p>
+<p>A: Use <code>Queue&lt;T&gt;</code> for single-threaded scenarios. Use <code>ConcurrentQueue&lt;T&gt;</code> when multiple threads enqueue/dequeue concurrently, but note it lacks blocking reads.</p>
+<p><strong>Q: Why choose <code>Channel&lt;T&gt;</code> over <code>BlockingCollection&lt;T&gt;</code>?</strong></p>
+<p>A: <code>Channel&lt;T&gt;</code> supports async producers/consumers, backpressure, and high performance without legacy <code>BlockingCollection</code> overhead. It integrates well with async/await.</p>
+<p><strong>Q: How do you implement backpressure with FIFO queues?</strong></p>
+<p>A: Use bounded <code>Channel&lt;T&gt;</code> so producers await when the queue is full, preventing memory blowups and throttling upstream systems.</p>
+<p><strong>Q: How do you ensure ordering when scaling consumers?</strong></p>
+<p>A: Single consumer preserves strict FIFO. If you scale out, partition by key (e.g., account ID) so each partition maintains order, or accept eventual ordering per partition only.</p>
+<p><strong>Q: How do you persist FIFO semantics across process restarts?</strong></p>
+<p>A: Use durable queues (RabbitMQ, Azure Service Bus) with FIFO support, or persist queue state in a database/outbox to resume processing after failure.</p>
+<p><strong>Q: What’s the cost of peeking?</strong></p>
+<p>A: <code>Queue&lt;T&gt;.Peek()</code> is O(1) and non-destructive. For channels, peeking isn’t supported; you’d need to buffer manually if you must inspect before processing.</p>
+<p><strong>Q: How do you avoid busy-wait loops with <code>Queue&lt;T&gt;</code>?</strong></p>
+<p>A: Use synchronization primitives (<code>SemaphoreSlim</code>, <code>AutoResetEvent</code>) or switch to <code>Channel&lt;T&gt;</code>/<code>BlockingCollection&lt;T&gt;</code> which provide blocking/async waits.</p>
+<p><strong>Q: How do FIFO queues interact with metrics?</strong></p>
+<p>A: Track enqueue/dequeue rates, queue length, and processing latency. Alert when queue length grows unexpectedly—indicates downstream slowness.</p>
+<p><strong>Q: How do you handle poison messages?</strong></p>
+<p>A: Implement retries with exponential backoff, move failures to a dead-letter queue, and avoid blocking the FIFO by skipping or quarantining bad entries.</p>
+<p><strong>Q: How do you throttle producers?</strong></p>
+<p>A: Combine bounded channels with <code>SemaphoreSlim</code> or token buckets. Producers await when the channel is full, smoothing load on downstream services.</p>
       </article>
     </main>
   </div>

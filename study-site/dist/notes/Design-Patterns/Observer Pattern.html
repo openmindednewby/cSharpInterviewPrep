@@ -85,7 +85,7 @@
         <div class="breadcrumbs">notes\Design-Patterns\Observer Pattern.md</div>
         <h2>Observer Pattern</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#2-observer-pattern-market-data-broadcast">⚙️ 2️⃣ Observer Pattern — *Market data broadcast*</a></li><li class="level-3"><a href="#example-pricefeed-with-multiple-subscribers">🧩 Example — PriceFeed with multiple subscribers</a></li></ul></div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#2-observer-pattern-market-data-broadcast">⚙️ 2️⃣ Observer Pattern — *Market data broadcast*</a></li><li class="level-3"><a href="#example-pricefeed-with-multiple-subscribers">🧩 Example — PriceFeed with multiple subscribers</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
         <h1 id="2-observer-pattern-market-data-broadcast">⚙️ 2️⃣ Observer Pattern — <em>Market data broadcast</em></h1>
 <blockquote><p>Let multiple subscribers react to market data updates in real-time.</p></blockquote>
 <p>---</p>
@@ -139,6 +139,27 @@ feed.Publish(new Tick { Symbol = &quot;GBPUSD&quot;, Bid = 1.2520, Ask = 1.2522 
 <p>✅ <strong>Why it matters:</strong></p>
 <ul><li>Perfect for <strong>real-time streaming</strong> (price feeds, notifications, updates).</li><li>Loose coupling between publisher and subscribers.</li><li>Scales to multiple observers (UI, loggers, analytics, etc.).</li></ul>
 <p>---</p>
+<h2 id="questions-answers">Questions & Answers</h2>
+<p><strong>Q: When do you reach for the Observer pattern in .NET systems?</strong></p>
+<p>A: Whenever multiple components need to react to the same event stream—market ticks, order fills, health changes—without tight coupling. It decouples publishers from subscribers so you can add/remove listeners without touching producers.</p>
+<p><strong>Q: How does Observer compare to pub/sub messaging?</strong></p>
+<p>A: Observer is in-process and synchronous (events raised inside the same app), while pub/sub uses brokers for cross-process communication. Start with Observer for local notifications; graduate to brokers (RabbitMQ, Kafka) for distributed systems.</p>
+<p><strong>Q: How do you prevent event handlers from crashing the publisher?</strong></p>
+<p>A: Wrap subscriber invocations in try/catch, run them asynchronously, or use mediator pipelines that isolate failures. Consider <code>IObservable&lt;T&gt;</code> + Rx to provide built-in error handling semantics.</p>
+<p><strong>Q: How do you unsubscribe to avoid memory leaks?</strong></p>
+<p>A: Keep references to event handlers and detach them (<code>feed.OnTick -= handler</code>). With <code>IObservable&lt;T&gt;</code>, dispose the subscription. In DI scenarios, use weak references or lifetime-managed subscriptions.</p>
+<p><strong>Q: When would you use <code>IObservable&lt;T&gt;</code>/Reactive Extensions instead of custom events?</strong></p>
+<p>A: When you need advanced operators (buffering, throttling, filtering) or asynchronous streams. Rx provides a richer API and backpressure controls.</p>
+<p><strong>Q: How do you scale observers across services?</strong></p>
+<p>A: Push ticks to a message broker (RabbitMQ topics, Kafka) and let downstream services subscribe. The Observer concept still applies, but the transport ensures durability and fan-out across machines.</p>
+<p><strong>Q: How do you ensure observers don’t block the publisher?</strong></p>
+<p>A: Execute callbacks on thread pool tasks, channels, or use asynchronous event handlers returning <code>Task</code>. Alternatively, push events into bounded queues so slow consumers don’t back up producers.</p>
+<p><strong>Q: What patterns pair well with Observer?</strong></p>
+<p>A: Combine with Strategy (different reaction logic per subscriber), Decorator (add logging around event handling), or CQRS (publish domain events that feed read models).</p>
+<p><strong>Q: How do you test observers?</strong></p>
+<p>A: Subscribe fake handlers or use spies to capture events, then assert they received the expected sequence when the publisher produces certain ticks.</p>
+<p><strong>Q: How do you handle ordering guarantees?</strong></p>
+<p>A: Document whether observers receive events in publish order; if ordering matters, process events synchronously per subscriber or use ordered queues. For distributed observers, leverage partitions/keys to maintain order.</p>
       </article>
     </main>
   </div>

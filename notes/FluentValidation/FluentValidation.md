@@ -227,3 +227,45 @@ If you want, I can:
 - Add a checklist template for PR/code reviews focusing on validation rules.
 
 ***
+
+## Questions & Answers
+
+**Q: When should you reach for FluentValidation over data annotations?**
+
+A: When validation is complex, needs async checks, localization, or cross-field logic. FluentValidation keeps rules in dedicated classes, making them testable and composable, whereas data annotations are limited to attribute-based, synchronous checks.
+
+**Q: How do you share rules between create and update flows?**
+
+A: Use `Include()` to compose validators, `RuleSet` to toggle groups, or separate DTOs per use case. Avoid giant conditional validators—split contexts when rules diverge significantly.
+
+**Q: How do you keep validators from doing business logic?**
+
+A: Limit them to pure validation (checking invariants, referencing read-only dependencies). For workflows or state changes, push logic into application/domain services. Validators can query read models but shouldn’t mutate state or call external systems beyond existence checks.
+
+**Q: What’s the role of `CascadeMode`?**
+
+A: It controls whether subsequent rules run after a failure. `CascadeMode.Stop` short-circuits to reduce noise and redundant work, which is useful for perf or to avoid duplicate messages.
+
+**Q: How do you validate collections?**
+
+A: Use `RuleForEach(x => x.Items).SetValidator(new ItemValidator());` to apply nested validators per element, or `RuleFor(x => x.Items).NotEmpty()` for aggregate-level checks. Each nested validator has access to the child item context.
+
+**Q: How do you handle async validators hitting external services?**
+
+A: Use `MustAsync` or `CustomAsync`, inject the dependency (e.g., repository, API client), and ensure it supports cancellation tokens. Batch expensive checks to avoid N+1 calls.
+
+**Q: How do you integrate FluentValidation with MediatR pipelines?**
+
+A: Register validators in DI and add a pipeline behavior that resolves `IValidator<TRequest>`, executes them before the handler, and throws a `ValidationException` if failures exist. This keeps controllers thin and centralizes validation.
+
+**Q: How do you test validators that depend on services?**
+
+A: Provide fake implementations or mocks for the dependencies, instantiate the validator with them, and assert `Validate` results. Since validators are regular classes, tests run fast without ASP.NET hosting.
+
+**Q: How can you customize error messages for localization?**
+
+A: Use `WithMessage(localizer["Key"])`, configure `ValidatorOptions.Global.LanguageManager`, or override `IStringSource` to supply localized strings. Keep messages in resource files rather than hard-coding text.
+
+**Q: How do you prevent validators from capturing scoped services incorrectly?**
+
+A: Register validators with matching lifetimes (usually transient), inject scoped services via constructor, and avoid static validators. When using `AddValidatorsFromAssemblyContaining`, it defaults to transient, which honors DI scopes.

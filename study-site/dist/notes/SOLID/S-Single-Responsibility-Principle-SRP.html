@@ -85,7 +85,7 @@
         <div class="breadcrumbs">notes\SOLID\S-Single-Responsibility-Principle-SRP.md</div>
         <h2>S Single Responsibility Principle SRP</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-2"><a href="#s-single-responsibility-principle-srp">**S — Single Responsibility Principle (SRP)**</a></li><li class="level-3"><a href="#bad-example">❌ Bad example:</a></li><li class="level-3"><a href="#good-example">✅ Good example:</a></li></ul></div>
+        <div class="toc"><ul class="toc-list"><li class="level-2"><a href="#s-single-responsibility-principle-srp">**S — Single Responsibility Principle (SRP)**</a></li><li class="level-3"><a href="#bad-example">❌ Bad example:</a></li><li class="level-3"><a href="#good-example">✅ Good example:</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
         <h2 id="s-single-responsibility-principle-srp"><strong>S — Single Responsibility Principle (SRP)</strong></h2>
 <blockquote><p>“A class should have one and only one reason to change.”</p></blockquote>
 <h3 id="bad-example">❌ Bad example:</h3>
@@ -120,6 +120,28 @@ public class OrderLogger
 <p>👉 Each class does one thing — easier to test, maintain, and evolve.</p>
 <p>💡 <strong>In trading systems:</strong></p>
 <ul><li>Separate <strong>validation</strong>, <strong>risk checks</strong>, and <strong>execution</strong>.</li><li>Each layer can evolve independently (e.g., compliance rules, broker APIs).</li></ul>
+<p>---</p>
+<h2 id="questions-answers">Questions & Answers</h2>
+<p><strong>Q: How do you recognize SRP violations?</strong></p>
+<p>A: When a class changes for multiple reasons—new logging needs, validation tweaks, and execution rules all touching the same file. High churn and wide unit tests are red flags.</p>
+<p><strong>Q: How does SRP improve deploy cadence?</strong></p>
+<p>A: Focused classes let teams modify one area without risk to others, reducing merge conflicts and enabling independent deployments with fewer regression tests.</p>
+<p><strong>Q: Can a class coordinate other classes and still obey SRP?</strong></p>
+<p>A: Yes, if its sole reason is orchestration. For example, <code>OrderProcessor</code> can call validator, risk, and executor; its responsibility is orchestration, not validation logic itself.</p>
+<p><strong>Q: How does SRP influence folder/project structure?</strong></p>
+<p>A: Group types by feature/use case, not by type (e.g., <code>Orders/OrderValidator.cs</code>). This keeps responsibilities cohesive and discoverable.</p>
+<p><strong>Q: What role do interfaces play in SRP?</strong></p>
+<p>A: Interfaces define focused contracts (<code>IOrderValidator</code>, <code>IRiskService</code>), ensuring implementations stay narrow and substitution-friendly.</p>
+<p><strong>Q: How do you refactor SRP violations safely?</strong></p>
+<p>A: Extract class responsibilities incrementally, add unit tests, and use DI to wire new components. Feature toggles can help decouple releases.</p>
+<p><strong>Q: Can modules (not just classes) violate SRP?</strong></p>
+<p>A: Absolutely. Services that mix API logic, data access, and scheduling also violate SRP; break them into modules or microservices with single purposes.</p>
+<p><strong>Q: How does SRP impact observability?</strong></p>
+<p>A: Focused components emit targeted metrics/logs, making it easier to pinpoint issues (e.g., validation vs execution failures).</p>
+<p><strong>Q: What tooling catches SRP issues?</strong></p>
+<p>A: Static analysis for cyclomatic complexity, architecture tests (NetArchTest), and code reviews that demand clear reasons-to-change statements.</p>
+<p><strong>Q: How do you communicate SRP to non-technical stakeholders?</strong></p>
+<p>A: Describe it as separating responsibilities like accounting vs trading—each workflow has its own owner, reducing risk when requirements change.</p>
       </article>
     </main>
   </div>

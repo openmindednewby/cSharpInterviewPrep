@@ -200,6 +200,50 @@ Let’s walk through it step by step, from memory layout to how structs and clas
 
 ---
 
+## Questions & Answers
+
+**Q: When should you choose a struct over a class?**
+
+A: When the data is small (≤16 bytes), immutable, frequently created, and benefits from value semantics. Structs reduce GC pressure by living inline and being collected with stack frames.
+
+**Q: What pitfalls occur when structs are too large?**
+
+A: Copies become expensive, especially when passing by value. This can negate performance gains and increase stack usage. Use `in`/`ref` parameters or switch to classes if the struct grows.
+
+**Q: How does boxing affect struct performance?**
+
+A: Boxing copies the struct onto the heap and allocates, defeating the GC benefits. Avoid passing structs to APIs expecting `object` or non-generic interfaces to prevent boxing.
+
+**Q: Can structs have parameterless constructors?**
+
+A: Starting with C# 10, yes, but they must be `public`/`private` and initialize all fields. Historically, structs always had an implicit default constructor. Remember that every struct has a zeroed default state.
+
+**Q: How do you prevent copying when passing structs to methods?**
+
+A: Use `in` (readonly ref) for read-only access, or `ref`/`ref readonly` when you need to mutate or avoid copies. This keeps performance predictable for larger structs.
+
+**Q: Can structs inherit from classes?**
+
+A: No. Structs are sealed value types that inherit from `ValueType`. They can implement interfaces but cannot participate in class inheritance hierarchies.
+
+**Q: When do structs hurt cache locality?**
+
+A: Rarely—they often improve locality. However, large structs embedded in arrays can cause cache misses due to size. Evaluate data layout to ensure structs remain lean.
+
+**Q: How do you model optional structs?**
+
+A: Use `Nullable<T>` (`Tick?`). It wraps the struct with a `HasValue` flag, allowing null-like semantics without resorting to classes.
+
+**Q: What about mutability?**
+
+A: Prefer immutable structs to avoid accidental copies followed by mutation. Mutable structs can lead to confusing bugs when copies diverge silently.
+
+**Q: How do structs interact with pattern matching and deconstruction?**
+
+A: They support `Deconstruct` methods and pattern matching just like classes. This makes them ergonomic for lightweight domain data while still keeping value semantics.
+
+---
+
 ## 2️⃣ Assignment behavior
 
 ### ✅ Struct (value type)

@@ -85,10 +85,32 @@
         <div class="breadcrumbs">notes\sub-notes\Dependency Injection Lifetimes.md</div>
         <h2>Dependency Injection Lifetimes</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#dependency-injection-lifetimes-at-a-glance">Dependency Injection Lifetimes at a Glance</a></li></ul></div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#dependency-injection-lifetimes-at-a-glance">Dependency Injection Lifetimes at a Glance</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
         <h1 id="dependency-injection-lifetimes-at-a-glance">Dependency Injection Lifetimes at a Glance</h1>
 <p>| Lifetime      | Description                                              | Common Registration                 | Best For | | ------------- | -------------------------------------------------------- | ----------------------------------- | -------- | | <strong>Transient</strong> | A new instance is created <strong>every time</strong> it’s requested. | <code>AddTransient&lt;IService, Service&gt;()</code> | Lightweight, stateless work such as formatters, command objects, or EF Core DbContext factories. | | <strong>Scoped</strong>    | One instance per <strong>HTTP request (scope)</strong>.               | <code>AddScoped&lt;IService, Service&gt;()</code>    | Request-based state such as per-request caches, unit-of-work patterns, or EF Core <code>DbContext</code>. | | <strong>Singleton</strong> | One instance for the <strong>entire application lifetime</strong>.    | <code>AddSingleton&lt;IService, Service&gt;()</code> | Cross-request services like configuration, logging, caching, or HTTP clients created via <code>IHttpClientFactory</code>. |</p>
 <blockquote><p>🔐 <strong>Tip:</strong> Never capture a scoped service inside a singleton—inject <code>IServiceScopeFactory</code> instead and create a scope per operation.</p></blockquote>
+<p>---</p>
+<h2 id="questions-answers">Questions & Answers</h2>
+<p><strong>Q: When do you choose transient over scoped?</strong></p>
+<p>A: Use transient for stateless, lightweight services or short-lived operations (formatters, handlers). Use scoped when the service holds per-request state or depends on scoped services like <code>DbContext</code>.</p>
+<p><strong>Q: Why does capturing a scoped service in a singleton cause issues?</strong></p>
+<p>A: The singleton outlives the request scope, so it holds onto disposed or cross-request state, leading to race conditions, memory leaks, or <code>ObjectDisposedException</code>.</p>
+<p><strong>Q: How do you use scoped services from a singleton safely?</strong></p>
+<p>A: Inject <code>IServiceScopeFactory</code>, create a scope when needed, resolve the scoped service inside it, and dispose the scope afterward.</p>
+<p><strong>Q: What lifetime should HttpClient instances have?</strong></p>
+<p>A: Use <code>IHttpClientFactory</code> (singleton-managed) to create clients per use, which internally pools handlers and avoids socket exhaustion.</p>
+<p><strong>Q: Can singletons depend on transients?</strong></p>
+<p>A: Yes, but the transient effectively becomes a singleton because the DI container creates it once for the singleton. Prefer injecting interfaces with the right lifetime semantics.</p>
+<p><strong>Q: How do lifetimes work in background services?</strong></p>
+<p>A: Hosted services run outside HTTP scopes. If they need scoped services, create scopes manually per iteration to avoid cross-thread leaks.</p>
+<p><strong>Q: How do you test scoped services without ASP.NET hosting?</strong></p>
+<p>A: Create a <code>ServiceScope</code> via the provider in tests, resolve scoped services, and dispose the scope when done. This mimics per-request behavior.</p>
+<p><strong>Q: What happens if you register <code>DbContext</code> as singleton?</strong></p>
+<p>A: It becomes shared across requests, causing threading issues, stale state, and memory leaks. EF contexts must be scoped or transient.</p>
+<p><strong>Q: How do you ensure deterministic disposal for transients?</strong></p>
+<p>A: The container disposes transients when the scope disposing them ends. If they hold unmanaged resources, ensure they are resolved and disposed within a scope.</p>
+<p><strong>Q: What about custom lifetimes?</strong></p>
+<p>A: You can implement <code>IServiceScopeFactory</code> or use keyed services, but keep the mental model simple—most cases are solved with transient/scoped/singleton.</p>
       </article>
     </main>
   </div>

@@ -85,11 +85,32 @@
         <div class="breadcrumbs">notes\SOLID\index.md</div>
         <h2>SOLID</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#1-solid-principles-deep-dive-with-examples">🧠 1️⃣ SOLID Principles — Deep Dive with Examples</a></li></ul></div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#1-solid-principles-deep-dive-with-examples">🧠 1️⃣ SOLID Principles — Deep Dive with Examples</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
         <h1 id="1-solid-principles-deep-dive-with-examples">🧠 1️⃣ SOLID Principles — Deep Dive with Examples</h1>
 <p>---</p>
 <ul><li><a href="S-Single-Responsibility-Principle-SRP.md">S — Single Responsibility Principle (SRP)</a></li><li><a href="O-Open-Closed-Principle-OCP.md">O — Open/Closed Principle (OCP)</a></li><li><a href="L-Liskov-Substitution-Principle-LSP.md">L — Liskov Substitution Principle (LSP)</a></li><li><a href="I-Interface-Segregation-Principle-ISP.md">I — Interface Segregation Principle (ISP)</a></li><li><a href="D-Dependency-Inversion-Principle-DIP.md">D — Dependency Inversion Principle (DIP)</a></li></ul>
 <p>---</p>
+<h2 id="questions-answers">Questions & Answers</h2>
+<p><strong>Q: Why are SOLID principles important for senior engineers?</strong></p>
+<p>A: They’re heuristics for keeping codebases maintainable and evolvable. Applying SOLID reduces regressions, eases testing, and makes large systems like trading platforms adaptable to new requirements.</p>
+<p><strong>Q: How do SOLID principles interact with Clean Architecture?</strong></p>
+<p>A: Clean Architecture enforces layer boundaries; SOLID guides class-level design inside those layers. Together they ensure domains stay decoupled from infrastructure and classes remain focused.</p>
+<p><strong>Q: Can you break SOLID intentionally?</strong></p>
+<p>A: Yes, when performance or simplicity demands it. Document deviations, ensure tests cover the risk, and revisit later. SOLID is guidance, not dogma.</p>
+<p><strong>Q: How do SOLID principles apply to microservices?</strong></p>
+<p>A: Each service should have a single bounded context (SRP), expose stable contracts (OCP), adhere to interface segregation for clients, and depend on abstractions so infrastructure can evolve independently.</p>
+<p><strong>Q: What metrics signal SOLID violations?</strong></p>
+<p>A: High cyclomatic complexity, low cohesion, many reasons to change a class (SRP), or ripple effects from small requirements. Code reviews and architecture fitness functions can catch these.</p>
+<p><strong>Q: How do SOLID principles improve testing?</strong></p>
+<p>A: Focused classes are easier to test (SRP), abstractions enable mocking (DIP), and segregated interfaces prevent massive fakes. This reduces flakiness and speeds CI feedback.</p>
+<p><strong>Q: How does LSP relate to API design?</strong></p>
+<p>A: Derived types must honor base contracts; otherwise substitutability fails and consumers break. In APIs, ensure new versions remain backward compatible, mirroring LSP.</p>
+<p><strong>Q: How does ISP influence public contracts?</strong></p>
+<p>A: Expose narrow interfaces tailored to specific clients so they don't depend on methods they don't use. This minimizes breaking changes and improves clarity.</p>
+<p><strong>Q: How does DIP show up in ASP.NET Core?</strong></p>
+<p>A: Services depend on abstractions registered in DI containers. Infrastructure injects concrete implementations, enabling easier testing and swapping components like data stores.</p>
+<p><strong>Q: How do you balance SOLID with performance?</strong></p>
+<p>A: Apply SOLID first, measure, and only optimize hotspots. If adding an abstraction hurts perf, encapsulate the optimized path while documenting why the deviation exists.</p>
       </article>
     </main>
   </div>

@@ -277,3 +277,47 @@ ArrayPool<byte>.Shared.Return(buffer);
 
 Would you like me to show you **a before-and-after microbenchmark** example using `BenchmarkDotNet`, comparing naive allocation-heavy code vs pooled + span-based parsing?
 It’s an awesome way to explain “I don’t just know it — I’ve measured it.”
+
+---
+
+## Questions & Answers
+
+**Q: Why does allocation discipline matter for trading services?**
+
+A: High-frequency workloads process millions of ticks per minute. Excess allocations trigger frequent GC cycles, inflating tail latency and risking missed market data. Disciplined allocation keeps GC quiet so SLAs stay predictable.
+
+**Q: How do you decide when to optimize allocations?**
+
+A: Profile first. Use BenchmarkDotNet or dotnet-trace to find hot spots with high allocated bytes/op. Only refactor critical paths—premature optimization everywhere reduces readability.
+
+**Q: What tools do you use to monitor allocations in production?**
+
+A: `dotnet-counters monitor System.Runtime` for Allocated Bytes/sec, Prometheus/OpenTelemetry metrics, Azure App Insights, or PerfView ETW traces. Alert when allocations or GC pause time exceed thresholds.
+
+**Q: How does `ArrayPool<T>` help avoid LOH pressure?**
+
+A: Renting buffers from the shared pool reuses large arrays instead of allocating >85 KB objects per request, which would otherwise land on the LOH and cause expensive, fragmented Gen2 collections.
+
+**Q: When would you choose structs over classes?**
+
+A: For small immutable data (ticks, coordinates) that you pass frequently. Structs live inline/on the stack, so they avoid heap allocations and GC tracking. Keep them small (≤16 bytes) to minimize copy cost.
+
+**Q: How do `Span<T>` and `Memory<T>` reduce allocations?**
+
+A: They let you slice and parse existing buffers without creating new arrays or substrings. `Span<T>` stays within synchronous scopes; `Memory<T>` handles async flows while still pointing to the same backing buffer.
+
+**Q: How do you avoid boxing in logging or metrics code?**
+
+A: Use structured logging with value-type overloads or interpolated string handlers, keep APIs generic, and avoid casting to `object`. When necessary, wrap primitives in custom struct formatters or use spans.
+
+**Q: How can `System.IO.Pipelines` improve allocation profile?**
+
+A: Pipelines manage pooled buffers and expose `ReadOnlySequence<T>` so you can parse streaming data without copying. They also support backpressure and reduce per-message allocations vs manual `Stream.ReadAsync`.
+
+**Q: What’s your approach to verifying improvements?**
+
+A: Write microbenchmarks with `MemoryDiagnoser`, run load tests, and compare GC metrics before/after. Only merge when data shows lower allocations and stable latency.
+
+**Q: How do you keep the team aligned on allocation discipline?**
+
+A: Document guidelines (span usage, pooling patterns), add analyzers/tests for accidental allocations, and review PRs with perf instrumentation results so everyone understands the cost model.

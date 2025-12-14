@@ -85,10 +85,32 @@
         <div class="breadcrumbs">notes\sub-notes\Sorted Collections Interview Notes.md</div>
         <h2>Sorted Collections Interview Notes</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#sorted-collections-interview-talking-points">Sorted Collections & Interview Talking Points</a></li></ul></div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#sorted-collections-interview-talking-points">Sorted Collections & Interview Talking Points</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
         <h1 id="sorted-collections-interview-talking-points">Sorted Collections & Interview Talking Points</h1>
 <p>| Collection | Ordering | Duplicates | Big-O (lookup/insert) | Interview Highlights | | ---------- | -------- | ---------- | ---------------------- | -------------------- | | <code>List&lt;T&gt;</code> + <code>List&lt;T&gt;.Sort()</code> | Custom comparer | Allows duplicates | Lookup: <code>O(n)</code>, Insert (sorted): <code>O(n)</code> | Use when you can sort once and traverse. Mention <code>Array.Sort</code> vs <code>List&lt;T&gt;.Sort</code> and <code>Span&lt;T&gt;</code> overloads. | | <code>SortedList&lt;TKey,TValue&gt;</code> | Sorted by key (array-backed) | Keys must be unique | Lookup: <code>O(log n)</code>, Insert: <code>O(n)</code> | Compact memory footprint, but expensive inserts due to array shifts. Great for mostly-read scenarios. | | <code>SortedDictionary&lt;TKey,TValue&gt;</code> | Sorted by key (red-black tree) | Keys must be unique | Lookup/Insert: <code>O(log n)</code> | Balanced tree handles frequent inserts/removals better than <code>SortedList</code>. | | <code>SortedSet&lt;T&gt;</code> | Sorted by value (tree) | No duplicates | Lookup/Insert: <code>O(log n)</code> | Ideal for maintaining a sorted unique set—mention <code>GetViewBetween</code>. | | <code>PriorityQueue&lt;TElement,TPriority&gt;</code> | Min-heap by priority | Allows duplicates | Enqueue: <code>O(log n)</code>, Peek: <code>O(1)</code> | Perfect for Dijkstra/A* discussions. Talk about customizing priority comparer. |</p>
 <blockquote><p>🧠 <strong>Practice Prompt:</strong> Explain how you’d pick between <code>SortedList</code> and <code>SortedDictionary</code> for a price ladder updated multiple times per second.</p></blockquote>
+<p>---</p>
+<h2 id="questions-answers">Questions & Answers</h2>
+<p><strong>Q: When would you use <code>SortedList</code> over <code>SortedDictionary</code>?</strong></p>
+<p>A: When reads dominate and the key set doesn’t change frequently. <code>SortedList</code> uses arrays, so lookups are <code>O(log n)</code>, but inserts shift elements (<code>O(n)</code>), making it best for mostly-static data.</p>
+<p><strong>Q: How do <code>SortedDictionary</code> and <code>SortedSet</code> differ?</strong></p>
+<p>A: <code>SortedDictionary</code> stores key/value pairs with unique keys. <code>SortedSet</code> stores unique values only. Both use balanced trees with <code>O(log n)</code> operations; choose based on whether you need values associated with keys.</p>
+<p><strong>Q: What’s a practical use of <code>SortedSet.GetViewBetween</code>?</strong></p>
+<p>A: Maintaining sliding windows or retrieving ranges (e.g., trades between two timestamps) without copying data.</p>
+<p><strong>Q: How do you implement a max-heap with <code>PriorityQueue</code>?</strong></p>
+<p>A: Provide a comparer that flips the priority ordering (e.g., <code>Comparer&lt;int&gt;.Create((a,b) =&gt; b.CompareTo(a))</code>) so highest values bubble to the top.</p>
+<p><strong>Q: How do sorted collections handle custom ordering?</strong></p>
+<p>A: Pass an <code>IComparer&lt;T&gt;</code> or implement <code>IComparable&lt;T&gt;</code> on keys/elements. This enables domain-specific ordering (e.g., price descending, timestamp ascending).</p>
+<p><strong>Q: When is <code>List&lt;T&gt;.BinarySearch</code> enough?</strong></p>
+<p>A: If you can maintain a sorted list and only need lookups/removals occasionally. Inserts remain <code>O(n)</code>, but the simplicity might beat tree-based structures.</p>
+<p><strong>Q: How do you keep sorted collections thread-safe?</strong></p>
+<p>A: Wrap access with locks or use immutable snapshots. There’s no built-in concurrent sorted collection, so you must manage synchronization yourself.</p>
+<p><strong>Q: How does memory usage compare between <code>SortedList</code> and <code>SortedDictionary</code>?</strong></p>
+<p>A: <code>SortedList</code> uses contiguous arrays (less overhead). <code>SortedDictionary</code> stores nodes with pointers (higher overhead) but faster inserts/removals.</p>
+<p><strong>Q: How do you maintain a top-N leaderboard efficiently?</strong></p>
+<p>A: Use <code>SortedSet</code> or <code>PriorityQueue</code> bounded to N items. When a new value arrives, compare against the smallest/largest and adjust accordingly.</p>
+<p><strong>Q: What are alternatives for huge sorted datasets?</strong></p>
+<p>A: Consider B-trees or sorted indexes at the storage layer (SQL ORDER BY/indexes), or specialized libraries like <code>ImmutableSortedSet</code> for functional requirements.</p>
       </article>
     </main>
   </div>

@@ -82,3 +82,47 @@ _logger.LogInformation("Started processing {Handler}", nameof(MyHandler));
 ---
 
 If you'd like, I can add a short section showing `nameof` combined with `CallerMemberName` for compact `INotifyPropertyChanged` helpers. Would you like that included?
+
+---
+
+## Questions & Answers
+
+**Q: Why prefer `nameof` over hard-coded strings?**
+
+A: It’s refactor-safe. Renaming a symbol updates `nameof` usage automatically; string literals would silently become stale.
+
+**Q: Is `nameof` evaluated at runtime?**
+
+A: No, it’s compile-time. The compiler replaces `nameof(Symbol)` with a string literal, so there’s zero runtime cost.
+
+**Q: Can `nameof` handle fully qualified names?**
+
+A: You can pass `Namespace.Type.Member`, but it returns only the last identifier (e.g., `Member`). Use `typeof(Type).FullName` if you need the full name.
+
+**Q: How does `nameof` help with exceptions?**
+
+A: Use it in `ArgumentNullException(nameof(param))` so parameter names stay accurate even after refactors.
+
+**Q: Can you use `nameof` with generics?**
+
+A: Yes, but it returns the unqualified type name (e.g., `nameof(Dictionary<int,string>)` yields `"Dictionary"`). It doesn’t include type arguments.
+
+**Q: Does `nameof` support aliases?**
+
+A: Yes—it respects `using alias = ...;`. `nameof(alias)` returns the alias name, not the underlying type.
+
+**Q: Can `nameof` reference private members?**
+
+A: Absolutely. It works with any accessible symbol at compile time, including locals, parameters, and private members.
+
+**Q: How does `nameof` interact with `CallerMemberName`?**
+
+A: `CallerMemberName` auto-fills the calling member name. Use `nameof` when referencing other members explicitly, and `CallerMemberName` when you want the current member at call site.
+
+**Q: Can `nameof` reference methods?**
+
+A: Yes—`nameof(MyMethod)` returns `"MyMethod"`, regardless of overloads. It doesn’t encode signatures.
+
+**Q: How do you ensure localization isn’t impacted?**
+
+A: `nameof` is for developer-oriented strings (logging, diagnostics), not user-visible text. Keep localized strings separate from `nameof` usage.

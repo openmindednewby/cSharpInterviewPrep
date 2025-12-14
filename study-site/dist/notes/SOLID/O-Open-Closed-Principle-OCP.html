@@ -85,7 +85,7 @@
         <div class="breadcrumbs">notes\SOLID\O-Open-Closed-Principle-OCP.md</div>
         <h2>O Open Closed Principle OCP</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-2"><a href="#o-openclosed-principle-ocp">**O — Open/Closed Principle (OCP)**</a></li><li class="level-3"><a href="#example-new-trade-execution-channels">✅ Example: New trade execution channels</a></li></ul></div>
+        <div class="toc"><ul class="toc-list"><li class="level-2"><a href="#o-openclosed-principle-ocp">**O — Open/Closed Principle (OCP)**</a></li><li class="level-3"><a href="#example-new-trade-execution-channels">✅ Example: New trade execution channels</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
         <h2 id="o-openclosed-principle-ocp"><strong>O — Open/Closed Principle (OCP)</strong></h2>
 <blockquote><p>“Software entities should be open for extension but closed for modification.”</p></blockquote>
 <p>You should add new behavior <strong>without editing existing code</strong>.</p>
@@ -114,6 +114,28 @@ public class TradeService
     public void Execute(Order order) =&gt; _executor.Execute(order);
 }</code></pre>
 <p>✅ Adding a new trading platform (like cTrader or FIX API) just means creating another <code>ITradeExecutor</code> implementation — no code modification, only <strong>extension</strong>.</p>
+<p>---</p>
+<h2 id="questions-answers">Questions & Answers</h2>
+<p><strong>Q: How do you ensure new features don’t require modifying existing classes?</strong></p>
+<p>A: Depend on abstractions and register new implementations via DI. Use patterns like Strategy or Decorator so new behavior plugs in without touching existing code.</p>
+<p><strong>Q: What signals an OCP violation?</strong></p>
+<p>A: If every new platform or workflow requires editing the same switch statement or base class, you’re modifying existing code instead of extending via new types.</p>
+<p><strong>Q: How do feature flags interact with OCP?</strong></p>
+<p>A: Feature flags can select between implementations at runtime without modifying code. Register both paths and toggle via configuration, respecting OCP.</p>
+<p><strong>Q: How do you balance OCP with readability?</strong></p>
+<p>A: Don’t over-abstract. Introduce extension points only when change pressure exists. Keep base abstractions small so extensions remain straightforward.</p>
+<p><strong>Q: How does OCP apply to APIs?</strong></p>
+<p>A: Version APIs instead of changing contracts. Add new endpoints or fields while keeping existing behavior untouched to avoid breaking clients.</p>
+<p><strong>Q: What tooling helps enforce OCP?</strong></p>
+<p>A: Architecture tests verifying dependencies, code analyzers warning on large switch statements, and DI/registration conventions that encourage extending via new classes.</p>
+<p><strong>Q: How do templates or generics aid OCP?</strong></p>
+<p>A: Generics let you inject behavior (e.g., <code>IRepository&lt;T&gt;</code>) without rewriting code for each type. Base functionality stays closed; new types extend usage.</p>
+<p><strong>Q: How do you vet extension points for security/compliance?</strong></p>
+<p>A: Document allowed extensions, run threat modeling on new implementations, and add automated tests to ensure they honor validation/risk rules like existing types.</p>
+<p><strong>Q: Can configuration count as “extension”?</strong></p>
+<p>A: If behavior is data-driven (rules engine, config-based workflows), adding entries might be enough. Ensure validation guards keep config changes safe.</p>
+<p><strong>Q: How does OCP help with plugin architectures?</strong></p>
+<p>A: Plugins implement known interfaces and register themselves. The host never changes; you drop in new assemblies to extend behavior safely.</p>
       </article>
     </main>
   </div>
