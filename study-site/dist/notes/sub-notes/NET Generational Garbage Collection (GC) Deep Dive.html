@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for NET Generational Garbage Collection (GC) Deep Dive" />
+  <title>NET Generational Garbage Collection (GC) Deep Dive | C# Interview Prep Cheat Sheet</title>
+  <link rel="stylesheet" href="../../assets/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="badge">Fast recall</div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="nav-groups"><div class="sidebar-group">
+      <h3>Notes</h3>
+      <ul><li><a href="notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a href="notes/Automapper/AutoMapper.html">AutoMapper</a></li><li><a href="notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a href="notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a href="notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a href="notes/core-concepts.html">Core Concepts</a></li><li><a href="notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a href="notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a href="notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a href="notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a href="notes/error-handling.html">Error Handling</a></li><li><a href="notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a href="notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a href="notes/FluentValidation/FluentValidation.html">FluentValidation</a></li><li><a href="notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a href="notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a href="notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a href="notes/Clean-Architecture/index.html">Index</a></li><li><a href="notes/DRY/index.html">Index</a></li><li><a href="notes/Memory-Allocation-Discipline/index.html">Index</a></li><li><a href="notes/SOLID/index.html">Index</a></li><li><a href="notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a href="notes/logging.html">Logging</a></li><li><a href="notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a href="notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a href="notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li><li><a href="notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a href="notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a href="notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a href="notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a href="notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a href="notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a href="notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a href="notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a href="notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a href="notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a href="notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li><li><a href="notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a href="notes/testing-strategies.html">Testing Strategies</a></li><li><a href="notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group">
+      <h3>Practice</h3>
+      <ul><li><a href="practice/answers.html">Answers</a></li><li><a href="practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a href="practice/questions.html">Questions</a></li><li><a href="practice/real exam questions answers/replace int without variable.html">Replace Int Without Variable</a></li><li><a href="practice/real exam questions answers/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li></ul>
+    </div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.md</div>
+        <h2>NET Generational Garbage Collection (GC) Deep Dive</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#net-generational-garbage-collection-gc-deep-dive">🧠 .NET Generational Garbage Collection (GC) Deep Dive</a></li><li class="level-2"><a href="#1-the-why-why-generational-gc-exists">1️⃣ The “why”: Why generational GC exists</a></li><li class="level-2"><a href="#2-the-three-main-generations">2️⃣ The three main generations</a></li><li class="level-2"><a href="#3-visual-mental-model">3️⃣ Visual mental model</a></li><li class="level-2"><a href="#4-how-it-works-step-by-step">4️⃣ How it works step by step</a></li><li class="level-3"><a href="#allocation">🧩 Allocation</a></li><li class="level-3"><a href="#gen-0-collection">🧩 Gen 0 Collection</a></li><li class="level-3"><a href="#gen-1-collection">🧩 Gen 1 Collection</a></li><li class="level-3"><a href="#gen-2-collection-full-gc">🧩 Gen 2 Collection (Full GC)</a></li><li class="level-3"><a href="#loh-large-object-heap">🧩 LOH (Large Object Heap)</a></li><li class="level-2"><a href="#5-compacting-vs-non-compacting">5️⃣ Compacting vs Non-Compacting</a></li><li class="level-2"><a href="#6-what-triggers-a-gc">6️⃣ What triggers a GC?</a></li><li class="level-2"><a href="#7-gc-stats-and-diagnostics">7️⃣ GC stats and diagnostics</a></li><li class="level-2"><a href="#8-performance-design-tips-for-gc-friendly-code">8️⃣ Performance design tips for GC-friendly code</a></li><li class="level-2"><a href="#9-trading-system-example-hfm-context">9️⃣ Trading-system example (HFM context)</a></li><li class="level-2"><a href="#10-tldr-how-to-summarize-it-in-your-interview">10️⃣ TL;DR — How to summarize it in your interview</a></li></ul></div>
+        <h1 id="net-generational-garbage-collection-gc-deep-dive">🧠 .NET Generational Garbage Collection (GC) Deep Dive</h1>
+<p>---</p>
+<h2 id="1-the-why-why-generational-gc-exists">1️⃣ The “why”: Why generational GC exists</h2>
+<p>In most real-world programs:</p>
+<ul><li>Most objects are <strong>short-lived</strong> (local variables, temporary data, buffers, LINQ results).</li><li>Some objects are <strong>long-lived</strong> (caches, connection pools, singletons, static config).</li></ul>
+<p>This is known as the <strong>generational hypothesis</strong>:</p>
+<blockquote><p>“Most objects die young.”</p></blockquote>
+<p>So instead of scanning the entire heap every time, .NET uses a <strong>generational GC</strong> — it <strong>divides the heap into generations</strong> and <strong>collects the youngest first</strong>, because they’re most likely garbage.</p>
+<p>That gives you <strong>massive efficiency</strong> and predictable pause times.</p>
+<p>---</p>
+<h2 id="2-the-three-main-generations">2️⃣ The three main generations</h2>
+<p>| Generation | Description                        | Frequency                      | Typical objects                      | | ---------- | ---------------------------------- | ------------------------------ | ------------------------------------ | | <strong>Gen 0</strong>  | Newest, youngest objects           | Collected <strong>most frequently</strong>  | Locals, temp lists, short-lived data | | <strong>Gen 1</strong>  | “Middle-aged” survivors from Gen 0 | Collected occasionally         | Transient mid-term data              | | <strong>Gen 2</strong>  | Long-lived survivors               | Collected <strong>rarely</strong> (full GC) | Caches, singletons, static data      | | <strong>LOH</strong>    | Large Object Heap (≥ 85,000 bytes) | Collected <strong>with Gen 2</strong>       | Large arrays, strings, buffers       |</p>
+<p>---</p>
+<h2 id="3-visual-mental-model">3️⃣ Visual mental model</h2>
+<pre class="hljs"><code>Gen0 ──► Gen1 ──► Gen2 ──► LOH
+ short   medium   long     very large (&gt;85KB)
+ lived   lived    lived    objects (arrays, strings)</code></pre>
+<p>Each arrow means <em>“survive one more collection → promoted”</em>.</p>
+<p>---</p>
+<h2 id="4-how-it-works-step-by-step">4️⃣ How it works step by step</h2>
+<h3 id="allocation">🧩 Allocation</h3>
+<p>When you create a new object:</p>
+<pre class="hljs"><code>var o = new object();</code></pre>
+<ul><li>Memory is allocated in <strong>Gen 0</strong> segment (on the heap).</li><li>.NET uses a <strong>bump pointer</strong> allocator — incredibly fast (just moves a pointer).</li></ul>
+<p>---</p>
+<h3 id="gen-0-collection">🧩 Gen 0 Collection</h3>
+<p>When Gen 0 is full:</p>
+<ul><li>GC pauses threads (short pause, typically sub-millisecond).</li><li>It scans Gen 0 roots (stack references, static fields, registers).</li><li><strong>Live objects survive → promoted to Gen 1</strong>.</li><li><strong>Dead objects → reclaimed</strong>.</li></ul>
+<pre class="hljs"><code>Before:
+Gen0: [A, B, C]
+After GC0:
+  A dead, B/C alive → B,C moved to Gen1</code></pre>
+<p>---</p>
+<h3 id="gen-1-collection">🧩 Gen 1 Collection</h3>
+<p>When Gen 1 fills:</p>
+<ul><li>GC collects Gen 0 + Gen 1.</li><li>Survivors move to <strong>Gen 2</strong>.</li></ul>
+<p>---</p>
+<h3 id="gen-2-collection-full-gc">🧩 Gen 2 Collection (Full GC)</h3>
+<p>When Gen 2 fills (or memory pressure triggers it):</p>
+<ul><li>GC collects all generations.</li><li>This is the <strong>most expensive collection</strong> (may take tens or hundreds of ms).</li></ul>
+<p>---</p>
+<h3 id="loh-large-object-heap">🧩 LOH (Large Object Heap)</h3>
+<p>Objects <strong>≥ 85,000 bytes</strong> (like large arrays, bitmaps, or JSON buffers):</p>
+<ul><li>Allocated directly into the <strong>LOH</strong>.</li><li>Not compacted by default (can fragment memory).</li><li>Collected <strong>only with Gen 2</strong> — so expensive.</li></ul>
+<p>💡 <strong>Tip:</strong> Avoid frequent large allocations. Reuse buffers via <code>ArrayPool&lt;T&gt;.Shared</code> to keep the LOH stable.</p>
+<p>---</p>
+<h2 id="5-compacting-vs-non-compacting">5️⃣ Compacting vs Non-Compacting</h2>
+<p>➜ Keeps memory tight, improves cache performance.</p>
+<p>➜ Can fragment over time.</p>
+<ul><li><strong>SOH (Small Object Heap)</strong> — compacts after GC (moves survivors to eliminate gaps).</li><li><strong>LOH (Large Object Heap)</strong> — <strong>does not compact by default</strong>, to avoid moving huge memory blocks.</li></ul>
+<p>Optional: You can compact LOH manually (rarely needed):</p>
+<pre class="hljs"><code>GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);</code></pre>
+<p>---</p>
+<h2 id="6-what-triggers-a-gc">6️⃣ What triggers a GC?</h2>
+<p>The CLR decides to collect when:</p>
+<ol><li><strong>Gen 0 segment fills up</strong> (most common).</li><li><strong>Gen 1/2 segment fills up</strong> (promotion pressure).</li><li><strong>System memory pressure</strong> (OS signal).</li><li>You explicitly call <code>GC.Collect()</code> (almost never do this).</li></ol>
+<p>💡 Pro tip: Avoid manual <code>GC.Collect()</code> — it often <em>hurts</em> performance because it interrupts the GC’s adaptive tuning.</p>
+<p>---</p>
+<h2 id="7-gc-stats-and-diagnostics">7️⃣ GC stats and diagnostics</h2>
+<p>You can observe GC behavior in real-time:</p>
+<pre class="hljs"><code>dotnet-counters monitor System.Runtime</code></pre>
+<p>You’ll see counters like:</p>
+<pre class="hljs"><code>Gen 0 GC Count: 345
+Gen 1 GC Count: 12
+Gen 2 GC Count: 1
+% Time in GC: 0.25
+Allocated Bytes/sec: 1,024,000</code></pre>
+<p>✅ Healthy app:</p>
+<ul><li>Many Gen 0s</li><li>Occasional Gen 1s</li><li>Rare Gen 2s</li><li>Low “% Time in GC”</li></ul>
+<p>---</p>
+<h2 id="8-performance-design-tips-for-gc-friendly-code">8️⃣ Performance design tips for GC-friendly code</h2>
+<p>| Goal                             | Best Practice                                               | | -------------------------------- | ----------------------------------------------------------- | | Minimize Gen 0 churn             | Avoid allocating in tight loops or hot paths                | | Prevent Gen 2 pressure           | Reuse objects and buffers (<code>ArrayPool&lt;T&gt;</code>, <code>ObjectPool&lt;T&gt;</code>) | | Avoid LOH fragmentation          | Use pooled or chunked buffers                               | | Keep structs small and immutable | No unnecessary copying or boxing                            | | Monitor allocations              | Use <code>dotnet-trace</code> or <code>dotMemory</code> to find hotspots          |</p>
+<p>---</p>
+<h2 id="9-trading-system-example-hfm-context">9️⃣ Trading-system example (HFM context)</h2>
+<p>In a <strong>price feed processor</strong> that handles thousands of ticks per second:</p>
+<p>❌ <strong>Bad design:</strong></p>
+<pre class="hljs"><code>foreach (var msg in messages)
+{
+    var parts = msg.Split(&#39;,&#39;); // allocates string[] and substrings each iteration
+    var tick = new Tick { Symbol = parts[0], Bid = double.Parse(parts[1]) };
+}</code></pre>
+<ul><li>Massive Gen 0 churn</li><li>Frequent Gen 1/2 GCs under load</li></ul>
+<p>✅ <strong>Good design:</strong></p>
+<pre class="hljs"><code>var buffer = ArrayPool&lt;byte&gt;.Shared.Rent(4096);
+ReadOnlySpan&lt;byte&gt; span = buffer.AsSpan(0, length);
+ParseSpan(span); // no allocations
+ArrayPool&lt;byte&gt;.Shared.Return(buffer);</code></pre>
+<ul><li>Almost no heap allocations</li><li>GC barely runs</li><li>Stable latency (critical for trading)</li></ul>
+<p>---</p>
+<h2 id="10-tldr-how-to-summarize-it-in-your-interview">10️⃣ TL;DR — How to summarize it in your interview</h2>
+<blockquote><p>“.NET uses a <strong>generational GC</strong> because most objects die young. New objects go into <strong>Gen 0</strong>, survivors are promoted to <strong>Gen 1</strong>, then <strong>Gen 2</strong>. The <strong>Large Object Heap (LOH)</strong> stores objects above ~85 KB and is only collected with Gen 2.  The key to performance is keeping allocations short-lived so they die in Gen 0, reusing large buffers to avoid LOH fragmentation, and preventing unnecessary promotions that trigger full GCs.”</p></blockquote>
+<p>---</p>
+<p>Would you like me to show you a <strong>diagram of the generational heap</strong> — with arrows showing object lifecycles (Gen0→Gen1→Gen2→LOH) and what happens during collections? It’s one of the best ways to visualize promotions and GC compaction.</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+</body>
+</html>

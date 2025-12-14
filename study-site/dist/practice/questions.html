@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for Questions" />
+  <title>Questions | C# Interview Prep Cheat Sheet</title>
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="badge">Fast recall</div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="nav-groups"><div class="sidebar-group">
+      <h3>Notes</h3>
+      <ul><li><a href="notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a href="notes/Automapper/AutoMapper.html">AutoMapper</a></li><li><a href="notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a href="notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a href="notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a href="notes/core-concepts.html">Core Concepts</a></li><li><a href="notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a href="notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a href="notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a href="notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a href="notes/error-handling.html">Error Handling</a></li><li><a href="notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a href="notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a href="notes/FluentValidation/FluentValidation.html">FluentValidation</a></li><li><a href="notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a href="notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a href="notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a href="notes/Clean-Architecture/index.html">Index</a></li><li><a href="notes/DRY/index.html">Index</a></li><li><a href="notes/Memory-Allocation-Discipline/index.html">Index</a></li><li><a href="notes/SOLID/index.html">Index</a></li><li><a href="notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a href="notes/logging.html">Logging</a></li><li><a href="notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a href="notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a href="notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li><li><a href="notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a href="notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a href="notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a href="notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a href="notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a href="notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a href="notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a href="notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a href="notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a href="notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a href="notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li><li><a href="notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a href="notes/testing-strategies.html">Testing Strategies</a></li><li><a href="notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group">
+      <h3>Practice</h3>
+      <ul><li><a href="practice/answers.html">Answers</a></li><li><a href="practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a href="practice/questions.html">Questions</a></li><li><a href="practice/real exam questions answers/replace int without variable.html">Replace Int Without Variable</a></li><li><a href="practice/real exam questions answers/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li></ul>
+    </div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">practice/questions.md</div>
+        <h2>Questions</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-2"><a href="#linq-collections">LINQ & Collections</a></li><li class="level-2"><a href="#async-resilience">Async & Resilience</a></li><li class="level-2"><a href="#api-lifecycle">API & Lifecycle</a></li><li class="level-2"><a href="#system-design">System Design</a></li><li class="level-2"><a href="#messaging-integration">Messaging & Integration</a></li><li class="level-2"><a href="#data-layer">Data Layer</a></li><li class="level-2"><a href="#trading-domain-knowledge">Trading Domain Knowledge</a></li><li class="level-2"><a href="#behavioral-soft-skills">Behavioral & Soft Skills</a></li><li class="level-2"><a href="#questions-for-the-interviewer">Questions for the Interviewer</a></li><li class="level-2"><a href="#access-modifiers-public-private-internal-protected-and-variants">Access Modifiers  `public`, `private`, `internal`, `protected` (and variants)</a></li><li class="level-2"><a href="#dependency-injection-lifetimes-transient-scoped-singleton-and-tips">Dependency Injection Lifetimes  `Transient`, `Scoped`, `Singleton` (and tips)</a></li><li class="level-2"><a href="#code-assessment-questions-answers-with-snippets">Code Assessment Questions & Answers (with snippets)</a></li></ul></div>
+        <p># Practice Questions & Prompts</p>
+<p>Use these prompts while working through the <a href="../prep-plan.md">prep plan</a>. Aim to answer out loud and capture key points in your notes.</p>
+<p>---</p>
+<h2 id="linq-collections">LINQ & Collections</h2>
+<ol><li>Given a list of trades with timestamps, return the latest trade per account using LINQ.</li><li>Implement a method that flattens nested lists of instrument codes while preserving ordering.</li><li>Explain the difference between <code>SelectMany</code> and nested loops. When is each preferable?</li><li>How would you detect duplicate orders in a stream using <code>GroupBy</code> and produce a summary?</li></ol>
+<h2 id="async-resilience">Async & Resilience</h2>
+<ol><li>Sketch code to call three REST endpoints concurrently, cancel if any take longer than 3 seconds, and aggregate results.</li><li>Implement a resilient HTTP client with retry and circuit breaker policies using Polly.</li><li>How would you handle backpressure when consuming a fast message queue with a slower downstream API?</li><li>Explain why you might use <code>SemaphoreSlim</code> with async code over <code>lock</code>.</li></ol>
+<h2 id="api-lifecycle">API & Lifecycle</h2>
+<ol><li>Describe the ASP.NET Core middleware pipeline for a request hitting an authenticated endpoint with custom exception handling.</li><li>How do you implement API versioning and backward compatibility?</li><li>Discuss strategies for rate limiting and request throttling.</li><li>How would you log correlation IDs across services and propagate them to downstream dependencies?</li></ol>
+<h2 id="system-design">System Design</h2>
+<ol><li><strong>Price Streaming Service:</strong> Design a service that ingests MT5 tick data, normalizes it, caches latest prices, and exposes them via REST/WebSocket.</li><li><strong>Order Execution Workflow:</strong> Design an API that receives orders, validates, routes to MT4/MT5, and confirms execution. Include failure recovery.</li><li><strong>Real-Time Monitoring Dashboard:</strong> Architect a system to collect metrics from trading microservices and alert on anomalies.</li><li>Discuss how you would integrate an external risk management engine into an existing microservices ecosystem.</li></ol>
+<h2 id="messaging-integration">Messaging & Integration</h2>
+<ol><li>Compare RabbitMQ and ZeroMQ for distributing price updates. When would you choose one over the other?</li><li>Explain how to ensure at-least-once delivery with RabbitMQ while preventing duplicate processing.</li><li>How would you design a saga pattern to coordinate account funding across multiple services?</li><li>Discuss the outbox pattern and how it prevents message loss in event-driven systems.</li></ol>
+<h2 id="data-layer">Data Layer</h2>
+<ol><li>Write a SQL query to calculate the rolling 7-day trade volume per instrument.</li><li>Explain how you would choose between normalized schemas and denormalized tables for reporting.</li><li>Describe the differences between clustered and non-clustered indexes and when to use covering indexes.</li><li>Walk through handling a long-running report query that impacts OLTP performance.</li></ol>
+<h2 id="trading-domain-knowledge">Trading Domain Knowledge</h2>
+<ol><li>Describe the lifecycle of a forex trade from placement to settlement.</li><li>How would you integrate with MT4/MT5 APIs for trade execution in C#? Mention authentication, session management, and error handling.</li><li>What are common risk checks before executing a client order (e.g., margin, exposure limits)?</li><li>Explain how youd handle market data bursts without dropping updates.</li></ol>
+<h2 id="behavioral-soft-skills">Behavioral & Soft Skills</h2>
+<ol><li>Tell me about a time you led a critical production fix under pressure.</li><li>Describe a situation where you improved a process by automating manual work.</li><li>Discuss a conflict within a team and how you resolved it.</li><li>Share a story that demonstrates your commitment to documentation or knowledge sharing.</li></ol>
+<h2 id="questions-for-the-interviewer">Questions for the Interviewer</h2>
+<ol><li>How does HFM structure collaboration between developers, QA, and trading desks?</li><li>What are the biggest technical challenges facing the MT4/MT5 integration team right now?</li><li>How do you measure success for developers in this role within the first 6 months?</li><li>What opportunities exist for continuous learning and innovation within the engineering org?</li></ol>
+<p>---</p>
+<p>Answer as many as you can out loud. For each, note concise bullet responses to reference right before the interview.</p>
+<h2 id="access-modifiers-public-private-internal-protected-and-variants">Access Modifiers  <code>public</code>, <code>private</code>, <code>internal</code>, <code>protected</code> (and variants)</h2>
+<p>Quick summary:</p>
+<ul><li><code>public</code>: accessible from any code that can see the type.</li><li><code>private</code>: accessible only within the containing type (default for members).</li><li><code>internal</code>: accessible to code within the same assembly (project output).</li><li><code>protected</code>: accessible within the containing type and its derived types.</li><li><code>protected internal</code>: accessible from derived types or any code in the same assembly.</li><li><code>private protected</code> (C# 7.2+): accessible within the containing class or derived types in the same assembly.</li></ul>
+<p>Examples:</p>
+<pre class="hljs"><code>public class Base
+{
+    private int _secret;                 // only inside Base
+    protected int ProtectedValue;        // Base + derived classes
+    internal int InternalValue;          // same assembly
+    public int PublicValue;              // everyone
+}
+
+public class Derived : Base
+{
+    void Demo()
+    {
+        // can access ProtectedValue and InternalValue and PublicValue
+        // cannot access _secret
+    }
+}
+
+// Top-level types (classes) without a modifier default to internal.</code></pre>
+<p>Notes:</p>
+<ul><li>Use <code>private</code> to encapsulate implementation details.</li><li>Use <code>internal</code> to expose APIs across your project but hide them from other assemblies.</li><li>Prefer <code>protected</code> sparingly; heavy use can expose internal invariants to subclasses and increase coupling.</li></ul>
+<h2 id="dependency-injection-lifetimes-transient-scoped-singleton-and-tips">Dependency Injection Lifetimes  <code>Transient</code>, <code>Scoped</code>, <code>Singleton</code> (and tips)</h2>
+<p>Quick summary (Microsoft.Extensions.DependencyInjection semantics):</p>
+<ul><li><code>Transient</code>: a new instance is created every time the service is requested.</li><li><code>Scoped</code>: a single instance is created per scope (in ASP.NET Core a scope is typically a single HTTP request).</li><li><code>Singleton</code>: a single instance is created for the application's lifetime (or until the container is disposed).</li></ul>
+<p>Examples and behavior:</p>
+<pre class="hljs"><code>services.AddTransient&lt;IRepo, Repo&gt;();   // new Repo each injection
+services.AddScoped&lt;IRepo, Repo&gt;();      // one Repo per request/scope
+services.AddSingleton&lt;IRepo, Repo&gt;();   // single Repo for the app lifetime</code></pre>
+<p>Important tips:</p>
+<ul><li>Use <code>Scoped</code> for per-request services that hold state tied to the request (e.g., <code>DbContext</code>).</li><li>Use <code>Singleton</code> for stateless, thread-safe services (caches, configuration providers). Be careful with mutable singletons.</li><li>Avoid injecting a <code>Scoped</code> service into a <code>Singleton</code>  the scoped service may be captured incorrectly leading to unintended shared state or runtime errors.</li><li><code>Transient</code> is good for lightweight, stateless services; it can be used when you explicitly want fresh instances.</li></ul>
+<p>Pitfall example:</p>
+<pre class="hljs"><code>// Bad: singleton holding a scoped dependency
+services.AddSingleton&lt;MySingleton&gt;();
+services.AddScoped&lt;MyScopedDependency&gt;();
+
+public class MySingleton
+{
+    public MySingleton(MyScopedDependency dep) { /* captured scoped dep = problematic */ }
+}</code></pre>
+<p>If you need to use a scoped service from a singleton, resolve scoped instances using <code>IServiceScopeFactory</code> or limit the singleton to factory-style resolution at operation time.</p>
+<p>---</p>
+<h2 id="code-assessment-questions-answers-with-snippets">Code Assessment Questions & Answers (with snippets)</h2>
+<p>Use these to rehearse typical coding test prompts. Aim to talk through complexity trade-offs and add small notes about edge cases.</p>
+<ol><li><strong>Async REST fan-out with cancellation and timeout</strong></li></ol>
+<p><em>Question (real-life style):</em> "You have to hit three quote endpoints in parallel and bail out if any call takes longer than 3 seconds, while still honoring upstream cancellation. Return only non-null quotes. Sketch the method you'd drop into the pricing client."</p>
+<pre class="hljs"><code>public static async Task&lt;IReadOnlyList&lt;Quote&gt;&gt; FetchQuotesAsync(HttpClient client, CancellationToken cancellationToken)
+{
+    using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+    cts.CancelAfter(TimeSpan.FromSeconds(3));
+
+    var endpoints = new[] {&quot;prices/eurusd&quot;, &quot;prices/gbpusd&quot;, &quot;prices/usdjpy&quot;};
+    var tasks = endpoints.Select(e =&gt; client.GetFromJsonAsync&lt;Quote&gt;(e, cts.Token)).ToArray();
+
+    var results = await Task.WhenAll(tasks);
+    return results!
+        .Where(q =&gt; q is not null)
+        .ToArray();
+}</code></pre>
+<p>Notes: Use <code>CancellationTokenSource.CreateLinkedTokenSource</code> to respect upstream cancellation. Consider wrapping each call with <code>Try/Finally</code> or <code>Task.WhenAny</code> if partial failures should be tolerated instead of throwing.</p>
+<ol><li><strong>LRU cache for price lookups</strong></li></ol>
+<p><em>Question (real-life style):</em> "Implement an in-memory LRU cache (single-threaded is fine) for up to N price lookups with O(1) <code>Put</code>/<code>TryGet</code>. Show the class you would hand to another team to reuse in a console app."</p>
+<pre class="hljs"><code>public sealed class LruCache&lt;TKey, TValue&gt;
+{
+    private readonly int _capacity;
+    private readonly Dictionary&lt;TKey, LinkedListNode&lt;(TKey Key, TValue Value)&gt;&gt; _map = new();
+    private readonly LinkedList&lt;(TKey Key, TValue Value)&gt; _list = new();
+
+    public LruCache(int capacity) =&gt; _capacity = capacity;
+
+    public void Put(TKey key, TValue value)
+    {
+        if (_map.TryGetValue(key, out var node))
+        {
+            node.Value = (key, value);
+            _list.Remove(node);
+            _list.AddFirst(node);
+            return;
+        }
+
+        if (_map.Count == _capacity)
+        {
+            var toRemove = _list.Last!;
+            _map.Remove(toRemove.Value.Key);
+            _list.RemoveLast();
+        }
+
+        var newNode = new LinkedListNode&lt;(TKey, TValue)&gt;((key, value));
+        _list.AddFirst(newNode);
+        _map[key] = newNode;
+    }
+
+    public bool TryGet(TKey key, out TValue value)
+    {
+        if (_map.TryGetValue(key, out var node))
+        {
+            _list.Remove(node);
+            _list.AddFirst(node);
+            value = node.Value.Value;
+            return true;
+        }
+
+        value = default!;
+        return false;
+    }
+}</code></pre>
+<p>Notes: <code>Put</code> and <code>TryGet</code> are O(1). Thread-safety can be added with <code>SemaphoreSlim</code> for async scenarios or <code>lock</code> for synchronous use.</p>
+<ol><li><strong>Concurrent producer/consumer pipeline for order enrichment</strong></li></ol>
+<p><em>Question (real-life style):</em> "We ingest orders into a channel and need to enrich them via an async call before publishing. Write the enrichment pipeline so it can fan out work and push enriched orders to the outbound channel."</p>
+<pre class="hljs"><code>public static async Task StartEnrichmentPipeline(Channel&lt;Order&gt; inbound, Func&lt;Order, Task&lt;Order&gt;&gt; enrich, Channel&lt;Order&gt; outbound)
+{
+    await foreach (var order in inbound.Reader.ReadAllAsync())
+    {
+        _ = Task.Run(async () =&gt;
+        {
+            var enriched = await enrich(order);
+            await outbound.Writer.WriteAsync(enriched);
+        });
+    }
+}</code></pre>
+<p>Notes: Use <code>Channel.CreateBounded&lt;Order&gt;(capacity)</code> to add backpressure. For stricter ordering, await tasks or use <code>Parallel.ForEachAsync</code> with <code>MaxDegreeOfParallelism</code>.</p>
+<ol><li><strong>SQL: find latest fill per order</strong></li></ol>
+<p><em>Question (real-life style):</em> "Given a <code>fills</code> table with <code>order_id</code>, <code>fill_price</code>, and <code>filled_at</code>, write a query that returns only the most recent fill per order for a compliance report."</p>
+<pre class="hljs"><code>SELECT DISTINCT ON (order_id) order_id, fill_price, filled_at
+FROM fills
+ORDER BY order_id, filled_at DESC;</code></pre>
+<p>Notes: <code>DISTINCT ON</code> is PostgreSQL-specific; in SQL Server, use <code>ROW_NUMBER() OVER (PARTITION BY order_id ORDER BY filled_at DESC)</code> and filter on <code>ROW_NUMBER = 1</code>.</p>
+<ol><li><strong>Minimal API health endpoint with dependency injection</strong></li></ol>
+<p><em>Question (real-life style):</em> "Expose a <code>/health</code> endpoint in a minimal API that reports <code>200</code> when a price feed is connected, otherwise <code>503</code>. Keep the composition root small and use DI for the feed implementation."</p>
+<pre class="hljs"><code>var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddSingleton&lt;IPriceFeed, PriceFeed&gt;();
+var app = builder.Build();
+
+app.MapGet(&quot;/health&quot;, (IPriceFeed feed) =&gt; feed.IsConnected
+    ? Results.Ok(new { status = &quot;ok&quot; })
+    : Results.StatusCode(StatusCodes.Status503ServiceUnavailable));
+
+await app.RunAsync();</code></pre>
+<p>Notes: Mapping the health check keeps the app’s composition root small. Consider adding <code>UseHealthChecks</code> or custom readiness/liveness probes for Kubernetes deployments.</p>
+<ol><li><strong>Secure parameterized data access to prevent SQL injection</strong></li></ol>
+<p><em>Question (real-life style):</em> "Refactor a repository method that currently concatenates <code>accountId</code> into SQL. Show a safe, parameterized implementation that streams results asynchronously."</p>
+<pre class="hljs"><code>public async Task&lt;IReadOnlyList&lt;Order&gt;&gt; GetOrdersAsync(
+    SqlConnection connection,
+    int accountId,
+    CancellationToken cancellationToken)
+{
+    const string sql = &quot;SELECT order_id, symbol, qty, status FROM dbo.Orders WHERE account_id = @AccountId&quot;;
+
+    await using var cmd = new SqlCommand(sql, connection);
+    cmd.Parameters.Add(new SqlParameter(&quot;@AccountId&quot;, SqlDbType.Int) { Value = accountId });
+
+    await using var reader = await cmd.ExecuteReaderAsync(cancellationToken);
+    var orders = new List&lt;Order&gt;();
+    while (await reader.ReadAsync(cancellationToken))
+    {
+        orders.Add(new Order
+        {
+            Id = reader.GetInt32(0),
+            Symbol = reader.GetString(1),
+            Quantity = reader.GetDecimal(2),
+            Status = reader.GetString(3)
+        });
+    }
+
+    return orders;
+}</code></pre>
+<p>Notes: Always bind parameters instead of string interpolation to avoid SQL injection. Use least-privileged SQL logins and timeouts to limit blast radius, and validate <code>accountId</code> ranges before querying.</p>
+<ol><li><strong>JWT authentication with audience validation and clock skew control</strong></li></ol>
+<p><em>Question (real-life style):</em> "You need to secure an API with JWT bearer auth. Configure validation to lock issuer/audience, tighten clock skew, and require a symmetric signing key from configuration. What does the startup code look like?"</p>
+<pre class="hljs"><code>builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =&gt;
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = &quot;https://issuer.example.com&quot;,
+            ValidateAudience = true,
+            ValidAudience = &quot;trading-api&quot;,
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.FromMinutes(1),
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config[&quot;Jwt:SigningKey&quot;]))
+        };
+    });</code></pre>
+<p>Notes: Tighten <code>ClockSkew</code> to reduce replay windows, ensure HTTPS-only transport, and rotate signing keys. Add <code>RequireAuthorization()</code> on sensitive endpoints and propagate correlation IDs for audit logs.</p>
+<ol><li><strong>Performance: span-based parsing to reduce allocations</strong></li></ol>
+<p><em>Question (real-life style):</em> "We parse numeric quantities from protocol buffers and want to avoid string allocations. Implement a span-based parser that returns <code>-1</code> on invalid input."</p>
+<pre class="hljs"><code>public static int ParseQuantity(ReadOnlySpan&lt;char&gt; span)
+{
+    // Expects numeric ASCII; returns -1 for invalid input.
+    int value = 0;
+    foreach (var ch in span)
+    {
+        if ((uint)(ch - &#39;0&#39;) &gt; 9) return -1;
+        value = unchecked(value * 10 + (ch - &#39;0&#39;));
+    }
+    return value;
+}</code></pre>
+<p>Notes: Using <code>ReadOnlySpan&lt;char&gt;</code> avoids string allocations when parsing slices from protocol buffers or HTTP headers. Consider <code>int.TryParse(ReadOnlySpan&lt;char&gt;, NumberStyles, IFormatProvider, out int)</code> for built-in validation and benchmark with BenchmarkDotNet to confirm gains.</p>
+<ol><li><strong>Performance: async streaming to lower memory footprint</strong></li></ol>
+<p><em>Question (real-life style):</em> "Show how you would stream trades from an HTTP endpoint without buffering the whole payload, yielding trades as they arrive and honoring cancellation."</p>
+<pre class="hljs"><code>public static async IAsyncEnumerable&lt;Trade&gt; StreamTradesAsync(
+    HttpClient client,
+    [EnumeratorCancellation] CancellationToken cancellationToken)
+{
+    await using var stream = await client.GetStreamAsync(&quot;trades/stream&quot;, cancellationToken);
+    await foreach (var trade in JsonSerializer.DeserializeAsyncEnumerable&lt;Trade&gt;(stream, cancellationToken: cancellationToken))
+    {
+        if (trade is not null)
+            yield return trade;
+    }
+}</code></pre>
+<p>Notes: Streaming deserialization prevents buffering large payloads. Combine with <code>HttpClientFactory</code> for connection reuse and set <code>MaxResponseContentBufferSize</code> when buffering is unavoidable. Add defensive cancellation to avoid stuck I/O.</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+</body>
+</html>

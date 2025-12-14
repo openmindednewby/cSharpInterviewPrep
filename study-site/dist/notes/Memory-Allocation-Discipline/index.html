@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for Index" />
+  <title>Index | C# Interview Prep Cheat Sheet</title>
+  <link rel="stylesheet" href="../../assets/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="badge">Fast recall</div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="nav-groups"><div class="sidebar-group">
+      <h3>Notes</h3>
+      <ul><li><a href="notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a href="notes/Automapper/AutoMapper.html">AutoMapper</a></li><li><a href="notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a href="notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a href="notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a href="notes/core-concepts.html">Core Concepts</a></li><li><a href="notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a href="notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a href="notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a href="notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a href="notes/error-handling.html">Error Handling</a></li><li><a href="notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a href="notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a href="notes/FluentValidation/FluentValidation.html">FluentValidation</a></li><li><a href="notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a href="notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a href="notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a href="notes/Clean-Architecture/index.html">Index</a></li><li><a href="notes/DRY/index.html">Index</a></li><li><a href="notes/Memory-Allocation-Discipline/index.html">Index</a></li><li><a href="notes/SOLID/index.html">Index</a></li><li><a href="notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a href="notes/logging.html">Logging</a></li><li><a href="notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a href="notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a href="notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li><li><a href="notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a href="notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a href="notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a href="notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a href="notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a href="notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a href="notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a href="notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a href="notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a href="notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a href="notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li><li><a href="notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a href="notes/testing-strategies.html">Testing Strategies</a></li><li><a href="notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group">
+      <h3>Practice</h3>
+      <ul><li><a href="practice/answers.html">Answers</a></li><li><a href="practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a href="practice/questions.html">Questions</a></li><li><a href="practice/real exam questions answers/replace int without variable.html">Replace Int Without Variable</a></li><li><a href="practice/real exam questions answers/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li></ul>
+    </div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">notes/Memory-Allocation-Discipline/index.md</div>
+        <h2>Index</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#memory-allocation-discipline-in-net-deep-dive">🧠 Memory Allocation Discipline in .NET — Deep Dive</a></li><li class="level-2"><a href="#1-what-it-means">1️⃣ What it means</a></li><li class="level-2"><a href="#2-why-it-matters">2️⃣ Why it matters</a></li><li class="level-2"><a href="#3-common-allocation-traps-and-how-to-fix-them">3️⃣ Common allocation traps (and how to fix them)</a></li><li class="level-2"><a href="#4-reuse-patterns-that-eliminate-gc-churn">4️⃣ Reuse patterns that eliminate GC churn</a></li><li class="level-3"><a href="#object-pooling">✅ **Object pooling**</a></li><li class="level-3"><a href="#buffer-pooling">✅ **Buffer pooling**</a></li><li class="level-3"><a href="#string-interning-or-caching">✅ **String interning or caching**</a></li><li class="level-3"><a href="#structs-and-value-types">✅ **Structs and value types**</a></li><li class="level-3"><a href="#using-spant-memoryt-for-zero-copy">✅ **Using `Span<T>` / `Memory<T>` for zero-copy**</a></li><li class="level-2"><a href="#5-avoiding-hidden-allocations">5️⃣ Avoiding hidden allocations</a></li><li class="level-2"><a href="#6-temporal-allocation-awareness-lifetime-patterns">6️⃣ Temporal allocation awareness (lifetime patterns)</a></li><li class="level-2"><a href="#7-measuring-validating-allocation-discipline">7️⃣ Measuring & validating allocation discipline</a></li><li class="level-2"><a href="#8-interview-ready-example-say-this-at-hfm">8️⃣ Interview-ready example (say this at HFM)</a></li><li class="level-2"><a href="#9-trading-system-tie-in-concrete-example">9️⃣ Trading-system tie-in (concrete example)</a></li><li class="level-2"><a href="#10-tldr-summary-say-this-confidently">10️⃣ TL;DR Summary (say this confidently)</a></li></ul></div>
+        <h1 id="memory-allocation-discipline-in-net-deep-dive">🧠 Memory Allocation Discipline in .NET — Deep Dive</h1>
+<p>---</p>
+<h2 id="1-what-it-means">1️⃣ What it means</h2>
+<p><strong>Allocation discipline</strong> means designing your code so that you:</p>
+<ul><li>Allocate <strong>only when necessary</strong></li><li><strong>Reuse</strong> what you already allocated</li><li><strong>Minimize copying</strong> of data</li><li>Keep <strong>object lifetimes short</strong> (so they die in Gen 0)</li><li>Prevent <strong>accidental heap allocations</strong> in tight loops or latency-sensitive paths</li></ul>
+<p>Basically:</p>
+<blockquote><p>“Don’t let your code throw objects at the GC faster than it can clean them up.”</p></blockquote>
+<p>---</p>
+<h2 id="2-why-it-matters">2️⃣ Why it matters</h2>
+<p>Allocations aren’t “free.” Each heap allocation:</p>
+<p>(eventually promotions → Gen 2 → <strong>long pauses</strong>)</p>
+<ul><li>Consumes CPU (for pointer bumping)</li><li>Increases memory footprint</li><li>Puts pressure on Gen 0 → more GC cycles</li></ul>
+<p>In <strong>low-latency systems</strong> (like trade execution or tick feeds), GC pauses = missed ticks or delayed quotes — unacceptable.</p>
+<p>So the best GC strategy is often:</p>
+<blockquote><p>“Don’t make the GC do work at all.”</p></blockquote>
+<p>---</p>
+<h2 id="3-common-allocation-traps-and-how-to-fix-them">3️⃣ Common allocation traps (and how to fix them)</h2>
+<p>| Bad Practice                           | Why it’s bad                    | Fix                                      | | -------------------------------------- | ------------------------------- | ---------------------------------------- | | Using <code>new</code> objects inside tight loops | Floods Gen 0                    | Reuse pooled objects                     | | <code>string.Concat</code> or <code>+</code> in loops        | Creates new string every time   | Use <code>StringBuilder</code> or spans             | | LINQ in hot paths                      | Allocates enumerators, closures | Use <code>for</code> loops                          | | Boxing value types                     | Allocates on heap               | Use generics / avoid casting to <code>object</code> | | Repeatedly allocating buffers          | LOH churn                       | Use <code>ArrayPool&lt;T&gt;</code>                       | | Returning large arrays                 | LOH growth                      | Reuse pooled arrays or slice spans       |</p>
+<p>---</p>
+<h2 id="4-reuse-patterns-that-eliminate-gc-churn">4️⃣ Reuse patterns that eliminate GC churn</h2>
+<h3 id="object-pooling">✅ <strong>Object pooling</strong></h3>
+<p>.NET has built-in pools for common cases:</p>
+<pre class="hljs"><code>using Microsoft.Extensions.ObjectPool;
+
+var pool = ObjectPool.Create&lt;MyReusableObject&gt;();
+var item = pool.Get();
+// use item...
+pool.Return(item);</code></pre>
+<p>💡 Great for: serializers, parsers, <code>StringBuilder</code>s, temp containers.</p>
+<p><strong>Example:</strong></p>
+<pre class="hljs"><code>var sb = StringBuilderCache.Acquire();
+// build a string
+var result = StringBuilderCache.GetStringAndRelease(sb);</code></pre>
+<p>→ zero allocations between calls.</p>
+<p>---</p>
+<h3 id="buffer-pooling">✅ <strong>Buffer pooling</strong></h3>
+<p>The <code>ArrayPool&lt;T&gt;</code> API lets you rent and return arrays instead of allocating new ones.</p>
+<pre class="hljs"><code>var pool = ArrayPool&lt;byte&gt;.Shared;
+byte[] buffer = pool.Rent(1024);
+// use it
+pool.Return(buffer);</code></pre>
+<p>💡 Use this for:</p>
+<ul><li>I/O buffers</li><li>Network streams</li><li>Deserialization</li><li>Message batching</li></ul>
+<p>🚀 Benefit: Avoids <strong>Large Object Heap churn</strong> (LOH fragmentation) and constant GC pressure.</p>
+<p>---</p>
+<h3 id="string-interning-or-caching">✅ <strong>String interning or caching</strong></h3>
+<p>Instead of creating new string instances for common identifiers (e.g., “EURUSD”):</p>
+<pre class="hljs"><code>string symbol = string.Intern(&quot;EURUSD&quot;);</code></pre>
+<p>Or better — store common symbols in a static <code>Dictionary&lt;string, string&gt;</code> and reuse the reference.</p>
+<p>---</p>
+<h3 id="structs-and-value-types">✅ <strong>Structs and value types</strong></h3>
+<p>For small, immutable data (ticks, coordinates, etc.), use <strong>structs</strong>:</p>
+<ul><li>Stored inline → no GC tracking</li><li>Can live and die on the stack</li><li>No heap allocations for short-lived data</li></ul>
+<pre class="hljs"><code>readonly struct Tick
+{
+    public string Symbol { get; }
+    public double Bid { get; }
+    public double Ask { get; }
+}</code></pre>
+<p>But ⚠️ keep them <strong>small</strong> (≤ 16–32 bytes). Large structs hurt performance due to copy costs.</p>
+<p>---</p>
+<h3 id="using-spant-memoryt-for-zero-copy">✅ <strong>Using <code>Span&lt;T&gt;</code> / <code>Memory&lt;T&gt;</code> for zero-copy</strong></h3>
+<p><code>Span&lt;T&gt;</code> and <code>Memory&lt;T&gt;</code> let you <strong>operate directly on existing memory</strong> — without allocating new arrays or substrings.</p>
+<p>Example: parsing a price line</p>
+<pre class="hljs"><code>ReadOnlySpan&lt;byte&gt; span = Encoding.ASCII.GetBytes(&quot;EURUSD,1.0743,1.0745&quot;);
+
+int comma = span.IndexOf((byte)&#39;,&#39;);
+var symbol = Encoding.ASCII.GetString(span[..comma]); // one allocation
+
+Utf8Parser.TryParse(span[(comma + 1)..], out double bid, out _);</code></pre>
+<p>No string splitting, no array allocations, no GC.</p>
+<p>💡 <strong>Rule:</strong> Use <code>Span&lt;T&gt;</code> for synchronous parsing; <code>Memory&lt;T&gt;</code> when data crosses async boundaries.</p>
+<p>---</p>
+<h2 id="5-avoiding-hidden-allocations">5️⃣ Avoiding hidden allocations</h2>
+<p>Even code that <em>looks innocent</em> can allocate. Some hidden examples:</p>
+<p>| Code                                     | Hidden allocation                       | | ---------------------------------------- | --------------------------------------- | | <code>foreach (var x in list)</code>                | Enumerator struct may box               | | <code>async</code> methods                          | Allocates a state machine object        | | <code>lambda</code> or <code>delegate</code> captures variable | Allocates closure object                | | <code>ToString()</code>                             | Often allocates new string              | | <code>Task.FromResult(...)</code>                   | Reuses task, good ✅                     | | <code>await</code> on <code>Task</code> that already completed | Allocates continuation unless optimized |</p>
+<p>💡 Use tools like:</p>
+<pre class="hljs"><code>dotnet-trace collect --process-id &lt;pid&gt;
+dotnet-counters monitor System.Runtime</code></pre>
+<p>to watch <strong>Allocated Bytes/sec</strong>.</p>
+<p>---</p>
+<h2 id="6-temporal-allocation-awareness-lifetime-patterns">6️⃣ Temporal allocation awareness (lifetime patterns)</h2>
+<p>The key to designing allocation-efficient systems is understanding <strong>lifetime scopes</strong>:</p>
+<p>| Lifetime          | Strategy                                                         | | ----------------- | ---------------------------------------------------------------- | | <strong>Per-request</strong>   | Avoid allocations in controllers; reuse service-scoped resources | | <strong>Per-session</strong>   | Use dependency injection scopes for per-user data                | | <strong>Global/static</strong> | Cache immutable data, don’t recreate                             | | <strong>Transient</strong>     | Keep short-lived structs or pooled objects                       |</p>
+<p>Example: in a market data service</p>
+<ul><li>Buffer per connection (rented from pool)</li><li>Parser per connection (reused object)</li><li>Tick structs per message (stack-allocated)</li></ul>
+<p>No GC churn in steady state.</p>
+<p>---</p>
+<h2 id="7-measuring-validating-allocation-discipline">7️⃣ Measuring & validating allocation discipline</h2>
+<p>Use:</p>
+<pre class="hljs"><code>dotnet-counters monitor System.Runtime</code></pre>
+<p>Watch:</p>
+<pre class="hljs"><code>Allocated Bytes/sec
+Gen 0 GC Count
+% Time in GC</code></pre>
+<p>or use code:</p>
+<pre class="hljs"><code>Console.WriteLine(GC.GetTotalAllocatedBytes(true));</code></pre>
+<p>✅ Healthy pattern:</p>
+<ul><li>High throughput with low Allocated Bytes/sec</li><li>Frequent Gen0, rare Gen1/2</li><li>% Time in GC < 2–3%</li></ul>
+<p>---</p>
+<h2 id="8-interview-ready-example-say-this-at-hfm">8️⃣ Interview-ready example (say this at HFM)</h2>
+<blockquote><p>“Allocation discipline means being intentional about where and how you allocate. In latency-sensitive systems, even Gen0 collections matter. I use <code>ArrayPool&lt;T&gt;</code> and <code>ObjectPool&lt;T&gt;</code> to reuse memory, <code>Span&lt;T&gt;</code> for parsing binary and textual data, and avoid LINQ or string concatenation in tight loops. I measure Allocated Bytes/sec and Gen0 frequency in production to ensure the system stays allocation-stable. Our goal isn’t zero GC — it’s <strong>predictable, bounded GC behavior</strong>.”</p></blockquote>
+<p>---</p>
+<h2 id="9-trading-system-tie-in-concrete-example">9️⃣ Trading-system tie-in (concrete example)</h2>
+<p><strong>Without discipline:</strong></p>
+<pre class="hljs"><code>foreach (var msg in feed)
+{
+    var parts = msg.Split(&#39;,&#39;);
+    var tick = new Tick(parts[0], double.Parse(parts[1]), double.Parse(parts[2]));
+    Publish(tick);
+}</code></pre>
+<p>→ Creates new string arrays, substrings, doubles → Gen0/Gen1 churn.</p>
+<p><strong>With discipline:</strong></p>
+<pre class="hljs"><code>byte[] buffer = ArrayPool&lt;byte&gt;.Shared.Rent(1024);
+ReadOnlySpan&lt;byte&gt; span = buffer.AsSpan(0, bytesRead);
+ParseTick(span);
+ArrayPool&lt;byte&gt;.Shared.Return(buffer);</code></pre>
+<p>→ Zero heap allocations, predictable performance, stable GC profile.</p>
+<p>---</p>
+<h2 id="10-tldr-summary-say-this-confidently">10️⃣ TL;DR Summary (say this confidently)</h2>
+<blockquote><p>“Allocation discipline is about <strong>controlling your memory behavior</strong>. I design code to <strong>minimize heap allocations</strong>, <strong>reuse buffers</strong>, and <strong>operate directly on memory</strong> using <code>Span&lt;T&gt;</code> and <code>ArrayPool&lt;T&gt;</code>. That keeps the GC quiet, prevents Gen2 promotions, and delivers low-latency performance. In production, I watch GC metrics and tune allocation-heavy paths continuously.”</p></blockquote>
+<p>---</p>
+<p>Would you like me to show you <strong>a before-and-after microbenchmark</strong> example using <code>BenchmarkDotNet</code>, comparing naive allocation-heavy code vs pooled + span-based parsing? It’s an awesome way to explain “I don’t just know it — I’ve measured it.”</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for Async Await Deep Dive" />
+  <title>Async Await Deep Dive | C# Interview Prep Cheat Sheet</title>
+  <link rel="stylesheet" href="../../assets/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="badge">Fast recall</div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="nav-groups"><div class="sidebar-group">
+      <h3>Notes</h3>
+      <ul><li><a href="notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a href="notes/Automapper/AutoMapper.html">AutoMapper</a></li><li><a href="notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a href="notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a href="notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a href="notes/core-concepts.html">Core Concepts</a></li><li><a href="notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a href="notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a href="notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a href="notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a href="notes/error-handling.html">Error Handling</a></li><li><a href="notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a href="notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a href="notes/FluentValidation/FluentValidation.html">FluentValidation</a></li><li><a href="notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a href="notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a href="notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a href="notes/Clean-Architecture/index.html">Index</a></li><li><a href="notes/DRY/index.html">Index</a></li><li><a href="notes/Memory-Allocation-Discipline/index.html">Index</a></li><li><a href="notes/SOLID/index.html">Index</a></li><li><a href="notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a href="notes/logging.html">Logging</a></li><li><a href="notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a href="notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a href="notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li><li><a href="notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a href="notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a href="notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a href="notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a href="notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a href="notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a href="notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a href="notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a href="notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a href="notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a href="notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li><li><a href="notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a href="notes/testing-strategies.html">Testing Strategies</a></li><li><a href="notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group">
+      <h3>Practice</h3>
+      <ul><li><a href="practice/answers.html">Answers</a></li><li><a href="practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a href="practice/questions.html">Questions</a></li><li><a href="practice/real exam questions answers/replace int without variable.html">Replace Int Without Variable</a></li><li><a href="practice/real exam questions answers/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li></ul>
+    </div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">notes/sub-notes/Async Await Deep Dive.md</div>
+        <h2>Async Await Deep Dive</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#asyncawait-deep-dive">Async/Await Deep Dive</a></li><li class="level-2"><a href="#compiler-generated-state-machine">Compiler-Generated State Machine</a></li><li class="level-2"><a href="#synchronization-context-capture">Synchronization Context Capture</a></li><li class="level-2"><a href="#deadlocks-blocking-calls">Deadlocks & Blocking Calls</a></li><li class="level-2"><a href="#exception-propagation">Exception Propagation</a></li><li class="level-2"><a href="#locks-async-coordination">Locks & Async Coordination</a></li><li class="level-2"><a href="#io-bound-vs-cpu-bound">I/O-Bound vs CPU-Bound</a></li><li class="level-2"><a href="#performance-considerations">Performance Considerations</a></li><li class="level-2"><a href="#interview-quick-hits">Interview Quick Hits</a></li></ul></div>
+        <h1 id="asyncawait-deep-dive">Async/Await Deep Dive</h1>
+<p>Use this sheet to unpack what happens when the compiler rewrites an <code>async</code> method and how to keep code responsive under load.</p>
+<h2 id="compiler-generated-state-machine">Compiler-Generated State Machine</h2>
+<ul><li>The compiler transforms every <code>async</code> method into a <strong>struct-based state machine</strong> implementing <code>IAsyncStateMachine</code>.</li><li>Local variables become fields on the state machine; <code>await</code> points split the method into states that resume via <code>MoveNext</code>.</li><li>Hot-path tip: keep locals small (e.g., avoid large structs) to limit the generated state machine size.</li></ul>
+<pre class="hljs"><code>public async Task&lt;int&gt; SumAsync(int a, int b)
+{
+    await Task.Yield();
+    return a + b;
+}</code></pre>
+<blockquote><p>Decompile with ILSpy/dotnet-ildasm to show the generated <code>MoveNext</code> method when interviewing.</p></blockquote>
+<h2 id="synchronization-context-capture">Synchronization Context Capture</h2>
+<ul><li><strong>UI/WPF/WinForms & ASP.NET (pre-Core)</strong> capture a <code>SynchronizationContext</code>; continuations post back to the captured context.</li><li>In ASP.NET Core/background services, the default context is the thread pool so no extra marshaling is needed.</li><li>Call <code>.ConfigureAwait(false)</code> inside reusable libraries/background jobs to avoid deadlocks and reduce context switches.</li></ul>
+<pre class="hljs"><code>public async Task&lt;string&gt; DownloadAsync(HttpClient client, Uri uri)
+    =&gt; await (await client.GetAsync(uri).ConfigureAwait(false))
+        .Content.ReadAsStringAsync().ConfigureAwait(false);</code></pre>
+<h2 id="deadlocks-blocking-calls">Deadlocks & Blocking Calls</h2>
+<ul><li>Blocking on <code>Task.Result</code> or <code>.Wait()</code> inside a context that disallows re-entrancy prevents the continuation from running.</li><li>Fix deadlocks by keeping the call chain <code>async</code> all the way up or by using <code>ConfigureAwait(false)</code> in library code.</li></ul>
+<pre class="hljs"><code>// ❌ Deadlocks on UI thread
+var content = client.GetStringAsync(url).Result;
+
+// ✅ Allow the message loop to process the continuation
+var content = await client.GetStringAsync(url).ConfigureAwait(false);</code></pre>
+<h2 id="exception-propagation">Exception Propagation</h2>
+<ul><li>Exceptions thrown inside an <code>async</code> method are captured and placed on the returned <code>Task</code>.</li><li>Always <code>await</code> the task to observe the exception; otherwise you risk unobserved task exceptions.</li><li>For fire-and-forget work, log via <code>Task.Run(...).ContinueWith</code> or use <code>IHostedService</code>/background queue patterns.</li></ul>
+<h2 id="locks-async-coordination">Locks & Async Coordination</h2>
+<ul><li><code>lock</code>/<code>Monitor</code> stay synchronous—only use around code that never <code>await</code>s.</li><li>Reach for <code>SemaphoreSlim</code>, <code>AsyncLock</code>, or channels when coordinating asynchronous work.</li></ul>
+<pre class="hljs"><code>private readonly SemaphoreSlim _mutex = new(1, 1);
+
+public async Task UpdateAsync()
+{
+    await _mutex.WaitAsync();
+    try
+    {
+        await PersistAsync();
+    }
+    finally
+    {
+        _mutex.Release();
+    }
+}</code></pre>
+<h2 id="io-bound-vs-cpu-bound">I/O-Bound vs CPU-Bound</h2>
+<ul><li><code>await</code> frees the thread to return to the pool while the I/O operation runs (HTTP, DB, queues).</li><li>For CPU-bound workloads, offload to <code>Task.Run</code> or dedicated worker threads to avoid blocking the caller.</li></ul>
+<h2 id="performance-considerations">Performance Considerations</h2>
+<ul><li>Prefer <code>ValueTask</code> when the result often completes synchronously (e.g., cached data) to avoid allocating a <code>Task</code>.</li><li>Avoid capturing the current context by default in library code—<code>ConfigureAwait(false)</code> becomes muscle memory.</li><li>Use <code>Task.WhenAll</code>/<code>Task.WhenAny</code> to fan out concurrent operations without repeated awaits.</li><li><strong>Cancellation:</strong> Accept <code>CancellationToken</code> parameters and forward them to downstream async APIs.</li></ul>
+<pre class="hljs"><code>public async Task&lt;Order&gt; PlaceAsync(OrderRequest request, CancellationToken cancellationToken)
+{
+    using var activity = _activitySource.StartActivity(&quot;PlaceOrder&quot;);
+
+    var quote = await _pricingClient.GetQuoteAsync(request.Symbol, cancellationToken)
+                                    .ConfigureAwait(false);
+
+    return await _orderGateway.ExecuteAsync(request with { Price = quote }, cancellationToken)
+                              .ConfigureAwait(false);
+}</code></pre>
+<h2 id="interview-quick-hits">Interview Quick Hits</h2>
+<ul><li>Explain how async improves scalability by releasing threads during I/O waits.</li><li>Contrast <code>Task</code>, <code>Task&lt;T&gt;</code>, <code>ValueTask&lt;T&gt;</code>, and <code>IAsyncEnumerable&lt;T&gt;</code>.</li><li>Mention tooling: <code>dotnet-trace</code>, <code>EventPipe</code>, and the <strong>Tasks</strong> view in Visual Studio for diagnosing hung awaits.</li></ul>
+<p>Keep this page handy to answer deep-dive follow-ups confidently.</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+</body>
+</html>

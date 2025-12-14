@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for FluentValidation" />
+  <title>FluentValidation | C# Interview Prep Cheat Sheet</title>
+  <link rel="stylesheet" href="../../assets/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="badge">Fast recall</div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="nav-groups"><div class="sidebar-group">
+      <h3>Notes</h3>
+      <ul><li><a href="notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a href="notes/Automapper/AutoMapper.html">AutoMapper</a></li><li><a href="notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a href="notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a href="notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a href="notes/core-concepts.html">Core Concepts</a></li><li><a href="notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a href="notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a href="notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a href="notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a href="notes/error-handling.html">Error Handling</a></li><li><a href="notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a href="notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a href="notes/FluentValidation/FluentValidation.html">FluentValidation</a></li><li><a href="notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a href="notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a href="notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a href="notes/Clean-Architecture/index.html">Index</a></li><li><a href="notes/DRY/index.html">Index</a></li><li><a href="notes/Memory-Allocation-Discipline/index.html">Index</a></li><li><a href="notes/SOLID/index.html">Index</a></li><li><a href="notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a href="notes/logging.html">Logging</a></li><li><a href="notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a href="notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a href="notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li><li><a href="notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a href="notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a href="notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a href="notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a href="notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a href="notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a href="notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a href="notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a href="notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a href="notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a href="notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li><li><a href="notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a href="notes/testing-strategies.html">Testing Strategies</a></li><li><a href="notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group">
+      <h3>Practice</h3>
+      <ul><li><a href="practice/answers.html">Answers</a></li><li><a href="practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a href="practice/questions.html">Questions</a></li><li><a href="practice/real exam questions answers/replace int without variable.html">Replace Int Without Variable</a></li><li><a href="practice/real exam questions answers/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li></ul>
+    </div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">notes/FluentValidation/FluentValidation.md</div>
+        <h2>FluentValidation</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#fluentvalidation-senior-developer-guide">FluentValidation — Senior developer guide</a></li><li class="level-2"><a href="#quick-overview">Quick overview</a></li><li class="level-2"><a href="#core-concepts-and-api">Core concepts and API</a></li><li class="level-2"><a href="#integration-with-aspnet-core">Integration with ASP.NET Core</a></li><li class="level-2"><a href="#senior-level-best-practices">Senior-level best practices</a></li><li class="level-2"><a href="#testing-validators">Testing validators</a></li><li class="level-2"><a href="#error-mapping-and-api-responses">Error mapping and API responses</a></li><li class="level-2"><a href="#performance-considerations">Performance considerations</a></li><li class="level-2"><a href="#advanced-topics-senior-level">Advanced topics (senior-level)</a></li><li class="level-2"><a href="#common-pitfalls-how-to-avoid-them">Common pitfalls & how to avoid them</a></li><li class="level-2"><a href="#checklist-for-senior-devs-when-reviewing-validation">Checklist for senior devs when reviewing validation</a></li><li class="level-2"><a href="#quick-code-snippets">Quick code snippets</a></li><li class="level-2"><a href="#further-reading-references">Further reading & references</a></li></ul></div>
+        <h1 id="fluentvalidation-senior-developer-guide">FluentValidation — Senior developer guide</h1>
+<p>This note covers how to use FluentValidation properly and what a senior C#/.NET developer needs to know: core concepts, best practices, integration with ASP.NET Core, testing, performance, and advanced extension points.</p>
+<p>---</p>
+<h2 id="quick-overview">Quick overview</h2>
+<p>FluentValidation is a popular .NET library for building strongly-typed validation rules using a fluent API. It separates validation rules from models and supports composition, async checks, localization, and easy testing.</p>
+<p>NuGet package: <code>FluentValidation</code> and for ASP.NET Core integration <code>FluentValidation.AspNetCore</code>.</p>
+<p>---</p>
+<h2 id="core-concepts-and-api">Core concepts and API</h2>
+<ul><li>Create a validator by implementing <code>AbstractValidator&lt;T&gt;</code>.</li><li>Add rules with <code>RuleFor(x =&gt; x.Property).NotEmpty().Length(5, 50).Must(...);</code></li><li>Supports <code>When</code>, <code>Unless</code>, <code>CascadeMode</code> and <code>RuleSet</code> for conditional and grouped validation.</li><li>Validators support async via <code>MustAsync</code>, custom <code>IValidator&lt;T&gt;</code> implementations, and <code>SetValidator</code> to compose nested validators.</li></ul>
+<p>Example:</p>
+<pre class="hljs"><code>public class CreateOrderDto
+{
+    public string Symbol { get; set; }
+    public decimal Amount { get; set; }
+    public string CustomerId { get; set; }
+}
+
+public class CreateOrderDtoValidator : AbstractValidator&lt;CreateOrderDto&gt;
+{
+    private readonly ILeaveTypeRepository _leaveTypeRepository;
+
+    public CreateOrderDtoValidator(ILeaveTypeRepository leaveTypeRepository)
+    {
+        CascadeMode = CascadeMode.Stop;
+
+        RuleFor(x =&gt; x.Symbol)
+            .NotEmpty()
+            .Length(3, 10);
+
+        RuleFor(x =&gt; x.Amount)
+            .GreaterThan(0);
+
+        RuleFor(x =&gt; x.CustomerId)
+            .NotEmpty()
+            .MustAsync(async (id, ct) =&gt; await CustomerExists(id))
+            .WithMessage(&quot;Customer does not exist&quot;);
+
+        // Example of nested validator
+        RuleFor(x =&gt; x.Address).SetValidator(new AddressValidator());
+        RuleFor(q =&gt; q)
+        .MustAsync(LeaveTypeNameUnique).WithMessage(&quot;Leave type already exists&quot;);
+
+        _leaveTypeRepository = leaveTypeRepository;
+    }
+
+    private async Task&lt;bool&gt; LeaveTypeNameUnique(CreateLeaveTypeCommand command, CancellationToken token)
+    {
+        return await _leaveTypeRepository.IsLeaveTypeUniqe(command.Name); 
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="integration-with-aspnet-core">Integration with ASP.NET Core</h2>
+<ul><li>Register validators in DI and enable automatic model validation.</li></ul>
+<pre class="hljs"><code>services.AddControllers()
+        .AddFluentValidation(fv =&gt; fv.RegisterValidatorsFromAssemblyContaining&lt;CreateOrderDtoValidator&gt;());</code></pre>
+<ul><li>You can also register <code>IValidator&lt;T&gt;</code> explicitly:</li></ul>
+<pre class="hljs"><code>services.AddTransient&lt;IValidator&lt;CreateOrderDto&gt;, CreateOrderDtoValidator&gt;();</code></pre>
+<ul><li>By default FluentValidation integrates with ASP.NET Core's model validation pipeline. Customize behavior with <code>FluentValidationModelValidatorProvider.Configure(...)</code> or by disabling automatic validation and invoking validators manually.</li></ul>
+<p>---</p>
+<h2 id="senior-level-best-practices">Senior-level best practices</h2>
+<ul><li>Keep validators thin: validation expresses rules, not business processes. Avoid embedding heavy domain logic or side effects in validators.</li><li>Prefer composition: extract reusable rule sets and nested validators via <code>SetValidator</code> or separate <code>AbstractValidator&lt;T&gt;</code> types.</li><li>Use <code>CascadeMode.Stop</code> when you want to short-circuit rules to reduce noise and unnecessary checks.</li><li>Use <code>When</code>/<code>Unless</code> sparingly for conditional validation; prefer explicit DTOs per use-case if the validation surface differs greatly.</li><li>For cross-field validation, use <code>DependentRules</code> or <code>Must</code> on a root object:</li></ul>
+<pre class="hljs"><code>RuleFor(x =&gt; x).Must(x =&gt; IsValidCombination(x.Some, x.Other));</code></pre>
+<ul><li>Validate externally for expensive checks (network/db) and consider running them asynchronously with <code>MustAsync</code>.</li><li>Use <code>RuleForEach</code> for collection items and <code>Include</code> to reuse other validators.</li></ul>
+<p>---</p>
+<h2 id="testing-validators">Testing validators</h2>
+<ul><li>Unit test validators directly — instantiating the validator and calling <code>Validate</code>/<code>ValidateAsync</code> is fast and deterministic.</li></ul>
+<pre class="hljs"><code>var validator = new CreateOrderDtoValidator();
+var result = validator.Validate(dto);
+Assert.False(result.IsValid);
+Assert.Contains(result.Errors, e =&gt; e.PropertyName == &quot;Amount&quot;);</code></pre>
+<ul><li>Mock external dependencies for async rules using test doubles or extract the dependency behind an interface passed into the validator's constructor.</li></ul>
+<p>---</p>
+<h2 id="error-mapping-and-api-responses">Error mapping and API responses</h2>
+<ul><li>FluentValidation produces <code>ValidationFailure</code> objects containing <code>PropertyName</code>, <code>ErrorMessage</code>, and <code>AttemptedValue</code>.</li><li>Map failures to API error response models consistently (problem details, field errors list).</li><li>Consider grouping errors by field and return a compact payload for clients.</li></ul>
+<p>---</p>
+<h2 id="performance-considerations">Performance considerations</h2>
+<ul><li>Avoid expensive synchronous work in rule delegates — prefer async variants.</li><li>If validators call DB or service methods, ensure they are async and avoid N+1 patterns; batch checks where possible (e.g., prefetch referenced ids before validation).</li><li>Keep <code>CascadeMode</code> behavior in mind; short-circuit can reduce extra checks.</li></ul>
+<p>---</p>
+<h2 id="advanced-topics-senior-level">Advanced topics (senior-level)</h2>
+<ul><li>Custom property validators: implement <code>IPropertyValidator</code> for reusable complex checks.</li><li>Interceptors: use <code>IValidatorInterceptor</code> to hook into validation execution for logging or transformation.</li><li>Validators as filters: using validators within a MediatR pipeline behavior to validate requests before handlers run.</li></ul>
+<p>Example MediatR pipeline registration:</p>
+<pre class="hljs"><code>public class ValidationBehavior&lt;TRequest, TResponse&gt; : IPipelineBehavior&lt;TRequest, TResponse&gt;
+{
+    private readonly IEnumerable&lt;IValidator&lt;TRequest&gt;&gt; _validators;
+    public ValidationBehavior(IEnumerable&lt;IValidator&lt;TRequest&gt;&gt; validators) =&gt; _validators = validators;
+
+    public async Task&lt;TResponse&gt; Handle(TRequest request, RequestHandlerDelegate&lt;TResponse&gt; next, CancellationToken ct)
+    {
+        var failures = _validators
+            .Select(v =&gt; v.Validate(request))
+            .SelectMany(r =&gt; r.Errors)
+            .Where(f =&gt; f != null)
+            .ToList();
+
+        if (failures.Any()) throw new ValidationException(failures);
+
+        return await next();
+    }
+}</code></pre>
+<ul><li>Localization: FluentValidation supports localized messages. Avoid composing error messages in validators; prefer resource keys.</li><li>Using <code>RuleSet</code> to group validations by scenario (e.g., <code>Create</code>, <code>Update</code>) and call specific rule sets when required.</li></ul>
+<p>---</p>
+<h2 id="common-pitfalls-how-to-avoid-them">Common pitfalls & how to avoid them</h2>
+<ul><li>Do not put persistence or side effects inside validators (e.g., saving logs, sending events).</li><li>Avoid long synchronous I/O (DB or HTTP) that will block the threadpool; use <code>MustAsync</code> instead.</li><li>Don't capture scoped services in singletons when injecting services into validators — prefer constructor-injected scoped/transient services and register validators with correct lifetimes.</li><li>Watch for ambiguous <code>PropertyName</code> when using <code>RuleFor(x =&gt; x)</code> root validators — map errors to clear property paths.</li></ul>
+<p>---</p>
+<h2 id="checklist-for-senior-devs-when-reviewing-validation">Checklist for senior devs when reviewing validation</h2>
+<ul><li>Are validators isolated and focused on rules only?</li><li>Are expensive checks async and stubbed in tests?</li><li>Is composition used instead of duplication (Include/SetValidator)?</li><li>Are messages localizable and consistent?</li><li>Are validators registered and resolved correctly in DI (right lifetime)?</li><li>Are validators used in the pipeline (MediatR/Controller) consistently?</li><li>Are cross-field validations explicit and tested?</li></ul>
+<p>---</p>
+<h2 id="quick-code-snippets">Quick code snippets</h2>
+<p>Register validators:</p>
+<pre class="hljs"><code>services.AddFluentValidationAutoValidation();
+services.AddValidatorsFromAssemblyContaining&lt;CreateOrderDtoValidator&gt;();</code></pre>
+<p>Conditional rule example:</p>
+<pre class="hljs"><code>RuleFor(x =&gt; x.Discount)
+    .GreaterThan(0)
+    .When(x =&gt; x.HasDiscount);</code></pre>
+<p>Async rule example:</p>
+<pre class="hljs"><code>RuleFor(x =&gt; x.CustomerId)
+    .MustAsync(async (id, ct) =&gt; await _customerService.Exists(id))
+    .WithMessage(&quot;Customer not found&quot;);</code></pre>
+<p>---</p>
+<h2 id="further-reading-references">Further reading & references</h2>
+<ul><li>FluentValidation docs: https://docs.fluentvalidation.net/</li><li>Patterns: using FluentValidation with MediatR, ASP.NET Core model binding, and localization.</li></ul>
+<p>---</p>
+<p>If you want, I can:</p>
+<ul><li>Add a short example wiring validators into a MediatR pipeline and an ASP.NET Core minimal API sample.</li><li>Add a checklist template for PR/code reviews focusing on validation rules.</li></ul>
+<p>***</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+</body>
+</html>

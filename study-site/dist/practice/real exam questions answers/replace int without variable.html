@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for Replace Int Without Variable" />
+  <title>Replace Int Without Variable | C# Interview Prep Cheat Sheet</title>
+  <link rel="stylesheet" href="../../assets/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="badge">Fast recall</div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="nav-groups"><div class="sidebar-group">
+      <h3>Notes</h3>
+      <ul><li><a href="notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a href="notes/Automapper/AutoMapper.html">AutoMapper</a></li><li><a href="notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a href="notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a href="notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a href="notes/core-concepts.html">Core Concepts</a></li><li><a href="notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a href="notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a href="notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a href="notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a href="notes/error-handling.html">Error Handling</a></li><li><a href="notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a href="notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a href="notes/FluentValidation/FluentValidation.html">FluentValidation</a></li><li><a href="notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a href="notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a href="notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a href="notes/Clean-Architecture/index.html">Index</a></li><li><a href="notes/DRY/index.html">Index</a></li><li><a href="notes/Memory-Allocation-Discipline/index.html">Index</a></li><li><a href="notes/SOLID/index.html">Index</a></li><li><a href="notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a href="notes/logging.html">Logging</a></li><li><a href="notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a href="notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a href="notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li><li><a href="notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a href="notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a href="notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a href="notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a href="notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a href="notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a href="notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a href="notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a href="notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a href="notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a href="notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li><li><a href="notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a href="notes/testing-strategies.html">Testing Strategies</a></li><li><a href="notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group">
+      <h3>Practice</h3>
+      <ul><li><a href="practice/answers.html">Answers</a></li><li><a href="practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a href="practice/questions.html">Questions</a></li><li><a href="practice/real exam questions answers/replace int without variable.html">Replace Int Without Variable</a></li><li><a href="practice/real exam questions answers/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li></ul>
+    </div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">practice/real exam questions answers/replace int without variable.md</div>
+        <h2>Replace Int Without Variable</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-2"><a href="#1-method-1-using-arithmetic-addition-subtraction">🧮 1️⃣ Method 1 — Using Arithmetic (Addition & Subtraction)</a></li><li class="level-3"><a href="#how-it-works">⚙️ How it works</a></li><li class="level-3"><a href="#caveat">⚠️ Caveat</a></li><li class="level-2"><a href="#2-method-2-using-bitwise-xor">⚡ 2️⃣ Method 2 — Using Bitwise XOR</a></li><li class="level-3"><a href="#how-it-works">🧠 How it works</a></li><li class="level-3"><a href="#pros">✅ Pros</a></li><li class="level-2"><a href="#3-comparison">🔍 3️⃣ Comparison</a></li><li class="level-2"><a href="#interview-tip">🚀 Interview Tip</a></li></ul></div>
+        <p>Excellent interview-style question 💡</p>
+<p>You can swap <strong>two integer values without using a third variable</strong> using either <strong>arithmetic operations</strong> or <strong>bitwise XOR</strong>.</p>
+<p>Let’s go through both 👇</p>
+<p>---</p>
+<h2 id="1-method-1-using-arithmetic-addition-subtraction">🧮 1️⃣ Method 1 — Using Arithmetic (Addition & Subtraction)</h2>
+<pre class="hljs"><code>int a = 5;
+int b = 10;
+
+a = a + b; // a = 15
+b = a - b; // b = 5
+a = a - b; // a = 10
+
+Console.WriteLine($&quot;a = {a}, b = {b}&quot;);</code></pre>
+<p>✅ Output:</p>
+<pre class="hljs"><code>a = 10, b = 5</code></pre>
+<h3 id="how-it-works">⚙️ How it works</h3>
+<ul><li>Step 1: <code>a</code> temporarily holds the sum of both.</li><li>Step 2: Subtracting <code>b</code> from sum gives original <code>a</code>.</li><li>Step 3: Subtracting new <code>b</code> gives original <code>b</code>.</li></ul>
+<h3 id="caveat">⚠️ Caveat</h3>
+<ul><li>Risk of <strong>integer overflow</strong> if <code>a + b</code> exceeds the data type’s range.</li></ul>
+<p>---</p>
+<h2 id="2-method-2-using-bitwise-xor">⚡ 2️⃣ Method 2 — Using Bitwise XOR</h2>
+<pre class="hljs"><code>int a = 5;
+int b = 10;
+
+a = a ^ b;
+b = a ^ b;
+a = a ^ b;
+
+Console.WriteLine($&quot;a = {a}, b = {b}&quot;);</code></pre>
+<p>✅ Output:</p>
+<pre class="hljs"><code>a = 10, b = 5</code></pre>
+<h3 id="how-it-works">🧠 How it works</h3>
+<p>XOR has a neat property:</p>
+<ul><li><code>x ^ x = 0</code></li><li><code>x ^ 0 = x</code></li><li><code>x ^ y ^ y = x</code></li></ul>
+<p>So:</p>
+<ol><li><code>a = a ^ b</code> → combined info of a & b</li><li><code>b = a ^ b</code> → becomes original <code>a</code></li><li><code>a = a ^ b</code> → becomes original <code>b</code></li></ol>
+<h3 id="pros">✅ Pros</h3>
+<ul><li>No overflow risk</li><li>Works perfectly for integers</li></ul>
+<p>---</p>
+<h2 id="3-comparison">🔍 3️⃣ Comparison</h2>
+<p>| Method          | Uses     | Overflow Risk | Works For     | Readability    | | --------------- | -------- | ------------- | ------------- | -------------- | | <strong>Arithmetic</strong>  | <code>+</code>, <code>-</code> | ⚠️ Yes        | Numeric types | Moderate       | | <strong>Bitwise XOR</strong> | <code>^</code>      | ✅ No          | Integers only | Less intuitive |</p>
+<p>---</p>
+<h2 id="interview-tip">🚀 Interview Tip</h2>
+<p>If asked in an interview, say:</p>
+<blockquote><p>“There are two main ways — arithmetic or bitwise XOR. XOR is safer because it avoids overflow and doesn’t need extra storage.”</p></blockquote>
+<p>---</p>
+<p>Would you like me to explain <em>why</em> the XOR trick mathematically guarantees that the two values swap back correctly (bitwise reasoning)?</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+</body>
+</html>
