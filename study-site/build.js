@@ -190,7 +190,9 @@ function buildTemplate({ title, navHtml, tocHtml, contentHtml, meta }) {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="${description}" />
+  <meta name="theme-color" content="#0f172a" />
   <title>${title} | C# Interview Prep Cheat Sheet</title>
+  <link rel="manifest" href="${meta.assetBase}/manifest.webmanifest" />
   <script>
     (() => {
       const supported = ['midnight', 'light', 'dark'];
@@ -230,7 +232,7 @@ function buildTemplate({ title, navHtml, tocHtml, contentHtml, meta }) {
       <div class="sidebar-section">
         <h2>Navigation</h2>
         <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
-        ${navHtml}
+        <div class="sidebar-scroll">${navHtml}</div>
       </div>
     </nav>
     <main class="content">
@@ -262,21 +264,79 @@ function buildTemplate({ title, navHtml, tocHtml, contentHtml, meta }) {
         });
       }
     })();
+    (() => {
+      const groups = document.querySelectorAll('.sidebar-group');
+      if (!groups.length) return;
+      const storageKey = 'study-open-groups';
+      const saved = sessionStorage.getItem(storageKey);
+      const openFromStorage = new Set(saved ? JSON.parse(saved) : []);
+
+      const activeLink = document.querySelector('.nav-link.active');
+      const activeGroup = activeLink?.closest('.sidebar-group');
+      if (activeGroup?.dataset.group) {
+        openFromStorage.add(activeGroup.dataset.group);
+      }
+
+      const syncStorage = () => {
+        const openIds = Array.from(document.querySelectorAll('.sidebar-group.is-open'))
+          .map((group) => group.dataset.group)
+          .filter(Boolean);
+        sessionStorage.setItem(storageKey, JSON.stringify(openIds));
+      };
+
+      const setExpanded = (group, expanded) => {
+        const header = group.querySelector('.sidebar-group__header');
+        const list = group.querySelector('.sidebar-group__items');
+        group.classList.toggle('is-open', expanded);
+        header?.setAttribute('aria-expanded', expanded);
+        if (list) {
+          list.hidden = !expanded;
+        }
+      };
+
+      groups.forEach((group) => {
+        const shouldOpen = openFromStorage.has(group.dataset.group);
+        setExpanded(group, shouldOpen);
+        const header = group.querySelector('.sidebar-group__header');
+        header?.addEventListener('click', () => {
+          const next = !group.classList.contains('is-open');
+          setExpanded(group, next);
+          syncStorage();
+        });
+      });
+    })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swPath = '${meta.swPath}';
+        navigator.serviceWorker.register(swPath).catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
   </script>
 </body>
 </html>`;
 }
 
-function navList(groups, basePrefix = '.') {
+function navList(groups, basePrefix = '.', activeHref = '') {
   const sectionHtml = groups.map((group) => {
+    const groupId = slugify(group.label);
     const items = group.items
       .slice()
       .sort((a, b) => a.title.localeCompare(b.title))
-      .map((file) => `<li><a href="${path.posix.join(basePrefix, file.href)}">${file.title}</a></li>`)
+      .map((file) => {
+        const isActive = file.href === activeHref;
+        const href = path.posix.join(basePrefix, file.href);
+        return `<li><a class="nav-link${isActive ? ' active' : ''}" href="${href}">${file.title}</a></li>`;
+      })
       .join('');
-    return `<div class="sidebar-group">
-      <h3>${group.label}</h3>
-      <ul>${items}</ul>
+    const isOpen = group.items.some((item) => item.href === activeHref);
+    return `<div class="sidebar-group${isOpen ? ' is-open' : ''}" data-group="${groupId}">
+      <button class="sidebar-group__header" type="button" aria-expanded="${isOpen}">
+        <span>${group.label}</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items"${isOpen ? '' : ' hidden'}>${items}</ul>
     </div>`;
   }).join('');
   return `<div class="nav-groups">${sectionHtml}</div>`;
@@ -330,14 +390,16 @@ async function buildFile(file, navGroups) {
 
   const assetBase = path.relative(targetDir, path.join(outputRoot, 'assets')) || '.';
   const navBase = path.relative(targetDir, outputRoot) || '.';
+  const swPath = path.posix.join(navBase, 'service-worker.js');
   const template = buildTemplate({
     title,
-    navHtml: navList(navGroups, navBase),
+    navHtml: navList(navGroups, navBase, file.output.href),
     tocHtml,
     contentHtml: html,
     meta: {
       breadcrumbs: file.relative,
       assetBase,
+      swPath,
     }
   });
 
@@ -363,6 +425,7 @@ async function buildIndex(navGroups) {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f172a" />
   <title>Study Portal | C# Interview Prep</title>
   <script>
     (() => {
@@ -374,6 +437,7 @@ async function buildIndex(navGroups) {
       window.__studyTheme = initial;
     })();
   </script>
+  <link rel="manifest" href="./assets/manifest.webmanifest" />
   <link rel="stylesheet" href="./assets/styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -420,6 +484,13 @@ async function buildIndex(navGroups) {
         });
       }
     })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js').catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
   </script>
 </body>
 </html>`;
@@ -434,8 +505,14 @@ async function copyAssets() {
   await ensureDir(dest);
   const files = await fs.readdir(source);
   for (const file of files) {
+    if (file === 'service-worker.js') {
+      continue;
+    }
     await fs.copyFile(path.join(source, file), path.join(dest, file));
   }
+  const swSource = path.join(source, 'service-worker.js');
+  const swDest = path.join(outputRoot, 'service-worker.js');
+  await fs.copyFile(swSource, swDest);
 }
 
 async function main() {
