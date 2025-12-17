@@ -23,12 +23,12 @@ public class OrderController : ControllerBase
     [HttpPost("orders")]
     public IActionResult CreateOrder(CreateOrderRequest request)
     {
-        // WRONG: .Result blocks the thread
+        // WRONG: .Result blocks the thread The CPU is doing nothing, but the thread is unavailable.
         var inventory = _httpClient
             .GetAsync($"https://inventory-api/check/{request.ProductId}")
             .Result;  // 🔥 Thread blocked here
 
-        // WRONG: Synchronous DB call
+        // WRONG: Synchronous DB call The CPU is doing nothing, but the thread is unavailable.
         var product = _db.Query<Product>(
             "SELECT * FROM Products WHERE Id = @Id",
             new { Id = request.ProductId }
@@ -112,6 +112,35 @@ public class OrderController : ControllerBase
 3. Threads return to pool, handle more requests
 4. When I/O completes, continuation runs on available thread
 5. **Same thread pool handles 10x more throughput**
+
+
+“Async/await allows us to release threads while waiting for I/O, so the same threads can serve many more requests.”
+
+**What async actually means (important explanation)**
+
+When you await an I/O operation:
+- ❌ The thread does NOT wait
+- ✅ The thread is returned to the ThreadPool
+- ✅ The request state is stored
+- ✅ When I/O completes, execution continues on any available thread
+
+This is not multithreading, it’s non-blocking I/O.
+
+**“With blocking code, throughput is limited by thread count. With async code, throughput is limited by I/O capacity.”. “Async/await doesn’t make code faster, it makes the system scale by freeing threads during I/O.”**
+
+| Model    | Threads | Avg I/O | Max Throughput |
+| -------- | ------- | ------- | -------------- |
+| Blocking | 200     | 50ms    | ~4,000 req/s   |
+| Async    | 200     | 50ms    | 50,000+ req/s  |
+
+
+#### ❓ “Is async always better?”
+
+“Only for I/O-bound work. For CPU-bound work, async doesn’t help; you need parallelism or offloading to background workers.”
+
+#### ❓ “What about Task.Run?”
+
+“Task.Run just moves blocking work to another thread — it doesn’t solve scalability and can make it worse under load.”
 
 ---
 

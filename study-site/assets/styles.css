@@ -149,7 +149,8 @@ h1 {
   position: sticky;
   top: 12px;
   align-self: start;
-  max-height: calc(100vh - 48px);
+  height: calc(100vh - 24px);
+  max-height: calc(100vh - 24px);
 }
 
 .sidebar-section {
@@ -161,6 +162,7 @@ h1 {
   display: flex;
   flex-direction: column;
   height: 100%;
+  overflow: hidden;
 }
 
 .sidebar-group h3 {
@@ -189,19 +191,33 @@ h1 {
 
 .sidebar-scroll {
   overflow-y: auto;
+  overflow-x: hidden;
   padding-right: 10px;
   margin-right: -6px;
   scroll-behavior: smooth;
   flex: 1;
+  min-height: 0;
 }
 
 .sidebar-scroll::-webkit-scrollbar {
   width: 10px;
 }
 
+.sidebar-scroll::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 999px;
+}
+
 .sidebar-scroll::-webkit-scrollbar-thumb {
   background: rgba(148, 163, 184, 0.35);
   border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+.sidebar-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.55);
+  background-clip: content-box;
 }
 
 .sidebar-group {
@@ -372,7 +388,8 @@ footer.footer {
 
   .sidebar {
     position: static;
-    max-height: none;
+    height: auto;
+    max-height: 70vh;
   }
 }
 
