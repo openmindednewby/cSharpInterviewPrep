@@ -220,6 +220,28 @@ public class PaymentService
 - Connection limits prevent overwhelming downstream
 - Timeout prevents hanging requests
 
+**“Without HttpClientFactory, each request creates new sockets, which quickly exhaust OS resources. HttpClientFactory centralizes connection pooling, respects DNS changes, and enforces connection limits, which is essential for high-throughput systems.”**
+
+| Topic              | New HttpClient | HttpClientFactory |
+| ------------------ | -------------- | ----------------- |
+| Socket reuse       | ❌ No           | ✅ Yes             |
+| DNS refresh        | ❌ No           | ✅ Yes             |
+| Connection pooling | ❌ No           | ✅ Yes             |
+| Under load         | 💥 Fails       | 🚀 Stable         |
+| Recommended        | ❌ Never        | ✅ Always          |
+
+#### What is a socket and why does it matter?
+
+“A socket is an OS-managed network connection. Creating too many too fast exhausts system resources, which is why socket reuse is critical at scale.”
+
+- It’s a **temporary** connection between your application and another machine. Used to send and receive data over the network (TCP/UDP)
+- Managed by the OS, not by your application code
+- Think of a socket like a phone line:
+  - You open it
+  - Talk (send data)
+  - Hang up
+  - The OS cleans it up later
+
 ---
 
 ## Rule #3: Always Pass CancellationToken
@@ -294,6 +316,15 @@ public class ReportGenerator : IReportGenerator
 
 ## Rule #4: Avoid Sync-Over-Async Antipatterns
 
+**Sync-over-async means calling async code in a synchronous, blocking way.**
+
+You have **Async method (Task<T>)** But you force it to run synchronously using:
+- .Result
+- .Wait()
+- .GetAwaiter().GetResult()
+
+This defeats the entire purpose of async.
+
 ### ❌ Deadly Antipatterns
 
 ```csharp
@@ -318,6 +349,8 @@ public async Task<User> GetUserAsync(int id)
 
 ### ✅ Correct Patterns
 
+**If a method is async, everything below it must be async.**
+
 ```csharp
 // Use truly async libraries
 public async Task<User> GetUserAsync(int id, CancellationToken ct)
@@ -340,6 +373,14 @@ public async Task<User> GetUserAsync(int id, CancellationToken ct)
     // ... read results
 }
 ```
+
+#### ❓ “Is .GetAwaiter().GetResult() safer?”
+
+“No, it has the same deadlock and blocking issues as .Result. Always prefer async all the way.”
+
+#### ❓ “Is Task.Run ever okay?”
+
+“Only for CPU-bound work that you want to offload from the main thread, not for I/O-bound work. For I/O, always use async methods directly.”
 
 ---
 

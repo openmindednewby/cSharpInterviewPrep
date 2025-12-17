@@ -61,6 +61,8 @@ function renderMarkdown(markdown) {
   let listBuffer = [];
   let paragraph = [];
   let blockquote = [];
+  let inTable = false;
+  let tableBuffer = [];
 
   const flushParagraph = () => {
     if (paragraph.length) {
@@ -84,6 +86,29 @@ function renderMarkdown(markdown) {
     }
   };
 
+  const flushTable = () => {
+    if (tableBuffer.length > 0) {
+      const rows = tableBuffer.filter(row => !row.match(/^\|[\s:-]+\|/)); // Skip separator rows
+      if (rows.length > 0) {
+        const headerRow = rows[0];
+        const bodyRows = rows.slice(1);
+
+        const parseRow = (row, isHeader) => {
+          const cells = row.split('|').slice(1, -1).map(cell => cell.trim());
+          const tag = isHeader ? 'th' : 'td';
+          return `<tr>${cells.map(cell => `<${tag}>${formatInline(cell)}</${tag}>`).join('')}</tr>`;
+        };
+
+        const thead = `<thead>${parseRow(headerRow, true)}</thead>`;
+        const tbody = bodyRows.length > 0 ? `<tbody>${bodyRows.map(row => parseRow(row, false)).join('')}</tbody>` : '';
+
+        html.push(`<table>${thead}${tbody}</table>`);
+      }
+      tableBuffer = [];
+      inTable = false;
+    }
+  };
+
   for (const line of lines) {
     if (inCode) {
       if (line.trim().startsWith('```')) {
@@ -101,6 +126,7 @@ function renderMarkdown(markdown) {
       flushParagraph();
       flushList();
       flushBlockquote();
+      flushTable();
       inCode = true;
       codeLines = [];
       continue;
@@ -110,7 +136,22 @@ function renderMarkdown(markdown) {
       flushParagraph();
       flushList();
       flushBlockquote();
+      flushTable();
       continue;
+    }
+
+    // Check for table rows (lines that start and end with |)
+    const tableMatch = line.match(/^\|(.+)\|$/);
+    if (tableMatch) {
+      flushParagraph();
+      flushList();
+      flushBlockquote();
+      inTable = true;
+      tableBuffer.push(line.trim());
+      continue;
+    } else if (inTable) {
+      // We were in a table but this line doesn't match, flush the table
+      flushTable();
     }
 
     const headingMatch = line.match(/^(#{1,6})\s+(.*)/);
@@ -118,6 +159,7 @@ function renderMarkdown(markdown) {
       flushParagraph();
       flushList();
       flushBlockquote();
+      flushTable();
       const level = headingMatch[1].length;
       const text = headingMatch[2].trim();
       const id = slugify(text);
@@ -130,6 +172,7 @@ function renderMarkdown(markdown) {
     if (listMatch) {
       flushParagraph();
       flushBlockquote();
+      flushTable();
       const type = listMatch[1].endsWith('.') ? 'ol' : 'ul';
       if (listType && listType !== type) {
         flushList();
@@ -143,6 +186,7 @@ function renderMarkdown(markdown) {
     if (quoteMatch) {
       flushParagraph();
       flushList();
+      flushTable();
       blockquote.push(quoteMatch[1]);
       continue;
     }
@@ -153,6 +197,7 @@ function renderMarkdown(markdown) {
   flushParagraph();
   flushList();
   flushBlockquote();
+  flushTable();
 
   return { html: html.join('\n'), headings };
 }

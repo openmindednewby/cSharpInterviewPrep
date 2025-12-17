@@ -126,7 +126,7 @@
         <div class="breadcrumbs">notes\Use-Cases\massive-traffic\01-async-patterns.md</div>
         <h2>01 Async Patterns</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#async-non-blocking-io-patterns-for-high-throughput-systems">Async & Non-Blocking I/O Patterns for High-Throughput Systems</a></li><li class="level-2"><a href="#why-this-matters-at-scale">Why This Matters at Scale</a></li><li class="level-2"><a href="#rule-1-never-block-threads-on-io">Rule #1: Never Block Threads on I/O</a></li><li class="level-3"><a href="#bad-blocking-code-thread-starvation">❌ Bad: Blocking Code (Thread Starvation)</a></li><li class="level-3"><a href="#good-async-all-the-way">✅ Good: Async All The Way</a></li><li class="level-4"><a href="#is-async-always-better">❓ “Is async always better?”</a></li><li class="level-4"><a href="#what-about-taskrun">❓ “What about Task.Run?”</a></li><li class="level-2"><a href="#rule-2-use-httpclientfactory-prevent-socket-exhaustion">Rule #2: Use HttpClientFactory (Prevent Socket Exhaustion)</a></li><li class="level-3"><a href="#bad-creating-httpclient-instances">❌ Bad: Creating HttpClient Instances</a></li><li class="level-3"><a href="#good-httpclientfactory">✅ Good: HttpClientFactory</a></li><li class="level-2"><a href="#rule-3-always-pass-cancellationtoken">Rule #3: Always Pass CancellationToken</a></li><li class="level-3"><a href="#proper-cancellation-propagation">✅ Proper Cancellation Propagation</a></li><li class="level-2"><a href="#rule-4-avoid-sync-over-async-antipatterns">Rule #4: Avoid Sync-Over-Async Antipatterns</a></li><li class="level-3"><a href="#deadly-antipatterns">❌ Deadly Antipatterns</a></li><li class="level-3"><a href="#correct-patterns">✅ Correct Patterns</a></li><li class="level-2"><a href="#advanced-valuetask-for-hot-paths">Advanced: ValueTask for Hot Paths</a></li><li class="level-2"><a href="#thread-pool-tuning-last-resort">Thread Pool Tuning (Last Resort)</a></li><li class="level-2"><a href="#summary-the-async-checklist">Summary: The Async Checklist</a></li></ul></div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#async-non-blocking-io-patterns-for-high-throughput-systems">Async & Non-Blocking I/O Patterns for High-Throughput Systems</a></li><li class="level-2"><a href="#why-this-matters-at-scale">Why This Matters at Scale</a></li><li class="level-2"><a href="#rule-1-never-block-threads-on-io">Rule #1: Never Block Threads on I/O</a></li><li class="level-3"><a href="#bad-blocking-code-thread-starvation">❌ Bad: Blocking Code (Thread Starvation)</a></li><li class="level-3"><a href="#good-async-all-the-way">✅ Good: Async All The Way</a></li><li class="level-4"><a href="#is-async-always-better">❓ “Is async always better?”</a></li><li class="level-4"><a href="#what-about-taskrun">❓ “What about Task.Run?”</a></li><li class="level-2"><a href="#rule-2-use-httpclientfactory-prevent-socket-exhaustion">Rule #2: Use HttpClientFactory (Prevent Socket Exhaustion)</a></li><li class="level-3"><a href="#bad-creating-httpclient-instances">❌ Bad: Creating HttpClient Instances</a></li><li class="level-3"><a href="#good-httpclientfactory">✅ Good: HttpClientFactory</a></li><li class="level-4"><a href="#what-is-a-socket-and-why-does-it-matter">What is a socket and why does it matter?</a></li><li class="level-2"><a href="#rule-3-always-pass-cancellationtoken">Rule #3: Always Pass CancellationToken</a></li><li class="level-3"><a href="#proper-cancellation-propagation">✅ Proper Cancellation Propagation</a></li><li class="level-2"><a href="#rule-4-avoid-sync-over-async-antipatterns">Rule #4: Avoid Sync-Over-Async Antipatterns</a></li><li class="level-3"><a href="#deadly-antipatterns">❌ Deadly Antipatterns</a></li><li class="level-3"><a href="#correct-patterns">✅ Correct Patterns</a></li><li class="level-4"><a href="#is-getawaitergetresult-safer">❓ “Is .GetAwaiter().GetResult() safer?”</a></li><li class="level-4"><a href="#is-taskrun-ever-okay">❓ “Is Task.Run ever okay?”</a></li><li class="level-2"><a href="#advanced-valuetask-for-hot-paths">Advanced: ValueTask for Hot Paths</a></li><li class="level-2"><a href="#thread-pool-tuning-last-resort">Thread Pool Tuning (Last Resort)</a></li><li class="level-2"><a href="#summary-the-async-checklist">Summary: The Async Checklist</a></li></ul></div>
         <h1 id="async-non-blocking-io-patterns-for-high-throughput-systems">Async & Non-Blocking I/O Patterns for High-Throughput Systems</h1>
 <h2 id="why-this-matters-at-scale">Why This Matters at Scale</h2>
 <p>When handling millions of requests, <strong>threads are your most precious resource</strong>. Blocking a thread while waiting for I/O (database query, HTTP call, file read) means that thread can't process other requests. With only hundreds of threads available, you'll hit a wall fast.</p>
@@ -222,7 +222,7 @@
 <ul><li>❌ The thread does NOT wait</li><li>✅ The thread is returned to the ThreadPool</li><li>✅ The request state is stored</li><li>✅ When I/O completes, execution continues on any available thread</li></ul>
 <p>This is not multithreading, it’s non-blocking I/O.</p>
 <p><strong>“With blocking code, throughput is limited by thread count. With async code, throughput is limited by I/O capacity.”. “Async/await doesn’t make code faster, it makes the system scale by freeing threads during I/O.”</strong></p>
-<p>| Model    | Threads | Avg I/O | Max Throughput | | -------- | ------- | ------- | -------------- | | Blocking | 200     | 50ms    | ~4,000 req/s   | | Async    | 200     | 50ms    | 50,000+ req/s  |</p>
+<table><thead><tr><th>Model</th><th>Threads</th><th>Avg I/O</th><th>Max Throughput</th></tr></thead><tbody><tr><td>Blocking</td><td>200</td><td>50ms</td><td>~4,000 req/s</td></tr><tr><td>Async</td><td>200</td><td>50ms</td><td>50,000+ req/s</td></tr></tbody></table>
 <h4 id="is-async-always-better">❓ “Is async always better?”</h4>
 <p>“Only for I/O-bound work. For CPU-bound work, async doesn’t help; you need parallelism or offloading to background workers.”</p>
 <h4 id="what-about-taskrun">❓ “What about Task.Run?”</h4>
@@ -288,6 +288,11 @@ public class PaymentService
 }</code></pre>
 <p><strong>Why this works:</strong></p>
 <ul><li>Socket pooling managed correctly</li><li>DNS TTL respected (PooledConnectionLifetime)</li><li>Connection limits prevent overwhelming downstream</li><li>Timeout prevents hanging requests</li></ul>
+<p><strong>“Without HttpClientFactory, each request creates new sockets, which quickly exhaust OS resources. HttpClientFactory centralizes connection pooling, respects DNS changes, and enforces connection limits, which is essential for high-throughput systems.”</strong></p>
+<table><thead><tr><th>Topic</th><th>New HttpClient</th><th>HttpClientFactory</th></tr></thead><tbody><tr><td>Socket reuse</td><td>❌ No</td><td>✅ Yes</td></tr><tr><td>DNS refresh</td><td>❌ No</td><td>✅ Yes</td></tr><tr><td>Connection pooling</td><td>❌ No</td><td>✅ Yes</td></tr><tr><td>Under load</td><td>💥 Fails</td><td>🚀 Stable</td></tr><tr><td>Recommended</td><td>❌ Never</td><td>✅ Always</td></tr></tbody></table>
+<h4 id="what-is-a-socket-and-why-does-it-matter">What is a socket and why does it matter?</h4>
+<p>“A socket is an OS-managed network connection. Creating too many too fast exhausts system resources, which is why socket reuse is critical at scale.”</p>
+<ul><li>It’s a <strong>temporary</strong> connection between your application and another machine. Used to send and receive data over the network (TCP/UDP)</li><li>Managed by the OS, not by your application code</li><li>Think of a socket like a phone line:</li><li>You open it</li><li>Talk (send data)</li><li>Hang up</li><li>The OS cleans it up later</li></ul>
 <p>---</p>
 <h2 id="rule-3-always-pass-cancellationtoken">Rule #3: Always Pass CancellationToken</h2>
 <p>Cancellation lets you stop work that's no longer needed (user disconnected, timeout hit).</p>
@@ -350,6 +355,10 @@ public class ReportGenerator : IReportGenerator
 <ul><li>User closes browser → cancel DB query, stop report generation</li><li>Saves CPU, DB connections, memory</li><li>At scale: <strong>prevents pile-up of abandoned work</strong></li></ul>
 <p>---</p>
 <h2 id="rule-4-avoid-sync-over-async-antipatterns">Rule #4: Avoid Sync-Over-Async Antipatterns</h2>
+<p><strong>Sync-over-async means calling async code in a synchronous, blocking way.</strong></p>
+<p>You have <strong>Async method (Task<T>)</strong> But you force it to run synchronously using:</p>
+<ul><li>.Result</li><li>.Wait()</li><li>.GetAwaiter().GetResult()</li></ul>
+<p>This defeats the entire purpose of async.</p>
 <h3 id="deadly-antipatterns">❌ Deadly Antipatterns</h3>
 <pre class="hljs"><code>// ANTIPATTERN #1: .Result / .Wait()
 var user = _userService.GetUserAsync(id).Result; // Deadlock risk + blocks thread
@@ -369,6 +378,7 @@ public async Task&lt;User&gt; GetUserAsync(int id)
     // This STILL uses a thread for the duration of the query
 }</code></pre>
 <h3 id="correct-patterns">✅ Correct Patterns</h3>
+<p><strong>If a method is async, everything below it must be async.</strong></p>
 <pre class="hljs"><code>// Use truly async libraries
 public async Task&lt;User&gt; GetUserAsync(int id, CancellationToken ct)
 {
@@ -389,6 +399,10 @@ public async Task&lt;User&gt; GetUserAsync(int id, CancellationToken ct)
     await using var reader = await cmd.ExecuteReaderAsync(ct);
     // ... read results
 }</code></pre>
+<h4 id="is-getawaitergetresult-safer">❓ “Is .GetAwaiter().GetResult() safer?”</h4>
+<p>“No, it has the same deadlock and blocking issues as .Result. Always prefer async all the way.”</p>
+<h4 id="is-taskrun-ever-okay">❓ “Is Task.Run ever okay?”</h4>
+<p>“Only for CPU-bound work that you want to offload from the main thread, not for I/O-bound work. For I/O, always use async methods directly.”</p>
 <p>---</p>
 <h2 id="advanced-valuetask-for-hot-paths">Advanced: ValueTask for Hot Paths</h2>
 <p>When an operation <strong>completes synchronously most of the time</strong> (e.g., cache hit), use <code>ValueTask&lt;T&gt;</code> to avoid Task allocation.</p>
