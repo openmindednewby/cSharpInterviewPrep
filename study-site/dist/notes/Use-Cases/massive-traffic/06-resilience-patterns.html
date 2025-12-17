@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for 06 Resilience Patterns" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>06 Resilience Patterns | C# Interview Prep Cheat Sheet</title>
+  <link rel="manifest" href="..\..\..\assets/manifest.webmanifest" />
+  <script>
+    (() => {
+      const supported = ['midnight', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const fallback = 'light';
+      const initial = supported.includes(saved) ? saved : fallback;
+      document.documentElement.dataset.theme = initial;
+      window.__studyTheme = initial;
+    })();
+  </script>
+  <link rel="stylesheet" href="..\..\..\assets/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="midnight">Current</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group" data-group="notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="..\..\../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="..\..\../notes/logging.html">Logging</a></li><li><a class="nav-link" href="..\..\../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a class="nav-link" href="..\..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a class="nav-link" href="..\..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group is-open" data-group="notes-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
+        <span>Notes / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/01-async-patterns.html">01 Async Patterns</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/02-backpressure-rate-limiting.html">02 Backpressure Rate Limiting</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/03-caching-strategies.html">03 Caching Strategies</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/04-database-scaling.html">04 Database Scaling</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/05-message-queues.html">05 Message Queues</a></li><li><a class="nav-link active" href="..\..\../notes/Use-Cases/massive-traffic/06-resilience-patterns.html">06 Resilience Patterns</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/07-observability.html">07 Observability</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/08-complete-example.html">08 Complete Example</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../practice/answers.html">Answers</a></li><li><a class="nav-link" href="..\..\../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="..\..\../practice/questions.html">Questions</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-real-exam-questions-answers">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Real Exam Questions Answers</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../practice/real exam questions answers/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="..\..\../practice/real exam questions answers/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li></ul>
+    </div></div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">notes\Use-Cases\massive-traffic\06-resilience-patterns.md</div>
+        <h2>06 Resilience Patterns</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#resilience-patterns-building-systems-that-handle-failures-gracefully">Resilience Patterns: Building Systems That Handle Failures Gracefully</a></li><li class="level-2"><a href="#why-resilience-is-critical-at-scale">Why Resilience is Critical at Scale</a></li><li class="level-2"><a href="#1-timeouts-the-foundation-of-resilience">1. Timeouts: The Foundation of Resilience</a></li><li class="level-3"><a href="#bad-no-timeout">❌ Bad: No Timeout</a></li><li class="level-3"><a href="#good-always-set-timeouts">✅ Good: Always Set Timeouts</a></li><li class="level-3"><a href="#database-timeouts">Database Timeouts</a></li><li class="level-2"><a href="#2-circuit-breaker-stop-hammering-failed-services">2. Circuit Breaker: Stop Hammering Failed Services</a></li><li class="level-3"><a href="#the-pattern">The Pattern</a></li><li class="level-3"><a href="#using-polly-library">Using Polly Library</a></li><li class="level-3"><a href="#manual-circuit-breaker-implementation">Manual Circuit Breaker Implementation</a></li><li class="level-2"><a href="#3-retry-policies-handling-transient-failures">3. Retry Policies: Handling Transient Failures</a></li><li class="level-3"><a href="#good-retry-strategy">✅ Good Retry Strategy</a></li><li class="level-3"><a href="#advanced-retry-with-jitter">Advanced: Retry with Jitter</a></li><li class="level-3"><a href="#database-retries-ef-core">Database Retries (EF Core)</a></li><li class="level-3"><a href="#retry-guidelines">Retry Guidelines</a></li><li class="level-2"><a href="#4-bulkhead-pattern-isolate-failures">4. Bulkhead Pattern: Isolate Failures</a></li><li class="level-3"><a href="#thread-pool-bulkheads">Thread Pool Bulkheads</a></li><li class="level-3"><a href="#polly-bulkhead">Polly Bulkhead</a></li><li class="level-2"><a href="#5-fallback-graceful-degradation">5. Fallback: Graceful Degradation</a></li><li class="level-3"><a href="#fallback-examples">Fallback Examples</a></li><li class="level-3"><a href="#polly-fallback-policy">Polly Fallback Policy</a></li><li class="level-2"><a href="#6-health-checks-monitor-dependency-health">6. Health Checks: Monitor Dependency Health</a></li><li class="level-3"><a href="#custom-health-check">Custom Health Check</a></li><li class="level-2"><a href="#7-combining-resilience-patterns-the-full-stack">7. Combining Resilience Patterns (The Full Stack)</a></li><li class="level-2"><a href="#summary-resilience-checklist">Summary: Resilience Checklist</a></li></ul></div>
+        <h1 id="resilience-patterns-building-systems-that-handle-failures-gracefully">Resilience Patterns: Building Systems That Handle Failures Gracefully</h1>
+<h2 id="why-resilience-is-critical-at-scale">Why Resilience is Critical at Scale</h2>
+<p><strong>The Reality:</strong></p>
+<ul><li>Networks fail</li><li>Services go down</li><li>Databases get slow</li><li>Dependencies time out</li></ul>
+<p><strong>At scale, failures are not edge cases — they're guaranteed.</strong></p>
+<p><strong>Key Principle:</strong> Design for failure. Your system should degrade gracefully, not catastrophically.</p>
+<p>---</p>
+<h2 id="1-timeouts-the-foundation-of-resilience">1. Timeouts: The Foundation of Resilience</h2>
+<p>Never call external services without a timeout. A hanging request is worse than a failed request.</p>
+<h3 id="bad-no-timeout">❌ Bad: No Timeout</h3>
+<pre class="hljs"><code>public class PaymentService
+{
+    private readonly HttpClient _httpClient;
+
+    public async Task&lt;PaymentResult&gt; ProcessPaymentAsync(PaymentRequest request)
+    {
+        // 🔥 No timeout = can hang forever
+        var response = await _httpClient.PostAsJsonAsync(
+            &quot;https://payment-gateway/charge&quot;,
+            request
+        );
+
+        return await response.Content.ReadFromJsonAsync&lt;PaymentResult&gt;();
+    }
+}
+// Under load: all threads hang waiting for slow gateway → system dies</code></pre>
+<h3 id="good-always-set-timeouts">✅ Good: Always Set Timeouts</h3>
+<pre class="hljs"><code>public class PaymentService
+{
+    private readonly HttpClient _httpClient;
+    private readonly ILogger&lt;PaymentService&gt; _logger;
+
+    public PaymentService(HttpClient httpClient, ILogger&lt;PaymentService&gt; logger)
+    {
+        _httpClient = httpClient;
+        _logger = logger;
+
+        // Set default timeout at HttpClient level
+        _httpClient.Timeout = TimeSpan.FromSeconds(10);
+    }
+
+    public async Task&lt;PaymentResult&gt; ProcessPaymentAsync(
+        PaymentRequest request,
+        CancellationToken ct)
+    {
+        try
+        {
+            // Per-request timeout (overrides default)
+            using var cts = CancellationTokenSource.CreateLinkedTokenSource(ct);
+            cts.CancelAfter(TimeSpan.FromSeconds(5));
+
+            var response = await _httpClient.PostAsJsonAsync(
+                &quot;https://payment-gateway/charge&quot;,
+                request,
+                cts.Token
+            );
+
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync&lt;PaymentResult&gt;(cts.Token);
+        }
+        catch (TaskCanceledException ex)
+        {
+            _logger.LogWarning(ex, &quot;Payment gateway timeout for request {RequestId}&quot;, request.Id);
+            throw new PaymentTimeoutException(&quot;Payment processing timed out&quot;, ex);
+        }
+        catch (HttpRequestException ex)
+        {
+            _logger.LogError(ex, &quot;Payment gateway error for request {RequestId}&quot;, request.Id);
+            throw new PaymentFailedException(&quot;Payment gateway unavailable&quot;, ex);
+        }
+    }
+}</code></pre>
+<h3 id="database-timeouts">Database Timeouts</h3>
+<pre class="hljs"><code>public class OrderRepository
+{
+    private readonly IDbConnection _db;
+
+    public async Task&lt;Order&gt; GetOrderAsync(int orderId, CancellationToken ct)
+    {
+        // Dapper: use CommandDefinition for timeout
+        var command = new CommandDefinition(
+            commandText: &quot;SELECT * FROM Orders WHERE OrderId = @OrderId&quot;,
+            parameters: new { OrderId = orderId },
+            commandTimeout: 5, // 5 seconds
+            cancellationToken: ct
+        );
+
+        return await _db.QueryFirstOrDefaultAsync&lt;Order&gt;(command);
+    }
+}
+
+// EF Core: set timeout
+public class AppDbContext : DbContext
+{
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlServer(
+            connectionString,
+            options =&gt; options.CommandTimeout(5) // 5 seconds
+        );
+    }
+}</code></pre>
+<p><strong>Timeout Guidelines:</strong></p>
+<ul><li>HTTP calls: 5-10 seconds</li><li>Database queries: 3-5 seconds</li><li>Third-party APIs: 10-30 seconds (depends on SLA)</li><li>Internal microservices: 2-5 seconds</li></ul>
+<p>---</p>
+<h2 id="2-circuit-breaker-stop-hammering-failed-services">2. Circuit Breaker: Stop Hammering Failed Services</h2>
+<p>When a dependency fails, stop calling it temporarily to let it recover.</p>
+<h3 id="the-pattern">The Pattern</h3>
+<pre class="hljs"><code>Closed (normal) → failures exceed threshold → Open (reject immediately)
+                ↓
+Open → after timeout → Half-Open (try one request)
+                ↓
+Half-Open → success → Closed (resume normal)
+Half-Open → failure → Open (back to rejecting)</code></pre>
+<h3 id="using-polly-library">Using Polly Library</h3>
+<pre class="hljs"><code>// Install: Polly, Microsoft.Extensions.Http.Polly
+
+// Program.cs
+builder.Services.AddHttpClient&lt;IInventoryService, InventoryService&gt;(client =&gt;
+{
+    client.BaseAddress = new Uri(&quot;https://inventory-api&quot;);
+    client.Timeout = TimeSpan.FromSeconds(10);
+})
+.AddTransientHttpErrorPolicy(policyBuilder =&gt;
+    policyBuilder.CircuitBreakerAsync(
+        handledEventsAllowedBeforeBreaking: 5, // Open after 5 failures
+        durationOfBreak: TimeSpan.FromSeconds(30) // Stay open for 30 seconds
+    )
+)
+.AddTransientHttpErrorPolicy(policyBuilder =&gt;
+    policyBuilder.WaitAndRetryAsync(new[]
+    {
+        TimeSpan.FromSeconds(1),
+        TimeSpan.FromSeconds(2),
+        TimeSpan.FromSeconds(4)
+    })
+);
+
+// Service
+public class InventoryService : IInventoryService
+{
+    private readonly HttpClient _httpClient;
+    private readonly ILogger&lt;InventoryService&gt; _logger;
+
+    // HttpClient already has circuit breaker from configuration
+    public async Task&lt;InventoryStatus&gt; CheckInventoryAsync(
+        int productId,
+        CancellationToken ct)
+    {
+        try
+        {
+            var response = await _httpClient.GetAsync($&quot;/api/inventory/{productId}&quot;, ct);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync&lt;InventoryStatus&gt;(ct);
+        }
+        catch (BrokenCircuitException ex)
+        {
+            _logger.LogWarning(
+                &quot;Circuit breaker open for inventory service, product {ProductId}&quot;,
+                productId
+            );
+
+            // Return fallback value
+            return new InventoryStatus { Available = false, Reason = &quot;Service unavailable&quot; };
+        }
+    }
+}</code></pre>
+<h3 id="manual-circuit-breaker-implementation">Manual Circuit Breaker Implementation</h3>
+<pre class="hljs"><code>public class CircuitBreaker
+{
+    private readonly int _threshold;
+    private readonly TimeSpan _timeout;
+    private int _failureCount;
+    private DateTime _lastFailureTime;
+    private CircuitState _state = CircuitState.Closed;
+    private readonly object _lock = new();
+
+    public CircuitBreaker(int threshold, TimeSpan timeout)
+    {
+        _threshold = threshold;
+        _timeout = timeout;
+    }
+
+    public async Task&lt;T&gt; ExecuteAsync&lt;T&gt;(Func&lt;Task&lt;T&gt;&gt; operation)
+    {
+        lock (_lock)
+        {
+            if (_state == CircuitState.Open)
+            {
+                if (DateTime.UtcNow - _lastFailureTime &gt; _timeout)
+                {
+                    _state = CircuitState.HalfOpen;
+                }
+                else
+                {
+                    throw new CircuitBreakerOpenException(&quot;Circuit breaker is open&quot;);
+                }
+            }
+        }
+
+        try
+        {
+            var result = await operation();
+
+            lock (_lock)
+            {
+                if (_state == CircuitState.HalfOpen)
+                {
+                    _state = CircuitState.Closed;
+                    _failureCount = 0;
+                }
+            }
+
+            return result;
+        }
+        catch (Exception)
+        {
+            lock (_lock)
+            {
+                _failureCount++;
+                _lastFailureTime = DateTime.UtcNow;
+
+                if (_failureCount &gt;= _threshold)
+                {
+                    _state = CircuitState.Open;
+                }
+            }
+
+            throw;
+        }
+    }
+}
+
+public enum CircuitState
+{
+    Closed,
+    Open,
+    HalfOpen
+}
+
+public class CircuitBreakerOpenException : Exception
+{
+    public CircuitBreakerOpenException(string message) : base(message) { }
+}</code></pre>
+<p>---</p>
+<h2 id="3-retry-policies-handling-transient-failures">3. Retry Policies: Handling Transient Failures</h2>
+<p>Retry transient failures (network glitches, temporary overload), but not permanent failures (404, 401).</p>
+<h3 id="good-retry-strategy">✅ Good Retry Strategy</h3>
+<pre class="hljs"><code>builder.Services.AddHttpClient&lt;IEmailService, EmailService&gt;()
+    .AddTransientHttpErrorPolicy(policyBuilder =&gt;
+        policyBuilder.WaitAndRetryAsync(
+            retryCount: 3,
+            sleepDurationProvider: retryAttempt =&gt;
+                TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), // Exponential backoff: 2s, 4s, 8s
+            onRetry: (outcome, timespan, retryAttempt, context) =&gt;
+            {
+                var logger = context.GetLogger();
+                logger?.LogWarning(
+                    &quot;Retry {RetryAttempt} after {Delay}s due to {Exception}&quot;,
+                    retryAttempt,
+                    timespan.TotalSeconds,
+                    outcome.Exception?.Message
+                );
+            }
+        )
+    );</code></pre>
+<h3 id="advanced-retry-with-jitter">Advanced: Retry with Jitter</h3>
+<pre class="hljs"><code>public static class RetryPolicies
+{
+    private static readonly Random _jitterer = new();
+
+    public static IAsyncPolicy&lt;HttpResponseMessage&gt; GetRetryPolicyWithJitter()
+    {
+        return Policy
+            .HandleResult&lt;HttpResponseMessage&gt;(r =&gt;
+                (int)r.StatusCode &gt;= 500 || r.StatusCode == System.Net.HttpStatusCode.RequestTimeout)
+            .Or&lt;HttpRequestException&gt;()
+            .Or&lt;TaskCanceledException&gt;()
+            .WaitAndRetryAsync(
+                retryCount: 3,
+                sleepDurationProvider: retryAttempt =&gt;
+                {
+                    // Exponential backoff with jitter
+                    var exponentialDelay = TimeSpan.FromSeconds(Math.Pow(2, retryAttempt));
+                    var jitter = TimeSpan.FromMilliseconds(_jitterer.Next(0, 1000));
+                    return exponentialDelay + jitter;
+                },
+                onRetry: (outcome, timespan, retryAttempt, context) =&gt;
+                {
+                    Console.WriteLine($&quot;Retry {retryAttempt} after {timespan.TotalSeconds:F2}s&quot;);
+                }
+            );
+    }
+}</code></pre>
+<p><strong>Why jitter?</strong> Prevents thundering herd (all clients retrying at exactly the same time).</p>
+<h3 id="database-retries-ef-core">Database Retries (EF Core)</h3>
+<pre class="hljs"><code>public class AppDbContext : DbContext
+{
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlServer(
+            connectionString,
+            options =&gt; options.EnableRetryOnFailure(
+                maxRetryCount: 3,
+                maxRetryDelay: TimeSpan.FromSeconds(5),
+                errorNumbersToAdd: null
+            )
+        );
+    }
+}</code></pre>
+<h3 id="retry-guidelines">Retry Guidelines</h3>
+<p><strong>DO retry:</strong></p>
+<ul><li>Network timeouts (TCP)</li><li>HTTP 5xx errors (server errors)</li><li>HTTP 429 (rate limit) with exponential backoff</li><li>Transient database errors (deadlocks, connection issues)</li></ul>
+<p><strong>DON'T retry:</strong></p>
+<ul><li>HTTP 4xx errors (client errors: 400, 401, 403, 404)</li><li>Business logic failures</li><li>Validation errors</li><li>Non-idempotent operations (unless using idempotency keys)</li></ul>
+<p>---</p>
+<h2 id="4-bulkhead-pattern-isolate-failures">4. Bulkhead Pattern: Isolate Failures</h2>
+<p>Don't let one failing dependency exhaust all resources.</p>
+<h3 id="thread-pool-bulkheads">Thread Pool Bulkheads</h3>
+<pre class="hljs"><code>public class BulkheadService
+{
+    private readonly SemaphoreSlim _paymentSemaphore = new(20, 20); // 20 concurrent payments
+    private readonly SemaphoreSlim _emailSemaphore = new(50, 50);   // 50 concurrent emails
+
+    public async Task&lt;PaymentResult&gt; ProcessPaymentAsync(
+        PaymentRequest request,
+        CancellationToken ct)
+    {
+        if (!await _paymentSemaphore.WaitAsync(TimeSpan.FromMilliseconds(100), ct))
+        {
+            throw new BulkheadRejectedException(&quot;Payment bulkhead full&quot;);
+        }
+
+        try
+        {
+            return await CallPaymentGatewayAsync(request, ct);
+        }
+        finally
+        {
+            _paymentSemaphore.Release();
+        }
+    }
+
+    public async Task SendEmailAsync(EmailMessage message, CancellationToken ct)
+    {
+        if (!await _emailSemaphore.WaitAsync(TimeSpan.FromMilliseconds(100), ct))
+        {
+            throw new BulkheadRejectedException(&quot;Email bulkhead full&quot;);
+        }
+
+        try
+        {
+            await CallEmailServiceAsync(message, ct);
+        }
+        finally
+        {
+            _emailSemaphore.Release();
+        }
+    }
+}</code></pre>
+<p><strong>Why bulkheads?</strong> If payment gateway is slow/down, it won't prevent emails from being sent. Failures are isolated.</p>
+<h3 id="polly-bulkhead">Polly Bulkhead</h3>
+<pre class="hljs"><code>var bulkheadPolicy = Policy.BulkheadAsync&lt;HttpResponseMessage&gt;(
+    maxParallelization: 20,
+    maxQueuingActions: 10,
+    onBulkheadRejectedAsync: context =&gt;
+    {
+        Console.WriteLine(&quot;Bulkhead rejected request&quot;);
+        return Task.CompletedTask;
+    }
+);
+
+// Combine with retry and circuit breaker
+var resilientPolicy = Policy.WrapAsync(
+    bulkheadPolicy,
+    circuitBreakerPolicy,
+    retryPolicy
+);
+
+var result = await resilientPolicy.ExecuteAsync(() =&gt;
+    _httpClient.GetAsync(&quot;https://api.example.com/data&quot;)
+);</code></pre>
+<p>---</p>
+<h2 id="5-fallback-graceful-degradation">5. Fallback: Graceful Degradation</h2>
+<p>When a dependency fails, serve degraded functionality instead of crashing.</p>
+<h3 id="fallback-examples">Fallback Examples</h3>
+<pre class="hljs"><code>public class RecommendationService
+{
+    private readonly HttpClient _httpClient;
+    private readonly ICache _cache;
+    private readonly ILogger&lt;RecommendationService&gt; _logger;
+
+    public async Task&lt;List&lt;Product&gt;&gt; GetRecommendationsAsync(
+        int userId,
+        CancellationToken ct)
+    {
+        try
+        {
+            // Try ML-based recommendations
+            var response = await _httpClient.GetAsync($&quot;/recommendations/{userId}&quot;, ct);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync&lt;List&lt;Product&gt;&gt;(ct);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, &quot;Recommendation service failed, using fallback&quot;);
+
+            // Fallback 1: Cached recommendations
+            var cached = await _cache.GetAsync&lt;List&lt;Product&gt;&gt;($&quot;recommendations:{userId}&quot;, ct);
+            if (cached != null)
+            {
+                _logger.LogInformation(&quot;Returning cached recommendations for user {UserId}&quot;, userId);
+                return cached;
+            }
+
+            // Fallback 2: Popular products (global)
+            _logger.LogInformation(&quot;Returning popular products for user {UserId}&quot;, userId);
+            return await GetPopularProductsAsync(ct);
+        }
+    }
+
+    private async Task&lt;List&lt;Product&gt;&gt; GetPopularProductsAsync(CancellationToken ct)
+    {
+        // Simple fallback: top 10 popular products
+        return new List&lt;Product&gt;
+        {
+            // Static or from simple DB query
+        };
+    }
+}</code></pre>
+<h3 id="polly-fallback-policy">Polly Fallback Policy</h3>
+<pre class="hljs"><code>var fallbackPolicy = Policy&lt;List&lt;Product&gt;&gt;
+    .Handle&lt;Exception&gt;()
+    .FallbackAsync(
+        fallbackValue: new List&lt;Product&gt;(), // Empty list
+        onFallbackAsync: async (outcome, context) =&gt;
+        {
+            var logger = context.GetLogger();
+            logger?.LogWarning(&quot;Fallback triggered: {Exception}&quot;, outcome.Exception?.Message);
+            await Task.CompletedTask;
+        }
+    );
+
+var recommendations = await fallbackPolicy.ExecuteAsync(async () =&gt;
+{
+    var response = await _httpClient.GetAsync($&quot;/recommendations/{userId}&quot;);
+    response.EnsureSuccessStatusCode();
+    return await response.Content.ReadFromJsonAsync&lt;List&lt;Product&gt;&gt;();
+});</code></pre>
+<p>---</p>
+<h2 id="6-health-checks-monitor-dependency-health">6. Health Checks: Monitor Dependency Health</h2>
+<p>Expose health check endpoints for load balancers and monitoring.</p>
+<pre class="hljs"><code>// Program.cs
+builder.Services.AddHealthChecks()
+    .AddCheck(&quot;self&quot;, () =&gt; HealthCheckResult.Healthy())
+    .AddSqlServer(
+        connectionString: builder.Configuration.GetConnectionString(&quot;DefaultConnection&quot;)!,
+        name: &quot;database&quot;,
+        timeout: TimeSpan.FromSeconds(5)
+    )
+    .AddRedis(
+        redisConnectionString: builder.Configuration.GetConnectionString(&quot;Redis&quot;)!,
+        name: &quot;redis&quot;,
+        timeout: TimeSpan.FromSeconds(5)
+    )
+    .AddUrlGroup(
+        new Uri(&quot;https://inventory-api/health&quot;),
+        name: &quot;inventory-service&quot;,
+        timeout: TimeSpan.FromSeconds(5)
+    );
+
+var app = builder.Build();
+
+// Basic health check
+app.MapHealthChecks(&quot;/health&quot;);
+
+// Detailed health check (for monitoring)
+app.MapHealthChecks(&quot;/health/detailed&quot;, new HealthCheckOptions
+{
+    ResponseWriter = async (context, report) =&gt;
+    {
+        context.Response.ContentType = &quot;application/json&quot;;
+
+        var result = new
+        {
+            status = report.Status.ToString(),
+            checks = report.Entries.Select(e =&gt; new
+            {
+                name = e.Key,
+                status = e.Value.Status.ToString(),
+                duration = e.Value.Duration.TotalMilliseconds,
+                exception = e.Value.Exception?.Message,
+                data = e.Value.Data
+            }),
+            totalDuration = report.TotalDuration.TotalMilliseconds
+        };
+
+        await context.Response.WriteAsJsonAsync(result);
+    }
+});</code></pre>
+<h3 id="custom-health-check">Custom Health Check</h3>
+<pre class="hljs"><code>public class MessageQueueHealthCheck : IHealthCheck
+{
+    private readonly IRabbitMQConnection _rabbitConnection;
+
+    public async Task&lt;HealthCheckResult&gt; CheckHealthAsync(
+        HealthCheckContext context,
+        CancellationToken ct = default)
+    {
+        try
+        {
+            var connection = _rabbitConnection.GetConnection();
+
+            if (!connection.IsOpen)
+            {
+                return HealthCheckResult.Unhealthy(&quot;RabbitMQ connection is closed&quot;);
+            }
+
+            using var channel = connection.CreateModel();
+            // Check if we can declare a queue (lightweight operation)
+            channel.QueueDeclarePassive(&quot;health-check&quot;);
+
+            return HealthCheckResult.Healthy(&quot;RabbitMQ is reachable&quot;);
+        }
+        catch (Exception ex)
+        {
+            return HealthCheckResult.Unhealthy(&quot;RabbitMQ is unreachable&quot;, ex);
+        }
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="7-combining-resilience-patterns-the-full-stack">7. Combining Resilience Patterns (The Full Stack)</h2>
+<pre class="hljs"><code>// Program.cs - Production-ready HTTP client configuration
+builder.Services.AddHttpClient&lt;IPaymentService, PaymentService&gt;(client =&gt;
+{
+    client.BaseAddress = new Uri(&quot;https://payment-gateway&quot;);
+    client.Timeout = TimeSpan.FromSeconds(10);
+})
+.AddPolicyHandler((services, request) =&gt;
+{
+    // Combine multiple policies
+    var retryPolicy = Policy
+        .HandleResult&lt;HttpResponseMessage&gt;(r =&gt; !r.IsSuccessStatusCode)
+        .Or&lt;HttpRequestException&gt;()
+        .WaitAndRetryAsync(
+            retryCount: 3,
+            sleepDurationProvider: retryAttempt =&gt;
+                TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)) +
+                TimeSpan.FromMilliseconds(Random.Shared.Next(0, 1000)) // Jitter
+        );
+
+    var circuitBreakerPolicy = Policy
+        .HandleResult&lt;HttpResponseMessage&gt;(r =&gt; !r.IsSuccessStatusCode)
+        .Or&lt;HttpRequestException&gt;()
+        .CircuitBreakerAsync(
+            handledEventsAllowedBeforeBreaking: 5,
+            durationOfBreak: TimeSpan.FromSeconds(30)
+        );
+
+    var bulkheadPolicy = Policy.BulkheadAsync&lt;HttpResponseMessage&gt;(
+        maxParallelization: 20,
+        maxQueuingActions: 10
+    );
+
+    var timeoutPolicy = Policy.TimeoutAsync&lt;HttpResponseMessage&gt;(
+        TimeSpan.FromSeconds(5)
+    );
+
+    // Order matters: timeout → retry → circuit breaker → bulkhead
+    return Policy.WrapAsync(timeoutPolicy, retryPolicy, circuitBreakerPolicy, bulkheadPolicy);
+});</code></pre>
+<p>---</p>
+<h2 id="summary-resilience-checklist">Summary: Resilience Checklist</h2>
+<p>✅ <strong>Timeouts on all I/O</strong>: HTTP, database, cache, queues ✅ <strong>Circuit breakers</strong>: For external dependencies ✅ <strong>Retry policies</strong>: Exponential backoff with jitter for transient failures ✅ <strong>Bulkheads</strong>: Isolate resource pools per dependency ✅ <strong>Fallbacks</strong>: Graceful degradation with cached/default data ✅ <strong>Health checks</strong>: For load balancer and monitoring ✅ <strong>Combine patterns</strong>: Timeout + retry + circuit breaker + bulkhead</p>
+<p><strong>Key Insight:</strong> At scale, failures happen constantly. Resilience patterns ensure one failing service doesn't cascade and bring down your entire system.</p>
+<p><strong>Next:</strong> <a href="./07-observability.md">Observability & Monitoring</a> - You can't fix what you can't see.</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['midnight', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const fallback = 'light';
+      const initial = supported.includes(saved) ? saved : (window.__studyTheme || fallback);
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          sessionStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+    (() => {
+      const groups = document.querySelectorAll('.sidebar-group');
+      if (!groups.length) return;
+      const storageKey = 'study-open-groups';
+      const saved = sessionStorage.getItem(storageKey);
+      const openFromStorage = new Set(saved ? JSON.parse(saved) : []);
+
+      const activeLink = document.querySelector('.nav-link.active');
+      const activeGroup = activeLink?.closest('.sidebar-group');
+      if (activeGroup?.dataset.group) {
+        openFromStorage.add(activeGroup.dataset.group);
+      }
+
+      const syncStorage = () => {
+        const openIds = Array.from(document.querySelectorAll('.sidebar-group.is-open'))
+          .map((group) => group.dataset.group)
+          .filter(Boolean);
+        sessionStorage.setItem(storageKey, JSON.stringify(openIds));
+      };
+
+      const setExpanded = (group, expanded) => {
+        const header = group.querySelector('.sidebar-group__header');
+        const list = group.querySelector('.sidebar-group__items');
+        group.classList.toggle('is-open', expanded);
+        header?.setAttribute('aria-expanded', expanded);
+        if (list) {
+          list.hidden = !expanded;
+        }
+      };
+
+      groups.forEach((group) => {
+        const shouldOpen = openFromStorage.has(group.dataset.group);
+        setExpanded(group, shouldOpen);
+        const header = group.querySelector('.sidebar-group__header');
+        header?.addEventListener('click', () => {
+          const next = !group.classList.contains('is-open');
+          setExpanded(group, next);
+          syncStorage();
+        });
+      });
+    })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swPath = '..\..\../service-worker.js';
+        navigator.serviceWorker.register(swPath).catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>

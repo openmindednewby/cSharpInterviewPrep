@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for 01 Async Patterns" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>01 Async Patterns | C# Interview Prep Cheat Sheet</title>
+  <link rel="manifest" href="..\..\..\assets/manifest.webmanifest" />
+  <script>
+    (() => {
+      const supported = ['midnight', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const fallback = 'light';
+      const initial = supported.includes(saved) ? saved : fallback;
+      document.documentElement.dataset.theme = initial;
+      window.__studyTheme = initial;
+    })();
+  </script>
+  <link rel="stylesheet" href="..\..\..\assets/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="midnight">Current</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group" data-group="notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="..\..\../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="..\..\../notes/logging.html">Logging</a></li><li><a class="nav-link" href="..\..\../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a class="nav-link" href="..\..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a class="nav-link" href="..\..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group is-open" data-group="notes-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
+        <span>Notes / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items"><li><a class="nav-link active" href="..\..\../notes/Use-Cases/massive-traffic/01-async-patterns.html">01 Async Patterns</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/02-backpressure-rate-limiting.html">02 Backpressure Rate Limiting</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/03-caching-strategies.html">03 Caching Strategies</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/04-database-scaling.html">04 Database Scaling</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/05-message-queues.html">05 Message Queues</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/06-resilience-patterns.html">06 Resilience Patterns</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/07-observability.html">07 Observability</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/08-complete-example.html">08 Complete Example</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../practice/answers.html">Answers</a></li><li><a class="nav-link" href="..\..\../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="..\..\../practice/questions.html">Questions</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-real-exam-questions-answers">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Real Exam Questions Answers</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../practice/real exam questions answers/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="..\..\../practice/real exam questions answers/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li></ul>
+    </div></div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">notes\Use-Cases\massive-traffic\01-async-patterns.md</div>
+        <h2>01 Async Patterns</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#async-non-blocking-io-patterns-for-high-throughput-systems">Async & Non-Blocking I/O Patterns for High-Throughput Systems</a></li><li class="level-2"><a href="#why-this-matters-at-scale">Why This Matters at Scale</a></li><li class="level-2"><a href="#rule-1-never-block-threads-on-io">Rule #1: Never Block Threads on I/O</a></li><li class="level-3"><a href="#bad-blocking-code-thread-starvation">❌ Bad: Blocking Code (Thread Starvation)</a></li><li class="level-3"><a href="#good-async-all-the-way">✅ Good: Async All The Way</a></li><li class="level-2"><a href="#rule-2-use-httpclientfactory-prevent-socket-exhaustion">Rule #2: Use HttpClientFactory (Prevent Socket Exhaustion)</a></li><li class="level-3"><a href="#bad-creating-httpclient-instances">❌ Bad: Creating HttpClient Instances</a></li><li class="level-3"><a href="#good-httpclientfactory">✅ Good: HttpClientFactory</a></li><li class="level-2"><a href="#rule-3-always-pass-cancellationtoken">Rule #3: Always Pass CancellationToken</a></li><li class="level-3"><a href="#proper-cancellation-propagation">✅ Proper Cancellation Propagation</a></li><li class="level-2"><a href="#rule-4-avoid-sync-over-async-antipatterns">Rule #4: Avoid Sync-Over-Async Antipatterns</a></li><li class="level-3"><a href="#deadly-antipatterns">❌ Deadly Antipatterns</a></li><li class="level-3"><a href="#correct-patterns">✅ Correct Patterns</a></li><li class="level-2"><a href="#advanced-valuetask-for-hot-paths">Advanced: ValueTask for Hot Paths</a></li><li class="level-2"><a href="#thread-pool-tuning-last-resort">Thread Pool Tuning (Last Resort)</a></li><li class="level-2"><a href="#summary-the-async-checklist">Summary: The Async Checklist</a></li></ul></div>
+        <h1 id="async-non-blocking-io-patterns-for-high-throughput-systems">Async & Non-Blocking I/O Patterns for High-Throughput Systems</h1>
+<h2 id="why-this-matters-at-scale">Why This Matters at Scale</h2>
+<p>When handling millions of requests, <strong>threads are your most precious resource</strong>. Blocking a thread while waiting for I/O (database query, HTTP call, file read) means that thread can't process other requests. With only hundreds of threads available, you'll hit a wall fast.</p>
+<p><strong>The Math:</strong></p>
+<ul><li>Default thread pool: ~hundreds of threads (varies by cores)</li><li>Average database query: 50ms</li><li>If threads block waiting: <strong>200 threads = 4,000 requests/second max</strong></li><li>With async/await (no blocking): <strong>Same threads = 50,000+ requests/second</strong></li></ul>
+<h2 id="rule-1-never-block-threads-on-io">Rule #1: Never Block Threads on I/O</h2>
+<h3 id="bad-blocking-code-thread-starvation">❌ Bad: Blocking Code (Thread Starvation)</h3>
+<pre class="hljs"><code>public class OrderController : ControllerBase
+{
+    private readonly HttpClient _httpClient;
+    private readonly IDbConnection _db;
+
+    [HttpPost(&quot;orders&quot;)]
+    public IActionResult CreateOrder(CreateOrderRequest request)
+    {
+        // WRONG: .Result blocks the thread
+        var inventory = _httpClient
+            .GetAsync($&quot;https://inventory-api/check/{request.ProductId}&quot;)
+            .Result;  // 🔥 Thread blocked here
+
+        // WRONG: Synchronous DB call
+        var product = _db.Query&lt;Product&gt;(
+            &quot;SELECT * FROM Products WHERE Id = @Id&quot;,
+            new { Id = request.ProductId }
+        ).First();  // 🔥 Thread blocked here
+
+        // More blocking...
+        var result = ProcessOrder(product, inventory).Result;
+
+        return Ok(result);
+    }
+}</code></pre>
+<p><strong>What happens under load:</strong></p>
+<ol><li>500 concurrent requests come in</li><li>All 500 grab a thread and block</li><li>Thread pool exhausted</li><li>New requests queue up or timeout</li><li><strong>System dies under load</strong></li></ol>
+<h3 id="good-async-all-the-way">✅ Good: Async All The Way</h3>
+<pre class="hljs"><code>public class OrderController : ControllerBase
+{
+    private readonly HttpClient _httpClient;
+    private readonly IDbConnection _db;
+
+    [HttpPost(&quot;orders&quot;)]
+    public async Task&lt;IActionResult&gt; CreateOrderAsync(
+        CreateOrderRequest request,
+        CancellationToken ct)
+    {
+        // ✅ Thread released while waiting
+        var inventoryTask = _httpClient
+            .GetAsync($&quot;https://inventory-api/check/{request.ProductId}&quot;, ct);
+
+        // ✅ Thread released while waiting
+        var productTask = _db.QueryFirstAsync&lt;Product&gt;(
+            &quot;SELECT * FROM Products WHERE Id = @Id&quot;,
+            new { Id = request.ProductId }
+        );
+
+        // Run both in parallel, await both
+        await Task.WhenAll(inventoryTask, productTask);
+
+        var inventory = await inventoryTask;
+        var product = await productTask;
+
+        // ✅ Process async
+        var result = await ProcessOrderAsync(product, inventory, ct);
+
+        return Ok(result);
+    }
+
+    private async Task&lt;OrderResult&gt; ProcessOrderAsync(
+        Product product,
+        HttpResponseMessage inventory,
+        CancellationToken ct)
+    {
+        var inventoryData = await inventory.Content
+            .ReadFromJsonAsync&lt;InventoryResponse&gt;(ct);
+
+        if (!inventoryData.Available)
+            throw new OutOfStockException();
+
+        // Write to DB async
+        await _db.ExecuteAsync(
+            &quot;INSERT INTO Orders (ProductId, Quantity) VALUES (@ProductId, @Qty)&quot;,
+            new { ProductId = product.Id, Qty = 1 }
+        );
+
+        return new OrderResult { OrderId = Guid.NewGuid(), Status = &quot;Created&quot; };
+    }
+}</code></pre>
+<p><strong>What happens under load:</strong></p>
+<ol><li>5,000 concurrent requests come in</li><li>Each starts on a thread, hits await, <strong>releases the thread</strong></li><li>Threads return to pool, handle more requests</li><li>When I/O completes, continuation runs on available thread</li><li><strong>Same thread pool handles 10x more throughput</strong></li></ol>
+<p>---</p>
+<h2 id="rule-2-use-httpclientfactory-prevent-socket-exhaustion">Rule #2: Use HttpClientFactory (Prevent Socket Exhaustion)</h2>
+<h3 id="bad-creating-httpclient-instances">❌ Bad: Creating HttpClient Instances</h3>
+<pre class="hljs"><code>// WRONG: Creates new sockets, doesn&#39;t respect DNS TTL
+public class PaymentService
+{
+    public async Task&lt;PaymentResult&gt; ChargeCardAsync(string cardToken)
+    {
+        using var client = new HttpClient(); // 🔥 New sockets every time
+
+        var response = await client.PostAsJsonAsync(
+            &quot;https://payment-gateway/charge&quot;,
+            new { Token = cardToken }
+        );
+
+        return await response.Content.ReadFromJsonAsync&lt;PaymentResult&gt;();
+    }
+}</code></pre>
+<p><strong>Problems:</strong></p>
+<ul><li><strong>Socket exhaustion</strong>: Each instance creates new sockets</li><li><strong>DNS changes ignored</strong>: Doesn't respect DNS TTL</li><li>Under load: <strong>TIME_WAIT sockets pile up → connection failures</strong></li></ul>
+<h3 id="good-httpclientfactory">✅ Good: HttpClientFactory</h3>
+<pre class="hljs"><code>// Startup.cs / Program.cs
+builder.Services.AddHttpClient&lt;PaymentService&gt;(client =&gt;
+{
+    client.BaseAddress = new Uri(&quot;https://payment-gateway&quot;);
+    client.Timeout = TimeSpan.FromSeconds(10); // Always set timeout
+    client.DefaultRequestHeaders.Add(&quot;Accept&quot;, &quot;application/json&quot;);
+})
+.ConfigurePrimaryHttpMessageHandler(() =&gt; new SocketsHttpHandler
+{
+    PooledConnectionLifetime = TimeSpan.FromMinutes(2), // DNS refresh
+    MaxConnectionsPerServer = 100 // Tune based on downstream capacity
+});
+
+// Service
+public class PaymentService
+{
+    private readonly HttpClient _httpClient;
+
+    // Injected from factory - reuses sockets correctly
+    public PaymentService(HttpClient httpClient)
+    {
+        _httpClient = httpClient;
+    }
+
+    public async Task&lt;PaymentResult&gt; ChargeCardAsync(
+        string cardToken,
+        CancellationToken ct)
+    {
+        var response = await _httpClient.PostAsJsonAsync(
+            &quot;/charge&quot;,
+            new { Token = cardToken },
+            ct
+        );
+
+        response.EnsureSuccessStatusCode();
+        return await response.Content.ReadFromJsonAsync&lt;PaymentResult&gt;(ct);
+    }
+}</code></pre>
+<p><strong>Why this works:</strong></p>
+<ul><li>Socket pooling managed correctly</li><li>DNS TTL respected (PooledConnectionLifetime)</li><li>Connection limits prevent overwhelming downstream</li><li>Timeout prevents hanging requests</li></ul>
+<p>---</p>
+<h2 id="rule-3-always-pass-cancellationtoken">Rule #3: Always Pass CancellationToken</h2>
+<p>Cancellation lets you stop work that's no longer needed (user disconnected, timeout hit).</p>
+<h3 id="proper-cancellation-propagation">✅ Proper Cancellation Propagation</h3>
+<pre class="hljs"><code>public class ReportController : ControllerBase
+{
+    private readonly IReportGenerator _reportGen;
+    private readonly IDbConnection _db;
+
+    [HttpGet(&quot;reports/{id}&quot;)]
+    public async Task&lt;IActionResult&gt; GetReportAsync(
+        int id,
+        CancellationToken ct) // ASP.NET provides this
+    {
+        // Propagate to all async operations
+        var data = await _db.QueryAsync&lt;ReportData&gt;(
+            &quot;SELECT * FROM LargeReportTable WHERE ReportId = @Id&quot;,
+            new { Id = id }
+            // Note: Dapper doesn&#39;t natively support CT, use wrapper
+        );
+
+        var report = await _reportGen.GenerateAsync(data, ct);
+
+        return File(report, &quot;application/pdf&quot;);
+    }
+}
+
+public class ReportGenerator : IReportGenerator
+{
+    public async Task&lt;byte[]&gt; GenerateAsync(
+        IEnumerable&lt;ReportData&gt; data,
+        CancellationToken ct)
+    {
+        using var stream = new MemoryStream();
+
+        foreach (var item in data)
+        {
+            // Check cancellation in loops
+            ct.ThrowIfCancellationRequested();
+
+            await ProcessItemAsync(item, stream, ct);
+        }
+
+        return stream.ToArray();
+    }
+
+    private async Task ProcessItemAsync(
+        ReportData item,
+        Stream stream,
+        CancellationToken ct)
+    {
+        // Expensive operation
+        await Task.Delay(100, ct); // Honors cancellation
+
+        var bytes = Encoding.UTF8.GetBytes(item.ToString());
+        await stream.WriteAsync(bytes, ct);
+    }
+}</code></pre>
+<p><strong>Why this matters:</strong></p>
+<ul><li>User closes browser → cancel DB query, stop report generation</li><li>Saves CPU, DB connections, memory</li><li>At scale: <strong>prevents pile-up of abandoned work</strong></li></ul>
+<p>---</p>
+<h2 id="rule-4-avoid-sync-over-async-antipatterns">Rule #4: Avoid Sync-Over-Async Antipatterns</h2>
+<h3 id="deadly-antipatterns">❌ Deadly Antipatterns</h3>
+<pre class="hljs"><code>// ANTIPATTERN #1: .Result / .Wait()
+var user = _userService.GetUserAsync(id).Result; // Deadlock risk + blocks thread
+
+// ANTIPATTERN #2: .GetAwaiter().GetResult()
+var user = _userService.GetUserAsync(id).GetAwaiter().GetResult(); // Same problems
+
+// ANTIPATTERN #3: Task.Run for fake async
+public async Task&lt;User&gt; GetUserAsync(int id)
+{
+    // WRONG: Just wrapping sync code in Task.Run
+    return await Task.Run(() =&gt;
+    {
+        return _db.Query&lt;User&gt;(&quot;SELECT * FROM Users WHERE Id = @Id&quot;, new { Id = id })
+                  .First();
+    });
+    // This STILL uses a thread for the duration of the query
+}</code></pre>
+<h3 id="correct-patterns">✅ Correct Patterns</h3>
+<pre class="hljs"><code>// Use truly async libraries
+public async Task&lt;User&gt; GetUserAsync(int id, CancellationToken ct)
+{
+    // EF Core - truly async
+    return await _dbContext.Users.FirstOrDefaultAsync(u =&gt; u.Id == id, ct);
+
+    // Dapper - truly async
+    return await _db.QueryFirstOrDefaultAsync&lt;User&gt;(
+        &quot;SELECT * FROM Users WHERE Id = @Id&quot;,
+        new { Id = id }
+    );
+
+    // SqlClient - truly async
+    await using var conn = new SqlConnection(_connectionString);
+    await conn.OpenAsync(ct);
+    await using var cmd = new SqlCommand(&quot;SELECT * FROM Users WHERE Id = @Id&quot;, conn);
+    cmd.Parameters.AddWithValue(&quot;@Id&quot;, id);
+    await using var reader = await cmd.ExecuteReaderAsync(ct);
+    // ... read results
+}</code></pre>
+<p>---</p>
+<h2 id="advanced-valuetask-for-hot-paths">Advanced: ValueTask for Hot Paths</h2>
+<p>When an operation <strong>completes synchronously most of the time</strong> (e.g., cache hit), use <code>ValueTask&lt;T&gt;</code> to avoid Task allocation.</p>
+<pre class="hljs"><code>public interface ICacheService
+{
+    ValueTask&lt;T?&gt; GetAsync&lt;T&gt;(string key, CancellationToken ct);
+    ValueTask SetAsync&lt;T&gt;(string key, T value, CancellationToken ct);
+}
+
+public class RedisCacheService : ICacheService
+{
+    private readonly IDatabase _redis;
+
+    public async ValueTask&lt;T?&gt; GetAsync&lt;T&gt;(string key, CancellationToken ct)
+    {
+        var value = await _redis.StringGetAsync(key);
+
+        if (value.IsNullOrEmpty)
+            return default;
+
+        return JsonSerializer.Deserialize&lt;T&gt;(value!);
+    }
+
+    public async ValueTask SetAsync&lt;T&gt;(
+        string key,
+        T value,
+        CancellationToken ct)
+    {
+        var json = JsonSerializer.Serialize(value);
+        await _redis.StringSetAsync(key, json);
+    }
+}
+
+public class UserService
+{
+    private readonly ICacheService _cache;
+    private readonly IUserRepository _repo;
+
+    // ValueTask: if cache hits (common), avoids Task allocation
+    public async ValueTask&lt;User&gt; GetUserAsync(int id, CancellationToken ct)
+    {
+        var cacheKey = $&quot;user:{id}&quot;;
+
+        // Might complete synchronously if in memory cache
+        var cached = await _cache.GetAsync&lt;User&gt;(cacheKey, ct);
+        if (cached != null)
+            return cached;
+
+        var user = await _repo.GetByIdAsync(id, ct);
+        await _cache.SetAsync(cacheKey, user, ct);
+
+        return user;
+    }
+}</code></pre>
+<p><strong>When to use ValueTask:</strong></p>
+<ul><li>Operations that often complete synchronously (cache hits, pooled resources)</li><li>Hot paths called millions of times</li><li><strong>Trade-off</strong>: Slightly more complex, harder to debug</li></ul>
+<p>---</p>
+<h2 id="thread-pool-tuning-last-resort">Thread Pool Tuning (Last Resort)</h2>
+<p><strong>Default settings work for 99% of cases</strong>. Only tune if you've:</p>
+<ol><li>Measured with profiling</li><li>Confirmed thread pool starvation</li><li>Made everything async first</li></ol>
+<pre class="hljs"><code>// Program.cs - ONLY if measurements show it&#39;s needed
+ThreadPool.GetMinThreads(out var minWorker, out var minIOCP);
+Console.WriteLine($&quot;Default min threads: Worker={minWorker}, IOCP={minIOCP}&quot;);
+
+// Increase min threads to reduce ramp-up time under bursts
+// Rule of thumb: cores * 2 to cores * 4
+ThreadPool.SetMinThreads(
+    workerThreads: Environment.ProcessorCount * 2,
+    completionPortThreads: Environment.ProcessorCount * 2
+);</code></pre>
+<p><strong>Warning</strong>: Increasing max threads doesn't help with async I/O. If you need more max threads, you're doing something wrong (probably blocking somewhere).</p>
+<p>---</p>
+<h2 id="summary-the-async-checklist">Summary: The Async Checklist</h2>
+<p>✅ <strong>All I/O operations are async</strong> (DB, HTTP, file, Redis, queue) ✅ <strong>No <code>.Result</code>, <code>.Wait()</code>, or <code>GetAwaiter().GetResult()</code></strong> ✅ <strong>HttpClientFactory configured with timeouts and connection limits</strong> ✅ <strong>CancellationToken passed to all async methods</strong> ✅ <strong>Using truly async libraries</strong> (EF Core, Dapper async, StackExchange.Redis) ✅ <strong>ValueTask for hot paths</strong> with frequent sync completion ✅ <strong>Measured thread pool metrics</strong> before tuning</p>
+<p><strong>Next:</strong> <a href="./02-backpressure-rate-limiting.md">Backpressure & Rate Limiting</a> - Even with perfect async code, you need limits to protect the system.</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['midnight', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const fallback = 'light';
+      const initial = supported.includes(saved) ? saved : (window.__studyTheme || fallback);
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          sessionStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+    (() => {
+      const groups = document.querySelectorAll('.sidebar-group');
+      if (!groups.length) return;
+      const storageKey = 'study-open-groups';
+      const saved = sessionStorage.getItem(storageKey);
+      const openFromStorage = new Set(saved ? JSON.parse(saved) : []);
+
+      const activeLink = document.querySelector('.nav-link.active');
+      const activeGroup = activeLink?.closest('.sidebar-group');
+      if (activeGroup?.dataset.group) {
+        openFromStorage.add(activeGroup.dataset.group);
+      }
+
+      const syncStorage = () => {
+        const openIds = Array.from(document.querySelectorAll('.sidebar-group.is-open'))
+          .map((group) => group.dataset.group)
+          .filter(Boolean);
+        sessionStorage.setItem(storageKey, JSON.stringify(openIds));
+      };
+
+      const setExpanded = (group, expanded) => {
+        const header = group.querySelector('.sidebar-group__header');
+        const list = group.querySelector('.sidebar-group__items');
+        group.classList.toggle('is-open', expanded);
+        header?.setAttribute('aria-expanded', expanded);
+        if (list) {
+          list.hidden = !expanded;
+        }
+      };
+
+      groups.forEach((group) => {
+        const shouldOpen = openFromStorage.has(group.dataset.group);
+        setExpanded(group, shouldOpen);
+        const header = group.querySelector('.sidebar-group__header');
+        header?.addEventListener('click', () => {
+          const next = !group.classList.contains('is-open');
+          setExpanded(group, next);
+          syncStorage();
+        });
+      });
+    })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swPath = '..\..\../service-worker.js';
+        navigator.serviceWorker.register(swPath).catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>

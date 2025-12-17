@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for 05 Message Queues" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>05 Message Queues | C# Interview Prep Cheat Sheet</title>
+  <link rel="manifest" href="..\..\..\assets/manifest.webmanifest" />
+  <script>
+    (() => {
+      const supported = ['midnight', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const fallback = 'light';
+      const initial = supported.includes(saved) ? saved : fallback;
+      document.documentElement.dataset.theme = initial;
+      window.__studyTheme = initial;
+    })();
+  </script>
+  <link rel="stylesheet" href="..\..\..\assets/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="midnight">Current</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group" data-group="notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="..\..\../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="..\..\../notes/logging.html">Logging</a></li><li><a class="nav-link" href="..\..\../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a class="nav-link" href="..\..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a class="nav-link" href="..\..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group is-open" data-group="notes-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
+        <span>Notes / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/01-async-patterns.html">01 Async Patterns</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/02-backpressure-rate-limiting.html">02 Backpressure Rate Limiting</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/03-caching-strategies.html">03 Caching Strategies</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/04-database-scaling.html">04 Database Scaling</a></li><li><a class="nav-link active" href="..\..\../notes/Use-Cases/massive-traffic/05-message-queues.html">05 Message Queues</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/06-resilience-patterns.html">06 Resilience Patterns</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/07-observability.html">07 Observability</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/08-complete-example.html">08 Complete Example</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../practice/answers.html">Answers</a></li><li><a class="nav-link" href="..\..\../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="..\..\../practice/questions.html">Questions</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-real-exam-questions-answers">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Real Exam Questions Answers</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../practice/real exam questions answers/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="..\..\../practice/real exam questions answers/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li></ul>
+    </div></div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">notes\Use-Cases\massive-traffic\05-message-queues.md</div>
+        <h2>05 Message Queues</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#message-queues-async-processing-decoupling-for-scale">Message Queues & Async Processing: Decoupling for Scale</a></li><li class="level-2"><a href="#why-message-queues-matter">Why Message Queues Matter</a></li><li class="level-2"><a href="#1-in-process-background-queues-simple-cases">1. In-Process Background Queues (Simple Cases)</a></li><li class="level-3"><a href="#channel-based-background-queue">Channel-Based Background Queue</a></li><li class="level-2"><a href="#2-rabbitmq-for-distributed-work-queues">2. RabbitMQ for Distributed Work Queues</a></li><li class="level-3"><a href="#setup-rabbitmq-client">Setup RabbitMQ Client</a></li><li class="level-3"><a href="#publisher-queue-messages">Publisher: Queue Messages</a></li><li class="level-3"><a href="#consumer-process-messages">Consumer: Process Messages</a></li><li class="level-3"><a href="#dead-letter-queue-dlq-for-failed-messages">Dead Letter Queue (DLQ) for Failed Messages</a></li><li class="level-2"><a href="#3-idempotency-critical-for-retries">3. Idempotency: Critical for Retries</a></li><li class="level-3"><a href="#idempotency-key-pattern">Idempotency Key Pattern</a></li><li class="level-2"><a href="#4-outbox-pattern-transactional-messaging">4. Outbox Pattern (Transactional Messaging)</a></li><li class="level-3"><a href="#the-problem">The Problem</a></li><li class="level-3"><a href="#the-solution-outbox-pattern">The Solution: Outbox Pattern</a></li><li class="level-2"><a href="#5-masstransit-abstraction-over-message-brokers">5. MassTransit: Abstraction Over Message Brokers</a></li><li class="level-3"><a href="#setup-masstransit-with-rabbitmq">Setup MassTransit with RabbitMQ</a></li><li class="level-2"><a href="#summary-message-queue-checklist">Summary: Message Queue Checklist</a></li></ul></div>
+        <h1 id="message-queues-async-processing-decoupling-for-scale">Message Queues & Async Processing: Decoupling for Scale</h1>
+<h2 id="why-message-queues-matter">Why Message Queues Matter</h2>
+<p><strong>The Problem:</strong></p>
+<ul><li>User submits order → triggers inventory check, payment, email, SMS, analytics</li><li>If all happen synchronously: slow response (5+ seconds)</li><li>If any fails: entire request fails</li><li>Under load: threads blocked waiting for slow operations</li></ul>
+<p><strong>The Solution:</strong></p>
+<ul><li>Accept request → validate → return 202 Accepted (fast)</li><li>Push work to queue → background workers process</li><li>User gets instant response, work happens asynchronously</li></ul>
+<p><strong>Key Benefits:</strong></p>
+<ul><li>Fast response times</li><li>Fault tolerance (retry failed work)</li><li>Load leveling (workers process at sustainable rate)</li><li>Scalability (add more workers independently)</li></ul>
+<p>---</p>
+<h2 id="1-in-process-background-queues-simple-cases">1. In-Process Background Queues (Simple Cases)</h2>
+<p>For lightweight background work within a single application.</p>
+<h3 id="channel-based-background-queue">Channel-Based Background Queue</h3>
+<pre class="hljs"><code>public interface IBackgroundTaskQueue
+{
+    ValueTask QueueAsync(Func&lt;CancellationToken, ValueTask&gt; workItem);
+    ValueTask&lt;Func&lt;CancellationToken, ValueTask&gt;&gt; DequeueAsync(CancellationToken ct);
+}
+
+public class BackgroundTaskQueue : IBackgroundTaskQueue
+{
+    private readonly Channel&lt;Func&lt;CancellationToken, ValueTask&gt;&gt; _queue;
+
+    public BackgroundTaskQueue(int capacity = 1000)
+    {
+        var options = new BoundedChannelOptions(capacity)
+        {
+            FullMode = BoundedChannelFullMode.Wait // Block when full
+        };
+        _queue = Channel.CreateBounded&lt;Func&lt;CancellationToken, ValueTask&gt;&gt;(options);
+    }
+
+    public async ValueTask QueueAsync(Func&lt;CancellationToken, ValueTask&gt; workItem)
+    {
+        if (workItem == null)
+            throw new ArgumentNullException(nameof(workItem));
+
+        await _queue.Writer.WriteAsync(workItem);
+    }
+
+    public async ValueTask&lt;Func&lt;CancellationToken, ValueTask&gt;&gt; DequeueAsync(
+        CancellationToken ct)
+    {
+        var workItem = await _queue.Reader.ReadAsync(ct);
+        return workItem;
+    }
+}
+
+// Background service to process queue
+public class QueuedHostedService : BackgroundService
+{
+    private readonly IBackgroundTaskQueue _taskQueue;
+    private readonly ILogger&lt;QueuedHostedService&gt; _logger;
+
+    public QueuedHostedService(
+        IBackgroundTaskQueue taskQueue,
+        ILogger&lt;QueuedHostedService&gt; logger)
+    {
+        _taskQueue = taskQueue;
+        _logger = logger;
+    }
+
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        _logger.LogInformation(&quot;Queued Hosted Service is starting.&quot;);
+
+        while (!stoppingToken.IsCancellationRequested)
+        {
+            try
+            {
+                var workItem = await _taskQueue.DequeueAsync(stoppingToken);
+
+                await workItem(stoppingToken);
+            }
+            catch (OperationCanceledException)
+            {
+                // Expected on shutdown
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, &quot;Error occurred executing task work item.&quot;);
+            }
+        }
+
+        _logger.LogInformation(&quot;Queued Hosted Service is stopping.&quot;);
+    }
+}
+
+// Usage in controller
+[ApiController]
+[Route(&quot;api/[controller]&quot;)]
+public class OrderController : ControllerBase
+{
+    private readonly IBackgroundTaskQueue _queue;
+    private readonly IEmailService _emailService;
+
+    [HttpPost]
+    public async Task&lt;IActionResult&gt; CreateOrderAsync(
+        CreateOrderRequest request,
+        CancellationToken ct)
+    {
+        // Validate and create order (fast, synchronous)
+        var orderId = await CreateOrderInDbAsync(request, ct);
+
+        // Queue background work (email, analytics, etc.)
+        await _queue.QueueAsync(async token =&gt;
+        {
+            await _emailService.SendOrderConfirmationAsync(orderId, token);
+            await _analyticsService.TrackOrderAsync(orderId, token);
+        });
+
+        // Return immediately
+        return Accepted(new { orderId, message = &quot;Order created successfully&quot; });
+    }
+}
+
+// Registration
+builder.Services.AddSingleton&lt;IBackgroundTaskQueue, BackgroundTaskQueue&gt;();
+builder.Services.AddHostedService&lt;QueuedHostedService&gt;();</code></pre>
+<p><strong>When to use:</strong></p>
+<ul><li>Single-instance deployments</li><li>Non-critical background work (failures acceptable)</li><li>Low volume (< 1000 jobs/minute)</li></ul>
+<p><strong>When NOT to use:</strong></p>
+<ul><li>Multi-instance deployments (work lost on restart)</li><li>Mission-critical work (no durability)</li><li>High volume (needs distributed queue)</li></ul>
+<p>---</p>
+<h2 id="2-rabbitmq-for-distributed-work-queues">2. RabbitMQ for Distributed Work Queues</h2>
+<p>Production-grade message queue with durability, retries, and acknowledgments.</p>
+<h3 id="setup-rabbitmq-client">Setup RabbitMQ Client</h3>
+<pre class="hljs"><code>// Install: RabbitMQ.Client
+// appsettings.json
+{
+  &quot;RabbitMQ&quot;: {
+    &quot;Host&quot;: &quot;localhost&quot;,
+    &quot;Port&quot;: 5672,
+    &quot;Username&quot;: &quot;guest&quot;,
+    &quot;Password&quot;: &quot;guest&quot;,
+    &quot;VirtualHost&quot;: &quot;/&quot;
+  }
+}
+
+// Connection factory
+public interface IRabbitMQConnection
+{
+    IConnection GetConnection();
+}
+
+public class RabbitMQConnection : IRabbitMQConnection, IDisposable
+{
+    private readonly IConfiguration _config;
+    private IConnection? _connection;
+    private readonly object _lock = new();
+
+    public RabbitMQConnection(IConfiguration config)
+    {
+        _config = config;
+    }
+
+    public IConnection GetConnection()
+    {
+        if (_connection != null &amp;&amp; _connection.IsOpen)
+            return _connection;
+
+        lock (_lock)
+        {
+            if (_connection != null &amp;&amp; _connection.IsOpen)
+                return _connection;
+
+            var factory = new ConnectionFactory
+            {
+                HostName = _config[&quot;RabbitMQ:Host&quot;],
+                Port = _config.GetValue&lt;int&gt;(&quot;RabbitMQ:Port&quot;),
+                UserName = _config[&quot;RabbitMQ:Username&quot;],
+                Password = _config[&quot;RabbitMQ:Password&quot;],
+                VirtualHost = _config[&quot;RabbitMQ:VirtualHost&quot;],
+                AutomaticRecoveryEnabled = true,
+                NetworkRecoveryInterval = TimeSpan.FromSeconds(10),
+                RequestedHeartbeat = TimeSpan.FromSeconds(60)
+            };
+
+            _connection = factory.CreateConnection();
+            return _connection;
+        }
+    }
+
+    public void Dispose()
+    {
+        _connection?.Close();
+        _connection?.Dispose();
+    }
+}</code></pre>
+<h3 id="publisher-queue-messages">Publisher: Queue Messages</h3>
+<pre class="hljs"><code>public interface IMessagePublisher
+{
+    Task PublishAsync&lt;T&gt;(string queueName, T message, CancellationToken ct);
+}
+
+public class RabbitMQPublisher : IMessagePublisher
+{
+    private readonly IRabbitMQConnection _rabbitConnection;
+    private readonly ILogger&lt;RabbitMQPublisher&gt; _logger;
+
+    public RabbitMQPublisher(
+        IRabbitMQConnection rabbitConnection,
+        ILogger&lt;RabbitMQPublisher&gt; logger)
+    {
+        _rabbitConnection = rabbitConnection;
+        _logger = logger;
+    }
+
+    public Task PublishAsync&lt;T&gt;(string queueName, T message, CancellationToken ct)
+    {
+        try
+        {
+            using var channel = _rabbitConnection.GetConnection().CreateModel();
+
+            // Declare queue (idempotent)
+            channel.QueueDeclare(
+                queue: queueName,
+                durable: true, // Survives broker restart
+                exclusive: false,
+                autoDelete: false,
+                arguments: null
+            );
+
+            var json = JsonSerializer.Serialize(message);
+            var body = Encoding.UTF8.GetBytes(json);
+
+            var properties = channel.CreateBasicProperties();
+            properties.Persistent = true; // Message survives restart
+            properties.ContentType = &quot;application/json&quot;;
+            properties.DeliveryMode = 2; // Persistent
+
+            channel.BasicPublish(
+                exchange: &quot;&quot;,
+                routingKey: queueName,
+                basicProperties: properties,
+                body: body
+            );
+
+            _logger.LogInformation(
+                &quot;Published message to queue {Queue}: {Message}&quot;,
+                queueName,
+                json
+            );
+
+            return Task.CompletedTask;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, &quot;Failed to publish message to queue {Queue}&quot;, queueName);
+            throw;
+        }
+    }
+}</code></pre>
+<h3 id="consumer-process-messages">Consumer: Process Messages</h3>
+<pre class="hljs"><code>public class OrderProcessingConsumer : BackgroundService
+{
+    private readonly IRabbitMQConnection _rabbitConnection;
+    private readonly IServiceProvider _serviceProvider;
+    private readonly ILogger&lt;OrderProcessingConsumer&gt; _logger;
+    private IModel? _channel;
+
+    public OrderProcessingConsumer(
+        IRabbitMQConnection rabbitConnection,
+        IServiceProvider serviceProvider,
+        ILogger&lt;OrderProcessingConsumer&gt; logger)
+    {
+        _rabbitConnection = rabbitConnection;
+        _serviceProvider = serviceProvider;
+        _logger = logger;
+    }
+
+    protected override Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        _channel = _rabbitConnection.GetConnection().CreateModel();
+
+        // Set prefetch count: how many messages to fetch at once
+        _channel.BasicQos(
+            prefetchSize: 0,
+            prefetchCount: 10, // Process 10 messages at a time
+            global: false
+        );
+
+        var queueName = &quot;order-processing&quot;;
+        _channel.QueueDeclare(
+            queue: queueName,
+            durable: true,
+            exclusive: false,
+            autoDelete: false,
+            arguments: null
+        );
+
+        var consumer = new EventingBasicConsumer(_channel);
+
+        consumer.Received += async (model, ea) =&gt;
+        {
+            var body = ea.Body.ToArray();
+            var message = Encoding.UTF8.GetString(body);
+
+            try
+            {
+                var order = JsonSerializer.Deserialize&lt;OrderMessage&gt;(message);
+
+                _logger.LogInformation(
+                    &quot;Processing order {OrderId}&quot;,
+                    order?.OrderId
+                );
+
+                // Process with scoped services
+                using var scope = _serviceProvider.CreateScope();
+                var orderService = scope.ServiceProvider.GetRequiredService&lt;IOrderService&gt;();
+
+                await orderService.ProcessOrderAsync(order!, stoppingToken);
+
+                // Acknowledge message (remove from queue)
+                _channel.BasicAck(ea.DeliveryTag, multiple: false);
+
+                _logger.LogInformation(&quot;Order {OrderId} processed successfully&quot;, order?.OrderId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, &quot;Error processing message: {Message}&quot;, message);
+
+                // Reject and requeue (will retry)
+                // Use dead-letter queue for poison messages
+                _channel.BasicNack(
+                    deliveryTag: ea.DeliveryTag,
+                    multiple: false,
+                    requeue: ea.BasicProperties.Headers?.ContainsKey(&quot;x-retry-count&quot;) != true
+                );
+            }
+        };
+
+        _channel.BasicConsume(
+            queue: queueName,
+            autoAck: false, // Manual acknowledgment
+            consumer: consumer
+        );
+
+        return Task.CompletedTask;
+    }
+
+    public override void Dispose()
+    {
+        _channel?.Close();
+        _channel?.Dispose();
+        base.Dispose();
+    }
+}
+
+public record OrderMessage(int OrderId, int UserId, decimal Total);</code></pre>
+<h3 id="dead-letter-queue-dlq-for-failed-messages">Dead Letter Queue (DLQ) for Failed Messages</h3>
+<pre class="hljs"><code>public class QueueSetup
+{
+    public static void ConfigureQueuesWithDLQ(IModel channel)
+    {
+        var dlqName = &quot;order-processing-dlq&quot;;
+        var mainQueueName = &quot;order-processing&quot;;
+
+        // Create DLQ
+        channel.QueueDeclare(
+            queue: dlqName,
+            durable: true,
+            exclusive: false,
+            autoDelete: false,
+            arguments: null
+        );
+
+        // Create main queue with DLQ configured
+        var args = new Dictionary&lt;string, object&gt;
+        {
+            { &quot;x-dead-letter-exchange&quot;, &quot;&quot; },
+            { &quot;x-dead-letter-routing-key&quot;, dlqName },
+            { &quot;x-message-ttl&quot;, 3600000 } // 1 hour TTL
+        };
+
+        channel.QueueDeclare(
+            queue: mainQueueName,
+            durable: true,
+            exclusive: false,
+            autoDelete: false,
+            arguments: args
+        );
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="3-idempotency-critical-for-retries">3. Idempotency: Critical for Retries</h2>
+<p>Messages may be delivered more than once. Ensure operations are idempotent.</p>
+<h3 id="idempotency-key-pattern">Idempotency Key Pattern</h3>
+<pre class="hljs"><code>public class IdempotentOrderService
+{
+    private readonly IDbConnection _db;
+    private readonly ILogger&lt;IdempotentOrderService&gt; _logger;
+
+    public async Task ProcessPaymentAsync(
+        PaymentMessage message,
+        CancellationToken ct)
+    {
+        var idempotencyKey = message.IdempotencyKey;
+
+        // Check if already processed
+        var existing = await _db.QueryFirstOrDefaultAsync&lt;ProcessedMessage&gt;(
+            &quot;SELECT * FROM ProcessedMessages WHERE IdempotencyKey = @Key&quot;,
+            new { Key = idempotencyKey }
+        );
+
+        if (existing != null)
+        {
+            _logger.LogInformation(
+                &quot;Payment {IdempotencyKey} already processed, skipping&quot;,
+                idempotencyKey
+            );
+            return;
+        }
+
+        // Process payment
+        using var transaction = _db.BeginTransaction();
+        try
+        {
+            await ProcessPaymentInternalAsync(message, ct);
+
+            // Mark as processed
+            await _db.ExecuteAsync(@&quot;
+                INSERT INTO ProcessedMessages (IdempotencyKey, ProcessedAt, MessageData)
+                VALUES (@Key, @ProcessedAt, @Data)&quot;,
+                new
+                {
+                    Key = idempotencyKey,
+                    ProcessedAt = DateTime.UtcNow,
+                    Data = JsonSerializer.Serialize(message)
+                },
+                transaction: transaction
+            );
+
+            transaction.Commit();
+
+            _logger.LogInformation(&quot;Payment {IdempotencyKey} processed&quot;, idempotencyKey);
+        }
+        catch (Exception ex)
+        {
+            transaction.Rollback();
+            _logger.LogError(ex, &quot;Failed to process payment {IdempotencyKey}&quot;, idempotencyKey);
+            throw;
+        }
+    }
+}
+
+public record PaymentMessage(
+    string IdempotencyKey, // GUID or composite key
+    int OrderId,
+    decimal Amount
+);
+
+// Table schema
+/*
+CREATE TABLE ProcessedMessages (
+    IdempotencyKey NVARCHAR(255) PRIMARY KEY,
+    ProcessedAt DATETIME2 NOT NULL,
+    MessageData NVARCHAR(MAX) NOT NULL,
+    INDEX IX_ProcessedMessages_ProcessedAt (ProcessedAt) -- For cleanup
+);
+*/</code></pre>
+<p>---</p>
+<h2 id="4-outbox-pattern-transactional-messaging">4. Outbox Pattern (Transactional Messaging)</h2>
+<p>Ensure database changes and message publishing are atomic.</p>
+<h3 id="the-problem">The Problem</h3>
+<pre class="hljs"><code>// ❌ Race condition: DB commits but message publish fails
+await _db.ExecuteAsync(&quot;INSERT INTO Orders ...&quot;);
+await _messagePublisher.PublishAsync(&quot;order-created&quot;, orderMessage); // Fails = lost event</code></pre>
+<h3 id="the-solution-outbox-pattern">The Solution: Outbox Pattern</h3>
+<pre class="hljs"><code>public class OutboxMessage
+{
+    public Guid Id { get; set; }
+    public string QueueName { get; set; } = string.Empty;
+    public string Payload { get; set; } = string.Empty;
+    public DateTime CreatedAt { get; set; }
+    public DateTime? ProcessedAt { get; set; }
+    public int RetryCount { get; set; }
+}
+
+public class OrderServiceWithOutbox
+{
+    private readonly IDbConnection _db;
+
+    public async Task CreateOrderAsync(Order order, CancellationToken ct)
+    {
+        using var transaction = _db.BeginTransaction();
+
+        try
+        {
+            // Insert order
+            await _db.ExecuteAsync(@&quot;
+                INSERT INTO Orders (UserId, Total, Status, CreatedAt)
+                VALUES (@UserId, @Total, @Status, @CreatedAt)&quot;,
+                order,
+                transaction: transaction
+            );
+
+            // Insert outbox message in same transaction
+            var outboxMessage = new OutboxMessage
+            {
+                Id = Guid.NewGuid(),
+                QueueName = &quot;order-created&quot;,
+                Payload = JsonSerializer.Serialize(new OrderCreatedEvent
+                {
+                    OrderId = order.Id,
+                    UserId = order.UserId,
+                    Total = order.Total
+                }),
+                CreatedAt = DateTime.UtcNow
+            };
+
+            await _db.ExecuteAsync(@&quot;
+                INSERT INTO OutboxMessages (Id, QueueName, Payload, CreatedAt)
+                VALUES (@Id, @QueueName, @Payload, @CreatedAt)&quot;,
+                outboxMessage,
+                transaction: transaction
+            );
+
+            transaction.Commit();
+        }
+        catch
+        {
+            transaction.Rollback();
+            throw;
+        }
+    }
+}
+
+// Background service to publish outbox messages
+public class OutboxPublisher : BackgroundService
+{
+    private readonly IDbConnection _db;
+    private readonly IMessagePublisher _publisher;
+    private readonly ILogger&lt;OutboxPublisher&gt; _logger;
+
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        while (!stoppingToken.IsCancellationRequested)
+        {
+            try
+            {
+                // Fetch unprocessed messages
+                var messages = await _db.QueryAsync&lt;OutboxMessage&gt;(@&quot;
+                    SELECT TOP 100 * FROM OutboxMessages
+                    WHERE ProcessedAt IS NULL AND RetryCount &lt; 5
+                    ORDER BY CreatedAt&quot;);
+
+                foreach (var message in messages)
+                {
+                    try
+                    {
+                        await _publisher.PublishAsync(
+                            message.QueueName,
+                            message.Payload,
+                            stoppingToken
+                        );
+
+                        // Mark as processed
+                        await _db.ExecuteAsync(@&quot;
+                            UPDATE OutboxMessages
+                            SET ProcessedAt = @ProcessedAt
+                            WHERE Id = @Id&quot;,
+                            new { ProcessedAt = DateTime.UtcNow, Id = message.Id }
+                        );
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, &quot;Failed to publish outbox message {Id}&quot;, message.Id);
+
+                        // Increment retry count
+                        await _db.ExecuteAsync(@&quot;
+                            UPDATE OutboxMessages
+                            SET RetryCount = RetryCount + 1
+                            WHERE Id = @Id&quot;,
+                            new { Id = message.Id }
+                        );
+                    }
+                }
+
+                await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, &quot;Error in outbox publisher&quot;);
+                await Task.Delay(TimeSpan.FromSeconds(30), stoppingToken);
+            }
+        }
+    }
+}</code></pre>
+<p><strong>Why Outbox Pattern:</strong></p>
+<ul><li>Atomic: DB write and message enqueue in same transaction</li><li>Reliable: No lost messages</li><li>At-least-once delivery guaranteed</li></ul>
+<p>---</p>
+<h2 id="5-masstransit-abstraction-over-message-brokers">5. MassTransit: Abstraction Over Message Brokers</h2>
+<p>Production-ready library with retry, saga, and observability built-in.</p>
+<h3 id="setup-masstransit-with-rabbitmq">Setup MassTransit with RabbitMQ</h3>
+<pre class="hljs"><code>// Install: MassTransit.RabbitMQ
+
+builder.Services.AddMassTransit(x =&gt;
+{
+    // Register consumers
+    x.AddConsumer&lt;OrderCreatedConsumer&gt;();
+
+    x.UsingRabbitMq((context, cfg) =&gt;
+    {
+        cfg.Host(&quot;localhost&quot;, &quot;/&quot;, h =&gt;
+        {
+            h.Username(&quot;guest&quot;);
+            h.Password(&quot;guest&quot;);
+        });
+
+        // Configure retry
+        cfg.UseMessageRetry(r =&gt; r.Incremental(
+            retryLimit: 5,
+            initialInterval: TimeSpan.FromSeconds(1),
+            intervalIncrement: TimeSpan.FromSeconds(2)
+        ));
+
+        // Configure endpoints
+        cfg.ConfigureEndpoints(context);
+    });
+});
+
+// Consumer
+public class OrderCreatedConsumer : IConsumer&lt;OrderCreatedEvent&gt;
+{
+    private readonly ILogger&lt;OrderCreatedConsumer&gt; _logger;
+    private readonly IEmailService _emailService;
+
+    public async Task Consume(ConsumeContext&lt;OrderCreatedEvent&gt; context)
+    {
+        var order = context.Message;
+
+        _logger.LogInformation(&quot;Processing order created event: {OrderId}&quot;, order.OrderId);
+
+        await _emailService.SendOrderConfirmationAsync(order.OrderId, context.CancellationToken);
+
+        // Message automatically acknowledged on success
+        // Automatically retried on exception (per retry policy)
+    }
+}
+
+// Publisher
+public class OrderService
+{
+    private readonly IPublishEndpoint _publishEndpoint;
+
+    public async Task CreateOrderAsync(Order order, CancellationToken ct)
+    {
+        // Save to database
+        await SaveOrderAsync(order, ct);
+
+        // Publish event
+        await _publishEndpoint.Publish(new OrderCreatedEvent
+        {
+            OrderId = order.Id,
+            UserId = order.UserId,
+            Total = order.Total
+        }, ct);
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="summary-message-queue-checklist">Summary: Message Queue Checklist</h2>
+<p>✅ <strong>In-process queues</strong>: For simple, single-instance scenarios ✅ <strong>RabbitMQ/Kafka</strong>: For distributed, durable message queues ✅ <strong>Idempotency</strong>: All message handlers are idempotent ✅ <strong>Dead letter queues</strong>: For poison messages ✅ <strong>Outbox pattern</strong>: For transactional messaging ✅ <strong>Retry policies</strong>: Exponential backoff, max retries ✅ <strong>Monitoring</strong>: Queue depth, processing time, error rate</p>
+<p><strong>Key Insight:</strong> Async processing via queues is what enables scale. Fast API responses + reliable background processing = happy users + stable system.</p>
+<p><strong>Next:</strong> <a href="./06-resilience-patterns.md">Resilience Patterns</a> - Handle failures gracefully.</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['midnight', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const fallback = 'light';
+      const initial = supported.includes(saved) ? saved : (window.__studyTheme || fallback);
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          sessionStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+    (() => {
+      const groups = document.querySelectorAll('.sidebar-group');
+      if (!groups.length) return;
+      const storageKey = 'study-open-groups';
+      const saved = sessionStorage.getItem(storageKey);
+      const openFromStorage = new Set(saved ? JSON.parse(saved) : []);
+
+      const activeLink = document.querySelector('.nav-link.active');
+      const activeGroup = activeLink?.closest('.sidebar-group');
+      if (activeGroup?.dataset.group) {
+        openFromStorage.add(activeGroup.dataset.group);
+      }
+
+      const syncStorage = () => {
+        const openIds = Array.from(document.querySelectorAll('.sidebar-group.is-open'))
+          .map((group) => group.dataset.group)
+          .filter(Boolean);
+        sessionStorage.setItem(storageKey, JSON.stringify(openIds));
+      };
+
+      const setExpanded = (group, expanded) => {
+        const header = group.querySelector('.sidebar-group__header');
+        const list = group.querySelector('.sidebar-group__items');
+        group.classList.toggle('is-open', expanded);
+        header?.setAttribute('aria-expanded', expanded);
+        if (list) {
+          list.hidden = !expanded;
+        }
+      };
+
+      groups.forEach((group) => {
+        const shouldOpen = openFromStorage.has(group.dataset.group);
+        setExpanded(group, shouldOpen);
+        const header = group.querySelector('.sidebar-group__header');
+        header?.addEventListener('click', () => {
+          const next = !group.classList.contains('is-open');
+          setExpanded(group, next);
+          syncStorage();
+        });
+      });
+    })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swPath = '..\..\../service-worker.js';
+        navigator.serviceWorker.register(swPath).catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>

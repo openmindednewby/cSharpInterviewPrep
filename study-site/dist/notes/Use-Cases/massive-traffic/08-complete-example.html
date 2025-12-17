@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for 08 Complete Example" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>08 Complete Example | C# Interview Prep Cheat Sheet</title>
+  <link rel="manifest" href="..\..\..\assets/manifest.webmanifest" />
+  <script>
+    (() => {
+      const supported = ['midnight', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const fallback = 'light';
+      const initial = supported.includes(saved) ? saved : fallback;
+      document.documentElement.dataset.theme = initial;
+      window.__studyTheme = initial;
+    })();
+  </script>
+  <link rel="stylesheet" href="..\..\..\assets/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="midnight">Current</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group" data-group="notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="..\..\../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="..\..\../notes/logging.html">Logging</a></li><li><a class="nav-link" href="..\..\../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a class="nav-link" href="..\..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a class="nav-link" href="..\..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group is-open" data-group="notes-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
+        <span>Notes / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/01-async-patterns.html">01 Async Patterns</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/02-backpressure-rate-limiting.html">02 Backpressure Rate Limiting</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/03-caching-strategies.html">03 Caching Strategies</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/04-database-scaling.html">04 Database Scaling</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/05-message-queues.html">05 Message Queues</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/06-resilience-patterns.html">06 Resilience Patterns</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/07-observability.html">07 Observability</a></li><li><a class="nav-link active" href="..\..\../notes/Use-Cases/massive-traffic/08-complete-example.html">08 Complete Example</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../practice/answers.html">Answers</a></li><li><a class="nav-link" href="..\..\../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="..\..\../practice/questions.html">Questions</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-real-exam-questions-answers">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Real Exam Questions Answers</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../practice/real exam questions answers/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="..\..\../practice/real exam questions answers/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li></ul>
+    </div></div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">notes\Use-Cases\massive-traffic\08-complete-example.md</div>
+        <h2>08 Complete Example</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#complete-example-high-traffic-e-commerce-order-api">Complete Example: High-Traffic E-Commerce Order API</a></li><li class="level-2"><a href="#system-architecture">System Architecture</a></li><li class="level-2"><a href="#project-structure">Project Structure</a></li><li class="level-2"><a href="#complete-implementation">Complete Implementation</a></li><li class="level-3"><a href="#programcs---bootstrap-everything">Program.cs - Bootstrap Everything</a></li><li class="level-3"><a href="#orderscontrollercs">OrdersController.cs</a></li><li class="level-3"><a href="#orderservicecs---business-logic">OrderService.cs - Business Logic</a></li><li class="level-3"><a href="#orderrepositorycs---database-access">OrderRepository.cs - Database Access</a></li><li class="level-3"><a href="#orderprocessingworkercs---background-processing">OrderProcessingWorker.cs - Background Processing</a></li><li class="level-2"><a href="#database-schema">Database Schema</a></li><li class="level-2"><a href="#configuration-appsettingsjson">Configuration (appsettings.json)</a></li><li class="level-2"><a href="#summary-what-this-example-demonstrates">Summary: What This Example Demonstrates</a></li></ul></div>
+        <h1 id="complete-example-high-traffic-e-commerce-order-api">Complete Example: High-Traffic E-Commerce Order API</h1>
+<p>This is a production-ready implementation combining all patterns: async I/O, caching, rate limiting, resilience, queues, and observability.</p>
+<h2 id="system-architecture">System Architecture</h2>
+<pre class="hljs"><code>Client Request
+    ↓
+Load Balancer (NGINX/AWS ALB)
+    ↓
+API Gateway (Rate Limiting)
+    ↓
+Order Service (Stateless, Horizontal Scaling)
+    ↓
+├─→ Redis Cache (L2)
+├─→ PostgreSQL (Primary + Read Replicas)
+├─→ RabbitMQ (Async Processing)
+└─→ External Services (Inventory, Payment)
+    ↓
+Background Workers (Order Processing, Notifications)</code></pre>
+<p>---</p>
+<h2 id="project-structure">Project Structure</h2>
+<pre class="hljs"><code>OrderService/
+├── Controllers/
+│   └── OrdersController.cs
+├── Services/
+│   ├── OrderService.cs
+│   ├── CacheService.cs
+│   ├── InventoryService.cs
+│   └── PaymentService.cs
+├── Repositories/
+│   └── OrderRepository.cs
+├── BackgroundServices/
+│   ├── OrderProcessingWorker.cs
+│   └── MetricsCollector.cs
+├── Models/
+│   ├── Order.cs
+│   ├── OrderMessage.cs
+│   └── DTOs/
+├── Infrastructure/
+│   ├── RabbitMQ/
+│   │   ├── RabbitMQConnection.cs
+│   │   └── MessagePublisher.cs
+│   └── Middleware/
+│       ├── CorrelationIdMiddleware.cs
+│       └── ExceptionHandlingMiddleware.cs
+├── Metrics/
+│   └── ApplicationMetrics.cs
+└── Program.cs</code></pre>
+<p>---</p>
+<h2 id="complete-implementation">Complete Implementation</h2>
+<h3 id="programcs---bootstrap-everything">Program.cs - Bootstrap Everything</h3>
+<pre class="hljs"><code>using System.Data;
+using Dapper;
+using Microsoft.AspNetCore.RateLimiting;
+using Npgsql;
+using Polly;
+using Polly.Extensions.Http;
+using Prometheus;
+using Serilog;
+using StackExchange.Redis;
+using System.Threading.RateLimiting;
+using OrderService.Services;
+using OrderService.Repositories;
+using OrderService.Infrastructure;
+using OrderService.BackgroundServices;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// ============ LOGGING ============
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .Enrich.WithMachineName()
+    .Enrich.WithProperty(&quot;Application&quot;, &quot;OrderService&quot;)
+    .WriteTo.Console()
+    .WriteTo.File(&quot;logs/app-.log&quot;, rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+builder.Host.UseSerilog();
+
+// ============ CONTROLLERS &amp; API ============
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+// ============ RATE LIMITING ============
+builder.Services.AddRateLimiter(options =&gt;
+{
+    options.AddSlidingWindowLimiter(&quot;api&quot;, opt =&gt;
+    {
+        opt.PermitLimit = 100;
+        opt.Window = TimeSpan.FromMinutes(1);
+        opt.SegmentsPerWindow = 6;
+        opt.QueueLimit = 0;
+    });
+
+    options.OnRejected = async (context, ct) =&gt;
+    {
+        context.HttpContext.Response.StatusCode = 429;
+        await context.HttpContext.Response.WriteAsJsonAsync(new
+        {
+            error = &quot;Rate limit exceeded. Please retry later.&quot;
+        }, ct);
+    };
+});
+
+// ============ DATABASE ============
+builder.Services.AddScoped&lt;IDbConnection&gt;(sp =&gt;
+{
+    var connectionString = builder.Configuration.GetConnectionString(&quot;DefaultConnection&quot;);
+    return new NpgsqlConnection(connectionString);
+});
+
+builder.Services.AddScoped&lt;IOrderRepository, OrderRepository&gt;();
+
+// ============ REDIS CACHE ============
+builder.Services.AddSingleton&lt;IConnectionMultiplexer&gt;(sp =&gt;
+{
+    var config = ConfigurationOptions.Parse(
+        builder.Configuration.GetConnectionString(&quot;Redis&quot;)!
+    );
+    config.AbortOnConnectFail = false;
+    config.ConnectTimeout = 5000;
+    return ConnectionMultiplexer.Connect(config);
+});
+
+builder.Services.AddSingleton&lt;ICacheService, RedisCacheService&gt;();
+builder.Services.AddMemoryCache();
+
+// ============ MESSAGE QUEUE ============
+builder.Services.AddSingleton&lt;IRabbitMQConnection, RabbitMQConnection&gt;();
+builder.Services.AddSingleton&lt;IMessagePublisher, RabbitMQPublisher&gt;();
+
+// ============ HTTP CLIENTS WITH RESILIENCE ============
+builder.Services.AddHttpClient&lt;IInventoryService, InventoryService&gt;(client =&gt;
+{
+    client.BaseAddress = new Uri(builder.Configuration[&quot;Services:Inventory&quot;]!);
+    client.Timeout = TimeSpan.FromSeconds(10);
+})
+.AddPolicyHandler(GetRetryPolicy())
+.AddPolicyHandler(GetCircuitBreakerPolicy());
+
+builder.Services.AddHttpClient&lt;IPaymentService, PaymentService&gt;(client =&gt;
+{
+    client.BaseAddress = new Uri(builder.Configuration[&quot;Services:Payment&quot;]!);
+    client.Timeout = TimeSpan.FromSeconds(10);
+})
+.AddPolicyHandler(GetRetryPolicy())
+.AddPolicyHandler(GetCircuitBreakerPolicy());
+
+// ============ SERVICES ============
+builder.Services.AddScoped&lt;IOrderService, Services.OrderService&gt;();
+
+// ============ BACKGROUND WORKERS ============
+builder.Services.AddHostedService&lt;OrderProcessingWorker&gt;();
+builder.Services.AddHostedService&lt;MetricsCollector&gt;();
+
+// ============ HEALTH CHECKS ============
+builder.Services.AddHealthChecks()
+    .AddNpgSql(builder.Configuration.GetConnectionString(&quot;DefaultConnection&quot;)!)
+    .AddRedis(builder.Configuration.GetConnectionString(&quot;Redis&quot;)!);
+
+var app = builder.Build();
+
+// ============ MIDDLEWARE PIPELINE ============
+app.UseMiddleware&lt;CorrelationIdMiddleware&gt;();
+app.UseMiddleware&lt;ExceptionHandlingMiddleware&gt;();
+
+app.UseSerilogRequestLogging();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseRateLimiter();
+
+app.UseHttpMetrics(); // Prometheus
+app.MapMetrics();     // /metrics endpoint
+
+app.MapHealthChecks(&quot;/health&quot;);
+app.MapControllers();
+
+app.Run();
+
+// ============ RESILIENCE POLICIES ============
+static IAsyncPolicy&lt;HttpResponseMessage&gt; GetRetryPolicy()
+{
+    return HttpPolicyExtensions
+        .HandleTransientHttpError()
+        .WaitAndRetryAsync(
+            retryCount: 3,
+            sleepDurationProvider: retryAttempt =&gt;
+                TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)) +
+                TimeSpan.FromMilliseconds(Random.Shared.Next(0, 1000)),
+            onRetry: (outcome, timespan, retryAttempt, context) =&gt;
+            {
+                Log.Warning(
+                    &quot;Retry {RetryAttempt} after {Delay}s due to {Exception}&quot;,
+                    retryAttempt, timespan.TotalSeconds, outcome.Exception?.Message
+                );
+            }
+        );
+}
+
+static IAsyncPolicy&lt;HttpResponseMessage&gt; GetCircuitBreakerPolicy()
+{
+    return HttpPolicyExtensions
+        .HandleTransientHttpError()
+        .CircuitBreakerAsync(
+            handledEventsAllowedBeforeBreaking: 5,
+            durationOfBreak: TimeSpan.FromSeconds(30),
+            onBreak: (outcome, duration) =&gt;
+            {
+                Log.Error(&quot;Circuit breaker opened for {Duration}s&quot;, duration.TotalSeconds);
+            },
+            onReset: () =&gt;
+            {
+                Log.Information(&quot;Circuit breaker reset&quot;);
+            }
+        );
+}</code></pre>
+<p>---</p>
+<h3 id="orderscontrollercs">OrdersController.cs</h3>
+<pre class="hljs"><code>using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
+using OrderService.Models;
+using OrderService.Services;
+using Prometheus;
+
+namespace OrderService.Controllers;
+
+[ApiController]
+[Route(&quot;api/[controller]&quot;)]
+[EnableRateLimiting(&quot;api&quot;)]
+public class OrdersController : ControllerBase
+{
+    private readonly IOrderService _orderService;
+    private readonly ILogger&lt;OrdersController&gt; _logger;
+
+    private static readonly Counter OrderRequestsTotal = Metrics.CreateCounter(
+        &quot;order_requests_total&quot;,
+        &quot;Total order requests&quot;,
+        new CounterConfiguration { LabelNames = new[] { &quot;action&quot;, &quot;status&quot; } }
+    );
+
+    public OrdersController(
+        IOrderService orderService,
+        ILogger&lt;OrdersController&gt; logger)
+    {
+        _orderService = orderService;
+        _logger = logger;
+    }
+
+    [HttpPost]
+    public async Task&lt;IActionResult&gt; CreateOrderAsync(
+        [FromBody] CreateOrderRequest request,
+        CancellationToken ct)
+    {
+        try
+        {
+            var order = await _orderService.CreateOrderAsync(request, ct);
+
+            OrderRequestsTotal.Labels(&quot;create&quot;, &quot;success&quot;).Inc();
+
+            return Accepted(new
+            {
+                orderId = order.Id,
+                status = order.Status,
+                message = &quot;Order is being processed&quot;
+            });
+        }
+        catch (InvalidOperationException ex)
+        {
+            OrderRequestsTotal.Labels(&quot;create&quot;, &quot;validation_error&quot;).Inc();
+            return BadRequest(new { error = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            OrderRequestsTotal.Labels(&quot;create&quot;, &quot;error&quot;).Inc();
+            _logger.LogError(ex, &quot;Error creating order&quot;);
+            return StatusCode(500, new { error = &quot;An error occurred processing your order&quot; });
+        }
+    }
+
+    [HttpGet(&quot;{id}&quot;)]
+    public async Task&lt;IActionResult&gt; GetOrderAsync(int id, CancellationToken ct)
+    {
+        try
+        {
+            var order = await _orderService.GetOrderAsync(id, ct);
+
+            if (order == null)
+            {
+                OrderRequestsTotal.Labels(&quot;get&quot;, &quot;not_found&quot;).Inc();
+                return NotFound();
+            }
+
+            OrderRequestsTotal.Labels(&quot;get&quot;, &quot;success&quot;).Inc();
+            return Ok(order);
+        }
+        catch (Exception ex)
+        {
+            OrderRequestsTotal.Labels(&quot;get&quot;, &quot;error&quot;).Inc();
+            _logger.LogError(ex, &quot;Error retrieving order {OrderId}&quot;, id);
+            return StatusCode(500, new { error = &quot;An error occurred&quot; });
+        }
+    }
+
+    [HttpGet(&quot;user/{userId}&quot;)]
+    public async Task&lt;IActionResult&gt; GetUserOrdersAsync(
+        int userId,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 20,
+        CancellationToken ct = default)
+    {
+        try
+        {
+            var orders = await _orderService.GetUserOrdersAsync(userId, page, pageSize, ct);
+            return Ok(orders);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, &quot;Error retrieving orders for user {UserId}&quot;, userId);
+            return StatusCode(500, new { error = &quot;An error occurred&quot; });
+        }
+    }
+}</code></pre>
+<p>---</p>
+<h3 id="orderservicecs---business-logic">OrderService.cs - Business Logic</h3>
+<pre class="hljs"><code>using System.Diagnostics;
+using OrderService.Infrastructure;
+using OrderService.Models;
+using OrderService.Repositories;
+using Prometheus;
+
+namespace OrderService.Services;
+
+public interface IOrderService
+{
+    Task&lt;Order&gt; CreateOrderAsync(CreateOrderRequest request, CancellationToken ct);
+    Task&lt;Order?&gt; GetOrderAsync(int orderId, CancellationToken ct);
+    Task&lt;IEnumerable&lt;Order&gt;&gt; GetUserOrdersAsync(int userId, int page, int pageSize, CancellationToken ct);
+}
+
+public class OrderService : IOrderService
+{
+    private readonly IOrderRepository _repository;
+    private readonly ICacheService _cache;
+    private readonly IInventoryService _inventoryService;
+    private readonly IPaymentService _paymentService;
+    private readonly IMessagePublisher _publisher;
+    private readonly ILogger&lt;OrderService&gt; _logger;
+
+    private static readonly ActivitySource ActivitySource = new(&quot;OrderService&quot;);
+
+    private static readonly Histogram OrderProcessingDuration = Metrics.CreateHistogram(
+        &quot;order_processing_duration_seconds&quot;,
+        &quot;Duration of order processing&quot;
+    );
+
+    public OrderService(
+        IOrderRepository repository,
+        ICacheService cache,
+        IInventoryService inventoryService,
+        IPaymentService paymentService,
+        IMessagePublisher publisher,
+        ILogger&lt;OrderService&gt; logger)
+    {
+        _repository = repository;
+        _cache = cache;
+        _inventoryService = inventoryService;
+        _paymentService = paymentService;
+        _publisher = publisher;
+        _logger = logger;
+    }
+
+    public async Task&lt;Order&gt; CreateOrderAsync(CreateOrderRequest request, CancellationToken ct)
+    {
+        using var activity = ActivitySource.StartActivity(&quot;CreateOrder&quot;);
+        activity?.SetTag(&quot;user.id&quot;, request.UserId);
+        activity?.SetTag(&quot;order.total&quot;, request.Total);
+
+        using (OrderProcessingDuration.NewTimer())
+        {
+            _logger.LogInformation(
+                &quot;Creating order for user {UserId} with total {Total}&quot;,
+                request.UserId,
+                request.Total
+            );
+
+            // 1. Check inventory (external service)
+            using (var inventoryActivity = ActivitySource.StartActivity(&quot;CheckInventory&quot;))
+            {
+                var inventoryAvailable = await _inventoryService.CheckAvailabilityAsync(
+                    request.ProductId,
+                    request.Quantity,
+                    ct
+                );
+
+                if (!inventoryAvailable)
+                {
+                    _logger.LogWarning(
+                        &quot;Insufficient inventory for product {ProductId}&quot;,
+                        request.ProductId
+                    );
+                    throw new InvalidOperationException(&quot;Insufficient inventory&quot;);
+                }
+            }
+
+            // 2. Create order in database
+            var order = new Order
+            {
+                UserId = request.UserId,
+                ProductId = request.ProductId,
+                Quantity = request.Quantity,
+                Total = request.Total,
+                Status = &quot;Pending&quot;,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            using (var dbActivity = ActivitySource.StartActivity(&quot;SaveOrder&quot;))
+            {
+                order.Id = await _repository.CreateAsync(order, ct);
+            }
+
+            _logger.LogInformation(&quot;Order {OrderId} created&quot;, order.Id);
+
+            // 3. Publish message for async processing (payment, notifications)
+            await _publisher.PublishAsync(&quot;order-processing&quot;, new OrderMessage
+            {
+                OrderId = order.Id,
+                UserId = order.UserId,
+                ProductId = order.ProductId,
+                Quantity = order.Quantity,
+                Total = order.Total,
+                PaymentMethod = request.PaymentMethod
+            }, ct);
+
+            _logger.LogInformation(&quot;Order {OrderId} queued for processing&quot;, order.Id);
+
+            activity?.SetTag(&quot;order.id&quot;, order.Id);
+            activity?.SetStatus(ActivityStatusCode.Ok);
+
+            return order;
+        }
+    }
+
+    public async Task&lt;Order?&gt; GetOrderAsync(int orderId, CancellationToken ct)
+    {
+        var cacheKey = $&quot;order:{orderId}&quot;;
+
+        // Try cache first
+        var cached = await _cache.GetAsync&lt;Order&gt;(cacheKey, ct);
+        if (cached != null)
+        {
+            _logger.LogDebug(&quot;Cache hit for order {OrderId}&quot;, orderId);
+            return cached;
+        }
+
+        _logger.LogDebug(&quot;Cache miss for order {OrderId}&quot;, orderId);
+
+        // Load from database
+        var order = await _repository.GetByIdAsync(orderId, ct);
+
+        if (order != null)
+        {
+            // Cache for 5 minutes
+            await _cache.SetAsync(cacheKey, order, TimeSpan.FromMinutes(5), ct);
+        }
+
+        return order;
+    }
+
+    public async Task&lt;IEnumerable&lt;Order&gt;&gt; GetUserOrdersAsync(
+        int userId,
+        int page,
+        int pageSize,
+        CancellationToken ct)
+    {
+        return await _repository.GetUserOrdersAsync(userId, page, pageSize, ct);
+    }
+}</code></pre>
+<p>---</p>
+<h3 id="orderrepositorycs---database-access">OrderRepository.cs - Database Access</h3>
+<pre class="hljs"><code>using System.Data;
+using Dapper;
+using OrderService.Models;
+
+namespace OrderService.Repositories;
+
+public interface IOrderRepository
+{
+    Task&lt;int&gt; CreateAsync(Order order, CancellationToken ct);
+    Task&lt;Order?&gt; GetByIdAsync(int orderId, CancellationToken ct);
+    Task&lt;IEnumerable&lt;Order&gt;&gt; GetUserOrdersAsync(int userId, int page, int pageSize, CancellationToken ct);
+    Task UpdateStatusAsync(int orderId, string status, CancellationToken ct);
+}
+
+public class OrderRepository : IOrderRepository
+{
+    private readonly IDbConnection _db;
+
+    public OrderRepository(IDbConnection db)
+    {
+        _db = db;
+    }
+
+    public async Task&lt;int&gt; CreateAsync(Order order, CancellationToken ct)
+    {
+        var sql = @&quot;
+            INSERT INTO Orders (UserId, ProductId, Quantity, Total, Status, CreatedAt)
+            VALUES (@UserId, @ProductId, @Quantity, @Total, @Status, @CreatedAt)
+            RETURNING Id&quot;;
+
+        return await _db.ExecuteScalarAsync&lt;int&gt;(new CommandDefinition(
+            commandText: sql,
+            parameters: order,
+            cancellationToken: ct
+        ));
+    }
+
+    public async Task&lt;Order?&gt; GetByIdAsync(int orderId, CancellationToken ct)
+    {
+        var sql = &quot;SELECT * FROM Orders WHERE Id = @OrderId&quot;;
+
+        return await _db.QueryFirstOrDefaultAsync&lt;Order&gt;(new CommandDefinition(
+            commandText: sql,
+            parameters: new { OrderId = orderId },
+            commandTimeout: 5,
+            cancellationToken: ct
+        ));
+    }
+
+    public async Task&lt;IEnumerable&lt;Order&gt;&gt; GetUserOrdersAsync(
+        int userId,
+        int page,
+        int pageSize,
+        CancellationToken ct)
+    {
+        // Keyset pagination for better performance
+        var sql = @&quot;
+            SELECT * FROM Orders
+            WHERE UserId = @UserId
+            ORDER BY CreatedAt DESC, Id DESC
+            LIMIT @PageSize
+            OFFSET @Offset&quot;;
+
+        return await _db.QueryAsync&lt;Order&gt;(new CommandDefinition(
+            commandText: sql,
+            parameters: new
+            {
+                UserId = userId,
+                PageSize = pageSize,
+                Offset = (page - 1) * pageSize
+            },
+            commandTimeout: 5,
+            cancellationToken: ct
+        ));
+    }
+
+    public async Task UpdateStatusAsync(int orderId, string status, CancellationToken ct)
+    {
+        var sql = &quot;UPDATE Orders SET Status = @Status WHERE Id = @OrderId&quot;;
+
+        await _db.ExecuteAsync(new CommandDefinition(
+            commandText: sql,
+            parameters: new { OrderId = orderId, Status = status },
+            commandTimeout: 5,
+            cancellationToken: ct
+        ));
+    }
+}</code></pre>
+<p>---</p>
+<h3 id="orderprocessingworkercs---background-processing">OrderProcessingWorker.cs - Background Processing</h3>
+<pre class="hljs"><code>using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
+using System.Text;
+using System.Text.Json;
+using OrderService.Infrastructure;
+using OrderService.Models;
+using OrderService.Repositories;
+using OrderService.Services;
+
+namespace OrderService.BackgroundServices;
+
+public class OrderProcessingWorker : BackgroundService
+{
+    private readonly IRabbitMQConnection _rabbitConnection;
+    private readonly IServiceProvider _serviceProvider;
+    private readonly ILogger&lt;OrderProcessingWorker&gt; _logger;
+    private IModel? _channel;
+
+    public OrderProcessingWorker(
+        IRabbitMQConnection rabbitConnection,
+        IServiceProvider serviceProvider,
+        ILogger&lt;OrderProcessingWorker&gt; logger)
+    {
+        _rabbitConnection = rabbitConnection;
+        _serviceProvider = serviceProvider;
+        _logger = logger;
+    }
+
+    protected override Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        _channel = _rabbitConnection.GetConnection().CreateModel();
+        _channel.BasicQos(0, 10, false);
+
+        var queueName = &quot;order-processing&quot;;
+        _channel.QueueDeclare(queueName, durable: true, exclusive: false, autoDelete: false);
+
+        var consumer = new EventingBasicConsumer(_channel);
+
+        consumer.Received += async (model, ea) =&gt;
+        {
+            var body = ea.Body.ToArray();
+            var message = Encoding.UTF8.GetString(body);
+
+            try
+            {
+                var orderMessage = JsonSerializer.Deserialize&lt;OrderMessage&gt;(message);
+
+                _logger.LogInformation(&quot;Processing order {OrderId}&quot;, orderMessage?.OrderId);
+
+                using var scope = _serviceProvider.CreateScope();
+                var paymentService = scope.ServiceProvider.GetRequiredService&lt;IPaymentService&gt;();
+                var repository = scope.ServiceProvider.GetRequiredService&lt;IOrderRepository&gt;();
+
+                // Process payment
+                var paymentResult = await paymentService.ProcessPaymentAsync(
+                    orderMessage!.OrderId,
+                    orderMessage.Total,
+                    orderMessage.PaymentMethod,
+                    stoppingToken
+                );
+
+                if (paymentResult.Success)
+                {
+                    await repository.UpdateStatusAsync(
+                        orderMessage.OrderId,
+                        &quot;Completed&quot;,
+                        stoppingToken
+                    );
+
+                    _logger.LogInformation(&quot;Order {OrderId} completed&quot;, orderMessage.OrderId);
+                }
+                else
+                {
+                    await repository.UpdateStatusAsync(
+                        orderMessage.OrderId,
+                        &quot;Failed&quot;,
+                        stoppingToken
+                    );
+
+                    _logger.LogWarning(&quot;Order {OrderId} payment failed&quot;, orderMessage.OrderId);
+                }
+
+                _channel.BasicAck(ea.DeliveryTag, false);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, &quot;Error processing order message: {Message}&quot;, message);
+                _channel.BasicNack(ea.DeliveryTag, false, requeue: true);
+            }
+        };
+
+        _channel.BasicConsume(queueName, autoAck: false, consumer: consumer);
+
+        return Task.CompletedTask;
+    }
+
+    public override void Dispose()
+    {
+        _channel?.Close();
+        _channel?.Dispose();
+        base.Dispose();
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="database-schema">Database Schema</h2>
+<pre class="hljs"><code>CREATE TABLE Orders (
+    Id SERIAL PRIMARY KEY,
+    UserId INT NOT NULL,
+    ProductId INT NOT NULL,
+    Quantity INT NOT NULL,
+    Total DECIMAL(10, 2) NOT NULL,
+    Status VARCHAR(50) NOT NULL,
+    CreatedAt TIMESTAMP NOT NULL,
+    UpdatedAt TIMESTAMP
+);
+
+CREATE INDEX IX_Orders_UserId_CreatedAt ON Orders (UserId, CreatedAt DESC);
+CREATE INDEX IX_Orders_Status ON Orders (Status);</code></pre>
+<p>---</p>
+<h2 id="configuration-appsettingsjson">Configuration (appsettings.json)</h2>
+<pre class="hljs"><code>{
+  &quot;ConnectionStrings&quot;: {
+    &quot;DefaultConnection&quot;: &quot;Host=localhost;Database=orderdb;Username=postgres;Password=password;Max Pool Size=100&quot;,
+    &quot;Redis&quot;: &quot;localhost:6379&quot;
+  },
+  &quot;Services&quot;: {
+    &quot;Inventory&quot;: &quot;https://inventory-api&quot;,
+    &quot;Payment&quot;: &quot;https://payment-api&quot;
+  },
+  &quot;Serilog&quot;: {
+    &quot;MinimumLevel&quot;: &quot;Information&quot;
+  }
+}</code></pre>
+<p>---</p>
+<h2 id="summary-what-this-example-demonstrates">Summary: What This Example Demonstrates</h2>
+<p>✅ <strong>Async/await</strong>: All I/O is non-blocking ✅ <strong>Rate limiting</strong>: Built-in ASP.NET Core rate limiter ✅ <strong>Caching</strong>: Redis with cache-aside pattern ✅ <strong>Database</strong>: Dapper with proper indexing and pagination ✅ <strong>Message queues</strong>: RabbitMQ for async processing ✅ <strong>Resilience</strong>: Polly retry + circuit breaker on HTTP clients ✅ <strong>Observability</strong>: Structured logging, Prometheus metrics, OpenTelemetry tracing ✅ <strong>Health checks</strong>: Database and Redis health endpoints ✅ <strong>Clean architecture</strong>: Separation of concerns (controllers, services, repositories)</p>
+<p><strong>This is interview-ready code</strong> that demonstrates you understand how to build systems that scale to millions of users.</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['midnight', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const fallback = 'light';
+      const initial = supported.includes(saved) ? saved : (window.__studyTheme || fallback);
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          sessionStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+    (() => {
+      const groups = document.querySelectorAll('.sidebar-group');
+      if (!groups.length) return;
+      const storageKey = 'study-open-groups';
+      const saved = sessionStorage.getItem(storageKey);
+      const openFromStorage = new Set(saved ? JSON.parse(saved) : []);
+
+      const activeLink = document.querySelector('.nav-link.active');
+      const activeGroup = activeLink?.closest('.sidebar-group');
+      if (activeGroup?.dataset.group) {
+        openFromStorage.add(activeGroup.dataset.group);
+      }
+
+      const syncStorage = () => {
+        const openIds = Array.from(document.querySelectorAll('.sidebar-group.is-open'))
+          .map((group) => group.dataset.group)
+          .filter(Boolean);
+        sessionStorage.setItem(storageKey, JSON.stringify(openIds));
+      };
+
+      const setExpanded = (group, expanded) => {
+        const header = group.querySelector('.sidebar-group__header');
+        const list = group.querySelector('.sidebar-group__items');
+        group.classList.toggle('is-open', expanded);
+        header?.setAttribute('aria-expanded', expanded);
+        if (list) {
+          list.hidden = !expanded;
+        }
+      };
+
+      groups.forEach((group) => {
+        const shouldOpen = openFromStorage.has(group.dataset.group);
+        setExpanded(group, shouldOpen);
+        const header = group.querySelector('.sidebar-group__header');
+        header?.addEventListener('click', () => {
+          const next = !group.classList.contains('is-open');
+          setExpanded(group, next);
+          syncStorage();
+        });
+      });
+    })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swPath = '..\..\../service-worker.js';
+        navigator.serviceWorker.register(swPath).catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>

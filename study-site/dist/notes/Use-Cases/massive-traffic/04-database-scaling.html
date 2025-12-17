@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for 04 Database Scaling" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>04 Database Scaling | C# Interview Prep Cheat Sheet</title>
+  <link rel="manifest" href="..\..\..\assets/manifest.webmanifest" />
+  <script>
+    (() => {
+      const supported = ['midnight', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const fallback = 'light';
+      const initial = supported.includes(saved) ? saved : fallback;
+      document.documentElement.dataset.theme = initial;
+      window.__studyTheme = initial;
+    })();
+  </script>
+  <link rel="stylesheet" href="..\..\..\assets/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="midnight">Current</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group" data-group="notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="..\..\../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="..\..\../notes/logging.html">Logging</a></li><li><a class="nav-link" href="..\..\../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a class="nav-link" href="..\..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a class="nav-link" href="..\..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group is-open" data-group="notes-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
+        <span>Notes / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/01-async-patterns.html">01 Async Patterns</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/02-backpressure-rate-limiting.html">02 Backpressure Rate Limiting</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/03-caching-strategies.html">03 Caching Strategies</a></li><li><a class="nav-link active" href="..\..\../notes/Use-Cases/massive-traffic/04-database-scaling.html">04 Database Scaling</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/05-message-queues.html">05 Message Queues</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/06-resilience-patterns.html">06 Resilience Patterns</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/07-observability.html">07 Observability</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/08-complete-example.html">08 Complete Example</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../practice/answers.html">Answers</a></li><li><a class="nav-link" href="..\..\../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="..\..\../practice/questions.html">Questions</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-real-exam-questions-answers">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Real Exam Questions Answers</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../practice/real exam questions answers/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="..\..\../practice/real exam questions answers/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li></ul>
+    </div></div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">notes\Use-Cases\massive-traffic\04-database-scaling.md</div>
+        <h2>04 Database Scaling</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#database-optimization-scaling-for-high-traffic-systems">Database Optimization & Scaling for High-Traffic Systems</a></li><li class="level-2"><a href="#why-database-performance-matters">Why Database Performance Matters</a></li><li class="level-2"><a href="#1-indexing-the-foundation-of-fast-queries">1. Indexing: The Foundation of Fast Queries</a></li><li class="level-3"><a href="#the-problem-missing-indexes">The Problem: Missing Indexes</a></li><li class="level-3"><a href="#the-solution-composite-indexes">The Solution: Composite Indexes</a></li><li class="level-3"><a href="#c-code-ensure-queries-use-indexes">C# Code: Ensure Queries Use Indexes</a></li><li class="level-3"><a href="#index-strategy-rules">Index Strategy Rules</a></li><li class="level-2"><a href="#2-avoid-n1-query-problem">2. Avoid N+1 Query Problem</a></li><li class="level-3"><a href="#the-problem">❌ The Problem</a></li><li class="level-3"><a href="#solution-1-join-in-sql">✅ Solution 1: Join in SQL</a></li><li class="level-3"><a href="#solution-2-batch-load-when-join-is-impractical">✅ Solution 2: Batch Load (when JOIN is impractical)</a></li><li class="level-3"><a href="#ef-core-use-include-to-avoid-n1">EF Core: Use Include to avoid N+1</a></li><li class="level-2"><a href="#3-pagination-never-use-offset-for-large-tables">3. Pagination: Never Use OFFSET for Large Tables</a></li><li class="level-3"><a href="#bad-offset-gets-slower-as-offset-increases">❌ Bad: OFFSET (gets slower as offset increases)</a></li><li class="level-3"><a href="#good-keyset-pagination-seek-method">✅ Good: Keyset Pagination (Seek Method)</a></li><li class="level-2"><a href="#4-connection-pooling-management">4. Connection Pooling & Management</a></li><li class="level-3"><a href="#configure-connection-pool">Configure Connection Pool</a></li><li class="level-3"><a href="#pool-size-guidelines">Pool Size Guidelines</a></li><li class="level-3"><a href="#monitor-connection-pool">Monitor Connection Pool</a></li><li class="level-2"><a href="#5-read-replicas-for-read-heavy-workloads">5. Read Replicas for Read-Heavy Workloads</a></li><li class="level-3"><a href="#setup-multi-database-routing">Setup Multi-Database Routing</a></li><li class="level-3"><a href="#handle-replication-lag">Handle Replication Lag</a></li><li class="level-2"><a href="#6-database-partitioningsharding">6. Database Partitioning/Sharding</a></li><li class="level-3"><a href="#horizontal-partitioning-sharding-by-user-id">Horizontal Partitioning (Sharding by User ID)</a></li><li class="level-2"><a href="#7-query-optimization-techniques">7. Query Optimization Techniques</a></li><li class="level-3"><a href="#use-compiled-queries-ef-core">Use Compiled Queries (EF Core)</a></li><li class="level-3"><a href="#use-asnotracking-for-read-only-queries">Use AsNoTracking for Read-Only Queries</a></li><li class="level-3"><a href="#project-only-needed-columns">Project Only Needed Columns</a></li><li class="level-2"><a href="#summary-database-scaling-checklist">Summary: Database Scaling Checklist</a></li></ul></div>
+        <h1 id="database-optimization-scaling-for-high-traffic-systems">Database Optimization & Scaling for High-Traffic Systems</h1>
+<h2 id="why-database-performance-matters">Why Database Performance Matters</h2>
+<p><strong>The Reality:</strong></p>
+<ul><li>Most applications are database-bound, not CPU-bound</li><li>A single slow query can bring down your entire system</li><li>At scale, every millisecond of query time costs money</li></ul>
+<p><strong>The Goal:</strong> Make database the "cold path" (via caching), and when you do hit it, make it fast.</p>
+<p>---</p>
+<h2 id="1-indexing-the-foundation-of-fast-queries">1. Indexing: The Foundation of Fast Queries</h2>
+<h3 id="the-problem-missing-indexes">The Problem: Missing Indexes</h3>
+<pre class="hljs"><code>-- SLOW: Full table scan on 10 million rows
+SELECT * FROM Orders
+WHERE UserId = 12345
+  AND Status = &#39;Pending&#39;
+  AND CreatedAt &gt; &#39;2024-01-01&#39;;
+
+-- Execution plan shows: Table Scan (cost: 10,000,000)</code></pre>
+<h3 id="the-solution-composite-indexes">The Solution: Composite Indexes</h3>
+<pre class="hljs"><code>-- Create covering index (index contains all needed columns)
+CREATE NONCLUSTERED INDEX IX_Orders_UserId_Status_CreatedAt
+ON Orders (UserId, Status, CreatedAt)
+INCLUDE (OrderTotal, ShippingAddress); -- Add frequently selected columns
+
+-- Now query uses index seek (cost: 10)</code></pre>
+<h3 id="c-code-ensure-queries-use-indexes">C# Code: Ensure Queries Use Indexes</h3>
+<pre class="hljs"><code>public class OrderRepository
+{
+    private readonly IDbConnection _db;
+
+    // ✅ GOOD: Query aligns with index
+    public async Task&lt;IEnumerable&lt;Order&gt;&gt; GetPendingOrdersAsync(
+        int userId,
+        DateTime since,
+        CancellationToken ct)
+    {
+        // Uses index: IX_Orders_UserId_Status_CreatedAt
+        return await _db.QueryAsync&lt;Order&gt;(new CommandDefinition(
+            commandText: @&quot;
+                SELECT OrderId, UserId, Status, CreatedAt, OrderTotal, ShippingAddress
+                FROM Orders
+                WHERE UserId = @UserId
+                  AND Status = @Status
+                  AND CreatedAt &gt; @Since
+                ORDER BY CreatedAt DESC&quot;,
+            parameters: new { UserId = userId, Status = &quot;Pending&quot;, Since = since },
+            cancellationToken: ct
+        ));
+    }
+
+    // ❌ BAD: Function in WHERE prevents index usage
+    public async Task&lt;IEnumerable&lt;Order&gt;&gt; GetOrdersByDateBad(DateTime date)
+    {
+        // Index not used because of CONVERT function
+        return await _db.QueryAsync&lt;Order&gt;(@&quot;
+            SELECT * FROM Orders
+            WHERE CONVERT(DATE, CreatedAt) = @Date&quot;,
+            new { Date = date }
+        );
+    }
+
+    // ✅ GOOD: Query structure allows index usage
+    public async Task&lt;IEnumerable&lt;Order&gt;&gt; GetOrdersByDateGood(DateTime date)
+    {
+        var startOfDay = date.Date;
+        var endOfDay = date.Date.AddDays(1);
+
+        // Index can be used with range
+        return await _db.QueryAsync&lt;Order&gt;(@&quot;
+            SELECT * FROM Orders
+            WHERE CreatedAt &gt;= @Start AND CreatedAt &lt; @End&quot;,
+            new { Start = startOfDay, End = endOfDay }
+        );
+    }
+}</code></pre>
+<h3 id="index-strategy-rules">Index Strategy Rules</h3>
+<p>```sql -- GOOD: UserId is highly selective (filters to one user) CREATE INDEX IX_Orders ON Orders (UserId, Status, CreatedAt);</p>
+<ol><li><strong>Column order matters:</strong> Most selective column first</li></ol>
+<p>-- BAD: Status has low selectivity (only a few values) CREATE INDEX IX_Orders_Bad ON Orders (Status, UserId, CreatedAt); ```</p>
+<p>``<code>sql -- Find unused indexes SELECT OBJECT_NAME(i.object_id) AS TableName, i.name AS IndexName, s.user_seeks, s.user_scans, s.user_updates FROM sys.indexes i LEFT JOIN sys.dm_db_index_usage_stats s ON i.object_id = s.object_id AND i.index_id = s.index_id WHERE s.user_seeks = 0 AND s.user_scans = 0 AND s.user_updates &gt; 0; -- Written to but never read </code>``</p>
+<ol><li><strong>Include frequently selected columns</strong> to avoid lookups</li><li><strong>Don't over-index:</strong> Every index slows writes (INSERT/UPDATE/DELETE)</li><li><strong>Monitor index usage:</strong></li></ol>
+<p>---</p>
+<h2 id="2-avoid-n1-query-problem">2. Avoid N+1 Query Problem</h2>
+<h3 id="the-problem">❌ The Problem</h3>
+<pre class="hljs"><code>// Loads 1 query for users, then 1 query per user for orders = N+1 queries
+public async Task&lt;List&lt;UserWithOrders&gt;&gt; GetUsersWithOrdersBad(CancellationToken ct)
+{
+    var users = await _db.QueryAsync&lt;User&gt;(&quot;SELECT * FROM Users&quot;);
+
+    var result = new List&lt;UserWithOrders&gt;();
+    foreach (var user in users) // N iterations
+    {
+        // 🔥 1 query per user!
+        var orders = await _db.QueryAsync&lt;Order&gt;(
+            &quot;SELECT * FROM Orders WHERE UserId = @UserId&quot;,
+            new { UserId = user.Id }
+        );
+
+        result.Add(new UserWithOrders { User = user, Orders = orders.ToList() });
+    }
+
+    return result;
+}
+// 1 + N queries for N users = 1,001 queries for 1,000 users</code></pre>
+<h3 id="solution-1-join-in-sql">✅ Solution 1: Join in SQL</h3>
+<pre class="hljs"><code>public async Task&lt;List&lt;UserWithOrders&gt;&gt; GetUsersWithOrdersJoin(CancellationToken ct)
+{
+    var sql = @&quot;
+        SELECT
+            u.Id, u.Name, u.Email,
+            o.OrderId, o.UserId, o.OrderTotal, o.CreatedAt
+        FROM Users u
+        LEFT JOIN Orders o ON u.Id = o.UserId&quot;;
+
+    var userDictionary = new Dictionary&lt;int, UserWithOrders&gt;();
+
+    await _db.QueryAsync&lt;User, Order, UserWithOrders&gt;(
+        sql,
+        (user, order) =&gt;
+        {
+            if (!userDictionary.TryGetValue(user.Id, out var userWithOrders))
+            {
+                userWithOrders = new UserWithOrders { User = user, Orders = new List&lt;Order&gt;() };
+                userDictionary.Add(user.Id, userWithOrders);
+            }
+
+            if (order != null)
+            {
+                userWithOrders.Orders.Add(order);
+            }
+
+            return userWithOrders;
+        },
+        splitOn: &quot;OrderId&quot;
+    );
+
+    return userDictionary.Values.ToList();
+}
+// 1 query total</code></pre>
+<h3 id="solution-2-batch-load-when-join-is-impractical">✅ Solution 2: Batch Load (when JOIN is impractical)</h3>
+<pre class="hljs"><code>public async Task&lt;List&lt;UserWithOrders&gt;&gt; GetUsersWithOrdersBatched(CancellationToken ct)
+{
+    // 1 query: get all users
+    var users = (await _db.QueryAsync&lt;User&gt;(&quot;SELECT * FROM Users&quot;)).ToList();
+
+    var userIds = users.Select(u =&gt; u.Id).ToList();
+
+    // 2nd query: get all orders for these users in one query
+    var orders = (await _db.QueryAsync&lt;Order&gt;(
+        &quot;SELECT * FROM Orders WHERE UserId IN @UserIds&quot;,
+        new { UserIds = userIds }
+    )).ToList();
+
+    // Group in memory
+    var ordersByUser = orders.GroupBy(o =&gt; o.UserId).ToDictionary(g =&gt; g.Key, g =&gt; g.ToList());
+
+    return users.Select(u =&gt; new UserWithOrders
+    {
+        User = u,
+        Orders = ordersByUser.GetValueOrDefault(u.Id, new List&lt;Order&gt;())
+    }).ToList();
+}
+// 2 queries total, regardless of number of users</code></pre>
+<h3 id="ef-core-use-include-to-avoid-n1">EF Core: Use Include to avoid N+1</h3>
+<pre class="hljs"><code>public async Task&lt;List&lt;User&gt;&gt; GetUsersWithOrdersEFCore(CancellationToken ct)
+{
+    return await _dbContext.Users
+        .Include(u =&gt; u.Orders) // Single query with JOIN
+        .ToListAsync(ct);
+}
+
+// For deep graphs, use ThenInclude
+public async Task&lt;List&lt;Order&gt;&gt; GetOrdersWithDetailsEFCore(CancellationToken ct)
+{
+    return await _dbContext.Orders
+        .Include(o =&gt; o.User)
+        .Include(o =&gt; o.OrderItems)
+            .ThenInclude(oi =&gt; oi.Product)
+        .ToListAsync(ct);
+}</code></pre>
+<p>---</p>
+<h2 id="3-pagination-never-use-offset-for-large-tables">3. Pagination: Never Use OFFSET for Large Tables</h2>
+<h3 id="bad-offset-gets-slower-as-offset-increases">❌ Bad: OFFSET (gets slower as offset increases)</h3>
+<pre class="hljs"><code>// Page 1,000 of 10,000,000 records = scans 1,000,000 rows
+public async Task&lt;PagedResult&lt;Order&gt;&gt; GetOrdersOffset(int page, int pageSize, CancellationToken ct)
+{
+    var offset = (page - 1) * pageSize;
+
+    var orders = await _db.QueryAsync&lt;Order&gt;(@&quot;
+        SELECT * FROM Orders
+        ORDER BY CreatedAt DESC
+        OFFSET @Offset ROWS
+        FETCH NEXT @PageSize ROWS ONLY&quot;,
+        new { Offset = offset, PageSize = pageSize }
+    );
+
+    var total = await _db.ExecuteScalarAsync&lt;int&gt;(&quot;SELECT COUNT(*) FROM Orders&quot;);
+
+    return new PagedResult&lt;Order&gt;
+    {
+        Items = orders.ToList(),
+        TotalCount = total,
+        Page = page,
+        PageSize = pageSize
+    };
+}
+// Performance degrades linearly with page number</code></pre>
+<h3 id="good-keyset-pagination-seek-method">✅ Good: Keyset Pagination (Seek Method)</h3>
+<pre class="hljs"><code>public async Task&lt;PagedResult&lt;Order&gt;&gt; GetOrdersKeyset(
+    DateTime? lastCreatedAt,
+    int? lastOrderId,
+    int pageSize,
+    CancellationToken ct)
+{
+    var sql = lastCreatedAt == null
+        ? @&quot;SELECT TOP(@PageSize) * FROM Orders ORDER BY CreatedAt DESC, OrderId DESC&quot;
+        : @&quot;SELECT TOP(@PageSize) * FROM Orders
+           WHERE CreatedAt &lt; @LastCreatedAt
+              OR (CreatedAt = @LastCreatedAt AND OrderId &lt; @LastOrderId)
+           ORDER BY CreatedAt DESC, OrderId DESC&quot;;
+
+    var orders = await _db.QueryAsync&lt;Order&gt;(sql, new
+    {
+        PageSize = pageSize,
+        LastCreatedAt = lastCreatedAt,
+        LastOrderId = lastOrderId
+    });
+
+    var ordersList = orders.ToList();
+
+    return new PagedResult&lt;Order&gt;
+    {
+        Items = ordersList,
+        PageSize = pageSize,
+        // Return cursor for next page
+        NextCursor = ordersList.Count &gt; 0
+            ? new { ordersList.Last().CreatedAt, ordersList.Last().OrderId }
+            : null
+    };
+}
+// Consistent performance regardless of position in dataset</code></pre>
+<p><strong>Why keyset pagination:</strong></p>
+<ul><li>Constant performance (no OFFSET scan)</li><li>Works for infinite scroll</li><li>Handles concurrent writes (no missing/duplicate items)</li></ul>
+<p>---</p>
+<h2 id="4-connection-pooling-management">4. Connection Pooling & Management</h2>
+<h3 id="configure-connection-pool">Configure Connection Pool</h3>
+<pre class="hljs"><code>// appsettings.json
+{
+  &quot;ConnectionStrings&quot;: {
+    &quot;DefaultConnection&quot;: &quot;Server=myserver;Database=mydb;User Id=user;Password=pass;
+                          Min Pool Size=10;
+                          Max Pool Size=100;
+                          Connection Lifetime=300;
+                          Connection Timeout=30;
+                          Pooling=true;&quot;
+  }
+}</code></pre>
+<h3 id="pool-size-guidelines">Pool Size Guidelines</h3>
+<pre class="hljs"><code>// Rule of thumb: Max Pool Size = (Number of CPU cores * 2) + effective spindle count
+// For cloud databases with connection limits:
+
+public static class DatabaseConfig
+{
+    public static int CalculateMaxPoolSize(int maxConnections, int instanceCount)
+    {
+        // Leave 20% headroom for admin connections, background jobs
+        var usableConnections = (int)(maxConnections * 0.8);
+
+        // Divide among instances
+        return usableConnections / instanceCount;
+    }
+}
+
+// Example:
+// RDS PostgreSQL max_connections = 100
+// Running 4 instances
+// Max pool size per instance = (100 * 0.8) / 4 = 20 connections</code></pre>
+<h3 id="monitor-connection-pool">Monitor Connection Pool</h3>
+<pre class="hljs"><code>public class DatabaseHealthCheck : IHealthCheck
+{
+    private readonly IDbConnection _db;
+
+    public async Task&lt;HealthCheckResult&gt; CheckHealthAsync(
+        HealthCheckContext context,
+        CancellationToken ct = default)
+    {
+        try
+        {
+            await _db.ExecuteScalarAsync&lt;int&gt;(&quot;SELECT 1&quot;, cancellationToken: ct);
+
+            // For SqlConnection, check pool stats
+            if (_db is SqlConnection sqlConn)
+            {
+                SqlConnection.ClearPool(sqlConn); // Only for diagnostics, not production
+            }
+
+            return HealthCheckResult.Healthy(&quot;Database is reachable&quot;);
+        }
+        catch (Exception ex)
+        {
+            return HealthCheckResult.Unhealthy(&quot;Database is unreachable&quot;, ex);
+        }
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="5-read-replicas-for-read-heavy-workloads">5. Read Replicas for Read-Heavy Workloads</h2>
+<h3 id="setup-multi-database-routing">Setup Multi-Database Routing</h3>
+<pre class="hljs"><code>public enum DatabaseRole
+{
+    Primary,
+    Replica
+}
+
+public interface IDatabaseConnectionFactory
+{
+    IDbConnection CreateConnection(DatabaseRole role);
+}
+
+public class DatabaseConnectionFactory : IDatabaseConnectionFactory
+{
+    private readonly IConfiguration _config;
+
+    public IDbConnection CreateConnection(DatabaseRole role)
+    {
+        var connectionString = role == DatabaseRole.Primary
+            ? _config.GetConnectionString(&quot;Primary&quot;)
+            : _config.GetConnectionString(&quot;Replica&quot;);
+
+        return new SqlConnection(connectionString);
+    }
+}
+
+// Repository with read/write separation
+public class OrderRepository
+{
+    private readonly IDatabaseConnectionFactory _dbFactory;
+
+    // Read from replica
+    public async Task&lt;Order&gt; GetOrderAsync(int orderId, CancellationToken ct)
+    {
+        using var db = _dbFactory.CreateConnection(DatabaseRole.Replica);
+        return await db.QueryFirstOrDefaultAsync&lt;Order&gt;(
+            &quot;SELECT * FROM Orders WHERE OrderId = @OrderId&quot;,
+            new { OrderId = orderId }
+        );
+    }
+
+    // Write to primary
+    public async Task&lt;int&gt; CreateOrderAsync(Order order, CancellationToken ct)
+    {
+        using var db = _dbFactory.CreateConnection(DatabaseRole.Primary);
+        return await db.ExecuteAsync(@&quot;
+            INSERT INTO Orders (UserId, OrderTotal, Status, CreatedAt)
+            VALUES (@UserId, @OrderTotal, @Status, @CreatedAt)&quot;,
+            order
+        );
+    }
+}</code></pre>
+<h3 id="handle-replication-lag">Handle Replication Lag</h3>
+<pre class="hljs"><code>public class ReplicationAwareRepository
+{
+    private readonly IDatabaseConnectionFactory _dbFactory;
+
+    // After write, read from primary for consistency
+    public async Task&lt;Order&gt; CreateAndGetOrderAsync(Order order, CancellationToken ct)
+    {
+        using var db = _dbFactory.CreateConnection(DatabaseRole.Primary);
+
+        var orderId = await db.QuerySingleAsync&lt;int&gt;(@&quot;
+            INSERT INTO Orders (UserId, OrderTotal, Status, CreatedAt)
+            OUTPUT INSERTED.OrderId
+            VALUES (@UserId, @OrderTotal, @Status, @CreatedAt)&quot;,
+            order
+        );
+
+        // Read from same connection (primary) to avoid replication lag
+        return await db.QueryFirstAsync&lt;Order&gt;(
+            &quot;SELECT * FROM Orders WHERE OrderId = @OrderId&quot;,
+            new { OrderId = orderId }
+        );
+    }
+
+    // For eventual consistency scenarios
+    public async Task&lt;Order?&gt; GetOrderWithRetryAsync(int orderId, CancellationToken ct)
+    {
+        for (int attempt = 0; attempt &lt; 3; attempt++)
+        {
+            using var db = _dbFactory.CreateConnection(DatabaseRole.Replica);
+            var order = await db.QueryFirstOrDefaultAsync&lt;Order&gt;(
+                &quot;SELECT * FROM Orders WHERE OrderId = @OrderId&quot;,
+                new { OrderId = orderId }
+            );
+
+            if (order != null)
+                return order;
+
+            // Wait for replication
+            await Task.Delay(TimeSpan.FromMilliseconds(100), ct);
+        }
+
+        // Fall back to primary if still not found
+        using var primaryDb = _dbFactory.CreateConnection(DatabaseRole.Primary);
+        return await primaryDb.QueryFirstOrDefaultAsync&lt;Order&gt;(
+            &quot;SELECT * FROM Orders WHERE OrderId = @OrderId&quot;,
+            new { OrderId = orderId }
+        );
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="6-database-partitioningsharding">6. Database Partitioning/Sharding</h2>
+<h3 id="horizontal-partitioning-sharding-by-user-id">Horizontal Partitioning (Sharding by User ID)</h3>
+<pre class="hljs"><code>public interface IShardingStrategy
+{
+    int GetShardId(int userId);
+    IDbConnection GetConnection(int shardId);
+}
+
+public class UserIdShardingStrategy : IShardingStrategy
+{
+    private readonly IConfiguration _config;
+    private readonly int _shardCount;
+
+    public UserIdShardingStrategy(IConfiguration config)
+    {
+        _config = config;
+        _shardCount = _config.GetValue&lt;int&gt;(&quot;Sharding:ShardCount&quot;);
+    }
+
+    public int GetShardId(int userId)
+    {
+        // Consistent hashing
+        return userId % _shardCount;
+    }
+
+    public IDbConnection GetConnection(int shardId)
+    {
+        var connectionString = _config.GetConnectionString($&quot;Shard{shardId}&quot;);
+        return new SqlConnection(connectionString);
+    }
+}
+
+public class ShardedOrderRepository
+{
+    private readonly IShardingStrategy _sharding;
+
+    // All queries must include userId for shard routing
+    public async Task&lt;IEnumerable&lt;Order&gt;&gt; GetUserOrdersAsync(
+        int userId,
+        CancellationToken ct)
+    {
+        var shardId = _sharding.GetShardId(userId);
+        using var db = _sharding.GetConnection(shardId);
+
+        return await db.QueryAsync&lt;Order&gt;(
+            &quot;SELECT * FROM Orders WHERE UserId = @UserId&quot;,
+            new { UserId = userId }
+        );
+    }
+
+    // Cross-shard queries require scatter-gather
+    public async Task&lt;int&gt; GetTotalOrderCountAsync(CancellationToken ct)
+    {
+        var tasks = new List&lt;Task&lt;int&gt;&gt;();
+
+        for (int shardId = 0; shardId &lt; _sharding.ShardCount; shardId++)
+        {
+            var shard = shardId; // Capture for closure
+            tasks.Add(Task.Run(async () =&gt;
+            {
+                using var db = _sharding.GetConnection(shard);
+                return await db.ExecuteScalarAsync&lt;int&gt;(&quot;SELECT COUNT(*) FROM Orders&quot;);
+            }, ct));
+        }
+
+        var results = await Task.WhenAll(tasks);
+        return results.Sum();
+    }
+}</code></pre>
+<p><strong>Warning:</strong> Sharding adds complexity. Only shard when:</p>
+<ul><li>Single database can't handle the load</li><li>Data naturally partitions (by user, tenant, region)</li><li>You've exhausted vertical scaling and read replicas</li></ul>
+<p>---</p>
+<h2 id="7-query-optimization-techniques">7. Query Optimization Techniques</h2>
+<h3 id="use-compiled-queries-ef-core">Use Compiled Queries (EF Core)</h3>
+<pre class="hljs"><code>public class OrderQueries
+{
+    // Compiled query: parsed once, executed many times
+    private static readonly Func&lt;AppDbContext, int, Task&lt;Order?&gt;&gt; _getOrderById =
+        EF.CompileAsyncQuery((AppDbContext db, int orderId) =&gt;
+            db.Orders.FirstOrDefault(o =&gt; o.OrderId == orderId));
+
+    public async Task&lt;Order?&gt; GetOrderAsync(AppDbContext db, int orderId)
+    {
+        return await _getOrderById(db, orderId);
+    }
+}</code></pre>
+<h3 id="use-asnotracking-for-read-only-queries">Use AsNoTracking for Read-Only Queries</h3>
+<pre class="hljs"><code>// ❌ Bad: Change tracking overhead for read-only data
+var orders = await _dbContext.Orders.ToListAsync();
+
+// ✅ Good: No tracking = faster
+var orders = await _dbContext.Orders.AsNoTracking().ToListAsync();</code></pre>
+<h3 id="project-only-needed-columns">Project Only Needed Columns</h3>
+<pre class="hljs"><code>// ❌ Bad: Selects all columns, loads entire object graph
+var users = await _dbContext.Users
+    .Include(u =&gt; u.Orders)
+    .Include(u =&gt; u.Addresses)
+    .ToListAsync();
+
+// ✅ Good: Project to DTO with only needed data
+var users = await _dbContext.Users
+    .Select(u =&gt; new UserSummaryDto
+    {
+        Id = u.Id,
+        Name = u.Name,
+        OrderCount = u.Orders.Count
+    })
+    .ToListAsync();</code></pre>
+<p>---</p>
+<h2 id="summary-database-scaling-checklist">Summary: Database Scaling Checklist</h2>
+<p>✅ <strong>Proper indexes</strong>: Composite indexes aligned with query patterns ✅ <strong>Avoid N+1</strong>: Use JOINs or batch loading ✅ <strong>Keyset pagination</strong>: For large datasets ✅ <strong>Connection pooling</strong>: Tune pool size for your workload ✅ <strong>Read replicas</strong>: For read-heavy workloads ✅ <strong>Sharding</strong>: Only when necessary, with clear partition key ✅ <strong>Query optimization</strong>: Compiled queries, AsNoTracking, projection ✅ <strong>Monitor</strong>: Slow query log, index usage, connection pool stats</p>
+<p><strong>Key Insight:</strong> Most performance problems are query problems. Indexing, N+1 elimination, and proper pagination solve 90% of database issues.</p>
+<p><strong>Next:</strong> <a href="./05-message-queues.md">Message Queues & Async Processing</a> - Decouple heavy work from request/response cycle.</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['midnight', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const fallback = 'light';
+      const initial = supported.includes(saved) ? saved : (window.__studyTheme || fallback);
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          sessionStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+    (() => {
+      const groups = document.querySelectorAll('.sidebar-group');
+      if (!groups.length) return;
+      const storageKey = 'study-open-groups';
+      const saved = sessionStorage.getItem(storageKey);
+      const openFromStorage = new Set(saved ? JSON.parse(saved) : []);
+
+      const activeLink = document.querySelector('.nav-link.active');
+      const activeGroup = activeLink?.closest('.sidebar-group');
+      if (activeGroup?.dataset.group) {
+        openFromStorage.add(activeGroup.dataset.group);
+      }
+
+      const syncStorage = () => {
+        const openIds = Array.from(document.querySelectorAll('.sidebar-group.is-open'))
+          .map((group) => group.dataset.group)
+          .filter(Boolean);
+        sessionStorage.setItem(storageKey, JSON.stringify(openIds));
+      };
+
+      const setExpanded = (group, expanded) => {
+        const header = group.querySelector('.sidebar-group__header');
+        const list = group.querySelector('.sidebar-group__items');
+        group.classList.toggle('is-open', expanded);
+        header?.setAttribute('aria-expanded', expanded);
+        if (list) {
+          list.hidden = !expanded;
+        }
+      };
+
+      groups.forEach((group) => {
+        const shouldOpen = openFromStorage.has(group.dataset.group);
+        setExpanded(group, shouldOpen);
+        const header = group.querySelector('.sidebar-group__header');
+        header?.addEventListener('click', () => {
+          const next = !group.classList.contains('is-open');
+          setExpanded(group, next);
+          syncStorage();
+        });
+      });
+    })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swPath = '..\..\../service-worker.js';
+        navigator.serviceWorker.register(swPath).catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>

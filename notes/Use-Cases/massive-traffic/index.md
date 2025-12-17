@@ -1,6 +1,22 @@
-If they’re hinting “massive traffic, millions of users” in a C# interview, they’re really testing whether you think in **throughput, latency, backpressure, and failure modes** — not just “I’ll add more servers”.
+# Designing .NET Systems for Massive Traffic and Millions of Users
 
-Here’s how you answer (and how you’d actually build it).
+If they're hinting "massive traffic, millions of users" in a C# interview, they're really testing whether you think in **throughput, latency, backpressure, and failure modes** — not just "I'll add more servers".
+
+This guide covers **how to actually design and build systems that handle millions of requests** in .NET, with detailed explanations, code examples, and the reasoning behind each decision.
+
+## Table of Contents
+
+1. [Mental Model & Architecture Overview](#the-mental-model)
+2. [Async & Non-Blocking I/O Patterns](./massive-traffic/01-async-patterns.md) - Deep dive into async/await, thread pool management
+3. [Backpressure & Rate Limiting](./massive-traffic/02-backpressure-rate-limiting.md) - Protecting your system under load
+4. [Caching Strategies](./massive-traffic/03-caching-strategies.md) - Redis, in-memory, CDN patterns
+5. [Database Optimization & Scaling](./massive-traffic/04-database-scaling.md) - Indexes, partitioning, read replicas
+6. [Message Queues & Async Processing](./massive-traffic/05-message-queues.md) - Decoupling heavy work
+7. [Resilience Patterns](./massive-traffic/06-resilience-patterns.md) - Circuit breakers, retries, timeouts
+8. [Observability & Monitoring](./massive-traffic/07-observability.md) - Metrics, tracing, structured logging
+9. [Complete Example Application](./massive-traffic/08-complete-example.md) - Real-world implementation
+
+---
 
 ## The mental model
 

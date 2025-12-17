@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for 02 Backpressure Rate Limiting" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>02 Backpressure Rate Limiting | C# Interview Prep Cheat Sheet</title>
+  <link rel="manifest" href="..\..\..\assets/manifest.webmanifest" />
+  <script>
+    (() => {
+      const supported = ['midnight', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const fallback = 'light';
+      const initial = supported.includes(saved) ? saved : fallback;
+      document.documentElement.dataset.theme = initial;
+      window.__studyTheme = initial;
+    })();
+  </script>
+  <link rel="stylesheet" href="..\..\..\assets/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="midnight">Current</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group" data-group="notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="..\..\../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="..\..\../notes/logging.html">Logging</a></li><li><a class="nav-link" href="..\..\../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a class="nav-link" href="..\..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a class="nav-link" href="..\..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group is-open" data-group="notes-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
+        <span>Notes / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/01-async-patterns.html">01 Async Patterns</a></li><li><a class="nav-link active" href="..\..\../notes/Use-Cases/massive-traffic/02-backpressure-rate-limiting.html">02 Backpressure Rate Limiting</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/03-caching-strategies.html">03 Caching Strategies</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/04-database-scaling.html">04 Database Scaling</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/05-message-queues.html">05 Message Queues</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/06-resilience-patterns.html">06 Resilience Patterns</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/07-observability.html">07 Observability</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/08-complete-example.html">08 Complete Example</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../practice/answers.html">Answers</a></li><li><a class="nav-link" href="..\..\../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="..\..\../practice/questions.html">Questions</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-real-exam-questions-answers">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Real Exam Questions Answers</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../practice/real exam questions answers/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="..\..\../practice/real exam questions answers/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li></ul>
+    </div></div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">notes\Use-Cases\massive-traffic\02-backpressure-rate-limiting.md</div>
+        <h2>02 Backpressure Rate Limiting</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#backpressure-rate-limiting-protecting-your-system-under-load">Backpressure & Rate Limiting: Protecting Your System Under Load</a></li><li class="level-2"><a href="#why-you-must-have-backpressure">Why You MUST Have Backpressure</a></li><li class="level-2"><a href="#1-aspnet-core-built-in-rate-limiting-net-7">1. ASP.NET Core Built-in Rate Limiting (.NET 7+)</a></li><li class="level-3"><a href="#basic-setup">Basic Setup</a></li><li class="level-3"><a href="#apply-to-specific-endpoints">Apply to Specific Endpoints</a></li><li class="level-2"><a href="#2-per-userper-ip-rate-limiting">2. Per-User/Per-IP Rate Limiting</a></li><li class="level-2"><a href="#3-concurrency-limiter-semaphore-pattern">3. Concurrency Limiter (Semaphore Pattern)</a></li><li class="level-3"><a href="#manual-semaphore-implementation">Manual Semaphore Implementation</a></li><li class="level-3"><a href="#middleware-for-global-concurrency-limit">Middleware for Global Concurrency Limit</a></li><li class="level-2"><a href="#4-bounded-queues-for-background-work">4. Bounded Queues for Background Work</a></li><li class="level-2"><a href="#5-distributed-rate-limiting-with-redis">5. Distributed Rate Limiting with Redis</a></li><li class="level-2"><a href="#summary-backpressure-checklist">Summary: Backpressure Checklist</a></li></ul></div>
+        <h1 id="backpressure-rate-limiting-protecting-your-system-under-load">Backpressure & Rate Limiting: Protecting Your System Under Load</h1>
+<h2 id="why-you-must-have-backpressure">Why You MUST Have Backpressure</h2>
+<p><strong>The Problem:</strong> When traffic spikes, accepting every request leads to:</p>
+<ul><li>Queue explosion (memory exhaustion)</li><li>Database connection pool exhaustion</li><li>Cascading failures to downstream services</li><li>Increased latency for ALL users (death spiral)</li></ul>
+<p><strong>The Solution:</strong> Reject requests early when you're at capacity. Better to serve 10,000 requests fast with 1,000 rejections than have all 11,000 requests time out.</p>
+<p><strong>Key Principle:</strong> Fail fast, fail explicitly, preserve capacity for requests you can handle.</p>
+<p>---</p>
+<h2 id="1-aspnet-core-built-in-rate-limiting-net-7">1. ASP.NET Core Built-in Rate Limiting (.NET 7+)</h2>
+<p>The framework includes rate limiting middleware. Use it.</p>
+<h3 id="basic-setup">Basic Setup</h3>
+<pre class="hljs"><code>// Program.cs
+using System.Threading.RateLimiting;
+using Microsoft.AspNetCore.RateLimiting;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddRateLimiter(options =&gt;
+{
+    // Fixed window: X requests per time window
+    options.AddFixedWindowLimiter(&quot;fixed&quot;, opt =&gt;
+    {
+        opt.PermitLimit = 100;
+        opt.Window = TimeSpan.FromMinutes(1);
+        opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        opt.QueueLimit = 10; // How many can queue waiting for a slot
+    });
+
+    // Sliding window: Smoother than fixed (prevents reset spike)
+    options.AddSlidingWindowLimiter(&quot;sliding&quot;, opt =&gt;
+    {
+        opt.PermitLimit = 100;
+        opt.Window = TimeSpan.FromMinutes(1);
+        opt.SegmentsPerWindow = 6; // 6 segments of 10 seconds each
+        opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        opt.QueueLimit = 0; // Reject immediately when full
+    });
+
+    // Token bucket: Allows bursts
+    options.AddTokenBucketLimiter(&quot;token&quot;, opt =&gt;
+    {
+        opt.TokenLimit = 100;
+        opt.ReplenishmentPeriod = TimeSpan.FromMinutes(1);
+        opt.TokensPerPeriod = 100;
+        opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        opt.QueueLimit = 0;
+    });
+
+    // Concurrency limiter: Max simultaneous requests
+    options.AddConcurrencyLimiter(&quot;concurrent&quot;, opt =&gt;
+    {
+        opt.PermitLimit = 50; // Only 50 requests executing at once
+        opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        opt.QueueLimit = 25; // 25 more can wait
+    });
+
+    // Default rejection response
+    options.OnRejected = async (context, ct) =&gt;
+    {
+        context.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
+
+        if (context.Lease.TryGetMetadata(MetadataName.RetryAfter, out var retryAfter))
+        {
+            context.HttpContext.Response.Headers.RetryAfter = retryAfter.TotalSeconds.ToString();
+        }
+
+        await context.HttpContext.Response.WriteAsJsonAsync(new
+        {
+            error = &quot;Too many requests. Please retry later.&quot;,
+            retryAfter = retryAfter?.TotalSeconds
+        }, cancellationToken: ct);
+    };
+});
+
+var app = builder.Build();
+
+// Apply globally
+app.UseRateLimiter();
+
+app.MapControllers();
+app.Run();</code></pre>
+<h3 id="apply-to-specific-endpoints">Apply to Specific Endpoints</h3>
+<pre class="hljs"><code>[ApiController]
+[Route(&quot;api/[controller]&quot;)]
+public class OrdersController : ControllerBase
+{
+    // High-traffic endpoint: strict limit
+    [HttpPost]
+    [EnableRateLimiting(&quot;sliding&quot;)]
+    public async Task&lt;IActionResult&gt; CreateOrderAsync(
+        CreateOrderRequest request,
+        CancellationToken ct)
+    {
+        // Process order
+        return Ok();
+    }
+
+    // Read endpoint: more lenient
+    [HttpGet(&quot;{id}&quot;)]
+    [EnableRateLimiting(&quot;token&quot;)]
+    public async Task&lt;IActionResult&gt; GetOrderAsync(int id, CancellationToken ct)
+    {
+        // Fetch order
+        return Ok();
+    }
+
+    // Expensive report: concurrency limit
+    [HttpGet(&quot;reports/{id}&quot;)]
+    [EnableRateLimiting(&quot;concurrent&quot;)]
+    public async Task&lt;IActionResult&gt; GetReportAsync(int id, CancellationToken ct)
+    {
+        // Generate report (expensive)
+        return Ok();
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="2-per-userper-ip-rate-limiting">2. Per-User/Per-IP Rate Limiting</h2>
+<p>Prevent a single user from monopolizing resources.</p>
+<pre class="hljs"><code>// Custom partition key resolver
+builder.Services.AddRateLimiter(options =&gt;
+{
+    options.AddSlidingWindowLimiter(&quot;per-user&quot;, opt =&gt;
+    {
+        opt.PermitLimit = 10;
+        opt.Window = TimeSpan.FromSeconds(10);
+        opt.SegmentsPerWindow = 2;
+        opt.QueueLimit = 0;
+    }).AddPolicy(&quot;per-user-policy&quot;, context =&gt;
+    {
+        // Get user ID from claims or API key
+        var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                     ?? context.Request.Headers[&quot;X-API-Key&quot;].ToString()
+                     ?? context.Connection.RemoteIpAddress?.ToString()
+                     ?? &quot;anonymous&quot;;
+
+        return RateLimitPartition.GetSlidingWindowLimiter(userId, _ =&gt; new SlidingWindowRateLimiterOptions
+        {
+            PermitLimit = 100,
+            Window = TimeSpan.FromMinutes(1),
+            SegmentsPerWindow = 6,
+            QueueLimit = 0
+        });
+    });
+});
+
+// Apply to controller
+[EnableRateLimiting(&quot;per-user-policy&quot;)]
+[ApiController]
+[Route(&quot;api/[controller]&quot;)]
+public class UserController : ControllerBase
+{
+    // Each user gets their own 100 req/min limit
+}</code></pre>
+<p><strong>Why this matters:</strong></p>
+<ul><li>One abusive user doesn't affect others</li><li>Prevents scraping/abuse</li><li>Fair resource distribution</li></ul>
+<p>---</p>
+<h2 id="3-concurrency-limiter-semaphore-pattern">3. Concurrency Limiter (Semaphore Pattern)</h2>
+<p>When rate limiting by time isn't enough (e.g., expensive operations), limit <strong>how many run simultaneously</strong>.</p>
+<h3 id="manual-semaphore-implementation">Manual Semaphore Implementation</h3>
+<pre class="hljs"><code>public interface IExpensiveService
+{
+    Task&lt;ReportData&gt; GenerateReportAsync(int userId, CancellationToken ct);
+}
+
+public class ExpensiveReportService : IExpensiveService
+{
+    private readonly SemaphoreSlim _concurrencyLimit;
+    private readonly IDbConnection _db;
+    private readonly ILogger&lt;ExpensiveReportService&gt; _logger;
+
+    public ExpensiveReportService(
+        IDbConnection db,
+        ILogger&lt;ExpensiveReportService&gt; logger)
+    {
+        _db = db;
+        _logger = logger;
+
+        // Only 20 reports generating at once
+        // Tune based on: CPU cores, memory, DB connection pool size
+        _concurrencyLimit = new SemaphoreSlim(
+            initialCount: 20,
+            maxCount: 20
+        );
+    }
+
+    public async Task&lt;ReportData&gt; GenerateReportAsync(
+        int userId,
+        CancellationToken ct)
+    {
+        // Try to acquire a slot, wait max 2 seconds
+        var acquired = await _concurrencyLimit.WaitAsync(
+            TimeSpan.FromSeconds(2),
+            ct
+        );
+
+        if (!acquired)
+        {
+            _logger.LogWarning(
+                &quot;Report generation rejected for user {UserId} - concurrency limit reached&quot;,
+                userId
+            );
+            throw new TooManyRequestsException(
+                &quot;System is under heavy load. Please retry in a moment.&quot;
+            );
+        }
+
+        try
+        {
+            _logger.LogInformation(
+                &quot;Starting report generation for user {UserId}. Current concurrency: {Current}/{Max}&quot;,
+                userId,
+                20 - _concurrencyLimit.CurrentCount,
+                20
+            );
+
+            // Expensive work here
+            var data = await _db.QueryAsync&lt;ReportData&gt;(
+                &quot;EXEC GenerateUserReport @UserId&quot;,
+                new { UserId = userId }
+            );
+
+            // Simulate heavy processing
+            await ProcessDataAsync(data, ct);
+
+            return new ReportData { /* ... */ };
+        }
+        finally
+        {
+            _concurrencyLimit.Release();
+
+            _logger.LogInformation(
+                &quot;Completed report for user {UserId}. Current concurrency: {Current}/{Max}&quot;,
+                userId,
+                20 - _concurrencyLimit.CurrentCount,
+                20
+            );
+        }
+    }
+
+    private async Task ProcessDataAsync(
+        IEnumerable&lt;ReportData&gt; data,
+        CancellationToken ct)
+    {
+        foreach (var item in data)
+        {
+            ct.ThrowIfCancellationRequested();
+            // Heavy CPU work
+            await Task.Delay(50, ct);
+        }
+    }
+}
+
+public class TooManyRequestsException : Exception
+{
+    public TooManyRequestsException(string message) : base(message) { }
+}</code></pre>
+<h3 id="middleware-for-global-concurrency-limit">Middleware for Global Concurrency Limit</h3>
+<pre class="hljs"><code>public class ConcurrencyLimitMiddleware
+{
+    private readonly RequestDelegate _next;
+    private readonly SemaphoreSlim _semaphore;
+    private readonly ILogger&lt;ConcurrencyLimitMiddleware&gt; _logger;
+
+    public ConcurrencyLimitMiddleware(
+        RequestDelegate next,
+        ILogger&lt;ConcurrencyLimitMiddleware&gt; logger,
+        int maxConcurrency = 1000)
+    {
+        _next = next;
+        _logger = logger;
+        _semaphore = new SemaphoreSlim(maxConcurrency, maxConcurrency);
+    }
+
+    public async Task InvokeAsync(HttpContext context)
+    {
+        var acquired = await _semaphore.WaitAsync(TimeSpan.FromMilliseconds(100));
+
+        if (!acquired)
+        {
+            _logger.LogWarning(
+                &quot;Request rejected - global concurrency limit reached. Path: {Path}&quot;,
+                context.Request.Path
+            );
+
+            context.Response.StatusCode = StatusCodes.Status503ServiceUnavailable;
+            context.Response.Headers.RetryAfter = &quot;5&quot;;
+
+            await context.Response.WriteAsJsonAsync(new
+            {
+                error = &quot;Service temporarily overloaded. Please retry.&quot;,
+                retryAfter = 5
+            });
+
+            return;
+        }
+
+        try
+        {
+            await _next(context);
+        }
+        finally
+        {
+            _semaphore.Release();
+        }
+    }
+}
+
+// Register in Program.cs
+app.UseMiddleware&lt;ConcurrencyLimitMiddleware&gt;(maxConcurrency: 2000);</code></pre>
+<p><strong>When to use:</strong></p>
+<ul><li>CPU-intensive endpoints (reports, image processing)</li><li>Memory-intensive operations</li><li>Expensive database queries</li><li>Calls to rate-limited external APIs</li></ul>
+<p>---</p>
+<h2 id="4-bounded-queues-for-background-work">4. Bounded Queues for Background Work</h2>
+<p>Don't let background job queues grow unbounded.</p>
+<pre class="hljs"><code>public interface IBackgroundJobQueue
+{
+    ValueTask&lt;bool&gt; QueueAsync(Func&lt;CancellationToken, Task&gt; workItem, CancellationToken ct);
+    ValueTask&lt;Func&lt;CancellationToken, Task&gt;?&gt; DequeueAsync(CancellationToken ct);
+}
+
+public class BoundedBackgroundJobQueue : IBackgroundJobQueue
+{
+    private readonly Channel&lt;Func&lt;CancellationToken, Task&gt;&gt; _queue;
+    private readonly ILogger&lt;BoundedBackgroundJobQueue&gt; _logger;
+
+    public BoundedBackgroundJobQueue(
+        int capacity,
+        ILogger&lt;BoundedBackgroundJobQueue&gt; logger)
+    {
+        _logger = logger;
+
+        // Bounded channel: reject writes when full
+        var options = new BoundedChannelOptions(capacity)
+        {
+            FullMode = BoundedChannelFullMode.DropWrite // Or DropOldest, Wait
+        };
+
+        _queue = Channel.CreateBounded&lt;Func&lt;CancellationToken, Task&gt;&gt;(options);
+    }
+
+    public async ValueTask&lt;bool&gt; QueueAsync(
+        Func&lt;CancellationToken, Task&gt; workItem,
+        CancellationToken ct)
+    {
+        var queued = await _queue.Writer.WaitToWriteAsync(ct);
+
+        if (!queued)
+        {
+            _logger.LogWarning(&quot;Background queue is full - job rejected&quot;);
+            return false;
+        }
+
+        if (!_queue.Writer.TryWrite(workItem))
+        {
+            _logger.LogWarning(&quot;Failed to write to background queue&quot;);
+            return false;
+        }
+
+        return true;
+    }
+
+    public async ValueTask&lt;Func&lt;CancellationToken, Task&gt;?&gt; DequeueAsync(
+        CancellationToken ct)
+    {
+        var workItem = await _queue.Reader.ReadAsync(ct);
+        return workItem;
+    }
+}
+
+// Background service processing the queue
+public class BackgroundJobProcessor : BackgroundService
+{
+    private readonly IBackgroundJobQueue _queue;
+    private readonly ILogger&lt;BackgroundJobProcessor&gt; _logger;
+
+    public BackgroundJobProcessor(
+        IBackgroundJobQueue queue,
+        ILogger&lt;BackgroundJobProcessor&gt; logger)
+    {
+        _queue = queue;
+        _logger = logger;
+    }
+
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        _logger.LogInformation(&quot;Background job processor started&quot;);
+
+        while (!stoppingToken.IsCancellationRequested)
+        {
+            try
+            {
+                var workItem = await _queue.DequeueAsync(stoppingToken);
+
+                if (workItem != null)
+                {
+                    await workItem(stoppingToken);
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                // Expected on shutdown
+                break;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, &quot;Error processing background job&quot;);
+            }
+        }
+
+        _logger.LogInformation(&quot;Background job processor stopped&quot;);
+    }
+}
+
+// Usage in controller
+[ApiController]
+[Route(&quot;api/[controller]&quot;)]
+public class NotificationController : ControllerBase
+{
+    private readonly IBackgroundJobQueue _jobQueue;
+
+    [HttpPost(&quot;send&quot;)]
+    public async Task&lt;IActionResult&gt; SendNotificationAsync(
+        NotificationRequest request,
+        CancellationToken ct)
+    {
+        var queued = await _jobQueue.QueueAsync(async token =&gt;
+        {
+            // Expensive work: send email, SMS, push notification
+            await SendEmailAsync(request.Email, token);
+            await SendSmsAsync(request.Phone, token);
+        }, ct);
+
+        if (!queued)
+        {
+            return StatusCode(
+                StatusCodes.Status503ServiceUnavailable,
+                &quot;System is overloaded. Please retry later.&quot;
+            );
+        }
+
+        return Accepted(new { message = &quot;Notification queued for processing&quot; });
+    }
+
+    private Task SendEmailAsync(string email, CancellationToken ct)
+    {
+        // Implementation
+        return Task.CompletedTask;
+    }
+
+    private Task SendSmsAsync(string phone, CancellationToken ct)
+    {
+        // Implementation
+        return Task.CompletedTask;
+    }
+}
+
+// Registration
+builder.Services.AddSingleton&lt;IBackgroundJobQueue&gt;(
+    sp =&gt; new BoundedBackgroundJobQueue(
+        capacity: 10000, // Tune based on memory
+        sp.GetRequiredService&lt;ILogger&lt;BoundedBackgroundJobQueue&gt;&gt;()
+    )
+);
+builder.Services.AddHostedService&lt;BackgroundJobProcessor&gt;();</code></pre>
+<p><strong>Why bounded queues:</strong></p>
+<ul><li>Prevents memory exhaustion</li><li>Fails fast when overloaded</li><li>Forces clients to retry (with backoff)</li><li>Preserves system stability</li></ul>
+<p>---</p>
+<h2 id="5-distributed-rate-limiting-with-redis">5. Distributed Rate Limiting with Redis</h2>
+<p>For multi-instance deployments, use Redis for shared rate limit state.</p>
+<pre class="hljs"><code>public interface IDistributedRateLimiter
+{
+    Task&lt;bool&gt; AllowRequestAsync(string key, int limit, TimeSpan window, CancellationToken ct);
+}
+
+public class RedisRateLimiter : IDistributedRateLimiter
+{
+    private readonly IDatabase _redis;
+    private readonly ILogger&lt;RedisRateLimiter&gt; _logger;
+
+    public RedisRateLimiter(
+        IConnectionMultiplexer redis,
+        ILogger&lt;RedisRateLimiter&gt; logger)
+    {
+        _redis = redis.GetDatabase();
+        _logger = logger;
+    }
+
+    public async Task&lt;bool&gt; AllowRequestAsync(
+        string key,
+        int limit,
+        TimeSpan window,
+        CancellationToken ct)
+    {
+        var redisKey = $&quot;ratelimit:{key}&quot;;
+
+        try
+        {
+            // Sliding window log algorithm using Redis sorted set
+            var now = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            var windowStart = now - (long)window.TotalMilliseconds;
+
+            // Remove old entries outside the window
+            await _redis.SortedSetRemoveRangeByScoreAsync(
+                redisKey,
+                double.NegativeInfinity,
+                windowStart
+            );
+
+            // Count current entries in window
+            var currentCount = await _redis.SortedSetLengthAsync(redisKey);
+
+            if (currentCount &gt;= limit)
+            {
+                _logger.LogWarning(
+                    &quot;Rate limit exceeded for key {Key}. Current: {Current}, Limit: {Limit}&quot;,
+                    key, currentCount, limit
+                );
+                return false;
+            }
+
+            // Add current request
+            await _redis.SortedSetAddAsync(redisKey, now, now);
+
+            // Set expiry to clean up old keys
+            await _redis.KeyExpireAsync(redisKey, window);
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, &quot;Redis rate limiter error for key {Key}. Allowing request.&quot;, key);
+            // Fail open: allow request if Redis is down
+            return true;
+        }
+    }
+}
+
+// Lua script for atomic sliding window (more efficient)
+public class RedisRateLimiterOptimized : IDistributedRateLimiter
+{
+    private readonly IDatabase _redis;
+    private readonly ILogger&lt;RedisRateLimiterOptimized&gt; _logger;
+
+    private const string LuaScript = @&quot;
+        local key = KEYS[1]
+        local now = tonumber(ARGV[1])
+        local window = tonumber(ARGV[2])
+        local limit = tonumber(ARGV[3])
+
+        local clearBefore = now - window
+        redis.call(&#39;ZREMRANGEBYSCORE&#39;, key, 0, clearBefore)
+
+        local amount = redis.call(&#39;ZCARD&#39;, key)
+        if amount &lt; limit then
+            redis.call(&#39;ZADD&#39;, key, now, now)
+            redis.call(&#39;EXPIRE&#39;, key, window / 1000)
+            return 1
+        end
+        return 0
+    &quot;;
+
+    public async Task&lt;bool&gt; AllowRequestAsync(
+        string key,
+        int limit,
+        TimeSpan window,
+        CancellationToken ct)
+    {
+        var redisKey = $&quot;ratelimit:{key}&quot;;
+        var now = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+
+        try
+        {
+            var result = await _redis.ScriptEvaluateAsync(
+                LuaScript,
+                new RedisKey[] { redisKey },
+                new RedisValue[]
+                {
+                    now,
+                    (long)window.TotalMilliseconds,
+                    limit
+                }
+            );
+
+            return (int)result == 1;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, &quot;Redis rate limiter error. Allowing request.&quot;);
+            return true; // Fail open
+        }
+    }
+}
+
+// Usage in middleware
+public class DistributedRateLimitMiddleware
+{
+    private readonly RequestDelegate _next;
+    private readonly IDistributedRateLimiter _rateLimiter;
+
+    public async Task InvokeAsync(HttpContext context)
+    {
+        var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                     ?? context.Connection.RemoteIpAddress?.ToString()
+                     ?? &quot;anonymous&quot;;
+
+        var allowed = await _rateLimiter.AllowRequestAsync(
+            key: userId,
+            limit: 100,
+            window: TimeSpan.FromMinutes(1),
+            ct: context.RequestAborted
+        );
+
+        if (!allowed)
+        {
+            context.Response.StatusCode = StatusCodes.Status429TooManyRequests;
+            await context.Response.WriteAsJsonAsync(new
+            {
+                error = &quot;Rate limit exceeded&quot;
+            });
+            return;
+        }
+
+        await _next(context);
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="summary-backpressure-checklist">Summary: Backpressure Checklist</h2>
+<p>✅ <strong>Built-in rate limiting</strong> configured for public endpoints ✅ <strong>Per-user/per-IP limits</strong> to prevent monopolization ✅ <strong>Concurrency limits</strong> on expensive operations (semaphore pattern) ✅ <strong>Bounded queues</strong> for background work ✅ <strong>Distributed rate limiting</strong> (Redis) for multi-instance deployments ✅ <strong>Fail fast</strong> with proper 429/503 responses and Retry-After headers ✅ <strong>Monitoring</strong> of rejection rates, queue depth, semaphore contention</p>
+<p><strong>Key Insight:</strong> Backpressure is not about blocking users — it's about <strong>preserving system health</strong> so you can serve the requests you accept with good latency. A 429 response in 10ms is better than a timeout after 30 seconds.</p>
+<p><strong>Next:</strong> <a href="./03-caching-strategies.md">Caching Strategies</a> - The fastest request is one you don't have to process.</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['midnight', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const fallback = 'light';
+      const initial = supported.includes(saved) ? saved : (window.__studyTheme || fallback);
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          sessionStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+    (() => {
+      const groups = document.querySelectorAll('.sidebar-group');
+      if (!groups.length) return;
+      const storageKey = 'study-open-groups';
+      const saved = sessionStorage.getItem(storageKey);
+      const openFromStorage = new Set(saved ? JSON.parse(saved) : []);
+
+      const activeLink = document.querySelector('.nav-link.active');
+      const activeGroup = activeLink?.closest('.sidebar-group');
+      if (activeGroup?.dataset.group) {
+        openFromStorage.add(activeGroup.dataset.group);
+      }
+
+      const syncStorage = () => {
+        const openIds = Array.from(document.querySelectorAll('.sidebar-group.is-open'))
+          .map((group) => group.dataset.group)
+          .filter(Boolean);
+        sessionStorage.setItem(storageKey, JSON.stringify(openIds));
+      };
+
+      const setExpanded = (group, expanded) => {
+        const header = group.querySelector('.sidebar-group__header');
+        const list = group.querySelector('.sidebar-group__items');
+        group.classList.toggle('is-open', expanded);
+        header?.setAttribute('aria-expanded', expanded);
+        if (list) {
+          list.hidden = !expanded;
+        }
+      };
+
+      groups.forEach((group) => {
+        const shouldOpen = openFromStorage.has(group.dataset.group);
+        setExpanded(group, shouldOpen);
+        const header = group.querySelector('.sidebar-group__header');
+        header?.addEventListener('click', () => {
+          const next = !group.classList.contains('is-open');
+          setExpanded(group, next);
+          syncStorage();
+        });
+      });
+    })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swPath = '..\..\../service-worker.js';
+        navigator.serviceWorker.register(swPath).catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for 07 Observability" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>07 Observability | C# Interview Prep Cheat Sheet</title>
+  <link rel="manifest" href="..\..\..\assets/manifest.webmanifest" />
+  <script>
+    (() => {
+      const supported = ['midnight', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const fallback = 'light';
+      const initial = supported.includes(saved) ? saved : fallback;
+      document.documentElement.dataset.theme = initial;
+      window.__studyTheme = initial;
+    })();
+  </script>
+  <link rel="stylesheet" href="..\..\..\assets/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="midnight">Current</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group" data-group="notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="..\..\../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="..\..\../notes/logging.html">Logging</a></li><li><a class="nav-link" href="..\..\../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a class="nav-link" href="..\..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a class="nav-link" href="..\..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group is-open" data-group="notes-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
+        <span>Notes / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/01-async-patterns.html">01 Async Patterns</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/02-backpressure-rate-limiting.html">02 Backpressure Rate Limiting</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/03-caching-strategies.html">03 Caching Strategies</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/04-database-scaling.html">04 Database Scaling</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/05-message-queues.html">05 Message Queues</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/06-resilience-patterns.html">06 Resilience Patterns</a></li><li><a class="nav-link active" href="..\..\../notes/Use-Cases/massive-traffic/07-observability.html">07 Observability</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/08-complete-example.html">08 Complete Example</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../practice/answers.html">Answers</a></li><li><a class="nav-link" href="..\..\../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="..\..\../practice/questions.html">Questions</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-real-exam-questions-answers">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Real Exam Questions Answers</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../practice/real exam questions answers/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="..\..\../practice/real exam questions answers/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li></ul>
+    </div></div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">notes\Use-Cases\massive-traffic\07-observability.md</div>
+        <h2>07 Observability</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#observability-monitoring-seeing-whats-happening-at-scale">Observability & Monitoring: Seeing What's Happening at Scale</a></li><li class="level-2"><a href="#why-observability-is-critical">Why Observability is Critical</a></li><li class="level-2"><a href="#1-structured-logging-with-serilog">1. Structured Logging with Serilog</a></li><li class="level-3"><a href="#setup-serilog">Setup Serilog</a></li><li class="level-3"><a href="#structured-logging-in-code">Structured Logging in Code</a></li><li class="level-3"><a href="#correlation-ids-for-request-tracking">Correlation IDs for Request Tracking</a></li><li class="level-2"><a href="#2-metrics-with-prometheus-grafana">2. Metrics with Prometheus & Grafana</a></li><li class="level-3"><a href="#setup-prometheus-metrics">Setup Prometheus Metrics</a></li><li class="level-3"><a href="#custom-metrics">Custom Metrics</a></li><li class="level-3"><a href="#key-metrics-to-track">Key Metrics to Track</a></li><li class="level-3"><a href="#background-service-for-system-metrics">Background Service for System Metrics</a></li><li class="level-2"><a href="#3-distributed-tracing-with-opentelemetry">3. Distributed Tracing with OpenTelemetry</a></li><li class="level-3"><a href="#setup-opentelemetry">Setup OpenTelemetry</a></li><li class="level-3"><a href="#manual-instrumentation">Manual Instrumentation</a></li><li class="level-2"><a href="#4-application-performance-monitoring-apm">4. Application Performance Monitoring (APM)</a></li><li class="level-3"><a href="#setup-application-insights-azure">Setup Application Insights (Azure)</a></li><li class="level-2"><a href="#5-alerting-know-when-things-break">5. Alerting: Know When Things Break</a></li><li class="level-3"><a href="#prometheus-alerting-rules">Prometheus Alerting Rules</a></li><li class="level-2"><a href="#6-dashboards-visualize-system-health">6. Dashboards: Visualize System Health</a></li><li class="level-3"><a href="#grafana-dashboard-key-panels">Grafana Dashboard (Key Panels)</a></li><li class="level-2"><a href="#summary-observability-checklist">Summary: Observability Checklist</a></li></ul></div>
+        <h1 id="observability-monitoring-seeing-whats-happening-at-scale">Observability & Monitoring: Seeing What's Happening at Scale</h1>
+<h2 id="why-observability-is-critical">Why Observability is Critical</h2>
+<p><strong>The Problem:</strong></p>
+<ul><li>At scale, you can't SSH into servers to debug</li><li>Logs alone don't tell you what's slow or broken</li><li>You need to see: traffic patterns, latency, errors, saturation</li></ul>
+<p><strong>Three Pillars of Observability:</strong></p>
+<ol><li><strong>Metrics</strong> - What is happening? (RPS, latency, error rate)</li><li><strong>Logs</strong> - What happened? (structured events with context)</li><li><strong>Traces</strong> - Where is time spent? (distributed request tracking)</li></ol>
+<p>---</p>
+<h2 id="1-structured-logging-with-serilog">1. Structured Logging with Serilog</h2>
+<p>Stop using <code>Console.WriteLine</code>. Use structured logs with correlation IDs.</p>
+<h3 id="setup-serilog">Setup Serilog</h3>
+<pre class="hljs"><code>// Install: Serilog.AspNetCore, Serilog.Sinks.Console, Serilog.Sinks.File, Serilog.Sinks.Seq
+
+// Program.cs
+using Serilog;
+using Serilog.Events;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Configure Serilog
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .MinimumLevel.Override(&quot;Microsoft&quot;, LogEventLevel.Warning)
+    .MinimumLevel.Override(&quot;Microsoft.AspNetCore&quot;, LogEventLevel.Warning)
+    .Enrich.FromLogContext()
+    .Enrich.WithMachineName()
+    .Enrich.WithThreadId()
+    .Enrich.WithProperty(&quot;Application&quot;, &quot;OrderService&quot;)
+    .WriteTo.Console(outputTemplate:
+        &quot;[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj} {Properties:j}{NewLine}{Exception}&quot;)
+    .WriteTo.File(
+        path: &quot;logs/app-.log&quot;,
+        rollingInterval: RollingInterval.Day,
+        retainedFileCountLimit: 7,
+        outputTemplate: &quot;{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj} {Properties:j}{NewLine}{Exception}&quot;
+    )
+    .WriteTo.Seq(&quot;http://localhost:5341&quot;) // Centralized log aggregation
+    .CreateLogger();
+
+builder.Host.UseSerilog();
+
+var app = builder.Build();
+
+// Add request logging middleware
+app.UseSerilogRequestLogging(options =&gt;
+{
+    options.MessageTemplate = &quot;HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000}ms&quot;;
+    options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =&gt;
+    {
+        diagnosticContext.Set(&quot;RequestHost&quot;, httpContext.Request.Host.Value);
+        diagnosticContext.Set(&quot;UserAgent&quot;, httpContext.Request.Headers[&quot;User-Agent&quot;].ToString());
+        diagnosticContext.Set(&quot;UserId&quot;, httpContext.User.FindFirst(&quot;sub&quot;)?.Value);
+    };
+});
+
+app.MapControllers();
+app.Run();</code></pre>
+<h3 id="structured-logging-in-code">Structured Logging in Code</h3>
+<pre class="hljs"><code>public class OrderService
+{
+    private readonly ILogger&lt;OrderService&gt; _logger;
+
+    public async Task&lt;Order&gt; CreateOrderAsync(CreateOrderRequest request, CancellationToken ct)
+    {
+        // ❌ Bad: String interpolation (not structured)
+        _logger.LogInformation($&quot;Creating order for user {request.UserId} with total {request.Total}&quot;);
+
+        // ✅ Good: Structured logging with named properties
+        _logger.LogInformation(
+            &quot;Creating order for user {UserId} with total {Total} and {ItemCount} items&quot;,
+            request.UserId,
+            request.Total,
+            request.Items.Count
+        );
+
+        try
+        {
+            var order = await ProcessOrderAsync(request, ct);
+
+            _logger.LogInformation(
+                &quot;Order {OrderId} created successfully for user {UserId}&quot;,
+                order.Id,
+                request.UserId
+            );
+
+            return order;
+        }
+        catch (OutOfStockException ex)
+        {
+            _logger.LogWarning(
+                ex,
+                &quot;Order creation failed due to out of stock. User {UserId}, Product {ProductId}&quot;,
+                request.UserId,
+                ex.ProductId
+            );
+            throw;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(
+                ex,
+                &quot;Order creation failed for user {UserId}&quot;,
+                request.UserId
+            );
+            throw;
+        }
+    }
+}</code></pre>
+<h3 id="correlation-ids-for-request-tracking">Correlation IDs for Request Tracking</h3>
+<pre class="hljs"><code>// Middleware to add correlation ID
+public class CorrelationIdMiddleware
+{
+    private readonly RequestDelegate _next;
+    private const string CorrelationIdHeader = &quot;X-Correlation-ID&quot;;
+
+    public async Task InvokeAsync(HttpContext context)
+    {
+        var correlationId = context.Request.Headers[CorrelationIdHeader].FirstOrDefault()
+                            ?? Guid.NewGuid().ToString();
+
+        context.Items[&quot;CorrelationId&quot;] = correlationId;
+        context.Response.Headers[CorrelationIdHeader] = correlationId;
+
+        // Add to log context
+        using (Serilog.Context.LogContext.PushProperty(&quot;CorrelationId&quot;, correlationId))
+        {
+            await _next(context);
+        }
+    }
+}
+
+// Register
+app.UseMiddleware&lt;CorrelationIdMiddleware&gt;();
+
+// Now all logs automatically include CorrelationId
+// [15:23:45 INF] Creating order {UserId: 123, CorrelationId: &quot;abc-123-def&quot;}</code></pre>
+<p>---</p>
+<h2 id="2-metrics-with-prometheus-grafana">2. Metrics with Prometheus & Grafana</h2>
+<p>Track system health in real-time: requests per second, latency, error rate.</p>
+<h3 id="setup-prometheus-metrics">Setup Prometheus Metrics</h3>
+<pre class="hljs"><code>// Install: prometheus-net.AspNetCore
+
+// Program.cs
+using Prometheus;
+
+builder.Services.AddControllers();
+
+var app = builder.Build();
+
+// Enable metrics endpoint
+app.UseHttpMetrics(); // Track HTTP metrics automatically
+
+// Expose /metrics endpoint
+app.MapMetrics();
+
+app.MapControllers();
+app.Run();</code></pre>
+<h3 id="custom-metrics">Custom Metrics</h3>
+<pre class="hljs"><code>using Prometheus;
+
+public class OrderMetrics
+{
+    // Counter: monotonically increasing (total orders)
+    public static readonly Counter OrdersCreated = Metrics.CreateCounter(
+        &quot;orders_created_total&quot;,
+        &quot;Total number of orders created&quot;,
+        new CounterConfiguration
+        {
+            LabelNames = new[] { &quot;status&quot;, &quot;payment_method&quot; }
+        }
+    );
+
+    // Gauge: value that can go up and down (queue depth)
+    public static readonly Gauge QueueDepth = Metrics.CreateGauge(
+        &quot;order_queue_depth&quot;,
+        &quot;Current depth of order processing queue&quot;
+    );
+
+    // Histogram: distribution of values (latency)
+    public static readonly Histogram OrderProcessingDuration = Metrics.CreateHistogram(
+        &quot;order_processing_duration_seconds&quot;,
+        &quot;Duration of order processing in seconds&quot;,
+        new HistogramConfiguration
+        {
+            LabelNames = new[] { &quot;order_type&quot; },
+            Buckets = Histogram.ExponentialBuckets(0.01, 2, 10) // 10ms to 5s
+        }
+    );
+
+    // Summary: like histogram but calculates percentiles
+    public static readonly Summary PaymentProcessingDuration = Metrics.CreateSummary(
+        &quot;payment_processing_duration_seconds&quot;,
+        &quot;Duration of payment processing&quot;,
+        new SummaryConfiguration
+        {
+            Objectives = new[]
+            {
+                new QuantileEpsilonPair(0.5, 0.05),  // p50
+                new QuantileEpsilonPair(0.95, 0.01), // p95
+                new QuantileEpsilonPair(0.99, 0.01)  // p99
+            }
+        }
+    );
+}
+
+public class OrderService
+{
+    public async Task&lt;Order&gt; CreateOrderAsync(CreateOrderRequest request, CancellationToken ct)
+    {
+        // Track latency
+        using (OrderMetrics.OrderProcessingDuration.Labels(&quot;standard&quot;).NewTimer())
+        {
+            var order = await ProcessOrderAsync(request, ct);
+
+            // Increment counter
+            OrderMetrics.OrdersCreated.Labels(
+                status: order.Status,
+                payment_method: request.PaymentMethod
+            ).Inc();
+
+            return order;
+        }
+    }
+
+    public void UpdateQueueDepth(int depth)
+    {
+        OrderMetrics.QueueDepth.Set(depth);
+    }
+}</code></pre>
+<h3 id="key-metrics-to-track">Key Metrics to Track</h3>
+<pre class="hljs"><code>public static class ApplicationMetrics
+{
+    // RED method: Rate, Errors, Duration
+    public static readonly Counter RequestsTotal = Metrics.CreateCounter(
+        &quot;http_requests_total&quot;,
+        &quot;Total HTTP requests&quot;,
+        new CounterConfiguration { LabelNames = new[] { &quot;method&quot;, &quot;endpoint&quot;, &quot;status&quot; } }
+    );
+
+    public static readonly Histogram RequestDuration = Metrics.CreateHistogram(
+        &quot;http_request_duration_seconds&quot;,
+        &quot;HTTP request duration&quot;,
+        new HistogramConfiguration
+        {
+            LabelNames = new[] { &quot;method&quot;, &quot;endpoint&quot; },
+            Buckets = Histogram.ExponentialBuckets(0.001, 2, 15) // 1ms to 16s
+        }
+    );
+
+    public static readonly Counter ErrorsTotal = Metrics.CreateCounter(
+        &quot;errors_total&quot;,
+        &quot;Total errors&quot;,
+        new CounterConfiguration { LabelNames = new[] { &quot;type&quot;, &quot;endpoint&quot; } }
+    );
+
+    // USE method: Utilization, Saturation, Errors
+    public static readonly Gauge ThreadPoolAvailableThreads = Metrics.CreateGauge(
+        &quot;threadpool_available_threads&quot;,
+        &quot;Available thread pool threads&quot;
+    );
+
+    public static readonly Gauge MemoryUsageBytes = Metrics.CreateGauge(
+        &quot;memory_usage_bytes&quot;,
+        &quot;Memory usage in bytes&quot;
+    );
+
+    public static readonly Gauge CpuUsagePercent = Metrics.CreateGauge(
+        &quot;cpu_usage_percent&quot;,
+        &quot;CPU usage percentage&quot;
+    );
+
+    // Database
+    public static readonly Gauge DatabaseConnectionPoolActive = Metrics.CreateGauge(
+        &quot;database_connection_pool_active&quot;,
+        &quot;Active database connections&quot;
+    );
+
+    public static readonly Counter DatabaseQueriesTotal = Metrics.CreateCounter(
+        &quot;database_queries_total&quot;,
+        &quot;Total database queries&quot;,
+        new CounterConfiguration { LabelNames = new[] { &quot;query_type&quot;, &quot;table&quot; } }
+    );
+
+    public static readonly Histogram DatabaseQueryDuration = Metrics.CreateHistogram(
+        &quot;database_query_duration_seconds&quot;,
+        &quot;Database query duration&quot;
+    );
+
+    // Cache
+    public static readonly Counter CacheHitsTotal = Metrics.CreateCounter(
+        &quot;cache_hits_total&quot;,
+        &quot;Total cache hits&quot;,
+        new CounterConfiguration { LabelNames = new[] { &quot;cache_type&quot; } }
+    );
+
+    public static readonly Counter CacheMissesTotal = Metrics.CreateCounter(
+        &quot;cache_misses_total&quot;,
+        &quot;Total cache misses&quot;,
+        new CounterConfiguration { LabelNames = new[] { &quot;cache_type&quot; } }
+    );
+}</code></pre>
+<h3 id="background-service-for-system-metrics">Background Service for System Metrics</h3>
+<pre class="hljs"><code>public class SystemMetricsCollector : BackgroundService
+{
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        while (!stoppingToken.IsCancellationRequested)
+        {
+            try
+            {
+                // Thread pool metrics
+                ThreadPool.GetAvailableThreads(out var availableWorker, out var availableIO);
+                ApplicationMetrics.ThreadPoolAvailableThreads.Set(availableWorker);
+
+                // Memory metrics
+                var memoryUsed = GC.GetTotalMemory(forceFullCollection: false);
+                ApplicationMetrics.MemoryUsageBytes.Set(memoryUsed);
+
+                // CPU metrics (requires System.Diagnostics.PerformanceCounter or Process)
+                var process = Process.GetCurrentProcess();
+                var cpuUsage = process.TotalProcessorTime.TotalMilliseconds /
+                               (Environment.ProcessorCount * process.TotalProcessorTime.TotalMilliseconds) * 100;
+                ApplicationMetrics.CpuUsagePercent.Set(cpuUsage);
+
+                await Task.Delay(TimeSpan.FromSeconds(15), stoppingToken);
+            }
+            catch (Exception ex)
+            {
+                // Log but don&#39;t crash
+                Console.WriteLine($&quot;Error collecting system metrics: {ex.Message}&quot;);
+            }
+        }
+    }
+}
+
+// Register
+builder.Services.AddHostedService&lt;SystemMetricsCollector&gt;();</code></pre>
+<p>---</p>
+<h2 id="3-distributed-tracing-with-opentelemetry">3. Distributed Tracing with OpenTelemetry</h2>
+<p>Track requests across multiple services (microservices, databases, queues).</p>
+<h3 id="setup-opentelemetry">Setup OpenTelemetry</h3>
+<pre class="hljs"><code>// Install: OpenTelemetry.Exporter.Console, OpenTelemetry.Exporter.Jaeger,
+//          OpenTelemetry.Instrumentation.AspNetCore, OpenTelemetry.Instrumentation.Http,
+//          OpenTelemetry.Instrumentation.SqlClient
+
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
+
+builder.Services.AddOpenTelemetry()
+    .ConfigureResource(resource =&gt; resource.AddService(&quot;OrderService&quot;))
+    .WithTracing(tracing =&gt; tracing
+        .AddAspNetCoreInstrumentation(options =&gt;
+        {
+            options.RecordException = true;
+            options.EnrichWithHttpRequest = (activity, request) =&gt;
+            {
+                activity.SetTag(&quot;user_id&quot;, request.HttpContext.User.FindFirst(&quot;sub&quot;)?.Value);
+            };
+        })
+        .AddHttpClientInstrumentation(options =&gt;
+        {
+            options.RecordException = true;
+        })
+        .AddSqlClientInstrumentation(options =&gt;
+        {
+            options.SetDbStatementForText = true;
+            options.RecordException = true;
+        })
+        .AddSource(&quot;OrderService&quot;)
+        .AddConsoleExporter()
+        .AddJaegerExporter(options =&gt;
+        {
+            options.AgentHost = &quot;localhost&quot;;
+            options.AgentPort = 6831;
+        })
+    );</code></pre>
+<h3 id="manual-instrumentation">Manual Instrumentation</h3>
+<pre class="hljs"><code>using System.Diagnostics;
+
+public class OrderService
+{
+    private static readonly ActivitySource ActivitySource = new(&quot;OrderService&quot;);
+    private readonly ILogger&lt;OrderService&gt; _logger;
+
+    public async Task&lt;Order&gt; CreateOrderAsync(CreateOrderRequest request, CancellationToken ct)
+    {
+        // Create custom span
+        using var activity = ActivitySource.StartActivity(&quot;CreateOrder&quot;, ActivityKind.Server);
+        activity?.SetTag(&quot;order.user_id&quot;, request.UserId);
+        activity?.SetTag(&quot;order.total&quot;, request.Total);
+        activity?.SetTag(&quot;order.item_count&quot;, request.Items.Count);
+
+        try
+        {
+            // Child span for validation
+            using (var validationActivity = ActivitySource.StartActivity(&quot;ValidateOrder&quot;))
+            {
+                await ValidateOrderAsync(request, ct);
+            }
+
+            // Child span for payment
+            using (var paymentActivity = ActivitySource.StartActivity(&quot;ProcessPayment&quot;))
+            {
+                await ProcessPaymentAsync(request, ct);
+                paymentActivity?.SetTag(&quot;payment.method&quot;, request.PaymentMethod);
+            }
+
+            // Child span for database
+            using (var dbActivity = ActivitySource.StartActivity(&quot;SaveOrder&quot;))
+            {
+                var order = await SaveOrderToDbAsync(request, ct);
+                dbActivity?.SetTag(&quot;order.id&quot;, order.Id);
+
+                activity?.SetTag(&quot;order.id&quot;, order.Id);
+                activity?.SetStatus(ActivityStatusCode.Ok);
+
+                return order;
+            }
+        }
+        catch (Exception ex)
+        {
+            activity?.SetStatus(ActivityStatusCode.Error, ex.Message);
+            activity?.RecordException(ex);
+            throw;
+        }
+    }
+}</code></pre>
+<p><strong>What you get:</strong></p>
+<ul><li>Request flows across services visualized</li><li>Slow operations identified (e.g., "payment service took 2s")</li><li>Error propagation tracked</li></ul>
+<p>---</p>
+<h2 id="4-application-performance-monitoring-apm">4. Application Performance Monitoring (APM)</h2>
+<p>For production, use a full APM solution.</p>
+<h3 id="setup-application-insights-azure">Setup Application Insights (Azure)</h3>
+<pre class="hljs"><code>// Install: Microsoft.ApplicationInsights.AspNetCore
+
+builder.Services.AddApplicationInsightsTelemetry(options =&gt;
+{
+    options.ConnectionString = builder.Configuration[&quot;ApplicationInsights:ConnectionString&quot;];
+    options.EnableAdaptiveSampling = true; // Sample at high traffic
+});
+
+// Track custom events
+public class OrderService
+{
+    private readonly TelemetryClient _telemetry;
+
+    public async Task&lt;Order&gt; CreateOrderAsync(CreateOrderRequest request, CancellationToken ct)
+    {
+        var stopwatch = Stopwatch.StartNew();
+
+        try
+        {
+            var order = await ProcessOrderAsync(request, ct);
+
+            // Track custom metric
+            _telemetry.TrackMetric(&quot;OrderValue&quot;, request.Total);
+
+            // Track custom event
+            _telemetry.TrackEvent(&quot;OrderCreated&quot;, new Dictionary&lt;string, string&gt;
+            {
+                { &quot;OrderId&quot;, order.Id.ToString() },
+                { &quot;UserId&quot;, request.UserId.ToString() },
+                { &quot;PaymentMethod&quot;, request.PaymentMethod }
+            });
+
+            stopwatch.Stop();
+            _telemetry.TrackMetric(&quot;OrderProcessingTime&quot;, stopwatch.ElapsedMilliseconds);
+
+            return order;
+        }
+        catch (Exception ex)
+        {
+            _telemetry.TrackException(ex, new Dictionary&lt;string, string&gt;
+            {
+                { &quot;UserId&quot;, request.UserId.ToString() },
+                { &quot;Total&quot;, request.Total.ToString() }
+            });
+            throw;
+        }
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="5-alerting-know-when-things-break">5. Alerting: Know When Things Break</h2>
+<h3 id="prometheus-alerting-rules">Prometheus Alerting Rules</h3>
+<pre class="hljs"><code># prometheus-alerts.yml
+groups:
+  - name: api_alerts
+    interval: 30s
+    rules:
+      # High error rate
+      - alert: HighErrorRate
+        expr: rate(http_requests_total{status=~&quot;5..&quot;}[5m]) &gt; 0.05
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: &quot;High error rate detected&quot;
+          description: &quot;Error rate is {{ $value }} errors/sec&quot;
+
+      # High latency
+      - alert: HighLatency
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) &gt; 2
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: &quot;High latency detected&quot;
+          description: &quot;p95 latency is {{ $value }}s&quot;
+
+      # Database connection pool exhaustion
+      - alert: DatabaseConnectionPoolExhausted
+        expr: database_connection_pool_active / database_connection_pool_max &gt; 0.9
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: &quot;Database connection pool nearly exhausted&quot;
+
+      # Queue depth growing
+      - alert: QueueDepthGrowing
+        expr: delta(order_queue_depth[5m]) &gt; 1000
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: &quot;Order queue depth growing rapidly&quot;</code></pre>
+<p>---</p>
+<h2 id="6-dashboards-visualize-system-health">6. Dashboards: Visualize System Health</h2>
+<h3 id="grafana-dashboard-key-panels">Grafana Dashboard (Key Panels)</h3>
+<pre class="hljs"><code>{
+  &quot;dashboard&quot;: {
+    &quot;title&quot;: &quot;Order Service Dashboard&quot;,
+    &quot;panels&quot;: [
+      {
+        &quot;title&quot;: &quot;Requests per Second&quot;,
+        &quot;targets&quot;: [
+          {
+            &quot;expr&quot;: &quot;rate(http_requests_total[1m])&quot;
+          }
+        ]
+      },
+      {
+        &quot;title&quot;: &quot;Latency (p50, p95, p99)&quot;,
+        &quot;targets&quot;: [
+          {
+            &quot;expr&quot;: &quot;histogram_quantile(0.50, rate(http_request_duration_seconds_bucket[5m]))&quot;,
+            &quot;legendFormat&quot;: &quot;p50&quot;
+          },
+          {
+            &quot;expr&quot;: &quot;histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))&quot;,
+            &quot;legendFormat&quot;: &quot;p95&quot;
+          },
+          {
+            &quot;expr&quot;: &quot;histogram_quantile(0.99, rate(http_request_duration_seconds_bucket[5m]))&quot;,
+            &quot;legendFormat&quot;: &quot;p99&quot;
+          }
+        ]
+      },
+      {
+        &quot;title&quot;: &quot;Error Rate&quot;,
+        &quot;targets&quot;: [
+          {
+            &quot;expr&quot;: &quot;rate(http_requests_total{status=~\&quot;5..\&quot;}[5m])&quot;
+          }
+        ]
+      },
+      {
+        &quot;title&quot;: &quot;Cache Hit Rate&quot;,
+        &quot;targets&quot;: [
+          {
+            &quot;expr&quot;: &quot;rate(cache_hits_total[5m]) / (rate(cache_hits_total[5m]) + rate(cache_misses_total[5m]))&quot;
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+<p>---</p>
+<h2 id="summary-observability-checklist">Summary: Observability Checklist</h2>
+<p>✅ <strong>Structured logging</strong>: Serilog with correlation IDs ✅ <strong>Metrics</strong>: Prometheus with RED (Rate, Errors, Duration) and USE (Utilization, Saturation, Errors) ✅ <strong>Distributed tracing</strong>: OpenTelemetry across services ✅ <strong>APM tool</strong>: Application Insights, Datadog, or New Relic ✅ <strong>Alerting</strong>: Critical alerts for error rate, latency, saturation ✅ <strong>Dashboards</strong>: Real-time visualization of system health ✅ <strong>Log aggregation</strong>: Centralized logs (Seq, Elasticsearch, Splunk)</p>
+<p><strong>Key Metrics to Always Track:</strong></p>
+<ol><li><strong>Request rate</strong> (requests per second)</li><li><strong>Error rate</strong> (errors per second, percentage)</li><li><strong>Latency</strong> (p50, p95, p99)</li><li><strong>Saturation</strong> (CPU, memory, thread pool, DB connections, queue depth)</li></ol>
+<p><strong>The Golden Signals (Google SRE):</strong></p>
+<ul><li><strong>Latency</strong>: How long requests take</li><li><strong>Traffic</strong>: How many requests</li><li><strong>Errors</strong>: Rate of failed requests</li><li><strong>Saturation</strong>: How "full" your system is</li></ul>
+<p><strong>Next:</strong> <a href="./08-complete-example.md">Complete Example Application</a> - Putting it all together in a real-world example.</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['midnight', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const fallback = 'light';
+      const initial = supported.includes(saved) ? saved : (window.__studyTheme || fallback);
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          sessionStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+    (() => {
+      const groups = document.querySelectorAll('.sidebar-group');
+      if (!groups.length) return;
+      const storageKey = 'study-open-groups';
+      const saved = sessionStorage.getItem(storageKey);
+      const openFromStorage = new Set(saved ? JSON.parse(saved) : []);
+
+      const activeLink = document.querySelector('.nav-link.active');
+      const activeGroup = activeLink?.closest('.sidebar-group');
+      if (activeGroup?.dataset.group) {
+        openFromStorage.add(activeGroup.dataset.group);
+      }
+
+      const syncStorage = () => {
+        const openIds = Array.from(document.querySelectorAll('.sidebar-group.is-open'))
+          .map((group) => group.dataset.group)
+          .filter(Boolean);
+        sessionStorage.setItem(storageKey, JSON.stringify(openIds));
+      };
+
+      const setExpanded = (group, expanded) => {
+        const header = group.querySelector('.sidebar-group__header');
+        const list = group.querySelector('.sidebar-group__items');
+        group.classList.toggle('is-open', expanded);
+        header?.setAttribute('aria-expanded', expanded);
+        if (list) {
+          list.hidden = !expanded;
+        }
+      };
+
+      groups.forEach((group) => {
+        const shouldOpen = openFromStorage.has(group.dataset.group);
+        setExpanded(group, shouldOpen);
+        const header = group.querySelector('.sidebar-group__header');
+        header?.addEventListener('click', () => {
+          const next = !group.classList.contains('is-open');
+          setExpanded(group, next);
+          syncStorage();
+        });
+      });
+    })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swPath = '..\..\../service-worker.js';
+        navigator.serviceWorker.register(swPath).catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>
