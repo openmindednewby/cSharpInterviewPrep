@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Senior .NET study guide for Mediator Pattern" />
+  <meta name="description" content="Senior .NET study guide for How To Handle Massive Amount Of Requests" />
   <meta name="theme-color" content="#0f172a" />
-  <title>Mediator Pattern | C# Interview Prep Cheat Sheet</title>
+  <title>How To Handle Massive Amount Of Requests | C# Interview Prep Cheat Sheet</title>
   <link rel="manifest" href="..\..\assets/manifest.webmanifest" />
   <script>
     (() => {
@@ -64,12 +64,12 @@
         <span class="chevron" aria-hidden="true"></span>
       </button>
       <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
-    </div><div class="sidebar-group is-open" data-group="notes-design-patterns">
-      <button class="sidebar-group__header" type="button" aria-expanded="true">
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
         <span>Notes / Design Patterns</span>
         <span class="chevron" aria-hidden="true"></span>
       </button>
-      <ul class="sidebar-group__items"><li><a class="nav-link" href="..\../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link active" href="..\../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
     </div><div class="sidebar-group" data-group="notes-dry">
       <button class="sidebar-group__header" type="button" aria-expanded="false">
         <span>Notes / DRY</span>
@@ -100,12 +100,12 @@
         <span class="chevron" aria-hidden="true"></span>
       </button>
       <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a class="nav-link" href="..\../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a class="nav-link" href="..\../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a class="nav-link" href="..\../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a class="nav-link" href="..\../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a class="nav-link" href="..\../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a class="nav-link" href="..\../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a class="nav-link" href="..\../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a class="nav-link" href="..\../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a class="nav-link" href="..\../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a class="nav-link" href="..\../notes/sub-notes/types.html">Types</a></li></ul>
-    </div><div class="sidebar-group" data-group="notes-use-cases">
-      <button class="sidebar-group__header" type="button" aria-expanded="false">
+    </div><div class="sidebar-group is-open" data-group="notes-use-cases">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
         <span>Notes / Use Cases</span>
         <span class="chevron" aria-hidden="true"></span>
       </button>
-      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Use-Cases/how-to-handle-massive-amount-of-requests.html">How To Handle Massive Amount Of Requests</a></li></ul>
+      <ul class="sidebar-group__items"><li><a class="nav-link active" href="..\../notes/Use-Cases/how-to-handle-massive-amount-of-requests.html">How To Handle Massive Amount Of Requests</a></li></ul>
     </div><div class="sidebar-group" data-group="practice">
       <button class="sidebar-group__header" type="button" aria-expanded="false">
         <span>Practice</span>
@@ -123,103 +123,113 @@
     </nav>
     <main class="content">
       <article class="card">
-        <div class="breadcrumbs">notes\Design-Patterns\Mediator Pattern.md</div>
-        <h2>Mediator Pattern</h2>
+        <div class="breadcrumbs">notes\Use-Cases\how-to-handle-massive-amount-of-requests.md</div>
+        <h2>How To Handle Massive Amount Of Requests</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#2-mediator-pattern-decouple-components-by-introducing-a-controller">⚙️ 2️⃣ Mediator Pattern — *Decouple components by introducing a controller*</a></li><li class="level-3"><a href="#example-mediator-coordinating-order-validation-risk-and-execution">🧩 Example — Mediator coordinating order validation, risk and execution</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
-        <h1 id="2-mediator-pattern-decouple-components-by-introducing-a-controller">⚙️ 2️⃣ Mediator Pattern — <em>Decouple components by introducing a controller</em></h1>
-<p>!<a href="image.png">alt text</a></p>
-<blockquote><p>Define an object that encapsulates how a set of objects interact. The mediator promotes loose coupling by keeping objects from referring to each other explicitly.</p></blockquote>
+        <div class="toc"><ul class="toc-list"><li class="level-2"><a href="#the-mental-model">The mental model</a></li><li class="level-2"><a href="#what-youd-implement-in-c-practical-checklist">What you’d implement in C# (practical checklist)</a></li><li class="level-3"><a href="#1-make-your-api-async-and-non-blocking">1) Make your API async and non-blocking</a></li><li class="level-3"><a href="#2-protect-the-system-with-limits-backpressure">2) Protect the system with limits (backpressure)</a></li><li class="level-3"><a href="#3-cache-aggressively-but-correctly">3) Cache aggressively (but correctly)</a></li><li class="level-3"><a href="#4-make-db-the-last-resort-and-design-it-for-scale">4) Make DB the last resort and design it for scale</a></li><li class="level-3"><a href="#5-decouple-heavy-work-queues-eventual-consistency">5) Decouple heavy work (queues, eventual consistency)</a></li><li class="level-3"><a href="#6-resilience-patterns-you-must-say-these-out-loud">6) Resilience patterns (you must say these out loud)</a></li><li class="level-3"><a href="#7-observability-to-keep-it-alive-in-production">7) Observability to keep it alive in production</a></li><li class="level-2"><a href="#a-concrete-interview-ready-coding-example-c-rate-limit-bounded-concurrency-cache-aside">A concrete “interview-ready” coding example (C#): rate limit + bounded concurrency + cache-aside</a></li><li class="level-3"><a href="#a-cache-aside-with-stampede-protection-per-key-lock">A) Cache-aside with stampede protection (per-key lock)</a></li><li class="level-3"><a href="#b-concurrency-limit-around-an-expensive-call-backpressure">B) Concurrency limit around an expensive call (backpressure)</a></li><li class="level-2"><a href="#what-interviewers-love-to-hear-say-this">What interviewers love to hear (say this)</a></li></ul></div>
+        <p>If they’re hinting “massive traffic, millions of users” in a C# interview, they’re really testing whether you think in <strong>throughput, latency, backpressure, and failure modes</strong> — not just “I’ll add more servers”.</p>
+<p>Here’s how you answer (and how you’d actually build it).</p>
+<h2 id="the-mental-model">The mental model</h2>
+<p>You handle massive request volume by combining:</p>
+<ul><li><strong>Stateless APIs + horizontal scaling</strong></li><li><strong>Fast paths</strong> (cache) and <strong>slow paths</strong> (DB / downstream)</li><li><strong>Async I/O</strong> end-to-end (don’t block threads)</li><li><strong>Backpressure</strong> (bounded queues, rate limits)</li><li><strong>Resilience</strong> (timeouts, retries <em>carefully</em>, circuit breakers)</li><li><strong>Data design</strong> (indexes, read/write separation, partitioning)</li><li><strong>Observability</strong> (metrics + tracing, not just logs)</li></ul>
+<h2 id="what-youd-implement-in-c-practical-checklist">What you’d implement in C# (practical checklist)</h2>
+<h3 id="1-make-your-api-async-and-non-blocking">1) Make your API async and non-blocking</h3>
+<ul><li>Use <code>async/await</code> for anything I/O (DB, HTTP, Redis, MQ).</li><li>Avoid <code>.Result</code> / <code>.Wait()</code> (threadpool starvation under load).</li><li>Use <code>HttpClientFactory</code> (prevents socket exhaustion).</li></ul>
+<h3 id="2-protect-the-system-with-limits-backpressure">2) Protect the system with limits (backpressure)</h3>
+<p>When traffic spikes, the worst thing is letting everything pile up until the system dies.</p>
+<p>Implement:</p>
+<ul><li><strong>Rate limiting</strong> (per user/IP/token)</li><li><strong>Concurrency limits</strong> for expensive endpoints</li><li><strong>Bounded queues</strong> for background work (reject/429 when full)</li></ul>
+<p>In ASP.NET Core you can use built-in rate limiting (good interview point).</p>
+<h3 id="3-cache-aggressively-but-correctly">3) Cache aggressively (but correctly)</h3>
+<p>For millions of users, your DB cannot be the “hot path”.</p>
+<ul><li><strong>In-memory cache</strong> for per-instance hot items.</li><li><strong>Distributed cache (Redis)</strong> for shared hot items.</li><li>Use <strong>cache-aside</strong>: read cache → if miss, load from DB → set cache.</li><li>Add <strong>TTL</strong> + <strong>jitter</strong> to avoid stampedes.</li></ul>
+<p>Also mention:</p>
+<ul><li><strong>ETags / 304</strong> for GETs</li><li><strong>CDN</strong> for static and cacheable content</li></ul>
+<h3 id="4-make-db-the-last-resort-and-design-it-for-scale">4) Make DB the last resort and design it for scale</h3>
+<ul><li>Proper indexes (composite indexes aligned with query patterns)</li><li>Avoid N+1 queries</li><li>Use pagination (keyset pagination, not <code>Skip/Take</code> on huge tables)</li><li>Consider <strong>read replicas</strong> for heavy read workloads</li><li>Partition/shard by a key if you outgrow a single node</li><li>Keep transactions small and short</li></ul>
+<h3 id="5-decouple-heavy-work-queues-eventual-consistency">5) Decouple heavy work (queues, eventual consistency)</h3>
+<p>If a request triggers something expensive (emails, reports, settlement, heavy compute):</p>
+<ul><li>Return fast (202 Accepted)</li><li>Push message to <strong>RabbitMQ/ZeroMQ/Kafka</strong> (they mentioned RabbitMQ/ZeroMQ)</li><li>Process in background workers</li><li>Use <strong>idempotency keys</strong> so retries don’t double-apply actions</li></ul>
+<h3 id="6-resilience-patterns-you-must-say-these-out-loud">6) Resilience patterns (you must say these out loud)</h3>
+<ul><li><strong>Timeouts everywhere</strong> (DB + HTTP)</li><li><strong>Retries with exponential backoff</strong> only for transient failures</li><li><strong>Circuit breaker</strong> to stop hammering a failing dependency</li><li><strong>Bulkheads</strong> (separate pools/limits per downstream)</li><li><strong>Graceful degradation</strong> (serve stale cache if DB is sick)</li></ul>
+<h3 id="7-observability-to-keep-it-alive-in-production">7) Observability to keep it alive in production</h3>
+<ul><li>Metrics: RPS, p95/p99 latency, error rate, saturation, queue depth</li><li>Tracing: OpenTelemetry</li><li>Logs: structured logs with correlation IDs</li></ul>
 <p>---</p>
-<h3 id="example-mediator-coordinating-order-validation-risk-and-execution">🧩 Example — Mediator coordinating order validation, risk and execution</h3>
-<pre class="hljs"><code>public interface ITradeMediator
+<h2 id="a-concrete-interview-ready-coding-example-c-rate-limit-bounded-concurrency-cache-aside">A concrete “interview-ready” coding example (C#): rate limit + bounded concurrency + cache-aside</h2>
+<h3 id="a-cache-aside-with-stampede-protection-per-key-lock">A) Cache-aside with stampede protection (per-key lock)</h3>
+<pre class="hljs"><code>using Microsoft.Extensions.Caching.Memory;
+using System.Collections.Concurrent;
+
+public class CachedProfileService
 {
-    void Notify(object sender, string ev, Order order);
-}
+    private readonly IMemoryCache _cache;
+    private static readonly ConcurrentDictionary&lt;string, SemaphoreSlim&gt; _locks = new();
 
-public class TradeMediator : ITradeMediator
-{
-    private readonly OrderValidator _validator;
-    private readonly RiskService _risk;
-    private readonly TradeExecutor _executor;
+    public CachedProfileService(IMemoryCache cache) =&gt; _cache = cache;
 
-    public TradeMediator(OrderValidator validator, RiskService risk, TradeExecutor executor)
+    public async Task&lt;UserProfile&gt; GetProfileAsync(
+        string userId,
+        Func&lt;Task&lt;UserProfile&gt;&gt; loadFromDb,
+        CancellationToken ct)
     {
-        _validator = validator;
-        _risk = risk;
-        _executor = executor;
-    }
+        var cacheKey = $&quot;profile:{userId}&quot;;
+        if (_cache.TryGetValue(cacheKey, out UserProfile cached))
+            return cached;
 
-    public void Notify(object sender, string ev, Order order)
-    {
-        if (ev == &quot;PlaceOrder&quot;)
+        var sem = _locks.GetOrAdd(cacheKey, _ =&gt; new SemaphoreSlim(1, 1));
+        await sem.WaitAsync(ct);
+        try
         {
-            if (!_validator.Validate(order))
-            {
-                Console.WriteLine(&quot;Validation failed&quot;);
-                return;
-            }
+            // double-check after acquiring lock
+            if (_cache.TryGetValue(cacheKey, out cached))
+                return cached;
 
-            if (!_risk.Check(order))
-            {
-                Console.WriteLine(&quot;Risk check failed&quot;);
-                return;
-            }
-
-            _executor.Execute(order);
+            var profile = await loadFromDb();
+            _cache.Set(cacheKey, profile, TimeSpan.FromMinutes(5));
+            return profile;
+        }
+        finally
+        {
+            sem.Release();
+            // optional cleanup: don’t let dictionary grow forever
+            if (sem.CurrentCount == 1) _locks.TryRemove(cacheKey, out _);
         }
     }
 }
 
-public class OrderValidator
+public record UserProfile(string Id, string Name);</code></pre>
+<p>What this shows:</p>
+<ul><li>async I/O</li><li>caching</li><li>stampede prevention (critical at scale)</li></ul>
+<h3 id="b-concurrency-limit-around-an-expensive-call-backpressure">B) Concurrency limit around an expensive call (backpressure)</h3>
+<pre class="hljs"><code>public class ExpensiveGateway
 {
-    private readonly ITradeMediator _mediator;
-    public OrderValidator(ITradeMediator mediator) =&gt; _mediator = mediator;
-    public bool Validate(Order order) =&gt; order != null &amp;&amp; order.Amount &gt; 0;
+    private readonly SemaphoreSlim _limit = new(initialCount: 200); // tune based on load tests
+
+    public async Task&lt;string&gt; CallAsync(Func&lt;CancellationToken, Task&lt;string&gt;&gt; operation, CancellationToken ct)
+    {
+        // if we can’t get a slot quickly, fail fast
+        if (!await _limit.WaitAsync(TimeSpan.FromMilliseconds(50), ct))
+            throw new TooManyRequestsException();
+
+        try
+        {
+            return await operation(ct);
+        }
+        finally
+        {
+            _limit.Release();
+        }
+    }
 }
 
-public class RiskService
-{
-    private readonly ITradeMediator _mediator;
-    public RiskService(ITradeMediator mediator) =&gt; _mediator = mediator;
-    public bool Check(Order order) =&gt; order.Amount &lt;= 100000; // simple rule
-}
-
-public class TradeExecutor
-{
-    private readonly ITradeMediator _mediator;
-    public TradeExecutor(ITradeMediator mediator) =&gt; _mediator = mediator;
-    public void Execute(Order order) =&gt; Console.WriteLine($&quot;Executed {order.Id} for {order.Amount}&quot;);
-}
-
-// --- Usage ---
-// Compose mediator with concrete components
-// var mediator = new TradeMediator(new OrderValidator(null), new RiskService(null), new TradeExecutor(null));
-// Wire mediator into components and use mediator.Notify(this, &quot;PlaceOrder&quot;, order);</code></pre>
-<p>✅ <strong>Why it matters:</strong></p>
-<ul><li>Centralizes interaction logic between components (validation, risk, execution).</li><li>Reduces direct dependencies between components, improving testability and maintainability.</li><li>Makes it easier to change coordination rules without touching each component.</li></ul>
+public class TooManyRequestsException : Exception { }</code></pre>
+<p>This is the heart of “handling massive requests”: <strong>don’t let expensive work explode your resources</strong>.</p>
 <p>---</p>
-<h2 id="questions-answers">Questions & Answers</h2>
-<p><strong>Q: What problem does the Mediator pattern solve?</strong></p>
-<p>A: It avoids spaghetti dependencies among collaborating components (validator, risk, executor) by centralizing communication in a mediator. Components interact via the mediator instead of referencing each other directly.</p>
-<p><strong>Q: How does MediatR implement the Mediator pattern in .NET?</strong></p>
-<p>A: MediatR routes requests (commands/queries/notifications) to their handlers through a central mediator, letting senders remain unaware of receivers. Pipeline behaviors provide cross-cutting features without tight coupling.</p>
-<p><strong>Q: When would you build a custom mediator vs using MediatR?</strong></p>
-<p>A: Use MediatR for request/response flows in application layers. Build custom mediators when orchestrating domain services with bespoke protocols or when you need full control over orchestration semantics.</p>
-<p><strong>Q: How do mediators improve testability?</strong></p>
-<p>A: Components depend only on the mediator interface, so tests can supply stub mediators to assert interactions. You can validate coordination logic by testing the mediator in isolation.</p>
-<p><strong>Q: What’s a downside of mediators?</strong></p>
-<p>A: The mediator can become a god object if it accumulates too much logic. Mitigate by splitting mediators per feature or layering policies/pipeline behaviors to keep responsibilities focused.</p>
-<p><strong>Q: How do you prevent mediator logic from duplicating domain rules?</strong></p>
-<p>A: Keep mediators focused on coordination (who to notify next) and delegate business invariants to domain services/entities. If logic belongs to the domain, move it there rather than hiding it in the mediator.</p>
-<p><strong>Q: How do you handle asynchronous workflows with a mediator?</strong></p>
-<p>A: Define async methods (<code>Task NotifyAsync(...)</code>) and await dependent operations. MediatR supports async handlers out of the box, ensuring non-blocking orchestration.</p>
-<p><strong>Q: What patterns complement mediators?</strong></p>
-<p>A: Combine with CQRS (commands/queries flow through the mediator), decorators (pipeline behaviors like logging/validation), and event sourcing (mediator publishes domain events).</p>
-<p><strong>Q: How can mediators support extensibility?</strong></p>
-<p>A: Register handlers or collaborators via DI so new behaviors can be added without changing existing code. For example, add a compliance handler to the notification pipeline without modifying producer services.</p>
-<p><strong>Q: How do you monitor mediator pipelines?</strong></p>
-<p>A: Instrument pipeline behaviors or interceptors to log request duration, handler outcomes, and errors. This keeps observability centralized and avoids duplicating logging in every handler.</p>
+<h2 id="what-interviewers-love-to-hear-say-this">What interviewers love to hear (say this)</h2>
+<p>If they ask “how would you do it?” you can answer in 30–60 seconds like:</p>
+<blockquote><p>“I’d keep the API stateless and async, scale horizontally behind a load balancer, put Redis in front of the database for hot reads, use rate limiting and bounded concurrency to apply backpressure, and move expensive tasks to a queue processed by background workers with idempotency. I’d add timeouts, circuit breakers, and good observability so the system degrades gracefully under spikes.”</p></blockquote>
+<p>---</p>
+<p>If you tell me what kind of “system” they’ll likely ask you to code (e.g., login/token service, feed, trading/order submission, notifications), I’ll give you a <strong>more tailored architecture + a coding exercise</strong> that matches it.</p>
       </article>
     </main>
   </div>
