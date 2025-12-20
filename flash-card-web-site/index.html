@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Discover a curated sanctuary of multicultural wisdom featuring annotated quotes, cultural context, and guiding principles for intentional living.">
+  <meta name="keywords" content="multicultural wisdom quotes, philosophical principles, inspirational sayings, global proverbs, mindful living">
+  <meta name="author" content="openmindednewby">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Sanctum of Wisdom">
+  <meta property="og:description" content="Step into a contemplative space where quotes from every corner of the globe fade into view, one breath at a time.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://quotes.dloizides.com">
+  <meta property="og:image" content="https://quotes.dloizides.com/quotes-preview.png">
+  <meta property="og:image:alt" content="Preview of the Sanctum of Wisdom app displaying a quote over a dark atmospheric background">
+  <meta property="og:site_name" content="Sanctum of Wisdom">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Sanctum of Wisdom">
+  <meta name="twitter:description" content="Explore multicultural wisdom with annotated quotes, cultural context, and guiding principles for mindful living.">
+  <meta name="twitter:image" content="https://quotes.dloizides.com/quotes-preview.png">
+  <meta name="twitter:image:alt" content="Preview of the Sanctum of Wisdom app displaying a quote over a dark atmospheric background">
+  <meta name="theme-color" content="#121417">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=IBM+Plex+Sans:wght@300;400;500&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="canonical" href="https://quotes.dloizides.com">
+  <link rel="alternate" href="https://quotes.dloizides.com" hreflang="en">
+  <title>Sanctum of Wisdom</title>
+  <script type="application/ld+json" nonce="abc123">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Sanctum of Wisdom",
+    "url": "https://quotes.dloizides.com",
+    "description": "A curated collection of intergenerational wisdom featuring quotes, principles, and ideals from cultures around the world.",
+    "inLanguage": "en",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Sanctum of Wisdom"
+    },
+    "potentialAction": {
+      "@type": "ReadAction",
+      "target": "https://quotes.dloizides.com"
+    }
+  }
+  </script>
+</head>
+
+<body>
+  <main class="quote-container" role="main" aria-live="polite" aria-atomic="true">
+    <p class="quote-text" id="quoteOriginal">Loading ancient whispers...</p>
+    <p class="quote-translation" id="quoteTranslation"></p>
+    <p class="quote-meta" id="quoteMeta"></p>
+  </main>
+
+  <script>
+    const isServiceWorkerAllowed =
+      ('isSecureContext' in window && window.isSecureContext) ||
+      window.location.protocol === 'https:' ||
+      window.location.hostname === 'localhost';
+
+    if ('serviceWorker' in navigator && isServiceWorkerAllowed) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then((registration) => {
+            console.log('Service Worker registered:', registration);
+          })
+          .catch((error) => {
+            console.error('Service Worker registration failed:', error);
+          });
+      });
+    }
+  </script>
+  <script src="quotes-data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
