@@ -167,7 +167,7 @@ function extractQA(markdown, sourcePath) {
 }
 
 /**
- * Extract detailed sections (h3 headers with content)
+ * Extract detailed sections (h2, h3, h4 headers with content)
  */
 function extractSections(markdown, sourcePath) {
   const sections = [];
@@ -179,6 +179,7 @@ function extractSections(markdown, sourcePath) {
   let codeLines = [];
   let inList = false;
   let listItems = [];
+  let sectionLevel = null; // Track which level (h2, h3, h4) started the current section
 
   const sourceFile = path.relative(repoRoot, sourcePath).replace(/\\/g, '/');
   const category = sourceFile.split('/')[0];
@@ -197,20 +198,31 @@ function extractSections(markdown, sourcePath) {
     }
     currentSection = null;
     sectionContent = [];
+    sectionLevel = null;
   };
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
 
-    // Detect h3 headers (###)
+    // Detect h2, h3, or h4 headers
+    const h2Match = line.match(/^##\s+(.+)/);
     const h3Match = line.match(/^###\s+(.+)/);
-    if (h3Match) {
-      // Save previous section
-      saveSection();
+    const h4Match = line.match(/^####\s+(.+)/);
+
+    if (h2Match || h3Match || h4Match) {
+      // Determine the level and whether to start a new section
+      const newLevel = h2Match ? 2 : (h3Match ? 3 : 4);
+      const headerText = cleanMarkdown((h2Match || h3Match || h4Match)[1]);
+
+      // If we have a current section and encounter a header at the same or higher level, save it
+      if (currentSection && (sectionLevel === null || newLevel <= sectionLevel)) {
+        saveSection();
+      }
 
       // Start new section
-      currentSection = cleanMarkdown(h3Match[1]);
+      currentSection = headerText;
       sectionContent = [];
+      sectionLevel = newLevel;
       inList = false;
       continue;
     }
@@ -245,8 +257,8 @@ function extractSections(markdown, sourcePath) {
         continue;
       }
 
-      // Handle lists
-      const listMatch = line.match(/^\s*[-*]\s+(.+)/);
+      // Handle lists (both bullet and numbered)
+      const listMatch = line.match(/^\s*(?:[-*]|\d+\.)\s+(.+)/);
       if (listMatch) {
         if (!inList) {
           inList = true;
