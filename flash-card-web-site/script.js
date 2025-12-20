@@ -128,6 +128,39 @@ function setCardContent(card) {
           ul.appendChild(li);
         });
         cardAnswerEl.appendChild(ul);
+      } else if (item.type === 'table') {
+        const tableWrapper = document.createElement('div');
+        tableWrapper.className = 'table-wrapper';
+
+        const table = document.createElement('table');
+        table.className = 'answer-table';
+
+        // Create header
+        const thead = document.createElement('thead');
+        const headerRow = document.createElement('tr');
+        item.headers.forEach(header => {
+          const th = document.createElement('th');
+          th.textContent = header;
+          headerRow.appendChild(th);
+        });
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+
+        // Create body
+        const tbody = document.createElement('tbody');
+        item.rows.forEach(row => {
+          const tr = document.createElement('tr');
+          row.forEach(cell => {
+            const td = document.createElement('td');
+            td.textContent = cell;
+            tr.appendChild(td);
+          });
+          tbody.appendChild(tr);
+        });
+        table.appendChild(tbody);
+
+        tableWrapper.appendChild(table);
+        cardAnswerEl.appendChild(tableWrapper);
       } else if (item.type === 'code') {
         const codeWrapper = document.createElement('div');
         codeWrapper.className = `code-wrapper ${item.codeType || 'neutral'}`;

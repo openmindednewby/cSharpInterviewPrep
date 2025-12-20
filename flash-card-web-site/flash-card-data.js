@@ -1,5 +1,5 @@
 // Auto-generated flash card data from notes/ and practice/ folders
-// Generated on: 2025-12-20T12:35:34.701Z
+// Generated on: 2025-12-20T12:42:59.564Z
 // Total cards: 1027 (512 Q&A, 453 sections, 62 concepts)
 
 window.FLASH_CARD_DATA = [
@@ -7440,36 +7440,44 @@ window.FLASH_CARD_DATA = [
     "question": "3️⃣ Common allocation traps (and how to fix them)",
     "answer": [
       {
-        "type": "text",
-        "content": "| Bad Practice                           | Why it’s bad                    | Fix                                      |"
-      },
-      {
-        "type": "text",
-        "content": "| -------------------------------------- | ------------------------------- | ---------------------------------------- |"
-      },
-      {
-        "type": "text",
-        "content": "| Using new objects inside tight loops | Floods Gen 0                    | Reuse pooled objects                     |"
-      },
-      {
-        "type": "text",
-        "content": "| string.Concat or + in loops        | Creates new string every time   | Use StringBuilder or spans             |"
-      },
-      {
-        "type": "text",
-        "content": "| LINQ in hot paths                      | Allocates enumerators, closures | Use for loops                          |"
-      },
-      {
-        "type": "text",
-        "content": "| Boxing value types                     | Allocates on heap               | Use generics / avoid casting to object |"
-      },
-      {
-        "type": "text",
-        "content": "| Repeatedly allocating buffers          | LOH churn                       | Use ArrayPool<T>                       |"
-      },
-      {
-        "type": "text",
-        "content": "| Returning large arrays                 | LOH growth                      | Reuse pooled arrays or slice spans       |"
+        "type": "table",
+        "headers": [
+          "Bad Practice",
+          "Why it’s bad",
+          "Fix"
+        ],
+        "rows": [
+          [
+            "Using new objects inside tight loops",
+            "Floods Gen 0",
+            "Reuse pooled objects"
+          ],
+          [
+            "string.Concat or + in loops",
+            "Creates new string every time",
+            "Use StringBuilder or spans"
+          ],
+          [
+            "LINQ in hot paths",
+            "Allocates enumerators, closures",
+            "Use for loops"
+          ],
+          [
+            "Boxing value types",
+            "Allocates on heap",
+            "Use generics / avoid casting to object"
+          ],
+          [
+            "Repeatedly allocating buffers",
+            "LOH churn",
+            "Use ArrayPool<T>"
+          ],
+          [
+            "Returning large arrays",
+            "LOH growth",
+            "Reuse pooled arrays or slice spans"
+          ]
+        ]
       }
     ],
     "category": "notes",
@@ -7653,36 +7661,37 @@ window.FLASH_CARD_DATA = [
         "content": "Even code that looks innocent can allocate. Some hidden examples:"
       },
       {
-        "type": "text",
-        "content": "| Code                                     | Hidden allocation                       |"
-      },
-      {
-        "type": "text",
-        "content": "| ---------------------------------------- | --------------------------------------- |"
-      },
-      {
-        "type": "text",
-        "content": "| foreach (var x in list)                | Enumerator struct may box               |"
-      },
-      {
-        "type": "text",
-        "content": "| async methods                          | Allocates a state machine object        |"
-      },
-      {
-        "type": "text",
-        "content": "| lambda or delegate captures variable | Allocates closure object                |"
-      },
-      {
-        "type": "text",
-        "content": "| ToString()                             | Often allocates new string              |"
-      },
-      {
-        "type": "text",
-        "content": "| Task.FromResult(...)                   | Reuses task, good ✅                     |"
-      },
-      {
-        "type": "text",
-        "content": "| await on Task that already completed | Allocates continuation unless optimized |"
+        "type": "table",
+        "headers": [
+          "Code",
+          "Hidden allocation"
+        ],
+        "rows": [
+          [
+            "foreach (var x in list)",
+            "Enumerator struct may box"
+          ],
+          [
+            "async methods",
+            "Allocates a state machine object"
+          ],
+          [
+            "lambda or delegate captures variable",
+            "Allocates closure object"
+          ],
+          [
+            "ToString()",
+            "Often allocates new string"
+          ],
+          [
+            "Task.FromResult(...)",
+            "Reuses task, good ✅"
+          ],
+          [
+            "await on Task that already completed",
+            "Allocates continuation unless optimized"
+          ]
+        ]
       },
       {
         "type": "text",
@@ -7713,28 +7722,29 @@ window.FLASH_CARD_DATA = [
         "content": "The key to designing allocation-efficient systems is understanding lifetime scopes:"
       },
       {
-        "type": "text",
-        "content": "| Lifetime          | Strategy                                                         |"
-      },
-      {
-        "type": "text",
-        "content": "| ----------------- | ---------------------------------------------------------------- |"
-      },
-      {
-        "type": "text",
-        "content": "| Per-request   | Avoid allocations in controllers; reuse service-scoped resources |"
-      },
-      {
-        "type": "text",
-        "content": "| Per-session   | Use dependency injection scopes for per-user data                |"
-      },
-      {
-        "type": "text",
-        "content": "| Global/static | Cache immutable data, don’t recreate                             |"
-      },
-      {
-        "type": "text",
-        "content": "| Transient     | Keep short-lived structs or pooled objects                       |"
+        "type": "table",
+        "headers": [
+          "Lifetime",
+          "Strategy"
+        ],
+        "rows": [
+          [
+            "Per-request",
+            "Avoid allocations in controllers; reuse service-scoped resources"
+          ],
+          [
+            "Per-session",
+            "Use dependency injection scopes for per-user data"
+          ],
+          [
+            "Global/static",
+            "Cache immutable data, don’t recreate"
+          ],
+          [
+            "Transient",
+            "Keep short-lived structs or pooled objects"
+          ]
+        ]
       },
       {
         "type": "text",
@@ -8215,36 +8225,37 @@ window.FLASH_CARD_DATA = [
     "question": "🧠 What makes this “senior-level”",
     "answer": [
       {
-        "type": "text",
-        "content": "| Feature                         | Why it matters                                                      |"
-      },
-      {
-        "type": "text",
-        "content": "| ------------------------------- | ------------------------------------------------------------------- |"
-      },
-      {
-        "type": "text",
-        "content": "| ✅ System.IO.Pipelines         | Uses pre-allocated pooled memory segments (no per-read allocations) |"
-      },
-      {
-        "type": "text",
-        "content": "| ✅ ReadOnlySequence<byte>      | Supports multi-segment data without copying                         |"
-      },
-      {
-        "type": "text",
-        "content": "| ✅ Utf8Parser                  | Parses directly from bytes — no string parsing overhead             |"
-      },
-      {
-        "type": "text",
-        "content": "| ✅ Tick is a readonly struct | Stack-friendly, immutable, no GC tracking                           |"
-      },
-      {
-        "type": "text",
-        "content": "| ✅ Async producer-consumer model | Perfect for real-time stream ingestion                              |"
-      },
-      {
-        "type": "text",
-        "content": "| ✅ Zero-copy                     | Data flows from socket → pipeline → span → parsed → done            |"
+        "type": "table",
+        "headers": [
+          "Feature",
+          "Why it matters"
+        ],
+        "rows": [
+          [
+            "✅ System.IO.Pipelines",
+            "Uses pre-allocated pooled memory segments (no per-read allocations)"
+          ],
+          [
+            "✅ ReadOnlySequence<byte>",
+            "Supports multi-segment data without copying"
+          ],
+          [
+            "✅ Utf8Parser",
+            "Parses directly from bytes — no string parsing overhead"
+          ],
+          [
+            "✅ Tick is a readonly struct",
+            "Stack-friendly, immutable, no GC tracking"
+          ],
+          [
+            "✅ Async producer-consumer model",
+            "Perfect for real-time stream ingestion"
+          ],
+          [
+            "✅ Zero-copy",
+            "Data flows from socket → pipeline → span → parsed → done"
+          ]
+        ]
       }
     ],
     "category": "notes",
@@ -8612,32 +8623,33 @@ window.FLASH_CARD_DATA = [
     "question": "💡 Key improvements explained",
     "answer": [
       {
-        "type": "text",
-        "content": "| Improvement              | Why it matters                                                    |"
-      },
-      {
-        "type": "text",
-        "content": "| ------------------------ | ----------------------------------------------------------------- |"
-      },
-      {
-        "type": "text",
-        "content": "| ArrayPool<byte>.Shared | Reuses buffers, avoids LOH churn                                  |"
-      },
-      {
-        "type": "text",
-        "content": "| ReadOnlySpan<byte>     | Zero-copy slicing of incoming data                                |"
-      },
-      {
-        "type": "text",
-        "content": "| Utf8Parser             | Parses numeric values directly from bytes (no string allocations) |"
-      },
-      {
-        "type": "text",
-        "content": "| readonly struct Tick   | Stack-friendly immutable type, no GC tracking                     |"
-      },
-      {
-        "type": "text",
-        "content": "| in Tick (if used)      | Passes struct by ref → no copying                                 |"
+        "type": "table",
+        "headers": [
+          "Improvement",
+          "Why it matters"
+        ],
+        "rows": [
+          [
+            "ArrayPool<byte>.Shared",
+            "Reuses buffers, avoids LOH churn"
+          ],
+          [
+            "ReadOnlySpan<byte>",
+            "Zero-copy slicing of incoming data"
+          ],
+          [
+            "Utf8Parser",
+            "Parses numeric values directly from bytes (no string allocations)"
+          ],
+          [
+            "readonly struct Tick",
+            "Stack-friendly immutable type, no GC tracking"
+          ],
+          [
+            "in Tick (if used)",
+            "Passes struct by ref → no copying"
+          ]
+        ]
       }
     ],
     "category": "notes",
@@ -12904,28 +12916,39 @@ window.FLASH_CARD_DATA = [
     "question": "2️⃣ The three main generations",
     "answer": [
       {
-        "type": "text",
-        "content": "| Generation | Description                        | Frequency                      | Typical objects                      |"
-      },
-      {
-        "type": "text",
-        "content": "| ---------- | ---------------------------------- | ------------------------------ | ------------------------------------ |"
-      },
-      {
-        "type": "text",
-        "content": "| Gen 0  | Newest, youngest objects           | Collected most frequently  | Locals, temp lists, short-lived data |"
-      },
-      {
-        "type": "text",
-        "content": "| Gen 1  | “Middle-aged” survivors from Gen 0 | Collected occasionally         | Transient mid-term data              |"
-      },
-      {
-        "type": "text",
-        "content": "| Gen 2  | Long-lived survivors               | Collected rarely (full GC) | Caches, singletons, static data      |"
-      },
-      {
-        "type": "text",
-        "content": "| LOH    | Large Object Heap (≥ 85,000 bytes) | Collected with Gen 2       | Large arrays, strings, buffers       |"
+        "type": "table",
+        "headers": [
+          "Generation",
+          "Description",
+          "Frequency",
+          "Typical objects"
+        ],
+        "rows": [
+          [
+            "Gen 0",
+            "Newest, youngest objects",
+            "Collected most frequently",
+            "Locals, temp lists, short-lived data"
+          ],
+          [
+            "Gen 1",
+            "“Middle-aged” survivors from Gen 0",
+            "Collected occasionally",
+            "Transient mid-term data"
+          ],
+          [
+            "Gen 2",
+            "Long-lived survivors",
+            "Collected rarely (full GC)",
+            "Caches, singletons, static data"
+          ],
+          [
+            "LOH",
+            "Large Object Heap (≥ 85,000 bytes)",
+            "Collected with Gen 2",
+            "Large arrays, strings, buffers"
+          ]
+        ]
       }
     ],
     "category": "notes",
@@ -13191,32 +13214,33 @@ window.FLASH_CARD_DATA = [
     "question": "8️⃣ Performance design tips for GC-friendly code",
     "answer": [
       {
-        "type": "text",
-        "content": "| Goal                             | Best Practice                                               |"
-      },
-      {
-        "type": "text",
-        "content": "| -------------------------------- | ----------------------------------------------------------- |"
-      },
-      {
-        "type": "text",
-        "content": "| Minimize Gen 0 churn             | Avoid allocating in tight loops or hot paths                |"
-      },
-      {
-        "type": "text",
-        "content": "| Prevent Gen 2 pressure           | Reuse objects and buffers (ArrayPool<T>, ObjectPool<T>) |"
-      },
-      {
-        "type": "text",
-        "content": "| Avoid LOH fragmentation          | Use pooled or chunked buffers                               |"
-      },
-      {
-        "type": "text",
-        "content": "| Keep structs small and immutable | No unnecessary copying or boxing                            |"
-      },
-      {
-        "type": "text",
-        "content": "| Monitor allocations              | Use dotnet-trace or dotMemory to find hotspots          |"
+        "type": "table",
+        "headers": [
+          "Goal",
+          "Best Practice"
+        ],
+        "rows": [
+          [
+            "Minimize Gen 0 churn",
+            "Avoid allocating in tight loops or hot paths"
+          ],
+          [
+            "Prevent Gen 2 pressure",
+            "Reuse objects and buffers (ArrayPool<T>, ObjectPool<T>)"
+          ],
+          [
+            "Avoid LOH fragmentation",
+            "Use pooled or chunked buffers"
+          ],
+          [
+            "Keep structs small and immutable",
+            "No unnecessary copying or boxing"
+          ],
+          [
+            "Monitor allocations",
+            "Use dotnet-trace or dotMemory to find hotspots"
+          ]
+        ]
       }
     ],
     "category": "notes",
@@ -14442,36 +14466,65 @@ window.FLASH_CARD_DATA = [
     "question": "Comparison Sorts",
     "answer": [
       {
-        "type": "text",
-        "content": "| Algorithm | Time (avg) | Time (worst) | Space | Stable | Notes |"
-      },
-      {
-        "type": "text",
-        "content": "| --------- | ---------- | ------------ | ----- | ------ | ----- |"
-      },
-      {
-        "type": "text",
-        "content": "| Insertion Sort | O(n²) | O(n²) | O(1) | ✅ | Fast on nearly sorted data; used for small partitions within hybrid sorts. |"
-      },
-      {
-        "type": "text",
-        "content": "| Selection Sort | O(n²) | O(n²) | O(1) | ❌ | Minimal swaps—works when writing to flash memory where writes are expensive. |"
-      },
-      {
-        "type": "text",
-        "content": "| Bubble Sort | O(n²) | O(n²) | O(1) | ✅ | Easy to explain; mention the flag optimization for already-sorted input. |"
-      },
-      {
-        "type": "text",
-        "content": "| Heap Sort | O(n log n) | O(n log n) | O(1) | ❌ | Deterministic O(n log n) with no extra space; basis for priority queues. |"
-      },
-      {
-        "type": "text",
-        "content": "| Merge Sort | O(n log n) | O(n log n) | O(n) | ✅ | Streaming-friendly; Enumerable.OrderBy pipelines to merge sort under the hood. |"
-      },
-      {
-        "type": "text",
-        "content": "| Quick Sort / Introsort | O(n log n) | O(n²) | O(log n) | ❌ | .NET’s Array.Sort uses introspective sort (quick + heap + insertion) to avoid worst-case. |"
+        "type": "table",
+        "headers": [
+          "Algorithm",
+          "Time (avg)",
+          "Time (worst)",
+          "Space",
+          "Stable",
+          "Notes"
+        ],
+        "rows": [
+          [
+            "Insertion Sort",
+            "O(n²)",
+            "O(n²)",
+            "O(1)",
+            "✅",
+            "Fast on nearly sorted data; used for small partitions within hybrid sorts."
+          ],
+          [
+            "Selection Sort",
+            "O(n²)",
+            "O(n²)",
+            "O(1)",
+            "❌",
+            "Minimal swaps—works when writing to flash memory where writes are expensive."
+          ],
+          [
+            "Bubble Sort",
+            "O(n²)",
+            "O(n²)",
+            "O(1)",
+            "✅",
+            "Easy to explain; mention the flag optimization for already-sorted input."
+          ],
+          [
+            "Heap Sort",
+            "O(n log n)",
+            "O(n log n)",
+            "O(1)",
+            "❌",
+            "Deterministic O(n log n) with no extra space; basis for priority queues."
+          ],
+          [
+            "Merge Sort",
+            "O(n log n)",
+            "O(n log n)",
+            "O(n)",
+            "✅",
+            "Streaming-friendly; Enumerable.OrderBy pipelines to merge sort under the hood."
+          ],
+          [
+            "Quick Sort / Introsort",
+            "O(n log n)",
+            "O(n²)",
+            "O(log n)",
+            "❌",
+            ".NET’s Array.Sort uses introspective sort (quick + heap + insertion) to avoid worst-case."
+          ]
+        ]
       },
       {
         "type": "code",
@@ -14490,24 +14543,33 @@ window.FLASH_CARD_DATA = [
     "question": "Non-Comparison Sorts",
     "answer": [
       {
-        "type": "text",
-        "content": "| Algorithm | Complexity | Stable | When to Use |"
-      },
-      {
-        "type": "text",
-        "content": "| --------- | ---------- | ------ | ----------- |"
-      },
-      {
-        "type": "text",
-        "content": "| Counting Sort | O(n + k) | ✅ | Small integer ranges (e.g., enum buckets, ASCII chars). |"
-      },
-      {
-        "type": "text",
-        "content": "| Radix Sort | O(d * (n + k)) | ✅ | Fixed-length integers/strings; combine with counting sort per digit. |"
-      },
-      {
-        "type": "text",
-        "content": "| Bucket Sort | O(n) avg | ✅ | Uniformly distributed floats (0–1); use for histograms or frequency analysis. |"
+        "type": "table",
+        "headers": [
+          "Algorithm",
+          "Complexity",
+          "Stable",
+          "When to Use"
+        ],
+        "rows": [
+          [
+            "Counting Sort",
+            "O(n + k)",
+            "✅",
+            "Small integer ranges (e.g., enum buckets, ASCII chars)."
+          ],
+          [
+            "Radix Sort",
+            "O(d * (n + k))",
+            "✅",
+            "Fixed-length integers/strings; combine with counting sort per digit."
+          ],
+          [
+            "Bucket Sort",
+            "O(n) avg",
+            "✅",
+            "Uniformly distributed floats (0–1); use for histograms or frequency analysis."
+          ]
+        ]
       },
       {
         "type": "code",
@@ -14761,56 +14823,69 @@ window.FLASH_CARD_DATA = [
     "question": "🧠 Conceptual Summary",
     "answer": [
       {
-        "type": "text",
-        "content": "| Feature                    | struct                                                                  | class                                       |"
-      },
-      {
-        "type": "text",
-        "content": "| -------------------------- | ----------------------------------------------------------------------------- | ------------------------------------------------- |"
-      },
-      {
-        "type": "text",
-        "content": "| Type category          | Value type                                                                    | Reference type                                    |"
-      },
-      {
-        "type": "text",
-        "content": "| Memory allocation      | Stored inline (stack, or inside another object)                           | Stored on heap, referenced via pointer        |"
-      },
-      {
-        "type": "text",
-        "content": "| Default behavior       | Copied by value (creates a full copy)                                     | Copied by reference (points to same object)   |"
-      },
-      {
-        "type": "text",
-        "content": "| Nullability            | Cannot be null (unless Nullable<T>)                                       | Can be null                                     |"
-      },
-      {
-        "type": "text",
-        "content": "| Inheritance            | Cannot inherit from another struct or class; only from ValueType            | Supports inheritance and polymorphism             |"
-      },
-      {
-        "type": "text",
-        "content": "| Interfaces             | Can implement interfaces                                                      | Can implement interfaces and base classes         |"
-      },
-      {
-        "type": "text",
-        "content": "| Default constructor    | Cannot define a custom parameterless constructor (C# 10 adds limited support) | Can freely define constructors                    |"
-      },
-      {
-        "type": "text",
-        "content": "| Finalizer / Destructor | Not supported                                                                 | Supported                                         |"
-      },
-      {
-        "type": "text",
-        "content": "| GC behavior            | Usually short-lived, reclaimed when out of scope                              | Managed by the Garbage Collector              |"
-      },
-      {
-        "type": "text",
-        "content": "| Boxing / Unboxing      | Converting to/from object/interface causes allocation                         | No boxing/unboxing issues                         |"
-      },
-      {
-        "type": "text",
-        "content": "| Thread safety          | Safer for small immutable data                                                | Reference types require synchronization if shared |"
+        "type": "table",
+        "headers": [
+          "Feature",
+          "struct",
+          "class"
+        ],
+        "rows": [
+          [
+            "Type category",
+            "Value type",
+            "Reference type"
+          ],
+          [
+            "Memory allocation",
+            "Stored inline (stack, or inside another object)",
+            "Stored on heap, referenced via pointer"
+          ],
+          [
+            "Default behavior",
+            "Copied by value (creates a full copy)",
+            "Copied by reference (points to same object)"
+          ],
+          [
+            "Nullability",
+            "Cannot be null (unless Nullable<T>)",
+            "Can be null"
+          ],
+          [
+            "Inheritance",
+            "Cannot inherit from another struct or class; only from ValueType",
+            "Supports inheritance and polymorphism"
+          ],
+          [
+            "Interfaces",
+            "Can implement interfaces",
+            "Can implement interfaces and base classes"
+          ],
+          [
+            "Default constructor",
+            "Cannot define a custom parameterless constructor (C# 10 adds limited support)",
+            "Can freely define constructors"
+          ],
+          [
+            "Finalizer / Destructor",
+            "Not supported",
+            "Supported"
+          ],
+          [
+            "GC behavior",
+            "Usually short-lived, reclaimed when out of scope",
+            "Managed by the Garbage Collector"
+          ],
+          [
+            "Boxing / Unboxing",
+            "Converting to/from object/interface causes allocation",
+            "No boxing/unboxing issues"
+          ],
+          [
+            "Thread safety",
+            "Safer for small immutable data",
+            "Reference types require synchronization if shared"
+          ]
+        ]
       }
     ],
     "category": "notes",
@@ -20491,20 +20566,30 @@ window.FLASH_CARD_DATA = [
     "question": "🔍 3️⃣ Comparison",
     "answer": [
       {
-        "type": "text",
-        "content": "| Method          | Uses     | Overflow Risk | Works For     | Readability    |"
-      },
-      {
-        "type": "text",
-        "content": "| --------------- | -------- | ------------- | ------------- | -------------- |"
-      },
-      {
-        "type": "text",
-        "content": "| Arithmetic  | +, - | ⚠️ Yes        | Numeric types | Moderate       |"
-      },
-      {
-        "type": "text",
-        "content": "| Bitwise XOR | ^      | ✅ No          | Integers only | Less intuitive |"
+        "type": "table",
+        "headers": [
+          "Method",
+          "Uses",
+          "Overflow Risk",
+          "Works For",
+          "Readability"
+        ],
+        "rows": [
+          [
+            "Arithmetic",
+            "+, -",
+            "⚠️ Yes",
+            "Numeric types",
+            "Moderate"
+          ],
+          [
+            "Bitwise XOR",
+            "^",
+            "✅ No",
+            "Integers only",
+            "Less intuitive"
+          ]
+        ]
       }
     ],
     "category": "practice",

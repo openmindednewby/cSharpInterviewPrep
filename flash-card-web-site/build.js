@@ -179,6 +179,9 @@ function extractSections(markdown, sourcePath) {
   let codeLines = [];
   let inList = false;
   let listItems = [];
+  let inTable = false;
+  let tableHeaders = [];
+  let tableRows = [];
   let sectionLevel = null; // Track which level (h2, h3, h4) started the current section
 
   const sourceFile = path.relative(repoRoot, sourcePath).replace(/\\/g, '/');
@@ -254,6 +257,39 @@ function extractSections(markdown, sourcePath) {
 
       if (inCodeBlock) {
         codeLines.push(line);
+        continue;
+      }
+
+      // Handle tables
+      const tableRowMatch = line.match(/^\s*\|(.+)\|\s*$/);
+      if (tableRowMatch) {
+        const cells = tableRowMatch[1].split('|').map(cell => cleanMarkdown(cell.trim()));
+
+        if (!inTable) {
+          // First row is headers
+          inTable = true;
+          tableHeaders = cells;
+          tableRows = [];
+        } else if (line.match(/^\s*\|[\s:-]+\|/)) {
+          // Separator row (|---|---|), skip it
+          continue;
+        } else {
+          // Data row
+          tableRows.push(cells);
+        }
+        continue;
+      } else if (inTable && line.trim() === '') {
+        // End of table
+        if (tableHeaders.length > 0 && tableRows.length > 0) {
+          sectionContent.push({
+            type: 'table',
+            headers: tableHeaders,
+            rows: tableRows
+          });
+        }
+        inTable = false;
+        tableHeaders = [];
+        tableRows = [];
         continue;
       }
 
