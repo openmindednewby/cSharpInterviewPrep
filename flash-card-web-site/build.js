@@ -284,8 +284,8 @@ function extractSections(markdown, sourcePath) {
         }
       }
 
-      // Stop section at horizontal rule or h2 header
-      if (line.match(/^---+$/) || line.match(/^##\s+/)) {
+      // Stop section at horizontal rule (but NOT at h2 headers, as h3 can be inside h2)
+      if (line.match(/^---+$/)) {
         saveSection();
       }
     }
