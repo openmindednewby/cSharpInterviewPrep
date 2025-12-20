@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for System Design" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>System Design | C# Interview Prep Cheat Sheet</title>
+  <link rel="manifest" href="..\assets/manifest.webmanifest" />
+  <script>
+    (() => {
+      const supported = ['midnight', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const fallback = 'light';
+      const initial = supported.includes(saved) ? saved : fallback;
+      document.documentElement.dataset.theme = initial;
+      window.__studyTheme = initial;
+    })();
+  </script>
+  <link rel="stylesheet" href="..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="midnight">Current</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group" data-group="notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="../notes/logging.html">Logging</a></li><li><a class="nav-link" href="../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/O1-Constant-Time.html">O1 Constant Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/OLogN-Logarithmic-Time.html">OLogN Logarithmic Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/ON-Linear-Time.html">ON Linear Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/ON2-Quadratic-Time.html">ON2 Quadratic Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/ONLogN-Linearithmic-Time.html">ONLogN Linearithmic Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/Space-Complexity.html">Space Complexity</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/ICollection.html">ICollection</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IEnumerable.html">IEnumerable</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IList.html">IList</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IQueryable.html">IQueryable</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IReadOnly.html">IReadOnly</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a class="nav-link" href="../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a class="nav-link" href="../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a class="nav-link" href="../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a class="nav-link" href="../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a class="nav-link" href="../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a class="nav-link" href="../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a class="nav-link" href="../notes/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a class="nav-link" href="../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a class="nav-link" href="../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a class="nav-link" href="../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a class="nav-link" href="../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a class="nav-link" href="../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a class="nav-link" href="../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a class="nav-link" href="../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a class="nav-link" href="../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a class="nav-link" href="../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a class="nav-link" href="../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a class="nav-link" href="../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a class="nav-link" href="../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a class="nav-link" href="../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a class="nav-link" href="../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a class="nav-link" href="../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a class="nav-link" href="../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/01-async-patterns.html">01 Async Patterns</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/02-backpressure-rate-limiting.html">02 Backpressure Rate Limiting</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/03-caching-strategies.html">03 Caching Strategies</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/04-database-scaling.html">04 Database Scaling</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/05-message-queues.html">05 Message Queues</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/06-resilience-patterns.html">06 Resilience Patterns</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/07-observability.html">07 Observability</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/08-complete-example.html">08 Complete Example</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+    </div><div class="sidebar-group is-open" data-group="practice">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
+        <span>Practice</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="../practice/answers.html">Answers</a></li><li><a class="nav-link" href="../practice/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="../practice/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="../practice/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="../practice/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="../practice/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="../practice/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="../practice/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="../practice/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="../practice/index.html">Practice</a></li><li><a class="nav-link" href="../practice/questions.html">Questions</a></li><li><a class="nav-link" href="../practice/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="../practice/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link active" href="../practice/system-design.html">System Design</a></li><li><a class="nav-link" href="../practice/trading-domain.html">Trading Domain</a></li></ul>
+    </div></div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">practice\system-design.md</div>
+        <h2>System Design</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#system-design-practice-exercises">System Design Practice Exercises</a></li><li class="level-2"><a href="#foundational-questions">Foundational Questions</a></li><li class="level-2"><a href="#microservices-architecture">Microservices Architecture</a></li><li class="level-2"><a href="#cqrs-event-sourcing">CQRS & Event Sourcing</a></li><li class="level-2"><a href="#caching-strategies">Caching Strategies</a></li><li class="level-2"><a href="#database-scaling">Database Scaling</a></li><li class="level-2"><a href="#high-availability-patterns">High Availability Patterns</a></li><li class="level-2"><a href="#observability">Observability</a></li></ul></div>
+        <h1 id="system-design-practice-exercises">System Design Practice Exercises</h1>
+<p>Master distributed systems architecture, scalability patterns, and real-world system design for trading and financial applications.</p>
+<p>---</p>
+<h2 id="foundational-questions">Foundational Questions</h2>
+<p><strong>Q: Design a service that ingests MT5 tick data, normalizes it, caches latest prices, and exposes them via REST/WebSocket.</strong></p>
+<p>A: Components: Ingestion (connectors to MT5), normalization workers, cache (Redis), API (REST/WebSocket), persistence. Add replay storage (Kafka topic or time-series DB) for audit and late subscribers. Use message queue (Kafka) for fan-out and resilient decoupling of ingestion from delivery.</p>
+<pre class="language-csharp"><code class="language-csharp">while (await mt5Stream.MoveNextAsync())
+{
+    var normalized = Normalize(mt5Stream.Current);
+    await cache.SetAsync(normalized.Symbol, normalized.Price);
+    await hubContext.Clients.Group(normalized.Symbol)
+        .SendAsync(&quot;price&quot;, normalized);
+}</code></pre>
+<p>Use when need low-latency price dissemination. Avoid when low-frequency batch updates suffice.</p>
+<p><strong>Q: Design an API that receives orders, validates, routes to MT4/MT5, and confirms execution. Include failure recovery.</strong></p>
+<p>A: Steps: receive REST order → validate (risk, compliance) → persist pending state → route to MT4/MT5 → await ack → publish result. Include idempotency keys on inbound requests and a reconciliation process for missing confirmations. Use saga/outbox for reliability and to coordinate compensating actions when downstream legs fail.</p>
+<pre class="language-csharp"><code class="language-csharp">public async Task&lt;IActionResult&gt; Submit(OrderRequest dto)
+{
+    var order = await _validator.ValidateAsync(dto);
+    await _repository.SavePending(order);
+    var result = await _mtGateway.SendAsync(order);
+    await _repository.UpdateStatus(order.Id, result.Status);
+    await _bus.Publish(new OrderStatusChanged(order.Id, result.Status));
+    return Ok(result);
+}</code></pre>
+<p>Use when real-time trading with external platforms. Avoid when simple internal workflows—overkill.</p>
+<p><strong>Q: Architect a system to collect metrics from trading microservices and alert on anomalies.</strong></p>
+<p>A: Collect metrics via OpenTelemetry exporters, push to time-series DB (Prometheus), visualize in Grafana, alert via Alertmanager. Tag metrics with dimensions (service, region, environment) to support slicing and alert thresholds. Include streaming logs via ELK stack and trace sampling via Jaeger/Tempo.</p>
+<pre class="language-csharp"><code class="language-csharp">var meter = new Meter(&quot;Trading.Services&quot;);
+var orderLatency = meter.CreateHistogram&lt;double&gt;(&quot;order_latency_ms&quot;);
+orderLatency.Record(latencyMs, KeyValuePair.Create&lt;string, object?&gt;(&quot;service&quot;, serviceName));</code></pre>
+<p>Use when need proactive observability. Avoid when prototype with low SLA.</p>
+<p><strong>Q: Discuss how you would integrate an external risk management engine into an existing microservices ecosystem.</strong></p>
+<p>A: Use async messaging or REST; maintain schema adapters; ensure idempotency. Map risk statuses to domain-specific responses and version contracts to avoid breaking changes. Add caching for rules, circuit breakers, fallback decisions, and health checks to remove unhealthy nodes from rotation.</p>
+<pre class="language-csharp"><code class="language-csharp">var riskResponse = await _riskClient.EvaluateAsync(order, ct);
+if (!riskResponse.Approved)
+    return OrderDecision.Rejected(riskResponse.Reason);</code></pre>
+<p>Use when external compliance requirement. Avoid when latency-critical path can't tolerate external dependency—consider in-process rules.</p>
+<p>---</p>
+<h2 id="microservices-architecture">Microservices Architecture</h2>
+<p><strong>Q: Design a microservices architecture for an e-commerce platform with orders, inventory, payments, and shipping.</strong></p>
+<p>A: Break into bounded contexts with clear ownership and data isolation.</p>
+<pre class="language-csharp"><code class="language-csharp">Architecture Components:
+1. API Gateway (YARP, Ocelot, or Kong)
+   - Authentication/Authorization
+   - Rate limiting
+   - Request routing
+   - Response aggregation
+
+2. Order Service
+   - Order placement
+   - Order status tracking
+   - Saga orchestration
+   - Database: Orders, OrderItems
+
+3. Inventory Service
+   - Stock management
+   - Reservation system
+   - Database: Products, Stock
+
+4. Payment Service
+   - Payment processing
+   - Refunds
+   - Database: Transactions
+
+5. Shipping Service
+   - Shipping label generation
+   - Tracking
+   - Database: Shipments
+
+6. Notification Service
+   - Email/SMS notifications
+   - Event-driven (consumes from message bus)
+
+7. Infrastructure
+   - Message Bus: RabbitMQ/Kafka
+   - Cache: Redis
+   - Service Discovery: Consul/Kubernetes
+   - Config: Consul/Azure App Config
+   - Observability: Prometheus + Grafana + Jaeger</code></pre>
+<p><strong>Example Saga Implementation:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public class OrderSaga
+{
+    private readonly IInventoryService _inventory;
+    private readonly IPaymentService _payment;
+    private readonly IShippingService _shipping;
+    private readonly IMessageBus _bus;
+
+    public async Task&lt;OrderResult&gt; ProcessOrderAsync(CreateOrderCommand command)
+    {
+        var orderId = Guid.NewGuid();
+        var reservationId = Guid.Empty;
+        var paymentId = Guid.Empty;
+
+        try
+        {
+            // Step 1: Reserve inventory
+            reservationId = await _inventory.ReserveAsync(
+                command.Items,
+                TimeSpan.FromMinutes(10));
+
+            // Step 2: Process payment
+            paymentId = await _payment.ChargeAsync(
+                command.CustomerId,
+                command.TotalAmount);
+
+            // Step 3: Create shipment
+            var shipmentId = await _shipping.CreateShipmentAsync(
+                orderId,
+                command.ShippingAddress);
+
+            // Step 4: Complete order
+            await _bus.PublishAsync(new OrderCompletedEvent
+            {
+                OrderId = orderId,
+                PaymentId = paymentId,
+                ShipmentId = shipmentId
+            });
+
+            return OrderResult.Success(orderId);
+        }
+        catch (Exception ex)
+        {
+            // Compensating transactions
+            if (paymentId != Guid.Empty)
+            {
+                await _payment.RefundAsync(paymentId);
+            }
+
+            if (reservationId != Guid.Empty)
+            {
+                await _inventory.ReleaseReservationAsync(reservationId);
+            }
+
+            await _bus.PublishAsync(new OrderFailedEvent
+            {
+                OrderId = orderId,
+                Reason = ex.Message
+            });
+
+            return OrderResult.Failed(ex.Message);
+        }
+    }
+}</code></pre>
+<p><strong>Q: Design service-to-service communication strategy: when to use sync vs async?</strong></p>
+<p>A: Choose based on coupling, latency, and failure tolerance requirements.</p>
+<pre class="language-csharp"><code class="language-csharp">// Synchronous (HTTP/gRPC) - Use when:
+// - Immediate response needed
+// - Simple request/response
+// - Strong consistency required
+public class OrderController : ControllerBase
+{
+    private readonly IInventoryClient _inventoryClient;
+
+    [HttpPost]
+    public async Task&lt;IActionResult&gt; CreateOrder(OrderDto dto)
+    {
+        // Synchronous call for immediate stock check
+        var available = await _inventoryClient.CheckAvailabilityAsync(dto.Items);
+        if (!available)
+            return BadRequest(&quot;Insufficient stock&quot;);
+
+        // Process order...
+        return Ok();
+    }
+}
+
+// Asynchronous (Message Bus) - Use when:
+// - Fire-and-forget acceptable
+// - Eventual consistency OK
+// - Decoupling important
+// - Multiple consumers
+public class OrderCreatedHandler : IMessageHandler&lt;OrderCreatedEvent&gt;
+{
+    private readonly IEmailService _emailService;
+    private readonly IAnalyticsService _analytics;
+
+    public async Task HandleAsync(OrderCreatedEvent evt)
+    {
+        // Multiple services can react independently
+        await _emailService.SendConfirmationAsync(evt.CustomerId);
+        await _analytics.TrackOrderAsync(evt);
+    }
+}
+
+// Hybrid Approach - Request/Response over Message Bus
+public class InventoryQueryHandler
+{
+    private readonly IMessageBus _bus;
+
+    public async Task&lt;StockLevel&gt; GetStockAsync(string productId)
+    {
+        var correlationId = Guid.NewGuid().ToString();
+        var tcs = new TaskCompletionSource&lt;StockLevel&gt;();
+
+        // Register one-time response handler
+        _bus.Subscribe&lt;StockLevelResponse&gt;(correlationId, response =&gt;
+        {
+            tcs.SetResult(response.Level);
+        });
+
+        // Send query
+        await _bus.PublishAsync(new StockLevelQuery
+        {
+            ProductId = productId,
+            CorrelationId = correlationId
+        });
+
+        // Wait for response with timeout
+        using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+        return await tcs.Task.WaitAsync(cts.Token);
+    }
+}</code></pre>
+<p><strong>Q: Implement service discovery pattern for dynamic service registration.</strong></p>
+<p>A: Use Consul or Kubernetes service discovery.</p>
+<pre class="language-csharp"><code class="language-csharp">// Service Registration
+public class ConsulServiceRegistration : IHostedService
+{
+    private readonly IConsulClient _consulClient;
+    private readonly IConfiguration _configuration;
+    private string _registrationId;
+
+    public async Task StartAsync(CancellationToken cancellationToken)
+    {
+        _registrationId = $&quot;{_configuration[&quot;ServiceName&quot;]}-{Guid.NewGuid()}&quot;;
+
+        var registration = new AgentServiceRegistration
+        {
+            ID = _registrationId,
+            Name = _configuration[&quot;ServiceName&quot;],
+            Address = _configuration[&quot;ServiceAddress&quot;],
+            Port = int.Parse(_configuration[&quot;ServicePort&quot;]),
+            Tags = new[] { &quot;api&quot;, &quot;v1&quot; },
+            Check = new AgentServiceCheck
+            {
+                HTTP = $&quot;http://{_configuration[&quot;ServiceAddress&quot;]}:{_configuration[&quot;ServicePort&quot;]}/health&quot;,
+                Interval = TimeSpan.FromSeconds(10),
+                Timeout = TimeSpan.FromSeconds(5),
+                DeregisterCriticalServiceAfter = TimeSpan.FromMinutes(1)
+            }
+        };
+
+        await _consulClient.Agent.ServiceRegister(registration, cancellationToken);
+    }
+
+    public async Task StopAsync(CancellationToken cancellationToken)
+    {
+        await _consulClient.Agent.ServiceDeregister(_registrationId, cancellationToken);
+    }
+}
+
+// Service Discovery
+public class ConsulServiceDiscovery
+{
+    private readonly IConsulClient _consulClient;
+    private readonly IMemoryCache _cache;
+
+    public async Task&lt;ServiceEndpoint&gt; DiscoverServiceAsync(string serviceName)
+    {
+        return await _cache.GetOrCreateAsync($&quot;service:{serviceName}&quot;, async entry =&gt;
+        {
+            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(30);
+
+            var services = await _consulClient.Health.Service(serviceName, tag: null, passingOnly: true);
+            var service = services.Response
+                .OrderBy(_ =&gt; Guid.NewGuid()) // Random selection
+                .FirstOrDefault();
+
+            if (service == null)
+                throw new ServiceNotFoundException(serviceName);
+
+            return new ServiceEndpoint
+            {
+                Address = service.Service.Address,
+                Port = service.Service.Port
+            };
+        });
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="cqrs-event-sourcing">CQRS & Event Sourcing</h2>
+<p><strong>Q: Implement CQRS pattern for an order management system.</strong></p>
+<p>A: Separate read and write models with different databases.</p>
+<pre class="language-csharp"><code class="language-csharp">// Write Model (Commands)
+public class CreateOrderCommand
+{
+    public Guid CustomerId { get; set; }
+    public List&lt;OrderItem&gt; Items { get; set; }
+    public Address ShippingAddress { get; set; }
+}
+
+public class CreateOrderCommandHandler
+{
+    private readonly OrderDbContext _writeDb;
+    private readonly IMessageBus _bus;
+
+    public async Task&lt;Guid&gt; HandleAsync(CreateOrderCommand command)
+    {
+        var order = new Order
+        {
+            Id = Guid.NewGuid(),
+            CustomerId = command.CustomerId,
+            Items = command.Items,
+            Status = OrderStatus.Pending,
+            CreatedAt = DateTime.UtcNow
+        };
+
+        _writeDb.Orders.Add(order);
+        await _writeDb.SaveChangesAsync();
+
+        // Publish event for read model update
+        await _bus.PublishAsync(new OrderCreatedEvent
+        {
+            OrderId = order.Id,
+            CustomerId = order.CustomerId,
+            Items = order.Items,
+            Total = order.Items.Sum(i =&gt; i.Price * i.Quantity),
+            CreatedAt = order.CreatedAt
+        });
+
+        return order.Id;
+    }
+}
+
+// Read Model (Queries)
+public class OrderSummaryQuery
+{
+    public Guid CustomerId { get; set; }
+    public DateTime? FromDate { get; set; }
+    public DateTime? ToDate { get; set; }
+}
+
+public class OrderSummaryQueryHandler
+{
+    private readonly IMongoDatabase _readDb; // Denormalized read database
+
+    public async Task&lt;List&lt;OrderSummary&gt;&gt; HandleAsync(OrderSummaryQuery query)
+    {
+        var collection = _readDb.GetCollection&lt;OrderSummary&gt;(&quot;order_summaries&quot;);
+
+        var filter = Builders&lt;OrderSummary&gt;.Filter.Eq(o =&gt; o.CustomerId, query.CustomerId);
+
+        if (query.FromDate.HasValue)
+            filter &amp;= Builders&lt;OrderSummary&gt;.Filter.Gte(o =&gt; o.CreatedAt, query.FromDate.Value);
+
+        if (query.ToDate.HasValue)
+            filter &amp;= Builders&lt;OrderSummary&gt;.Filter.Lte(o =&gt; o.CreatedAt, query.ToDate.Value);
+
+        return await collection.Find(filter).ToListAsync();
+    }
+}
+
+// Read Model Updater (Event Handler)
+public class OrderCreatedEventHandler : IMessageHandler&lt;OrderCreatedEvent&gt;
+{
+    private readonly IMongoDatabase _readDb;
+
+    public async Task HandleAsync(OrderCreatedEvent evt)
+    {
+        var collection = _readDb.GetCollection&lt;OrderSummary&gt;(&quot;order_summaries&quot;);
+
+        var summary = new OrderSummary
+        {
+            OrderId = evt.OrderId,
+            CustomerId = evt.CustomerId,
+            ItemCount = evt.Items.Count,
+            TotalAmount = evt.Total,
+            CreatedAt = evt.CreatedAt,
+            Status = &quot;Pending&quot;
+        };
+
+        await collection.InsertOneAsync(summary);
+    }
+}</code></pre>
+<p><strong>Q: Design event sourcing system for account transactions.</strong></p>
+<p>A: Store all state changes as events, rebuild state by replaying events.</p>
+<pre class="language-csharp"><code class="language-csharp">// Domain Events
+public abstract record DomainEvent
+{
+    public Guid AggregateId { get; init; }
+    public long Version { get; init; }
+    public DateTime Timestamp { get; init; }
+}
+
+public record AccountCreatedEvent : DomainEvent
+{
+    public string AccountNumber { get; init; }
+    public string CustomerName { get; init; }
+}
+
+public record FundsDepositedEvent : DomainEvent
+{
+    public decimal Amount { get; init; }
+    public string Description { get; init; }
+}
+
+public record FundsWithdrawnEvent : DomainEvent
+{
+    public decimal Amount { get; init; }
+    public string Description { get; init; }
+}
+
+// Aggregate
+public class Account
+{
+    private readonly List&lt;DomainEvent&gt; _uncommittedEvents = new();
+
+    public Guid Id { get; private set; }
+    public string AccountNumber { get; private set; }
+    public decimal Balance { get; private set; }
+    public long Version { get; private set; }
+
+    // Factory method
+    public static Account Create(Guid id, string accountNumber, string customerName)
+    {
+        var account = new Account();
+        account.Apply(new AccountCreatedEvent
+        {
+            AggregateId = id,
+            AccountNumber = accountNumber,
+            CustomerName = customerName,
+            Version = 1,
+            Timestamp = DateTime.UtcNow
+        });
+        return account;
+    }
+
+    // Command methods
+    public void Deposit(decimal amount, string description)
+    {
+        if (amount &lt;= 0)
+            throw new InvalidOperationException(&quot;Amount must be positive&quot;);
+
+        Apply(new FundsDepositedEvent
+        {
+            AggregateId = Id,
+            Amount = amount,
+            Description = description,
+            Version = Version + 1,
+            Timestamp = DateTime.UtcNow
+        });
+    }
+
+    public void Withdraw(decimal amount, string description)
+    {
+        if (amount &lt;= 0)
+            throw new InvalidOperationException(&quot;Amount must be positive&quot;);
+
+        if (Balance &lt; amount)
+            throw new InvalidOperationException(&quot;Insufficient funds&quot;);
+
+        Apply(new FundsWithdrawnEvent
+        {
+            AggregateId = Id,
+            Amount = amount,
+            Description = description,
+            Version = Version + 1,
+            Timestamp = DateTime.UtcNow
+        });
+    }
+
+    // Event application
+    private void Apply(DomainEvent @event)
+    {
+        When(@event);
+        _uncommittedEvents.Add(@event);
+    }
+
+    private void When(DomainEvent @event)
+    {
+        switch (@event)
+        {
+            case AccountCreatedEvent e:
+                Id = e.AggregateId;
+                AccountNumber = e.AccountNumber;
+                Balance = 0;
+                Version = e.Version;
+                break;
+
+            case FundsDepositedEvent e:
+                Balance += e.Amount;
+                Version = e.Version;
+                break;
+
+            case FundsWithdrawnEvent e:
+                Balance -= e.Amount;
+                Version = e.Version;
+                break;
+        }
+    }
+
+    // Reconstitution from event stream
+    public static Account FromEvents(IEnumerable&lt;DomainEvent&gt; events)
+    {
+        var account = new Account();
+        foreach (var @event in events)
+        {
+            account.When(@event);
+        }
+        return account;
+    }
+
+    public IReadOnlyList&lt;DomainEvent&gt; GetUncommittedEvents() =&gt; _uncommittedEvents;
+    public void MarkEventsAsCommitted() =&gt; _uncommittedEvents.Clear();
+}
+
+// Event Store
+public class EventStore
+{
+    private readonly DbContext _dbContext;
+
+    public async Task SaveEventsAsync(Guid aggregateId, IEnumerable&lt;DomainEvent&gt; events, long expectedVersion)
+    {
+        // Optimistic concurrency check
+        var currentVersion = await _dbContext.Events
+            .Where(e =&gt; e.AggregateId == aggregateId)
+            .MaxAsync(e =&gt; (long?)e.Version) ?? 0;
+
+        if (currentVersion != expectedVersion)
+            throw new ConcurrencyException($&quot;Expected version {expectedVersion}, but found {currentVersion}&quot;);
+
+        foreach (var @event in events)
+        {
+            _dbContext.Events.Add(new EventRecord
+            {
+                AggregateId = aggregateId,
+                EventType = @event.GetType().Name,
+                EventData = JsonSerializer.Serialize(@event),
+                Version = @event.Version,
+                Timestamp = @event.Timestamp
+            });
+        }
+
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task&lt;List&lt;DomainEvent&gt;&gt; GetEventsAsync(Guid aggregateId)
+    {
+        var records = await _dbContext.Events
+            .Where(e =&gt; e.AggregateId == aggregateId)
+            .OrderBy(e =&gt; e.Version)
+            .ToListAsync();
+
+        return records.Select(r =&gt; DeserializeEvent(r.EventType, r.EventData)).ToList();
+    }
+
+    private DomainEvent DeserializeEvent(string eventType, string eventData)
+    {
+        var type = Type.GetType($&quot;YourNamespace.{eventType}&quot;);
+        return (DomainEvent)JsonSerializer.Deserialize(eventData, type);
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="caching-strategies">Caching Strategies</h2>
+<p><strong>Q: Design a multi-layer caching strategy (L1: in-memory, L2: Redis, L3: database).</strong></p>
+<p>A: Implement cache-aside pattern with fallback layers.</p>
+<pre class="language-csharp"><code class="language-csharp">public class MultiLayerCache&lt;T&gt;
+{
+    private readonly IMemoryCache _l1Cache;
+    private readonly IDistributedCache _l2Cache;
+    private readonly Func&lt;string, Task&lt;T&gt;&gt; _l3Loader;
+    private readonly ILogger&lt;MultiLayerCache&lt;T&gt;&gt; _logger;
+
+    public MultiLayerCache(
+        IMemoryCache l1Cache,
+        IDistributedCache l2Cache,
+        Func&lt;string, Task&lt;T&gt;&gt; l3Loader,
+        ILogger&lt;MultiLayerCache&lt;T&gt;&gt; logger)
+    {
+        _l1Cache = l1Cache;
+        _l2Cache = l2Cache;
+        _l3Loader = l3Loader;
+        _logger = logger;
+    }
+
+    public async Task&lt;T&gt; GetAsync(string key)
+    {
+        // L1: Memory cache
+        if (_l1Cache.TryGetValue(key, out T value))
+        {
+            _logger.LogDebug(&quot;Cache hit: L1 (Memory) for key {Key}&quot;, key);
+            return value;
+        }
+
+        // L2: Redis cache
+        var l2Data = await _l2Cache.GetStringAsync(key);
+        if (l2Data != null)
+        {
+            _logger.LogDebug(&quot;Cache hit: L2 (Redis) for key {Key}&quot;, key);
+            value = JsonSerializer.Deserialize&lt;T&gt;(l2Data);
+
+            // Populate L1
+            _l1Cache.Set(key, value, TimeSpan.FromMinutes(5));
+
+            return value;
+        }
+
+        // L3: Database
+        _logger.LogDebug(&quot;Cache miss: Loading from database for key {Key}&quot;, key);
+        value = await _l3Loader(key);
+
+        if (value != null)
+        {
+            // Populate L2 and L1
+            var serialized = JsonSerializer.Serialize(value);
+            await _l2Cache.SetStringAsync(
+                key,
+                serialized,
+                new DistributedCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1)
+                });
+
+            _l1Cache.Set(key, value, TimeSpan.FromMinutes(5));
+        }
+
+        return value;
+    }
+
+    public async Task SetAsync(string key, T value)
+    {
+        // Write through all layers
+        _l1Cache.Set(key, value, TimeSpan.FromMinutes(5));
+
+        var serialized = JsonSerializer.Serialize(value);
+        await _l2Cache.SetStringAsync(
+            key,
+            serialized,
+            new DistributedCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1)
+            });
+    }
+
+    public async Task InvalidateAsync(string key)
+    {
+        _l1Cache.Remove(key);
+        await _l2Cache.RemoveAsync(key);
+    }
+}
+
+// Usage
+public class ProductService
+{
+    private readonly MultiLayerCache&lt;Product&gt; _cache;
+    private readonly DbContext _db;
+
+    public ProductService(
+        IMemoryCache memoryCache,
+        IDistributedCache distributedCache,
+        DbContext db,
+        ILogger&lt;MultiLayerCache&lt;Product&gt;&gt; logger)
+    {
+        _db = db;
+        _cache = new MultiLayerCache&lt;Product&gt;(
+            memoryCache,
+            distributedCache,
+            async (key) =&gt; await _db.Products.FindAsync(key),
+            logger);
+    }
+
+    public async Task&lt;Product&gt; GetProductAsync(string id)
+    {
+        return await _cache.GetAsync($&quot;product:{id}&quot;);
+    }
+}</code></pre>
+<p><strong>Q: Implement cache invalidation strategy for distributed systems.</strong></p>
+<p>A: Use pub/sub pattern for cache invalidation.</p>
+<pre class="language-csharp"><code class="language-csharp">public class DistributedCacheInvalidator
+{
+    private readonly IConnectionMultiplexer _redis;
+    private readonly IMemoryCache _localCache;
+    private readonly ILogger&lt;DistributedCacheInvalidator&gt; _logger;
+    private ISubscriber _subscriber;
+
+    public DistributedCacheInvalidator(
+        IConnectionMultiplexer redis,
+        IMemoryCache localCache,
+        ILogger&lt;DistributedCacheInvalidator&gt; logger)
+    {
+        _redis = redis;
+        _localCache = localCache;
+        _logger = logger;
+    }
+
+    public async Task InitializeAsync()
+    {
+        _subscriber = _redis.GetSubscriber();
+        await _subscriber.SubscribeAsync(&quot;cache:invalidate&quot;, (channel, message) =&gt;
+        {
+            _logger.LogInformation(&quot;Received cache invalidation for: {Key}&quot;, message);
+            _localCache.Remove(message);
+        });
+    }
+
+    public async Task InvalidateAsync(string key)
+    {
+        // Remove from local cache
+        _localCache.Remove(key);
+
+        // Remove from Redis
+        var db = _redis.GetDatabase();
+        await db.KeyDeleteAsync(key);
+
+        // Notify other instances
+        await _subscriber.PublishAsync(&quot;cache:invalidate&quot;, key);
+        _logger.LogInformation(&quot;Published cache invalidation for: {Key}&quot;, key);
+    }
+
+    public async Task InvalidatePatternAsync(string pattern)
+    {
+        var db = _redis.GetDatabase();
+        var endpoints = _redis.GetEndPoints();
+
+        foreach (var endpoint in endpoints)
+        {
+            var server = _redis.GetServer(endpoint);
+            var keys = server.Keys(pattern: pattern);
+
+            foreach (var key in keys)
+            {
+                await InvalidateAsync(key);
+            }
+        }
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="database-scaling">Database Scaling</h2>
+<p><strong>Q: Design read replica strategy for handling high read traffic.</strong></p>
+<p>A: Separate read and write database connections.</p>
+<pre class="language-csharp"><code class="language-csharp">public class DatabaseConnectionFactory
+{
+    private readonly string _writeConnectionString;
+    private readonly List&lt;string&gt; _readConnectionStrings;
+    private int _currentReadIndex = 0;
+
+    public DatabaseConnectionFactory(IConfiguration configuration)
+    {
+        _writeConnectionString = configuration.GetConnectionString(&quot;WriteDatabase&quot;);
+        _readConnectionStrings = configuration.GetSection(&quot;ReadDatabases&quot;)
+            .Get&lt;List&lt;string&gt;&gt;();
+    }
+
+    public DbConnection GetWriteConnection()
+    {
+        return new SqlConnection(_writeConnectionString);
+    }
+
+    public DbConnection GetReadConnection()
+    {
+        // Round-robin load balancing
+        var index = Interlocked.Increment(ref _currentReadIndex) % _readConnectionStrings.Count;
+        return new SqlConnection(_readConnectionStrings[index]);
+    }
+}
+
+// DbContext with read/write separation
+public class TradingDbContext : DbContext
+{
+    private readonly DatabaseConnectionFactory _connectionFactory;
+    private readonly bool _isReadOnly;
+
+    public TradingDbContext(
+        DbContextOptions&lt;TradingDbContext&gt; options,
+        DatabaseConnectionFactory connectionFactory,
+        bool isReadOnly = false)
+        : base(options)
+    {
+        _connectionFactory = connectionFactory;
+        _isReadOnly = isReadOnly;
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+            var connection = _isReadOnly
+                ? _connectionFactory.GetReadConnection()
+                : _connectionFactory.GetWriteConnection();
+
+            optionsBuilder.UseSqlServer(connection);
+        }
+    }
+}
+
+// Repository with read/write contexts
+public class OrderRepository
+{
+    private readonly IDbContextFactory&lt;TradingDbContext&gt; _contextFactory;
+
+    public async Task&lt;Order&gt; GetByIdAsync(Guid id)
+    {
+        // Use read replica
+        await using var context = _contextFactory.CreateDbContext();
+        context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+
+        return await context.Orders
+            .AsNoTracking()
+            .FirstOrDefaultAsync(o =&gt; o.Id == id);
+    }
+
+    public async Task&lt;Guid&gt; CreateAsync(Order order)
+    {
+        // Use write database
+        await using var context = _contextFactory.CreateDbContext();
+
+        context.Orders.Add(order);
+        await context.SaveChangesAsync();
+
+        return order.Id;
+    }
+}</code></pre>
+<p><strong>Q: Design database sharding strategy for multi-tenant application.</strong></p>
+<p>A: Implement tenant-based sharding.</p>
+<pre class="language-csharp"><code class="language-csharp">public interface IShardSelector
+{
+    string SelectShard(string tenantId);
+}
+
+public class HashBasedShardSelector : IShardSelector
+{
+    private readonly List&lt;string&gt; _shardConnectionStrings;
+
+    public HashBasedShardSelector(IConfiguration configuration)
+    {
+        _shardConnectionStrings = configuration.GetSection(&quot;Shards&quot;)
+            .Get&lt;List&lt;string&gt;&gt;();
+    }
+
+    public string SelectShard(string tenantId)
+    {
+        var hash = tenantId.GetHashCode();
+        var shardIndex = Math.Abs(hash) % _shardConnectionStrings.Count;
+        return _shardConnectionStrings[shardIndex];
+    }
+}
+
+public class ShardedDbContextFactory
+{
+    private readonly IShardSelector _shardSelector;
+    private readonly ITenantService _tenantService;
+
+    public ShardedDbContextFactory(
+        IShardSelector shardSelector,
+        ITenantService tenantService)
+    {
+        _shardSelector = shardSelector;
+        _tenantService = tenantService;
+    }
+
+    public TradingDbContext CreateContext()
+    {
+        var tenantId = _tenantService.GetCurrentTenantId();
+        var connectionString = _shardSelector.SelectShard(tenantId);
+
+        var optionsBuilder = new DbContextOptionsBuilder&lt;TradingDbContext&gt;();
+        optionsBuilder.UseSqlServer(connectionString);
+
+        return new TradingDbContext(optionsBuilder.Options);
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="high-availability-patterns">High Availability Patterns</h2>
+<p><strong>Q: Design circuit breaker pattern for external API calls.</strong></p>
+<p>A: Already covered in async-resilience.md, but here's a distributed version using Redis:</p>
+<pre class="language-csharp"><code class="language-csharp">public class DistributedCircuitBreaker
+{
+    private readonly IConnectionMultiplexer _redis;
+    private readonly string _serviceKey;
+    private readonly int _failureThreshold;
+    private readonly TimeSpan _timeout;
+
+    public DistributedCircuitBreaker(
+        IConnectionMultiplexer redis,
+        string serviceKey,
+        int failureThreshold,
+        TimeSpan timeout)
+    {
+        _redis = redis;
+        _serviceKey = $&quot;circuit:{serviceKey}&quot;;
+        _failureThreshold = failureThreshold;
+        _timeout = timeout;
+    }
+
+    public async Task&lt;T&gt; ExecuteAsync&lt;T&gt;(Func&lt;Task&lt;T&gt;&gt; operation)
+    {
+        var db = _redis.GetDatabase();
+
+        // Check circuit state
+        var state = await db.StringGetAsync($&quot;{_serviceKey}:state&quot;);
+        if (state == &quot;open&quot;)
+        {
+            var openedAt = await db.StringGetAsync($&quot;{_serviceKey}:opened_at&quot;);
+            if (!openedAt.IsNullOrEmpty)
+            {
+                var openTime = DateTimeOffset.FromUnixTimeSeconds((long)openedAt);
+                if (DateTimeOffset.UtcNow - openTime &lt; _timeout)
+                {
+                    throw new CircuitBreakerOpenException();
+                }
+
+                // Try half-open
+                await db.StringSetAsync($&quot;{_serviceKey}:state&quot;, &quot;half-open&quot;);
+            }
+        }
+
+        try
+        {
+            var result = await operation();
+
+            // Success - reset if half-open
+            if (state == &quot;half-open&quot;)
+            {
+                await db.KeyDeleteAsync($&quot;{_serviceKey}:failures&quot;);
+                await db.StringSetAsync($&quot;{_serviceKey}:state&quot;, &quot;closed&quot;);
+            }
+
+            return result;
+        }
+        catch (Exception)
+        {
+            var failures = await db.StringIncrementAsync($&quot;{_serviceKey}:failures&quot;);
+
+            if (failures &gt;= _failureThreshold)
+            {
+                await db.StringSetAsync($&quot;{_serviceKey}:state&quot;, &quot;open&quot;);
+                await db.StringSetAsync(
+                    $&quot;{_serviceKey}:opened_at&quot;,
+                    DateTimeOffset.UtcNow.ToUnixTimeSeconds());
+            }
+
+            throw;
+        }
+    }
+}</code></pre>
+<p><strong>Q: Implement health check aggregator for microservices.</strong></p>
+<p>A: Collect health status from all services.</p>
+<pre class="language-csharp"><code class="language-csharp">public class AggregatedHealthCheck : IHealthCheck
+{
+    private readonly IHttpClientFactory _httpClientFactory;
+    private readonly IConfiguration _configuration;
+
+    public async Task&lt;HealthCheckResult&gt; CheckHealthAsync(
+        HealthCheckContext context,
+        CancellationToken cancellationToken = default)
+    {
+        var services = _configuration.GetSection(&quot;DependentServices&quot;)
+            .Get&lt;List&lt;ServiceEndpoint&gt;&gt;();
+
+        var tasks = services.Select(async service =&gt;
+        {
+            try
+            {
+                var client = _httpClientFactory.CreateClient();
+                var response = await client.GetAsync(
+                    $&quot;{service.Url}/health&quot;,
+                    cancellationToken);
+
+                return new ServiceHealth
+                {
+                    ServiceName = service.Name,
+                    IsHealthy = response.IsSuccessStatusCode,
+                    ResponseTime = response.Headers.Age?.TotalMilliseconds ?? 0
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ServiceHealth
+                {
+                    ServiceName = service.Name,
+                    IsHealthy = false,
+                    Error = ex.Message
+                };
+            }
+        });
+
+        var results = await Task.WhenAll(tasks);
+        var unhealthy = results.Where(r =&gt; !r.IsHealthy).ToList();
+
+        if (unhealthy.Any())
+        {
+            return HealthCheckResult.Degraded(
+                $&quot;Services unhealthy: {string.Join(&quot;, &quot;, unhealthy.Select(u =&gt; u.ServiceName))}&quot;,
+                data: results.ToDictionary(r =&gt; r.ServiceName, r =&gt; (object)r));
+        }
+
+        return HealthCheckResult.Healthy(&quot;All services healthy&quot;,
+            data: results.ToDictionary(r =&gt; r.ServiceName, r =&gt; (object)r));
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="observability">Observability</h2>
+<p><strong>Q: Design distributed tracing system using OpenTelemetry.</strong></p>
+<p>A: Implement tracing across microservices.</p>
+<pre class="language-csharp"><code class="language-csharp">// Startup configuration
+var tracerProvider = Sdk.CreateTracerProviderBuilder()
+    .AddSource(&quot;TradingService&quot;)
+    .SetResourceBuilder(ResourceBuilder.CreateDefault()
+        .AddService(&quot;TradingService&quot;, serviceVersion: &quot;1.0.0&quot;))
+    .AddAspNetCoreInstrumentation(options =&gt;
+    {
+        options.RecordException = true;
+        options.Filter = (httpContext) =&gt;
+        {
+            // Don&#39;t trace health checks
+            return !httpContext.Request.Path.StartsWithSegments(&quot;/health&quot;);
+        };
+    })
+    .AddHttpClientInstrumentation()
+    .AddSqlClientInstrumentation(options =&gt;
+    {
+        options.SetDbStatementForText = true;
+        options.RecordException = true;
+    })
+    .AddJaegerExporter(options =&gt;
+    {
+        options.AgentHost = &quot;jaeger&quot;;
+        options.AgentPort = 6831;
+    })
+    .Build();
+
+// Custom tracing in business logic
+public class OrderService
+{
+    private static readonly ActivitySource ActivitySource = new(&quot;TradingService&quot;);
+    private readonly ILogger&lt;OrderService&gt; _logger;
+
+    public async Task&lt;OrderResult&gt; ProcessOrderAsync(CreateOrderRequest request)
+    {
+        using var activity = ActivitySource.StartActivity(&quot;ProcessOrder&quot;, ActivityKind.Server);
+        activity?.SetTag(&quot;order.customer_id&quot;, request.CustomerId);
+        activity?.SetTag(&quot;order.item_count&quot;, request.Items.Count);
+
+        try
+        {
+            // Step 1: Validate
+            using (var validateActivity = ActivitySource.StartActivity(&quot;ValidateOrder&quot;))
+            {
+                await ValidateOrderAsync(request);
+                validateActivity?.SetTag(&quot;validation.result&quot;, &quot;success&quot;);
+            }
+
+            // Step 2: Create order
+            Guid orderId;
+            using (var createActivity = ActivitySource.StartActivity(&quot;CreateOrder&quot;))
+            {
+                orderId = await CreateOrderInDatabaseAsync(request);
+                createActivity?.SetTag(&quot;order.id&quot;, orderId);
+            }
+
+            // Step 3: Publish event
+            using (var publishActivity = ActivitySource.StartActivity(&quot;PublishOrderEvent&quot;))
+            {
+                await PublishOrderCreatedEventAsync(orderId);
+            }
+
+            activity?.SetStatus(ActivityStatusCode.Ok);
+            return OrderResult.Success(orderId);
+        }
+        catch (Exception ex)
+        {
+            activity?.SetStatus(ActivityStatusCode.Error, ex.Message);
+            activity?.RecordException(ex);
+            _logger.LogError(ex, &quot;Failed to process order&quot;);
+            throw;
+        }
+    }
+}</code></pre>
+<p><strong>Q: Implement centralized logging with correlation IDs.</strong></p>
+<p>A: Use structured logging with correlation tracking.</p>
+<pre class="language-csharp"><code class="language-csharp">public class CorrelationIdMiddleware
+{
+    private readonly RequestDelegate _next;
+    private const string CorrelationIdHeader = &quot;X-Correlation-ID&quot;;
+
+    public async Task InvokeAsync(HttpContext context)
+    {
+        var correlationId = context.Request.Headers[CorrelationIdHeader].FirstOrDefault()
+            ?? Guid.NewGuid().ToString();
+
+        context.Items[&quot;CorrelationId&quot;] = correlationId;
+        context.Response.Headers.Add(CorrelationIdHeader, correlationId);
+
+        using (_logger.BeginScope(new Dictionary&lt;string, object&gt;
+        {
+            [&quot;CorrelationId&quot;] = correlationId,
+            [&quot;RequestPath&quot;] = context.Request.Path
+        }))
+        {
+            await _next(context);
+        }
+    }
+}
+
+// Propagate to downstream services
+public class CorrelationIdDelegatingHandler : DelegatingHandler
+{
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+    protected override async Task&lt;HttpResponseMessage&gt; SendAsync(
+        HttpRequestMessage request,
+        CancellationToken cancellationToken)
+    {
+        var correlationId = _httpContextAccessor.HttpContext?.Items[&quot;CorrelationId&quot;] as string;
+        if (!string.IsNullOrEmpty(correlationId))
+        {
+            request.Headers.Add(&quot;X-Correlation-ID&quot;, correlationId);
+        }
+
+        return await base.SendAsync(request, cancellationToken);
+    }
+}
+
+// Register handler
+services.AddHttpClient(&quot;DownstreamService&quot;)
+    .AddHttpMessageHandler&lt;CorrelationIdDelegatingHandler&gt;();</code></pre>
+<p>---</p>
+<p><strong>Total Exercises: 25+</strong></p>
+<p>Master these patterns to design scalable, resilient distributed systems!</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['midnight', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const fallback = 'light';
+      const initial = supported.includes(saved) ? saved : (window.__studyTheme || fallback);
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          sessionStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+    (() => {
+      const groups = document.querySelectorAll('.sidebar-group');
+      if (!groups.length) return;
+      const storageKey = 'study-open-groups';
+      const saved = sessionStorage.getItem(storageKey);
+      const openFromStorage = new Set(saved ? JSON.parse(saved) : []);
+
+      const activeLink = document.querySelector('.nav-link.active');
+      const activeGroup = activeLink?.closest('.sidebar-group');
+      if (activeGroup?.dataset.group) {
+        openFromStorage.add(activeGroup.dataset.group);
+      }
+
+      const syncStorage = () => {
+        const openIds = Array.from(document.querySelectorAll('.sidebar-group.is-open'))
+          .map((group) => group.dataset.group)
+          .filter(Boolean);
+        sessionStorage.setItem(storageKey, JSON.stringify(openIds));
+      };
+
+      const setExpanded = (group, expanded) => {
+        const header = group.querySelector('.sidebar-group__header');
+        const list = group.querySelector('.sidebar-group__items');
+        group.classList.toggle('is-open', expanded);
+        header?.setAttribute('aria-expanded', expanded);
+        if (list) {
+          list.hidden = !expanded;
+        }
+      };
+
+      groups.forEach((group) => {
+        const shouldOpen = openFromStorage.has(group.dataset.group);
+        setExpanded(group, shouldOpen);
+        const header = group.querySelector('.sidebar-group__header');
+        header?.addEventListener('click', () => {
+          const next = !group.classList.contains('is-open');
+          setExpanded(group, next);
+          syncStorage();
+        });
+      });
+    })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swPath = '../service-worker.js';
+        navigator.serviceWorker.register(swPath).catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+</body>
+</html>

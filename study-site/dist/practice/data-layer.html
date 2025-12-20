@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for Data Layer" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>Data Layer | C# Interview Prep Cheat Sheet</title>
+  <link rel="manifest" href="..\assets/manifest.webmanifest" />
+  <script>
+    (() => {
+      const supported = ['midnight', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const fallback = 'light';
+      const initial = supported.includes(saved) ? saved : fallback;
+      document.documentElement.dataset.theme = initial;
+      window.__studyTheme = initial;
+    })();
+  </script>
+  <link rel="stylesheet" href="..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="midnight">Current</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group" data-group="notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="../notes/logging.html">Logging</a></li><li><a class="nav-link" href="../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/O1-Constant-Time.html">O1 Constant Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/OLogN-Logarithmic-Time.html">OLogN Logarithmic Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/ON-Linear-Time.html">ON Linear Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/ON2-Quadratic-Time.html">ON2 Quadratic Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/ONLogN-Linearithmic-Time.html">ONLogN Linearithmic Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/Space-Complexity.html">Space Complexity</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/ICollection.html">ICollection</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IEnumerable.html">IEnumerable</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IList.html">IList</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IQueryable.html">IQueryable</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IReadOnly.html">IReadOnly</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a class="nav-link" href="../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a class="nav-link" href="../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a class="nav-link" href="../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a class="nav-link" href="../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a class="nav-link" href="../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a class="nav-link" href="../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a class="nav-link" href="../notes/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a class="nav-link" href="../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a class="nav-link" href="../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a class="nav-link" href="../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a class="nav-link" href="../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a class="nav-link" href="../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a class="nav-link" href="../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a class="nav-link" href="../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a class="nav-link" href="../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a class="nav-link" href="../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a class="nav-link" href="../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a class="nav-link" href="../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a class="nav-link" href="../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a class="nav-link" href="../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a class="nav-link" href="../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a class="nav-link" href="../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a class="nav-link" href="../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/01-async-patterns.html">01 Async Patterns</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/02-backpressure-rate-limiting.html">02 Backpressure Rate Limiting</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/03-caching-strategies.html">03 Caching Strategies</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/04-database-scaling.html">04 Database Scaling</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/05-message-queues.html">05 Message Queues</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/06-resilience-patterns.html">06 Resilience Patterns</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/07-observability.html">07 Observability</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/08-complete-example.html">08 Complete Example</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+    </div><div class="sidebar-group is-open" data-group="practice">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
+        <span>Practice</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="../practice/answers.html">Answers</a></li><li><a class="nav-link" href="../practice/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="../practice/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="../practice/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="../practice/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link active" href="../practice/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="../practice/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="../practice/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="../practice/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="../practice/index.html">Practice</a></li><li><a class="nav-link" href="../practice/questions.html">Questions</a></li><li><a class="nav-link" href="../practice/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="../practice/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="../practice/system-design.html">System Design</a></li><li><a class="nav-link" href="../practice/trading-domain.html">Trading Domain</a></li></ul>
+    </div></div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">practice\data-layer.md</div>
+        <h2>Data Layer</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#data-layer-practice-exercises">Data Layer Practice Exercises</a></li><li class="level-2"><a href="#foundational-questions">Foundational Questions</a></li><li class="level-2"><a href="#entity-framework-core-fundamentals">Entity Framework Core Fundamentals</a></li><li class="level-2"><a href="#advanced-entity-framework-patterns">Advanced Entity Framework Patterns</a></li><li class="level-2"><a href="#sql-optimization">SQL Optimization</a></li><li class="level-2"><a href="#indexing-strategies">Indexing Strategies</a></li><li class="level-2"><a href="#transactions-concurrency">Transactions & Concurrency</a></li><li class="level-2"><a href="#migrations-schema-management">Migrations & Schema Management</a></li><li class="level-2"><a href="#dapper-integration">Dapper Integration</a></li></ul></div>
+        <h1 id="data-layer-practice-exercises">Data Layer Practice Exercises</h1>
+<p>Master Entity Framework Core, SQL optimization, database design, and data access patterns for high-performance applications.</p>
+<p>---</p>
+<h2 id="foundational-questions">Foundational Questions</h2>
+<p><strong>Q: Write a SQL query to calculate the rolling 7-day trade volume per instrument.</strong></p>
+<p>A: Use window functions to calculate rolling aggregates.</p>
+<pre class="language-sql"><code class="language-sql">WITH daily AS (
+    SELECT instrument_id,
+           trade_timestamp::date AS trade_date,
+           SUM(volume) AS daily_volume
+    FROM trades
+    GROUP BY instrument_id, trade_timestamp::date
+)
+SELECT instrument_id,
+       trade_date,
+       daily_volume,
+       SUM(daily_volume) OVER (
+           PARTITION BY instrument_id
+           ORDER BY trade_date
+           ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+       ) AS rolling_7d_volume
+FROM daily
+ORDER BY instrument_id, trade_date;</code></pre>
+<p>Use when need rolling metrics in SQL. Avoid when database lacks window functions—use app-side aggregation.</p>
+<p><strong>Q: Explain how you would choose between normalized schemas and denormalized tables for reporting.</strong></p>
+<p>A: Normalized: reduces redundancy, good for OLTP. Changes cascade predictably, but reporting joins can be expensive. Denormalized: duplicates data for fast reads (reporting, analytics). Updates are more complex; rely on ETL pipelines to keep facts in sync. Choose based on workload: mixed? use hybrid star schema or CQRS approach with read-optimized projections.</p>
+<p><strong>Q: Describe the differences between clustered and non-clustered indexes and when to use covering indexes.</strong></p>
+<p>A: Clustered: defines physical order, one per table; great for range scans. Non-clustered: separate structure pointing to data; can include columns.</p>
+<pre class="language-sql"><code class="language-sql">CREATE NONCLUSTERED INDEX IX_Orders_Account_Status
+    ON Orders(AccountId, Status)
+    INCLUDE (CreatedAt, Amount);</code></pre>
+<p>Use covering index when query needs subset of columns; avoid extra lookups. Avoid when frequent writes—maintaining many indexes hurts performance.</p>
+<p><strong>Q: Walk through handling a long-running report query that impacts OLTP performance.</strong></p>
+<p>A: Strategies: read replicas, materialized views, batching, query hints, schedule off-peak. Consider breaking the query into smaller windowed segments and streaming results to avoid locking. Implement caching, pre-aggregation, and monitor execution plans for regressions.</p>
+<p>---</p>
+<h2 id="entity-framework-core-fundamentals">Entity Framework Core Fundamentals</h2>
+<p><strong>Q: Configure a many-to-many relationship with a junction table containing additional properties.</strong></p>
+<p>A: Use explicit junction entity with Fluent API.</p>
+<pre class="language-csharp"><code class="language-csharp">// Entities
+public class Student
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public List&lt;StudentCourse&gt; StudentCourses { get; set; }
+}
+
+public class Course
+{
+    public int Id { get; set; }
+    public string Title { get; set; }
+    public List&lt;StudentCourse&gt; StudentCourses { get; set; }
+}
+
+public class StudentCourse
+{
+    public int StudentId { get; set; }
+    public Student Student { get; set; }
+
+    public int CourseId { get; set; }
+    public Course Course { get; set; }
+
+    // Additional properties
+    public DateTime EnrolledDate { get; set; }
+    public decimal Grade { get; set; }
+}
+
+// Configuration
+public class StudentCourseConfiguration : IEntityTypeConfiguration&lt;StudentCourse&gt;
+{
+    public void Configure(EntityTypeBuilder&lt;StudentCourse&gt; builder)
+    {
+        builder.HasKey(sc =&gt; new { sc.StudentId, sc.CourseId });
+
+        builder.HasOne(sc =&gt; sc.Student)
+            .WithMany(s =&gt; s.StudentCourses)
+            .HasForeignKey(sc =&gt; sc.StudentId);
+
+        builder.HasOne(sc =&gt; sc.Course)
+            .WithMany(c =&gt; c.StudentCourses)
+            .HasForeignKey(sc =&gt; sc.CourseId);
+
+        builder.Property(sc =&gt; sc.EnrolledDate)
+            .HasDefaultValueSql(&quot;GETUTCDATE()&quot;);
+    }
+}</code></pre>
+<p><strong>Q: Implement soft delete with global query filters.</strong></p>
+<p>A: Use query filters to exclude deleted records automatically.</p>
+<pre class="language-csharp"><code class="language-csharp">public interface ISoftDeletable
+{
+    bool IsDeleted { get; set; }
+    DateTime? DeletedAt { get; set; }
+}
+
+public class Order : ISoftDeletable
+{
+    public Guid Id { get; set; }
+    public string OrderNumber { get; set; }
+    public bool IsDeleted { get; set; }
+    public DateTime? DeletedAt { get; set; }
+}
+
+public class TradingDbContext : DbContext
+{
+    public DbSet&lt;Order&gt; Orders { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        // Apply global query filter
+        modelBuilder.Entity&lt;Order&gt;()
+            .HasQueryFilter(o =&gt; !o.IsDeleted);
+
+        // Can apply to all entities implementing interface
+        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        {
+            if (typeof(ISoftDeletable).IsAssignableFrom(entityType.ClrType))
+            {
+                var parameter = Expression.Parameter(entityType.ClrType, &quot;e&quot;);
+                var property = Expression.Property(parameter, nameof(ISoftDeletable.IsDeleted));
+                var condition = Expression.Equal(property, Expression.Constant(false));
+                var lambda = Expression.Lambda(condition, parameter);
+
+                modelBuilder.Entity(entityType.ClrType).HasQueryFilter(lambda);
+            }
+        }
+    }
+
+    public override Task&lt;int&gt; SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        // Intercept deletions and mark as soft deleted
+        foreach (var entry in ChangeTracker.Entries&lt;ISoftDeletable&gt;())
+        {
+            if (entry.State == EntityState.Deleted)
+            {
+                entry.State = EntityState.Modified;
+                entry.Entity.IsDeleted = true;
+                entry.Entity.DeletedAt = DateTime.UtcNow;
+            }
+        }
+
+        return base.SaveChangesAsync(cancellationToken);
+    }
+}
+
+// Query without filter (include deleted)
+var allOrders = await context.Orders
+    .IgnoreQueryFilters()
+    .ToListAsync();</code></pre>
+<p><strong>Q: Implement optimistic concurrency control using row versioning.</strong></p>
+<p>A: Use timestamp/rowversion for conflict detection.</p>
+<pre class="language-csharp"><code class="language-csharp">public class Account
+{
+    public Guid Id { get; set; }
+    public string AccountNumber { get; set; }
+    public decimal Balance { get; set; }
+
+    [Timestamp]
+    public byte[] RowVersion { get; set; }
+}
+
+// Or with Fluent API
+public class AccountConfiguration : IEntityTypeConfiguration&lt;Account&gt;
+{
+    public void Configure(EntityTypeBuilder&lt;Account&gt; builder)
+    {
+        builder.Property(a =&gt; a.RowVersion)
+            .IsRowVersion();
+    }
+}
+
+// Usage
+public class AccountService
+{
+    private readonly TradingDbContext _context;
+
+    public async Task&lt;bool&gt; UpdateBalanceAsync(Guid accountId, decimal newBalance)
+    {
+        var maxRetries = 3;
+        var retryCount = 0;
+
+        while (retryCount &lt; maxRetries)
+        {
+            try
+            {
+                var account = await _context.Accounts.FindAsync(accountId);
+                account.Balance = newBalance;
+
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                retryCount++;
+
+                if (retryCount &gt;= maxRetries)
+                {
+                    throw;
+                }
+
+                // Reload entity with current database values
+                var entry = ex.Entries.Single();
+                await entry.ReloadAsync();
+
+                // Optionally merge changes or apply custom logic
+            }
+        }
+
+        return false;
+    }
+}</code></pre>
+<p><strong>Q: Configure table splitting to map multiple entities to a single table.</strong></p>
+<p>A: Share table between related entities.</p>
+<pre class="language-csharp"><code class="language-csharp">public class Order
+{
+    public Guid Id { get; set; }
+    public string OrderNumber { get; set; }
+    public OrderDetails Details { get; set; }
+}
+
+public class OrderDetails
+{
+    public Guid OrderId { get; set; }
+    public string Notes { get; set; }
+    public string ShippingInstructions { get; set; }
+}
+
+public class OrderConfiguration : IEntityTypeConfiguration&lt;Order&gt;
+{
+    public void Configure(EntityTypeBuilder&lt;Order&gt; builder)
+    {
+        builder.ToTable(&quot;Orders&quot;);
+        builder.HasKey(o =&gt; o.Id);
+
+        builder.HasOne(o =&gt; o.Details)
+            .WithOne()
+            .HasForeignKey&lt;OrderDetails&gt;(d =&gt; d.OrderId);
+
+        builder.OwnsOne(o =&gt; o.Details, details =&gt;
+        {
+            details.ToTable(&quot;Orders&quot;); // Same table
+        });
+    }
+}</code></pre>
+<p><strong>Q: Implement audit trail using change tracking.</strong></p>
+<p>A: Track who/when modified entities.</p>
+<pre class="language-csharp"><code class="language-csharp">public interface IAuditable
+{
+    DateTime CreatedAt { get; set; }
+    string CreatedBy { get; set; }
+    DateTime? ModifiedAt { get; set; }
+    string ModifiedBy { get; set; }
+}
+
+public class Order : IAuditable
+{
+    public Guid Id { get; set; }
+    public string OrderNumber { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public string CreatedBy { get; set; }
+    public DateTime? ModifiedAt { get; set; }
+    public string ModifiedBy { get; set; }
+}
+
+public class TradingDbContext : DbContext
+{
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+    public TradingDbContext(
+        DbContextOptions&lt;TradingDbContext&gt; options,
+        IHttpContextAccessor httpContextAccessor)
+        : base(options)
+    {
+        _httpContextAccessor = httpContextAccessor;
+    }
+
+    public override Task&lt;int&gt; SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        var userId = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value
+            ?? &quot;system&quot;;
+
+        var entries = ChangeTracker.Entries&lt;IAuditable&gt;();
+
+        foreach (var entry in entries)
+        {
+            switch (entry.State)
+            {
+                case EntityState.Added:
+                    entry.Entity.CreatedAt = DateTime.UtcNow;
+                    entry.Entity.CreatedBy = userId;
+                    break;
+
+                case EntityState.Modified:
+                    entry.Entity.ModifiedAt = DateTime.UtcNow;
+                    entry.Entity.ModifiedBy = userId;
+                    break;
+            }
+        }
+
+        return base.SaveChangesAsync(cancellationToken);
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="advanced-entity-framework-patterns">Advanced Entity Framework Patterns</h2>
+<p><strong>Q: Implement repository pattern with specification pattern for complex queries.</strong></p>
+<p>A: Encapsulate query logic in reusable specifications.</p>
+<pre class="language-csharp"><code class="language-csharp">// Specification interface
+public interface ISpecification&lt;T&gt;
+{
+    Expression&lt;Func&lt;T, bool&gt;&gt; Criteria { get; }
+    List&lt;Expression&lt;Func&lt;T, object&gt;&gt;&gt; Includes { get; }
+    List&lt;string&gt; IncludeStrings { get; }
+    Expression&lt;Func&lt;T, object&gt;&gt; OrderBy { get; }
+    Expression&lt;Func&lt;T, object&gt;&gt; OrderByDescending { get; }
+    int Take { get; }
+    int Skip { get; }
+    bool IsPagingEnabled { get; }
+}
+
+// Base specification
+public abstract class BaseSpecification&lt;T&gt; : ISpecification&lt;T&gt;
+{
+    public Expression&lt;Func&lt;T, bool&gt;&gt; Criteria { get; private set; }
+    public List&lt;Expression&lt;Func&lt;T, object&gt;&gt;&gt; Includes { get; } = new();
+    public List&lt;string&gt; IncludeStrings { get; } = new();
+    public Expression&lt;Func&lt;T, object&gt;&gt; OrderBy { get; private set; }
+    public Expression&lt;Func&lt;T, object&gt;&gt; OrderByDescending { get; private set; }
+    public int Take { get; private set; }
+    public int Skip { get; private set; }
+    public bool IsPagingEnabled { get; private set; }
+
+    protected BaseSpecification(Expression&lt;Func&lt;T, bool&gt;&gt; criteria)
+    {
+        Criteria = criteria;
+    }
+
+    protected void AddInclude(Expression&lt;Func&lt;T, object&gt;&gt; includeExpression)
+    {
+        Includes.Add(includeExpression);
+    }
+
+    protected void AddInclude(string includeString)
+    {
+        IncludeStrings.Add(includeString);
+    }
+
+    protected void ApplyOrderBy(Expression&lt;Func&lt;T, object&gt;&gt; orderByExpression)
+    {
+        OrderBy = orderByExpression;
+    }
+
+    protected void ApplyOrderByDescending(Expression&lt;Func&lt;T, object&gt;&gt; orderByDescExpression)
+    {
+        OrderByDescending = orderByDescExpression;
+    }
+
+    protected void ApplyPaging(int skip, int take)
+    {
+        Skip = skip;
+        Take = take;
+        IsPagingEnabled = true;
+    }
+}
+
+// Concrete specification
+public class OrdersByCustomerSpec : BaseSpecification&lt;Order&gt;
+{
+    public OrdersByCustomerSpec(Guid customerId, DateTime? fromDate = null, DateTime? toDate = null)
+        : base(o =&gt; o.CustomerId == customerId &amp;&amp;
+                   (!fromDate.HasValue || o.CreatedAt &gt;= fromDate.Value) &amp;&amp;
+                   (!toDate.HasValue || o.CreatedAt &lt;= toDate.Value))
+    {
+        AddInclude(o =&gt; o.Items);
+        AddInclude(o =&gt; o.Customer);
+        ApplyOrderByDescending(o =&gt; o.CreatedAt);
+    }
+}
+
+// Repository with specification support
+public class Repository&lt;T&gt; : IRepository&lt;T&gt; where T : class
+{
+    private readonly DbContext _context;
+
+    public Repository(DbContext context)
+    {
+        _context = context;
+    }
+
+    public async Task&lt;List&lt;T&gt;&gt; ListAsync(ISpecification&lt;T&gt; spec)
+    {
+        var query = ApplySpecification(spec);
+        return await query.ToListAsync();
+    }
+
+    public async Task&lt;int&gt; CountAsync(ISpecification&lt;T&gt; spec)
+    {
+        var query = ApplySpecification(spec);
+        return await query.CountAsync();
+    }
+
+    private IQueryable&lt;T&gt; ApplySpecification(ISpecification&lt;T&gt; spec)
+    {
+        return SpecificationEvaluator&lt;T&gt;.GetQuery(_context.Set&lt;T&gt;().AsQueryable(), spec);
+    }
+}
+
+// Specification evaluator
+public class SpecificationEvaluator&lt;T&gt; where T : class
+{
+    public static IQueryable&lt;T&gt; GetQuery(IQueryable&lt;T&gt; inputQuery, ISpecification&lt;T&gt; spec)
+    {
+        var query = inputQuery;
+
+        if (spec.Criteria != null)
+        {
+            query = query.Where(spec.Criteria);
+        }
+
+        query = spec.Includes.Aggregate(query, (current, include) =&gt; current.Include(include));
+        query = spec.IncludeStrings.Aggregate(query, (current, include) =&gt; current.Include(include));
+
+        if (spec.OrderBy != null)
+        {
+            query = query.OrderBy(spec.OrderBy);
+        }
+        else if (spec.OrderByDescending != null)
+        {
+            query = query.OrderByDescending(spec.OrderByDescending);
+        }
+
+        if (spec.IsPagingEnabled)
+        {
+            query = query.Skip(spec.Skip).Take(spec.Take);
+        }
+
+        return query;
+    }
+}
+
+// Usage
+var spec = new OrdersByCustomerSpec(customerId, fromDate: DateTime.UtcNow.AddDays(-30));
+var orders = await repository.ListAsync(spec);</code></pre>
+<p><strong>Q: Implement Unit of Work pattern for transaction management.</strong></p>
+<p>A: Coordinate multiple repositories in a single transaction.</p>
+<pre class="language-csharp"><code class="language-csharp">public interface IUnitOfWork : IDisposable
+{
+    IRepository&lt;T&gt; Repository&lt;T&gt;() where T : class;
+    Task&lt;int&gt; SaveChangesAsync(CancellationToken cancellationToken = default);
+    Task BeginTransactionAsync();
+    Task CommitTransactionAsync();
+    Task RollbackTransactionAsync();
+}
+
+public class UnitOfWork : IUnitOfWork
+{
+    private readonly DbContext _context;
+    private IDbContextTransaction _transaction;
+    private readonly Dictionary&lt;Type, object&gt; _repositories = new();
+
+    public UnitOfWork(DbContext context)
+    {
+        _context = context;
+    }
+
+    public IRepository&lt;T&gt; Repository&lt;T&gt;() where T : class
+    {
+        var type = typeof(T);
+
+        if (!_repositories.ContainsKey(type))
+        {
+            _repositories[type] = new Repository&lt;T&gt;(_context);
+        }
+
+        return (IRepository&lt;T&gt;)_repositories[type];
+    }
+
+    public async Task&lt;int&gt; SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        return await _context.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task BeginTransactionAsync()
+    {
+        _transaction = await _context.Database.BeginTransactionAsync();
+    }
+
+    public async Task CommitTransactionAsync()
+    {
+        try
+        {
+            await _context.SaveChangesAsync();
+            await _transaction.CommitAsync();
+        }
+        catch
+        {
+            await RollbackTransactionAsync();
+            throw;
+        }
+        finally
+        {
+            _transaction?.Dispose();
+            _transaction = null;
+        }
+    }
+
+    public async Task RollbackTransactionAsync()
+    {
+        await _transaction?.RollbackAsync();
+        _transaction?.Dispose();
+        _transaction = null;
+    }
+
+    public void Dispose()
+    {
+        _transaction?.Dispose();
+        _context?.Dispose();
+    }
+}
+
+// Usage
+public class OrderService
+{
+    private readonly IUnitOfWork _unitOfWork;
+
+    public async Task CreateOrderAsync(CreateOrderCommand command)
+    {
+        await _unitOfWork.BeginTransactionAsync();
+
+        try
+        {
+            var order = new Order { /* ... */ };
+            await _unitOfWork.Repository&lt;Order&gt;().AddAsync(order);
+
+            var inventory = await _unitOfWork.Repository&lt;Inventory&gt;()
+                .GetByIdAsync(command.ProductId);
+            inventory.Quantity -= command.Quantity;
+
+            await _unitOfWork.CommitTransactionAsync();
+        }
+        catch
+        {
+            await _unitOfWork.RollbackTransactionAsync();
+            throw;
+        }
+    }
+}</code></pre>
+<p><strong>Q: Implement custom value converter for complex types.</strong></p>
+<p>A: Convert between property types and database columns.</p>
+<pre class="language-csharp"><code class="language-csharp">public class Money
+{
+    public decimal Amount { get; }
+    public string Currency { get; }
+
+    public Money(decimal amount, string currency)
+    {
+        Amount = amount;
+        Currency = currency ?? throw new ArgumentNullException(nameof(currency));
+    }
+}
+
+public class MoneyConverter : ValueConverter&lt;Money, string&gt;
+{
+    public MoneyConverter()
+        : base(
+            money =&gt; $&quot;{money.Amount}|{money.Currency}&quot;,
+            str =&gt; FromString(str))
+    {
+    }
+
+    private static Money FromString(string value)
+    {
+        var parts = value.Split(&#39;|&#39;);
+        return new Money(decimal.Parse(parts[0]), parts[1]);
+    }
+}
+
+// Configuration
+public class OrderConfiguration : IEntityTypeConfiguration&lt;Order&gt;
+{
+    public void Configure(EntityTypeBuilder&lt;Order&gt; builder)
+    {
+        builder.Property(o =&gt; o.TotalAmount)
+            .HasConversion(new MoneyConverter())
+            .HasColumnName(&quot;TotalAmount&quot;);
+    }
+}
+
+// Alternative: JSON conversion for complex objects
+public class Address
+{
+    public string Street { get; set; }
+    public string City { get; set; }
+    public string ZipCode { get; set; }
+}
+
+public class AddressConverter : ValueConverter&lt;Address, string&gt;
+{
+    public AddressConverter()
+        : base(
+            address =&gt; JsonSerializer.Serialize(address, (JsonSerializerOptions)null),
+            json =&gt; JsonSerializer.Deserialize&lt;Address&gt;(json, (JsonSerializerOptions)null))
+    {
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="sql-optimization">SQL Optimization</h2>
+<p><strong>Q: Optimize a query with multiple joins and aggregations.</strong></p>
+<p>A: Analyze execution plan and apply optimizations.</p>
+<pre class="language-sql"><code class="language-sql">-- ❌ Slow query
+SELECT c.CustomerName,
+       COUNT(o.OrderId) AS OrderCount,
+       SUM(oi.Quantity * oi.UnitPrice) AS TotalSpent
+FROM Customers c
+LEFT JOIN Orders o ON c.CustomerId = o.CustomerId
+LEFT JOIN OrderItems oi ON o.OrderId = oi.OrderId
+WHERE o.OrderDate &gt;= &#39;2024-01-01&#39;
+GROUP BY c.CustomerId, c.CustomerName
+HAVING SUM(oi.Quantity * oi.UnitPrice) &gt; 1000
+ORDER BY TotalSpent DESC;
+
+-- ✅ Optimized with CTE and proper indexing
+-- First, create covering indexes:
+CREATE NONCLUSTERED INDEX IX_Orders_CustomerId_OrderDate
+    ON Orders(CustomerId, OrderDate)
+    INCLUDE (OrderId);
+
+CREATE NONCLUSTERED INDEX IX_OrderItems_OrderId
+    ON OrderItems(OrderId)
+    INCLUDE (Quantity, UnitPrice);
+
+-- Optimized query
+WITH OrderTotals AS (
+    SELECT o.CustomerId,
+           COUNT(DISTINCT o.OrderId) AS OrderCount,
+           SUM(oi.Quantity * oi.UnitPrice) AS TotalSpent
+    FROM Orders o
+    INNER JOIN OrderItems oi ON o.OrderId = oi.OrderId
+    WHERE o.OrderDate &gt;= &#39;2024-01-01&#39;
+    GROUP BY o.CustomerId
+    HAVING SUM(oi.Quantity * oi.UnitPrice) &gt; 1000
+)
+SELECT c.CustomerName,
+       ot.OrderCount,
+       ot.TotalSpent
+FROM Customers c
+INNER JOIN OrderTotals ot ON c.CustomerId = ot.CustomerId
+ORDER BY ot.TotalSpent DESC;</code></pre>
+<p><strong>Q: Implement pagination efficiently for large datasets.</strong></p>
+<p>A: Use OFFSET/FETCH or keyset pagination.</p>
+<pre class="language-sql"><code class="language-sql">-- ❌ Slow for large offsets
+SELECT OrderId, OrderNumber, CreatedAt
+FROM Orders
+ORDER BY CreatedAt DESC
+OFFSET 10000 ROWS
+FETCH NEXT 20 ROWS ONLY;
+
+-- ✅ Keyset pagination (seek method)
+-- First page
+SELECT TOP 20 OrderId, OrderNumber, CreatedAt
+FROM Orders
+ORDER BY CreatedAt DESC, OrderId DESC;
+
+-- Next page (using last CreatedAt and OrderId from previous page)
+SELECT TOP 20 OrderId, OrderNumber, CreatedAt
+FROM Orders
+WHERE CreatedAt &lt; @LastCreatedAt
+   OR (CreatedAt = @LastCreatedAt AND OrderId &lt; @LastOrderId)
+ORDER BY CreatedAt DESC, OrderId DESC;
+
+-- Index for keyset pagination
+CREATE NONCLUSTERED INDEX IX_Orders_CreatedAt_OrderId
+    ON Orders(CreatedAt DESC, OrderId DESC)
+    INCLUDE (OrderNumber);</code></pre>
+<p><strong>Q: Optimize EXISTS vs IN vs JOIN.</strong></p>
+<p>A: Choose based on data characteristics and cardinality.</p>
+<pre class="language-sql"><code class="language-sql">-- Scenario: Find customers who have placed orders
+
+-- ✅ EXISTS - Best when checking existence (stops at first match)
+SELECT c.CustomerId, c.CustomerName
+FROM Customers c
+WHERE EXISTS (
+    SELECT 1
+    FROM Orders o
+    WHERE o.CustomerId = c.CustomerId
+);
+
+-- ❌ IN - Slower with large subquery results
+SELECT c.CustomerId, c.CustomerName
+FROM Customers c
+WHERE c.CustomerId IN (
+    SELECT DISTINCT CustomerId
+    FROM Orders
+);
+
+-- ✅ INNER JOIN with DISTINCT - Good for retrieving additional columns
+SELECT DISTINCT c.CustomerId, c.CustomerName
+FROM Customers c
+INNER JOIN Orders o ON c.CustomerId = o.CustomerId;
+
+-- NOT EXISTS vs NOT IN
+-- ✅ NOT EXISTS - Handles NULLs correctly
+SELECT c.CustomerId, c.CustomerName
+FROM Customers c
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM Orders o
+    WHERE o.CustomerId = c.CustomerId
+);
+
+-- ❌ NOT IN - Returns empty if subquery contains NULL
+SELECT c.CustomerId, c.CustomerName
+FROM Customers c
+WHERE c.CustomerId NOT IN (
+    SELECT CustomerId
+    FROM Orders
+    WHERE CustomerId IS NOT NULL  -- Must exclude NULLs!
+);</code></pre>
+<p><strong>Q: Use window functions for ranking and percentiles.</strong></p>
+<p>A: Calculate rankings without self-joins.</p>
+<pre class="language-csharp"><code class="language-csharp">-- Rank products by sales within each category
+SELECT ProductId,
+       CategoryId,
+       ProductName,
+       TotalSales,
+       ROW_NUMBER() OVER (PARTITION BY CategoryId ORDER BY TotalSales DESC) AS SalesRank,
+       RANK() OVER (PARTITION BY CategoryId ORDER BY TotalSales DESC) AS SalesRankWithTies,
+       DENSE_RANK() OVER (PARTITION BY CategoryId ORDER BY TotalSales DESC) AS DenseSalesRank,
+       PERCENT_RANK() OVER (PARTITION BY CategoryId ORDER BY TotalSales DESC) AS PercentileRank,
+       NTILE(4) OVER (PARTITION BY CategoryId ORDER BY TotalSales DESC) AS Quartile
+FROM (
+    SELECT p.ProductId,
+           p.CategoryId,
+           p.ProductName,
+           SUM(oi.Quantity * oi.UnitPrice) AS TotalSales
+    FROM Products p
+    INNER JOIN OrderItems oi ON p.ProductId = oi.ProductId
+    GROUP BY p.ProductId, p.CategoryId, p.ProductName
+) AS ProductSales;
+
+-- Calculate running totals
+SELECT OrderDate,
+       OrderId,
+       Amount,
+       SUM(Amount) OVER (ORDER BY OrderDate, OrderId ROWS UNBOUNDED PRECEDING) AS RunningTotal,
+       AVG(Amount) OVER (ORDER BY OrderDate ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) AS MovingAvg7Day
+FROM Orders
+ORDER BY OrderDate, OrderId;</code></pre>
+<p>---</p>
+<h2 id="indexing-strategies">Indexing Strategies</h2>
+<p><strong>Q: Design composite index for a multi-column WHERE clause.</strong></p>
+<p>A: Order columns by selectivity and usage patterns.</p>
+<pre class="language-sql"><code class="language-sql">-- Query pattern
+SELECT OrderId, CustomerId, OrderDate, Status, TotalAmount
+FROM Orders
+WHERE CustomerId = @CustomerId
+  AND Status = @Status
+  AND OrderDate &gt;= @StartDate
+  AND OrderDate &lt; @EndDate;
+
+-- ✅ Optimal composite index (equality → range)
+CREATE NONCLUSTERED INDEX IX_Orders_CustomerId_Status_OrderDate
+    ON Orders(CustomerId, Status, OrderDate)
+    INCLUDE (TotalAmount);
+
+-- Index usage statistics
+SELECT OBJECT_NAME(s.object_id) AS TableName,
+       i.name AS IndexName,
+       s.user_seeks,
+       s.user_scans,
+       s.user_lookups,
+       s.user_updates,
+       s.last_user_seek,
+       s.last_user_scan
+FROM sys.dm_db_index_usage_stats s
+INNER JOIN sys.indexes i ON s.object_id = i.object_id AND s.index_id = i.index_id
+WHERE s.database_id = DB_ID()
+  AND OBJECT_NAME(s.object_id) = &#39;Orders&#39;
+ORDER BY s.user_seeks + s.user_scans + s.user_lookups DESC;</code></pre>
+<p><strong>Q: Identify and remove unused or duplicate indexes.</strong></p>
+<p>A: Find indexes with low usage and high maintenance cost.</p>
+<pre class="language-sql"><code class="language-sql">-- Find unused indexes
+SELECT OBJECT_NAME(i.object_id) AS TableName,
+       i.name AS IndexName,
+       i.type_desc AS IndexType,
+       s.user_seeks,
+       s.user_scans,
+       s.user_lookups,
+       s.user_updates,
+       (s.user_updates - (s.user_seeks + s.user_scans + s.user_lookups)) AS UpdateOverhead
+FROM sys.indexes i
+LEFT JOIN sys.dm_db_index_usage_stats s
+    ON i.object_id = s.object_id AND i.index_id = s.index_id AND s.database_id = DB_ID()
+WHERE OBJECTPROPERTY(i.object_id, &#39;IsUserTable&#39;) = 1
+  AND i.type_desc &lt;&gt; &#39;CLUSTERED&#39;
+  AND i.is_primary_key = 0
+  AND i.is_unique_constraint = 0
+  AND (s.user_seeks + s.user_scans + s.user_lookups = 0 OR s.user_seeks IS NULL)
+ORDER BY s.user_updates DESC;
+
+-- Find duplicate indexes
+WITH IndexColumns AS (
+    SELECT i.object_id,
+           i.index_id,
+           i.name AS IndexName,
+           STRING_AGG(c.name, &#39;, &#39;) WITHIN GROUP (ORDER BY ic.key_ordinal) AS KeyColumns,
+           STRING_AGG(c.name, &#39;, &#39;) WITHIN GROUP (ORDER BY ic.index_column_id) AS IncludedColumns
+    FROM sys.indexes i
+    INNER JOIN sys.index_columns ic ON i.object_id = ic.object_id AND i.index_id = ic.index_id
+    INNER JOIN sys.columns c ON ic.object_id = c.object_id AND ic.column_id = c.column_id
+    WHERE i.type_desc = &#39;NONCLUSTERED&#39;
+    GROUP BY i.object_id, i.index_id, i.name
+)
+SELECT OBJECT_NAME(a.object_id) AS TableName,
+       a.IndexName AS Index1,
+       b.IndexName AS Index2,
+       a.KeyColumns,
+       a.IncludedColumns
+FROM IndexColumns a
+INNER JOIN IndexColumns b
+    ON a.object_id = b.object_id
+   AND a.index_id &lt; b.index_id
+   AND a.KeyColumns = b.KeyColumns
+   AND (a.IncludedColumns = b.IncludedColumns OR a.IncludedColumns IS NULL AND b.IncludedColumns IS NULL);</code></pre>
+<p><strong>Q: Implement filtered index for specific query patterns.</strong></p>
+<p>A: Create indexes for subsets of data.</p>
+<pre class="language-sql"><code class="language-sql">-- Only index active orders
+CREATE NONCLUSTERED INDEX IX_Orders_Active_CreatedAt
+    ON Orders(CreatedAt DESC)
+    INCLUDE (CustomerId, TotalAmount)
+    WHERE Status IN (&#39;Pending&#39;, &#39;Processing&#39;);
+
+-- Index non-null values only
+CREATE NONCLUSTERED INDEX IX_Orders_CompletedDate
+    ON Orders(CompletedDate)
+    WHERE CompletedDate IS NOT NULL;
+
+-- Index specific date range (partitioning effect)
+CREATE NONCLUSTERED INDEX IX_Orders_Recent
+    ON Orders(OrderDate DESC, CustomerId)
+    INCLUDE (TotalAmount)
+    WHERE OrderDate &gt;= &#39;2024-01-01&#39;;</code></pre>
+<p>---</p>
+<h2 id="transactions-concurrency">Transactions & Concurrency</h2>
+<p><strong>Q: Implement distributed transaction across multiple databases.</strong></p>
+<p>A: Use TransactionScope for coordinated transactions.</p>
+<pre class="language-csharp"><code class="language-csharp">public class DistributedTransactionService
+{
+    private readonly DbContext _ordersContext;
+    private readonly DbContext _inventoryContext;
+    private readonly DbContext _accountingContext;
+
+    public async Task ProcessOrderAsync(CreateOrderCommand command)
+    {
+        var transactionOptions = new TransactionOptions
+        {
+            IsolationLevel = System.Transactions.IsolationLevel.ReadCommitted,
+            Timeout = TimeSpan.FromSeconds(30)
+        };
+
+        using var scope = new TransactionScope(
+            TransactionScopeOption.Required,
+            transactionOptions,
+            TransactionScopeAsyncFlowOption.Enabled);
+
+        try
+        {
+            // Database 1: Orders
+            var order = new Order
+            {
+                Id = Guid.NewGuid(),
+                CustomerId = command.CustomerId,
+                TotalAmount = command.TotalAmount
+            };
+            _ordersContext.Orders.Add(order);
+            await _ordersContext.SaveChangesAsync();
+
+            // Database 2: Inventory
+            var inventory = await _inventoryContext.Inventory
+                .FirstOrDefaultAsync(i =&gt; i.ProductId == command.ProductId);
+            inventory.Quantity -= command.Quantity;
+            await _inventoryContext.SaveChangesAsync();
+
+            // Database 3: Accounting
+            var transaction = new AccountingTransaction
+            {
+                OrderId = order.Id,
+                Amount = command.TotalAmount,
+                Type = TransactionType.Sale
+            };
+            _accountingContext.Transactions.Add(transaction);
+            await _accountingContext.SaveChangesAsync();
+
+            // Commit all or rollback all
+            scope.Complete();
+        }
+        catch (Exception ex)
+        {
+            // Transaction automatically rolls back if scope.Complete() not called
+            throw;
+        }
+    }
+}</code></pre>
+<p><strong>Q: Handle deadlocks with retry logic.</strong></p>
+<p>A: Detect and retry deadlock victims.</p>
+<pre class="language-csharp"><code class="language-csharp">public class DeadlockRetryService
+{
+    private const int MaxRetries = 3;
+    private static readonly int[] DeadlockErrorNumbers = { 1205 }; // SQL Server deadlock
+
+    public async Task&lt;T&gt; ExecuteWithRetryAsync&lt;T&gt;(Func&lt;Task&lt;T&gt;&gt; operation)
+    {
+        for (int attempt = 0; attempt &lt; MaxRetries; attempt++)
+        {
+            try
+            {
+                return await operation();
+            }
+            catch (DbUpdateException ex) when (IsDeadlock(ex) &amp;&amp; attempt &lt; MaxRetries - 1)
+            {
+                var delay = TimeSpan.FromMilliseconds(Math.Pow(2, attempt) * 100);
+                await Task.Delay(delay);
+            }
+        }
+
+        return await operation(); // Last attempt without catching
+    }
+
+    private bool IsDeadlock(Exception ex)
+    {
+        if (ex.InnerException is SqlException sqlEx)
+        {
+            return DeadlockErrorNumbers.Contains(sqlEx.Number);
+        }
+        return false;
+    }
+}
+
+// Usage
+var result = await _retryService.ExecuteWithRetryAsync(async () =&gt;
+{
+    await using var transaction = await _context.Database.BeginTransactionAsync(
+        IsolationLevel.ReadCommitted);
+
+    try
+    {
+        // Perform operations
+        var account = await _context.Accounts.FindAsync(accountId);
+        account.Balance += amount;
+
+        await _context.SaveChangesAsync();
+        await transaction.CommitAsync();
+
+        return account.Balance;
+    }
+    catch
+    {
+        await transaction.RollbackAsync();
+        throw;
+    }
+});</code></pre>
+<p><strong>Q: Implement pessimistic locking for critical sections.</strong></p>
+<p>A: Use row-level locks to prevent concurrent modifications.</p>
+<pre class="language-csharp"><code class="language-csharp">// SQL Server
+public async Task&lt;Account&gt; GetAccountWithLockAsync(Guid accountId)
+{
+    var account = await _context.Accounts
+        .FromSqlRaw(@&quot;
+            SELECT * FROM Accounts WITH (UPDLOCK, ROWLOCK)
+            WHERE Id = {0}&quot;,
+            accountId)
+        .FirstOrDefaultAsync();
+
+    return account;
+}
+
+// PostgreSQL
+public async Task&lt;Account&gt; GetAccountWithLockPgAsync(Guid accountId)
+{
+    var account = await _context.Accounts
+        .FromSqlRaw(@&quot;
+            SELECT * FROM &quot;&quot;Accounts&quot;&quot;
+            WHERE &quot;&quot;Id&quot;&quot; = {0}
+            FOR UPDATE&quot;,
+            accountId)
+        .FirstOrDefaultAsync();
+
+    return account;
+}
+
+// Usage in transaction
+await using var transaction = await _context.Database.BeginTransactionAsync();
+
+try
+{
+    var account = await GetAccountWithLockAsync(accountId);
+    account.Balance += amount;
+
+    await _context.SaveChangesAsync();
+    await transaction.CommitAsync();
+}
+catch
+{
+    await transaction.RollbackAsync();
+    throw;
+}</code></pre>
+<p>---</p>
+<h2 id="migrations-schema-management">Migrations & Schema Management</h2>
+<p><strong>Q: Create a data migration to transform existing records.</strong></p>
+<p>A: Use migration with custom SQL or code.</p>
+<pre class="language-csharp"><code class="language-csharp">public partial class MigrateOrderStatuses : Migration
+{
+    protected override void Up(MigrationBuilder migrationBuilder)
+    {
+        // Add new column
+        migrationBuilder.AddColumn&lt;string&gt;(
+            name: &quot;StatusV2&quot;,
+            table: &quot;Orders&quot;,
+            type: &quot;nvarchar(50)&quot;,
+            nullable: true);
+
+        // Migrate data
+        migrationBuilder.Sql(@&quot;
+            UPDATE Orders
+            SET StatusV2 = CASE Status
+                WHEN 0 THEN &#39;Pending&#39;
+                WHEN 1 THEN &#39;Processing&#39;
+                WHEN 2 THEN &#39;Shipped&#39;
+                WHEN 3 THEN &#39;Delivered&#39;
+                WHEN 4 THEN &#39;Cancelled&#39;
+                ELSE &#39;Unknown&#39;
+            END&quot;);
+
+        // Make new column required
+        migrationBuilder.AlterColumn&lt;string&gt;(
+            name: &quot;StatusV2&quot;,
+            table: &quot;Orders&quot;,
+            type: &quot;nvarchar(50)&quot;,
+            nullable: false);
+
+        // Drop old column
+        migrationBuilder.DropColumn(
+            name: &quot;Status&quot;,
+            table: &quot;Orders&quot;);
+
+        // Rename column
+        migrationBuilder.RenameColumn(
+            name: &quot;StatusV2&quot;,
+            table: &quot;Orders&quot;,
+            newName: &quot;Status&quot;);
+    }
+
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
+        // Reverse migration
+        migrationBuilder.RenameColumn(
+            name: &quot;Status&quot;,
+            table: &quot;Orders&quot;,
+            newName: &quot;StatusV2&quot;);
+
+        migrationBuilder.AddColumn&lt;int&gt;(
+            name: &quot;Status&quot;,
+            table: &quot;Orders&quot;,
+            type: &quot;int&quot;,
+            nullable: false,
+            defaultValue: 0);
+
+        migrationBuilder.Sql(@&quot;
+            UPDATE Orders
+            SET Status = CASE StatusV2
+                WHEN &#39;Pending&#39; THEN 0
+                WHEN &#39;Processing&#39; THEN 1
+                WHEN &#39;Shipped&#39; THEN 2
+                WHEN &#39;Delivered&#39; THEN 3
+                WHEN &#39;Cancelled&#39; THEN 4
+                ELSE 0
+            END&quot;);
+
+        migrationBuilder.DropColumn(
+            name: &quot;StatusV2&quot;,
+            table: &quot;Orders&quot;);
+    }
+}</code></pre>
+<p><strong>Q: Implement zero-downtime deployment with backward-compatible migrations.</strong></p>
+<p>A: Use expand-contract pattern.</p>
+<pre class="language-csharp"><code class="language-csharp">// Step 1: Expand - Add new column (backward compatible)
+public partial class AddEmailColumn : Migration
+{
+    protected override void Up(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.AddColumn&lt;string&gt;(
+            name: &quot;Email&quot;,
+            table: &quot;Customers&quot;,
+            nullable: true);  // Allow null for backward compatibility
+    }
+}
+
+// Step 2: Deploy new code that writes to both old and new columns
+
+// Step 3: Backfill - Migrate existing data
+public partial class BackfillEmail : Migration
+{
+    protected override void Up(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.Sql(@&quot;
+            UPDATE Customers
+            SET Email = ContactEmail
+            WHERE Email IS NULL AND ContactEmail IS NOT NULL&quot;);
+    }
+}
+
+// Step 4: Deploy code that reads from new column only
+
+// Step 5: Contract - Remove old column
+public partial class RemoveContactEmailColumn : Migration
+{
+    protected override void Up(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.DropColumn(
+            name: &quot;ContactEmail&quot;,
+            table: &quot;Customers&quot;);
+
+        // Make new column required
+        migrationBuilder.AlterColumn&lt;string&gt;(
+            name: &quot;Email&quot;,
+            table: &quot;Customers&quot;,
+            nullable: false);
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="dapper-integration">Dapper Integration</h2>
+<p><strong>Q: Use Dapper for high-performance bulk operations.</strong></p>
+<p>A: Execute raw SQL with minimal overhead.</p>
+<pre class="language-csharp"><code class="language-csharp">public class DapperOrderRepository
+{
+    private readonly IDbConnection _connection;
+
+    public DapperOrderRepository(IDbConnection connection)
+    {
+        _connection = connection;
+    }
+
+    public async Task&lt;IEnumerable&lt;Order&gt;&gt; GetOrdersByCustomerAsync(Guid customerId)
+    {
+        const string sql = @&quot;
+            SELECT o.OrderId, o.OrderNumber, o.CustomerId, o.TotalAmount, o.CreatedAt,
+                   oi.OrderItemId, oi.OrderId, oi.ProductId, oi.Quantity, oi.UnitPrice
+            FROM Orders o
+            INNER JOIN OrderItems oi ON o.OrderId = oi.OrderId
+            WHERE o.CustomerId = @CustomerId
+            ORDER BY o.CreatedAt DESC&quot;;
+
+        var orderDict = new Dictionary&lt;Guid, Order&gt;();
+
+        var orders = await _connection.QueryAsync&lt;Order, OrderItem, Order&gt;(
+            sql,
+            (order, orderItem) =&gt;
+            {
+                if (!orderDict.TryGetValue(order.OrderId, out var currentOrder))
+                {
+                    currentOrder = order;
+                    currentOrder.Items = new List&lt;OrderItem&gt;();
+                    orderDict.Add(order.OrderId, currentOrder);
+                }
+
+                currentOrder.Items.Add(orderItem);
+                return currentOrder;
+            },
+            new { CustomerId = customerId },
+            splitOn: &quot;OrderItemId&quot;);
+
+        return orderDict.Values;
+    }
+
+    public async Task&lt;int&gt; BulkInsertOrdersAsync(IEnumerable&lt;Order&gt; orders)
+    {
+        const string sql = @&quot;
+            INSERT INTO Orders (OrderId, OrderNumber, CustomerId, TotalAmount, CreatedAt)
+            VALUES (@OrderId, @OrderNumber, @CustomerId, @TotalAmount, @CreatedAt)&quot;;
+
+        return await _connection.ExecuteAsync(sql, orders);
+    }
+
+    public async Task&lt;IEnumerable&lt;OrderSummary&gt;&gt; GetOrderSummariesAsync(DateTime fromDate)
+    {
+        const string sql = @&quot;
+            SELECT c.CustomerName,
+                   COUNT(o.OrderId) AS OrderCount,
+                   SUM(o.TotalAmount) AS TotalSpent
+            FROM Customers c
+            INNER JOIN Orders o ON c.CustomerId = o.CustomerId
+            WHERE o.CreatedAt &gt;= @FromDate
+            GROUP BY c.CustomerId, c.CustomerName
+            HAVING SUM(o.TotalAmount) &gt; 1000
+            ORDER BY TotalSpent DESC&quot;;
+
+        return await _connection.QueryAsync&lt;OrderSummary&gt;(sql, new { FromDate = fromDate });
+    }
+
+    public async Task&lt;int&gt; UpdateOrderStatusAsync(Guid orderId, string status)
+    {
+        const string sql = @&quot;
+            UPDATE Orders
+            SET Status = @Status, ModifiedAt = GETUTCDATE()
+            WHERE OrderId = @OrderId&quot;;
+
+        return await _connection.ExecuteAsync(sql, new { OrderId = orderId, Status = status });
+    }
+}</code></pre>
+<p><strong>Q: Combine EF Core and Dapper for optimal performance.</strong></p>
+<p>A: Use EF Core for writes, Dapper for complex reads.</p>
+<pre class="language-csharp"><code class="language-csharp">public class HybridOrderRepository
+{
+    private readonly TradingDbContext _context;
+    private readonly IDbConnection _dapperConnection;
+
+    public HybridOrderRepository(TradingDbContext context, IDbConnection dapperConnection)
+    {
+        _context = context;
+        _dapperConnection = dapperConnection;
+    }
+
+    // Write with EF Core (change tracking, navigation properties)
+    public async Task&lt;Guid&gt; CreateOrderAsync(Order order)
+    {
+        _context.Orders.Add(order);
+        await _context.SaveChangesAsync();
+        return order.Id;
+    }
+
+    // Complex read with Dapper (performance)
+    public async Task&lt;OrderAnalytics&gt; GetOrderAnalyticsAsync(Guid customerId, DateTime fromDate)
+    {
+        const string sql = @&quot;
+            WITH OrderStats AS (
+                SELECT o.CustomerId,
+                       COUNT(DISTINCT o.OrderId) AS TotalOrders,
+                       SUM(o.TotalAmount) AS TotalSpent,
+                       AVG(o.TotalAmount) AS AvgOrderValue,
+                       MIN(o.CreatedAt) AS FirstOrderDate,
+                       MAX(o.CreatedAt) AS LastOrderDate
+                FROM Orders o
+                WHERE o.CustomerId = @CustomerId
+                  AND o.CreatedAt &gt;= @FromDate
+                GROUP BY o.CustomerId
+            ),
+            ProductPreferences AS (
+                SELECT TOP 5
+                       p.ProductName,
+                       SUM(oi.Quantity) AS TotalQuantity
+                FROM Orders o
+                INNER JOIN OrderItems oi ON o.OrderId = oi.OrderId
+                INNER JOIN Products p ON oi.ProductId = p.ProductId
+                WHERE o.CustomerId = @CustomerId
+                  AND o.CreatedAt &gt;= @FromDate
+                GROUP BY p.ProductId, p.ProductName
+                ORDER BY SUM(oi.Quantity) DESC
+            )
+            SELECT os.*, pp.ProductName, pp.TotalQuantity
+            FROM OrderStats os
+            CROSS APPLY (SELECT * FROM ProductPreferences) pp&quot;;
+
+        var analytics = await _dapperConnection.QueryAsync(
+            sql,
+            new { CustomerId = customerId, FromDate = fromDate });
+
+        return MapToOrderAnalytics(analytics);
+    }
+}</code></pre>
+<p>---</p>
+<p><strong>Total Exercises: 30+</strong></p>
+<p>Master data access patterns for building high-performance, scalable applications!</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['midnight', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const fallback = 'light';
+      const initial = supported.includes(saved) ? saved : (window.__studyTheme || fallback);
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          sessionStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+    (() => {
+      const groups = document.querySelectorAll('.sidebar-group');
+      if (!groups.length) return;
+      const storageKey = 'study-open-groups';
+      const saved = sessionStorage.getItem(storageKey);
+      const openFromStorage = new Set(saved ? JSON.parse(saved) : []);
+
+      const activeLink = document.querySelector('.nav-link.active');
+      const activeGroup = activeLink?.closest('.sidebar-group');
+      if (activeGroup?.dataset.group) {
+        openFromStorage.add(activeGroup.dataset.group);
+      }
+
+      const syncStorage = () => {
+        const openIds = Array.from(document.querySelectorAll('.sidebar-group.is-open'))
+          .map((group) => group.dataset.group)
+          .filter(Boolean);
+        sessionStorage.setItem(storageKey, JSON.stringify(openIds));
+      };
+
+      const setExpanded = (group, expanded) => {
+        const header = group.querySelector('.sidebar-group__header');
+        const list = group.querySelector('.sidebar-group__items');
+        group.classList.toggle('is-open', expanded);
+        header?.setAttribute('aria-expanded', expanded);
+        if (list) {
+          list.hidden = !expanded;
+        }
+      };
+
+      groups.forEach((group) => {
+        const shouldOpen = openFromStorage.has(group.dataset.group);
+        setExpanded(group, shouldOpen);
+        const header = group.querySelector('.sidebar-group__header');
+        header?.addEventListener('click', () => {
+          const next = !group.classList.contains('is-open');
+          setExpanded(group, next);
+          syncStorage();
+        });
+      });
+    })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swPath = '../service-worker.js';
+        navigator.serviceWorker.register(swPath).catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+</body>
+</html>

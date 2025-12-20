@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for Messaging Integration" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>Messaging Integration | C# Interview Prep Cheat Sheet</title>
+  <link rel="manifest" href="..\assets/manifest.webmanifest" />
+  <script>
+    (() => {
+      const supported = ['midnight', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const fallback = 'light';
+      const initial = supported.includes(saved) ? saved : fallback;
+      document.documentElement.dataset.theme = initial;
+      window.__studyTheme = initial;
+    })();
+  </script>
+  <link rel="stylesheet" href="..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="midnight">Current</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group" data-group="notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="../notes/logging.html">Logging</a></li><li><a class="nav-link" href="../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/O1-Constant-Time.html">O1 Constant Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/OLogN-Logarithmic-Time.html">OLogN Logarithmic Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/ON-Linear-Time.html">ON Linear Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/ON2-Quadratic-Time.html">ON2 Quadratic Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/ONLogN-Linearithmic-Time.html">ONLogN Linearithmic Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/Space-Complexity.html">Space Complexity</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/ICollection.html">ICollection</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IEnumerable.html">IEnumerable</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IList.html">IList</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IQueryable.html">IQueryable</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IReadOnly.html">IReadOnly</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a class="nav-link" href="../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a class="nav-link" href="../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a class="nav-link" href="../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a class="nav-link" href="../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a class="nav-link" href="../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a class="nav-link" href="../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a class="nav-link" href="../notes/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a class="nav-link" href="../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a class="nav-link" href="../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a class="nav-link" href="../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a class="nav-link" href="../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a class="nav-link" href="../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a class="nav-link" href="../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a class="nav-link" href="../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a class="nav-link" href="../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a class="nav-link" href="../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a class="nav-link" href="../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a class="nav-link" href="../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a class="nav-link" href="../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a class="nav-link" href="../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a class="nav-link" href="../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a class="nav-link" href="../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a class="nav-link" href="../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/01-async-patterns.html">01 Async Patterns</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/02-backpressure-rate-limiting.html">02 Backpressure Rate Limiting</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/03-caching-strategies.html">03 Caching Strategies</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/04-database-scaling.html">04 Database Scaling</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/05-message-queues.html">05 Message Queues</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/06-resilience-patterns.html">06 Resilience Patterns</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/07-observability.html">07 Observability</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/08-complete-example.html">08 Complete Example</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+    </div><div class="sidebar-group is-open" data-group="practice">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
+        <span>Practice</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="../practice/answers.html">Answers</a></li><li><a class="nav-link" href="../practice/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="../practice/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="../practice/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="../practice/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="../practice/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="../practice/linq-collections.html">Linq Collections</a></li><li><a class="nav-link active" href="../practice/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="../practice/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="../practice/index.html">Practice</a></li><li><a class="nav-link" href="../practice/questions.html">Questions</a></li><li><a class="nav-link" href="../practice/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="../practice/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="../practice/system-design.html">System Design</a></li><li><a class="nav-link" href="../practice/trading-domain.html">Trading Domain</a></li></ul>
+    </div></div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">practice\messaging-integration.md</div>
+        <h2>Messaging Integration</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#messaging-integration-practice-exercises">Messaging & Integration Practice Exercises</a></li><li class="level-2"><a href="#foundational-questions">Foundational Questions</a></li><li class="level-2"><a href="#rabbitmq-advanced-patterns">RabbitMQ Advanced Patterns</a></li><li class="level-2"><a href="#kafka-integration">Kafka Integration</a></li><li class="level-2"><a href="#saga-pattern">Saga Pattern</a></li><li class="level-2"><a href="#outbox-pattern">Outbox Pattern</a></li><li class="level-2"><a href="#idempotency">Idempotency</a></li><li class="level-2"><a href="#event-streaming">Event Streaming</a></li></ul></div>
+        <h1 id="messaging-integration-practice-exercises">Messaging & Integration Practice Exercises</h1>
+<p>Master message-driven architecture, event-driven patterns, and reliable integration strategies for distributed systems.</p>
+<p>---</p>
+<h2 id="foundational-questions">Foundational Questions</h2>
+<p><strong>Q: Compare RabbitMQ and ZeroMQ for distributing price updates. When would you choose one over the other?</strong></p>
+<p>A: RabbitMQ: brokered, supports persistence, routing, acknowledgments, management UI, plugins. ZeroMQ: brokerless sockets, ultra-low latency but manual patterns, no persistence out of the box. Use RabbitMQ for durable, complex routing, enterprise integration, where administrators need visibility and security. Use ZeroMQ for high-throughput, in-process/edge messaging; avoid if you need persistence or central management.</p>
+<p><strong>Q: Explain how to ensure at-least-once delivery with RabbitMQ while preventing duplicate processing.</strong></p>
+<p>A: Use durable queues, persistent messages, manual ack, idempotent consumers. Enable publisher confirms to ensure the broker persisted the message before acknowledging to the producer.</p>
+<pre class="language-csharp"><code class="language-csharp">channel.BasicConsume(queue, autoAck: false, consumer);
+consumer.Received += (sender, ea) =&gt;
+{
+    Handle(ea.Body);
+    channel.BasicAck(ea.DeliveryTag, multiple: false);
+};</code></pre>
+<p>Use when you can tolerate duplicates; critical to ensure no loss. Avoid when exactly-once semantics required—use transactional outbox + dedup.</p>
+<p><strong>Q: How would you design a saga pattern to coordinate account funding across multiple services?</strong></p>
+<p>A: Orchestrator or choreography; manage compensations (reverse ledger entry, refund payment).</p>
+<pre class="language-csharp"><code class="language-csharp">public async Task Handle(FundAccount command)
+{
+    var transferId = await _payments.DebitAsync(command.PaymentId);
+    try
+    {
+        await _ledger.CreditAsync(command.AccountId, command.Amount);
+        await _notifications.SendAsync(command.AccountId, &quot;Funding complete&quot;);
+    }
+    catch
+    {
+        await _payments.RefundAsync(transferId);
+        throw;
+    }
+}</code></pre>
+<p>Use when multi-step, distributed transactions. Avoid when single system handles all steps—simple ACID transaction suffices.</p>
+<p><strong>Q: Discuss the outbox pattern and how it prevents message loss in event-driven systems.</strong></p>
+<p>A: Write domain event to outbox table within same transaction, then relay to message bus. A background dispatcher polls the outbox table, publishes events, and marks them as processed (with retries and exponential backoff).</p>
+<pre class="language-csharp"><code class="language-csharp">await using var tx = await db.Database.BeginTransactionAsync();
+order.Status = OrderStatus.Accepted;
+db.Outbox.Add(new OutboxMessage(order.Id, new OrderAccepted(order.Id)));
+await db.SaveChangesAsync();
+await tx.CommitAsync();</code></pre>
+<p>Use when need atomic DB + message publish. Avoid when no shared database or eventual consistency acceptable without duplication.</p>
+<p>---</p>
+<h2 id="rabbitmq-advanced-patterns">RabbitMQ Advanced Patterns</h2>
+<p><strong>Q: Implement a publisher with confirmation to ensure messages are persisted.</strong></p>
+<p>A: Use publisher confirms for reliability.</p>
+<pre class="language-csharp"><code class="language-csharp">public class ReliableRabbitMqPublisher
+{
+    private readonly IConnection _connection;
+    private readonly ILogger&lt;ReliableRabbitMqPublisher&gt; _logger;
+
+    public ReliableRabbitMqPublisher(
+        ConnectionFactory factory,
+        ILogger&lt;ReliableRabbitMqPublisher&gt; logger)
+    {
+        _connection = factory.CreateConnection();
+        _logger = logger;
+    }
+
+    public async Task PublishAsync&lt;T&gt;(string exchange, string routingKey, T message)
+    {
+        using var channel = _connection.CreateModel();
+
+        // Enable publisher confirms
+        channel.ConfirmSelect();
+
+        // Declare exchange as durable
+        channel.ExchangeDeclare(
+            exchange: exchange,
+            type: ExchangeType.Topic,
+            durable: true,
+            autoDelete: false);
+
+        var body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(message));
+        var properties = channel.CreateBasicProperties();
+        properties.Persistent = true;  // Make message persistent
+        properties.MessageId = Guid.NewGuid().ToString();
+        properties.Timestamp = new AmqpTimestamp(DateTimeOffset.UtcNow.ToUnixTimeSeconds());
+
+        channel.BasicPublish(
+            exchange: exchange,
+            routingKey: routingKey,
+            basicProperties: properties,
+            body: body);
+
+        // Wait for confirmation
+        var confirmed = channel.WaitForConfirms(TimeSpan.FromSeconds(5));
+
+        if (!confirmed)
+        {
+            _logger.LogError(&quot;Message {MessageId} was not confirmed by broker&quot;, properties.MessageId);
+            throw new Exception(&quot;Message publish failed - not confirmed&quot;);
+        }
+
+        _logger.LogInformation(&quot;Message {MessageId} published and confirmed&quot;, properties.MessageId);
+    }
+
+    public async Task PublishBatchAsync&lt;T&gt;(string exchange, string routingKey, List&lt;T&gt; messages)
+    {
+        using var channel = _connection.CreateModel();
+        channel.ConfirmSelect();
+
+        channel.ExchangeDeclare(
+            exchange: exchange,
+            type: ExchangeType.Topic,
+            durable: true,
+            autoDelete: false);
+
+        // Publish all messages in batch
+        foreach (var message in messages)
+        {
+            var body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(message));
+            var properties = channel.CreateBasicProperties();
+            properties.Persistent = true;
+            properties.MessageId = Guid.NewGuid().ToString();
+
+            channel.BasicPublish(
+                exchange: exchange,
+                routingKey: routingKey,
+                basicProperties: properties,
+                body: body);
+        }
+
+        // Wait for all confirms
+        channel.WaitForConfirmsOrDie(TimeSpan.FromSeconds(30));
+        _logger.LogInformation(&quot;Batch of {Count} messages published and confirmed&quot;, messages.Count);
+    }
+}</code></pre>
+<p><strong>Q: Implement a resilient consumer with retry logic and dead letter queue.</strong></p>
+<p>A: Handle failures with retries and DLQ.</p>
+<pre class="language-csharp"><code class="language-csharp">public class ResilientRabbitMqConsumer
+{
+    private readonly IConnection _connection;
+    private readonly ILogger&lt;ResilientRabbitMqConsumer&gt; _logger;
+
+    public void StartConsuming&lt;T&gt;(
+        string queueName,
+        Func&lt;T, Task&gt; messageHandler,
+        int maxRetries = 3)
+    {
+        var channel = _connection.CreateModel();
+
+        // Declare main queue
+        var mainQueueArgs = new Dictionary&lt;string, object&gt;
+        {
+            { &quot;x-dead-letter-exchange&quot;, $&quot;{queueName}.dlx&quot; },
+            { &quot;x-dead-letter-routing-key&quot;, $&quot;{queueName}.dlq&quot; }
+        };
+
+        channel.QueueDeclare(
+            queue: queueName,
+            durable: true,
+            exclusive: false,
+            autoDelete: false,
+            arguments: mainQueueArgs);
+
+        // Declare dead letter exchange and queue
+        channel.ExchangeDeclare($&quot;{queueName}.dlx&quot;, ExchangeType.Direct, durable: true);
+        channel.QueueDeclare($&quot;{queueName}.dlq&quot;, durable: true, exclusive: false, autoDelete: false);
+        channel.QueueBind($&quot;{queueName}.dlq&quot;, $&quot;{queueName}.dlx&quot;, $&quot;{queueName}.dlq&quot;);
+
+        // Declare retry queue with TTL
+        var retryQueueArgs = new Dictionary&lt;string, object&gt;
+        {
+            { &quot;x-dead-letter-exchange&quot;, &quot;&quot; },  // Default exchange
+            { &quot;x-dead-letter-routing-key&quot;, queueName },
+            { &quot;x-message-ttl&quot;, 5000 }  // 5 second delay
+        };
+
+        channel.QueueDeclare(
+            queue: $&quot;{queueName}.retry&quot;,
+            durable: true,
+            exclusive: false,
+            autoDelete: false,
+            arguments: retryQueueArgs);
+
+        var consumer = new EventingBasicConsumer(channel);
+        consumer.Received += async (sender, ea) =&gt;
+        {
+            try
+            {
+                var body = Encoding.UTF8.GetString(ea.Body.ToArray());
+                var message = JsonSerializer.Deserialize&lt;T&gt;(body);
+
+                await messageHandler(message);
+
+                // Success - acknowledge
+                channel.BasicAck(ea.DeliveryTag, multiple: false);
+                _logger.LogInformation(&quot;Message {MessageId} processed successfully&quot;, ea.BasicProperties.MessageId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, &quot;Error processing message {MessageId}&quot;, ea.BasicProperties.MessageId);
+
+                // Check retry count
+                var retryCount = GetRetryCount(ea.BasicProperties);
+
+                if (retryCount &lt; maxRetries)
+                {
+                    // Send to retry queue
+                    _logger.LogInformation(
+                        &quot;Retrying message {MessageId} (attempt {Attempt}/{MaxRetries})&quot;,
+                        ea.BasicProperties.MessageId,
+                        retryCount + 1,
+                        maxRetries);
+
+                    var retryProperties = channel.CreateBasicProperties();
+                    retryProperties.Persistent = true;
+                    retryProperties.MessageId = ea.BasicProperties.MessageId;
+                    retryProperties.Headers = ea.BasicProperties.Headers ?? new Dictionary&lt;string, object&gt;();
+                    retryProperties.Headers[&quot;x-retry-count&quot;] = retryCount + 1;
+
+                    channel.BasicPublish(
+                        exchange: &quot;&quot;,
+                        routingKey: $&quot;{queueName}.retry&quot;,
+                        basicProperties: retryProperties,
+                        body: ea.Body);
+
+                    channel.BasicAck(ea.DeliveryTag, multiple: false);
+                }
+                else
+                {
+                    // Max retries exceeded - reject to DLQ
+                    _logger.LogError(
+                        &quot;Message {MessageId} exceeded max retries, sending to DLQ&quot;,
+                        ea.BasicProperties.MessageId);
+
+                    channel.BasicReject(ea.DeliveryTag, requeue: false);
+                }
+            }
+        };
+
+        channel.BasicConsume(
+            queue: queueName,
+            autoAck: false,
+            consumer: consumer);
+
+        _logger.LogInformation(&quot;Started consuming from queue: {QueueName}&quot;, queueName);
+    }
+
+    private int GetRetryCount(IBasicProperties properties)
+    {
+        if (properties.Headers != null &amp;&amp;
+            properties.Headers.TryGetValue(&quot;x-retry-count&quot;, out var value))
+        {
+            return Convert.ToInt32(value);
+        }
+        return 0;
+    }
+}</code></pre>
+<p><strong>Q: Implement priority queue pattern for urgent messages.</strong></p>
+<p>A: Use RabbitMQ priority queues.</p>
+<pre class="language-csharp"><code class="language-csharp">public class PriorityQueuePublisher
+{
+    private readonly IModel _channel;
+
+    public PriorityQueuePublisher(IConnection connection)
+    {
+        _channel = connection.CreateModel();
+
+        // Declare priority queue
+        var args = new Dictionary&lt;string, object&gt;
+        {
+            { &quot;x-max-priority&quot;, 10 }
+        };
+
+        _channel.QueueDeclare(
+            queue: &quot;orders.priority&quot;,
+            durable: true,
+            exclusive: false,
+            autoDelete: false,
+            arguments: args);
+    }
+
+    public void PublishOrder(Order order, int priority)
+    {
+        var properties = _channel.CreateBasicProperties();
+        properties.Persistent = true;
+        properties.Priority = (byte)Math.Min(priority, 10);  // 0-10 range
+
+        var body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(order));
+
+        _channel.BasicPublish(
+            exchange: &quot;&quot;,
+            routingKey: &quot;orders.priority&quot;,
+            basicProperties: properties,
+            body: body);
+    }
+}
+
+// Usage
+publisher.PublishOrder(urgentOrder, priority: 10);    // High priority
+publisher.PublishOrder(normalOrder, priority: 5);     // Normal priority
+publisher.PublishOrder(bulkOrder, priority: 1);       // Low priority</code></pre>
+<p>---</p>
+<h2 id="kafka-integration">Kafka Integration</h2>
+<p><strong>Q: Implement Kafka producer with idempotent writes and transactions.</strong></p>
+<p>A: Use Kafka transactional producer.</p>
+<pre class="language-csharp"><code class="language-csharp">public class TransactionalKafkaProducer
+{
+    private readonly IProducer&lt;string, string&gt; _producer;
+    private readonly ILogger&lt;TransactionalKafkaProducer&gt; _logger;
+
+    public TransactionalKafkaProducer(IConfiguration configuration, ILogger&lt;TransactionalKafkaProducer&gt; logger)
+    {
+        var config = new ProducerConfig
+        {
+            BootstrapServers = configuration[&quot;Kafka:BootstrapServers&quot;],
+            TransactionalId = $&quot;producer-{Guid.NewGuid()}&quot;,
+            EnableIdempotence = true,  // Exactly-once semantics
+            Acks = Acks.All,           // Wait for all replicas
+            MaxInFlight = 5,
+            MessageSendMaxRetries = 10,
+            RetryBackoffMs = 100
+        };
+
+        _producer = new ProducerBuilder&lt;string, string&gt;(config).Build();
+        _producer.InitTransactions(TimeSpan.FromSeconds(30));
+        _logger = logger;
+    }
+
+    public async Task PublishInTransactionAsync(
+        Dictionary&lt;string, List&lt;Message&lt;string, string&gt;&gt;&gt; messagesByTopic)
+    {
+        _producer.BeginTransaction();
+
+        try
+        {
+            var deliveryTasks = new List&lt;Task&lt;DeliveryResult&lt;string, string&gt;&gt;&gt;();
+
+            foreach (var (topic, messages) in messagesByTopic)
+            {
+                foreach (var message in messages)
+                {
+                    var task = _producer.ProduceAsync(topic, message);
+                    deliveryTasks.Add(task);
+                }
+            }
+
+            // Wait for all messages to be sent
+            var results = await Task.WhenAll(deliveryTasks);
+
+            _producer.CommitTransaction();
+
+            _logger.LogInformation(&quot;Transaction committed with {Count} messages&quot;, results.Length);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, &quot;Transaction failed, aborting&quot;);
+            _producer.AbortTransaction();
+            throw;
+        }
+    }
+
+    public void Dispose()
+    {
+        _producer?.Dispose();
+    }
+}</code></pre>
+<p><strong>Q: Implement Kafka consumer with manual offset management and exactly-once processing.</strong></p>
+<p>A: Use consumer with manual commit and idempotency.</p>
+<pre class="language-csharp"><code class="language-csharp">public class ExactlyOnceKafkaConsumer
+{
+    private readonly IConsumer&lt;string, string&gt; _consumer;
+    private readonly DbContext _dbContext;
+    private readonly ILogger&lt;ExactlyOnceKafkaConsumer&gt; _logger;
+
+    public ExactlyOnceKafkaConsumer(
+        IConfiguration configuration,
+        DbContext dbContext,
+        ILogger&lt;ExactlyOnceKafkaConsumer&gt; logger)
+    {
+        var config = new ConsumerConfig
+        {
+            BootstrapServers = configuration[&quot;Kafka:BootstrapServers&quot;],
+            GroupId = configuration[&quot;Kafka:ConsumerGroup&quot;],
+            EnableAutoCommit = false,  // Manual commit
+            AutoOffsetReset = AutoOffsetReset.Earliest,
+            IsolationLevel = IsolationLevel.ReadCommitted  // Only read committed messages
+        };
+
+        _consumer = new ConsumerBuilder&lt;string, string&gt;(config).Build();
+        _dbContext = dbContext;
+        _logger = logger;
+    }
+
+    public async Task StartConsumingAsync(
+        string topic,
+        Func&lt;string, Task&gt; messageHandler,
+        CancellationToken cancellationToken)
+    {
+        _consumer.Subscribe(topic);
+
+        while (!cancellationToken.IsCancellationRequested)
+        {
+            try
+            {
+                var consumeResult = _consumer.Consume(cancellationToken);
+
+                // Check if already processed (idempotency)
+                var messageId = consumeResult.Message.Key;
+                var alreadyProcessed = await _dbContext.ProcessedMessages
+                    .AnyAsync(m =&gt; m.MessageId == messageId, cancellationToken);
+
+                if (alreadyProcessed)
+                {
+                    _logger.LogInformation(&quot;Message {MessageId} already processed, skipping&quot;, messageId);
+                    _consumer.Commit(consumeResult);
+                    continue;
+                }
+
+                await using var transaction = await _dbContext.Database.BeginTransactionAsync(cancellationToken);
+
+                try
+                {
+                    // Process message
+                    await messageHandler(consumeResult.Message.Value);
+
+                    // Record processed message
+                    _dbContext.ProcessedMessages.Add(new ProcessedMessage
+                    {
+                        MessageId = messageId,
+                        ProcessedAt = DateTime.UtcNow,
+                        Partition = consumeResult.Partition.Value,
+                        Offset = consumeResult.Offset.Value
+                    });
+
+                    await _dbContext.SaveChangesAsync(cancellationToken);
+                    await transaction.CommitAsync(cancellationToken);
+
+                    // Commit offset to Kafka
+                    _consumer.Commit(consumeResult);
+
+                    _logger.LogInformation(
+                        &quot;Processed message {MessageId} at offset {Offset}&quot;,
+                        messageId,
+                        consumeResult.Offset.Value);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, &quot;Error processing message {MessageId}&quot;, messageId);
+                    await transaction.RollbackAsync(cancellationToken);
+                    throw;
+                }
+            }
+            catch (ConsumeException ex)
+            {
+                _logger.LogError(ex, &quot;Kafka consume error&quot;);
+            }
+        }
+    }
+}</code></pre>
+<p><strong>Q: Implement Kafka consumer group rebalancing with state management.</strong></p>
+<p>A: Handle partition assignment and revocation.</p>
+<pre class="language-csharp"><code class="language-csharp">public class StatefulKafkaConsumer
+{
+    private readonly IConsumer&lt;string, string&gt; _consumer;
+    private readonly Dictionary&lt;int, long&gt; _partitionOffsets = new();
+    private readonly ILogger&lt;StatefulKafkaConsumer&gt; _logger;
+
+    public StatefulKafkaConsumer(IConfiguration configuration, ILogger&lt;StatefulKafkaConsumer&gt; logger)
+    {
+        var config = new ConsumerConfig
+        {
+            BootstrapServers = configuration[&quot;Kafka:BootstrapServers&quot;],
+            GroupId = configuration[&quot;Kafka:ConsumerGroup&quot;],
+            EnableAutoCommit = false
+        };
+
+        _consumer = new ConsumerBuilder&lt;string, string&gt;(config)
+            .SetPartitionsAssignedHandler(OnPartitionsAssigned)
+            .SetPartitionsRevokedHandler(OnPartitionsRevoked)
+            .Build();
+
+        _logger = logger;
+    }
+
+    private void OnPartitionsAssigned(
+        IConsumer&lt;string, string&gt; consumer,
+        List&lt;TopicPartition&gt; partitions)
+    {
+        _logger.LogInformation(&quot;Partitions assigned: {Partitions}&quot;,
+            string.Join(&quot;, &quot;, partitions.Select(p =&gt; p.Partition.Value)));
+
+        // Load state for assigned partitions
+        foreach (var partition in partitions)
+        {
+            // Could load from database, cache, etc.
+            _partitionOffsets[partition.Partition.Value] = 0;
+        }
+    }
+
+    private void OnPartitionsRevoked(
+        IConsumer&lt;string, string&gt; consumer,
+        List&lt;TopicPartitionOffset&gt; partitions)
+    {
+        _logger.LogInformation(&quot;Partitions revoked: {Partitions}&quot;,
+            string.Join(&quot;, &quot;, partitions.Select(p =&gt; p.Partition.Value)));
+
+        // Save state before losing partitions
+        foreach (var partition in partitions)
+        {
+            var offset = _partitionOffsets.GetValueOrDefault(partition.Partition.Value);
+            _logger.LogInformation(&quot;Saving offset {Offset} for partition {Partition}&quot;,
+                offset, partition.Partition.Value);
+
+            // Could save to database, cache, etc.
+        }
+
+        // Commit offsets before rebalance
+        consumer.Commit(partitions);
+
+        // Clear local state
+        foreach (var partition in partitions)
+        {
+            _partitionOffsets.Remove(partition.Partition.Value);
+        }
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="saga-pattern">Saga Pattern</h2>
+<p><strong>Q: Implement orchestration-based saga for order processing.</strong></p>
+<p>A: Centralized orchestrator manages saga flow.</p>
+<pre class="language-csharp"><code class="language-csharp">public class OrderSagaOrchestrator
+{
+    private readonly IServiceProvider _serviceProvider;
+    private readonly IMessageBus _messageBus;
+    private readonly ISagaRepository _sagaRepository;
+    private readonly ILogger&lt;OrderSagaOrchestrator&gt; _logger;
+
+    public async Task&lt;Guid&gt; StartSagaAsync(CreateOrderCommand command)
+    {
+        var sagaId = Guid.NewGuid();
+        var saga = new OrderSaga
+        {
+            Id = sagaId,
+            State = SagaState.Started,
+            Command = command,
+            CreatedAt = DateTime.UtcNow
+        };
+
+        await _sagaRepository.SaveAsync(saga);
+
+        // Start saga execution
+        await ExecuteSagaStepAsync(sagaId, OrderSagaStep.ReserveInventory);
+
+        return sagaId;
+    }
+
+    private async Task ExecuteSagaStepAsync(Guid sagaId, OrderSagaStep step)
+    {
+        var saga = await _sagaRepository.GetAsync(sagaId);
+
+        try
+        {
+            switch (step)
+            {
+                case OrderSagaStep.ReserveInventory:
+                    await ReserveInventoryAsync(saga);
+                    saga.CurrentStep = OrderSagaStep.ProcessPayment;
+                    await ExecuteSagaStepAsync(sagaId, OrderSagaStep.ProcessPayment);
+                    break;
+
+                case OrderSagaStep.ProcessPayment:
+                    await ProcessPaymentAsync(saga);
+                    saga.CurrentStep = OrderSagaStep.CreateShipment;
+                    await ExecuteSagaStepAsync(sagaId, OrderSagaStep.CreateShipment);
+                    break;
+
+                case OrderSagaStep.CreateShipment:
+                    await CreateShipmentAsync(saga);
+                    saga.State = SagaState.Completed;
+                    await _sagaRepository.SaveAsync(saga);
+                    await _messageBus.PublishAsync(new OrderSagaCompletedEvent { SagaId = sagaId });
+                    break;
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, &quot;Saga step {Step} failed for saga {SagaId}&quot;, step, sagaId);
+            saga.State = SagaState.Compensating;
+            await _sagaRepository.SaveAsync(saga);
+            await CompensateSagaAsync(sagaId, step);
+        }
+    }
+
+    private async Task CompensateSagaAsync(Guid sagaId, OrderSagaStep failedStep)
+    {
+        var saga = await _sagaRepository.GetAsync(sagaId);
+
+        _logger.LogWarning(&quot;Starting compensation for saga {SagaId} at step {Step}&quot;, sagaId, failedStep);
+
+        // Compensate in reverse order
+        switch (failedStep)
+        {
+            case OrderSagaStep.CreateShipment:
+                await CancelPaymentAsync(saga);
+                goto case OrderSagaStep.ProcessPayment;
+
+            case OrderSagaStep.ProcessPayment:
+                await ReleaseInventoryAsync(saga);
+                break;
+        }
+
+        saga.State = SagaState.Compensated;
+        await _sagaRepository.SaveAsync(saga);
+        await _messageBus.PublishAsync(new OrderSagaFailedEvent { SagaId = sagaId });
+    }
+
+    private async Task ReserveInventoryAsync(OrderSaga saga)
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var inventoryService = scope.ServiceProvider.GetRequiredService&lt;IInventoryService&gt;();
+
+        saga.ReservationId = await inventoryService.ReserveAsync(
+            saga.Command.Items,
+            TimeSpan.FromMinutes(10));
+
+        await _sagaRepository.SaveAsync(saga);
+    }
+
+    private async Task ReleaseInventoryAsync(OrderSaga saga)
+    {
+        if (saga.ReservationId.HasValue)
+        {
+            using var scope = _serviceProvider.CreateScope();
+            var inventoryService = scope.ServiceProvider.GetRequiredService&lt;IInventoryService&gt;();
+            await inventoryService.ReleaseAsync(saga.ReservationId.Value);
+        }
+    }
+
+    private async Task ProcessPaymentAsync(OrderSaga saga)
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var paymentService = scope.ServiceProvider.GetRequiredService&lt;IPaymentService&gt;();
+
+        saga.PaymentId = await paymentService.ChargeAsync(
+            saga.Command.CustomerId,
+            saga.Command.TotalAmount);
+
+        await _sagaRepository.SaveAsync(saga);
+    }
+
+    private async Task CancelPaymentAsync(OrderSaga saga)
+    {
+        if (saga.PaymentId.HasValue)
+        {
+            using var scope = _serviceProvider.CreateScope();
+            var paymentService = scope.ServiceProvider.GetRequiredService&lt;IPaymentService&gt;();
+            await paymentService.RefundAsync(saga.PaymentId.Value);
+        }
+    }
+
+    private async Task CreateShipmentAsync(OrderSaga saga)
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var shippingService = scope.ServiceProvider.GetRequiredService&lt;IShippingService&gt;();
+
+        saga.ShipmentId = await shippingService.CreateShipmentAsync(
+            saga.Id,
+            saga.Command.ShippingAddress);
+
+        await _sagaRepository.SaveAsync(saga);
+    }
+}
+
+public class OrderSaga
+{
+    public Guid Id { get; set; }
+    public SagaState State { get; set; }
+    public OrderSagaStep CurrentStep { get; set; }
+    public CreateOrderCommand Command { get; set; }
+    public Guid? ReservationId { get; set; }
+    public Guid? PaymentId { get; set; }
+    public Guid? ShipmentId { get; set; }
+    public DateTime CreatedAt { get; set; }
+}
+
+public enum SagaState
+{
+    Started,
+    Compensating,
+    Compensated,
+    Completed
+}
+
+public enum OrderSagaStep
+{
+    ReserveInventory,
+    ProcessPayment,
+    CreateShipment
+}</code></pre>
+<p><strong>Q: Implement choreography-based saga using events.</strong></p>
+<p>A: Decentralized saga coordination through events.</p>
+<pre class="language-csharp"><code class="language-csharp">// Each service publishes events and listens for relevant events
+
+// Inventory Service
+public class InventoryService
+{
+    private readonly IMessageBus _messageBus;
+
+    public async Task HandleOrderCreatedAsync(OrderCreatedEvent evt)
+    {
+        try
+        {
+            var reservationId = await ReserveInventoryAsync(evt.Items);
+
+            await _messageBus.PublishAsync(new InventoryReservedEvent
+            {
+                OrderId = evt.OrderId,
+                ReservationId = reservationId,
+                Items = evt.Items
+            });
+        }
+        catch (Exception ex)
+        {
+            await _messageBus.PublishAsync(new InventoryReservationFailedEvent
+            {
+                OrderId = evt.OrderId,
+                Reason = ex.Message
+            });
+        }
+    }
+
+    public async Task HandlePaymentFailedAsync(PaymentFailedEvent evt)
+    {
+        // Compensate: release inventory
+        await ReleaseInventoryAsync(evt.ReservationId);
+
+        await _messageBus.PublishAsync(new InventoryReleasedEvent
+        {
+            OrderId = evt.OrderId,
+            ReservationId = evt.ReservationId
+        });
+    }
+}
+
+// Payment Service
+public class PaymentService
+{
+    private readonly IMessageBus _messageBus;
+
+    public async Task HandleInventoryReservedAsync(InventoryReservedEvent evt)
+    {
+        try
+        {
+            var paymentId = await ProcessPaymentAsync(evt.OrderId);
+
+            await _messageBus.PublishAsync(new PaymentProcessedEvent
+            {
+                OrderId = evt.OrderId,
+                PaymentId = paymentId,
+                ReservationId = evt.ReservationId
+            });
+        }
+        catch (Exception ex)
+        {
+            await _messageBus.PublishAsync(new PaymentFailedEvent
+            {
+                OrderId = evt.OrderId,
+                ReservationId = evt.ReservationId,
+                Reason = ex.Message
+            });
+        }
+    }
+
+    public async Task HandleShipmentFailedAsync(ShipmentFailedEvent evt)
+    {
+        // Compensate: refund payment
+        await RefundPaymentAsync(evt.PaymentId);
+
+        await _messageBus.PublishAsync(new PaymentRefundedEvent
+        {
+            OrderId = evt.OrderId,
+            PaymentId = evt.PaymentId
+        });
+    }
+}
+
+// Shipping Service
+public class ShippingService
+{
+    private readonly IMessageBus _messageBus;
+
+    public async Task HandlePaymentProcessedAsync(PaymentProcessedEvent evt)
+    {
+        try
+        {
+            var shipmentId = await CreateShipmentAsync(evt.OrderId);
+
+            await _messageBus.PublishAsync(new ShipmentCreatedEvent
+            {
+                OrderId = evt.OrderId,
+                ShipmentId = shipmentId,
+                PaymentId = evt.PaymentId
+            });
+        }
+        catch (Exception ex)
+        {
+            await _messageBus.PublishAsync(new ShipmentFailedEvent
+            {
+                OrderId = evt.OrderId,
+                PaymentId = evt.PaymentId,
+                Reason = ex.Message
+            });
+        }
+    }
+}
+
+// Order Service - tracks overall saga state
+public class OrderService
+{
+    public async Task HandleShipmentCreatedAsync(ShipmentCreatedEvent evt)
+    {
+        // Saga completed successfully
+        await UpdateOrderStatusAsync(evt.OrderId, OrderStatus.Shipped);
+    }
+
+    public async Task HandleInventoryReservationFailedAsync(InventoryReservationFailedEvent evt)
+    {
+        // Saga failed at first step
+        await UpdateOrderStatusAsync(evt.OrderId, OrderStatus.Cancelled);
+    }
+
+    public async Task HandlePaymentRefundedAsync(PaymentRefundedEvent evt)
+    {
+        // Saga fully compensated
+        await UpdateOrderStatusAsync(evt.OrderId, OrderStatus.Cancelled);
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="outbox-pattern">Outbox Pattern</h2>
+<p><strong>Q: Implement transactional outbox pattern with background processor.</strong></p>
+<p>A: Ensure atomic database updates and message publishing.</p>
+<pre class="language-csharp"><code class="language-csharp">// Outbox entity
+public class OutboxMessage
+{
+    public Guid Id { get; set; }
+    public string AggregateId { get; set; }
+    public string EventType { get; set; }
+    public string Payload { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime? ProcessedAt { get; set; }
+    public int RetryCount { get; set; }
+    public string Error { get; set; }
+}
+
+// Domain event handler
+public class OrderCommandHandler
+{
+    private readonly DbContext _dbContext;
+
+    public async Task HandleCreateOrderAsync(CreateOrderCommand command)
+    {
+        await using var transaction = await _dbContext.Database.BeginTransactionAsync();
+
+        try
+        {
+            // 1. Update domain entities
+            var order = new Order
+            {
+                Id = Guid.NewGuid(),
+                CustomerId = command.CustomerId,
+                Items = command.Items,
+                Status = OrderStatus.Pending
+            };
+
+            _dbContext.Orders.Add(order);
+
+            // 2. Write to outbox
+            var orderCreatedEvent = new OrderCreatedEvent
+            {
+                OrderId = order.Id,
+                CustomerId = order.CustomerId,
+                Items = order.Items
+            };
+
+            var outboxMessage = new OutboxMessage
+            {
+                Id = Guid.NewGuid(),
+                AggregateId = order.Id.ToString(),
+                EventType = nameof(OrderCreatedEvent),
+                Payload = JsonSerializer.Serialize(orderCreatedEvent),
+                CreatedAt = DateTime.UtcNow
+            };
+
+            _dbContext.OutboxMessages.Add(outboxMessage);
+
+            // 3. Commit transaction (atomic!)
+            await _dbContext.SaveChangesAsync();
+            await transaction.CommitAsync();
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+            throw;
+        }
+    }
+}
+
+// Background outbox processor
+public class OutboxProcessor : BackgroundService
+{
+    private readonly IServiceProvider _serviceProvider;
+    private readonly ILogger&lt;OutboxProcessor&gt; _logger;
+    private readonly TimeSpan _processingInterval = TimeSpan.FromSeconds(5);
+
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        _logger.LogInformation(&quot;Outbox Processor started&quot;);
+
+        while (!stoppingToken.IsCancellationRequested)
+        {
+            try
+            {
+                await ProcessOutboxMessagesAsync(stoppingToken);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, &quot;Error processing outbox messages&quot;);
+            }
+
+            await Task.Delay(_processingInterval, stoppingToken);
+        }
+    }
+
+    private async Task ProcessOutboxMessagesAsync(CancellationToken cancellationToken)
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService&lt;DbContext&gt;();
+        var messageBus = scope.ServiceProvider.GetRequiredService&lt;IMessageBus&gt;();
+
+        // Get unprocessed messages
+        var messages = await dbContext.OutboxMessages
+            .Where(m =&gt; m.ProcessedAt == null &amp;&amp; m.RetryCount &lt; 5)
+            .OrderBy(m =&gt; m.CreatedAt)
+            .Take(100)
+            .ToListAsync(cancellationToken);
+
+        foreach (var message in messages)
+        {
+            try
+            {
+                // Publish to message bus
+                await messageBus.PublishRawAsync(
+                    message.EventType,
+                    message.Payload,
+                    cancellationToken);
+
+                // Mark as processed
+                message.ProcessedAt = DateTime.UtcNow;
+
+                _logger.LogInformation(
+                    &quot;Published outbox message {MessageId} of type {EventType}&quot;,
+                    message.Id,
+                    message.EventType);
+            }
+            catch (Exception ex)
+            {
+                message.RetryCount++;
+                message.Error = ex.Message;
+
+                _logger.LogError(
+                    ex,
+                    &quot;Failed to publish outbox message {MessageId} (retry {RetryCount})&quot;,
+                    message.Id,
+                    message.RetryCount);
+            }
+        }
+
+        if (messages.Any())
+        {
+            await dbContext.SaveChangesAsync(cancellationToken);
+        }
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="idempotency">Idempotency</h2>
+<p><strong>Q: Implement idempotency using distributed cache.</strong></p>
+<p>A: Track processed requests to prevent duplicates.</p>
+<pre class="language-csharp"><code class="language-csharp">public class IdempotencyMiddleware
+{
+    private readonly RequestDelegate _next;
+    private readonly IDistributedCache _cache;
+    private readonly ILogger&lt;IdempotencyMiddleware&gt; _logger;
+
+    public async Task InvokeAsync(HttpContext context)
+    {
+        // Only handle POST/PUT/PATCH
+        if (context.Request.Method != &quot;POST&quot; &amp;&amp;
+            context.Request.Method != &quot;PUT&quot; &amp;&amp;
+            context.Request.Method != &quot;PATCH&quot;)
+        {
+            await _next(context);
+            return;
+        }
+
+        // Get idempotency key
+        if (!context.Request.Headers.TryGetValue(&quot;Idempotency-Key&quot;, out var idempotencyKey) ||
+            string.IsNullOrEmpty(idempotencyKey))
+        {
+            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            await context.Response.WriteAsJsonAsync(new { error = &quot;Idempotency-Key header required&quot; });
+            return;
+        }
+
+        var cacheKey = $&quot;idempotency:{idempotencyKey}&quot;;
+
+        // Check if request already processed
+        var cachedResponse = await _cache.GetStringAsync(cacheKey);
+        if (cachedResponse != null)
+        {
+            _logger.LogInformation(&quot;Returning cached response for idempotency key: {Key}&quot;, idempotencyKey);
+
+            var response = JsonSerializer.Deserialize&lt;IdempotentResponse&gt;(cachedResponse);
+            context.Response.StatusCode = response.StatusCode;
+            context.Response.ContentType = &quot;application/json&quot;;
+
+            foreach (var header in response.Headers)
+            {
+                context.Response.Headers[header.Key] = header.Value;
+            }
+
+            await context.Response.WriteAsync(response.Body);
+            return;
+        }
+
+        // Acquire lock to prevent concurrent processing
+        var lockKey = $&quot;{cacheKey}:lock&quot;;
+        var lockAcquired = await TryAcquireLockAsync(lockKey, TimeSpan.FromSeconds(30));
+
+        if (!lockAcquired)
+        {
+            context.Response.StatusCode = StatusCodes.Status409Conflict;
+            await context.Response.WriteAsJsonAsync(new
+            {
+                error = &quot;Request with this idempotency key is currently being processed&quot;
+            });
+            return;
+        }
+
+        try
+        {
+            // Capture response
+            var originalBodyStream = context.Response.Body;
+            using var responseBody = new MemoryStream();
+            context.Response.Body = responseBody;
+
+            await _next(context);
+
+            // Cache successful response
+            if (context.Response.StatusCode &gt;= 200 &amp;&amp; context.Response.StatusCode &lt; 300)
+            {
+                responseBody.Seek(0, SeekOrigin.Begin);
+                var body = await new StreamReader(responseBody).ReadToEndAsync();
+                responseBody.Seek(0, SeekOrigin.Begin);
+
+                var idempotentResponse = new IdempotentResponse
+                {
+                    StatusCode = context.Response.StatusCode,
+                    Headers = context.Response.Headers.ToDictionary(h =&gt; h.Key, h =&gt; h.Value.ToString()),
+                    Body = body
+                };
+
+                await _cache.SetStringAsync(
+                    cacheKey,
+                    JsonSerializer.Serialize(idempotentResponse),
+                    new DistributedCacheEntryOptions
+                    {
+                        AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(24)
+                    });
+            }
+
+            await responseBody.CopyToAsync(originalBodyStream);
+        }
+        finally
+        {
+            await ReleaseLockAsync(lockKey);
+        }
+    }
+
+    private async Task&lt;bool&gt; TryAcquireLockAsync(string lockKey, TimeSpan timeout)
+    {
+        var expiry = DateTime.UtcNow.Add(timeout);
+
+        while (DateTime.UtcNow &lt; expiry)
+        {
+            var acquired = await _cache.GetStringAsync(lockKey) == null;
+            if (acquired)
+            {
+                await _cache.SetStringAsync(lockKey, &quot;locked&quot;, new DistributedCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = timeout
+                });
+                return true;
+            }
+
+            await Task.Delay(100);
+        }
+
+        return false;
+    }
+
+    private async Task ReleaseLockAsync(string lockKey)
+    {
+        await _cache.RemoveAsync(lockKey);
+    }
+
+    private class IdempotentResponse
+    {
+        public int StatusCode { get; set; }
+        public Dictionary&lt;string, string&gt; Headers { get; set; }
+        public string Body { get; set; }
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="event-streaming">Event Streaming</h2>
+<p><strong>Q: Implement event store with snapshots for performance.</strong></p>
+<p>A: Optimize event replay with periodic snapshots.</p>
+<pre class="language-csharp"><code class="language-csharp">public class EventStoreWithSnapshots
+{
+    private readonly DbContext _dbContext;
+    private readonly int _snapshotInterval = 100; // Snapshot every 100 events
+
+    public async Task&lt;T&gt; LoadAggregateAsync&lt;T&gt;(Guid aggregateId) where T : Aggregate, new()
+    {
+        // Try to load latest snapshot
+        var snapshot = await _dbContext.Snapshots
+            .Where(s =&gt; s.AggregateId == aggregateId)
+            .OrderByDescending(s =&gt; s.Version)
+            .FirstOrDefaultAsync();
+
+        T aggregate;
+        long fromVersion;
+
+        if (snapshot != null)
+        {
+            // Deserialize snapshot
+            aggregate = JsonSerializer.Deserialize&lt;T&gt;(snapshot.Data);
+            fromVersion = snapshot.Version + 1;
+        }
+        else
+        {
+            aggregate = new T();
+            fromVersion = 0;
+        }
+
+        // Load events after snapshot
+        var events = await _dbContext.Events
+            .Where(e =&gt; e.AggregateId == aggregateId &amp;&amp; e.Version &gt;= fromVersion)
+            .OrderBy(e =&gt; e.Version)
+            .ToListAsync();
+
+        foreach (var eventRecord in events)
+        {
+            var @event = DeserializeEvent(eventRecord);
+            aggregate.ApplyEvent(@event);
+        }
+
+        return aggregate;
+    }
+
+    public async Task SaveAggregateAsync&lt;T&gt;(T aggregate) where T : Aggregate
+    {
+        var uncommittedEvents = aggregate.GetUncommittedEvents();
+
+        foreach (var @event in uncommittedEvents)
+        {
+            _dbContext.Events.Add(new EventRecord
+            {
+                AggregateId = aggregate.Id,
+                EventType = @event.GetType().Name,
+                Data = JsonSerializer.Serialize(@event),
+                Version = @event.Version,
+                Timestamp = @event.Timestamp
+            });
+        }
+
+        await _dbContext.SaveChangesAsync();
+
+        // Check if snapshot needed
+        if (aggregate.Version % _snapshotInterval == 0)
+        {
+            await CreateSnapshotAsync(aggregate);
+        }
+
+        aggregate.MarkEventsAsCommitted();
+    }
+
+    private async Task CreateSnapshotAsync&lt;T&gt;(T aggregate) where T : Aggregate
+    {
+        var snapshot = new SnapshotRecord
+        {
+            AggregateId = aggregate.Id,
+            AggregateType = typeof(T).Name,
+            Version = aggregate.Version,
+            Data = JsonSerializer.Serialize(aggregate),
+            CreatedAt = DateTime.UtcNow
+        };
+
+        _dbContext.Snapshots.Add(snapshot);
+        await _dbContext.SaveChangesAsync();
+
+        // Clean up old snapshots (keep last 3)
+        var oldSnapshots = await _dbContext.Snapshots
+            .Where(s =&gt; s.AggregateId == aggregate.Id)
+            .OrderByDescending(s =&gt; s.Version)
+            .Skip(3)
+            .ToListAsync();
+
+        _dbContext.Snapshots.RemoveRange(oldSnapshots);
+        await _dbContext.SaveChangesAsync();
+    }
+}</code></pre>
+<p>---</p>
+<p><strong>Total Exercises: 30+</strong></p>
+<p>Master messaging patterns for building resilient, event-driven distributed systems!</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['midnight', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const fallback = 'light';
+      const initial = supported.includes(saved) ? saved : (window.__studyTheme || fallback);
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          sessionStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+    (() => {
+      const groups = document.querySelectorAll('.sidebar-group');
+      if (!groups.length) return;
+      const storageKey = 'study-open-groups';
+      const saved = sessionStorage.getItem(storageKey);
+      const openFromStorage = new Set(saved ? JSON.parse(saved) : []);
+
+      const activeLink = document.querySelector('.nav-link.active');
+      const activeGroup = activeLink?.closest('.sidebar-group');
+      if (activeGroup?.dataset.group) {
+        openFromStorage.add(activeGroup.dataset.group);
+      }
+
+      const syncStorage = () => {
+        const openIds = Array.from(document.querySelectorAll('.sidebar-group.is-open'))
+          .map((group) => group.dataset.group)
+          .filter(Boolean);
+        sessionStorage.setItem(storageKey, JSON.stringify(openIds));
+      };
+
+      const setExpanded = (group, expanded) => {
+        const header = group.querySelector('.sidebar-group__header');
+        const list = group.querySelector('.sidebar-group__items');
+        group.classList.toggle('is-open', expanded);
+        header?.setAttribute('aria-expanded', expanded);
+        if (list) {
+          list.hidden = !expanded;
+        }
+      };
+
+      groups.forEach((group) => {
+        const shouldOpen = openFromStorage.has(group.dataset.group);
+        setExpanded(group, shouldOpen);
+        const header = group.querySelector('.sidebar-group__header');
+        header?.addEventListener('click', () => {
+          const next = !group.classList.contains('is-open');
+          setExpanded(group, next);
+          syncStorage();
+        });
+      });
+    })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swPath = '../service-worker.js';
+        navigator.serviceWorker.register(swPath).catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+</body>
+</html>

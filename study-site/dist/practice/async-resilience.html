@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for Async Resilience" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>Async Resilience | C# Interview Prep Cheat Sheet</title>
+  <link rel="manifest" href="..\assets/manifest.webmanifest" />
+  <script>
+    (() => {
+      const supported = ['midnight', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const fallback = 'light';
+      const initial = supported.includes(saved) ? saved : fallback;
+      document.documentElement.dataset.theme = initial;
+      window.__studyTheme = initial;
+    })();
+  </script>
+  <link rel="stylesheet" href="..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="midnight">Current</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group" data-group="notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="../notes/logging.html">Logging</a></li><li><a class="nav-link" href="../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/O1-Constant-Time.html">O1 Constant Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/OLogN-Logarithmic-Time.html">OLogN Logarithmic Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/ON-Linear-Time.html">ON Linear Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/ON2-Quadratic-Time.html">ON2 Quadratic Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/ONLogN-Linearithmic-Time.html">ONLogN Linearithmic Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/Space-Complexity.html">Space Complexity</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/ICollection.html">ICollection</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IEnumerable.html">IEnumerable</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IList.html">IList</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IQueryable.html">IQueryable</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IReadOnly.html">IReadOnly</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a class="nav-link" href="../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a class="nav-link" href="../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a class="nav-link" href="../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a class="nav-link" href="../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a class="nav-link" href="../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a class="nav-link" href="../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a class="nav-link" href="../notes/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a class="nav-link" href="../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a class="nav-link" href="../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a class="nav-link" href="../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a class="nav-link" href="../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a class="nav-link" href="../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a class="nav-link" href="../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a class="nav-link" href="../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a class="nav-link" href="../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a class="nav-link" href="../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a class="nav-link" href="../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a class="nav-link" href="../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a class="nav-link" href="../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a class="nav-link" href="../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a class="nav-link" href="../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a class="nav-link" href="../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a class="nav-link" href="../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/01-async-patterns.html">01 Async Patterns</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/02-backpressure-rate-limiting.html">02 Backpressure Rate Limiting</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/03-caching-strategies.html">03 Caching Strategies</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/04-database-scaling.html">04 Database Scaling</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/05-message-queues.html">05 Message Queues</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/06-resilience-patterns.html">06 Resilience Patterns</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/07-observability.html">07 Observability</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/08-complete-example.html">08 Complete Example</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+    </div><div class="sidebar-group is-open" data-group="practice">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
+        <span>Practice</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="../practice/answers.html">Answers</a></li><li><a class="nav-link" href="../practice/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link active" href="../practice/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="../practice/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="../practice/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="../practice/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="../practice/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="../practice/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="../practice/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="../practice/index.html">Practice</a></li><li><a class="nav-link" href="../practice/questions.html">Questions</a></li><li><a class="nav-link" href="../practice/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="../practice/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="../practice/system-design.html">System Design</a></li><li><a class="nav-link" href="../practice/trading-domain.html">Trading Domain</a></li></ul>
+    </div></div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">practice\async-resilience.md</div>
+        <h2>Async Resilience</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#async-resilience-practice-exercises">Async & Resilience Practice Exercises</a></li><li class="level-2"><a href="#foundational-async-questions">Foundational Async Questions</a></li><li class="level-2"><a href="#intermediate-async-patterns">Intermediate Async Patterns</a></li><li class="level-2"><a href="#advanced-async-patterns">Advanced Async Patterns</a></li><li class="level-2"><a href="#task-coordination-patterns">Task Coordination Patterns</a></li><li class="level-2"><a href="#error-handling-resilience">Error Handling & Resilience</a></li><li class="level-2"><a href="#real-world-scenarios">Real-World Scenarios</a></li></ul></div>
+        <h1 id="async-resilience-practice-exercises">Async & Resilience Practice Exercises</h1>
+<p>Master asynchronous programming, concurrency, and resilient patterns through comprehensive exercises.</p>
+<p>---</p>
+<h2 id="foundational-async-questions">Foundational Async Questions</h2>
+<p><strong>Q: Sketch code to call three REST endpoints concurrently, cancel if any take longer than 3 seconds, and aggregate results.</strong></p>
+<p>A: Use <code>Task.WhenAll</code> with <code>CancellationTokenSource</code> + timeout. Ensure the <code>HttpClient</code> is a singleton to avoid socket exhaustion and that partial results are handled gracefully when cancellation occurs.</p>
+<pre class="language-csharp"><code class="language-csharp">using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3));
+var tasks = endpoints.Select(url =&gt; httpClient.GetStringAsync(url, cts.Token));
+string[] responses = await Task.WhenAll(tasks);</code></pre>
+<p>Use when limited number of independent calls; want fail-fast. Avoid when endpoints depend on each other or you must gracefully degrade per-call.</p>
+<p><strong>Q: Implement a resilient HTTP client with retry and circuit breaker policies using Polly.</strong></p>
+<p>A: Define policies and wrap HTTP calls.</p>
+<pre class="language-csharp"><code class="language-csharp">var policy = Policy.WrapAsync(
+    Policy.Handle&lt;HttpRequestException&gt;()
+          .OrResult&lt;HttpResponseMessage&gt;(r =&gt; (int)r.StatusCode &gt;= 500)
+          .WaitAndRetryAsync(3, attempt =&gt; TimeSpan.FromMilliseconds(200 * attempt)),
+    Policy.Handle&lt;HttpRequestException&gt;()
+          .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30))
+);
+
+var response = await policy.ExecuteAsync(() =&gt; httpClient.SendAsync(request));</code></pre>
+<p>Use when downstream instability; need resilience. Avoid when operations must not be retried (e.g., non-idempotent commands without safeguards).</p>
+<p><strong>Q: How would you handle backpressure when consuming a fast message queue with a slower downstream API?</strong></p>
+<p>A: Use bounded channels, buffering, or throttling. Consider load shedding by dropping low-priority messages or scaling consumers horizontally when queue lengths grow.</p>
+<pre class="language-csharp"><code class="language-csharp">var channel = Channel.CreateBounded&lt;Message&gt;(new BoundedChannelOptions(100)
+{
+    FullMode = BoundedChannelFullMode.Wait
+});
+
+// Producer
+_ = Task.Run(async () =&gt;
+{
+    await foreach (var msg in source.ReadAllAsync())
+        await channel.Writer.WriteAsync(msg);
+});
+
+// Consumer
+await foreach (var msg in channel.Reader.ReadAllAsync())
+{
+    await ProcessAsync(msg);
+}</code></pre>
+<p>Use when consumer slower than producer; need to avoid overload. Avoid when throughput must be maximized with zero buffering—consider scaling consumers instead.</p>
+<p><strong>Q: Explain why you might use <code>SemaphoreSlim</code> with async code over <code>lock</code>.</strong></p>
+<p>A: <code>SemaphoreSlim</code> supports async waiting and throttling concurrency. It can represent both mutual exclusion (1 permit) and limited resource pools (>1 permits).</p>
+<pre class="language-csharp"><code class="language-csharp">private readonly SemaphoreSlim _mutex = new(1, 1);
+
+public async Task UseSharedAsync()
+{
+    await _mutex.WaitAsync();
+    try { await SharedAsyncOperation(); }
+    finally { _mutex.Release(); }
+}</code></pre>
+<p>Use <code>SemaphoreSlim</code> when async code needs mutual exclusion or limited parallelism. Avoid when code is synchronous—<code>lock</code> has less overhead.</p>
+<p>---</p>
+<h2 id="intermediate-async-patterns">Intermediate Async Patterns</h2>
+<p><strong>Q: Implement an async method that times out after a specified duration and returns a default value.</strong></p>
+<p>A: Use <code>Task.WhenAny</code> with a delay task or <code>CancellationTokenSource</code>.</p>
+<pre class="language-csharp"><code class="language-csharp">public static async Task&lt;T&gt; WithTimeout&lt;T&gt;(
+    Task&lt;T&gt; task,
+    TimeSpan timeout,
+    T defaultValue = default)
+{
+    using var cts = new CancellationTokenSource(timeout);
+    try
+    {
+        return await task.WaitAsync(timeout);  // .NET 6+
+    }
+    catch (TimeoutException)
+    {
+        return defaultValue;
+    }
+}
+
+// Pre-.NET 6 approach
+public static async Task&lt;T&gt; WithTimeoutClassic&lt;T&gt;(
+    Task&lt;T&gt; task,
+    TimeSpan timeout,
+    T defaultValue = default)
+{
+    var delayTask = Task.Delay(timeout);
+    var completedTask = await Task.WhenAny(task, delayTask);
+
+    if (completedTask == delayTask)
+        return defaultValue;
+
+    return await task;
+}</code></pre>
+<p><strong>Q: Create a method that retries an operation with exponential backoff.</strong></p>
+<p>A: Implement retry logic with increasing delays.</p>
+<pre class="language-csharp"><code class="language-csharp">public static async Task&lt;T&gt; RetryWithBackoff&lt;T&gt;(
+    Func&lt;Task&lt;T&gt;&gt; operation,
+    int maxRetries = 3,
+    int initialDelayMs = 100)
+{
+    for (int attempt = 0; attempt &lt; maxRetries; attempt++)
+    {
+        try
+        {
+            return await operation();
+        }
+        catch (Exception ex) when (attempt &lt; maxRetries - 1)
+        {
+            var delay = initialDelayMs * Math.Pow(2, attempt);
+            await Task.Delay((int)delay);
+        }
+    }
+
+    // Last attempt without catching
+    return await operation();
+}
+
+// Usage
+var result = await RetryWithBackoff(
+    () =&gt; httpClient.GetStringAsync(&quot;https://api.example.com/data&quot;),
+    maxRetries: 5,
+    initialDelayMs: 200
+);</code></pre>
+<p><strong>Q: Implement a method that processes items in batches with a maximum degree of parallelism.</strong></p>
+<p>A: Use <code>SemaphoreSlim</code> to limit concurrency or <code>Parallel.ForEachAsync</code>.</p>
+<pre class="language-csharp"><code class="language-csharp">// Using SemaphoreSlim
+public static async Task ProcessInParallel&lt;T&gt;(
+    IEnumerable&lt;T&gt; items,
+    Func&lt;T, Task&gt; processor,
+    int maxDegreeOfParallelism)
+{
+    using var semaphore = new SemaphoreSlim(maxDegreeOfParallelism);
+    var tasks = items.Select(async item =&gt;
+    {
+        await semaphore.WaitAsync();
+        try
+        {
+            await processor(item);
+        }
+        finally
+        {
+            semaphore.Release();
+        }
+    });
+
+    await Task.WhenAll(tasks);
+}
+
+// Using Parallel.ForEachAsync (.NET 6+)
+public static async Task ProcessInParallelModern&lt;T&gt;(
+    IEnumerable&lt;T&gt; items,
+    Func&lt;T, CancellationToken, ValueTask&gt; processor,
+    int maxDegreeOfParallelism)
+{
+    var options = new ParallelOptions
+    {
+        MaxDegreeOfParallelism = maxDegreeOfParallelism
+    };
+
+    await Parallel.ForEachAsync(items, options, processor);
+}</code></pre>
+<p><strong>Q: Create an async producer-consumer pattern using <code>Channel&lt;T&gt;</code>.</strong></p>
+<p>A: Implement coordinated producer and consumer tasks.</p>
+<pre class="language-csharp"><code class="language-csharp">public class AsyncProducerConsumer&lt;T&gt;
+{
+    private readonly Channel&lt;T&gt; _channel;
+
+    public AsyncProducerConsumer(int capacity)
+    {
+        _channel = Channel.CreateBounded&lt;T&gt;(capacity);
+    }
+
+    public async Task ProduceAsync(IAsyncEnumerable&lt;T&gt; items)
+    {
+        await foreach (var item in items)
+        {
+            await _channel.Writer.WriteAsync(item);
+        }
+        _channel.Writer.Complete();
+    }
+
+    public async Task ConsumeAsync(
+        Func&lt;T, Task&gt; processor,
+        CancellationToken cancellationToken = default)
+    {
+        await foreach (var item in _channel.Reader.ReadAllAsync(cancellationToken))
+        {
+            await processor(item);
+        }
+    }
+
+    public async Task RunAsync(
+        IAsyncEnumerable&lt;T&gt; items,
+        Func&lt;T, Task&gt; processor,
+        CancellationToken cancellationToken = default)
+    {
+        var produceTask = ProduceAsync(items);
+        var consumeTask = ConsumeAsync(processor, cancellationToken);
+
+        await Task.WhenAll(produceTask, consumeTask);
+    }
+}</code></pre>
+<p><strong>Q: Implement proper cancellation handling in an async method that makes multiple API calls.</strong></p>
+<p>A: Check cancellation token at strategic points and pass it through.</p>
+<pre class="language-csharp"><code class="language-csharp">public async Task&lt;OrderResult&gt; ProcessOrderAsync(
+    Order order,
+    CancellationToken cancellationToken)
+{
+    cancellationToken.ThrowIfCancellationRequested();
+
+    // Step 1: Validate
+    var validation = await ValidateOrderAsync(order, cancellationToken);
+    if (!validation.IsValid)
+        return OrderResult.Failed(validation.Errors);
+
+    cancellationToken.ThrowIfCancellationRequested();
+
+    // Step 2: Reserve inventory
+    var reservation = await ReserveInventoryAsync(order, cancellationToken);
+
+    cancellationToken.ThrowIfCancellationRequested();
+
+    // Step 3: Process payment
+    try
+    {
+        var payment = await ProcessPaymentAsync(order, cancellationToken);
+        return OrderResult.Success(payment.TransactionId);
+    }
+    catch (OperationCanceledException)
+    {
+        // Rollback reservation
+        await ReleaseInventoryAsync(reservation, CancellationToken.None);
+        throw;
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="advanced-async-patterns">Advanced Async Patterns</h2>
+<p><strong>Q: Implement an async lazy initialization pattern that ensures a resource is initialized only once.</strong></p>
+<p>A: Use <code>Lazy&lt;Task&lt;T&gt;&gt;</code> or custom lazy initialization.</p>
+<pre class="language-csharp"><code class="language-csharp">public class AsyncLazy&lt;T&gt;
+{
+    private readonly Lazy&lt;Task&lt;T&gt;&gt; _instance;
+
+    public AsyncLazy(Func&lt;Task&lt;T&gt;&gt; factory)
+    {
+        _instance = new Lazy&lt;Task&lt;T&gt;&gt;(factory);
+    }
+
+    public Task&lt;T&gt; Value =&gt; _instance.Value;
+}
+
+// Usage
+private readonly AsyncLazy&lt;DatabaseConnection&gt; _connection;
+
+public MyService()
+{
+    _connection = new AsyncLazy&lt;DatabaseConnection&gt;(
+        async () =&gt; await DatabaseConnection.ConnectAsync());
+}
+
+public async Task&lt;Data&gt; GetDataAsync()
+{
+    var conn = await _connection.Value;
+    return await conn.QueryAsync(&quot;SELECT * FROM Data&quot;);
+}</code></pre>
+<p><strong>Q: Create a rate limiter using <code>SemaphoreSlim</code> and <code>Timer</code> for token bucket algorithm.</strong></p>
+<p>A: Implement token bucket pattern with async semaphore.</p>
+<pre class="language-csharp"><code class="language-csharp">public class RateLimiter : IDisposable
+{
+    private readonly SemaphoreSlim _semaphore;
+    private readonly Timer _timer;
+    private readonly int _maxTokens;
+    private readonly TimeSpan _refillInterval;
+
+    public RateLimiter(int maxTokens, TimeSpan refillInterval)
+    {
+        _maxTokens = maxTokens;
+        _refillInterval = refillInterval;
+        _semaphore = new SemaphoreSlim(maxTokens, maxTokens);
+        _timer = new Timer(RefillTokens, null, refillInterval, refillInterval);
+    }
+
+    private void RefillTokens(object state)
+    {
+        // Add tokens up to max
+        if (_semaphore.CurrentCount &lt; _maxTokens)
+        {
+            _semaphore.Release();
+        }
+    }
+
+    public async Task&lt;bool&gt; TryAcquireAsync(
+        TimeSpan timeout,
+        CancellationToken cancellationToken = default)
+    {
+        return await _semaphore.WaitAsync(timeout, cancellationToken);
+    }
+
+    public void Dispose()
+    {
+        _timer?.Dispose();
+        _semaphore?.Dispose();
+    }
+}
+
+// Usage
+var rateLimiter = new RateLimiter(maxTokens: 10, TimeSpan.FromSeconds(1));
+if (await rateLimiter.TryAcquireAsync(TimeSpan.FromMilliseconds(100)))
+{
+    await MakeApiCallAsync();
+}</code></pre>
+<p><strong>Q: Implement async dispose pattern (IAsyncDisposable) for a resource that requires async cleanup.</strong></p>
+<p>A: Implement <code>IAsyncDisposable</code> interface.</p>
+<pre class="language-csharp"><code class="language-csharp">public class AsyncResource : IAsyncDisposable
+{
+    private readonly HttpClient _httpClient;
+    private readonly Stream _stream;
+    private bool _disposed;
+
+    public AsyncResource()
+    {
+        _httpClient = new HttpClient();
+        _stream = new MemoryStream();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_disposed) return;
+
+        await DisposeAsyncCore();
+
+        Dispose(disposing: false);
+        GC.SuppressFinalize(this);
+
+        _disposed = true;
+    }
+
+    protected virtual async ValueTask DisposeAsyncCore()
+    {
+        // Async cleanup
+        if (_stream != null)
+        {
+            await _stream.FlushAsync();
+            await _stream.DisposeAsync();
+        }
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            _httpClient?.Dispose();
+        }
+    }
+}
+
+// Usage
+await using var resource = new AsyncResource();</code></pre>
+<p><strong>Q: Create a circuit breaker implementation from scratch.</strong></p>
+<p>A: Implement state machine for circuit breaker pattern.</p>
+<pre class="language-csharp"><code class="language-csharp">public class CircuitBreaker
+{
+    private enum State { Closed, Open, HalfOpen }
+
+    private State _state = State.Closed;
+    private int _failureCount;
+    private DateTime _lastFailureTime;
+
+    private readonly int _failureThreshold;
+    private readonly TimeSpan _timeout;
+    private readonly SemaphoreSlim _lock = new(1, 1);
+
+    public CircuitBreaker(int failureThreshold, TimeSpan timeout)
+    {
+        _failureThreshold = failureThreshold;
+        _timeout = timeout;
+    }
+
+    public async Task&lt;T&gt; ExecuteAsync&lt;T&gt;(Func&lt;Task&lt;T&gt;&gt; operation)
+    {
+        await _lock.WaitAsync();
+        try
+        {
+            // Check if we should transition from Open to HalfOpen
+            if (_state == State.Open &amp;&amp;
+                DateTime.UtcNow - _lastFailureTime &gt;= _timeout)
+            {
+                _state = State.HalfOpen;
+            }
+
+            if (_state == State.Open)
+            {
+                throw new CircuitBreakerOpenException(
+                    &quot;Circuit breaker is open&quot;);
+            }
+        }
+        finally
+        {
+            _lock.Release();
+        }
+
+        try
+        {
+            var result = await operation();
+
+            // Success - reset if in HalfOpen
+            if (_state == State.HalfOpen)
+            {
+                await ResetAsync();
+            }
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            await RecordFailureAsync(ex);
+            throw;
+        }
+    }
+
+    private async Task RecordFailureAsync(Exception ex)
+    {
+        await _lock.WaitAsync();
+        try
+        {
+            _failureCount++;
+            _lastFailureTime = DateTime.UtcNow;
+
+            if (_failureCount &gt;= _failureThreshold)
+            {
+                _state = State.Open;
+            }
+        }
+        finally
+        {
+            _lock.Release();
+        }
+    }
+
+    private async Task ResetAsync()
+    {
+        await _lock.WaitAsync();
+        try
+        {
+            _failureCount = 0;
+            _state = State.Closed;
+        }
+        finally
+        {
+            _lock.Release();
+        }
+    }
+}</code></pre>
+<p><strong>Q: Implement a parallel batch processor that maintains order of results.</strong></p>
+<p>A: Process in parallel but preserve order.</p>
+<pre class="language-csharp"><code class="language-csharp">public static async Task&lt;List&lt;TResult&gt;&gt; ProcessInOrderAsync&lt;TSource, TResult&gt;(
+    IEnumerable&lt;TSource&gt; items,
+    Func&lt;TSource, Task&lt;TResult&gt;&gt; processor,
+    int maxDegreeOfParallelism)
+{
+    var semaphore = new SemaphoreSlim(maxDegreeOfParallelism);
+    var tasks = items.Select(async (item, index) =&gt;
+    {
+        await semaphore.WaitAsync();
+        try
+        {
+            var result = await processor(item);
+            return (Index: index, Result: result);
+        }
+        finally
+        {
+            semaphore.Release();
+        }
+    });
+
+    var results = await Task.WhenAll(tasks);
+
+    return results
+        .OrderBy(x =&gt; x.Index)
+        .Select(x =&gt; x.Result)
+        .ToList();
+}</code></pre>
+<p>---</p>
+<h2 id="task-coordination-patterns">Task Coordination Patterns</h2>
+<p><strong>Q: Implement a fan-out/fan-in pattern where multiple workers process items and results are aggregated.</strong></p>
+<p>A: Distribute work and collect results.</p>
+<pre class="language-csharp"><code class="language-csharp">public async Task&lt;Summary&gt; FanOutFanIn&lt;T&gt;(
+    IEnumerable&lt;T&gt; items,
+    Func&lt;T, Task&lt;Result&gt;&gt; processor)
+{
+    var channel = Channel.CreateUnbounded&lt;Result&gt;();
+
+    // Fan-out: Start workers
+    var workers = Enumerable.Range(0, Environment.ProcessorCount)
+        .Select(i =&gt; Task.Run(async () =&gt;
+        {
+            await foreach (var item in GetWorkItems(items, i))
+            {
+                var result = await processor(item);
+                await channel.Writer.WriteAsync(result);
+            }
+        }))
+        .ToArray();
+
+    // Signal completion
+    _ = Task.Run(async () =&gt;
+    {
+        await Task.WhenAll(workers);
+        channel.Writer.Complete();
+    });
+
+    // Fan-in: Aggregate results
+    var summary = new Summary();
+    await foreach (var result in channel.Reader.ReadAllAsync())
+    {
+        summary.Add(result);
+    }
+
+    return summary;
+}</code></pre>
+<p><strong>Q: Create a coordinated shutdown mechanism for multiple background tasks.</strong></p>
+<p>A: Implement graceful shutdown with cancellation.</p>
+<pre class="language-csharp"><code class="language-csharp">public class BackgroundWorkerCoordinator : IDisposable
+{
+    private readonly List&lt;Task&gt; _workers = new();
+    private readonly CancellationTokenSource _cts = new();
+
+    public void Start(Func&lt;CancellationToken, Task&gt; workerFactory, int workerCount)
+    {
+        for (int i = 0; i &lt; workerCount; i++)
+        {
+            var worker = Task.Run(() =&gt; workerFactory(_cts.Token));
+            _workers.Add(worker);
+        }
+    }
+
+    public async Task StopAsync(TimeSpan gracePeriod)
+    {
+        // Signal cancellation
+        _cts.Cancel();
+
+        // Wait for graceful shutdown
+        var shutdownTask = Task.WhenAll(_workers);
+        var timeoutTask = Task.Delay(gracePeriod);
+
+        var completedTask = await Task.WhenAny(shutdownTask, timeoutTask);
+
+        if (completedTask == timeoutTask)
+        {
+            // Forced shutdown after timeout
+            throw new TimeoutException(&quot;Workers did not complete in time&quot;);
+        }
+
+        await shutdownTask;  // Propagate exceptions
+    }
+
+    public void Dispose()
+    {
+        _cts?.Cancel();
+        _cts?.Dispose();
+    }
+}</code></pre>
+<p><strong>Q: Implement async event aggregation that batches events before processing.</strong></p>
+<p>A: Buffer events and process in batches.</p>
+<pre class="language-csharp"><code class="language-csharp">public class EventBatcher&lt;T&gt;
+{
+    private readonly Channel&lt;T&gt; _channel;
+    private readonly int _batchSize;
+    private readonly TimeSpan _batchTimeout;
+
+    public EventBatcher(int batchSize, TimeSpan batchTimeout)
+    {
+        _channel = Channel.CreateUnbounded&lt;T&gt;();
+        _batchSize = batchSize;
+        _batchTimeout = batchTimeout;
+    }
+
+    public async Task AddAsync(T item)
+    {
+        await _channel.Writer.WriteAsync(item);
+    }
+
+    public async Task ProcessAsync(
+        Func&lt;List&lt;T&gt;, Task&gt; batchProcessor,
+        CancellationToken cancellationToken)
+    {
+        var batch = new List&lt;T&gt;(_batchSize);
+        using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+
+        while (!cancellationToken.IsCancellationRequested)
+        {
+            try
+            {
+                // Wait for first item or cancellation
+                var item = await _channel.Reader.ReadAsync(cancellationToken);
+                batch.Add(item);
+
+                // Collect more items until batch full or timeout
+                using var timeoutCts = new CancellationTokenSource(_batchTimeout);
+                while (batch.Count &lt; _batchSize &amp;&amp;
+                       _channel.Reader.TryRead(out var nextItem))
+                {
+                    batch.Add(nextItem);
+                }
+
+                // Process batch
+                await batchProcessor(batch);
+                batch.Clear();
+            }
+            catch (OperationCanceledException)
+            {
+                break;
+            }
+        }
+
+        // Process remaining items
+        if (batch.Any())
+        {
+            await batchProcessor(batch);
+        }
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="error-handling-resilience">Error Handling & Resilience</h2>
+<p><strong>Q: Implement a bulkhead pattern to isolate failures.</strong></p>
+<p>A: Separate resource pools for different operations.</p>
+<pre class="language-csharp"><code class="language-csharp">public class Bulkhead
+{
+    private readonly SemaphoreSlim _semaphore;
+    private readonly int _maxConcurrent;
+
+    public Bulkhead(int maxConcurrent)
+    {
+        _maxConcurrent = maxConcurrent;
+        _semaphore = new SemaphoreSlim(maxConcurrent);
+    }
+
+    public async Task&lt;T&gt; ExecuteAsync&lt;T&gt;(
+        Func&lt;Task&lt;T&gt;&gt; operation,
+        TimeSpan? timeout = null)
+    {
+        var acquired = await _semaphore.WaitAsync(timeout ?? Timeout.InfiniteTimeSpan);
+        if (!acquired)
+        {
+            throw new BulkheadRejectedException(
+                $&quot;Bulkhead full: {_maxConcurrent} concurrent executions&quot;);
+        }
+
+        try
+        {
+            return await operation();
+        }
+        finally
+        {
+            _semaphore.Release();
+        }
+    }
+
+    public int AvailableSlots =&gt; _semaphore.CurrentCount;
+}
+
+// Usage: Separate bulkheads for different services
+var criticalServiceBulkhead = new Bulkhead(10);
+var nonCriticalServiceBulkhead = new Bulkhead(5);</code></pre>
+<p><strong>Q: Create a fallback mechanism that returns cached data when an API call fails.</strong></p>
+<p>A: Implement cache-aside pattern with fallback.</p>
+<pre class="language-csharp"><code class="language-csharp">public class ResilientDataService
+{
+    private readonly HttpClient _httpClient;
+    private readonly IMemoryCache _cache;
+
+    public async Task&lt;Data&gt; GetDataAsync(string key)
+    {
+        // Try cache first
+        if (_cache.TryGetValue(key, out Data cachedData))
+        {
+            return cachedData;
+        }
+
+        try
+        {
+            // Try API
+            var data = await _httpClient.GetFromJsonAsync&lt;Data&gt;($&quot;/api/data/{key}&quot;);
+
+            // Update cache
+            _cache.Set(key, data, TimeSpan.FromMinutes(5));
+
+            return data;
+        }
+        catch (HttpRequestException ex)
+        {
+            // Fallback to stale cache if available
+            if (_cache.TryGetValue($&quot;stale_{key}&quot;, out Data staleData))
+            {
+                return staleData;
+            }
+
+            throw;
+        }
+    }
+}</code></pre>
+<p><strong>Q: Implement timeout policies for different types of operations (fast, medium, slow).</strong></p>
+<p>A: Configure different timeout strategies.</p>
+<pre class="language-csharp"><code class="language-csharp">public class TimeoutPolicies
+{
+    public static IAsyncPolicy&lt;HttpResponseMessage&gt; FastOperation =&gt;
+        Policy.TimeoutAsync&lt;HttpResponseMessage&gt;(TimeSpan.FromSeconds(2));
+
+    public static IAsyncPolicy&lt;HttpResponseMessage&gt; MediumOperation =&gt;
+        Policy.TimeoutAsync&lt;HttpResponseMessage&gt;(TimeSpan.FromSeconds(10));
+
+    public static IAsyncPolicy&lt;HttpResponseMessage&gt; SlowOperation =&gt;
+        Policy.TimeoutAsync&lt;HttpResponseMessage&gt;(TimeSpan.FromSeconds(30));
+
+    public static IAsyncPolicy&lt;HttpResponseMessage&gt; WithRetry(
+        IAsyncPolicy&lt;HttpResponseMessage&gt; timeoutPolicy)
+    {
+        var retryPolicy = Policy
+            .HandleResult&lt;HttpResponseMessage&gt;(r =&gt; !r.IsSuccessStatusCode)
+            .Or&lt;TimeoutRejectedException&gt;()
+            .WaitAndRetryAsync(3, attempt =&gt; TimeSpan.FromMilliseconds(100 * attempt));
+
+        return Policy.WrapAsync(retryPolicy, timeoutPolicy);
+    }
+}
+
+// Usage
+var response = await TimeoutPolicies.WithRetry(TimeoutPolicies.FastOperation)
+    .ExecuteAsync(() =&gt; httpClient.GetAsync(&quot;/api/quick&quot;));</code></pre>
+<p>---</p>
+<h2 id="real-world-scenarios">Real-World Scenarios</h2>
+<p><strong>Q: Implement a download manager that downloads multiple files concurrently with progress reporting.</strong></p>
+<p>A: Track progress across parallel downloads.</p>
+<pre class="language-csharp"><code class="language-csharp">public class DownloadManager
+{
+    public async Task DownloadFilesAsync(
+        List&lt;string&gt; urls,
+        string outputDirectory,
+        IProgress&lt;DownloadProgress&gt; progress,
+        int maxConcurrent = 3)
+    {
+        var semaphore = new SemaphoreSlim(maxConcurrent);
+        var totalBytes = 0L;
+        var downloadedBytes = 0L;
+        var completed = 0;
+
+        var tasks = urls.Select(async (url, index) =&gt;
+        {
+            await semaphore.WaitAsync();
+            try
+            {
+                var fileName = Path.GetFileName(url);
+                var outputPath = Path.Combine(outputDirectory, fileName);
+
+                using var client = new HttpClient();
+                using var response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
+
+                var fileSize = response.Content.Headers.ContentLength ?? 0;
+                Interlocked.Add(ref totalBytes, fileSize);
+
+                await using var contentStream = await response.Content.ReadAsStreamAsync();
+                await using var fileStream = File.Create(outputPath);
+
+                var buffer = new byte[8192];
+                int bytesRead;
+                while ((bytesRead = await contentStream.ReadAsync(buffer)) &gt; 0)
+                {
+                    await fileStream.WriteAsync(buffer.AsMemory(0, bytesRead));
+
+                    Interlocked.Add(ref downloadedBytes, bytesRead);
+
+                    progress?.Report(new DownloadProgress
+                    {
+                        TotalFiles = urls.Count,
+                        CompletedFiles = Volatile.Read(ref completed),
+                        TotalBytes = Volatile.Read(ref totalBytes),
+                        DownloadedBytes = Volatile.Read(ref downloadedBytes)
+                    });
+                }
+
+                Interlocked.Increment(ref completed);
+            }
+            finally
+            {
+                semaphore.Release();
+            }
+        });
+
+        await Task.WhenAll(tasks);
+    }
+}
+
+public record DownloadProgress
+{
+    public int TotalFiles { get; init; }
+    public int CompletedFiles { get; init; }
+    public long TotalBytes { get; init; }
+    public long DownloadedBytes { get; init; }
+    public double PercentComplete =&gt; TotalBytes &gt; 0
+        ? (double)DownloadedBytes / TotalBytes * 100
+        : 0;
+}</code></pre>
+<p>---</p>
+<p><strong>Total Exercises: 30+</strong></p>
+<p>Focus on understanding cancellation, error handling, and coordination patterns!</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['midnight', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const fallback = 'light';
+      const initial = supported.includes(saved) ? saved : (window.__studyTheme || fallback);
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          sessionStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+    (() => {
+      const groups = document.querySelectorAll('.sidebar-group');
+      if (!groups.length) return;
+      const storageKey = 'study-open-groups';
+      const saved = sessionStorage.getItem(storageKey);
+      const openFromStorage = new Set(saved ? JSON.parse(saved) : []);
+
+      const activeLink = document.querySelector('.nav-link.active');
+      const activeGroup = activeLink?.closest('.sidebar-group');
+      if (activeGroup?.dataset.group) {
+        openFromStorage.add(activeGroup.dataset.group);
+      }
+
+      const syncStorage = () => {
+        const openIds = Array.from(document.querySelectorAll('.sidebar-group.is-open'))
+          .map((group) => group.dataset.group)
+          .filter(Boolean);
+        sessionStorage.setItem(storageKey, JSON.stringify(openIds));
+      };
+
+      const setExpanded = (group, expanded) => {
+        const header = group.querySelector('.sidebar-group__header');
+        const list = group.querySelector('.sidebar-group__items');
+        group.classList.toggle('is-open', expanded);
+        header?.setAttribute('aria-expanded', expanded);
+        if (list) {
+          list.hidden = !expanded;
+        }
+      };
+
+      groups.forEach((group) => {
+        const shouldOpen = openFromStorage.has(group.dataset.group);
+        setExpanded(group, shouldOpen);
+        const header = group.querySelector('.sidebar-group__header');
+        header?.addEventListener('click', () => {
+          const next = !group.classList.contains('is-open');
+          setExpanded(group, next);
+          syncStorage();
+        });
+      });
+    })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swPath = '../service-worker.js';
+        navigator.serviceWorker.register(swPath).catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+</body>
+</html>

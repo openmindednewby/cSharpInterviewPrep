@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for Api Lifecycle" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>Api Lifecycle | C# Interview Prep Cheat Sheet</title>
+  <link rel="manifest" href="..\assets/manifest.webmanifest" />
+  <script>
+    (() => {
+      const supported = ['midnight', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const fallback = 'light';
+      const initial = supported.includes(saved) ? saved : fallback;
+      document.documentElement.dataset.theme = initial;
+      window.__studyTheme = initial;
+    })();
+  </script>
+  <link rel="stylesheet" href="..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="midnight">Current</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group" data-group="notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="../notes/logging.html">Logging</a></li><li><a class="nav-link" href="../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/O1-Constant-Time.html">O1 Constant Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/OLogN-Logarithmic-Time.html">OLogN Logarithmic Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/ON-Linear-Time.html">ON Linear Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/ON2-Quadratic-Time.html">ON2 Quadratic Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/ONLogN-Linearithmic-Time.html">ONLogN Linearithmic Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/Space-Complexity.html">Space Complexity</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/ICollection.html">ICollection</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IEnumerable.html">IEnumerable</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IList.html">IList</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IQueryable.html">IQueryable</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IReadOnly.html">IReadOnly</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a class="nav-link" href="../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a class="nav-link" href="../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a class="nav-link" href="../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a class="nav-link" href="../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a class="nav-link" href="../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a class="nav-link" href="../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a class="nav-link" href="../notes/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a class="nav-link" href="../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a class="nav-link" href="../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a class="nav-link" href="../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a class="nav-link" href="../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a class="nav-link" href="../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a class="nav-link" href="../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a class="nav-link" href="../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a class="nav-link" href="../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a class="nav-link" href="../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a class="nav-link" href="../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a class="nav-link" href="../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a class="nav-link" href="../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a class="nav-link" href="../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a class="nav-link" href="../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a class="nav-link" href="../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a class="nav-link" href="../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/01-async-patterns.html">01 Async Patterns</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/02-backpressure-rate-limiting.html">02 Backpressure Rate Limiting</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/03-caching-strategies.html">03 Caching Strategies</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/04-database-scaling.html">04 Database Scaling</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/05-message-queues.html">05 Message Queues</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/06-resilience-patterns.html">06 Resilience Patterns</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/07-observability.html">07 Observability</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/08-complete-example.html">08 Complete Example</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+    </div><div class="sidebar-group is-open" data-group="practice">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
+        <span>Practice</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="../practice/answers.html">Answers</a></li><li><a class="nav-link active" href="../practice/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="../practice/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="../practice/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="../practice/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="../practice/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="../practice/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="../practice/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="../practice/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="../practice/index.html">Practice</a></li><li><a class="nav-link" href="../practice/questions.html">Questions</a></li><li><a class="nav-link" href="../practice/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="../practice/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="../practice/system-design.html">System Design</a></li><li><a class="nav-link" href="../practice/trading-domain.html">Trading Domain</a></li></ul>
+    </div></div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">practice\api-lifecycle.md</div>
+        <h2>Api Lifecycle</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#api-lifecycle-practice-exercises">API & Lifecycle Practice Exercises</a></li><li class="level-2"><a href="#foundational-questions">Foundational Questions</a></li><li class="level-2"><a href="#intermediate-exercises">Intermediate Exercises</a></li><li class="level-2"><a href="#advanced-exercises">Advanced Exercises</a></li><li class="level-2"><a href="#rate-limiting-throttling">Rate Limiting & Throttling</a></li><li class="level-2"><a href="#real-world-scenarios">Real-World Scenarios</a></li><li class="level-2"><a href="#authorization-security">Authorization & Security</a></li></ul></div>
+        <h1 id="api-lifecycle-practice-exercises">API & Lifecycle Practice Exercises</h1>
+<p>Master ASP.NET Core middleware pipeline, dependency injection, API design, and request lifecycle management.</p>
+<p>---</p>
+<h2 id="foundational-questions">Foundational Questions</h2>
+<p><strong>Q: Describe the ASP.NET Core middleware pipeline for a request hitting an authenticated endpoint with custom exception handling.</strong></p>
+<p>A: Typical order: <code>UseRouting</code> → auth middleware → custom exception handling (usually early) → <code>UseAuthentication</code>/<code>UseAuthorization</code> → endpoint execution. Static file middleware, response compression, and caching can be interleaved before routing. Include correlation logging, caching, validation, and telemetry instrumentation.</p>
+<pre class="language-csharp"><code class="language-csharp">app.UseMiddleware&lt;CorrelationMiddleware&gt;();
+app.UseMiddleware&lt;ExceptionHandlingMiddleware&gt;();
+app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapControllers();</code></pre>
+<p>Use when building consistent request handling. Avoid when for minimal APIs you might use delegate pipeline but still similar.</p>
+<p><strong>Q: How do you implement API versioning and backward compatibility?</strong></p>
+<p>A: Strategies: URL segment (<code>/v1/</code>), header, query string. Use <code>Asp.Versioning</code> package.</p>
+<pre class="language-csharp"><code class="language-csharp">services.AddApiVersioning(options =&gt;
+{
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ReportApiVersions = true;
+});
+services.AddVersionedApiExplorer();</code></pre>
+<p>Use when breaking changes; maintain backward compatibility by keeping old controllers. Avoid when internal services with clients you control; choose contract-first to avoid version explosion.</p>
+<p><strong>Q: Discuss strategies for rate limiting and request throttling.</strong></p>
+<p>A: Use ASP.NET rate limiting middleware or gateway. Techniques: token bucket, fixed window, sliding window.</p>
+<pre class="language-csharp"><code class="language-csharp">services.AddRateLimiter(options =&gt;
+{
+    options.AddFixedWindowLimiter(&quot;per-account&quot;, opt =&gt;
+    {
+        opt.Window = TimeSpan.FromMinutes(1);
+        opt.PermitLimit = 60;
+        opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        opt.QueueLimit = 20;
+    });
+});
+
+app.UseRateLimiter();</code></pre>
+<p>Use when protecting downstream resources. Avoid when latency-critical internal traffic; consider other forms of protection.</p>
+<p><strong>Q: How would you log correlation IDs across services and propagate them to downstream dependencies?</strong></p>
+<p>A: Generate ID in middleware, add to headers/log context, forward via <code>HttpClient</code>. Ensure asynchronous logging frameworks flow the correlation ID across threads (e.g., using <code>AsyncLocal</code>).</p>
+<pre class="language-csharp"><code class="language-csharp">context.TraceIdentifier = context.TraceIdentifier ?? Guid.NewGuid().ToString();
+_logger.LogInformation(&quot;{CorrelationId} handling {Path}&quot;, context.TraceIdentifier, context.Request.Path);
+httpClient.DefaultRequestHeaders.Add(&quot;X-Correlation-ID&quot;, context.TraceIdentifier);</code></pre>
+<p>Use when need distributed tracing. Avoid when truly isolated services—rare.</p>
+<p><strong>Q: Explain the difference between Transient, Scoped, and Singleton dependency injection lifetimes.</strong></p>
+<p>A: Quick summary (Microsoft.Extensions.DependencyInjection semantics):</p>
+<ul><li><code>Transient</code>: a new instance is created every time the service is requested.</li><li><code>Scoped</code>: a single instance is created per scope (in ASP.NET Core a scope is typically a single HTTP request).</li><li><code>Singleton</code>: a single instance is created for the application's lifetime (or until the container is disposed).</li></ul>
+<pre class="language-csharp"><code class="language-csharp">services.AddTransient&lt;IRepo, Repo&gt;();   // new Repo each injection
+services.AddScoped&lt;IRepo, Repo&gt;();      // one Repo per request/scope
+services.AddSingleton&lt;IRepo, Repo&gt;();   // single Repo for the app lifetime</code></pre>
+<p>Important tips:</p>
+<ul><li>Use <code>Scoped</code> for per-request services that hold state tied to the request (e.g., <code>DbContext</code>).</li><li>Use <code>Singleton</code> for stateless, thread-safe services (caches, configuration providers). Be careful with mutable singletons.</li><li>Avoid injecting a <code>Scoped</code> service into a <code>Singleton</code> - the scoped service may be captured incorrectly leading to unintended shared state or runtime errors.</li><li><code>Transient</code> is good for lightweight, stateless services; it can be used when you explicitly want fresh instances.</li></ul>
+<p>---</p>
+<h2 id="intermediate-exercises">Intermediate Exercises</h2>
+<p><strong>Q: Create custom middleware that validates API keys from request headers.</strong></p>
+<p>A: Implement middleware with authentication logic.</p>
+<pre class="language-csharp"><code class="language-csharp">public class ApiKeyMiddleware
+{
+    private readonly RequestDelegate _next;
+    private readonly IConfiguration _configuration;
+
+    public ApiKeyMiddleware(RequestDelegate next, IConfiguration configuration)
+    {
+        _next = next;
+        _configuration = configuration;
+    }
+
+    public async Task InvokeAsync(HttpContext context)
+    {
+        if (!context.Request.Headers.TryGetValue(&quot;X-Api-Key&quot;, out var extractedApiKey))
+        {
+            context.Response.StatusCode = 401;
+            await context.Response.WriteAsync(&quot;API Key missing&quot;);
+            return;
+        }
+
+        var apiKey = _configuration.GetValue&lt;string&gt;(&quot;ApiKey&quot;);
+        if (!apiKey.Equals(extractedApiKey))
+        {
+            context.Response.StatusCode = 401;
+            await context.Response.WriteAsync(&quot;Invalid API Key&quot;);
+            return;
+        }
+
+        await _next(context);
+    }
+}
+
+// Register middleware
+app.UseMiddleware&lt;ApiKeyMiddleware&gt;();</code></pre>
+<p><strong>Q: Implement global exception handling middleware that returns consistent error responses.</strong></p>
+<p>A: Create middleware that catches exceptions and formats responses.</p>
+<pre class="language-csharp"><code class="language-csharp">public class ExceptionHandlingMiddleware
+{
+    private readonly RequestDelegate _next;
+    private readonly ILogger&lt;ExceptionHandlingMiddleware&gt; _logger;
+
+    public ExceptionHandlingMiddleware(
+        RequestDelegate next,
+        ILogger&lt;ExceptionHandlingMiddleware&gt; logger)
+    {
+        _next = next;
+        _logger = logger;
+    }
+
+    public async Task InvokeAsync(HttpContext context)
+    {
+        try
+        {
+            await _next(context);
+        }
+        catch (ValidationException ex)
+        {
+            _logger.LogWarning(ex, &quot;Validation error occurred&quot;);
+            await HandleExceptionAsync(context, ex, StatusCodes.Status400BadRequest);
+        }
+        catch (NotFoundException ex)
+        {
+            _logger.LogWarning(ex, &quot;Resource not found&quot;);
+            await HandleExceptionAsync(context, ex, StatusCodes.Status404NotFound);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, &quot;Unhandled exception occurred&quot;);
+            await HandleExceptionAsync(context, ex, StatusCodes.Status500InternalServerError);
+        }
+    }
+
+    private static async Task HandleExceptionAsync(
+        HttpContext context,
+        Exception exception,
+        int statusCode)
+    {
+        context.Response.ContentType = &quot;application/json&quot;;
+        context.Response.StatusCode = statusCode;
+
+        var response = new ErrorResponse
+        {
+            StatusCode = statusCode,
+            Message = exception.Message,
+            TraceId = context.TraceIdentifier
+        };
+
+        await context.Response.WriteAsJsonAsync(response);
+    }
+}
+
+public record ErrorResponse
+{
+    public int StatusCode { get; init; }
+    public string Message { get; init; }
+    public string TraceId { get; init; }
+}</code></pre>
+<p><strong>Q: Design a health check endpoint that verifies database connectivity, external API availability, and cache status.</strong></p>
+<p>A: Use ASP.NET Core health checks with custom checks.</p>
+<pre class="language-csharp"><code class="language-csharp">// Custom health check
+public class DatabaseHealthCheck : IHealthCheck
+{
+    private readonly DbContext _dbContext;
+
+    public DatabaseHealthCheck(DbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
+
+    public async Task&lt;HealthCheckResult&gt; CheckHealthAsync(
+        HealthCheckContext context,
+        CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            await _dbContext.Database.CanConnectAsync(cancellationToken);
+            return HealthCheckResult.Healthy(&quot;Database is reachable&quot;);
+        }
+        catch (Exception ex)
+        {
+            return HealthCheckResult.Unhealthy(&quot;Database is unreachable&quot;, ex);
+        }
+    }
+}
+
+// Startup configuration
+builder.Services.AddHealthChecks()
+    .AddCheck&lt;DatabaseHealthCheck&gt;(&quot;database&quot;)
+    .AddUrlGroup(new Uri(&quot;https://api.example.com/health&quot;), &quot;external-api&quot;)
+    .AddRedis(connectionString, &quot;cache&quot;);
+
+app.MapHealthChecks(&quot;/health&quot;, new HealthCheckOptions
+{
+    ResponseWriter = async (context, report) =&gt;
+    {
+        context.Response.ContentType = &quot;application/json&quot;;
+        var result = JsonSerializer.Serialize(new
+        {
+            status = report.Status.ToString(),
+            checks = report.Entries.Select(e =&gt; new
+            {
+                name = e.Key,
+                status = e.Value.Status.ToString(),
+                description = e.Value.Description,
+                duration = e.Value.Duration.TotalMilliseconds
+            }),
+            totalDuration = report.TotalDuration.TotalMilliseconds
+        });
+        await context.Response.WriteAsync(result);
+    }
+});</code></pre>
+<p><strong>Q: Implement request/response logging middleware with performance tracking.</strong></p>
+<p>A: Create middleware that logs request details and timing.</p>
+<pre class="language-csharp"><code class="language-csharp">public class RequestLoggingMiddleware
+{
+    private readonly RequestDelegate _next;
+    private readonly ILogger&lt;RequestLoggingMiddleware&gt; _logger;
+
+    public RequestLoggingMiddleware(
+        RequestDelegate next,
+        ILogger&lt;RequestLoggingMiddleware&gt; logger)
+    {
+        _next = next;
+        _logger = logger;
+    }
+
+    public async Task InvokeAsync(HttpContext context)
+    {
+        var sw = Stopwatch.StartNew();
+        var correlationId = context.TraceIdentifier;
+
+        // Log request
+        _logger.LogInformation(
+            &quot;[{CorrelationId}] Request {Method} {Path} started&quot;,
+            correlationId,
+            context.Request.Method,
+            context.Request.Path);
+
+        // Capture response body
+        var originalBodyStream = context.Response.Body;
+        using var responseBody = new MemoryStream();
+        context.Response.Body = responseBody;
+
+        try
+        {
+            await _next(context);
+
+            sw.Stop();
+
+            // Log response
+            _logger.LogInformation(
+                &quot;[{CorrelationId}] Request {Method} {Path} completed with {StatusCode} in {ElapsedMs}ms&quot;,
+                correlationId,
+                context.Request.Method,
+                context.Request.Path,
+                context.Response.StatusCode,
+                sw.ElapsedMilliseconds);
+        }
+        catch (Exception ex)
+        {
+            sw.Stop();
+            _logger.LogError(
+                ex,
+                &quot;[{CorrelationId}] Request {Method} {Path} failed after {ElapsedMs}ms&quot;,
+                correlationId,
+                context.Request.Method,
+                context.Request.Path,
+                sw.ElapsedMilliseconds);
+            throw;
+        }
+        finally
+        {
+            responseBody.Seek(0, SeekOrigin.Begin);
+            await responseBody.CopyToAsync(originalBodyStream);
+        }
+    }
+}</code></pre>
+<p><strong>Q: Create a minimal API health endpoint with dependency injection.</strong></p>
+<p>A: Expose a <code>/health</code> endpoint in a minimal API that reports <code>200</code> when a price feed is connected, otherwise <code>503</code>.</p>
+<pre class="language-csharp"><code class="language-csharp">var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddSingleton&lt;IPriceFeed, PriceFeed&gt;();
+var app = builder.Build();
+
+app.MapGet(&quot;/health&quot;, (IPriceFeed feed) =&gt; feed.IsConnected
+    ? Results.Ok(new { status = &quot;ok&quot; })
+    : Results.StatusCode(StatusCodes.Status503ServiceUnavailable));
+
+await app.RunAsync();</code></pre>
+<p>Notes: Mapping the health check keeps the app's composition root small. Consider adding <code>UseHealthChecks</code> or custom readiness/liveness probes for Kubernetes deployments.</p>
+<p>---</p>
+<h2 id="advanced-exercises">Advanced Exercises</h2>
+<p><strong>Q: Implement middleware that enforces request size limits and prevents large payload attacks.</strong></p>
+<p>A: Create middleware with request body size validation.</p>
+<pre class="language-csharp"><code class="language-csharp">public class RequestSizeLimitMiddleware
+{
+    private readonly RequestDelegate _next;
+    private readonly long _maxRequestBodySize;
+
+    public RequestSizeLimitMiddleware(RequestDelegate next, long maxRequestBodySize)
+    {
+        _next = next;
+        _maxRequestBodySize = maxRequestBodySize;
+    }
+
+    public async Task InvokeAsync(HttpContext context)
+    {
+        if (context.Request.ContentLength.HasValue &amp;&amp;
+            context.Request.ContentLength.Value &gt; _maxRequestBodySize)
+        {
+            context.Response.StatusCode = StatusCodes.Status413PayloadTooLarge;
+            await context.Response.WriteAsync(
+                $&quot;Request body too large. Maximum size: {_maxRequestBodySize} bytes&quot;);
+            return;
+        }
+
+        // Wrap the request body stream
+        var originalBody = context.Request.Body;
+        try
+        {
+            using var limitedStream = new LimitedStream(originalBody, _maxRequestBodySize);
+            context.Request.Body = limitedStream;
+            await _next(context);
+        }
+        catch (InvalidOperationException) when (context.Response.StatusCode == 413)
+        {
+            // Stream limit exceeded during reading
+            return;
+        }
+        finally
+        {
+            context.Request.Body = originalBody;
+        }
+    }
+}
+
+public class LimitedStream : Stream
+{
+    private readonly Stream _innerStream;
+    private readonly long _maxLength;
+    private long _totalBytesRead;
+
+    public LimitedStream(Stream innerStream, long maxLength)
+    {
+        _innerStream = innerStream;
+        _maxLength = maxLength;
+    }
+
+    public override async Task&lt;int&gt; ReadAsync(
+        byte[] buffer,
+        int offset,
+        int count,
+        CancellationToken cancellationToken)
+    {
+        var bytesRead = await _innerStream.ReadAsync(buffer, offset, count, cancellationToken);
+        _totalBytesRead += bytesRead;
+
+        if (_totalBytesRead &gt; _maxLength)
+        {
+            throw new InvalidOperationException(&quot;Request body size limit exceeded&quot;);
+        }
+
+        return bytesRead;
+    }
+
+    // Implement other required Stream members...
+    public override bool CanRead =&gt; _innerStream.CanRead;
+    public override bool CanSeek =&gt; false;
+    public override bool CanWrite =&gt; false;
+    public override long Length =&gt; throw new NotSupportedException();
+    public override long Position
+    {
+        get =&gt; throw new NotSupportedException();
+        set =&gt; throw new NotSupportedException();
+    }
+    public override void Flush() { }
+    public override int Read(byte[] buffer, int offset, int count) =&gt;
+        throw new NotSupportedException(&quot;Use ReadAsync&quot;);
+    public override long Seek(long offset, SeekOrigin origin) =&gt;
+        throw new NotSupportedException();
+    public override void SetLength(long value) =&gt;
+        throw new NotSupportedException();
+    public override void Write(byte[] buffer, int offset, int count) =&gt;
+        throw new NotSupportedException();
+}</code></pre>
+<p><strong>Q: Design a dependency injection container configuration that uses factory patterns for complex object creation.</strong></p>
+<p>A: Implement factory-based DI registration.</p>
+<pre class="language-csharp"><code class="language-csharp">// Service interface and implementation
+public interface IOrderService
+{
+    Task ProcessOrderAsync(Order order);
+}
+
+public class OrderService : IOrderService
+{
+    private readonly IPaymentGateway _paymentGateway;
+    private readonly IInventoryService _inventory;
+    private readonly string _merchantId;
+
+    public OrderService(
+        IPaymentGateway paymentGateway,
+        IInventoryService inventory,
+        string merchantId)
+    {
+        _paymentGateway = paymentGateway;
+        _inventory = inventory;
+        _merchantId = merchantId;
+    }
+
+    public async Task ProcessOrderAsync(Order order)
+    {
+        // Implementation
+    }
+}
+
+// Factory interface
+public interface IOrderServiceFactory
+{
+    IOrderService Create(string merchantId);
+}
+
+// Factory implementation
+public class OrderServiceFactory : IOrderServiceFactory
+{
+    private readonly IPaymentGateway _paymentGateway;
+    private readonly IInventoryService _inventory;
+
+    public OrderServiceFactory(
+        IPaymentGateway paymentGateway,
+        IInventoryService inventory)
+    {
+        _paymentGateway = paymentGateway;
+        _inventory = inventory;
+    }
+
+    public IOrderService Create(string merchantId)
+    {
+        return new OrderService(_paymentGateway, _inventory, merchantId);
+    }
+}
+
+// Registration
+services.AddScoped&lt;IPaymentGateway, PaymentGateway&gt;();
+services.AddScoped&lt;IInventoryService, InventoryService&gt;();
+services.AddScoped&lt;IOrderServiceFactory, OrderServiceFactory&gt;();
+
+// Usage in controller
+public class OrdersController : ControllerBase
+{
+    private readonly IOrderServiceFactory _factory;
+
+    public OrdersController(IOrderServiceFactory factory)
+    {
+        _factory = factory;
+    }
+
+    [HttpPost]
+    public async Task&lt;IActionResult&gt; CreateOrder([FromBody] OrderDto dto)
+    {
+        var orderService = _factory.Create(dto.MerchantId);
+        await orderService.ProcessOrderAsync(dto.ToOrder());
+        return Ok();
+    }
+}</code></pre>
+<p><strong>Q: Implement multi-tenant support using scoped service provider per tenant.</strong></p>
+<p>A: Create tenant resolution and scoped services.</p>
+<pre class="language-csharp"><code class="language-csharp">public interface ITenantService
+{
+    string GetCurrentTenantId();
+}
+
+public class TenantService : ITenantService
+{
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+    public TenantService(IHttpContextAccessor httpContextAccessor)
+    {
+        _httpContextAccessor = httpContextAccessor;
+    }
+
+    public string GetCurrentTenantId()
+    {
+        // Extract from subdomain, header, or claim
+        var context = _httpContextAccessor.HttpContext;
+        if (context.Request.Headers.TryGetValue(&quot;X-Tenant-Id&quot;, out var tenantId))
+        {
+            return tenantId;
+        }
+
+        // Or from subdomain
+        var host = context.Request.Host.Host;
+        var parts = host.Split(&#39;.&#39;);
+        return parts.Length &gt; 2 ? parts[0] : &quot;default&quot;;
+    }
+}
+
+public class TenantDbContext : DbContext
+{
+    private readonly ITenantService _tenantService;
+
+    public TenantDbContext(
+        DbContextOptions&lt;TenantDbContext&gt; options,
+        ITenantService tenantService)
+        : base(options)
+    {
+        _tenantService = tenantService;
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        // Add global query filter for tenant isolation
+        modelBuilder.Entity&lt;Order&gt;()
+            .HasQueryFilter(o =&gt; o.TenantId == _tenantService.GetCurrentTenantId());
+
+        modelBuilder.Entity&lt;Customer&gt;()
+            .HasQueryFilter(c =&gt; c.TenantId == _tenantService.GetCurrentTenantId());
+    }
+
+    public override Task&lt;int&gt; SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        // Automatically set TenantId on new entities
+        var tenantId = _tenantService.GetCurrentTenantId();
+        var entries = ChangeTracker.Entries()
+            .Where(e =&gt; e.State == EntityState.Added &amp;&amp;
+                       e.Entity is ITenantEntity);
+
+        foreach (var entry in entries)
+        {
+            ((ITenantEntity)entry.Entity).TenantId = tenantId;
+        }
+
+        return base.SaveChangesAsync(cancellationToken);
+    }
+}
+
+// Registration
+services.AddHttpContextAccessor();
+services.AddScoped&lt;ITenantService, TenantService&gt;();
+services.AddDbContext&lt;TenantDbContext&gt;();</code></pre>
+<p><strong>Q: Create request validation middleware using FluentValidation.</strong></p>
+<p>A: Implement automatic model validation.</p>
+<pre class="language-csharp"><code class="language-csharp">public class ValidationMiddleware
+{
+    private readonly RequestDelegate _next;
+
+    public ValidationMiddleware(RequestDelegate next)
+    {
+        _next = next;
+    }
+
+    public async Task InvokeAsync(HttpContext context, IServiceProvider serviceProvider)
+    {
+        // Only validate POST/PUT requests
+        if (context.Request.Method != &quot;POST&quot; &amp;&amp; context.Request.Method != &quot;PUT&quot;)
+        {
+            await _next(context);
+            return;
+        }
+
+        var endpoint = context.GetEndpoint();
+        if (endpoint == null)
+        {
+            await _next(context);
+            return;
+        }
+
+        // Get the endpoint metadata to find request type
+        var metadata = endpoint.Metadata.GetMetadata&lt;ValidatableRequestAttribute&gt;();
+        if (metadata == null)
+        {
+            await _next(context);
+            return;
+        }
+
+        // Read and deserialize request body
+        context.Request.EnableBuffering();
+        var body = await new StreamReader(context.Request.Body).ReadToEndAsync();
+        context.Request.Body.Position = 0;
+
+        var requestType = metadata.RequestType;
+        var request = JsonSerializer.Deserialize(body, requestType);
+
+        // Get validator from DI
+        var validatorType = typeof(IValidator&lt;&gt;).MakeGenericType(requestType);
+        var validator = serviceProvider.GetService(validatorType) as IValidator;
+
+        if (validator != null)
+        {
+            var validationContext = new ValidationContext&lt;object&gt;(request);
+            var validationResult = await validator.ValidateAsync(validationContext);
+
+            if (!validationResult.IsValid)
+            {
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                await context.Response.WriteAsJsonAsync(new
+                {
+                    errors = validationResult.Errors.Select(e =&gt; new
+                    {
+                        property = e.PropertyName,
+                        message = e.ErrorMessage
+                    })
+                });
+                return;
+            }
+        }
+
+        await _next(context);
+    }
+}
+
+[AttributeUsage(AttributeTargets.Method)]
+public class ValidatableRequestAttribute : Attribute
+{
+    public Type RequestType { get; }
+
+    public ValidatableRequestAttribute(Type requestType)
+    {
+        RequestType = requestType;
+    }
+}
+
+// Usage in controller
+[HttpPost]
+[ValidatableRequest(typeof(CreateOrderRequest))]
+public async Task&lt;IActionResult&gt; CreateOrder([FromBody] CreateOrderRequest request)
+{
+    // Validation already done by middleware
+    return Ok();
+}</code></pre>
+<p><strong>Q: Implement authentication with multiple schemes (JWT + API Key).</strong></p>
+<p>A: Configure multiple authentication schemes.</p>
+<pre class="language-csharp"><code class="language-csharp">public class ApiKeyAuthenticationHandler : AuthenticationHandler&lt;ApiKeyAuthenticationOptions&gt;
+{
+    private readonly IConfiguration _configuration;
+
+    public ApiKeyAuthenticationHandler(
+        IOptionsMonitor&lt;ApiKeyAuthenticationOptions&gt; options,
+        ILoggerFactory logger,
+        UrlEncoder encoder,
+        ISystemClock clock,
+        IConfiguration configuration)
+        : base(options, logger, encoder, clock)
+    {
+        _configuration = configuration;
+    }
+
+    protected override Task&lt;AuthenticateResult&gt; HandleAuthenticateAsync()
+    {
+        if (!Request.Headers.TryGetValue(&quot;X-Api-Key&quot;, out var apiKeyHeaderValues))
+        {
+            return Task.FromResult(AuthenticateResult.NoResult());
+        }
+
+        var providedApiKey = apiKeyHeaderValues.FirstOrDefault();
+        var validApiKey = _configuration[&quot;ApiKey&quot;];
+
+        if (string.IsNullOrWhiteSpace(providedApiKey) || providedApiKey != validApiKey)
+        {
+            return Task.FromResult(AuthenticateResult.Fail(&quot;Invalid API Key&quot;));
+        }
+
+        var claims = new[]
+        {
+            new Claim(ClaimTypes.Name, &quot;ApiKeyUser&quot;),
+            new Claim(&quot;ApiKey&quot;, providedApiKey)
+        };
+
+        var identity = new ClaimsIdentity(claims, Scheme.Name);
+        var principal = new ClaimsPrincipal(identity);
+        var ticket = new AuthenticationTicket(principal, Scheme.Name);
+
+        return Task.FromResult(AuthenticateResult.Success(ticket));
+    }
+}
+
+public class ApiKeyAuthenticationOptions : AuthenticationSchemeOptions
+{
+}
+
+// Startup configuration
+services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =&gt;
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = &quot;https://issuer.example.com&quot;,
+            ValidateAudience = true,
+            ValidAudience = &quot;trading-api&quot;,
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.FromMinutes(1),
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(configuration[&quot;Jwt:SigningKey&quot;]))
+        };
+    })
+    .AddScheme&lt;ApiKeyAuthenticationOptions, ApiKeyAuthenticationHandler&gt;(
+        &quot;ApiKey&quot;,
+        options =&gt; { });
+
+// Configure authorization policies
+services.AddAuthorization(options =&gt;
+{
+    var defaultAuthBuilder = new AuthorizationPolicyBuilder(
+        JwtBearerDefaults.AuthenticationScheme,
+        &quot;ApiKey&quot;);
+    defaultAuthBuilder = defaultAuthBuilder.RequireAuthenticatedUser();
+    options.DefaultPolicy = defaultAuthBuilder.Build();
+
+    // Policy for JWT only
+    options.AddPolicy(&quot;JwtOnly&quot;, policy =&gt;
+        policy.RequireAuthenticatedUser()
+              .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme));
+
+    // Policy for API Key only
+    options.AddPolicy(&quot;ApiKeyOnly&quot;, policy =&gt;
+        policy.RequireAuthenticatedUser()
+              .AddAuthenticationSchemes(&quot;ApiKey&quot;));
+});
+
+// Usage in controller
+[Authorize(Policy = &quot;JwtOnly&quot;)]
+public class SecureController : ControllerBase
+{
+}
+
+[Authorize(Policy = &quot;ApiKeyOnly&quot;)]
+public class ApiController : ControllerBase
+{
+}</code></pre>
+<p>---</p>
+<h2 id="rate-limiting-throttling">Rate Limiting & Throttling</h2>
+<p><strong>Q: Implement a custom rate limiting policy based on user subscription tier.</strong></p>
+<p>A: Create custom rate limiter with different limits per tier.</p>
+<pre class="language-csharp"><code class="language-csharp">public class TieredRateLimiterPolicy : IRateLimiterPolicy&lt;string&gt;
+{
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+    public TieredRateLimiterPolicy(IHttpContextAccessor httpContextAccessor)
+    {
+        _httpContextAccessor = httpContextAccessor;
+    }
+
+    public Func&lt;OnRejectedContext, CancellationToken, ValueTask&gt;? OnRejected { get; } =
+        (context, cancellationToken) =&gt;
+        {
+            context.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
+            return new ValueTask();
+        };
+
+    public RateLimitPartition&lt;string&gt; GetPartition(HttpContext httpContext)
+    {
+        // Get user tier from claims or header
+        var tier = httpContext.User.FindFirst(&quot;Tier&quot;)?.Value ?? &quot;Free&quot;;
+        var userId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? &quot;anonymous&quot;;
+
+        return tier switch
+        {
+            &quot;Premium&quot; =&gt; RateLimitPartition.GetFixedWindowLimiter(userId, _ =&gt;
+                new FixedWindowRateLimiterOptions
+                {
+                    PermitLimit = 1000,
+                    Window = TimeSpan.FromMinutes(1),
+                    QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                    QueueLimit = 0
+                }),
+            &quot;Standard&quot; =&gt; RateLimitPartition.GetFixedWindowLimiter(userId, _ =&gt;
+                new FixedWindowRateLimiterOptions
+                {
+                    PermitLimit = 100,
+                    Window = TimeSpan.FromMinutes(1),
+                    QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                    QueueLimit = 0
+                }),
+            _ =&gt; RateLimitPartition.GetFixedWindowLimiter(userId, _ =&gt;
+                new FixedWindowRateLimiterOptions
+                {
+                    PermitLimit = 10,
+                    Window = TimeSpan.FromMinutes(1),
+                    QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                    QueueLimit = 0
+                })
+        };
+    }
+}
+
+// Registration
+services.AddHttpContextAccessor();
+services.AddRateLimiter(options =&gt;
+{
+    options.AddPolicy&lt;string, TieredRateLimiterPolicy&gt;(&quot;tiered&quot;);
+});
+
+// Usage
+app.MapGet(&quot;/api/data&quot;, () =&gt; Results.Ok(&quot;Data&quot;))
+   .RequireRateLimiting(&quot;tiered&quot;);</code></pre>
+<p><strong>Q: Create a distributed rate limiter using Redis.</strong></p>
+<p>A: Implement Redis-based rate limiting.</p>
+<pre class="language-csharp"><code class="language-csharp">public class RedisRateLimiter
+{
+    private readonly IConnectionMultiplexer _redis;
+    private readonly ILogger&lt;RedisRateLimiter&gt; _logger;
+
+    public RedisRateLimiter(
+        IConnectionMultiplexer redis,
+        ILogger&lt;RedisRateLimiter&gt; logger)
+    {
+        _redis = redis;
+        _logger = logger;
+    }
+
+    public async Task&lt;bool&gt; AllowRequestAsync(
+        string key,
+        int maxRequests,
+        TimeSpan window)
+    {
+        var db = _redis.GetDatabase();
+        var now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        var windowStart = now - (long)window.TotalSeconds;
+
+        var transaction = db.CreateTransaction();
+
+        // Remove old entries
+        var removeTask = transaction.SortedSetRemoveRangeByScoreAsync(
+            key,
+            double.NegativeInfinity,
+            windowStart);
+
+        // Add current request
+        var addTask = transaction.SortedSetAddAsync(key, now, now);
+
+        // Get count
+        var countTask = transaction.SortedSetLengthAsync(key);
+
+        // Set expiry
+        var expireTask = transaction.KeyExpireAsync(key, window);
+
+        var executed = await transaction.ExecuteAsync();
+
+        if (!executed)
+        {
+            _logger.LogWarning(&quot;Rate limit transaction failed for key: {Key}&quot;, key);
+            return false;
+        }
+
+        var count = await countTask;
+        return count &lt;= maxRequests;
+    }
+
+    public async Task&lt;RateLimitInfo&gt; GetRateLimitInfoAsync(
+        string key,
+        int maxRequests,
+        TimeSpan window)
+    {
+        var db = _redis.GetDatabase();
+        var now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        var windowStart = now - (long)window.TotalSeconds;
+
+        var count = await db.SortedSetLengthAsync(
+            key,
+            windowStart,
+            double.PositiveInfinity);
+
+        var remaining = Math.Max(0, maxRequests - (int)count);
+        var oldestEntry = await db.SortedSetRangeByScoreAsync(
+            key,
+            windowStart,
+            double.PositiveInfinity,
+            take: 1);
+
+        var resetTime = oldestEntry.Length &gt; 0
+            ? DateTimeOffset.FromUnixTimeSeconds((long)oldestEntry[0]).Add(window)
+            : DateTimeOffset.UtcNow.Add(window);
+
+        return new RateLimitInfo
+        {
+            Limit = maxRequests,
+            Remaining = remaining,
+            Reset = resetTime
+        };
+    }
+}
+
+public record RateLimitInfo
+{
+    public int Limit { get; init; }
+    public int Remaining { get; init; }
+    public DateTimeOffset Reset { get; init; }
+}
+
+// Middleware integration
+public class RedisRateLimitMiddleware
+{
+    private readonly RequestDelegate _next;
+    private readonly RedisRateLimiter _rateLimiter;
+
+    public RedisRateLimitMiddleware(
+        RequestDelegate next,
+        RedisRateLimiter rateLimiter)
+    {
+        _next = next;
+        _rateLimiter = rateLimiter;
+    }
+
+    public async Task InvokeAsync(HttpContext context)
+    {
+        var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? &quot;anonymous&quot;;
+        var key = $&quot;rate_limit:{userId}&quot;;
+
+        var allowed = await _rateLimiter.AllowRequestAsync(
+            key,
+            maxRequests: 100,
+            window: TimeSpan.FromMinutes(1));
+
+        if (!allowed)
+        {
+            var info = await _rateLimiter.GetRateLimitInfoAsync(
+                key,
+                maxRequests: 100,
+                window: TimeSpan.FromMinutes(1));
+
+            context.Response.Headers.Add(&quot;X-RateLimit-Limit&quot;, info.Limit.ToString());
+            context.Response.Headers.Add(&quot;X-RateLimit-Remaining&quot;, &quot;0&quot;);
+            context.Response.Headers.Add(&quot;X-RateLimit-Reset&quot;, info.Reset.ToUnixTimeSeconds().ToString());
+
+            context.Response.StatusCode = StatusCodes.Status429TooManyRequests;
+            await context.Response.WriteAsync(&quot;Rate limit exceeded&quot;);
+            return;
+        }
+
+        await _next(context);
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="real-world-scenarios">Real-World Scenarios</h2>
+<p><strong>Q: Design an API gateway pattern that routes requests to different microservices based on path.</strong></p>
+<p>A: Implement simple reverse proxy with routing.</p>
+<pre class="language-csharp"><code class="language-csharp">public class ApiGatewayMiddleware
+{
+    private readonly RequestDelegate _next;
+    private readonly IHttpClientFactory _httpClientFactory;
+    private readonly ILogger&lt;ApiGatewayMiddleware&gt; _logger;
+    private readonly Dictionary&lt;string, string&gt; _routes;
+
+    public ApiGatewayMiddleware(
+        RequestDelegate next,
+        IHttpClientFactory httpClientFactory,
+        ILogger&lt;ApiGatewayMiddleware&gt; logger,
+        IConfiguration configuration)
+    {
+        _next = next;
+        _httpClientFactory = httpClientFactory;
+        _logger = logger;
+        _routes = configuration.GetSection(&quot;Gateway:Routes&quot;)
+            .Get&lt;Dictionary&lt;string, string&gt;&gt;();
+    }
+
+    public async Task InvokeAsync(HttpContext context)
+    {
+        var path = context.Request.Path.Value;
+        var matchedRoute = _routes.FirstOrDefault(r =&gt; path.StartsWith(r.Key));
+
+        if (matchedRoute.Key == null)
+        {
+            await _next(context);
+            return;
+        }
+
+        var targetUrl = matchedRoute.Value + path.Substring(matchedRoute.Key.Length);
+        if (context.Request.QueryString.HasValue)
+        {
+            targetUrl += context.Request.QueryString.Value;
+        }
+
+        var httpClient = _httpClientFactory.CreateClient();
+        var requestMessage = new HttpRequestMessage
+        {
+            Method = new HttpMethod(context.Request.Method),
+            RequestUri = new Uri(targetUrl)
+        };
+
+        // Copy headers
+        foreach (var header in context.Request.Headers)
+        {
+            if (!header.Key.StartsWith(&quot;:&quot;) &amp;&amp;
+                header.Key != &quot;Host&quot; &amp;&amp;
+                header.Key != &quot;Content-Length&quot;)
+            {
+                requestMessage.Headers.TryAddWithoutValidation(header.Key, header.Value.ToArray());
+            }
+        }
+
+        // Copy body for POST/PUT
+        if (context.Request.Method == &quot;POST&quot; || context.Request.Method == &quot;PUT&quot;)
+        {
+            var streamContent = new StreamContent(context.Request.Body);
+            requestMessage.Content = streamContent;
+        }
+
+        try
+        {
+            var response = await httpClient.SendAsync(
+                requestMessage,
+                HttpCompletionOption.ResponseHeadersRead,
+                context.RequestAborted);
+
+            context.Response.StatusCode = (int)response.StatusCode;
+
+            // Copy response headers
+            foreach (var header in response.Headers)
+            {
+                context.Response.Headers[header.Key] = header.Value.ToArray();
+            }
+
+            foreach (var header in response.Content.Headers)
+            {
+                context.Response.Headers[header.Key] = header.Value.ToArray();
+            }
+
+            await response.Content.CopyToAsync(context.Response.Body);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, &quot;Error proxying request to {TargetUrl}&quot;, targetUrl);
+            context.Response.StatusCode = StatusCodes.Status502BadGateway;
+        }
+    }
+}
+
+// appsettings.json
+{
+  &quot;Gateway&quot;: {
+    &quot;Routes&quot;: {
+      &quot;/api/orders&quot;: &quot;http://orders-service&quot;,
+      &quot;/api/products&quot;: &quot;http://products-service&quot;,
+      &quot;/api/customers&quot;: &quot;http://customers-service&quot;
+    }
+  }
+}</code></pre>
+<p><strong>Q: Implement request deduplication middleware using distributed cache.</strong></p>
+<p>A: Prevent duplicate requests within a time window.</p>
+<pre class="language-csharp"><code class="language-csharp">public class RequestDeduplicationMiddleware
+{
+    private readonly RequestDelegate _next;
+    private readonly IDistributedCache _cache;
+    private readonly ILogger&lt;RequestDeduplicationMiddleware&gt; _logger;
+
+    public RequestDeduplicationMiddleware(
+        RequestDelegate next,
+        IDistributedCache cache,
+        ILogger&lt;RequestDeduplicationMiddleware&gt; logger)
+    {
+        _next = next;
+        _cache = cache;
+        _logger = logger;
+    }
+
+    public async Task InvokeAsync(HttpContext context)
+    {
+        // Only deduplicate POST/PUT requests
+        if (context.Request.Method != &quot;POST&quot; &amp;&amp; context.Request.Method != &quot;PUT&quot;)
+        {
+            await _next(context);
+            return;
+        }
+
+        // Get idempotency key from header
+        if (!context.Request.Headers.TryGetValue(&quot;Idempotency-Key&quot;, out var idempotencyKey))
+        {
+            await _next(context);
+            return;
+        }
+
+        var cacheKey = $&quot;idempotency:{idempotencyKey}&quot;;
+        var cachedResponse = await _cache.GetStringAsync(cacheKey);
+
+        if (cachedResponse != null)
+        {
+            _logger.LogInformation(
+                &quot;Returning cached response for idempotency key: {IdempotencyKey}&quot;,
+                idempotencyKey);
+
+            var response = JsonSerializer.Deserialize&lt;CachedResponse&gt;(cachedResponse);
+            context.Response.StatusCode = response.StatusCode;
+            context.Response.ContentType = response.ContentType;
+            await context.Response.WriteAsync(response.Body);
+            return;
+        }
+
+        // Capture response
+        var originalBodyStream = context.Response.Body;
+        using var responseBody = new MemoryStream();
+        context.Response.Body = responseBody;
+
+        await _next(context);
+
+        // Cache successful responses
+        if (context.Response.StatusCode &gt;= 200 &amp;&amp; context.Response.StatusCode &lt; 300)
+        {
+            responseBody.Seek(0, SeekOrigin.Begin);
+            var body = await new StreamReader(responseBody).ReadToEndAsync();
+            responseBody.Seek(0, SeekOrigin.Begin);
+
+            var cachedResponseObj = new CachedResponse
+            {
+                StatusCode = context.Response.StatusCode,
+                ContentType = context.Response.ContentType,
+                Body = body
+            };
+
+            var serialized = JsonSerializer.Serialize(cachedResponseObj);
+            await _cache.SetStringAsync(
+                cacheKey,
+                serialized,
+                new DistributedCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(24)
+                });
+
+            _logger.LogInformation(
+                &quot;Cached response for idempotency key: {IdempotencyKey}&quot;,
+                idempotencyKey);
+        }
+
+        await responseBody.CopyToAsync(originalBodyStream);
+    }
+
+    private class CachedResponse
+    {
+        public int StatusCode { get; set; }
+        public string ContentType { get; set; }
+        public string Body { get; set; }
+    }
+}</code></pre>
+<p><strong>Q: Create a background service that performs periodic health checks on external dependencies.</strong></p>
+<p>A: Implement IHostedService for background monitoring.</p>
+<pre class="language-csharp"><code class="language-csharp">public class HealthCheckBackgroundService : BackgroundService
+{
+    private readonly IServiceProvider _serviceProvider;
+    private readonly ILogger&lt;HealthCheckBackgroundService&gt; _logger;
+    private readonly TimeSpan _checkInterval = TimeSpan.FromMinutes(1);
+
+    public HealthCheckBackgroundService(
+        IServiceProvider serviceProvider,
+        ILogger&lt;HealthCheckBackgroundService&gt; logger)
+    {
+        _serviceProvider = serviceProvider;
+        _logger = logger;
+    }
+
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        _logger.LogInformation(&quot;Health Check Background Service started&quot;);
+
+        while (!stoppingToken.IsCancellationRequested)
+        {
+            try
+            {
+                await PerformHealthChecksAsync(stoppingToken);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, &quot;Error performing health checks&quot;);
+            }
+
+            await Task.Delay(_checkInterval, stoppingToken);
+        }
+
+        _logger.LogInformation(&quot;Health Check Background Service stopped&quot;);
+    }
+
+    private async Task PerformHealthChecksAsync(CancellationToken cancellationToken)
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var healthCheckService = scope.ServiceProvider
+            .GetRequiredService&lt;HealthCheckService&gt;();
+
+        var result = await healthCheckService.CheckHealthAsync(cancellationToken);
+
+        foreach (var entry in result.Entries)
+        {
+            if (entry.Value.Status != HealthStatus.Healthy)
+            {
+                _logger.LogWarning(
+                    &quot;Health check {Name} is {Status}: {Description}&quot;,
+                    entry.Key,
+                    entry.Value.Status,
+                    entry.Value.Description);
+
+                // Could send alerts, update metrics, etc.
+            }
+        }
+
+        _logger.LogInformation(
+            &quot;Health check completed. Overall status: {Status}&quot;,
+            result.Status);
+    }
+}
+
+// Registration
+services.AddHostedService&lt;HealthCheckBackgroundService&gt;();</code></pre>
+<p>---</p>
+<h2 id="authorization-security">Authorization & Security</h2>
+<p><strong>Q: Implement resource-based authorization for multi-tenant applications.</strong></p>
+<p>A: Create authorization handlers for tenant-specific resources.</p>
+<pre class="language-csharp"><code class="language-csharp">public class TenantAuthorizationHandler :
+    AuthorizationHandler&lt;TenantAccessRequirement, Order&gt;
+{
+    private readonly ITenantService _tenantService;
+
+    public TenantAuthorizationHandler(ITenantService tenantService)
+    {
+        _tenantService = tenantService;
+    }
+
+    protected override Task HandleRequirementAsync(
+        AuthorizationHandlerContext context,
+        TenantAccessRequirement requirement,
+        Order resource)
+    {
+        var currentTenantId = _tenantService.GetCurrentTenantId();
+
+        if (resource.TenantId == currentTenantId)
+        {
+            context.Succeed(requirement);
+        }
+
+        return Task.CompletedTask;
+    }
+}
+
+public class TenantAccessRequirement : IAuthorizationRequirement
+{
+}
+
+// Registration
+services.AddAuthorization(options =&gt;
+{
+    options.AddPolicy(&quot;TenantAccess&quot;, policy =&gt;
+        policy.Requirements.Add(new TenantAccessRequirement()));
+});
+
+services.AddSingleton&lt;IAuthorizationHandler, TenantAuthorizationHandler&gt;();
+
+// Usage in controller
+[HttpGet(&quot;{id}&quot;)]
+public async Task&lt;IActionResult&gt; GetOrder(int id)
+{
+    var order = await _orderService.GetByIdAsync(id);
+
+    var authResult = await _authorizationService.AuthorizeAsync(
+        User,
+        order,
+        &quot;TenantAccess&quot;);
+
+    if (!authResult.Succeeded)
+    {
+        return Forbid();
+    }
+
+    return Ok(order);
+}</code></pre>
+<p><strong>Q: Implement CORS policy dynamically based on database configuration.</strong></p>
+<p>A: Create dynamic CORS policy provider.</p>
+<pre class="language-csharp"><code class="language-csharp">public interface ICorsConfigurationService
+{
+    Task&lt;List&lt;string&gt;&gt; GetAllowedOriginsAsync();
+}
+
+public class DatabaseCorsConfigurationService : ICorsConfigurationService
+{
+    private readonly DbContext _dbContext;
+    private readonly IMemoryCache _cache;
+
+    public DatabaseCorsConfigurationService(DbContext dbContext, IMemoryCache cache)
+    {
+        _dbContext = dbContext;
+        _cache = cache;
+    }
+
+    public async Task&lt;List&lt;string&gt;&gt; GetAllowedOriginsAsync()
+    {
+        return await _cache.GetOrCreateAsync(&quot;cors-origins&quot;, async entry =&gt;
+        {
+            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5);
+
+            return await _dbContext.Set&lt;CorsOrigin&gt;()
+                .Where(o =&gt; o.IsEnabled)
+                .Select(o =&gt; o.Origin)
+                .ToListAsync();
+        });
+    }
+}
+
+public class DynamicCorsMiddleware
+{
+    private readonly RequestDelegate _next;
+    private readonly ICorsConfigurationService _corsConfig;
+
+    public DynamicCorsMiddleware(
+        RequestDelegate next,
+        ICorsConfigurationService corsConfig)
+    {
+        _next = next;
+        _corsConfig = corsConfig;
+    }
+
+    public async Task InvokeAsync(HttpContext context)
+    {
+        var origin = context.Request.Headers[&quot;Origin&quot;].ToString();
+
+        if (!string.IsNullOrEmpty(origin))
+        {
+            var allowedOrigins = await _corsConfig.GetAllowedOriginsAsync();
+
+            if (allowedOrigins.Contains(origin))
+            {
+                context.Response.Headers.Add(&quot;Access-Control-Allow-Origin&quot;, origin);
+                context.Response.Headers.Add(&quot;Access-Control-Allow-Credentials&quot;, &quot;true&quot;);
+
+                if (context.Request.Method == &quot;OPTIONS&quot;)
+                {
+                    context.Response.Headers.Add(
+                        &quot;Access-Control-Allow-Methods&quot;,
+                        &quot;GET, POST, PUT, DELETE, OPTIONS&quot;);
+                    context.Response.Headers.Add(
+                        &quot;Access-Control-Allow-Headers&quot;,
+                        &quot;Content-Type, Authorization&quot;);
+                    context.Response.StatusCode = StatusCodes.Status204NoContent;
+                    return;
+                }
+            }
+        }
+
+        await _next(context);
+    }
+}</code></pre>
+<p>---</p>
+<p><strong>Total Exercises: 35+</strong></p>
+<p>Master these patterns to build robust, scalable APIs with proper lifecycle management!</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['midnight', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const fallback = 'light';
+      const initial = supported.includes(saved) ? saved : (window.__studyTheme || fallback);
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          sessionStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+    (() => {
+      const groups = document.querySelectorAll('.sidebar-group');
+      if (!groups.length) return;
+      const storageKey = 'study-open-groups';
+      const saved = sessionStorage.getItem(storageKey);
+      const openFromStorage = new Set(saved ? JSON.parse(saved) : []);
+
+      const activeLink = document.querySelector('.nav-link.active');
+      const activeGroup = activeLink?.closest('.sidebar-group');
+      if (activeGroup?.dataset.group) {
+        openFromStorage.add(activeGroup.dataset.group);
+      }
+
+      const syncStorage = () => {
+        const openIds = Array.from(document.querySelectorAll('.sidebar-group.is-open'))
+          .map((group) => group.dataset.group)
+          .filter(Boolean);
+        sessionStorage.setItem(storageKey, JSON.stringify(openIds));
+      };
+
+      const setExpanded = (group, expanded) => {
+        const header = group.querySelector('.sidebar-group__header');
+        const list = group.querySelector('.sidebar-group__items');
+        group.classList.toggle('is-open', expanded);
+        header?.setAttribute('aria-expanded', expanded);
+        if (list) {
+          list.hidden = !expanded;
+        }
+      };
+
+      groups.forEach((group) => {
+        const shouldOpen = openFromStorage.has(group.dataset.group);
+        setExpanded(group, shouldOpen);
+        const header = group.querySelector('.sidebar-group__header');
+        header?.addEventListener('click', () => {
+          const next = !group.classList.contains('is-open');
+          setExpanded(group, next);
+          syncStorage();
+        });
+      });
+    })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swPath = '../service-worker.js';
+        navigator.serviceWorker.register(swPath).catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+</body>
+</html>

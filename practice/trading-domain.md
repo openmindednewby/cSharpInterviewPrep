@@ -1,0 +1,1341 @@
+# Trading Domain Practice Exercises
+
+Master forex trading concepts, MT4/MT5 integration, market data processing, and risk management for financial trading systems.
+
+---
+
+## Foundational Questions
+
+**Q: Describe the lifecycle of a forex trade from placement to settlement.**
+
+A: Steps: quote, order placement, validation, routing, execution (fill/partial), confirmation, settlement (T+2), P&L updates. Post-trade, apply trade capture in back-office systems and reconcile with liquidity providers. Include margin checks and clearing, corporate actions, and overnight financing (swap) adjustments.
+
+**Q: How would you integrate with MT4/MT5 APIs for trade execution in C#? Mention authentication, session management, and error handling.**
+
+A: Use MetaTrader Manager/Server APIs via C# wrappers; handle session auth, keep-alive, throttle requests. Manage connections via dedicated service accounts and pre-allocate connection pools. Implement reconnect logic, map errors, ensure idempotent order submission. Translate MT-specific error codes into domain-level responses for clients.
+
+```csharp
+using var session = new Mt5Gateway(credentials);
+await session.ConnectAsync();
+var ticket = await session.SendOrderAsync(request);
+```
+
+**Q: What are common risk checks before executing a client order (e.g., margin, exposure limits)?**
+
+A: Margin availability, max exposure per instrument, credit limits, duplicate orders, fat-finger (price deviation). Implement pre-trade risk service.
+
+**Q: Explain how you'd handle market data bursts without dropping updates.**
+
+A: Use batching, diff updates, UDP multicast ingestion, prioritized queues, snapshot + incremental updates. Utilize adaptive sampling—send every tick to VIP clients while throttling retail feeds. Apply throttling per client, drop non-critical updates after stale, and monitor queue depths to trigger auto-scaling.
+
+---
+
+## Trade Lifecycle Management
+
+**Q: Implement order validation pipeline with multiple risk checks.**
+
+A: Chain validation steps before order execution.
+
+```csharp
+public interface IOrderValidator
+{
+    Task<ValidationResult> ValidateAsync(Order order, CancellationToken ct = default);
+}
+
+public class MarginValidator : IOrderValidator
+{
+    private readonly IAccountRepository _accountRepo;
+    private readonly IMarginCalculator _marginCalc;
+
+    public async Task<ValidationResult> ValidateAsync(Order order, CancellationToken ct)
+    {
+        var account = await _accountRepo.GetByIdAsync(order.AccountId, ct);
+
+        var requiredMargin = _marginCalc.CalculateRequiredMargin(
+            order.Symbol,
+            order.Volume,
+            order.Leverage);
+
+        var availableMargin = account.Equity - account.UsedMargin;
+
+        if (requiredMargin > availableMargin)
+        {
+            return ValidationResult.Failure(
+                "INSUFFICIENT_MARGIN",
+                $"Required: {requiredMargin:F2}, Available: {availableMargin:F2}");
+        }
+
+        return ValidationResult.Success();
+    }
+}
+
+public class ExposureLimitValidator : IOrderValidator
+{
+    private readonly IPositionRepository _positionRepo;
+    private readonly IRiskConfigService _riskConfig;
+
+    public async Task<ValidationResult> ValidateAsync(Order order, CancellationToken ct)
+    {
+        var config = await _riskConfig.GetConfigAsync(order.AccountId, ct);
+        var currentPositions = await _positionRepo.GetByAccountAsync(order.AccountId, ct);
+
+        var symbolExposure = currentPositions
+            .Where(p => p.Symbol == order.Symbol)
+            .Sum(p => p.Volume);
+
+        var newExposure = order.Type == OrderType.Buy
+            ? symbolExposure + order.Volume
+            : symbolExposure - order.Volume;
+
+        if (Math.Abs(newExposure) > config.MaxExposurePerSymbol)
+        {
+            return ValidationResult.Failure(
+                "EXPOSURE_LIMIT_EXCEEDED",
+                $"Max exposure: {config.MaxExposurePerSymbol}, New exposure: {Math.Abs(newExposure)}");
+        }
+
+        return ValidationResult.Success();
+    }
+}
+
+public class PriceDeviationValidator : IOrderValidator
+{
+    private readonly IMarketDataService _marketData;
+    private const decimal MaxDeviationPercent = 2.0m;
+
+    public async Task<ValidationResult> ValidateAsync(Order order, CancellationToken ct)
+    {
+        if (order.Type != OrderType.Limit && order.Type != OrderType.Stop)
+            return ValidationResult.Success();
+
+        var currentPrice = await _marketData.GetPriceAsync(order.Symbol, ct);
+        var referencePrice = order.Side == OrderSide.Buy ? currentPrice.Ask : currentPrice.Bid;
+
+        var deviation = Math.Abs((order.Price - referencePrice) / referencePrice) * 100;
+
+        if (deviation > MaxDeviationPercent)
+        {
+            return ValidationResult.Failure(
+                "PRICE_DEVIATION",
+                $"Order price {order.Price} deviates {deviation:F2}% from market {referencePrice}");
+        }
+
+        return ValidationResult.Success();
+    }
+}
+
+// Composite validator pipeline
+public class OrderValidationPipeline
+{
+    private readonly IEnumerable<IOrderValidator> _validators;
+    private readonly ILogger<OrderValidationPipeline> _logger;
+
+    public OrderValidationPipeline(
+        IEnumerable<IOrderValidator> validators,
+        ILogger<OrderValidationPipeline> logger)
+    {
+        _validators = validators;
+        _logger = logger;
+    }
+
+    public async Task<ValidationResult> ValidateAsync(Order order, CancellationToken ct = default)
+    {
+        foreach (var validator in _validators)
+        {
+            var result = await validator.ValidateAsync(order, ct);
+            if (!result.IsValid)
+            {
+                _logger.LogWarning(
+                    "Order {OrderId} failed validation: {ValidationError}",
+                    order.Id,
+                    result.ErrorCode);
+                return result;
+            }
+        }
+
+        return ValidationResult.Success();
+    }
+}
+
+// DI registration
+services.AddScoped<IOrderValidator, MarginValidator>();
+services.AddScoped<IOrderValidator, ExposureLimitValidator>();
+services.AddScoped<IOrderValidator, PriceDeviationValidator>();
+services.AddScoped<IOrderValidator, DuplicateOrderValidator>();
+services.AddScoped<OrderValidationPipeline>();
+```
+
+**Q: Design state machine for order lifecycle tracking.**
+
+A: Implement order state transitions with guards.
+
+```csharp
+public enum OrderState
+{
+    Pending,
+    Validated,
+    Submitted,
+    PartiallyFilled,
+    Filled,
+    Cancelled,
+    Rejected,
+    Expired
+}
+
+public enum OrderEvent
+{
+    Validate,
+    Submit,
+    PartialFill,
+    Fill,
+    Cancel,
+    Reject,
+    Expire
+}
+
+public class OrderStateMachine
+{
+    private static readonly Dictionary<(OrderState, OrderEvent), OrderState> _transitions = new()
+    {
+        { (OrderState.Pending, OrderEvent.Validate), OrderState.Validated },
+        { (OrderState.Pending, OrderEvent.Reject), OrderState.Rejected },
+
+        { (OrderState.Validated, OrderEvent.Submit), OrderState.Submitted },
+        { (OrderState.Validated, OrderEvent.Cancel), OrderState.Cancelled },
+
+        { (OrderState.Submitted, OrderEvent.PartialFill), OrderState.PartiallyFilled },
+        { (OrderState.Submitted, OrderEvent.Fill), OrderState.Filled },
+        { (OrderState.Submitted, OrderEvent.Cancel), OrderState.Cancelled },
+        { (OrderState.Submitted, OrderEvent.Reject), OrderState.Rejected },
+        { (OrderState.Submitted, OrderEvent.Expire), OrderState.Expired },
+
+        { (OrderState.PartiallyFilled, OrderEvent.PartialFill), OrderState.PartiallyFilled },
+        { (OrderState.PartiallyFilled, OrderEvent.Fill), OrderState.Filled },
+        { (OrderState.PartiallyFilled, OrderEvent.Cancel), OrderState.Cancelled },
+        { (OrderState.PartiallyFilled, OrderEvent.Expire), OrderState.Expired }
+    };
+
+    private readonly Order _order;
+    private readonly IEventPublisher _eventPublisher;
+    private readonly ILogger<OrderStateMachine> _logger;
+
+    public OrderStateMachine(
+        Order order,
+        IEventPublisher eventPublisher,
+        ILogger<OrderStateMachine> logger)
+    {
+        _order = order;
+        _eventPublisher = eventPublisher;
+        _logger = logger;
+    }
+
+    public async Task<bool> TransitionAsync(OrderEvent @event)
+    {
+        var currentState = _order.State;
+
+        if (!_transitions.TryGetValue((currentState, @event), out var newState))
+        {
+            _logger.LogWarning(
+                "Invalid transition: Order {OrderId} cannot transition from {CurrentState} with event {@Event}",
+                _order.Id,
+                currentState,
+                @event);
+            return false;
+        }
+
+        _order.State = newState;
+        _order.UpdatedAt = DateTime.UtcNow;
+
+        await _eventPublisher.PublishAsync(new OrderStateChangedEvent
+        {
+            OrderId = _order.Id,
+            PreviousState = currentState,
+            NewState = newState,
+            Event = @event,
+            Timestamp = _order.UpdatedAt
+        });
+
+        _logger.LogInformation(
+            "Order {OrderId} transitioned from {PreviousState} to {NewState} via {@Event}",
+            _order.Id,
+            currentState,
+            newState,
+            @event);
+
+        return true;
+    }
+
+    public bool CanTransition(OrderEvent @event)
+    {
+        return _transitions.ContainsKey((_order.State, @event));
+    }
+
+    public IEnumerable<OrderEvent> GetAllowedEvents()
+    {
+        return _transitions
+            .Where(kvp => kvp.Key.Item1 == _order.State)
+            .Select(kvp => kvp.Key.Item2);
+    }
+}
+```
+
+**Q: Implement order reconciliation to detect missing confirmations.**
+
+A: Compare internal orders with broker confirmations.
+
+```csharp
+public class OrderReconciliationService : BackgroundService
+{
+    private readonly IServiceProvider _serviceProvider;
+    private readonly ILogger<OrderReconciliationService> _logger;
+    private readonly TimeSpan _reconciliationInterval = TimeSpan.FromMinutes(5);
+    private readonly TimeSpan _confirmationTimeout = TimeSpan.FromMinutes(2);
+
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        while (!stoppingToken.IsCancellationRequested)
+        {
+            try
+            {
+                await ReconcileOrdersAsync(stoppingToken);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Order reconciliation failed");
+            }
+
+            await Task.Delay(_reconciliationInterval, stoppingToken);
+        }
+    }
+
+    private async Task ReconcileOrdersAsync(CancellationToken ct)
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var orderRepo = scope.ServiceProvider.GetRequiredService<IOrderRepository>();
+        var mt5Gateway = scope.ServiceProvider.GetRequiredService<IMt5Gateway>();
+
+        // Find orders awaiting confirmation
+        var pendingOrders = await orderRepo.GetPendingConfirmationsAsync(
+            olderThan: DateTime.UtcNow - _confirmationTimeout,
+            ct);
+
+        _logger.LogInformation("Reconciling {Count} pending orders", pendingOrders.Count);
+
+        foreach (var order in pendingOrders)
+        {
+            try
+            {
+                // Query broker for order status
+                var brokerOrder = await mt5Gateway.GetOrderByClientIdAsync(order.ClientOrderId, ct);
+
+                if (brokerOrder != null)
+                {
+                    // Order found at broker - update status
+                    await SyncOrderStatusAsync(order, brokerOrder, orderRepo, ct);
+                }
+                else
+                {
+                    // Order not found - may have been rejected or lost
+                    await HandleMissingOrderAsync(order, orderRepo, ct);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(
+                    ex,
+                    "Failed to reconcile order {OrderId}",
+                    order.Id);
+            }
+        }
+    }
+
+    private async Task SyncOrderStatusAsync(
+        Order internalOrder,
+        BrokerOrder brokerOrder,
+        IOrderRepository orderRepo,
+        CancellationToken ct)
+    {
+        if (internalOrder.State != MapBrokerState(brokerOrder.State))
+        {
+            _logger.LogWarning(
+                "Order {OrderId} state mismatch. Internal: {InternalState}, Broker: {BrokerState}",
+                internalOrder.Id,
+                internalOrder.State,
+                brokerOrder.State);
+
+            internalOrder.State = MapBrokerState(brokerOrder.State);
+            internalOrder.BrokerOrderId = brokerOrder.OrderId;
+            internalOrder.FilledVolume = brokerOrder.FilledVolume;
+            internalOrder.AveragePrice = brokerOrder.AveragePrice;
+
+            await orderRepo.UpdateAsync(internalOrder, ct);
+        }
+    }
+
+    private async Task HandleMissingOrderAsync(
+        Order order,
+        IOrderRepository orderRepo,
+        CancellationToken ct)
+    {
+        _logger.LogError(
+            "Order {OrderId} not found at broker after {Minutes} minutes",
+            order.Id,
+            _confirmationTimeout.TotalMinutes);
+
+        // Mark as potentially lost
+        order.State = OrderState.Rejected;
+        order.RejectReason = "Order not confirmed by broker - may be lost";
+        await orderRepo.UpdateAsync(order, ct);
+
+        // Trigger alert for manual investigation
+        // await _alertService.SendAlertAsync(...)
+    }
+
+    private OrderState MapBrokerState(string brokerState)
+    {
+        return brokerState switch
+        {
+            "PENDING" => OrderState.Submitted,
+            "PARTIAL" => OrderState.PartiallyFilled,
+            "FILLED" => OrderState.Filled,
+            "CANCELLED" => OrderState.Cancelled,
+            "REJECTED" => OrderState.Rejected,
+            _ => OrderState.Pending
+        };
+    }
+}
+```
+
+---
+
+## MT4/MT5 Integration
+
+**Q: Implement MT5 Gateway with connection pooling and failover.**
+
+A: Manage multiple MT5 connections for reliability.
+
+```csharp
+public interface IMt5Gateway
+{
+    Task<string> SendOrderAsync(OrderRequest request, CancellationToken ct = default);
+    Task<BrokerOrder> GetOrderByClientIdAsync(string clientOrderId, CancellationToken ct = default);
+    Task<bool> CancelOrderAsync(string orderId, CancellationToken ct = default);
+}
+
+public class Mt5ConnectionPool
+{
+    private readonly List<Mt5Connection> _connections = new();
+    private readonly SemaphoreSlim _lock = new(1, 1);
+    private readonly IConfiguration _configuration;
+    private readonly ILogger<Mt5ConnectionPool> _logger;
+    private int _currentIndex = 0;
+
+    public Mt5ConnectionPool(IConfiguration configuration, ILogger<Mt5ConnectionPool> logger)
+    {
+        _configuration = configuration;
+        _logger = logger;
+    }
+
+    public async Task InitializeAsync()
+    {
+        var servers = _configuration.GetSection("Mt5:Servers").Get<List<Mt5ServerConfig>>();
+
+        foreach (var server in servers)
+        {
+            try
+            {
+                var connection = new Mt5Connection(server);
+                await connection.ConnectAsync();
+                _connections.Add(connection);
+
+                _logger.LogInformation(
+                    "Connected to MT5 server: {Server}:{Port}",
+                    server.Host,
+                    server.Port);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(
+                    ex,
+                    "Failed to connect to MT5 server: {Server}:{Port}",
+                    server.Host,
+                    server.Port);
+            }
+        }
+
+        if (_connections.Count == 0)
+        {
+            throw new InvalidOperationException("No MT5 connections available");
+        }
+    }
+
+    public async Task<Mt5Connection> GetConnectionAsync()
+    {
+        await _lock.WaitAsync();
+        try
+        {
+            // Round-robin with health check
+            for (int i = 0; i < _connections.Count; i++)
+            {
+                var index = (_currentIndex + i) % _connections.Count;
+                var connection = _connections[index];
+
+                if (await connection.IsHealthyAsync())
+                {
+                    _currentIndex = (index + 1) % _connections.Count;
+                    return connection;
+                }
+            }
+
+            throw new InvalidOperationException("No healthy MT5 connections available");
+        }
+        finally
+        {
+            _lock.Release();
+        }
+    }
+
+    public async Task<T> ExecuteWithRetryAsync<T>(
+        Func<Mt5Connection, Task<T>> operation,
+        int maxRetries = 3)
+    {
+        Exception lastException = null;
+
+        for (int attempt = 0; attempt < maxRetries; attempt++)
+        {
+            try
+            {
+                var connection = await GetConnectionAsync();
+                return await operation(connection);
+            }
+            catch (Mt5ConnectionException ex)
+            {
+                lastException = ex;
+                _logger.LogWarning(
+                    ex,
+                    "MT5 operation failed (attempt {Attempt}/{MaxRetries})",
+                    attempt + 1,
+                    maxRetries);
+
+                if (attempt < maxRetries - 1)
+                {
+                    await Task.Delay(TimeSpan.FromMilliseconds(100 * Math.Pow(2, attempt)));
+                }
+            }
+        }
+
+        throw new Mt5GatewayException(
+            $"MT5 operation failed after {maxRetries} attempts",
+            lastException);
+    }
+}
+
+public class Mt5Gateway : IMt5Gateway
+{
+    private readonly Mt5ConnectionPool _connectionPool;
+    private readonly ILogger<Mt5Gateway> _logger;
+
+    public Mt5Gateway(Mt5ConnectionPool connectionPool, ILogger<Mt5Gateway> logger)
+    {
+        _connectionPool = connectionPool;
+        _logger = logger;
+    }
+
+    public async Task<string> SendOrderAsync(OrderRequest request, CancellationToken ct = default)
+    {
+        return await _connectionPool.ExecuteWithRetryAsync(async connection =>
+        {
+            var mt5Order = new Mt5OrderRequest
+            {
+                Symbol = request.Symbol,
+                Volume = request.Volume,
+                Type = MapOrderType(request.Type),
+                Price = request.Price,
+                StopLoss = request.StopLoss,
+                TakeProfit = request.TakeProfit,
+                Comment = request.ClientOrderId,
+                Magic = CalculateMagicNumber(request.AccountId)
+            };
+
+            var result = await connection.SendOrderAsync(mt5Order, ct);
+
+            if (result.ReturnCode != Mt5ReturnCode.Success)
+            {
+                throw new Mt5OrderException(
+                    $"Order rejected: {result.ReturnCode} - {result.Comment}");
+            }
+
+            _logger.LogInformation(
+                "Order sent to MT5. ClientOrderId: {ClientOrderId}, Ticket: {Ticket}",
+                request.ClientOrderId,
+                result.OrderTicket);
+
+            return result.OrderTicket.ToString();
+        });
+    }
+
+    public async Task<BrokerOrder> GetOrderByClientIdAsync(
+        string clientOrderId,
+        CancellationToken ct = default)
+    {
+        return await _connectionPool.ExecuteWithRetryAsync(async connection =>
+        {
+            // Query orders by comment (where we store client order ID)
+            var orders = await connection.GetOrdersAsync(comment: clientOrderId, ct);
+            return orders.FirstOrDefault();
+        });
+    }
+
+    public async Task<bool> CancelOrderAsync(string orderId, CancellationToken ct = default)
+    {
+        return await _connectionPool.ExecuteWithRetryAsync(async connection =>
+        {
+            var result = await connection.CancelOrderAsync(long.Parse(orderId), ct);
+            return result.ReturnCode == Mt5ReturnCode.Success;
+        });
+    }
+
+    private Mt5OrderType MapOrderType(OrderType type)
+    {
+        return type switch
+        {
+            OrderType.Market => Mt5OrderType.Market,
+            OrderType.Limit => Mt5OrderType.Limit,
+            OrderType.Stop => Mt5OrderType.Stop,
+            OrderType.StopLimit => Mt5OrderType.StopLimit,
+            _ => throw new ArgumentException($"Unsupported order type: {type}")
+        };
+    }
+
+    private int CalculateMagicNumber(Guid accountId)
+    {
+        // Generate deterministic magic number from account ID
+        return Math.Abs(accountId.GetHashCode() % 999999);
+    }
+}
+```
+
+**Q: Handle MT5 error codes and map to domain exceptions.**
+
+A: Translate MT5-specific errors to business errors.
+
+```csharp
+public enum Mt5ReturnCode
+{
+    Success = 10009,
+    InvalidPrice = 10015,
+    InvalidStops = 10016,
+    InvalidVolume = 10014,
+    MarketClosed = 10018,
+    NoMoney = 10019,
+    PriceChanged = 10020,
+    Requote = 10004,
+    Timeout = 10024,
+    TooManyRequests = 10025,
+    TradeDisabled = 10017,
+    ConnectionError = 10030
+}
+
+public class Mt5ErrorMapper
+{
+    private static readonly Dictionary<Mt5ReturnCode, (string Code, string Message)> _errorMap = new()
+    {
+        { Mt5ReturnCode.InvalidPrice, ("INVALID_PRICE", "Order price is invalid or too far from market") },
+        { Mt5ReturnCode.InvalidStops, ("INVALID_STOPS", "Stop loss or take profit is invalid") },
+        { Mt5ReturnCode.InvalidVolume, ("INVALID_VOLUME", "Order volume is invalid") },
+        { Mt5ReturnCode.MarketClosed, ("MARKET_CLOSED", "Market is closed") },
+        { Mt5ReturnCode.NoMoney, ("INSUFFICIENT_MARGIN", "Insufficient margin to open position") },
+        { Mt5ReturnCode.PriceChanged, ("PRICE_CHANGED", "Price changed, retry with updated price") },
+        { Mt5ReturnCode.Requote, ("REQUOTE", "Broker requote received") },
+        { Mt5ReturnCode.Timeout, ("TIMEOUT", "Order execution timeout") },
+        { Mt5ReturnCode.TooManyRequests, ("RATE_LIMITED", "Too many requests to broker") },
+        { Mt5ReturnCode.TradeDisabled, ("TRADE_DISABLED", "Trading is disabled for this symbol") },
+        { Mt5ReturnCode.ConnectionError, ("CONNECTION_ERROR", "Connection to broker lost") }
+    };
+
+    public static OrderException MapToException(Mt5ReturnCode returnCode, string additionalInfo = null)
+    {
+        if (_errorMap.TryGetValue(returnCode, out var error))
+        {
+            var message = additionalInfo != null
+                ? $"{error.Message}. {additionalInfo}"
+                : error.Message;
+
+            return new OrderException(error.Code, message)
+            {
+                IsRetryable = IsRetryable(returnCode),
+                RequiresClientAction = RequiresClientAction(returnCode)
+            };
+        }
+
+        return new OrderException(
+            "BROKER_ERROR",
+            $"Unknown broker error: {returnCode}")
+        {
+            IsRetryable = false
+        };
+    }
+
+    private static bool IsRetryable(Mt5ReturnCode returnCode)
+    {
+        return returnCode switch
+        {
+            Mt5ReturnCode.PriceChanged => true,
+            Mt5ReturnCode.Requote => true,
+            Mt5ReturnCode.Timeout => true,
+            Mt5ReturnCode.ConnectionError => true,
+            _ => false
+        };
+    }
+
+    private static bool RequiresClientAction(Mt5ReturnCode returnCode)
+    {
+        return returnCode switch
+        {
+            Mt5ReturnCode.NoMoney => true,
+            Mt5ReturnCode.InvalidPrice => true,
+            Mt5ReturnCode.InvalidStops => true,
+            Mt5ReturnCode.InvalidVolume => true,
+            Mt5ReturnCode.TradeDisabled => true,
+            _ => false
+        };
+    }
+}
+
+public class OrderException : Exception
+{
+    public string ErrorCode { get; }
+    public bool IsRetryable { get; init; }
+    public bool RequiresClientAction { get; init; }
+
+    public OrderException(string errorCode, string message) : base(message)
+    {
+        ErrorCode = errorCode;
+    }
+}
+```
+
+---
+
+## Market Data Processing
+
+**Q: Implement high-frequency tick data processor with conflation.**
+
+A: Process and aggregate tick updates efficiently.
+
+```csharp
+public class TickDataProcessor
+{
+    private readonly Channel<Tick> _inboundChannel;
+    private readonly IDistributedCache _cache;
+    private readonly IHubContext<PriceHub> _hubContext;
+    private readonly ILogger<TickDataProcessor> _logger;
+
+    private readonly Dictionary<string, TickAggregator> _aggregators = new();
+    private readonly TimeSpan _conflationWindow = TimeSpan.FromMilliseconds(100);
+
+    public TickDataProcessor(
+        IDistributedCache cache,
+        IHubContext<PriceHub> hubContext,
+        ILogger<TickDataProcessor> logger)
+    {
+        _inboundChannel = Channel.CreateBounded<Tick>(new BoundedChannelOptions(10000)
+        {
+            FullMode = BoundedChannelFullMode.DropOldest
+        });
+        _cache = cache;
+        _hubContext = hubContext;
+        _logger = logger;
+    }
+
+    public async Task ProcessTickAsync(Tick tick)
+    {
+        await _inboundChannel.Writer.WriteAsync(tick);
+    }
+
+    public async Task StartProcessingAsync(CancellationToken ct)
+    {
+        var processingTasks = Enumerable.Range(0, Environment.ProcessorCount)
+            .Select(i => ProcessTicksAsync(ct))
+            .ToArray();
+
+        // Periodic flush for low-frequency symbols
+        var flushTask = PeriodicFlushAsync(ct);
+
+        await Task.WhenAll(processingTasks.Concat(new[] { flushTask }));
+    }
+
+    private async Task ProcessTicksAsync(CancellationToken ct)
+    {
+        await foreach (var tick in _inboundChannel.Reader.ReadAllAsync(ct))
+        {
+            try
+            {
+                if (!_aggregators.TryGetValue(tick.Symbol, out var aggregator))
+                {
+                    aggregator = new TickAggregator(tick.Symbol, _conflationWindow);
+                    _aggregators[tick.Symbol] = aggregator;
+                }
+
+                var conflatedTick = aggregator.AddTick(tick);
+
+                if (conflatedTick != null)
+                {
+                    await PublishTickAsync(conflatedTick, ct);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error processing tick for {Symbol}", tick.Symbol);
+            }
+        }
+    }
+
+    private async Task PeriodicFlushAsync(CancellationToken ct)
+    {
+        using var timer = new PeriodicTimer(_conflationWindow);
+
+        while (await timer.WaitForNextTickAsync(ct))
+        {
+            foreach (var aggregator in _aggregators.Values)
+            {
+                var tick = aggregator.Flush();
+                if (tick != null)
+                {
+                    await PublishTickAsync(tick, ct);
+                }
+            }
+        }
+    }
+
+    private async Task PublishTickAsync(Tick tick, CancellationToken ct)
+    {
+        // Update cache
+        var cacheKey = $"price:{tick.Symbol}";
+        await _cache.SetStringAsync(
+            cacheKey,
+            JsonSerializer.Serialize(tick),
+            new DistributedCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
+            },
+            ct);
+
+        // Broadcast to WebSocket clients
+        await _hubContext.Clients.Group(tick.Symbol)
+            .SendAsync("price", tick, ct);
+
+        _logger.LogDebug(
+            "Published tick: {Symbol} Bid={Bid} Ask={Ask}",
+            tick.Symbol,
+            tick.Bid,
+            tick.Ask);
+    }
+}
+
+public class TickAggregator
+{
+    private readonly string _symbol;
+    private readonly TimeSpan _window;
+    private Tick _pendingTick;
+    private DateTime _windowStart;
+
+    public TickAggregator(string symbol, TimeSpan window)
+    {
+        _symbol = symbol;
+        _window = window;
+        _windowStart = DateTime.UtcNow;
+    }
+
+    public Tick AddTick(Tick tick)
+    {
+        var now = DateTime.UtcNow;
+
+        if (_pendingTick == null)
+        {
+            _pendingTick = tick;
+            _windowStart = now;
+            return null;
+        }
+
+        // Aggregate tick data
+        _pendingTick = new Tick
+        {
+            Symbol = _symbol,
+            Bid = tick.Bid,  // Latest bid
+            Ask = tick.Ask,  // Latest ask
+            BidVolume = _pendingTick.BidVolume + tick.BidVolume,  // Sum volumes
+            AskVolume = _pendingTick.AskVolume + tick.AskVolume,
+            Timestamp = tick.Timestamp
+        };
+
+        // Check if window elapsed
+        if (now - _windowStart >= _window)
+        {
+            var result = _pendingTick;
+            _pendingTick = null;
+            return result;
+        }
+
+        return null;
+    }
+
+    public Tick Flush()
+    {
+        var result = _pendingTick;
+        _pendingTick = null;
+        return result;
+    }
+}
+```
+
+**Q: Implement VWAP (Volume-Weighted Average Price) calculator.**
+
+A: Calculate real-time VWAP from tick stream.
+
+```csharp
+public class VwapCalculator
+{
+    private readonly Dictionary<string, VwapData> _vwapBySymbol = new();
+    private readonly TimeSpan _window;
+
+    public VwapCalculator(TimeSpan window)
+    {
+        _window = window;
+    }
+
+    public decimal CalculateVwap(string symbol, decimal price, decimal volume, DateTime timestamp)
+    {
+        if (!_vwapBySymbol.TryGetValue(symbol, out var data))
+        {
+            data = new VwapData();
+            _vwapBySymbol[symbol] = data;
+        }
+
+        // Add new trade
+        data.Trades.Add(new Trade
+        {
+            Price = price,
+            Volume = volume,
+            Timestamp = timestamp
+        });
+
+        // Remove trades outside window
+        var cutoff = timestamp - _window;
+        data.Trades.RemoveAll(t => t.Timestamp < cutoff);
+
+        // Calculate VWAP
+        if (data.Trades.Count == 0)
+            return 0;
+
+        var totalValue = data.Trades.Sum(t => t.Price * t.Volume);
+        var totalVolume = data.Trades.Sum(t => t.Volume);
+
+        return totalVolume > 0 ? totalValue / totalVolume : 0;
+    }
+
+    private class VwapData
+    {
+        public List<Trade> Trades { get; } = new();
+    }
+
+    private class Trade
+    {
+        public decimal Price { get; set; }
+        public decimal Volume { get; set; }
+        public DateTime Timestamp { get; set; }
+    }
+}
+
+// Usage in tick processor
+public class EnhancedTickProcessor
+{
+    private readonly VwapCalculator _vwapCalculator;
+
+    public async Task ProcessTradeAsync(Trade trade)
+    {
+        var vwap = _vwapCalculator.CalculateVwap(
+            trade.Symbol,
+            trade.Price,
+            trade.Volume,
+            trade.Timestamp);
+
+        await PublishMarketDataAsync(new MarketData
+        {
+            Symbol = trade.Symbol,
+            LastPrice = trade.Price,
+            Vwap = vwap,
+            Timestamp = trade.Timestamp
+        });
+    }
+}
+```
+
+---
+
+## Risk Management
+
+**Q: Implement real-time P&L calculator for open positions.**
+
+A: Calculate unrealized profit/loss continuously.
+
+```csharp
+public class PnLCalculator
+{
+    private readonly IMarketDataService _marketData;
+    private readonly ILogger<PnLCalculator> _logger;
+
+    public async Task<PositionPnL> CalculatePnLAsync(Position position, CancellationToken ct = default)
+    {
+        var currentPrice = await _marketData.GetPriceAsync(position.Symbol, ct);
+
+        var closePrice = position.Type == PositionType.Long
+            ? currentPrice.Bid  // Close long at bid
+            : currentPrice.Ask;  // Close short at ask
+
+        // Calculate P&L in position currency
+        decimal pnl;
+        if (position.Type == PositionType.Long)
+        {
+            pnl = (closePrice - position.OpenPrice) * position.Volume;
+        }
+        else
+        {
+            pnl = (position.OpenPrice - closePrice) * position.Volume;
+        }
+
+        // Apply contract size
+        pnl *= position.ContractSize;
+
+        // Convert to account currency if needed
+        if (position.Currency != position.AccountCurrency)
+        {
+            var conversionRate = await GetConversionRateAsync(
+                position.Currency,
+                position.AccountCurrency,
+                ct);
+            pnl *= conversionRate;
+        }
+
+        // Calculate swap (overnight financing)
+        var swap = CalculateSwap(position);
+
+        // Calculate commission
+        var commission = CalculateCommission(position);
+
+        var netPnl = pnl + swap - commission;
+
+        return new PositionPnL
+        {
+            PositionId = position.Id,
+            GrossPnL = pnl,
+            Swap = swap,
+            Commission = commission,
+            NetPnL = netPnl,
+            PnLPercentage = (netPnl / (position.OpenPrice * position.Volume * position.ContractSize)) * 100,
+            CurrentPrice = closePrice,
+            Timestamp = DateTime.UtcNow
+        };
+    }
+
+    public async Task<AccountPnL> CalculateAccountPnLAsync(
+        Guid accountId,
+        CancellationToken ct = default)
+    {
+        var positions = await GetOpenPositionsAsync(accountId, ct);
+
+        var pnlTasks = positions.Select(p => CalculatePnLAsync(p, ct));
+        var pnls = await Task.WhenAll(pnlTasks);
+
+        return new AccountPnL
+        {
+            AccountId = accountId,
+            TotalGrossPnL = pnls.Sum(p => p.GrossPnL),
+            TotalSwap = pnls.Sum(p => p.Swap),
+            TotalCommission = pnls.Sum(p => p.Commission),
+            TotalNetPnL = pnls.Sum(p => p.NetPnL),
+            PositionCount = positions.Count,
+            Positions = pnls.ToList(),
+            Timestamp = DateTime.UtcNow
+        };
+    }
+
+    private decimal CalculateSwap(Position position)
+    {
+        var days = (DateTime.UtcNow - position.OpenTime).Days;
+        if (days == 0) return 0;
+
+        // Simplified swap calculation
+        var swapRate = position.Type == PositionType.Long
+            ? position.SwapLong
+            : position.SwapShort;
+
+        return swapRate * position.Volume * days;
+    }
+
+    private decimal CalculateCommission(Position position)
+    {
+        // Commission charged on open
+        return position.Commission;
+    }
+
+    private async Task<decimal> GetConversionRateAsync(
+        string fromCurrency,
+        string toCurrency,
+        CancellationToken ct)
+    {
+        if (fromCurrency == toCurrency)
+            return 1;
+
+        var symbol = $"{fromCurrency}{toCurrency}";
+        var price = await _marketData.GetPriceAsync(symbol, ct);
+
+        return (price.Bid + price.Ask) / 2;
+    }
+}
+```
+
+**Q: Implement margin calculator with different leverage levels.**
+
+A: Calculate required margin for positions.
+
+```csharp
+public class MarginCalculator
+{
+    private readonly ISymbolConfigService _symbolConfig;
+
+    public async Task<decimal> CalculateRequiredMarginAsync(
+        string symbol,
+        decimal volume,
+        int leverage,
+        CancellationToken ct = default)
+    {
+        var config = await _symbolConfig.GetConfigAsync(symbol, ct);
+
+        // Get current market price
+        var price = await GetMarketPriceAsync(symbol, ct);
+
+        // Calculate position value
+        var positionValue = volume * config.ContractSize * price;
+
+        // Apply leverage
+        var requiredMargin = positionValue / leverage;
+
+        // Apply margin requirements (can vary by symbol, time, volatility)
+        var marginMultiplier = await GetMarginMultiplierAsync(symbol, ct);
+        requiredMargin *= marginMultiplier;
+
+        return requiredMargin;
+    }
+
+    public async Task<MarginStatus> CalculateMarginStatusAsync(
+        Account account,
+        List<Position> positions,
+        CancellationToken ct = default)
+    {
+        // Calculate used margin
+        var usedMarginTasks = positions.Select(async p =>
+            await CalculateRequiredMarginAsync(p.Symbol, p.Volume, p.Leverage, ct));
+
+        var usedMargins = await Task.WhenAll(usedMarginTasks);
+        var totalUsedMargin = usedMargins.Sum();
+
+        // Calculate unrealized P&L
+        var pnlCalculator = new PnLCalculator(_marketDataService, _logger);
+        var accountPnl = await pnlCalculator.CalculateAccountPnLAsync(account.Id, ct);
+
+        // Calculate equity and free margin
+        var equity = account.Balance + accountPnl.TotalNetPnL;
+        var freeMargin = equity - totalUsedMargin;
+        var marginLevel = totalUsedMargin > 0 ? (equity / totalUsedMargin) * 100 : 0;
+
+        return new MarginStatus
+        {
+            Balance = account.Balance,
+            Equity = equity,
+            UsedMargin = totalUsedMargin,
+            FreeMargin = freeMargin,
+            MarginLevel = marginLevel,
+            UnrealizedPnL = accountPnl.TotalNetPnL,
+            IsMarginCall = marginLevel > 0 && marginLevel <= account.MarginCallLevel,
+            IsStopOut = marginLevel > 0 && marginLevel <= account.StopOutLevel
+        };
+    }
+
+    private async Task<decimal> GetMarginMultiplierAsync(string symbol, CancellationToken ct)
+    {
+        // Margin requirements can increase during:
+        // - High volatility periods
+        // - Weekend/overnight
+        // - Major news events
+        // - Low liquidity
+
+        var config = await _symbolConfig.GetConfigAsync(symbol, ct);
+
+        decimal multiplier = 1.0m;
+
+        // Weekend margin (typically higher)
+        if (IsWeekend())
+        {
+            multiplier *= config.WeekendMarginMultiplier;
+        }
+
+        // Overnight margin
+        if (IsOvernight())
+        {
+            multiplier *= config.OvernightMarginMultiplier;
+        }
+
+        // Volatility adjustment
+        var volatility = await GetCurrentVolatilityAsync(symbol, ct);
+        if (volatility > config.HighVolatilityThreshold)
+        {
+            multiplier *= config.HighVolatilityMarginMultiplier;
+        }
+
+        return multiplier;
+    }
+
+    private bool IsWeekend()
+    {
+        var now = DateTime.UtcNow;
+        return now.DayOfWeek == DayOfWeek.Saturday || now.DayOfWeek == DayOfWeek.Sunday;
+    }
+
+    private bool IsOvernight()
+    {
+        var now = DateTime.UtcNow.TimeOfDay;
+        return now < TimeSpan.FromHours(8) || now > TimeSpan.FromHours(22);
+    }
+}
+```
+
+**Q: Implement automatic stop-out mechanism.**
+
+A: Close positions when margin level falls below threshold.
+
+```csharp
+public class StopOutService : BackgroundService
+{
+    private readonly IServiceProvider _serviceProvider;
+    private readonly ILogger<StopOutService> _logger;
+    private readonly TimeSpan _checkInterval = TimeSpan.FromSeconds(5);
+
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        while (!stoppingToken.IsCancellationRequested)
+        {
+            try
+            {
+                await CheckStopOutLevelsAsync(stoppingToken);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error checking stop-out levels");
+            }
+
+            await Task.Delay(_checkInterval, stoppingToken);
+        }
+    }
+
+    private async Task CheckStopOutLevelsAsync(CancellationToken ct)
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var accountRepo = scope.ServiceProvider.GetRequiredService<IAccountRepository>();
+        var positionRepo = scope.ServiceProvider.GetRequiredService<IPositionRepository>();
+        var marginCalc = scope.ServiceProvider.GetRequiredService<MarginCalculator>();
+        var tradingService = scope.ServiceProvider.GetRequiredService<ITradingService>();
+
+        // Get accounts with open positions
+        var accounts = await accountRepo.GetAccountsWithPositionsAsync(ct);
+
+        foreach (var account in accounts)
+        {
+            var positions = await positionRepo.GetOpenPositionsAsync(account.Id, ct);
+
+            if (positions.Count == 0)
+                continue;
+
+            var marginStatus = await marginCalc.CalculateMarginStatusAsync(
+                account,
+                positions,
+                ct);
+
+            if (marginStatus.IsStopOut)
+            {
+                _logger.LogWarning(
+                    "Stop-out triggered for account {AccountId}. Margin level: {MarginLevel}%",
+                    account.Id,
+                    marginStatus.MarginLevel);
+
+                await ExecuteStopOutAsync(account, positions, marginStatus, tradingService, ct);
+            }
+            else if (marginStatus.IsMarginCall)
+            {
+                _logger.LogWarning(
+                    "Margin call for account {AccountId}. Margin level: {MarginLevel}%",
+                    account.Id,
+                    marginStatus.MarginLevel);
+
+                await SendMarginCallNotificationAsync(account, marginStatus, ct);
+            }
+        }
+    }
+
+    private async Task ExecuteStopOutAsync(
+        Account account,
+        List<Position> positions,
+        MarginStatus marginStatus,
+        ITradingService tradingService,
+        CancellationToken ct)
+    {
+        // Close positions starting with largest losing position
+        var positionsByLoss = positions
+            .OrderBy(p => p.UnrealizedPnL)
+            .ToList();
+
+        foreach (var position in positionsByLoss)
+        {
+            try
+            {
+                await tradingService.ClosePositionAsync(
+                    position.Id,
+                    reason: "Stop-out",
+                    ct);
+
+                _logger.LogInformation(
+                    "Closed position {PositionId} due to stop-out. P&L: {PnL}",
+                    position.Id,
+                    position.UnrealizedPnL);
+
+                // Recalculate margin status
+                var remainingPositions = positions.Where(p => p.Id != position.Id).ToList();
+                if (remainingPositions.Count == 0)
+                    break;
+
+                marginStatus = await _marginCalc.CalculateMarginStatusAsync(
+                    account,
+                    remainingPositions,
+                    ct);
+
+                // Stop if margin level recovered
+                if (!marginStatus.IsStopOut)
+                    break;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(
+                    ex,
+                    "Failed to close position {PositionId} during stop-out",
+                    position.Id);
+            }
+        }
+    }
+}
+```
+
+---
+
+**Total Exercises: 25+**
+
+Master trading domain concepts for building robust, compliant trading platforms!

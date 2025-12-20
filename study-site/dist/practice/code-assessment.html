@@ -1,0 +1,2959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for Code Assessment" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>Code Assessment | C# Interview Prep Cheat Sheet</title>
+  <link rel="manifest" href="..\assets/manifest.webmanifest" />
+  <script>
+    (() => {
+      const supported = ['midnight', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const fallback = 'light';
+      const initial = supported.includes(saved) ? saved : fallback;
+      document.documentElement.dataset.theme = initial;
+      window.__studyTheme = initial;
+    })();
+  </script>
+  <link rel="stylesheet" href="..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="midnight">Current</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group" data-group="notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="../notes/logging.html">Logging</a></li><li><a class="nav-link" href="../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/O1-Constant-Time.html">O1 Constant Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/OLogN-Logarithmic-Time.html">OLogN Logarithmic Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/ON-Linear-Time.html">ON Linear Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/ON2-Quadratic-Time.html">ON2 Quadratic Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/ONLogN-Linearithmic-Time.html">ONLogN Linearithmic Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/Space-Complexity.html">Space Complexity</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/ICollection.html">ICollection</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IEnumerable.html">IEnumerable</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IList.html">IList</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IQueryable.html">IQueryable</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IReadOnly.html">IReadOnly</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a class="nav-link" href="../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a class="nav-link" href="../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a class="nav-link" href="../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a class="nav-link" href="../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a class="nav-link" href="../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a class="nav-link" href="../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a class="nav-link" href="../notes/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a class="nav-link" href="../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a class="nav-link" href="../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a class="nav-link" href="../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a class="nav-link" href="../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a class="nav-link" href="../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a class="nav-link" href="../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a class="nav-link" href="../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a class="nav-link" href="../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a class="nav-link" href="../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a class="nav-link" href="../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a class="nav-link" href="../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a class="nav-link" href="../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a class="nav-link" href="../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a class="nav-link" href="../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a class="nav-link" href="../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a class="nav-link" href="../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/01-async-patterns.html">01 Async Patterns</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/02-backpressure-rate-limiting.html">02 Backpressure Rate Limiting</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/03-caching-strategies.html">03 Caching Strategies</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/04-database-scaling.html">04 Database Scaling</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/05-message-queues.html">05 Message Queues</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/06-resilience-patterns.html">06 Resilience Patterns</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/07-observability.html">07 Observability</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/08-complete-example.html">08 Complete Example</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+    </div><div class="sidebar-group is-open" data-group="practice">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
+        <span>Practice</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="../practice/answers.html">Answers</a></li><li><a class="nav-link" href="../practice/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="../practice/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="../practice/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link active" href="../practice/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="../practice/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="../practice/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="../practice/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="../practice/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="../practice/index.html">Practice</a></li><li><a class="nav-link" href="../practice/questions.html">Questions</a></li><li><a class="nav-link" href="../practice/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="../practice/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="../practice/system-design.html">System Design</a></li><li><a class="nav-link" href="../practice/trading-domain.html">Trading Domain</a></li></ul>
+    </div></div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">practice\code-assessment.md</div>
+        <h2>Code Assessment</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#code-assessment-practice-exercises">Code Assessment Practice Exercises</a></li><li class="level-2"><a href="#core-code-assessment-questions">Core Code Assessment Questions</a></li><li class="level-3"><a href="#1-async-rest-fan-out-with-cancellation-and-timeout">1. Async REST Fan-Out with Cancellation and Timeout</a></li><li class="level-3"><a href="#2-lru-cache-for-price-lookups">2. LRU Cache for Price Lookups</a></li><li class="level-3"><a href="#3-concurrent-producerconsumer-pipeline-for-order-enrichment">3. Concurrent Producer/Consumer Pipeline for Order Enrichment</a></li><li class="level-3"><a href="#4-sql-find-latest-fill-per-order">4. SQL: Find Latest Fill Per Order</a></li><li class="level-3"><a href="#5-minimal-api-health-endpoint-with-dependency-injection">5. Minimal API Health Endpoint with Dependency Injection</a></li><li class="level-3"><a href="#6-secure-parameterized-data-access-to-prevent-sql-injection">6. Secure Parameterized Data Access to Prevent SQL Injection</a></li><li class="level-3"><a href="#7-jwt-authentication-with-audience-validation-and-clock-skew-control">7. JWT Authentication with Audience Validation and Clock Skew Control</a></li><li class="level-3"><a href="#8-performance-span-based-parsing-to-reduce-allocations">8. Performance: Span-Based Parsing to Reduce Allocations</a></li><li class="level-3"><a href="#9-performance-async-streaming-to-lower-memory-footprint">9. Performance: Async Streaming to Lower Memory Footprint</a></li><li class="level-2"><a href="#algorithm-implementation">Algorithm Implementation</a></li><li class="level-3"><a href="#10-quicksort-implementation">10. QuickSort Implementation</a></li><li class="level-3"><a href="#11-binary-search-implementation">11. Binary Search Implementation</a></li><li class="level-3"><a href="#12-merge-sort-implementation">12. Merge Sort Implementation</a></li><li class="level-3"><a href="#13-depth-first-search-dfs-on-graph">13. Depth-First Search (DFS) on Graph</a></li><li class="level-3"><a href="#14-breadth-first-search-bfs-on-graph">14. Breadth-First Search (BFS) on Graph</a></li><li class="level-3"><a href="#15-dijkstras-shortest-path-algorithm">15. Dijkstra's Shortest Path Algorithm</a></li><li class="level-2"><a href="#data-structure-design">Data Structure Design</a></li><li class="level-3"><a href="#16-custom-min-stack">16. Custom Min Stack</a></li><li class="level-3"><a href="#17-binary-search-tree-implementation">17. Binary Search Tree Implementation</a></li><li class="level-3"><a href="#18-min-heap-implementation">18. Min Heap Implementation</a></li><li class="level-3"><a href="#19-trie-prefix-tree-implementation">19. Trie (Prefix Tree) Implementation</a></li><li class="level-3"><a href="#20-lfu-least-frequently-used-cache">20. LFU (Least Frequently Used) Cache</a></li><li class="level-2"><a href="#string-manipulation">String Manipulation</a></li><li class="level-3"><a href="#21-string-compression">21. String Compression</a></li><li class="level-3"><a href="#22-palindrome-check-with-preprocessing">22. Palindrome Check with Preprocessing</a></li><li class="level-3"><a href="#23-longest-substring-without-repeating-characters">23. Longest Substring Without Repeating Characters</a></li><li class="level-3"><a href="#24-string-pattern-matching-kmp-algorithm">24. String Pattern Matching (KMP Algorithm)</a></li><li class="level-3"><a href="#25-anagram-grouping">25. Anagram Grouping</a></li><li class="level-2"><a href="#array-and-matrix-problems">Array and Matrix Problems</a></li><li class="level-3"><a href="#26-two-sum-problem">26. Two Sum Problem</a></li><li class="level-3"><a href="#27-rotate-matrix-90-degrees">27. Rotate Matrix 90 Degrees</a></li><li class="level-3"><a href="#28-spiral-matrix-traversal">28. Spiral Matrix Traversal</a></li><li class="level-3"><a href="#29-maximum-subarray-sum-kadanes-algorithm">29. Maximum Subarray Sum (Kadane's Algorithm)</a></li><li class="level-3"><a href="#30-merge-intervals">30. Merge Intervals</a></li><li class="level-2"><a href="#performance-optimization-challenges">Performance Optimization Challenges</a></li><li class="level-3"><a href="#31-object-pooling-for-high-frequency-allocations">31. Object Pooling for High-Frequency Allocations</a></li><li class="level-3"><a href="#32-batch-processing-for-database-operations">32. Batch Processing for Database Operations</a></li><li class="level-3"><a href="#33-memoization-for-expensive-calculations">33. Memoization for Expensive Calculations</a></li><li class="level-3"><a href="#34-arraypool-for-reducing-array-allocations">34. ArrayPool for Reducing Array Allocations</a></li><li class="level-2"><a href="#concurrent-programming-problems">Concurrent Programming Problems</a></li><li class="level-3"><a href="#35-producer-consumer-with-blockingcollection">35. Producer-Consumer with BlockingCollection</a></li><li class="level-3"><a href="#36-parallelforeach-with-degree-of-parallelism">36. Parallel.ForEach with Degree of Parallelism</a></li><li class="level-3"><a href="#37-async-throttling-with-semaphoreslim">37. Async Throttling with SemaphoreSlim</a></li><li class="level-3"><a href="#38-thread-safe-lazy-initialization">38. Thread-Safe Lazy Initialization</a></li><li class="level-2"><a href="#security-best-practices">Security Best Practices</a></li><li class="level-3"><a href="#39-input-validation-and-sanitization">39. Input Validation and Sanitization</a></li><li class="level-3"><a href="#40-secure-password-hashing">40. Secure Password Hashing</a></li><li class="level-3"><a href="#41-rate-limiting-implementation">41. Rate Limiting Implementation</a></li><li class="level-3"><a href="#42-csrf-token-validation">42. CSRF Token Validation</a></li><li class="level-2"><a href="#code-refactoring-scenarios">Code Refactoring Scenarios</a></li><li class="level-3"><a href="#43-extract-method-refactoring">43. Extract Method Refactoring</a></li><li class="level-3"><a href="#44-replace-conditional-with-polymorphism">44. Replace Conditional with Polymorphism</a></li><li class="level-3"><a href="#45-strategy-pattern-for-algorithm-selection">45. Strategy Pattern for Algorithm Selection</a></li><li class="level-2"><a href="#bug-fixing-exercises">Bug Fixing Exercises</a></li><li class="level-3"><a href="#46-race-condition-in-cache">46. Race Condition in Cache</a></li><li class="level-3"><a href="#47-memory-leak-from-event-handlers">47. Memory Leak from Event Handlers</a></li><li class="level-3"><a href="#48-async-void-bug">48. Async Void Bug</a></li><li class="level-3"><a href="#49-disposed-object-access">49. Disposed Object Access</a></li><li class="level-3"><a href="#50-off-by-one-error-in-array-processing">50. Off-by-One Error in Array Processing</a></li><li class="level-2"><a href="#summary">Summary</a></li></ul></div>
+        <h1 id="code-assessment-practice-exercises">Code Assessment Practice Exercises</h1>
+<p>Master coding challenges through hands-on practice. This file contains practical coding exercises commonly found in technical interviews.</p>
+<p>---</p>
+<h2 id="core-code-assessment-questions">Core Code Assessment Questions</h2>
+<h3 id="1-async-rest-fan-out-with-cancellation-and-timeout">1. Async REST Fan-Out with Cancellation and Timeout</h3>
+<p><strong>Question:</strong> You have to hit three quote endpoints in parallel and bail out if any call takes longer than 3 seconds, while still honoring upstream cancellation. Return only non-null quotes. Sketch the method you'd drop into the pricing client.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public static async Task&lt;IReadOnlyList&lt;Quote&gt;&gt; FetchQuotesAsync(HttpClient client, CancellationToken cancellationToken)
+{
+    using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+    cts.CancelAfter(TimeSpan.FromSeconds(3));
+
+    var endpoints = new[] {&quot;prices/eurusd&quot;, &quot;prices/gbpusd&quot;, &quot;prices/usdjpy&quot;};
+    var tasks = endpoints.Select(e =&gt; client.GetFromJsonAsync&lt;Quote&gt;(e, cts.Token)).ToArray();
+
+    var results = await Task.WhenAll(tasks);
+    return results!
+        .Where(q =&gt; q is not null)
+        .ToArray();
+}</code></pre>
+<p><strong>Notes:</strong> Use <code>CancellationTokenSource.CreateLinkedTokenSource</code> to respect upstream cancellation. Consider wrapping each call with <code>Try/Finally</code> or <code>Task.WhenAny</code> if partial failures should be tolerated instead of throwing.</p>
+<p>---</p>
+<h3 id="2-lru-cache-for-price-lookups">2. LRU Cache for Price Lookups</h3>
+<p><strong>Question:</strong> Implement an in-memory LRU cache (single-threaded is fine) for up to N price lookups with O(1) <code>Put</code>/<code>TryGet</code>. Show the class you would hand to another team to reuse in a console app.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public sealed class LruCache&lt;TKey, TValue&gt;
+{
+    private readonly int _capacity;
+    private readonly Dictionary&lt;TKey, LinkedListNode&lt;(TKey Key, TValue Value)&gt;&gt; _map = new();
+    private readonly LinkedList&lt;(TKey Key, TValue Value)&gt; _list = new();
+
+    public LruCache(int capacity) =&gt; _capacity = capacity;
+
+    public void Put(TKey key, TValue value)
+    {
+        if (_map.TryGetValue(key, out var node))
+        {
+            node.Value = (key, value);
+            _list.Remove(node);
+            _list.AddFirst(node);
+            return;
+        }
+
+        if (_map.Count == _capacity)
+        {
+            var toRemove = _list.Last!;
+            _map.Remove(toRemove.Value.Key);
+            _list.RemoveLast();
+        }
+
+        var newNode = new LinkedListNode&lt;(TKey, TValue)&gt;((key, value));
+        _list.AddFirst(newNode);
+        _map[key] = newNode;
+    }
+
+    public bool TryGet(TKey key, out TValue value)
+    {
+        if (_map.TryGetValue(key, out var node))
+        {
+            _list.Remove(node);
+            _list.AddFirst(node);
+            value = node.Value.Value;
+            return true;
+        }
+
+        value = default!;
+        return false;
+    }
+}</code></pre>
+<p><strong>Notes:</strong> <code>Put</code> and <code>TryGet</code> are O(1). Thread-safety can be added with <code>SemaphoreSlim</code> for async scenarios or <code>lock</code> for synchronous use.</p>
+<p>---</p>
+<h3 id="3-concurrent-producerconsumer-pipeline-for-order-enrichment">3. Concurrent Producer/Consumer Pipeline for Order Enrichment</h3>
+<p><strong>Question:</strong> We ingest orders into a channel and need to enrich them via an async call before publishing. Write the enrichment pipeline so it can fan out work and push enriched orders to the outbound channel.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public static async Task StartEnrichmentPipeline(Channel&lt;Order&gt; inbound, Func&lt;Order, Task&lt;Order&gt;&gt; enrich, Channel&lt;Order&gt; outbound)
+{
+    await foreach (var order in inbound.Reader.ReadAllAsync())
+    {
+        _ = Task.Run(async () =&gt;
+        {
+            var enriched = await enrich(order);
+            await outbound.Writer.WriteAsync(enriched);
+        });
+    }
+}</code></pre>
+<p><strong>Notes:</strong> Use <code>Channel.CreateBounded&lt;Order&gt;(capacity)</code> to add backpressure. For stricter ordering, await tasks or use <code>Parallel.ForEachAsync</code> with <code>MaxDegreeOfParallelism</code>.</p>
+<p>---</p>
+<h3 id="4-sql-find-latest-fill-per-order">4. SQL: Find Latest Fill Per Order</h3>
+<p><strong>Question:</strong> Given a <code>fills</code> table with <code>order_id</code>, <code>fill_price</code>, and <code>filled_at</code>, write a query that returns only the most recent fill per order for a compliance report.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-sql"><code class="language-sql">-- PostgreSQL
+SELECT DISTINCT ON (order_id) order_id, fill_price, filled_at
+FROM fills
+ORDER BY order_id, filled_at DESC;
+
+-- SQL Server
+WITH RankedFills AS (
+    SELECT order_id, fill_price, filled_at,
+           ROW_NUMBER() OVER (PARTITION BY order_id ORDER BY filled_at DESC) AS rn
+    FROM fills
+)
+SELECT order_id, fill_price, filled_at
+FROM RankedFills
+WHERE rn = 1;</code></pre>
+<p><strong>Notes:</strong> <code>DISTINCT ON</code> is PostgreSQL-specific; in SQL Server, use <code>ROW_NUMBER() OVER (PARTITION BY order_id ORDER BY filled_at DESC)</code> and filter on <code>ROW_NUMBER = 1</code>.</p>
+<p>---</p>
+<h3 id="5-minimal-api-health-endpoint-with-dependency-injection">5. Minimal API Health Endpoint with Dependency Injection</h3>
+<p><strong>Question:</strong> Expose a <code>/health</code> endpoint in a minimal API that reports <code>200</code> when a price feed is connected, otherwise <code>503</code>. Keep the composition root small and use DI for the feed implementation.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddSingleton&lt;IPriceFeed, PriceFeed&gt;();
+var app = builder.Build();
+
+app.MapGet(&quot;/health&quot;, (IPriceFeed feed) =&gt; feed.IsConnected
+    ? Results.Ok(new { status = &quot;ok&quot; })
+    : Results.StatusCode(StatusCodes.Status503ServiceUnavailable));
+
+await app.RunAsync();</code></pre>
+<p><strong>Notes:</strong> Mapping the health check keeps the app's composition root small. Consider adding <code>UseHealthChecks</code> or custom readiness/liveness probes for Kubernetes deployments.</p>
+<p>---</p>
+<h3 id="6-secure-parameterized-data-access-to-prevent-sql-injection">6. Secure Parameterized Data Access to Prevent SQL Injection</h3>
+<p><strong>Question:</strong> Refactor a repository method that currently concatenates <code>accountId</code> into SQL. Show a safe, parameterized implementation that streams results asynchronously.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public async Task&lt;IReadOnlyList&lt;Order&gt;&gt; GetOrdersAsync(
+    SqlConnection connection,
+    int accountId,
+    CancellationToken cancellationToken)
+{
+    const string sql = &quot;SELECT order_id, symbol, qty, status FROM dbo.Orders WHERE account_id = @AccountId&quot;;
+
+    await using var cmd = new SqlCommand(sql, connection);
+    cmd.Parameters.Add(new SqlParameter(&quot;@AccountId&quot;, SqlDbType.Int) { Value = accountId });
+
+    await using var reader = await cmd.ExecuteReaderAsync(cancellationToken);
+    var orders = new List&lt;Order&gt;();
+    while (await reader.ReadAsync(cancellationToken))
+    {
+        orders.Add(new Order
+        {
+            Id = reader.GetInt32(0),
+            Symbol = reader.GetString(1),
+            Quantity = reader.GetDecimal(2),
+            Status = reader.GetString(3)
+        });
+    }
+
+    return orders;
+}</code></pre>
+<p><strong>Notes:</strong> Always bind parameters instead of string interpolation to avoid SQL injection. Use least-privileged SQL logins and timeouts to limit blast radius, and validate <code>accountId</code> ranges before querying.</p>
+<p>---</p>
+<h3 id="7-jwt-authentication-with-audience-validation-and-clock-skew-control">7. JWT Authentication with Audience Validation and Clock Skew Control</h3>
+<p><strong>Question:</strong> You need to secure an API with JWT bearer auth. Configure validation to lock issuer/audience, tighten clock skew, and require a symmetric signing key from configuration. What does the startup code look like?</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =&gt;
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = &quot;https://issuer.example.com&quot;,
+            ValidateAudience = true,
+            ValidAudience = &quot;trading-api&quot;,
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.FromMinutes(1),
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config[&quot;Jwt:SigningKey&quot;]))
+        };
+    });</code></pre>
+<p><strong>Notes:</strong> Tighten <code>ClockSkew</code> to reduce replay windows, ensure HTTPS-only transport, and rotate signing keys. Add <code>RequireAuthorization()</code> on sensitive endpoints and propagate correlation IDs for audit logs.</p>
+<p>---</p>
+<h3 id="8-performance-span-based-parsing-to-reduce-allocations">8. Performance: Span-Based Parsing to Reduce Allocations</h3>
+<p><strong>Question:</strong> We parse numeric quantities from protocol buffers and want to avoid string allocations. Implement a span-based parser that returns <code>-1</code> on invalid input.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public static int ParseQuantity(ReadOnlySpan&lt;char&gt; span)
+{
+    // Expects numeric ASCII; returns -1 for invalid input.
+    int value = 0;
+    foreach (var ch in span)
+    {
+        if ((uint)(ch - &#39;0&#39;) &gt; 9) return -1;
+        value = unchecked(value * 10 + (ch - &#39;0&#39;));
+    }
+    return value;
+}</code></pre>
+<p><strong>Notes:</strong> Using <code>ReadOnlySpan&lt;char&gt;</code> avoids string allocations when parsing slices from protocol buffers or HTTP headers. Consider <code>int.TryParse(ReadOnlySpan&lt;char&gt;, NumberStyles, IFormatProvider, out int)</code> for built-in validation and benchmark with BenchmarkDotNet to confirm gains.</p>
+<p>---</p>
+<h3 id="9-performance-async-streaming-to-lower-memory-footprint">9. Performance: Async Streaming to Lower Memory Footprint</h3>
+<p><strong>Question:</strong> Show how you would stream trades from an HTTP endpoint without buffering the whole payload, yielding trades as they arrive and honoring cancellation.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public static async IAsyncEnumerable&lt;Trade&gt; StreamTradesAsync(
+    HttpClient client,
+    [EnumeratorCancellation] CancellationToken cancellationToken)
+{
+    await using var stream = await client.GetStreamAsync(&quot;trades/stream&quot;, cancellationToken);
+    await foreach (var trade in JsonSerializer.DeserializeAsyncEnumerable&lt;Trade&gt;(stream, cancellationToken: cancellationToken))
+    {
+        if (trade is not null)
+            yield return trade;
+    }
+}</code></pre>
+<p><strong>Notes:</strong> Streaming deserialization prevents buffering large payloads. Combine with <code>HttpClientFactory</code> for connection reuse and set <code>MaxResponseContentBufferSize</code> when buffering is unavoidable. Add defensive cancellation to avoid stuck I/O.</p>
+<p>---</p>
+<h2 id="algorithm-implementation">Algorithm Implementation</h2>
+<h3 id="10-quicksort-implementation">10. QuickSort Implementation</h3>
+<p><strong>Question:</strong> Implement QuickSort algorithm with in-place sorting. Explain time and space complexity.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public static void QuickSort&lt;T&gt;(T[] array, int left, int right) where T : IComparable&lt;T&gt;
+{
+    if (left &lt; right)
+    {
+        int pivotIndex = Partition(array, left, right);
+        QuickSort(array, left, pivotIndex - 1);
+        QuickSort(array, pivotIndex + 1, right);
+    }
+}
+
+private static int Partition&lt;T&gt;(T[] array, int left, int right) where T : IComparable&lt;T&gt;
+{
+    T pivot = array[right];
+    int i = left - 1;
+
+    for (int j = left; j &lt; right; j++)
+    {
+        if (array[j].CompareTo(pivot) &lt;= 0)
+        {
+            i++;
+            Swap(array, i, j);
+        }
+    }
+
+    Swap(array, i + 1, right);
+    return i + 1;
+}
+
+private static void Swap&lt;T&gt;(T[] array, int i, int j)
+{
+    T temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+}
+
+// Usage
+var numbers = new[] { 5, 2, 9, 1, 7, 6, 3 };
+QuickSort(numbers, 0, numbers.Length - 1);</code></pre>
+<p><strong>Complexity:</strong></p>
+<ul><li>Time: O(n log n) average, O(n²) worst case</li><li>Space: O(log n) for recursion stack</li></ul>
+<p><strong>Notes:</strong> Use randomized pivot selection to avoid worst-case scenarios. For small subarrays, switch to insertion sort for better performance.</p>
+<p>---</p>
+<h3 id="11-binary-search-implementation">11. Binary Search Implementation</h3>
+<p><strong>Question:</strong> Implement binary search for a sorted array. Return the index of the target or -1 if not found.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public static int BinarySearch&lt;T&gt;(T[] array, T target) where T : IComparable&lt;T&gt;
+{
+    int left = 0;
+    int right = array.Length - 1;
+
+    while (left &lt;= right)
+    {
+        int mid = left + (right - left) / 2;  // Avoid overflow
+        int comparison = array[mid].CompareTo(target);
+
+        if (comparison == 0)
+            return mid;
+        else if (comparison &lt; 0)
+            left = mid + 1;
+        else
+            right = mid - 1;
+    }
+
+    return -1;  // Not found
+}
+
+// Recursive version
+public static int BinarySearchRecursive&lt;T&gt;(T[] array, T target, int left, int right) where T : IComparable&lt;T&gt;
+{
+    if (left &gt; right)
+        return -1;
+
+    int mid = left + (right - left) / 2;
+    int comparison = array[mid].CompareTo(target);
+
+    if (comparison == 0)
+        return mid;
+    else if (comparison &lt; 0)
+        return BinarySearchRecursive(array, target, mid + 1, right);
+    else
+        return BinarySearchRecursive(array, target, left, mid - 1);
+}</code></pre>
+<p><strong>Complexity:</strong></p>
+<ul><li>Time: O(log n)</li><li>Space: O(1) iterative, O(log n) recursive</li></ul>
+<p>---</p>
+<h3 id="12-merge-sort-implementation">12. Merge Sort Implementation</h3>
+<p><strong>Question:</strong> Implement merge sort algorithm. Explain why it's stable and when to prefer it over quicksort.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public static T[] MergeSort&lt;T&gt;(T[] array) where T : IComparable&lt;T&gt;
+{
+    if (array.Length &lt;= 1)
+        return array;
+
+    int mid = array.Length / 2;
+    T[] left = MergeSort(array.Take(mid).ToArray());
+    T[] right = MergeSort(array.Skip(mid).ToArray());
+
+    return Merge(left, right);
+}
+
+private static T[] Merge&lt;T&gt;(T[] left, T[] right) where T : IComparable&lt;T&gt;
+{
+    T[] result = new T[left.Length + right.Length];
+    int i = 0, j = 0, k = 0;
+
+    while (i &lt; left.Length &amp;&amp; j &lt; right.Length)
+    {
+        if (left[i].CompareTo(right[j]) &lt;= 0)
+            result[k++] = left[i++];
+        else
+            result[k++] = right[j++];
+    }
+
+    while (i &lt; left.Length)
+        result[k++] = left[i++];
+
+    while (j &lt; right.Length)
+        result[k++] = right[j++];
+
+    return result;
+}</code></pre>
+<p><strong>Complexity:</strong></p>
+<ul><li>Time: O(n log n) guaranteed</li><li>Space: O(n)</li></ul>
+<p><strong>Notes:</strong> Merge sort is stable (preserves relative order of equal elements) and has guaranteed O(n log n) time. Prefer it when stability matters or when dealing with linked lists. QuickSort is faster in practice for arrays due to better cache locality.</p>
+<p>---</p>
+<h3 id="13-depth-first-search-dfs-on-graph">13. Depth-First Search (DFS) on Graph</h3>
+<p><strong>Question:</strong> Implement DFS traversal for a graph represented as an adjacency list.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public class Graph
+{
+    private Dictionary&lt;int, List&lt;int&gt;&gt; _adjacencyList = new();
+
+    public void AddEdge(int from, int to)
+    {
+        if (!_adjacencyList.ContainsKey(from))
+            _adjacencyList[from] = new List&lt;int&gt;();
+        _adjacencyList[from].Add(to);
+    }
+
+    public List&lt;int&gt; DFS(int start)
+    {
+        var visited = new HashSet&lt;int&gt;();
+        var result = new List&lt;int&gt;();
+        DFSRecursive(start, visited, result);
+        return result;
+    }
+
+    private void DFSRecursive(int node, HashSet&lt;int&gt; visited, List&lt;int&gt; result)
+    {
+        visited.Add(node);
+        result.Add(node);
+
+        if (_adjacencyList.ContainsKey(node))
+        {
+            foreach (var neighbor in _adjacencyList[node])
+            {
+                if (!visited.Contains(neighbor))
+                    DFSRecursive(neighbor, visited, result);
+            }
+        }
+    }
+
+    // Iterative version using Stack
+    public List&lt;int&gt; DFSIterative(int start)
+    {
+        var visited = new HashSet&lt;int&gt;();
+        var result = new List&lt;int&gt;();
+        var stack = new Stack&lt;int&gt;();
+
+        stack.Push(start);
+
+        while (stack.Count &gt; 0)
+        {
+            int node = stack.Pop();
+
+            if (!visited.Contains(node))
+            {
+                visited.Add(node);
+                result.Add(node);
+
+                if (_adjacencyList.ContainsKey(node))
+                {
+                    foreach (var neighbor in _adjacencyList[node].Reverse&lt;int&gt;())
+                        stack.Push(neighbor);
+                }
+            }
+        }
+
+        return result;
+    }
+}</code></pre>
+<p><strong>Complexity:</strong></p>
+<ul><li>Time: O(V + E) where V is vertices and E is edges</li><li>Space: O(V) for visited set and recursion stack</li></ul>
+<p>---</p>
+<h3 id="14-breadth-first-search-bfs-on-graph">14. Breadth-First Search (BFS) on Graph</h3>
+<p><strong>Question:</strong> Implement BFS traversal and use it to find the shortest path between two nodes.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public class Graph
+{
+    private Dictionary&lt;int, List&lt;int&gt;&gt; _adjacencyList = new();
+
+    public void AddEdge(int from, int to)
+    {
+        if (!_adjacencyList.ContainsKey(from))
+            _adjacencyList[from] = new List&lt;int&gt;();
+        _adjacencyList[from].Add(to);
+    }
+
+    public List&lt;int&gt; BFS(int start)
+    {
+        var visited = new HashSet&lt;int&gt;();
+        var result = new List&lt;int&gt;();
+        var queue = new Queue&lt;int&gt;();
+
+        queue.Enqueue(start);
+        visited.Add(start);
+
+        while (queue.Count &gt; 0)
+        {
+            int node = queue.Dequeue();
+            result.Add(node);
+
+            if (_adjacencyList.ContainsKey(node))
+            {
+                foreach (var neighbor in _adjacencyList[node])
+                {
+                    if (!visited.Contains(neighbor))
+                    {
+                        visited.Add(neighbor);
+                        queue.Enqueue(neighbor);
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+
+    public List&lt;int&gt; ShortestPath(int start, int end)
+    {
+        var parent = new Dictionary&lt;int, int&gt;();
+        var visited = new HashSet&lt;int&gt;();
+        var queue = new Queue&lt;int&gt;();
+
+        queue.Enqueue(start);
+        visited.Add(start);
+        parent[start] = -1;
+
+        while (queue.Count &gt; 0)
+        {
+            int node = queue.Dequeue();
+
+            if (node == end)
+                break;
+
+            if (_adjacencyList.ContainsKey(node))
+            {
+                foreach (var neighbor in _adjacencyList[node])
+                {
+                    if (!visited.Contains(neighbor))
+                    {
+                        visited.Add(neighbor);
+                        parent[neighbor] = node;
+                        queue.Enqueue(neighbor);
+                    }
+                }
+            }
+        }
+
+        // Reconstruct path
+        var path = new List&lt;int&gt;();
+        if (parent.ContainsKey(end))
+        {
+            int current = end;
+            while (current != -1)
+            {
+                path.Add(current);
+                current = parent[current];
+            }
+            path.Reverse();
+        }
+
+        return path;
+    }
+}</code></pre>
+<p><strong>Complexity:</strong></p>
+<ul><li>Time: O(V + E)</li><li>Space: O(V)</li></ul>
+<p>---</p>
+<h3 id="15-dijkstras-shortest-path-algorithm">15. Dijkstra's Shortest Path Algorithm</h3>
+<p><strong>Question:</strong> Implement Dijkstra's algorithm for finding shortest paths in a weighted graph.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public class WeightedGraph
+{
+    private Dictionary&lt;int, List&lt;(int node, int weight)&gt;&gt; _adjacencyList = new();
+
+    public void AddEdge(int from, int to, int weight)
+    {
+        if (!_adjacencyList.ContainsKey(from))
+            _adjacencyList[from] = new List&lt;(int, int)&gt;();
+        _adjacencyList[from].Add((to, weight));
+    }
+
+    public Dictionary&lt;int, int&gt; Dijkstra(int start)
+    {
+        var distances = new Dictionary&lt;int, int&gt;();
+        var priorityQueue = new PriorityQueue&lt;int, int&gt;();
+        var visited = new HashSet&lt;int&gt;();
+
+        // Initialize distances
+        foreach (var node in _adjacencyList.Keys)
+            distances[node] = int.MaxValue;
+        distances[start] = 0;
+
+        priorityQueue.Enqueue(start, 0);
+
+        while (priorityQueue.Count &gt; 0)
+        {
+            int current = priorityQueue.Dequeue();
+
+            if (visited.Contains(current))
+                continue;
+
+            visited.Add(current);
+
+            if (_adjacencyList.ContainsKey(current))
+            {
+                foreach (var (neighbor, weight) in _adjacencyList[current])
+                {
+                    int newDistance = distances[current] + weight;
+
+                    if (newDistance &lt; distances[neighbor])
+                    {
+                        distances[neighbor] = newDistance;
+                        priorityQueue.Enqueue(neighbor, newDistance);
+                    }
+                }
+            }
+        }
+
+        return distances;
+    }
+}</code></pre>
+<p><strong>Complexity:</strong></p>
+<ul><li>Time: O((V + E) log V) with priority queue</li><li>Space: O(V)</li></ul>
+<p>---</p>
+<h2 id="data-structure-design">Data Structure Design</h2>
+<h3 id="16-custom-min-stack">16. Custom Min Stack</h3>
+<p><strong>Question:</strong> Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public class MinStack
+{
+    private Stack&lt;int&gt; _stack = new();
+    private Stack&lt;int&gt; _minStack = new();
+
+    public void Push(int value)
+    {
+        _stack.Push(value);
+
+        if (_minStack.Count == 0 || value &lt;= _minStack.Peek())
+            _minStack.Push(value);
+    }
+
+    public int Pop()
+    {
+        int value = _stack.Pop();
+
+        if (value == _minStack.Peek())
+            _minStack.Pop();
+
+        return value;
+    }
+
+    public int Top() =&gt; _stack.Peek();
+
+    public int GetMin() =&gt; _minStack.Peek();
+}
+
+// Alternative single-stack approach
+public class MinStackSingle
+{
+    private Stack&lt;(int value, int min)&gt; _stack = new();
+
+    public void Push(int value)
+    {
+        int min = _stack.Count == 0 ? value : Math.Min(value, _stack.Peek().min);
+        _stack.Push((value, min));
+    }
+
+    public int Pop() =&gt; _stack.Pop().value;
+
+    public int Top() =&gt; _stack.Peek().value;
+
+    public int GetMin() =&gt; _stack.Peek().min;
+}</code></pre>
+<p><strong>Complexity:</strong> All operations O(1)</p>
+<p>---</p>
+<h3 id="17-binary-search-tree-implementation">17. Binary Search Tree Implementation</h3>
+<p><strong>Question:</strong> Implement a binary search tree with insert, search, and in-order traversal.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public class BSTNode&lt;T&gt; where T : IComparable&lt;T&gt;
+{
+    public T Value { get; set; }
+    public BSTNode&lt;T&gt; Left { get; set; }
+    public BSTNode&lt;T&gt; Right { get; set; }
+
+    public BSTNode(T value)
+    {
+        Value = value;
+    }
+}
+
+public class BinarySearchTree&lt;T&gt; where T : IComparable&lt;T&gt;
+{
+    private BSTNode&lt;T&gt; _root;
+
+    public void Insert(T value)
+    {
+        _root = InsertRecursive(_root, value);
+    }
+
+    private BSTNode&lt;T&gt; InsertRecursive(BSTNode&lt;T&gt; node, T value)
+    {
+        if (node == null)
+            return new BSTNode&lt;T&gt;(value);
+
+        int comparison = value.CompareTo(node.Value);
+
+        if (comparison &lt; 0)
+            node.Left = InsertRecursive(node.Left, value);
+        else if (comparison &gt; 0)
+            node.Right = InsertRecursive(node.Right, value);
+
+        return node;
+    }
+
+    public bool Search(T value)
+    {
+        return SearchRecursive(_root, value);
+    }
+
+    private bool SearchRecursive(BSTNode&lt;T&gt; node, T value)
+    {
+        if (node == null)
+            return false;
+
+        int comparison = value.CompareTo(node.Value);
+
+        if (comparison == 0)
+            return true;
+        else if (comparison &lt; 0)
+            return SearchRecursive(node.Left, value);
+        else
+            return SearchRecursive(node.Right, value);
+    }
+
+    public List&lt;T&gt; InOrderTraversal()
+    {
+        var result = new List&lt;T&gt;();
+        InOrderRecursive(_root, result);
+        return result;
+    }
+
+    private void InOrderRecursive(BSTNode&lt;T&gt; node, List&lt;T&gt; result)
+    {
+        if (node == null)
+            return;
+
+        InOrderRecursive(node.Left, result);
+        result.Add(node.Value);
+        InOrderRecursive(node.Right, result);
+    }
+}</code></pre>
+<p><strong>Complexity:</strong></p>
+<ul><li>Insert/Search: O(log n) average, O(n) worst case</li><li>Traversal: O(n)</li></ul>
+<p>---</p>
+<h3 id="18-min-heap-implementation">18. Min Heap Implementation</h3>
+<p><strong>Question:</strong> Implement a min heap with insert and extract-min operations.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public class MinHeap&lt;T&gt; where T : IComparable&lt;T&gt;
+{
+    private List&lt;T&gt; _heap = new();
+
+    public int Count =&gt; _heap.Count;
+
+    public void Insert(T value)
+    {
+        _heap.Add(value);
+        HeapifyUp(_heap.Count - 1);
+    }
+
+    public T ExtractMin()
+    {
+        if (_heap.Count == 0)
+            throw new InvalidOperationException(&quot;Heap is empty&quot;);
+
+        T min = _heap[0];
+        _heap[0] = _heap[^1];
+        _heap.RemoveAt(_heap.Count - 1);
+
+        if (_heap.Count &gt; 0)
+            HeapifyDown(0);
+
+        return min;
+    }
+
+    public T Peek()
+    {
+        if (_heap.Count == 0)
+            throw new InvalidOperationException(&quot;Heap is empty&quot;);
+
+        return _heap[0];
+    }
+
+    private void HeapifyUp(int index)
+    {
+        while (index &gt; 0)
+        {
+            int parentIndex = (index - 1) / 2;
+
+            if (_heap[index].CompareTo(_heap[parentIndex]) &gt;= 0)
+                break;
+
+            Swap(index, parentIndex);
+            index = parentIndex;
+        }
+    }
+
+    private void HeapifyDown(int index)
+    {
+        while (true)
+        {
+            int smallest = index;
+            int leftChild = 2 * index + 1;
+            int rightChild = 2 * index + 2;
+
+            if (leftChild &lt; _heap.Count &amp;&amp; _heap[leftChild].CompareTo(_heap[smallest]) &lt; 0)
+                smallest = leftChild;
+
+            if (rightChild &lt; _heap.Count &amp;&amp; _heap[rightChild].CompareTo(_heap[smallest]) &lt; 0)
+                smallest = rightChild;
+
+            if (smallest == index)
+                break;
+
+            Swap(index, smallest);
+            index = smallest;
+        }
+    }
+
+    private void Swap(int i, int j)
+    {
+        T temp = _heap[i];
+        _heap[i] = _heap[j];
+        _heap[j] = temp;
+    }
+}</code></pre>
+<p><strong>Complexity:</strong></p>
+<ul><li>Insert: O(log n)</li><li>Extract-Min: O(log n)</li><li>Peek: O(1)</li></ul>
+<p>---</p>
+<h3 id="19-trie-prefix-tree-implementation">19. Trie (Prefix Tree) Implementation</h3>
+<p><strong>Question:</strong> Implement a trie for efficient string prefix searches.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public class TrieNode
+{
+    public Dictionary&lt;char, TrieNode&gt; Children { get; } = new();
+    public bool IsEndOfWord { get; set; }
+}
+
+public class Trie
+{
+    private readonly TrieNode _root = new();
+
+    public void Insert(string word)
+    {
+        var current = _root;
+
+        foreach (char ch in word)
+        {
+            if (!current.Children.ContainsKey(ch))
+                current.Children[ch] = new TrieNode();
+
+            current = current.Children[ch];
+        }
+
+        current.IsEndOfWord = true;
+    }
+
+    public bool Search(string word)
+    {
+        var node = FindNode(word);
+        return node != null &amp;&amp; node.IsEndOfWord;
+    }
+
+    public bool StartsWith(string prefix)
+    {
+        return FindNode(prefix) != null;
+    }
+
+    private TrieNode FindNode(string prefix)
+    {
+        var current = _root;
+
+        foreach (char ch in prefix)
+        {
+            if (!current.Children.ContainsKey(ch))
+                return null;
+
+            current = current.Children[ch];
+        }
+
+        return current;
+    }
+
+    public List&lt;string&gt; AutoComplete(string prefix)
+    {
+        var results = new List&lt;string&gt;();
+        var node = FindNode(prefix);
+
+        if (node == null)
+            return results;
+
+        CollectWords(node, prefix, results);
+        return results;
+    }
+
+    private void CollectWords(TrieNode node, string currentWord, List&lt;string&gt; results)
+    {
+        if (node.IsEndOfWord)
+            results.Add(currentWord);
+
+        foreach (var (ch, childNode) in node.Children)
+        {
+            CollectWords(childNode, currentWord + ch, results);
+        }
+    }
+}</code></pre>
+<p><strong>Complexity:</strong></p>
+<ul><li>Insert: O(m) where m is word length</li><li>Search: O(m)</li><li>StartsWith: O(m)</li></ul>
+<p>---</p>
+<h3 id="20-lfu-least-frequently-used-cache">20. LFU (Least Frequently Used) Cache</h3>
+<p><strong>Question:</strong> Implement an LFU cache with O(1) get and put operations.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public class LFUCache&lt;TKey, TValue&gt;
+{
+    private class Node
+    {
+        public TKey Key { get; set; }
+        public TValue Value { get; set; }
+        public int Frequency { get; set; }
+    }
+
+    private readonly int _capacity;
+    private int _minFrequency;
+    private readonly Dictionary&lt;TKey, Node&gt; _cache = new();
+    private readonly Dictionary&lt;int, LinkedList&lt;Node&gt;&gt; _frequencyMap = new();
+    private readonly Dictionary&lt;TKey, LinkedListNode&lt;Node&gt;&gt; _nodeMap = new();
+
+    public LFUCache(int capacity)
+    {
+        _capacity = capacity;
+        _minFrequency = 0;
+    }
+
+    public bool TryGet(TKey key, out TValue value)
+    {
+        if (!_cache.TryGetValue(key, out var node))
+        {
+            value = default;
+            return false;
+        }
+
+        UpdateFrequency(node);
+        value = node.Value;
+        return true;
+    }
+
+    public void Put(TKey key, TValue value)
+    {
+        if (_capacity &lt;= 0)
+            return;
+
+        if (_cache.TryGetValue(key, out var existingNode))
+        {
+            existingNode.Value = value;
+            UpdateFrequency(existingNode);
+            return;
+        }
+
+        if (_cache.Count &gt;= _capacity)
+        {
+            var listToRemoveFrom = _frequencyMap[_minFrequency];
+            var nodeToRemove = listToRemoveFrom.Last!.Value;
+            listToRemoveFrom.RemoveLast();
+            _cache.Remove(nodeToRemove.Key);
+            _nodeMap.Remove(nodeToRemove.Key);
+        }
+
+        var newNode = new Node { Key = key, Value = value, Frequency = 1 };
+        _cache[key] = newNode;
+
+        if (!_frequencyMap.ContainsKey(1))
+            _frequencyMap[1] = new LinkedList&lt;Node&gt;();
+
+        var linkedNode = _frequencyMap[1].AddFirst(newNode);
+        _nodeMap[key] = linkedNode;
+        _minFrequency = 1;
+    }
+
+    private void UpdateFrequency(Node node)
+    {
+        int freq = node.Frequency;
+        var listNode = _nodeMap[node.Key];
+
+        _frequencyMap[freq].Remove(listNode);
+
+        if (_frequencyMap[freq].Count == 0 &amp;&amp; freq == _minFrequency)
+            _minFrequency++;
+
+        node.Frequency++;
+        if (!_frequencyMap.ContainsKey(node.Frequency))
+            _frequencyMap[node.Frequency] = new LinkedList&lt;Node&gt;();
+
+        var newListNode = _frequencyMap[node.Frequency].AddFirst(node);
+        _nodeMap[node.Key] = newListNode;
+    }
+}</code></pre>
+<p><strong>Complexity:</strong> Both get and put are O(1)</p>
+<p>---</p>
+<h2 id="string-manipulation">String Manipulation</h2>
+<h3 id="21-string-compression">21. String Compression</h3>
+<p><strong>Question:</strong> Implement string compression using counts of repeated characters. If compressed string is not smaller, return original.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public static string Compress(string input)
+{
+    if (string.IsNullOrEmpty(input))
+        return input;
+
+    var sb = new StringBuilder();
+    int count = 1;
+
+    for (int i = 1; i &lt; input.Length; i++)
+    {
+        if (input[i] == input[i - 1])
+        {
+            count++;
+        }
+        else
+        {
+            sb.Append(input[i - 1]);
+            sb.Append(count);
+            count = 1;
+        }
+    }
+
+    // Append the last character and its count
+    sb.Append(input[^1]);
+    sb.Append(count);
+
+    string compressed = sb.ToString();
+    return compressed.Length &lt; input.Length ? compressed : input;
+}
+
+// Example: &quot;aabcccccaaa&quot; -&gt; &quot;a2b1c5a3&quot;</code></pre>
+<p><strong>Complexity:</strong></p>
+<ul><li>Time: O(n)</li><li>Space: O(n)</li></ul>
+<p>---</p>
+<h3 id="22-palindrome-check-with-preprocessing">22. Palindrome Check with Preprocessing</h3>
+<p><strong>Question:</strong> Check if a string is a palindrome, ignoring spaces, punctuation, and case.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public static bool IsPalindrome(string input)
+{
+    if (string.IsNullOrEmpty(input))
+        return true;
+
+    int left = 0;
+    int right = input.Length - 1;
+
+    while (left &lt; right)
+    {
+        while (left &lt; right &amp;&amp; !char.IsLetterOrDigit(input[left]))
+            left++;
+
+        while (left &lt; right &amp;&amp; !char.IsLetterOrDigit(input[right]))
+            right--;
+
+        if (char.ToLower(input[left]) != char.ToLower(input[right]))
+            return false;
+
+        left++;
+        right--;
+    }
+
+    return true;
+}
+
+// Examples:
+// &quot;A man, a plan, a canal: Panama&quot; -&gt; true
+// &quot;race a car&quot; -&gt; false</code></pre>
+<p><strong>Complexity:</strong></p>
+<ul><li>Time: O(n)</li><li>Space: O(1)</li></ul>
+<p>---</p>
+<h3 id="23-longest-substring-without-repeating-characters">23. Longest Substring Without Repeating Characters</h3>
+<p><strong>Question:</strong> Find the length of the longest substring without repeating characters.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public static int LengthOfLongestSubstring(string s)
+{
+    var charIndex = new Dictionary&lt;char, int&gt;();
+    int maxLength = 0;
+    int start = 0;
+
+    for (int end = 0; end &lt; s.Length; end++)
+    {
+        char currentChar = s[end];
+
+        if (charIndex.ContainsKey(currentChar) &amp;&amp; charIndex[currentChar] &gt;= start)
+        {
+            start = charIndex[currentChar] + 1;
+        }
+
+        charIndex[currentChar] = end;
+        maxLength = Math.Max(maxLength, end - start + 1);
+    }
+
+    return maxLength;
+}
+
+// Example: &quot;abcabcbb&quot; -&gt; 3 (&quot;abc&quot;)
+// Example: &quot;bbbbb&quot; -&gt; 1 (&quot;b&quot;)
+// Example: &quot;pwwkew&quot; -&gt; 3 (&quot;wke&quot;)</code></pre>
+<p><strong>Complexity:</strong></p>
+<ul><li>Time: O(n)</li><li>Space: O(min(n, m)) where m is charset size</li></ul>
+<p>---</p>
+<h3 id="24-string-pattern-matching-kmp-algorithm">24. String Pattern Matching (KMP Algorithm)</h3>
+<p><strong>Question:</strong> Implement the KMP (Knuth-Morris-Pratt) algorithm for pattern matching.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public static int KMPSearch(string text, string pattern)
+{
+    if (string.IsNullOrEmpty(pattern))
+        return 0;
+
+    int[] lps = ComputeLPSArray(pattern);
+    int i = 0; // index for text
+    int j = 0; // index for pattern
+
+    while (i &lt; text.Length)
+    {
+        if (text[i] == pattern[j])
+        {
+            i++;
+            j++;
+        }
+
+        if (j == pattern.Length)
+            return i - j; // Pattern found
+
+        if (i &lt; text.Length &amp;&amp; text[i] != pattern[j])
+        {
+            if (j != 0)
+                j = lps[j - 1];
+            else
+                i++;
+        }
+    }
+
+    return -1; // Pattern not found
+}
+
+private static int[] ComputeLPSArray(string pattern)
+{
+    int[] lps = new int[pattern.Length];
+    int len = 0;
+    int i = 1;
+
+    while (i &lt; pattern.Length)
+    {
+        if (pattern[i] == pattern[len])
+        {
+            len++;
+            lps[i] = len;
+            i++;
+        }
+        else
+        {
+            if (len != 0)
+                len = lps[len - 1];
+            else
+            {
+                lps[i] = 0;
+                i++;
+            }
+        }
+    }
+
+    return lps;
+}</code></pre>
+<p><strong>Complexity:</strong></p>
+<ul><li>Time: O(n + m) where n is text length, m is pattern length</li><li>Space: O(m)</li></ul>
+<p>---</p>
+<h3 id="25-anagram-grouping">25. Anagram Grouping</h3>
+<p><strong>Question:</strong> Group an array of strings into anagrams.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public static List&lt;List&lt;string&gt;&gt; GroupAnagrams(string[] strings)
+{
+    var groups = new Dictionary&lt;string, List&lt;string&gt;&gt;();
+
+    foreach (var str in strings)
+    {
+        var sorted = new string(str.OrderBy(c =&gt; c).ToArray());
+
+        if (!groups.ContainsKey(sorted))
+            groups[sorted] = new List&lt;string&gt;();
+
+        groups[sorted].Add(str);
+    }
+
+    return groups.Values.ToList();
+}
+
+// Alternative: Using character count as key
+public static List&lt;List&lt;string&gt;&gt; GroupAnagramsOptimized(string[] strings)
+{
+    var groups = new Dictionary&lt;string, List&lt;string&gt;&gt;();
+
+    foreach (var str in strings)
+    {
+        var count = new int[26];
+        foreach (char c in str)
+            count[c - &#39;a&#39;]++;
+
+        string key = string.Join(&quot;,&quot;, count);
+
+        if (!groups.ContainsKey(key))
+            groups[key] = new List&lt;string&gt;();
+
+        groups[key].Add(str);
+    }
+
+    return groups.Values.ToList();
+}
+
+// Example: [&quot;eat&quot;,&quot;tea&quot;,&quot;tan&quot;,&quot;ate&quot;,&quot;nat&quot;,&quot;bat&quot;]
+// Output: [[&quot;bat&quot;],[&quot;nat&quot;,&quot;tan&quot;],[&quot;ate&quot;,&quot;eat&quot;,&quot;tea&quot;]]</code></pre>
+<p><strong>Complexity:</strong></p>
+<ul><li>Time: O(n <em> k log k) where k is max string length (or O(n </em> k) for optimized)</li><li>Space: O(n * k)</li></ul>
+<p>---</p>
+<h2 id="array-and-matrix-problems">Array and Matrix Problems</h2>
+<h3 id="26-two-sum-problem">26. Two Sum Problem</h3>
+<p><strong>Question:</strong> Find two numbers in an array that add up to a target sum.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public static int[] TwoSum(int[] numbers, int target)
+{
+    var map = new Dictionary&lt;int, int&gt;();
+
+    for (int i = 0; i &lt; numbers.Length; i++)
+    {
+        int complement = target - numbers[i];
+
+        if (map.ContainsKey(complement))
+            return new[] { map[complement], i };
+
+        map[numbers[i]] = i;
+    }
+
+    return null; // No solution found
+}
+
+// For sorted array (two-pointer approach)
+public static int[] TwoSumSorted(int[] numbers, int target)
+{
+    int left = 0;
+    int right = numbers.Length - 1;
+
+    while (left &lt; right)
+    {
+        int sum = numbers[left] + numbers[right];
+
+        if (sum == target)
+            return new[] { left, right };
+        else if (sum &lt; target)
+            left++;
+        else
+            right--;
+    }
+
+    return null;
+}</code></pre>
+<p><strong>Complexity:</strong></p>
+<ul><li>Hash map approach: O(n) time, O(n) space</li><li>Two-pointer approach: O(n) time, O(1) space</li></ul>
+<p>---</p>
+<h3 id="27-rotate-matrix-90-degrees">27. Rotate Matrix 90 Degrees</h3>
+<p><strong>Question:</strong> Rotate an N×N matrix 90 degrees clockwise in-place.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public static void RotateMatrix(int[][] matrix)
+{
+    int n = matrix.Length;
+
+    // Transpose the matrix
+    for (int i = 0; i &lt; n; i++)
+    {
+        for (int j = i + 1; j &lt; n; j++)
+        {
+            int temp = matrix[i][j];
+            matrix[i][j] = matrix[j][i];
+            matrix[j][i] = temp;
+        }
+    }
+
+    // Reverse each row
+    for (int i = 0; i &lt; n; i++)
+    {
+        Array.Reverse(matrix[i]);
+    }
+}
+
+// Example:
+// [1,2,3]    [7,4,1]
+// [4,5,6] -&gt; [8,5,2]
+// [7,8,9]    [9,6,3]</code></pre>
+<p><strong>Complexity:</strong></p>
+<ul><li>Time: O(n²)</li><li>Space: O(1)</li></ul>
+<p>---</p>
+<h3 id="28-spiral-matrix-traversal">28. Spiral Matrix Traversal</h3>
+<p><strong>Question:</strong> Return all elements of a matrix in spiral order.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public static List&lt;int&gt; SpiralOrder(int[][] matrix)
+{
+    var result = new List&lt;int&gt;();
+
+    if (matrix.Length == 0)
+        return result;
+
+    int top = 0;
+    int bottom = matrix.Length - 1;
+    int left = 0;
+    int right = matrix[0].Length - 1;
+
+    while (top &lt;= bottom &amp;&amp; left &lt;= right)
+    {
+        // Traverse right
+        for (int i = left; i &lt;= right; i++)
+            result.Add(matrix[top][i]);
+        top++;
+
+        // Traverse down
+        for (int i = top; i &lt;= bottom; i++)
+            result.Add(matrix[i][right]);
+        right--;
+
+        // Traverse left
+        if (top &lt;= bottom)
+        {
+            for (int i = right; i &gt;= left; i--)
+                result.Add(matrix[bottom][i]);
+            bottom--;
+        }
+
+        // Traverse up
+        if (left &lt;= right)
+        {
+            for (int i = bottom; i &gt;= top; i--)
+                result.Add(matrix[i][left]);
+            left++;
+        }
+    }
+
+    return result;
+}</code></pre>
+<p><strong>Complexity:</strong></p>
+<ul><li>Time: O(m * n)</li><li>Space: O(1) excluding output</li></ul>
+<p>---</p>
+<h3 id="29-maximum-subarray-sum-kadanes-algorithm">29. Maximum Subarray Sum (Kadane's Algorithm)</h3>
+<p><strong>Question:</strong> Find the contiguous subarray with the maximum sum.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public static int MaxSubarraySum(int[] numbers)
+{
+    int maxSum = numbers[0];
+    int currentSum = numbers[0];
+
+    for (int i = 1; i &lt; numbers.Length; i++)
+    {
+        currentSum = Math.Max(numbers[i], currentSum + numbers[i]);
+        maxSum = Math.Max(maxSum, currentSum);
+    }
+
+    return maxSum;
+}
+
+// With indices
+public static (int maxSum, int start, int end) MaxSubarraySumWithIndices(int[] numbers)
+{
+    int maxSum = numbers[0];
+    int currentSum = numbers[0];
+    int start = 0, end = 0, tempStart = 0;
+
+    for (int i = 1; i &lt; numbers.Length; i++)
+    {
+        if (numbers[i] &gt; currentSum + numbers[i])
+        {
+            currentSum = numbers[i];
+            tempStart = i;
+        }
+        else
+        {
+            currentSum += numbers[i];
+        }
+
+        if (currentSum &gt; maxSum)
+        {
+            maxSum = currentSum;
+            start = tempStart;
+            end = i;
+        }
+    }
+
+    return (maxSum, start, end);
+}</code></pre>
+<p><strong>Complexity:</strong></p>
+<ul><li>Time: O(n)</li><li>Space: O(1)</li></ul>
+<p>---</p>
+<h3 id="30-merge-intervals">30. Merge Intervals</h3>
+<p><strong>Question:</strong> Merge overlapping intervals.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public class Interval
+{
+    public int Start { get; set; }
+    public int End { get; set; }
+}
+
+public static List&lt;Interval&gt; MergeIntervals(List&lt;Interval&gt; intervals)
+{
+    if (intervals.Count &lt;= 1)
+        return intervals;
+
+    // Sort by start time
+    intervals.Sort((a, b) =&gt; a.Start.CompareTo(b.Start));
+
+    var merged = new List&lt;Interval&gt;();
+    var current = intervals[0];
+
+    for (int i = 1; i &lt; intervals.Count; i++)
+    {
+        if (intervals[i].Start &lt;= current.End)
+        {
+            // Overlapping intervals, merge them
+            current.End = Math.Max(current.End, intervals[i].End);
+        }
+        else
+        {
+            // Non-overlapping interval, add current and move to next
+            merged.Add(current);
+            current = intervals[i];
+        }
+    }
+
+    merged.Add(current);
+    return merged;
+}
+
+// Example: [[1,3],[2,6],[8,10],[15,18]] -&gt; [[1,6],[8,10],[15,18]]</code></pre>
+<p><strong>Complexity:</strong></p>
+<ul><li>Time: O(n log n) due to sorting</li><li>Space: O(n)</li></ul>
+<p>---</p>
+<h2 id="performance-optimization-challenges">Performance Optimization Challenges</h2>
+<h3 id="31-object-pooling-for-high-frequency-allocations">31. Object Pooling for High-Frequency Allocations</h3>
+<p><strong>Question:</strong> Implement an object pool to reduce GC pressure for frequently allocated objects.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public class ObjectPool&lt;T&gt; where T : class, new()
+{
+    private readonly ConcurrentBag&lt;T&gt; _objects = new();
+    private readonly Func&lt;T&gt; _objectGenerator;
+    private readonly Action&lt;T&gt; _resetAction;
+
+    public ObjectPool(Func&lt;T&gt; objectGenerator = null, Action&lt;T&gt; resetAction = null)
+    {
+        _objectGenerator = objectGenerator ?? (() =&gt; new T());
+        _resetAction = resetAction ?? (_ =&gt; { });
+    }
+
+    public T Rent()
+    {
+        return _objects.TryTake(out T item) ? item : _objectGenerator();
+    }
+
+    public void Return(T item)
+    {
+        _resetAction(item);
+        _objects.Add(item);
+    }
+}
+
+// Usage example
+public class OrderProcessor
+{
+    private static readonly ObjectPool&lt;StringBuilder&gt; _stringBuilderPool = new(
+        () =&gt; new StringBuilder(256),
+        sb =&gt; sb.Clear()
+    );
+
+    public string FormatOrder(Order order)
+    {
+        var sb = _stringBuilderPool.Rent();
+        try
+        {
+            sb.Append(&quot;Order #&quot;).Append(order.Id);
+            sb.Append(&quot; - Amount: &quot;).Append(order.Amount);
+            return sb.ToString();
+        }
+        finally
+        {
+            _stringBuilderPool.Return(sb);
+        }
+    }
+}</code></pre>
+<p><strong>Notes:</strong> Use <code>ObjectPool&lt;T&gt;</code> from Microsoft.Extensions.ObjectPool in production. Custom implementations should handle thread safety.</p>
+<p>---</p>
+<h3 id="32-batch-processing-for-database-operations">32. Batch Processing for Database Operations</h3>
+<p><strong>Question:</strong> Optimize database inserts by batching operations.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public class BatchedRepository
+{
+    private readonly DbContext _context;
+    private const int BatchSize = 1000;
+
+    public async Task BulkInsertOrdersAsync(IEnumerable&lt;Order&gt; orders)
+    {
+        var batch = new List&lt;Order&gt;(BatchSize);
+
+        foreach (var order in orders)
+        {
+            batch.Add(order);
+
+            if (batch.Count &gt;= BatchSize)
+            {
+                await _context.Orders.AddRangeAsync(batch);
+                await _context.SaveChangesAsync();
+                batch.Clear();
+                _context.ChangeTracker.Clear(); // Prevent memory bloat
+            }
+        }
+
+        // Insert remaining items
+        if (batch.Count &gt; 0)
+        {
+            await _context.Orders.AddRangeAsync(batch);
+            await _context.SaveChangesAsync();
+        }
+    }
+
+    // Using bulk insert library for better performance
+    public async Task BulkInsertOptimizedAsync(IEnumerable&lt;Order&gt; orders)
+    {
+        // Using EFCore.BulkExtensions or similar
+        await _context.BulkInsertAsync(orders.ToList());
+    }
+}</code></pre>
+<p><strong>Performance gains:</strong> 10-100x faster than individual inserts</p>
+<p>---</p>
+<h3 id="33-memoization-for-expensive-calculations">33. Memoization for Expensive Calculations</h3>
+<p><strong>Question:</strong> Implement memoization to cache expensive function results.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public class Memoizer&lt;TKey, TResult&gt;
+{
+    private readonly ConcurrentDictionary&lt;TKey, Lazy&lt;TResult&gt;&gt; _cache = new();
+    private readonly Func&lt;TKey, TResult&gt; _function;
+
+    public Memoizer(Func&lt;TKey, TResult&gt; function)
+    {
+        _function = function ?? throw new ArgumentNullException(nameof(function));
+    }
+
+    public TResult GetOrCompute(TKey key)
+    {
+        return _cache.GetOrAdd(key, k =&gt; new Lazy&lt;TResult&gt;(() =&gt; _function(k))).Value;
+    }
+
+    public void Clear() =&gt; _cache.Clear();
+}
+
+// Usage: Fibonacci with memoization
+public class FibonacciCalculator
+{
+    private readonly Memoizer&lt;int, long&gt; _memoizer;
+
+    public FibonacciCalculator()
+    {
+        _memoizer = new Memoizer&lt;int, long&gt;(ComputeFibonacci);
+    }
+
+    private long ComputeFibonacci(int n)
+    {
+        if (n &lt;= 1)
+            return n;
+
+        return _memoizer.GetOrCompute(n - 1) + _memoizer.GetOrCompute(n - 2);
+    }
+
+    public long Calculate(int n) =&gt; _memoizer.GetOrCompute(n);
+}</code></pre>
+<p><strong>Notes:</strong> <code>Lazy&lt;T&gt;</code> ensures thread-safe, one-time initialization even under concurrent access.</p>
+<p>---</p>
+<h3 id="34-arraypool-for-reducing-array-allocations">34. ArrayPool for Reducing Array Allocations</h3>
+<p><strong>Question:</strong> Use <code>ArrayPool&lt;T&gt;</code> to reduce allocations in performance-critical code.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public class BufferProcessor
+{
+    public static byte[] ProcessData(byte[] input)
+    {
+        // Rent buffer from pool
+        byte[] buffer = ArrayPool&lt;byte&gt;.Shared.Rent(input.Length * 2);
+
+        try
+        {
+            // Process data using buffer
+            for (int i = 0; i &lt; input.Length; i++)
+            {
+                buffer[i * 2] = input[i];
+                buffer[i * 2 + 1] = (byte)(input[i] ^ 0xFF);
+            }
+
+            // Create result array with exact size
+            var result = new byte[input.Length * 2];
+            Array.Copy(buffer, result, result.Length);
+            return result;
+        }
+        finally
+        {
+            // Always return buffer to pool
+            ArrayPool&lt;byte&gt;.Shared.Return(buffer);
+        }
+    }
+}
+
+// Async streaming with ArrayPool
+public static async Task ProcessLargeFileAsync(Stream input, Stream output)
+{
+    byte[] buffer = ArrayPool&lt;byte&gt;.Shared.Rent(4096);
+
+    try
+    {
+        int bytesRead;
+        while ((bytesRead = await input.ReadAsync(buffer, 0, buffer.Length)) &gt; 0)
+        {
+            // Process buffer
+            for (int i = 0; i &lt; bytesRead; i++)
+                buffer[i] = (byte)(buffer[i] ^ 0xFF);
+
+            await output.WriteAsync(buffer, 0, bytesRead);
+        }
+    }
+    finally
+    {
+        ArrayPool&lt;byte&gt;.Shared.Return(buffer);
+    }
+}</code></pre>
+<p><strong>Performance:</strong> Eliminates GC pressure from temporary buffers</p>
+<p>---</p>
+<h2 id="concurrent-programming-problems">Concurrent Programming Problems</h2>
+<h3 id="35-producer-consumer-with-blockingcollection">35. Producer-Consumer with BlockingCollection</h3>
+<p><strong>Question:</strong> Implement a thread-safe producer-consumer pattern.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public class ProducerConsumer
+{
+    private readonly BlockingCollection&lt;WorkItem&gt; _queue = new(boundedCapacity: 100);
+
+    public void StartProducers(int count)
+    {
+        for (int i = 0; i &lt; count; i++)
+        {
+            int producerId = i;
+            Task.Run(() =&gt; Producer(producerId));
+        }
+    }
+
+    public void StartConsumers(int count)
+    {
+        for (int i = 0; i &lt; count; i++)
+        {
+            int consumerId = i;
+            Task.Run(() =&gt; Consumer(consumerId));
+        }
+    }
+
+    private void Producer(int id)
+    {
+        try
+        {
+            for (int i = 0; i &lt; 10; i++)
+            {
+                var item = new WorkItem { Id = $&quot;P{id}-{i}&quot;, Data = $&quot;Data from producer {id}&quot; };
+                _queue.Add(item);
+                Console.WriteLine($&quot;Producer {id} added {item.Id}&quot;);
+                Thread.Sleep(100);
+            }
+        }
+        catch (InvalidOperationException)
+        {
+            // Collection was completed
+        }
+    }
+
+    private void Consumer(int id)
+    {
+        try
+        {
+            foreach (var item in _queue.GetConsumingEnumerable())
+            {
+                Console.WriteLine($&quot;Consumer {id} processing {item.Id}&quot;);
+                Thread.Sleep(200); // Simulate work
+            }
+        }
+        catch (InvalidOperationException)
+        {
+            // Collection was completed
+        }
+    }
+
+    public void Complete()
+    {
+        _queue.CompleteAdding();
+    }
+}
+
+public class WorkItem
+{
+    public string Id { get; set; }
+    public string Data { get; set; }
+}</code></pre>
+<p>---</p>
+<h3 id="36-parallelforeach-with-degree-of-parallelism">36. Parallel.ForEach with Degree of Parallelism</h3>
+<p><strong>Question:</strong> Process items in parallel with controlled concurrency.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public async Task ProcessOrdersInParallelAsync(List&lt;Order&gt; orders)
+{
+    var options = new ParallelOptions
+    {
+        MaxDegreeOfParallelism = Environment.ProcessorCount,
+        CancellationToken = CancellationToken.None
+    };
+
+    await Parallel.ForEachAsync(orders, options, async (order, ct) =&gt;
+    {
+        await ProcessOrderAsync(order, ct);
+    });
+}
+
+// With custom partitioning for better load balancing
+public void ProcessWithPartitioning&lt;T&gt;(IEnumerable&lt;T&gt; items, Action&lt;T&gt; process)
+{
+    var partitioner = Partitioner.Create(items, EnumerablePartitionerOptions.NoBuffering);
+
+    Parallel.ForEach(partitioner, new ParallelOptions
+    {
+        MaxDegreeOfParallelism = Environment.ProcessorCount
+    }, item =&gt;
+    {
+        process(item);
+    });
+}
+
+// Thread-safe aggregation
+public int ParallelSum(int[] numbers)
+{
+    int total = 0;
+
+    Parallel.ForEach(numbers, () =&gt; 0, // Local init
+        (item, state, localSum) =&gt; localSum + item, // Body
+        localSum =&gt; Interlocked.Add(ref total, localSum)); // Local finally
+
+    return total;
+}</code></pre>
+<p>---</p>
+<h3 id="37-async-throttling-with-semaphoreslim">37. Async Throttling with SemaphoreSlim</h3>
+<p><strong>Question:</strong> Limit concurrent async operations to prevent resource exhaustion.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public class ThrottledHttpClient
+{
+    private readonly HttpClient _httpClient;
+    private readonly SemaphoreSlim _semaphore;
+
+    public ThrottledHttpClient(HttpClient httpClient, int maxConcurrency = 10)
+    {
+        _httpClient = httpClient;
+        _semaphore = new SemaphoreSlim(maxConcurrency, maxConcurrency);
+    }
+
+    public async Task&lt;string&gt; GetAsync(string url, CancellationToken cancellationToken = default)
+    {
+        await _semaphore.WaitAsync(cancellationToken);
+        try
+        {
+            return await _httpClient.GetStringAsync(url, cancellationToken);
+        }
+        finally
+        {
+            _semaphore.Release();
+        }
+    }
+
+    public async Task&lt;List&lt;string&gt;&gt; FetchAllAsync(IEnumerable&lt;string&gt; urls, CancellationToken cancellationToken = default)
+    {
+        var tasks = urls.Select(url =&gt; GetAsync(url, cancellationToken));
+        return (await Task.WhenAll(tasks)).ToList();
+    }
+}
+
+// Usage
+var client = new ThrottledHttpClient(httpClient, maxConcurrency: 5);
+var results = await client.FetchAllAsync(urls, cancellationToken);</code></pre>
+<p>---</p>
+<h3 id="38-thread-safe-lazy-initialization">38. Thread-Safe Lazy Initialization</h3>
+<p><strong>Question:</strong> Implement thread-safe lazy initialization patterns.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">// Using Lazy&lt;T&gt; (recommended)
+public class SingletonService
+{
+    private static readonly Lazy&lt;SingletonService&gt; _instance =
+        new Lazy&lt;SingletonService&gt;(() =&gt; new SingletonService(), LazyThreadSafetyMode.ExecutionAndPublication);
+
+    private SingletonService()
+    {
+        // Expensive initialization
+    }
+
+    public static SingletonService Instance =&gt; _instance.Value;
+}
+
+// Double-check locking pattern
+public class ConfigurationManager
+{
+    private static volatile ConfigurationManager _instance;
+    private static readonly object _lock = new object();
+
+    private ConfigurationManager()
+    {
+        // Load configuration
+    }
+
+    public static ConfigurationManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                lock (_lock)
+                {
+                    if (_instance == null)
+                    {
+                        _instance = new ConfigurationManager();
+                    }
+                }
+            }
+            return _instance;
+        }
+    }
+}
+
+// Async lazy initialization
+public class AsyncLazy&lt;T&gt;
+{
+    private readonly Lazy&lt;Task&lt;T&gt;&gt; _instance;
+
+    public AsyncLazy(Func&lt;Task&lt;T&gt;&gt; factory)
+    {
+        _instance = new Lazy&lt;Task&lt;T&gt;&gt;(() =&gt; Task.Run(factory));
+    }
+
+    public Task&lt;T&gt; Value =&gt; _instance.Value;
+}
+
+// Usage
+private static readonly AsyncLazy&lt;DatabaseConnection&gt; _connection =
+    new AsyncLazy&lt;DatabaseConnection&gt;(async () =&gt; await DatabaseConnection.CreateAsync());</code></pre>
+<p>---</p>
+<h2 id="security-best-practices">Security Best Practices</h2>
+<h3 id="39-input-validation-and-sanitization">39. Input Validation and Sanitization</h3>
+<p><strong>Question:</strong> Implement comprehensive input validation for API endpoints.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public class OrderRequest
+{
+    [Required]
+    [StringLength(50, MinimumLength = 1)]
+    [RegularExpression(@&quot;^[a-zA-Z0-9-]+$&quot;)]
+    public string OrderId { get; set; }
+
+    [Range(0.01, 1000000)]
+    public decimal Amount { get; set; }
+
+    [Required]
+    [EmailAddress]
+    public string CustomerEmail { get; set; }
+
+    [Url]
+    public string CallbackUrl { get; set; }
+}
+
+public class OrderValidator : AbstractValidator&lt;OrderRequest&gt;
+{
+    public OrderValidator()
+    {
+        RuleFor(x =&gt; x.OrderId)
+            .NotEmpty()
+            .MaximumLength(50)
+            .Matches(@&quot;^[a-zA-Z0-9-]+$&quot;)
+            .WithMessage(&quot;Order ID contains invalid characters&quot;);
+
+        RuleFor(x =&gt; x.Amount)
+            .GreaterThan(0)
+            .LessThanOrEqualTo(1000000);
+
+        RuleFor(x =&gt; x.CustomerEmail)
+            .NotEmpty()
+            .EmailAddress()
+            .Must(BeValidEmailDomain)
+            .WithMessage(&quot;Email domain not allowed&quot;);
+    }
+
+    private bool BeValidEmailDomain(string email)
+    {
+        var allowedDomains = new[] { &quot;example.com&quot;, &quot;company.com&quot; };
+        var domain = email.Split(&#39;@&#39;).LastOrDefault();
+        return allowedDomains.Contains(domain);
+    }
+}
+
+// Sanitization helper
+public static class InputSanitizer
+{
+    public static string SanitizeHtml(string input)
+    {
+        if (string.IsNullOrEmpty(input))
+            return input;
+
+        return System.Net.WebUtility.HtmlEncode(input);
+    }
+
+    public static string SanitizeSql(string input)
+    {
+        if (string.IsNullOrEmpty(input))
+            return input;
+
+        // Remove dangerous characters
+        return Regex.Replace(input, @&quot;[&#39;;--/**/]&quot;, &quot;&quot;);
+    }
+
+    public static string SanitizeFilePath(string path)
+    {
+        var invalidChars = Path.GetInvalidFileNameChars();
+        return string.Join(&quot;&quot;, path.Split(invalidChars));
+    }
+}</code></pre>
+<p>---</p>
+<h3 id="40-secure-password-hashing">40. Secure Password Hashing</h3>
+<p><strong>Question:</strong> Implement secure password hashing using industry standards.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public class PasswordHasher
+{
+    private const int SaltSize = 16;
+    private const int HashSize = 32;
+    private const int Iterations = 100000;
+
+    public static string HashPassword(string password)
+    {
+        // Generate salt
+        byte[] salt = new byte[SaltSize];
+        using (var rng = RandomNumberGenerator.Create())
+        {
+            rng.GetBytes(salt);
+        }
+
+        // Hash password with salt
+        using var pbkdf2 = new Rfc2898DeriveBytes(password, salt, Iterations, HashAlgorithmName.SHA256);
+        byte[] hash = pbkdf2.GetBytes(HashSize);
+
+        // Combine salt and hash
+        byte[] combined = new byte[SaltSize + HashSize];
+        Array.Copy(salt, 0, combined, 0, SaltSize);
+        Array.Copy(hash, 0, combined, SaltSize, HashSize);
+
+        return Convert.ToBase64String(combined);
+    }
+
+    public static bool VerifyPassword(string password, string hashedPassword)
+    {
+        byte[] combined = Convert.FromBase64String(hashedPassword);
+
+        // Extract salt
+        byte[] salt = new byte[SaltSize];
+        Array.Copy(combined, 0, salt, 0, SaltSize);
+
+        // Extract hash
+        byte[] storedHash = new byte[HashSize];
+        Array.Copy(combined, SaltSize, storedHash, 0, HashSize);
+
+        // Compute hash of provided password
+        using var pbkdf2 = new Rfc2898DeriveBytes(password, salt, Iterations, HashAlgorithmName.SHA256);
+        byte[] computedHash = pbkdf2.GetBytes(HashSize);
+
+        // Compare hashes
+        return CryptographicOperations.FixedTimeEquals(storedHash, computedHash);
+    }
+}
+
+// Using ASP.NET Core Identity PasswordHasher (recommended)
+public class UserService
+{
+    private readonly IPasswordHasher&lt;User&gt; _passwordHasher;
+
+    public UserService()
+    {
+        _passwordHasher = new PasswordHasher&lt;User&gt;();
+    }
+
+    public string HashPassword(User user, string password)
+    {
+        return _passwordHasher.HashPassword(user, password);
+    }
+
+    public bool VerifyPassword(User user, string hashedPassword, string providedPassword)
+    {
+        var result = _passwordHasher.VerifyHashedPassword(user, hashedPassword, providedPassword);
+        return result == PasswordVerificationResult.Success;
+    }
+}</code></pre>
+<p>---</p>
+<h3 id="41-rate-limiting-implementation">41. Rate Limiting Implementation</h3>
+<p><strong>Question:</strong> Implement rate limiting to prevent abuse.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public class RateLimiter
+{
+    private readonly ConcurrentDictionary&lt;string, SlidingWindowCounter&gt; _counters = new();
+    private readonly int _maxRequests;
+    private readonly TimeSpan _window;
+
+    public RateLimiter(int maxRequests, TimeSpan window)
+    {
+        _maxRequests = maxRequests;
+        _window = window;
+    }
+
+    public bool IsAllowed(string clientId)
+    {
+        var counter = _counters.GetOrAdd(clientId, _ =&gt; new SlidingWindowCounter());
+        return counter.TryIncrement(_maxRequests, _window);
+    }
+
+    private class SlidingWindowCounter
+    {
+        private readonly Queue&lt;DateTime&gt; _timestamps = new();
+        private readonly object _lock = new object();
+
+        public bool TryIncrement(int maxRequests, TimeSpan window)
+        {
+            lock (_lock)
+            {
+                var now = DateTime.UtcNow;
+                var cutoff = now - window;
+
+                // Remove old timestamps
+                while (_timestamps.Count &gt; 0 &amp;&amp; _timestamps.Peek() &lt; cutoff)
+                    _timestamps.Dequeue();
+
+                if (_timestamps.Count &lt; maxRequests)
+                {
+                    _timestamps.Enqueue(now);
+                    return true;
+                }
+
+                return false;
+            }
+        }
+    }
+}
+
+// Middleware implementation
+public class RateLimitingMiddleware
+{
+    private readonly RequestDelegate _next;
+    private readonly RateLimiter _rateLimiter;
+
+    public RateLimitingMiddleware(RequestDelegate next)
+    {
+        _next = next;
+        _rateLimiter = new RateLimiter(maxRequests: 100, window: TimeSpan.FromMinutes(1));
+    }
+
+    public async Task InvokeAsync(HttpContext context)
+    {
+        var clientId = context.Connection.RemoteIpAddress?.ToString() ?? &quot;unknown&quot;;
+
+        if (!_rateLimiter.IsAllowed(clientId))
+        {
+            context.Response.StatusCode = StatusCodes.Status429TooManyRequests;
+            await context.Response.WriteAsync(&quot;Rate limit exceeded. Please try again later.&quot;);
+            return;
+        }
+
+        await _next(context);
+    }
+}</code></pre>
+<p>---</p>
+<h3 id="42-csrf-token-validation">42. CSRF Token Validation</h3>
+<p><strong>Question:</strong> Implement CSRF protection for state-changing operations.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public class CsrfTokenService
+{
+    private readonly IDataProtector _protector;
+
+    public CsrfTokenService(IDataProtectionProvider provider)
+    {
+        _protector = provider.CreateProtector(&quot;CsrfTokenProtection&quot;);
+    }
+
+    public string GenerateToken(string userId, string sessionId)
+    {
+        var data = $&quot;{userId}:{sessionId}:{DateTime.UtcNow.Ticks}&quot;;
+        return _protector.Protect(data);
+    }
+
+    public bool ValidateToken(string token, string userId, string sessionId, TimeSpan maxAge)
+    {
+        try
+        {
+            var unprotected = _protector.Unprotect(token);
+            var parts = unprotected.Split(&#39;:&#39;);
+
+            if (parts.Length != 3)
+                return false;
+
+            if (parts[0] != userId || parts[1] != sessionId)
+                return false;
+
+            var timestamp = new DateTime(long.Parse(parts[2]));
+            return DateTime.UtcNow - timestamp &lt; maxAge;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+}
+
+// Anti-forgery filter attribute
+public class ValidateCsrfTokenAttribute : ActionFilterAttribute
+{
+    public override void OnActionExecuting(ActionExecutingContext context)
+    {
+        var csrfService = context.HttpContext.RequestServices.GetRequiredService&lt;CsrfTokenService&gt;();
+        var token = context.HttpContext.Request.Headers[&quot;X-CSRF-Token&quot;].FirstOrDefault();
+        var userId = context.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var sessionId = context.HttpContext.Session.Id;
+
+        if (string.IsNullOrEmpty(token) ||
+            !csrfService.ValidateToken(token, userId, sessionId, TimeSpan.FromHours(1)))
+        {
+            context.Result = new StatusCodeResult(StatusCodes.Status403Forbidden);
+        }
+
+        base.OnActionExecuting(context);
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="code-refactoring-scenarios">Code Refactoring Scenarios</h2>
+<h3 id="43-extract-method-refactoring">43. Extract Method Refactoring</h3>
+<p><strong>Question:</strong> Refactor a long method into smaller, focused methods.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">// Before: Long, complex method
+public class OrderProcessor
+{
+    public void ProcessOrder_Bad(Order order)
+    {
+        // Validate
+        if (string.IsNullOrEmpty(order.CustomerId))
+            throw new ArgumentException(&quot;Customer ID required&quot;);
+        if (order.Items == null || order.Items.Count == 0)
+            throw new ArgumentException(&quot;Order must have items&quot;);
+        foreach (var item in order.Items)
+        {
+            if (item.Quantity &lt;= 0)
+                throw new ArgumentException(&quot;Invalid quantity&quot;);
+            if (item.Price &lt; 0)
+                throw new ArgumentException(&quot;Invalid price&quot;);
+        }
+
+        // Calculate
+        decimal subtotal = 0;
+        foreach (var item in order.Items)
+            subtotal += item.Price * item.Quantity;
+        decimal tax = subtotal * 0.08m;
+        decimal shipping = subtotal &gt; 100 ? 0 : 10;
+        decimal total = subtotal + tax + shipping;
+
+        // Save
+        using var connection = new SqlConnection(_connectionString);
+        connection.Open();
+        using var command = connection.CreateCommand();
+        command.CommandText = &quot;INSERT INTO Orders...&quot;;
+        command.ExecuteNonQuery();
+    }
+}
+
+// After: Refactored into focused methods
+public class OrderProcessor
+{
+    public void ProcessOrder_Good(Order order)
+    {
+        ValidateOrder(order);
+        var pricing = CalculatePricing(order);
+        SaveOrder(order, pricing);
+    }
+
+    private void ValidateOrder(Order order)
+    {
+        ValidateCustomer(order.CustomerId);
+        ValidateOrderItems(order.Items);
+    }
+
+    private void ValidateCustomer(string customerId)
+    {
+        if (string.IsNullOrEmpty(customerId))
+            throw new ArgumentException(&quot;Customer ID required&quot;, nameof(customerId));
+    }
+
+    private void ValidateOrderItems(List&lt;OrderItem&gt; items)
+    {
+        if (items == null || items.Count == 0)
+            throw new ArgumentException(&quot;Order must have items&quot;, nameof(items));
+
+        foreach (var item in items)
+        {
+            if (item.Quantity &lt;= 0)
+                throw new ArgumentException($&quot;Invalid quantity for item {item.ProductId}&quot;);
+            if (item.Price &lt; 0)
+                throw new ArgumentException($&quot;Invalid price for item {item.ProductId}&quot;);
+        }
+    }
+
+    private OrderPricing CalculatePricing(Order order)
+    {
+        var subtotal = CalculateSubtotal(order.Items);
+        var tax = CalculateTax(subtotal);
+        var shipping = CalculateShipping(subtotal);
+
+        return new OrderPricing
+        {
+            Subtotal = subtotal,
+            Tax = tax,
+            Shipping = shipping,
+            Total = subtotal + tax + shipping
+        };
+    }
+
+    private decimal CalculateSubtotal(List&lt;OrderItem&gt; items)
+    {
+        return items.Sum(item =&gt; item.Price * item.Quantity);
+    }
+
+    private decimal CalculateTax(decimal subtotal)
+    {
+        const decimal TaxRate = 0.08m;
+        return subtotal * TaxRate;
+    }
+
+    private decimal CalculateShipping(decimal subtotal)
+    {
+        const decimal FreeShippingThreshold = 100m;
+        const decimal ShippingCost = 10m;
+        return subtotal &gt;= FreeShippingThreshold ? 0 : ShippingCost;
+    }
+
+    private void SaveOrder(Order order, OrderPricing pricing)
+    {
+        // Simplified - use repository pattern in practice
+        using var connection = new SqlConnection(_connectionString);
+        connection.Open();
+        using var command = connection.CreateCommand();
+        command.CommandText = &quot;INSERT INTO Orders (CustomerId, Total, Tax, Shipping) VALUES (@CustomerId, @Total, @Tax, @Shipping)&quot;;
+        command.Parameters.AddWithValue(&quot;@CustomerId&quot;, order.CustomerId);
+        command.Parameters.AddWithValue(&quot;@Total&quot;, pricing.Total);
+        command.Parameters.AddWithValue(&quot;@Tax&quot;, pricing.Tax);
+        command.Parameters.AddWithValue(&quot;@Shipping&quot;, pricing.Shipping);
+        command.ExecuteNonQuery();
+    }
+}</code></pre>
+<p>---</p>
+<h3 id="44-replace-conditional-with-polymorphism">44. Replace Conditional with Polymorphism</h3>
+<p><strong>Question:</strong> Refactor type-checking conditionals to use polymorphism.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">// Before: Type-checking with conditionals
+public class PaymentProcessor_Bad
+{
+    public void ProcessPayment(Payment payment)
+    {
+        if (payment.Type == &quot;CreditCard&quot;)
+        {
+            var card = payment as CreditCardPayment;
+            // Validate credit card
+            // Charge credit card
+            Console.WriteLine($&quot;Processing credit card ending in {card.LastFourDigits}&quot;);
+        }
+        else if (payment.Type == &quot;PayPal&quot;)
+        {
+            var paypal = payment as PayPalPayment;
+            // Validate PayPal account
+            // Process PayPal payment
+            Console.WriteLine($&quot;Processing PayPal account {paypal.Email}&quot;);
+        }
+        else if (payment.Type == &quot;BankTransfer&quot;)
+        {
+            var transfer = payment as BankTransferPayment;
+            // Validate bank account
+            // Process transfer
+            Console.WriteLine($&quot;Processing bank transfer from {transfer.AccountNumber}&quot;);
+        }
+    }
+}
+
+// After: Using polymorphism
+public abstract class Payment
+{
+    public decimal Amount { get; set; }
+    public abstract void Process();
+    public abstract bool Validate();
+}
+
+public class CreditCardPayment : Payment
+{
+    public string CardNumber { get; set; }
+    public string LastFourDigits =&gt; CardNumber?.Substring(CardNumber.Length - 4);
+
+    public override bool Validate()
+    {
+        // Credit card validation logic
+        return !string.IsNullOrEmpty(CardNumber) &amp;&amp; CardNumber.Length == 16;
+    }
+
+    public override void Process()
+    {
+        Console.WriteLine($&quot;Processing credit card ending in {LastFourDigits}&quot;);
+        // Credit card processing logic
+    }
+}
+
+public class PayPalPayment : Payment
+{
+    public string Email { get; set; }
+
+    public override bool Validate()
+    {
+        // PayPal validation logic
+        return !string.IsNullOrEmpty(Email) &amp;&amp; Email.Contains(&quot;@&quot;);
+    }
+
+    public override void Process()
+    {
+        Console.WriteLine($&quot;Processing PayPal account {Email}&quot;);
+        // PayPal processing logic
+    }
+}
+
+public class BankTransferPayment : Payment
+{
+    public string AccountNumber { get; set; }
+
+    public override bool Validate()
+    {
+        // Bank account validation logic
+        return !string.IsNullOrEmpty(AccountNumber);
+    }
+
+    public override void Process()
+    {
+        Console.WriteLine($&quot;Processing bank transfer from {AccountNumber}&quot;);
+        // Bank transfer processing logic
+    }
+}
+
+public class PaymentProcessor_Good
+{
+    public void ProcessPayment(Payment payment)
+    {
+        if (payment.Validate())
+        {
+            payment.Process();
+        }
+        else
+        {
+            throw new InvalidOperationException(&quot;Payment validation failed&quot;);
+        }
+    }
+}</code></pre>
+<p>---</p>
+<h3 id="45-strategy-pattern-for-algorithm-selection">45. Strategy Pattern for Algorithm Selection</h3>
+<p><strong>Question:</strong> Refactor conditional logic for different algorithms into Strategy pattern.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">// Before: Conditional algorithm selection
+public class PricingCalculator_Bad
+{
+    public decimal CalculatePrice(Order order, string customerType)
+    {
+        decimal basePrice = order.Items.Sum(i =&gt; i.Price * i.Quantity);
+
+        if (customerType == &quot;Regular&quot;)
+        {
+            return basePrice;
+        }
+        else if (customerType == &quot;Premium&quot;)
+        {
+            return basePrice * 0.9m; // 10% discount
+        }
+        else if (customerType == &quot;VIP&quot;)
+        {
+            return basePrice * 0.8m; // 20% discount
+        }
+        else if (customerType == &quot;Wholesale&quot;)
+        {
+            return basePrice * 0.7m; // 30% discount
+        }
+
+        return basePrice;
+    }
+}
+
+// After: Strategy pattern
+public interface IPricingStrategy
+{
+    decimal CalculatePrice(Order order);
+}
+
+public class RegularPricingStrategy : IPricingStrategy
+{
+    public decimal CalculatePrice(Order order)
+    {
+        return order.Items.Sum(i =&gt; i.Price * i.Quantity);
+    }
+}
+
+public class PremiumPricingStrategy : IPricingStrategy
+{
+    public decimal CalculatePrice(Order order)
+    {
+        decimal basePrice = order.Items.Sum(i =&gt; i.Price * i.Quantity);
+        return basePrice * 0.9m; // 10% discount
+    }
+}
+
+public class VIPPricingStrategy : IPricingStrategy
+{
+    public decimal CalculatePrice(Order order)
+    {
+        decimal basePrice = order.Items.Sum(i =&gt; i.Price * i.Quantity);
+        return basePrice * 0.8m; // 20% discount
+    }
+}
+
+public class WholesalePricingStrategy : IPricingStrategy
+{
+    public decimal CalculatePrice(Order order)
+    {
+        decimal basePrice = order.Items.Sum(i =&gt; i.Price * i.Quantity);
+        return basePrice * 0.7m; // 30% discount
+    }
+}
+
+public class PricingCalculator_Good
+{
+    private readonly Dictionary&lt;string, IPricingStrategy&gt; _strategies;
+
+    public PricingCalculator_Good()
+    {
+        _strategies = new Dictionary&lt;string, IPricingStrategy&gt;
+        {
+            [&quot;Regular&quot;] = new RegularPricingStrategy(),
+            [&quot;Premium&quot;] = new PremiumPricingStrategy(),
+            [&quot;VIP&quot;] = new VIPPricingStrategy(),
+            [&quot;Wholesale&quot;] = new WholesalePricingStrategy()
+        };
+    }
+
+    public decimal CalculatePrice(Order order, string customerType)
+    {
+        if (_strategies.TryGetValue(customerType, out var strategy))
+        {
+            return strategy.CalculatePrice(order);
+        }
+
+        // Default to regular pricing
+        return _strategies[&quot;Regular&quot;].CalculatePrice(order);
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="bug-fixing-exercises">Bug Fixing Exercises</h2>
+<h3 id="46-race-condition-in-cache">46. Race Condition in Cache</h3>
+<p><strong>Question:</strong> Identify and fix the race condition in this cache implementation.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">// Bug: Race condition in cache check-and-set
+public class BuggyCache&lt;TKey, TValue&gt;
+{
+    private readonly Dictionary&lt;TKey, TValue&gt; _cache = new();
+
+    public TValue GetOrAdd(TKey key, Func&lt;TKey, TValue&gt; factory)
+    {
+        // BUG: Multiple threads can pass this check simultaneously
+        if (!_cache.ContainsKey(key))
+        {
+            // BUG: Factory might be called multiple times for the same key
+            var value = factory(key);
+            _cache[key] = value;
+            return value;
+        }
+
+        return _cache[key];
+    }
+}
+
+// Fixed version 1: Using lock
+public class FixedCache&lt;TKey, TValue&gt;
+{
+    private readonly Dictionary&lt;TKey, TValue&gt; _cache = new();
+    private readonly object _lock = new object();
+
+    public TValue GetOrAdd(TKey key, Func&lt;TKey, TValue&gt; factory)
+    {
+        lock (_lock)
+        {
+            if (!_cache.ContainsKey(key))
+            {
+                var value = factory(key);
+                _cache[key] = value;
+                return value;
+            }
+
+            return _cache[key];
+        }
+    }
+}
+
+// Fixed version 2: Using ConcurrentDictionary (preferred)
+public class OptimizedCache&lt;TKey, TValue&gt;
+{
+    private readonly ConcurrentDictionary&lt;TKey, TValue&gt; _cache = new();
+
+    public TValue GetOrAdd(TKey key, Func&lt;TKey, TValue&gt; factory)
+    {
+        return _cache.GetOrAdd(key, factory);
+    }
+
+    // Even better: Lazy initialization to ensure factory runs once
+    public TValue GetOrAddLazy(TKey key, Func&lt;TKey, TValue&gt; factory)
+    {
+        var lazy = _cache.GetOrAdd(key, k =&gt; new Lazy&lt;TValue&gt;(() =&gt; factory(k)));
+        return ((Lazy&lt;TValue&gt;)lazy).Value;
+    }
+}</code></pre>
+<p>---</p>
+<h3 id="47-memory-leak-from-event-handlers">47. Memory Leak from Event Handlers</h3>
+<p><strong>Question:</strong> Fix the memory leak caused by event subscription.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">// Bug: Memory leak - event handler prevents garbage collection
+public class BuggySubscriber : IDisposable
+{
+    private readonly EventPublisher _publisher;
+
+    public BuggySubscriber(EventPublisher publisher)
+    {
+        _publisher = publisher;
+        // BUG: Subscribing without unsubscribing keeps this instance alive
+        _publisher.DataReceived += OnDataReceived;
+    }
+
+    private void OnDataReceived(object sender, DataEventArgs e)
+    {
+        Console.WriteLine($&quot;Received: {e.Data}&quot;);
+    }
+
+    public void Dispose()
+    {
+        // BUG: Not unsubscribing from event
+    }
+}
+
+// Fixed version
+public class FixedSubscriber : IDisposable
+{
+    private readonly EventPublisher _publisher;
+    private bool _disposed;
+
+    public FixedSubscriber(EventPublisher publisher)
+    {
+        _publisher = publisher;
+        _publisher.DataReceived += OnDataReceived;
+    }
+
+    private void OnDataReceived(object sender, DataEventArgs e)
+    {
+        Console.WriteLine($&quot;Received: {e.Data}&quot;);
+    }
+
+    public void Dispose()
+    {
+        if (!_disposed)
+        {
+            _publisher.DataReceived -= OnDataReceived;
+            _disposed = true;
+        }
+    }
+}
+
+// Alternative: Using WeakEventManager (WPF)
+public class WeakEventSubscriber
+{
+    public WeakEventSubscriber(EventPublisher publisher)
+    {
+        WeakEventManager&lt;EventPublisher, DataEventArgs&gt;.AddHandler(
+            publisher,
+            nameof(EventPublisher.DataReceived),
+            OnDataReceived);
+    }
+
+    private void OnDataReceived(object sender, DataEventArgs e)
+    {
+        Console.WriteLine($&quot;Received: {e.Data}&quot;);
+    }
+}</code></pre>
+<p>---</p>
+<h3 id="48-async-void-bug">48. Async Void Bug</h3>
+<p><strong>Question:</strong> Fix issues with async void methods.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">// Bug: async void swallows exceptions and can&#39;t be awaited
+public class BuggyAsyncCode
+{
+    public async void ProcessData(string data) // BUG: async void
+    {
+        await Task.Delay(1000);
+
+        if (string.IsNullOrEmpty(data))
+            throw new ArgumentException(&quot;Data is null&quot;); // BUG: Exception not observable
+
+        Console.WriteLine($&quot;Processed: {data}&quot;);
+    }
+
+    public void StartProcessing()
+    {
+        ProcessData(&quot;test&quot;); // BUG: Fire and forget, no way to know when it completes
+        Console.WriteLine(&quot;Started&quot;); // Might print before processing completes
+    }
+}
+
+// Fixed version
+public class FixedAsyncCode
+{
+    public async Task ProcessDataAsync(string data)
+    {
+        await Task.Delay(1000);
+
+        if (string.IsNullOrEmpty(data))
+            throw new ArgumentException(&quot;Data is null&quot;);
+
+        Console.WriteLine($&quot;Processed: {data}&quot;);
+    }
+
+    public async Task StartProcessingAsync()
+    {
+        try
+        {
+            await ProcessDataAsync(&quot;test&quot;);
+            Console.WriteLine(&quot;Completed successfully&quot;);
+        }
+        catch (ArgumentException ex)
+        {
+            Console.WriteLine($&quot;Error: {ex.Message}&quot;);
+        }
+    }
+
+    // Only use async void for event handlers
+    public async void Button_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            await ProcessDataAsync(&quot;test&quot;);
+        }
+        catch (Exception ex)
+        {
+            // Log exception - it won&#39;t propagate
+            Console.WriteLine($&quot;Error in event handler: {ex.Message}&quot;);
+        }
+    }
+}</code></pre>
+<p>---</p>
+<h3 id="49-disposed-object-access">49. Disposed Object Access</h3>
+<p><strong>Question:</strong> Fix the bug where a disposed object is accessed.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">// Bug: Using disposed object
+public class BuggyDatabaseQuery
+{
+    public async Task&lt;List&lt;Order&gt;&gt; GetOrdersAsync()
+    {
+        using var connection = new SqlConnection(_connectionString);
+        await connection.OpenAsync();
+
+        using var command = new SqlCommand(&quot;SELECT * FROM Orders&quot;, connection);
+        using var reader = await command.ExecuteReaderAsync();
+
+        var orders = new List&lt;Order&gt;();
+
+        // BUG: Reader is disposed after this using block
+        return orders;
+    }
+
+    // BUG: Trying to process reader after it&#39;s disposed
+    private async Task ProcessResults(SqlDataReader reader)
+    {
+        while (await reader.ReadAsync()) // Will fail - reader is disposed
+        {
+            // Process row
+        }
+    }
+}
+
+// Fixed version
+public class FixedDatabaseQuery
+{
+    public async Task&lt;List&lt;Order&gt;&gt; GetOrdersAsync()
+    {
+        using var connection = new SqlConnection(_connectionString);
+        await connection.OpenAsync();
+
+        using var command = new SqlCommand(&quot;SELECT * FROM Orders&quot;, connection);
+        using var reader = await command.ExecuteReaderAsync();
+
+        var orders = new List&lt;Order&gt;();
+
+        // Read all data while reader is still open
+        while (await reader.ReadAsync())
+        {
+            orders.Add(new Order
+            {
+                Id = reader.GetInt32(0),
+                CustomerId = reader.GetString(1),
+                Total = reader.GetDecimal(2)
+            });
+        }
+
+        return orders;
+    }
+
+    // Alternative: Use Dapper or EF Core to avoid manual disposal
+    public async Task&lt;List&lt;Order&gt;&gt; GetOrdersWithDapperAsync()
+    {
+        using var connection = new SqlConnection(_connectionString);
+        return (await connection.QueryAsync&lt;Order&gt;(&quot;SELECT * FROM Orders&quot;)).ToList();
+    }
+}</code></pre>
+<p>---</p>
+<h3 id="50-off-by-one-error-in-array-processing">50. Off-by-One Error in Array Processing</h3>
+<p><strong>Question:</strong> Find and fix the off-by-one error.</p>
+<p><strong>Answer:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">// Bug: Off-by-one error in loop
+public class BuggyArrayProcessor
+{
+    public int[] CalculateRunningSum(int[] numbers)
+    {
+        int[] result = new int[numbers.Length];
+        result[0] = numbers[0];
+
+        // BUG: Loop goes one past the array bounds
+        for (int i = 1; i &lt;= numbers.Length; i++)
+        {
+            result[i] = result[i - 1] + numbers[i]; // IndexOutOfRangeException
+        }
+
+        return result;
+    }
+
+    public void ProcessPairs(int[] numbers)
+    {
+        // BUG: Will skip last element if array has odd length
+        for (int i = 0; i &lt; numbers.Length - 1; i += 2)
+        {
+            Console.WriteLine($&quot;Pair: {numbers[i]}, {numbers[i + 1]}&quot;);
+        }
+    }
+}
+
+// Fixed version
+public class FixedArrayProcessor
+{
+    public int[] CalculateRunningSum(int[] numbers)
+    {
+        int[] result = new int[numbers.Length];
+        result[0] = numbers[0];
+
+        // Fix: Use &lt; instead of &lt;=
+        for (int i = 1; i &lt; numbers.Length; i++)
+        {
+            result[i] = result[i - 1] + numbers[i];
+        }
+
+        return result;
+    }
+
+    public void ProcessPairs(int[] numbers)
+    {
+        // Process pairs
+        for (int i = 0; i &lt; numbers.Length - 1; i += 2)
+        {
+            Console.WriteLine($&quot;Pair: {numbers[i]}, {numbers[i + 1]}&quot;);
+        }
+
+        // Handle last element if odd length
+        if (numbers.Length % 2 == 1)
+        {
+            Console.WriteLine($&quot;Unpaired: {numbers[^1]}&quot;);
+        }
+    }
+
+    // Alternative using LINQ
+    public void ProcessPairsLinq(int[] numbers)
+    {
+        var pairs = numbers
+            .Select((value, index) =&gt; new { value, index })
+            .GroupBy(x =&gt; x.index / 2)
+            .Select(g =&gt; g.Select(x =&gt; x.value).ToList());
+
+        foreach (var pair in pairs)
+        {
+            if (pair.Count == 2)
+                Console.WriteLine($&quot;Pair: {pair[0]}, {pair[1]}&quot;);
+            else
+                Console.WriteLine($&quot;Unpaired: {pair[0]}&quot;);
+        }
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="summary">Summary</h2>
+<p>This collection contains 50+ comprehensive coding challenges covering:</p>
+<ul><li><strong>Core assessments</strong> (9 exercises): Async operations, caching, concurrency, SQL, security</li><li><strong>Algorithms</strong> (6 exercises): Sorting, searching, graph traversal</li><li><strong>Data structures</strong> (5 exercises): Custom collections, trees, heaps, tries</li><li><strong>String manipulation</strong> (5 exercises): Compression, palindromes, pattern matching</li><li><strong>Array/Matrix</strong> (5 exercises): Two-sum, rotation, traversal, sliding window</li><li><strong>Performance</strong> (4 exercises): Object pooling, batching, memoization, ArrayPool</li><li><strong>Concurrency</strong> (4 exercises): Producer-consumer, parallel processing, throttling</li><li><strong>Security</strong> (4 exercises): Input validation, password hashing, rate limiting, CSRF</li><li><strong>Refactoring</strong> (3 exercises): Method extraction, polymorphism, strategy pattern</li><li><strong>Bug fixing</strong> (5 exercises): Race conditions, memory leaks, async issues, disposal</li></ul>
+<p><strong>Practice Tips:</strong></p>
+<ol><li>Implement each solution from scratch</li><li>Test with edge cases</li><li>Analyze time and space complexity</li><li>Consider alternative approaches</li><li>Review code for potential bugs</li><li>Practice explaining your solution out loud</li></ol>
+<p>---</p>
+<p><strong>Total Exercises: 50</strong></p>
+<p>Work through these systematically to build strong coding interview skills!</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['midnight', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const fallback = 'light';
+      const initial = supported.includes(saved) ? saved : (window.__studyTheme || fallback);
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          sessionStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+    (() => {
+      const groups = document.querySelectorAll('.sidebar-group');
+      if (!groups.length) return;
+      const storageKey = 'study-open-groups';
+      const saved = sessionStorage.getItem(storageKey);
+      const openFromStorage = new Set(saved ? JSON.parse(saved) : []);
+
+      const activeLink = document.querySelector('.nav-link.active');
+      const activeGroup = activeLink?.closest('.sidebar-group');
+      if (activeGroup?.dataset.group) {
+        openFromStorage.add(activeGroup.dataset.group);
+      }
+
+      const syncStorage = () => {
+        const openIds = Array.from(document.querySelectorAll('.sidebar-group.is-open'))
+          .map((group) => group.dataset.group)
+          .filter(Boolean);
+        sessionStorage.setItem(storageKey, JSON.stringify(openIds));
+      };
+
+      const setExpanded = (group, expanded) => {
+        const header = group.querySelector('.sidebar-group__header');
+        const list = group.querySelector('.sidebar-group__items');
+        group.classList.toggle('is-open', expanded);
+        header?.setAttribute('aria-expanded', expanded);
+        if (list) {
+          list.hidden = !expanded;
+        }
+      };
+
+      groups.forEach((group) => {
+        const shouldOpen = openFromStorage.has(group.dataset.group);
+        setExpanded(group, shouldOpen);
+        const header = group.querySelector('.sidebar-group__header');
+        header?.addEventListener('click', () => {
+          const next = !group.classList.contains('is-open');
+          setExpanded(group, next);
+          syncStorage();
+        });
+      });
+    })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swPath = '../service-worker.js';
+        navigator.serviceWorker.register(swPath).catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+</body>
+</html>

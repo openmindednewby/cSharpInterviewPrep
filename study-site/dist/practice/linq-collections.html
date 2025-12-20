@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for Linq Collections" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>Linq Collections | C# Interview Prep Cheat Sheet</title>
+  <link rel="manifest" href="..\assets/manifest.webmanifest" />
+  <script>
+    (() => {
+      const supported = ['midnight', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const fallback = 'light';
+      const initial = supported.includes(saved) ? saved : fallback;
+      document.documentElement.dataset.theme = initial;
+      window.__studyTheme = initial;
+    })();
+  </script>
+  <link rel="stylesheet" href="..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="midnight">Current</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group" data-group="notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="../notes/logging.html">Logging</a></li><li><a class="nav-link" href="../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/O1-Constant-Time.html">O1 Constant Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/OLogN-Logarithmic-Time.html">OLogN Logarithmic Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/ON-Linear-Time.html">ON Linear Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/ON2-Quadratic-Time.html">ON2 Quadratic Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/ONLogN-Linearithmic-Time.html">ONLogN Linearithmic Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/Space-Complexity.html">Space Complexity</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/ICollection.html">ICollection</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IEnumerable.html">IEnumerable</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IList.html">IList</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IQueryable.html">IQueryable</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IReadOnly.html">IReadOnly</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a class="nav-link" href="../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a class="nav-link" href="../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a class="nav-link" href="../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a class="nav-link" href="../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a class="nav-link" href="../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a class="nav-link" href="../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a class="nav-link" href="../notes/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a class="nav-link" href="../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a class="nav-link" href="../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a class="nav-link" href="../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a class="nav-link" href="../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a class="nav-link" href="../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a class="nav-link" href="../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a class="nav-link" href="../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a class="nav-link" href="../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a class="nav-link" href="../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a class="nav-link" href="../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a class="nav-link" href="../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a class="nav-link" href="../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a class="nav-link" href="../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a class="nav-link" href="../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a class="nav-link" href="../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a class="nav-link" href="../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/01-async-patterns.html">01 Async Patterns</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/02-backpressure-rate-limiting.html">02 Backpressure Rate Limiting</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/03-caching-strategies.html">03 Caching Strategies</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/04-database-scaling.html">04 Database Scaling</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/05-message-queues.html">05 Message Queues</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/06-resilience-patterns.html">06 Resilience Patterns</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/07-observability.html">07 Observability</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/08-complete-example.html">08 Complete Example</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+    </div><div class="sidebar-group is-open" data-group="practice">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
+        <span>Practice</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="../practice/answers.html">Answers</a></li><li><a class="nav-link" href="../practice/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="../practice/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="../practice/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="../practice/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="../practice/data-layer.html">Data Layer</a></li><li><a class="nav-link active" href="../practice/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="../practice/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="../practice/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="../practice/index.html">Practice</a></li><li><a class="nav-link" href="../practice/questions.html">Questions</a></li><li><a class="nav-link" href="../practice/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="../practice/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="../practice/system-design.html">System Design</a></li><li><a class="nav-link" href="../practice/trading-domain.html">Trading Domain</a></li></ul>
+    </div></div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">practice\linq-collections.md</div>
+        <h2>Linq Collections</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#linq-collections-practice-exercises">LINQ & Collections Practice Exercises</a></li><li class="level-2"><a href="#foundational-questions">Foundational Questions</a></li><li class="level-2"><a href="#intermediate-exercises">Intermediate Exercises</a></li><li class="level-2"><a href="#advanced-exercises">Advanced Exercises</a></li><li class="level-2"><a href="#performance-optimization">Performance & Optimization</a></li><li class="level-2"><a href="#collection-specific-exercises">Collection-Specific Exercises</a></li><li class="level-2"><a href="#real-world-scenarios">Real-World Scenarios</a></li><li class="level-2"><a href="#challenge-problems">Challenge Problems</a></li></ul></div>
+        <h1 id="linq-collections-practice-exercises">LINQ & Collections Practice Exercises</h1>
+<p>Master LINQ queries and collection manipulation through hands-on exercises.</p>
+<p>---</p>
+<h2 id="foundational-questions">Foundational Questions</h2>
+<p><strong>Q: Given a list of trades with timestamps, return the latest trade per account using LINQ.</strong></p>
+<p>A: Sort or group by account and pick the trade with the max timestamp using <code>GroupBy</code> + <code>OrderByDescending</code>/<code>MaxBy</code>. This keeps the logic declarative and pushes the temporal ordering into the query rather than manual loops.</p>
+<pre class="language-csharp"><code class="language-csharp">var latestTrades = trades
+    .GroupBy(t =&gt; t.AccountId)
+    .Select(g =&gt; g.OrderByDescending(t =&gt; t.Timestamp).First());</code></pre>
+<p>Use when you need the most recent entry per key without mutating state, such as building dashboards or reconciling snapshots. Avoid when the dataset is huge and you'd benefit from streaming/SQL aggregation; consider database query with <code>ROW_NUMBER</code> or a materialized view to avoid loading everything into memory.</p>
+<p><strong>Q: Implement a method that flattens nested lists of instrument codes while preserving ordering.</strong></p>
+<p>A: Use <code>SelectMany</code> to flatten while keeping inner order.</p>
+<pre class="language-csharp"><code class="language-csharp">var flat = nestedCodes.SelectMany(list =&gt; list);</code></pre>
+<p>Use when you have nested enumerables and simply need to concatenate them. Avoid when you must retain hierarchy boundaries—use nested loops instead.</p>
+<p><strong>Q: Explain the difference between <code>SelectMany</code> and nested loops. When is each preferable?</strong></p>
+<p>A: <code>SelectMany</code> projects each element to a sequence and flattens; nested loops make iteration explicit and allow more control over flow.</p>
+<pre class="language-csharp"><code class="language-csharp">// SelectMany
+var pairs = accounts.SelectMany(a =&gt; a.Orders, (a, o) =&gt; new { a.Id, o.Id });
+
+// Nested loops
+foreach (var a in accounts)
+    foreach (var o in a.Orders)
+        yield return (a.Id, o.Id);</code></pre>
+<p>Use <code>SelectMany</code> when you want a fluent declarative pipeline or need joins. Use loops when performance-critical, complex control flow, or break/continue needed.</p>
+<p><strong>Q: How would you detect duplicate orders in a stream using <code>GroupBy</code> and produce a summary?</strong></p>
+<p>A: Group by unique order keys and filter groups with count > 1. Summaries can include counts, timestamps, and other aggregate metadata that drive remediation.</p>
+<pre class="language-csharp"><code class="language-csharp">var duplicates = orders
+    .GroupBy(o =&gt; new { o.AccountId, o.ClientOrderId })
+    .Where(g =&gt; g.Count() &gt; 1)
+    .Select(g =&gt; new {
+        g.Key.AccountId,
+        g.Key.ClientOrderId,
+        Count = g.Count(),
+        LatestTimestamp = g.Max(o =&gt; o.Timestamp)
+    });</code></pre>
+<p>Use when you need summaries and easy grouping. Avoid when data volume exceeds in-memory capabilities—use database aggregates or streaming dedup.</p>
+<p>---</p>
+<h2 id="intermediate-exercises">Intermediate Exercises</h2>
+<p><strong>Q: Find all customers who have placed orders in the last 30 days and calculate their total order value.</strong></p>
+<p>A: Use <code>Where</code> to filter by date range, then <code>GroupBy</code> customer and <code>Sum</code> the order values.</p>
+<pre class="language-csharp"><code class="language-csharp">var cutoffDate = DateTime.UtcNow.AddDays(-30);
+var customerTotals = orders
+    .Where(o =&gt; o.OrderDate &gt;= cutoffDate)
+    .GroupBy(o =&gt; o.CustomerId)
+    .Select(g =&gt; new {
+        CustomerId = g.Key,
+        TotalValue = g.Sum(o =&gt; o.TotalAmount),
+        OrderCount = g.Count()
+    });</code></pre>
+<p><strong>Q: Given two lists (products and categories), perform a left join to get all products with their category names (null if no category).</strong></p>
+<p>A: Use <code>GroupJoin</code> or <code>LeftJoin</code> pattern with <code>DefaultIfEmpty</code>.</p>
+<pre class="language-csharp"><code class="language-csharp">var result = products
+    .GroupJoin(
+        categories,
+        p =&gt; p.CategoryId,
+        c =&gt; c.Id,
+        (product, cats) =&gt; new { product, cats })
+    .SelectMany(
+        x =&gt; x.cats.DefaultIfEmpty(),
+        (x, category) =&gt; new {
+            x.product.Name,
+            CategoryName = category?.Name ?? &quot;Uncategorized&quot;
+        });</code></pre>
+<p><strong>Q: Implement a LINQ query to find the top 5 most expensive products in each category.</strong></p>
+<p>A: Group by category, order by price descending, take 5.</p>
+<pre class="language-csharp"><code class="language-csharp">var topProducts = products
+    .GroupBy(p =&gt; p.CategoryId)
+    .Select(g =&gt; new {
+        CategoryId = g.Key,
+        TopProducts = g.OrderByDescending(p =&gt; p.Price).Take(5).ToList()
+    });</code></pre>
+<p><strong>Q: Find all pairs of employees who work in the same department (avoid duplicates like (A,B) and (B,A)).</strong></p>
+<p>A: Self-join with condition to avoid duplicates.</p>
+<pre class="language-csharp"><code class="language-csharp">var pairs = employees
+    .SelectMany(e1 =&gt; employees, (e1, e2) =&gt; new { e1, e2 })
+    .Where(p =&gt; p.e1.DepartmentId == p.e2.DepartmentId &amp;&amp; p.e1.Id &lt; p.e2.Id)
+    .Select(p =&gt; new { Employee1 = p.e1.Name, Employee2 = p.e2.Name });</code></pre>
+<p><strong>Q: Calculate running totals for daily sales.</strong></p>
+<p>A: Use <code>Aggregate</code> with accumulator or window function approach.</p>
+<pre class="language-csharp"><code class="language-csharp">var runningTotal = sales
+    .OrderBy(s =&gt; s.Date)
+    .Select((sale, index) =&gt; new {
+        sale.Date,
+        sale.Amount,
+        RunningTotal = sales
+            .OrderBy(s =&gt; s.Date)
+            .Take(index + 1)
+            .Sum(s =&gt; s.Amount)
+    });
+
+// More efficient approach
+decimal total = 0;
+var runningTotals = sales
+    .OrderBy(s =&gt; s.Date)
+    .Select(s =&gt; new {
+        s.Date,
+        s.Amount,
+        RunningTotal = total += s.Amount
+    })
+    .ToList();</code></pre>
+<p>---</p>
+<h2 id="advanced-exercises">Advanced Exercises</h2>
+<p><strong>Q: Implement a custom LINQ extension method <code>DistinctBy</code> that takes a key selector.</strong></p>
+<p>A: Create an extension method that uses HashSet for tracking seen keys.</p>
+<pre class="language-csharp"><code class="language-csharp">public static class LinqExtensions
+{
+    public static IEnumerable&lt;TSource&gt; DistinctBy&lt;TSource, TKey&gt;(
+        this IEnumerable&lt;TSource&gt; source,
+        Func&lt;TSource, TKey&gt; keySelector)
+    {
+        var seenKeys = new HashSet&lt;TKey&gt;();
+        foreach (var element in source)
+        {
+            if (seenKeys.Add(keySelector(element)))
+                yield return element;
+        }
+    }
+}
+
+// Usage
+var uniqueProducts = products.DistinctBy(p =&gt; p.Name);</code></pre>
+<p><strong>Q: Write a LINQ query to find all employees whose salary is above the average salary in their department.</strong></p>
+<p>A: Use subquery or join with calculated averages.</p>
+<pre class="language-csharp"><code class="language-csharp">var departmentAvgs = employees
+    .GroupBy(e =&gt; e.DepartmentId)
+    .Select(g =&gt; new { DeptId = g.Key, AvgSalary = g.Average(e =&gt; e.Salary) })
+    .ToDictionary(x =&gt; x.DeptId, x =&gt; x.AvgSalary);
+
+var aboveAverage = employees
+    .Where(e =&gt; e.Salary &gt; departmentAvgs[e.DepartmentId])
+    .Select(e =&gt; new {
+        e.Name,
+        e.Salary,
+        DeptAverage = departmentAvgs[e.DepartmentId]
+    });</code></pre>
+<p><strong>Q: Implement pagination with LINQ (Skip/Take) and explain potential issues with IQueryable vs IEnumerable.</strong></p>
+<p>A: Use <code>Skip</code> and <code>Take</code> for pagination.</p>
+<pre class="language-csharp"><code class="language-csharp">public IEnumerable&lt;Product&gt; GetProductsPage(int pageNumber, int pageSize)
+{
+    return dbContext.Products
+        .OrderBy(p =&gt; p.Id)  // IMPORTANT: Must order for consistent pagination
+        .Skip((pageNumber - 1) * pageSize)
+        .Take(pageSize)
+        .ToList();  // Execute query here
+}</code></pre>
+<p><strong>Potential Issues:</strong></p>
+<ul><li>IQueryable: Translates to SQL, efficient but can cause N+1 queries if not careful</li><li>IEnumerable: Loads all data into memory before Skip/Take, very inefficient</li><li>Always order before Skip/Take to ensure consistent results</li><li>Consider total count query for UI pagination info</li></ul>
+<p><strong>Q: Write a LINQ query to pivot data (convert rows to columns).</strong></p>
+<p>A: Use <code>GroupBy</code> and dynamic property creation.</p>
+<pre class="language-csharp"><code class="language-csharp">// Input: Sales with Year, Quarter, Amount
+// Output: Year with Q1, Q2, Q3, Q4 columns
+
+var pivoted = sales
+    .GroupBy(s =&gt; s.Year)
+    .Select(g =&gt; new {
+        Year = g.Key,
+        Q1 = g.Where(s =&gt; s.Quarter == 1).Sum(s =&gt; s.Amount),
+        Q2 = g.Where(s =&gt; s.Quarter == 2).Sum(s =&gt; s.Amount),
+        Q3 = g.Where(s =&gt; s.Quarter == 3).Sum(s =&gt; s.Amount),
+        Q4 = g.Where(s =&gt; s.Quarter == 4).Sum(s =&gt; s.Amount)
+    });</code></pre>
+<p><strong>Q: Implement a LINQ query with multiple grouping levels (hierarchical grouping).</strong></p>
+<p>A: Nest <code>GroupBy</code> operations.</p>
+<pre class="language-csharp"><code class="language-csharp">var hierarchicalGroups = sales
+    .GroupBy(s =&gt; s.Year)
+    .Select(yearGroup =&gt; new {
+        Year = yearGroup.Key,
+        Quarters = yearGroup
+            .GroupBy(s =&gt; s.Quarter)
+            .Select(quarterGroup =&gt; new {
+                Quarter = quarterGroup.Key,
+                TotalSales = quarterGroup.Sum(s =&gt; s.Amount),
+                Transactions = quarterGroup.ToList()
+            })
+            .ToList()
+    });</code></pre>
+<p><strong>Q: Find all consecutive sequences of at least 3 days where sales exceeded $10,000.</strong></p>
+<p>A: Use windowing logic with LINQ.</p>
+<pre class="language-csharp"><code class="language-csharp">var threshold = 10000m;
+var consecutiveHighSales = sales
+    .OrderBy(s =&gt; s.Date)
+    .Select((sale, index) =&gt; new {
+        sale,
+        index,
+        IsHigh = sale.Amount &gt; threshold
+    })
+    .Where(x =&gt; x.IsHigh)
+    .GroupBy(x =&gt; x.index - sales
+        .OrderBy(s =&gt; s.Date)
+        .TakeWhile((s, i) =&gt; i &lt; x.index)
+        .Count(s =&gt; s.Amount &gt; threshold))
+    .Where(g =&gt; g.Count() &gt;= 3)
+    .Select(g =&gt; new {
+        StartDate = g.First().sale.Date,
+        EndDate = g.Last().sale.Date,
+        DayCount = g.Count()
+    });</code></pre>
+<p>---</p>
+<h2 id="performance-optimization">Performance & Optimization</h2>
+<p><strong>Q: Explain deferred execution and when it can cause performance issues.</strong></p>
+<p>A: LINQ queries using IEnumerable are not executed until enumerated. Multiple enumerations re-execute the query.</p>
+<pre class="language-csharp"><code class="language-csharp">// ❌ Bad: Query executes 3 times
+var expensiveQuery = dbContext.Orders
+    .Where(o =&gt; ComplexCalculation(o));
+
+var count = expensiveQuery.Count();          // Executes query
+var first = expensiveQuery.FirstOrDefault(); // Executes query again
+var list = expensiveQuery.ToList();          // Executes query again
+
+// ✅ Good: Materialize once
+var results = dbContext.Orders
+    .Where(o =&gt; ComplexCalculation(o))
+    .ToList();  // Single execution
+
+var count = results.Count;
+var first = results.FirstOrDefault();</code></pre>
+<p><strong>Q: Compare the performance implications of <code>Count()</code> vs <code>Any()</code> for checking if a collection has items.</strong></p>
+<p>A: <code>Any()</code> stops at first match; <code>Count()</code> must enumerate everything.</p>
+<pre class="language-csharp"><code class="language-csharp">// ❌ Bad: Counts all items
+if (orders.Count() &gt; 0)
+{
+    // ...
+}
+
+// ✅ Good: Stops at first item
+if (orders.Any())
+{
+    // ...
+}
+
+// For checking specific count
+if (orders.Count() &gt;= 100)  // Bad: counts all
+if (orders.Skip(99).Any())  // Better: stops at 100th</code></pre>
+<p><strong>Q: Identify and fix performance issues in this query.</strong></p>
+<pre class="language-csharp"><code class="language-csharp">// ❌ Bad: Multiple database round trips
+var orders = dbContext.Orders.ToList();
+foreach (var order in orders)
+{
+    order.Customer = dbContext.Customers.Find(order.CustomerId);
+    order.Items = dbContext.OrderItems.Where(i =&gt; i.OrderId == order.Id).ToList();
+}</code></pre>
+<p>A: Use eager loading with <code>Include</code>.</p>
+<pre class="language-csharp"><code class="language-csharp">// ✅ Good: Single query with joins
+var orders = dbContext.Orders
+    .Include(o =&gt; o.Customer)
+    .Include(o =&gt; o.Items)
+    .ToList();</code></pre>
+<p><strong>Q: Write a LINQ query that uses <code>AsParallel</code> appropriately for CPU-bound operations.</strong></p>
+<p>A: Use PLINQ for computationally expensive operations.</p>
+<pre class="language-csharp"><code class="language-csharp">// CPU-bound operation
+var results = largeDataset
+    .AsParallel()
+    .WithDegreeOfParallelism(Environment.ProcessorCount)
+    .Where(item =&gt; ExpensiveComputation(item))
+    .Select(item =&gt; TransformItem(item))
+    .ToList();
+
+// Don&#39;t use for I/O-bound operations or small datasets</code></pre>
+<p>---</p>
+<h2 id="collection-specific-exercises">Collection-Specific Exercises</h2>
+<p><strong>Q: When should you use <code>List&lt;T&gt;</code> vs <code>IEnumerable&lt;T&gt;</code> as a return type?</strong></p>
+<p>A: Return <code>IEnumerable&lt;T&gt;</code> for flexibility; use <code>List&lt;T&gt;</code> when caller needs indexing/modification.</p>
+<pre class="language-csharp"><code class="language-csharp">// ✅ Good: Flexible, caller can decide materialization
+public IEnumerable&lt;Order&gt; GetOrders()
+{
+    return dbContext.Orders.Where(o =&gt; o.IsActive);
+}
+
+// Use List&lt;T&gt; when:
+// 1. Multiple enumerations are expected
+// 2. Caller needs random access
+// 3. Caller needs to modify the collection
+public List&lt;Order&gt; GetOrdersForProcessing()
+{
+    return dbContext.Orders.Where(o =&gt; o.Status == &quot;Pending&quot;).ToList();
+}</code></pre>
+<p><strong>Q: Implement a LookupTable using <code>ToLookup</code> and explain when to use it vs <code>GroupBy</code>.</strong></p>
+<p>A: <code>ToLookup</code> immediately executes and creates an immutable lookup structure.</p>
+<pre class="language-csharp"><code class="language-csharp">// ToLookup - immediate execution, multiple lookups
+var ordersByCustomer = orders.ToLookup(o =&gt; o.CustomerId);
+var customer1Orders = ordersByCustomer[customerId1];  // O(1) lookup
+var customer2Orders = ordersByCustomer[customerId2];  // Another O(1) lookup
+
+// GroupBy - deferred execution, single enumeration
+var grouped = orders.GroupBy(o =&gt; o.CustomerId);
+foreach (var customerOrders in grouped)  // Single pass
+{
+    ProcessOrders(customerOrders);
+}</code></pre>
+<p><strong>Q: Use <code>Zip</code> to combine two sequences and explain its behavior when sequences have different lengths.</strong></p>
+<p>A: <code>Zip</code> combines elements pairwise, stops at shortest sequence.</p>
+<pre class="language-csharp"><code class="language-csharp">var numbers = new[] { 1, 2, 3, 4 };
+var letters = new[] { &quot;A&quot;, &quot;B&quot;, &quot;C&quot; };
+
+var zipped = numbers.Zip(letters, (n, l) =&gt; $&quot;{n}-{l}&quot;);
+// Result: [&quot;1-A&quot;, &quot;2-B&quot;, &quot;3-C&quot;]  - 4 is ignored
+
+// C# 9+ Tuple syntax
+var zipped2 = numbers.Zip(letters);
+// Result: [(1, &quot;A&quot;), (2, &quot;B&quot;), (3, &quot;C&quot;)]</code></pre>
+<p><strong>Q: Implement a method that chunks a collection into batches of N items.</strong></p>
+<p>A: Use <code>Chunk</code> (C# 9+) or implement custom batching.</p>
+<pre class="language-csharp"><code class="language-csharp">// C# 9+
+var batches = items.Chunk(100);
+
+// Custom implementation
+public static IEnumerable&lt;IEnumerable&lt;T&gt;&gt; Batch&lt;T&gt;(
+    this IEnumerable&lt;T&gt; source, int batchSize)
+{
+    var batch = new List&lt;T&gt;(batchSize);
+    foreach (var item in source)
+    {
+        batch.Add(item);
+        if (batch.Count == batchSize)
+        {
+            yield return batch;
+            batch = new List&lt;T&gt;(batchSize);
+        }
+    }
+
+    if (batch.Any())
+        yield return batch;
+}</code></pre>
+<p>---</p>
+<h2 id="real-world-scenarios">Real-World Scenarios</h2>
+<p><strong>Q: You need to merge data from multiple sources (database, API, cache) and remove duplicates. Implement this efficiently.</strong></p>
+<p>A: Combine sources and use <code>DistinctBy</code> or <code>HashSet</code>.</p>
+<pre class="language-csharp"><code class="language-csharp">public async Task&lt;List&lt;Product&gt;&gt; GetMergedProducts()
+{
+    var dbProducts = await dbContext.Products.ToListAsync();
+    var apiProducts = await apiClient.GetProductsAsync();
+    var cachedProducts = cache.Get&lt;List&lt;Product&gt;&gt;(&quot;products&quot;) ?? new List&lt;Product&gt;();
+
+    var allProducts = dbProducts
+        .Concat(apiProducts)
+        .Concat(cachedProducts)
+        .DistinctBy(p =&gt; p.Id)
+        .ToList();
+
+    return allProducts;
+}</code></pre>
+<p><strong>Q: Implement a search feature with multiple optional filters (name, category, price range, tags).</strong></p>
+<p>A: Build query dynamically with conditional <code>Where</code> clauses.</p>
+<pre class="language-csharp"><code class="language-csharp">public IEnumerable&lt;Product&gt; SearchProducts(
+    string name = null,
+    int? categoryId = null,
+    decimal? minPrice = null,
+    decimal? maxPrice = null,
+    string[] tags = null)
+{
+    IQueryable&lt;Product&gt; query = dbContext.Products;
+
+    if (!string.IsNullOrEmpty(name))
+        query = query.Where(p =&gt; p.Name.Contains(name));
+
+    if (categoryId.HasValue)
+        query = query.Where(p =&gt; p.CategoryId == categoryId.Value);
+
+    if (minPrice.HasValue)
+        query = query.Where(p =&gt; p.Price &gt;= minPrice.Value);
+
+    if (maxPrice.HasValue)
+        query = query.Where(p =&gt; p.Price &lt;= maxPrice.Value);
+
+    if (tags != null &amp;&amp; tags.Any())
+        query = query.Where(p =&gt; p.Tags.Any(t =&gt; tags.Contains(t)));
+
+    return query.ToList();
+}</code></pre>
+<p><strong>Q: Calculate month-over-month growth percentage for sales data.</strong></p>
+<p>A: Join current month with previous month data.</p>
+<pre class="language-csharp"><code class="language-csharp">var monthlySales = sales
+    .GroupBy(s =&gt; new { s.Year, s.Month })
+    .Select(g =&gt; new {
+        g.Key.Year,
+        g.Key.Month,
+        Total = g.Sum(s =&gt; s.Amount)
+    })
+    .OrderBy(m =&gt; m.Year).ThenBy(m =&gt; m.Month)
+    .ToList();
+
+var growth = monthlySales
+    .Zip(monthlySales.Skip(1), (prev, curr) =&gt; new {
+        curr.Year,
+        curr.Month,
+        CurrentTotal = curr.Total,
+        PreviousTotal = prev.Total,
+        GrowthPercent = ((curr.Total - prev.Total) / prev.Total) * 100
+    });</code></pre>
+<p>---</p>
+<h2 id="challenge-problems">Challenge Problems</h2>
+<p><strong>Q: Implement an expression builder that allows dynamic LINQ query construction from user input.</strong></p>
+<p>A: Use <code>Expression</code> trees to build dynamic queries.</p>
+<pre class="language-csharp"><code class="language-csharp">public static class DynamicQueryBuilder
+{
+    public static IQueryable&lt;T&gt; ApplyFilter&lt;T&gt;(
+        IQueryable&lt;T&gt; query,
+        string propertyName,
+        string operation,
+        object value)
+    {
+        var parameter = Expression.Parameter(typeof(T), &quot;x&quot;);
+        var property = Expression.Property(parameter, propertyName);
+        var constant = Expression.Constant(value);
+
+        Expression comparison = operation switch
+        {
+            &quot;=&quot; =&gt; Expression.Equal(property, constant),
+            &quot;&gt;&quot; =&gt; Expression.GreaterThan(property, constant),
+            &quot;&lt;&quot; =&gt; Expression.LessThan(property, constant),
+            &quot;contains&quot; =&gt; Expression.Call(property, &quot;Contains&quot;, null, constant),
+            _ =&gt; throw new ArgumentException(&quot;Invalid operation&quot;)
+        };
+
+        var lambda = Expression.Lambda&lt;Func&lt;T, bool&gt;&gt;(comparison, parameter);
+        return query.Where(lambda);
+    }
+}
+
+// Usage
+var query = dbContext.Products.AsQueryable();
+query = DynamicQueryBuilder.ApplyFilter(query, &quot;Price&quot;, &quot;&gt;&quot;, 100m);
+query = DynamicQueryBuilder.ApplyFilter(query, &quot;Name&quot;, &quot;contains&quot;, &quot;Widget&quot;);</code></pre>
+<p><strong>Q: Implement a method that finds all possible combinations of products that sum to a target price (subset sum problem).</strong></p>
+<p>A: Recursive LINQ approach or dynamic programming.</p>
+<pre class="language-csharp"><code class="language-csharp">public static IEnumerable&lt;List&lt;Product&gt;&gt; FindCombinations(
+    List&lt;Product&gt; products,
+    decimal targetPrice,
+    decimal tolerance = 0.01m)
+{
+    for (int i = 0; i &lt; products.Count; i++)
+    {
+        var product = products[i];
+
+        if (Math.Abs(product.Price - targetPrice) &lt;= tolerance)
+        {
+            yield return new List&lt;Product&gt; { product };
+        }
+
+        if (product.Price &lt; targetPrice)
+        {
+            var remaining = products.Skip(i + 1).ToList();
+            var subCombos = FindCombinations(
+                remaining,
+                targetPrice - product.Price,
+                tolerance);
+
+            foreach (var combo in subCombos)
+            {
+                yield return new List&lt;Product&gt; { product }.Concat(combo).ToList();
+            }
+        }
+    }
+}</code></pre>
+<p>---</p>
+<p><strong>Total Exercises: 30+</strong></p>
+<p>Practice these exercises by actually writing the code. Don't just read—implement and test!</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['midnight', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const fallback = 'light';
+      const initial = supported.includes(saved) ? saved : (window.__studyTheme || fallback);
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          sessionStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+    (() => {
+      const groups = document.querySelectorAll('.sidebar-group');
+      if (!groups.length) return;
+      const storageKey = 'study-open-groups';
+      const saved = sessionStorage.getItem(storageKey);
+      const openFromStorage = new Set(saved ? JSON.parse(saved) : []);
+
+      const activeLink = document.querySelector('.nav-link.active');
+      const activeGroup = activeLink?.closest('.sidebar-group');
+      if (activeGroup?.dataset.group) {
+        openFromStorage.add(activeGroup.dataset.group);
+      }
+
+      const syncStorage = () => {
+        const openIds = Array.from(document.querySelectorAll('.sidebar-group.is-open'))
+          .map((group) => group.dataset.group)
+          .filter(Boolean);
+        sessionStorage.setItem(storageKey, JSON.stringify(openIds));
+      };
+
+      const setExpanded = (group, expanded) => {
+        const header = group.querySelector('.sidebar-group__header');
+        const list = group.querySelector('.sidebar-group__items');
+        group.classList.toggle('is-open', expanded);
+        header?.setAttribute('aria-expanded', expanded);
+        if (list) {
+          list.hidden = !expanded;
+        }
+      };
+
+      groups.forEach((group) => {
+        const shouldOpen = openFromStorage.has(group.dataset.group);
+        setExpanded(group, shouldOpen);
+        const header = group.querySelector('.sidebar-group__header');
+        header?.addEventListener('click', () => {
+          const next = !group.classList.contains('is-open');
+          setExpanded(group, next);
+          syncStorage();
+        });
+      });
+    })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swPath = '../service-worker.js';
+        navigator.serviceWorker.register(swPath).catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+</body>
+</html>
