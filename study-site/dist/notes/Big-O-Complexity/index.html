@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Senior .NET study guide for Strategy Pattern" />
+  <meta name="description" content="Senior .NET study guide for Big O Complexity" />
   <meta name="theme-color" content="#0f172a" />
-  <title>Strategy Pattern | C# Interview Prep Cheat Sheet</title>
+  <title>Big O Complexity | C# Interview Prep Cheat Sheet</title>
   <link rel="manifest" href="..\..\assets/manifest.webmanifest" />
   <script>
     (() => {
@@ -58,12 +58,12 @@
         <span class="chevron" aria-hidden="true"></span>
       </button>
       <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
-    </div><div class="sidebar-group" data-group="notes-big-o-complexity">
-      <button class="sidebar-group__header" type="button" aria-expanded="false">
+    </div><div class="sidebar-group is-open" data-group="notes-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
         <span>Notes / Big O Complexity</span>
         <span class="chevron" aria-hidden="true"></span>
       </button>
-      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/O1-Constant-Time.html">O1 Constant Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/OLogN-Logarithmic-Time.html">OLogN Logarithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON-Linear-Time.html">ON Linear Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON2-Quadratic-Time.html">ON2 Quadratic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ONLogN-Linearithmic-Time.html">ONLogN Linearithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/Space-Complexity.html">Space Complexity</a></li></ul>
+      <ul class="sidebar-group__items"><li><a class="nav-link active" href="..\../notes/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/O1-Constant-Time.html">O1 Constant Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/OLogN-Logarithmic-Time.html">OLogN Logarithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON-Linear-Time.html">ON Linear Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON2-Quadratic-Time.html">ON2 Quadratic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ONLogN-Linearithmic-Time.html">ONLogN Linearithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/Space-Complexity.html">Space Complexity</a></li></ul>
     </div><div class="sidebar-group" data-group="notes-clean-architecture">
       <button class="sidebar-group__header" type="button" aria-expanded="false">
         <span>Notes / Clean Architecture</span>
@@ -76,12 +76,12 @@
         <span class="chevron" aria-hidden="true"></span>
       </button>
       <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/ICollection.html">ICollection</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IEnumerable.html">IEnumerable</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IList.html">IList</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IQueryable.html">IQueryable</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IReadOnly.html">IReadOnly</a></li></ul>
-    </div><div class="sidebar-group is-open" data-group="notes-design-patterns">
-      <button class="sidebar-group__header" type="button" aria-expanded="true">
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
         <span>Notes / Design Patterns</span>
         <span class="chevron" aria-hidden="true"></span>
       </button>
-      <ul class="sidebar-group__items"><li><a class="nav-link" href="..\../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link active" href="..\../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
     </div><div class="sidebar-group" data-group="notes-dry">
       <button class="sidebar-group__header" type="button" aria-expanded="false">
         <span>Notes / DRY</span>
@@ -135,72 +135,35 @@
     </nav>
     <main class="content">
       <article class="card">
-        <div class="breadcrumbs">notes\Design-Patterns\Strategy Pattern.md</div>
-        <h2>Strategy Pattern</h2>
+        <div class="breadcrumbs">notes\Big-O-Complexity\index.md</div>
+        <h2>Big O Complexity</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#1-strategy-pattern-switching-trading-logic-at-runtime">⚙️ 1️⃣ Strategy Pattern — *Switching trading logic at runtime*</a></li><li class="level-3"><a href="#example-switching-between-aggressive-and-passive-strategies">🧩 Example — Switching between Aggressive and Passive strategies</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
-        <h1 id="1-strategy-pattern-switching-trading-logic-at-runtime">⚙️ 1️⃣ Strategy Pattern — <em>Switching trading logic at runtime</em></h1>
-<blockquote><p>Encapsulate different trading algorithms or execution strategies under a common interface.</p></blockquote>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#big-o-complexity-deep-dive-with-examples">🧠 ⏱️ Big O Complexity — Deep Dive with Examples</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
+        <h1 id="big-o-complexity-deep-dive-with-examples">🧠 ⏱️ Big O Complexity — Deep Dive with Examples</h1>
 <p>---</p>
-<h3 id="example-switching-between-aggressive-and-passive-strategies">🧩 Example — Switching between Aggressive and Passive strategies</h3>
-<pre class="hljs"><code>public interface ITradeStrategy
-{
-    void Execute(Order order);
-}
-
-public class AggressiveStrategy : ITradeStrategy
-{
-    public void Execute(Order order)
-    {
-        Console.WriteLine($&quot;[Aggressive] Sending order {order.Symbol} immediately at market price&quot;);
-    }
-}
-
-public class PassiveStrategy : ITradeStrategy
-{
-    public void Execute(Order order)
-    {
-        Console.WriteLine($&quot;[Passive] Placing limit order for {order.Symbol} to wait for better price&quot;);
-    }
-}
-
-public class Trader
-{
-    private readonly ITradeStrategy _strategy;
-
-    public Trader(ITradeStrategy strategy) =&gt; _strategy = strategy;
-
-    public void Trade(Order order) =&gt; _strategy.Execute(order);
-}
-
-// --- Usage ---
-var order = new Order { Symbol = &quot;EURUSD&quot;, Amount = 1000 };
-var trader = new Trader(new AggressiveStrategy());
-trader.Trade(order); // can switch strategy dynamically</code></pre>
-<p>✅ <strong>Why it matters:</strong></p>
-<ul><li>Switch trading behaviors (aggressive, passive, hedging) dynamically.</li><li>Avoids <code>if/else</code> hell.</li><li>New strategies plug in easily without code modification.</li></ul>
+<ul><li><a href="O1-Constant-Time.md">O(1) — Constant Time</a></li><li><a href="OLogN-Logarithmic-Time.md">O(log n) — Logarithmic Time</a></li><li><a href="ON-Linear-Time.md">O(n) — Linear Time</a></li><li><a href="ONLogN-Linearithmic-Time.md">O(n log n) — Linearithmic Time</a></li><li><a href="ON2-Quadratic-Time.md">O(n²) — Quadratic Time</a></li><li><a href="Space-Complexity.md">Space Complexity — Memory Usage</a></li></ul>
 <p>---</p>
 <h2 id="questions-answers">Questions & Answers</h2>
-<p><strong>Q: When do you apply the Strategy pattern?</strong></p>
-<p>A: When behavior varies by configuration, tenant, or runtime data (e.g., aggressive vs passive execution) and you want to encapsulate algorithms behind a shared interface instead of branching all over the codebase.</p>
-<p><strong>Q: How do you select a strategy at runtime?</strong></p>
-<p>A: Inject a factory that chooses the correct <code>ITradeStrategy</code> based on market conditions, order metadata, or feature flags. Strategies can be swapped via DI or resolved dynamically.</p>
-<p><strong>Q: How does Strategy differ from State?</strong></p>
-<p>A: Strategy changes behavior per request/order; State models transitions over time. Strategy is stateless and pluggable, whereas State encapsulates transitions inside the object.</p>
-<p><strong>Q: How do you unit test strategies?</strong></p>
-<p>A: Instantiate each strategy with fake dependencies and assert their behavior independently. Tests stay small because the interface isolates algorithms from the rest of the system.</p>
-<p><strong>Q: What happens when strategy selection itself becomes complex?</strong></p>
-<p>A: Combine Strategy with Factory or Specification. The factory encapsulates selection logic; strategies stay focused on execution.</p>
-<p><strong>Q: How do you prevent strategy explosion?</strong></p>
-<p>A: Group related variations via configuration or policy objects, and extract shared behavior into base classes or decorators. Only add new strategies when behavior genuinely differs.</p>
-<p><strong>Q: Can strategies maintain state?</strong></p>
-<p>A: They should be stateless or encapsulate state tightly (e.g., cached calculations). For long-lived state machines, consider the State pattern or per-order context objects passed into strategies.</p>
-<p><strong>Q: How does dependency injection help?</strong></p>
-<p>A: Register strategies and inject them via constructor or keyed services, enabling easy swapping in tests and runtime. Feature flags can toggle which strategy is resolved.</p>
-<p><strong>Q: How do strategies interact with telemetry?</strong></p>
-<p>A: Decorate strategies or wrap them with interceptors to log execution time and outcomes. This keeps telemetry consistent regardless of which strategy executed.</p>
-<p><strong>Q: What’s the performance impact?</strong></p>
-<p>A: Minimal—just an extra virtual call. The clarity and extensibility gained typically outweigh the small overhead, especially compared to complex branching logic.</p>
+<p><strong>Q: Why does Big O matter for senior engineers?</strong></p>
+<p>A: Understanding complexity lets you predict scalability. A trading system processing millions of ticks can't afford O(n²) algorithms. Big O guides data structure choices and identifies bottlenecks before production.</p>
+<p><strong>Q: How does Big O relate to real-world performance?</strong></p>
+<p>A: Big O describes growth rate, not absolute speed. O(n) with 1000 operations might beat O(1) with 100 operations for small n. Always profile, but use Big O to predict scaling behavior.</p>
+<p><strong>Q: What's the difference between time and space complexity?</strong></p>
+<p>A: Time complexity measures computational steps; space complexity measures memory usage. Some algorithms trade space for speed (caching, hash tables) or vice versa (in-place sorting).</p>
+<p><strong>Q: How do you measure Big O for LINQ queries?</strong></p>
+<p>A: Depends on the operation and underlying collection. <code>.Where()</code> on IEnumerable<T> is O(n), <code>.First()</code> is O(1) on IList<T> but O(n) on IEnumerable<T>. Know your data structures.</p>
+<p><strong>Q: Can Big O help with database queries?</strong></p>
+<p>A: Yes. Missing indexes turn O(1) lookups into O(n) table scans. JOIN operations, sorting, and aggregations have complexity costs. Use execution plans to identify O(n²) nested loops.</p>
+<p><strong>Q: How does amortized complexity differ from worst-case?</strong></p>
+<p>A: Amortized spreads cost over many operations. List<T>.Add() is O(1) amortized (occasional resizing is O(n)), but worst-case for a single Add() is O(n). Most analyses use amortized for collections.</p>
+<p><strong>Q: What's the complexity of Dictionary<TKey, TValue> operations?</strong></p>
+<p>A: Average case: O(1) for Add, Remove, ContainsKey due to hashing. Worst case: O(n) if all keys hash to the same bucket (rare with good hash functions). EqualityComparer matters.</p>
+<p><strong>Q: How do you optimize O(n²) code?</strong></p>
+<p>A: Use hash sets for lookups (O(1) vs O(n)), sort then binary search (O(n log n) vs O(n²)), or use dictionaries to cache results. Avoid nested loops over the same dataset.</p>
+<p><strong>Q: What's the complexity of string concatenation in loops?</strong></p>
+<p>A: <code>str += value</code> in a loop is O(n²) because strings are immutable—each concat allocates a new string. Use StringBuilder for O(n) complexity.</p>
+<p><strong>Q: How does Big O apply to async/await?</strong></p>
+<p>A: Async doesn't change algorithmic complexity; it changes latency/throughput. Calling 1000 APIs sequentially is still O(n) time, but parallel execution (Task.WhenAll) improves wall-clock time, not Big O.</p>
       </article>
     </main>
   </div>

@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Senior .NET study guide for Strategy Pattern" />
+  <meta name="description" content="Senior .NET study guide for Space Complexity" />
   <meta name="theme-color" content="#0f172a" />
-  <title>Strategy Pattern | C# Interview Prep Cheat Sheet</title>
+  <title>Space Complexity | C# Interview Prep Cheat Sheet</title>
   <link rel="manifest" href="..\..\assets/manifest.webmanifest" />
   <script>
     (() => {
@@ -58,12 +58,12 @@
         <span class="chevron" aria-hidden="true"></span>
       </button>
       <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
-    </div><div class="sidebar-group" data-group="notes-big-o-complexity">
-      <button class="sidebar-group__header" type="button" aria-expanded="false">
+    </div><div class="sidebar-group is-open" data-group="notes-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
         <span>Notes / Big O Complexity</span>
         <span class="chevron" aria-hidden="true"></span>
       </button>
-      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/O1-Constant-Time.html">O1 Constant Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/OLogN-Logarithmic-Time.html">OLogN Logarithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON-Linear-Time.html">ON Linear Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON2-Quadratic-Time.html">ON2 Quadratic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ONLogN-Linearithmic-Time.html">ONLogN Linearithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/Space-Complexity.html">Space Complexity</a></li></ul>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="..\../notes/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/O1-Constant-Time.html">O1 Constant Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/OLogN-Logarithmic-Time.html">OLogN Logarithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON-Linear-Time.html">ON Linear Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON2-Quadratic-Time.html">ON2 Quadratic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ONLogN-Linearithmic-Time.html">ONLogN Linearithmic Time</a></li><li><a class="nav-link active" href="..\../notes/Big-O-Complexity/Space-Complexity.html">Space Complexity</a></li></ul>
     </div><div class="sidebar-group" data-group="notes-clean-architecture">
       <button class="sidebar-group__header" type="button" aria-expanded="false">
         <span>Notes / Clean Architecture</span>
@@ -76,12 +76,12 @@
         <span class="chevron" aria-hidden="true"></span>
       </button>
       <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/ICollection.html">ICollection</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IEnumerable.html">IEnumerable</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IList.html">IList</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IQueryable.html">IQueryable</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IReadOnly.html">IReadOnly</a></li></ul>
-    </div><div class="sidebar-group is-open" data-group="notes-design-patterns">
-      <button class="sidebar-group__header" type="button" aria-expanded="true">
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
         <span>Notes / Design Patterns</span>
         <span class="chevron" aria-hidden="true"></span>
       </button>
-      <ul class="sidebar-group__items"><li><a class="nav-link" href="..\../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link active" href="..\../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
     </div><div class="sidebar-group" data-group="notes-dry">
       <button class="sidebar-group__header" type="button" aria-expanded="false">
         <span>Notes / DRY</span>
@@ -135,72 +135,214 @@
     </nav>
     <main class="content">
       <article class="card">
-        <div class="breadcrumbs">notes\Design-Patterns\Strategy Pattern.md</div>
-        <h2>Strategy Pattern</h2>
+        <div class="breadcrumbs">notes\Big-O-Complexity\Space-Complexity.md</div>
+        <h2>Space Complexity</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#1-strategy-pattern-switching-trading-logic-at-runtime">⚙️ 1️⃣ Strategy Pattern — *Switching trading logic at runtime*</a></li><li class="level-3"><a href="#example-switching-between-aggressive-and-passive-strategies">🧩 Example — Switching between Aggressive and Passive strategies</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
-        <h1 id="1-strategy-pattern-switching-trading-logic-at-runtime">⚙️ 1️⃣ Strategy Pattern — <em>Switching trading logic at runtime</em></h1>
-<blockquote><p>Encapsulate different trading algorithms or execution strategies under a common interface.</p></blockquote>
-<p>---</p>
-<h3 id="example-switching-between-aggressive-and-passive-strategies">🧩 Example — Switching between Aggressive and Passive strategies</h3>
-<pre class="hljs"><code>public interface ITradeStrategy
+        <div class="toc"><ul class="toc-list"><li class="level-2"><a href="#space-complexity-memory-usage">**Space Complexity — Memory Usage**</a></li><li class="level-3"><a href="#bad-example">❌ Bad example:</a></li><li class="level-3"><a href="#good-example">✅ Good example:</a></li><li class="level-3"><a href="#in-place-operations-o1-space">🔥 In-place operations (O(1) space):</a></li><li class="level-3"><a href="#trading-space-for-time">🔥 Trading space for time:</a></li><li class="level-3"><a href="#recursive-space-complexity">🔥 Recursive space complexity:</a></li><li class="level-3"><a href="#avoiding-memory-leaks">🔥 Avoiding memory leaks:</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
+        <h2 id="space-complexity-memory-usage"><strong>Space Complexity — Memory Usage</strong></h2>
+<blockquote><p>"Space complexity measures memory used by an algorithm relative to input size—critical for large datasets."</p></blockquote>
+<h3 id="bad-example">❌ Bad example:</h3>
+<pre class="hljs"><code>public class TradeTransformer
 {
-    void Execute(Order order);
-}
-
-public class AggressiveStrategy : ITradeStrategy
-{
-    public void Execute(Order order)
+    public List&lt;Trade&gt; FilterAndTransform(List&lt;Trade&gt; trades)
     {
-        Console.WriteLine($&quot;[Aggressive] Sending order {order.Symbol} immediately at market price&quot;);
+        // O(n) space - creates 3 intermediate collections
+        var filtered = trades.Where(t =&gt; t.Amount &gt; 1000).ToList();     // copy 1
+        var sorted = filtered.OrderBy(t =&gt; t.Price).ToList();           // copy 2
+        var projected = sorted.Select(t =&gt; new Trade
+        {
+            Id = t.Id,
+            Symbol = t.Symbol,
+            Price = t.Price * 1.05m
+        }).ToList();                                                     // copy 3
+
+        return projected; // 3 full copies in memory simultaneously
     }
 }
 
-public class PassiveStrategy : ITradeStrategy
+// Processing 1 million trades: ~3 million Trade objects in memory</code></pre>
+<p>Multiple intermediate collections waste memory—especially bad for large datasets.</p>
+<h3 id="good-example">✅ Good example:</h3>
+<pre class="hljs"><code>public class TradeTransformer
 {
-    public void Execute(Order order)
+    public IEnumerable&lt;Trade&gt; FilterAndTransform(IEnumerable&lt;Trade&gt; trades)
     {
-        Console.WriteLine($&quot;[Passive] Placing limit order for {order.Symbol} to wait for better price&quot;);
+        // O(1) space (excluding result) - streaming with deferred execution
+        return trades
+            .Where(t =&gt; t.Amount &gt; 1000)          // no allocation
+            .OrderBy(t =&gt; t.Price)                // O(n) when enumerated
+            .Select(t =&gt; new Trade
+            {
+                Id = t.Id,
+                Symbol = t.Symbol,
+                Price = t.Price * 1.05m
+            });                                    // creates items on demand
+    }
+
+    // If materialization is needed, single allocation
+    public List&lt;Trade&gt; FilterAndTransformMaterialized(List&lt;Trade&gt; trades)
+    {
+        return trades
+            .Where(t =&gt; t.Amount &gt; 1000)
+            .OrderBy(t =&gt; t.Price)
+            .Select(t =&gt; new Trade
+            {
+                Id = t.Id,
+                Symbol = t.Symbol,
+                Price = t.Price * 1.05m
+            })
+            .ToList(); // single allocation for result
+    }
+}</code></pre>
+<p>👉 LINQ deferred execution avoids intermediate collections—only final result is allocated.</p>
+<h3 id="in-place-operations-o1-space">🔥 In-place operations (O(1) space):</h3>
+<pre class="hljs"><code>public class ArrayProcessor
+{
+    public void ReverseArray(int[] array)
+    {
+        // O(1) space - modifies in-place
+        int left = 0, right = array.Length - 1;
+        while (left &lt; right)
+        {
+            int temp = array[left];
+            array[left] = array[right];
+            array[right] = temp;
+            left++;
+            right--;
+        }
+    }
+
+    public void SortInPlace(List&lt;Trade&gt; trades)
+    {
+        // O(log n) space - quicksort recursion stack
+        trades.Sort((a, b) =&gt; a.Price.CompareTo(b.Price));
+    }
+}</code></pre>
+<p>👉 In-place algorithms minimize memory allocation—critical for embedded systems or low-latency paths.</p>
+<h3 id="trading-space-for-time">🔥 Trading space for time:</h3>
+<pre class="hljs"><code>public class PriceCache
+{
+    // O(n) space - cache all prices for O(1) lookups
+    private Dictionary&lt;string, decimal&gt; _priceCache = new();
+
+    public void LoadPrices(List&lt;(string Symbol, decimal Price)&gt; prices)
+    {
+        // O(n) space - store all prices
+        foreach (var (symbol, price) in prices)
+        {
+            _priceCache[symbol] = price;
+        }
+    }
+
+    public decimal GetPrice(string symbol)
+    {
+        // O(1) time - instant lookup
+        return _priceCache.TryGetValue(symbol, out var price) ? price : 0;
     }
 }
 
-public class Trader
+// Alternative: no cache, query each time
+public class PriceLookupNoCache
 {
-    private readonly ITradeStrategy _strategy;
+    private List&lt;(string Symbol, decimal Price)&gt; _prices;
 
-    public Trader(ITradeStrategy strategy) =&gt; _strategy = strategy;
+    public decimal GetPrice(string symbol)
+    {
+        // O(1) space, but O(n) time - must scan list
+        return _prices.FirstOrDefault(p =&gt; p.Symbol == symbol).Price;
+    }
+}</code></pre>
+<p>👉 Caching uses O(n) space but reduces lookups from O(n) to O(1) time.</p>
+<h3 id="recursive-space-complexity">🔥 Recursive space complexity:</h3>
+<pre class="hljs"><code>public class TreeProcessor
+{
+    public int CalculateDepth(TreeNode node)
+    {
+        // O(h) space - recursion stack depth
+        // h = tree height (log n for balanced, n for skewed)
+        if (node == null) return 0;
 
-    public void Trade(Order order) =&gt; _strategy.Execute(order);
-}
+        return 1 + Math.Max(
+            CalculateDepth(node.Left),
+            CalculateDepth(node.Right)
+        );
+    }
 
-// --- Usage ---
-var order = new Order { Symbol = &quot;EURUSD&quot;, Amount = 1000 };
-var trader = new Trader(new AggressiveStrategy());
-trader.Trade(order); // can switch strategy dynamically</code></pre>
-<p>✅ <strong>Why it matters:</strong></p>
-<ul><li>Switch trading behaviors (aggressive, passive, hedging) dynamically.</li><li>Avoids <code>if/else</code> hell.</li><li>New strategies plug in easily without code modification.</li></ul>
+    // Iterative alternative - explicit stack
+    public int CalculateDepthIterative(TreeNode root)
+    {
+        // O(h) space - explicit stack
+        if (root == null) return 0;
+
+        var stack = new Stack&lt;(TreeNode Node, int Depth)&gt;();
+        stack.Push((root, 1));
+        int maxDepth = 0;
+
+        while (stack.Count &gt; 0)
+        {
+            var (node, depth) = stack.Pop();
+            maxDepth = Math.Max(maxDepth, depth);
+
+            if (node.Left != null) stack.Push((node.Left, depth + 1));
+            if (node.Right != null) stack.Push((node.Right, depth + 1));
+        }
+
+        return maxDepth;
+    }
+}</code></pre>
+<p>👉 Recursion uses call stack—O(h) where h is recursion depth.</p>
+<h3 id="avoiding-memory-leaks">🔥 Avoiding memory leaks:</h3>
+<pre class="hljs"><code>public class EventProcessor
+{
+    // ❌ Bad: event handlers create memory leaks
+    public void ProcessEvents(IEventSource source)
+    {
+        source.OnEvent += (s, e) =&gt; HandleEvent(e); // captures &#39;this&#39;, prevents GC
+    }
+
+    // ✅ Good: explicit unsubscribe
+    public void ProcessEventsCorrectly(IEventSource source)
+    {
+        EventHandler&lt;Event&gt; handler = (s, e) =&gt; HandleEvent(e);
+        source.OnEvent += handler;
+
+        // Later: unsubscribe
+        source.OnEvent -= handler;
+    }
+
+    // ✅ Alternative: weak references for long-lived publishers
+    public void ProcessEventsWeak(IEventSource source)
+    {
+        var weakHandler = new WeakEventHandler(this, source);
+    }
+
+    private void HandleEvent(Event e) { /* ... */ }
+}</code></pre>
+<p>👉 Unmanaged subscriptions create unbounded space growth—always clean up.</p>
+<p>💡 <strong>In trading systems:</strong></p>
+<ul><li>Use <strong>streaming</strong> (IEnumerable<T>) for large result sets to avoid loading everything.</li><li>Cache <strong>frequently accessed</strong> reference data (symbols, limits) for O(1) access.</li><li>Profile memory with tools—identify allocations in hot paths causing GC pressure.</li></ul>
 <p>---</p>
 <h2 id="questions-answers">Questions & Answers</h2>
-<p><strong>Q: When do you apply the Strategy pattern?</strong></p>
-<p>A: When behavior varies by configuration, tenant, or runtime data (e.g., aggressive vs passive execution) and you want to encapsulate algorithms behind a shared interface instead of branching all over the codebase.</p>
-<p><strong>Q: How do you select a strategy at runtime?</strong></p>
-<p>A: Inject a factory that chooses the correct <code>ITradeStrategy</code> based on market conditions, order metadata, or feature flags. Strategies can be swapped via DI or resolved dynamically.</p>
-<p><strong>Q: How does Strategy differ from State?</strong></p>
-<p>A: Strategy changes behavior per request/order; State models transitions over time. Strategy is stateless and pluggable, whereas State encapsulates transitions inside the object.</p>
-<p><strong>Q: How do you unit test strategies?</strong></p>
-<p>A: Instantiate each strategy with fake dependencies and assert their behavior independently. Tests stay small because the interface isolates algorithms from the rest of the system.</p>
-<p><strong>Q: What happens when strategy selection itself becomes complex?</strong></p>
-<p>A: Combine Strategy with Factory or Specification. The factory encapsulates selection logic; strategies stay focused on execution.</p>
-<p><strong>Q: How do you prevent strategy explosion?</strong></p>
-<p>A: Group related variations via configuration or policy objects, and extract shared behavior into base classes or decorators. Only add new strategies when behavior genuinely differs.</p>
-<p><strong>Q: Can strategies maintain state?</strong></p>
-<p>A: They should be stateless or encapsulate state tightly (e.g., cached calculations). For long-lived state machines, consider the State pattern or per-order context objects passed into strategies.</p>
-<p><strong>Q: How does dependency injection help?</strong></p>
-<p>A: Register strategies and inject them via constructor or keyed services, enabling easy swapping in tests and runtime. Feature flags can toggle which strategy is resolved.</p>
-<p><strong>Q: How do strategies interact with telemetry?</strong></p>
-<p>A: Decorate strategies or wrap them with interceptors to log execution time and outcomes. This keeps telemetry consistent regardless of which strategy executed.</p>
-<p><strong>Q: What’s the performance impact?</strong></p>
-<p>A: Minimal—just an extra virtual call. The clarity and extensibility gained typically outweigh the small overhead, especially compared to complex branching logic.</p>
+<p><strong>Q: What's the difference between time and space complexity?</strong></p>
+<p>A: Time measures computational steps; space measures memory used. Some algorithms trade one for the other (caching uses space to save time).</p>
+<p><strong>Q: Does O(1) space mean no memory allocation?</strong></p>
+<p>A: No. O(1) means constant memory regardless of input size. A few variables or a fixed-size buffer is O(1), even if it allocates.</p>
+<p><strong>Q: What's the space complexity of LINQ queries?</strong></p>
+<p>A: Depends. Deferred queries (Where, Select) are O(1) until materialized. ToList() is O(n). OrderBy() allocates O(n) for sorting.</p>
+<p><strong>Q: How do I reduce space complexity?</strong></p>
+<p>A: (1) Use streaming instead of materializing, (2) Operate in-place when possible, (3) Reuse buffers with ArrayPool<T> or stackalloc.</p>
+<p><strong>Q: What's the space complexity of recursion?</strong></p>
+<p>A: O(d) where d is recursion depth. Each call adds a stack frame. Deep recursion can cause StackOverflowException—use iteration for unbounded depth.</p>
+<p><strong>Q: Can space complexity be negative?</strong></p>
+<p>A: No. O(0) doesn't exist. Minimum is O(1) (constant space for variables). Algorithms always use some memory.</p>
+<p><strong>Q: What's the space complexity of StringBuilder?</strong></p>
+<p>A: O(n) where n is the final string length. StringBuilder allocates a buffer and resizes as needed, but total space scales with content.</p>
+<p><strong>Q: How does GC relate to space complexity?</strong></p>
+<p>A: Space complexity measures peak memory. GC reclaims unused objects, but high allocation rates cause GC pressure. Minimize allocations in hot paths.</p>
+<p><strong>Q: What's ArrayPool<T> and when should I use it?</strong></p>
+<p>A: ArrayPool<T> reuses arrays to reduce allocations. Use for temporary buffers in high-frequency paths (parsing, serialization). Return arrays after use.</p>
+<p><strong>Q: How do I measure space complexity in practice?</strong></p>
+<p>A: Use profilers (dotMemory, PerfView) to track allocations. Look for O(n) growth in object count or heap size as input scales.</p>
       </article>
     </main>
   </div>

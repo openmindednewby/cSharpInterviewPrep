@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Senior .NET study guide for Strategy Pattern" />
+  <meta name="description" content="Senior .NET study guide for O1 Constant Time" />
   <meta name="theme-color" content="#0f172a" />
-  <title>Strategy Pattern | C# Interview Prep Cheat Sheet</title>
+  <title>O1 Constant Time | C# Interview Prep Cheat Sheet</title>
   <link rel="manifest" href="..\..\assets/manifest.webmanifest" />
   <script>
     (() => {
@@ -58,12 +58,12 @@
         <span class="chevron" aria-hidden="true"></span>
       </button>
       <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
-    </div><div class="sidebar-group" data-group="notes-big-o-complexity">
-      <button class="sidebar-group__header" type="button" aria-expanded="false">
+    </div><div class="sidebar-group is-open" data-group="notes-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
         <span>Notes / Big O Complexity</span>
         <span class="chevron" aria-hidden="true"></span>
       </button>
-      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/O1-Constant-Time.html">O1 Constant Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/OLogN-Logarithmic-Time.html">OLogN Logarithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON-Linear-Time.html">ON Linear Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON2-Quadratic-Time.html">ON2 Quadratic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ONLogN-Linearithmic-Time.html">ONLogN Linearithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/Space-Complexity.html">Space Complexity</a></li></ul>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="..\../notes/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link active" href="..\../notes/Big-O-Complexity/O1-Constant-Time.html">O1 Constant Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/OLogN-Logarithmic-Time.html">OLogN Logarithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON-Linear-Time.html">ON Linear Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON2-Quadratic-Time.html">ON2 Quadratic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ONLogN-Linearithmic-Time.html">ONLogN Linearithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/Space-Complexity.html">Space Complexity</a></li></ul>
     </div><div class="sidebar-group" data-group="notes-clean-architecture">
       <button class="sidebar-group__header" type="button" aria-expanded="false">
         <span>Notes / Clean Architecture</span>
@@ -76,12 +76,12 @@
         <span class="chevron" aria-hidden="true"></span>
       </button>
       <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/ICollection.html">ICollection</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IEnumerable.html">IEnumerable</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IList.html">IList</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IQueryable.html">IQueryable</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IReadOnly.html">IReadOnly</a></li></ul>
-    </div><div class="sidebar-group is-open" data-group="notes-design-patterns">
-      <button class="sidebar-group__header" type="button" aria-expanded="true">
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
         <span>Notes / Design Patterns</span>
         <span class="chevron" aria-hidden="true"></span>
       </button>
-      <ul class="sidebar-group__items"><li><a class="nav-link" href="..\../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link active" href="..\../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
     </div><div class="sidebar-group" data-group="notes-dry">
       <button class="sidebar-group__header" type="button" aria-expanded="false">
         <span>Notes / DRY</span>
@@ -135,72 +135,109 @@
     </nav>
     <main class="content">
       <article class="card">
-        <div class="breadcrumbs">notes\Design-Patterns\Strategy Pattern.md</div>
-        <h2>Strategy Pattern</h2>
+        <div class="breadcrumbs">notes\Big-O-Complexity\O1-Constant-Time.md</div>
+        <h2>O1 Constant Time</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#1-strategy-pattern-switching-trading-logic-at-runtime">⚙️ 1️⃣ Strategy Pattern — *Switching trading logic at runtime*</a></li><li class="level-3"><a href="#example-switching-between-aggressive-and-passive-strategies">🧩 Example — Switching between Aggressive and Passive strategies</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
-        <h1 id="1-strategy-pattern-switching-trading-logic-at-runtime">⚙️ 1️⃣ Strategy Pattern — <em>Switching trading logic at runtime</em></h1>
-<blockquote><p>Encapsulate different trading algorithms or execution strategies under a common interface.</p></blockquote>
-<p>---</p>
-<h3 id="example-switching-between-aggressive-and-passive-strategies">🧩 Example — Switching between Aggressive and Passive strategies</h3>
-<pre class="hljs"><code>public interface ITradeStrategy
+        <div class="toc"><ul class="toc-list"><li class="level-2"><a href="#o1-constant-time">**O(1) — Constant Time**</a></li><li class="level-3"><a href="#bad-example">❌ Bad example:</a></li><li class="level-3"><a href="#good-example">✅ Good example:</a></li><li class="level-3"><a href="#array-indexing">🔥 Array indexing:</a></li><li class="level-3"><a href="#stackqueue-operations">🔥 Stack/Queue operations:</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
+        <h2 id="o1-constant-time"><strong>O(1) — Constant Time</strong></h2>
+<blockquote><p>"Operation time is independent of input size—always takes the same number of steps."</p></blockquote>
+<h3 id="bad-example">❌ Bad example:</h3>
+<pre class="hljs"><code>public class OrderBook
 {
-    void Execute(Order order);
-}
+    private List&lt;Order&gt; _orders = new();
 
-public class AggressiveStrategy : ITradeStrategy
-{
-    public void Execute(Order order)
+    public Order FindOrderById(int orderId)
     {
-        Console.WriteLine($&quot;[Aggressive] Sending order {order.Symbol} immediately at market price&quot;);
+        // O(n) - must scan entire list
+        return _orders.FirstOrDefault(o =&gt; o.Id == orderId);
     }
 }
 
-public class PassiveStrategy : ITradeStrategy
+// Finding order in 1 million orders requires scanning all
+var order = orderBook.FindOrderById(12345); // slow!</code></pre>
+<p>Linear search scales poorly—doubling orders doubles search time.</p>
+<h3 id="good-example">✅ Good example:</h3>
+<pre class="hljs"><code>public class OrderBook
 {
-    public void Execute(Order order)
+    private Dictionary&lt;int, Order&gt; _orders = new();
+
+    public Order FindOrderById(int orderId)
     {
-        Console.WriteLine($&quot;[Passive] Placing limit order for {order.Symbol} to wait for better price&quot;);
+        // O(1) - hash table lookup
+        _orders.TryGetValue(orderId, out var order);
+        return order;
+    }
+
+    public void AddOrder(Order order)
+    {
+        // O(1) - hash table insert
+        _orders[order.Id] = order;
     }
 }
 
-public class Trader
+// Finding order in 1 million orders is instant
+var order = orderBook.FindOrderById(12345); // fast!</code></pre>
+<p>👉 Dictionary uses hashing for O(1) lookups regardless of size.</p>
+<h3 id="array-indexing">🔥 Array indexing:</h3>
+<pre class="hljs"><code>public class PriceHistory
 {
-    private readonly ITradeStrategy _strategy;
+    private decimal[] _prices = new decimal[1000];
 
-    public Trader(ITradeStrategy strategy) =&gt; _strategy = strategy;
+    public decimal GetPriceAt(int index)
+    {
+        // O(1) - direct memory access
+        return _prices[index];
+    }
 
-    public void Trade(Order order) =&gt; _strategy.Execute(order);
-}
+    public void SetPriceAt(int index, decimal price)
+    {
+        // O(1) - direct memory write
+        _prices[index] = price;
+    }
+}</code></pre>
+<p>👉 Array indexing is O(1)—memory address is calculated directly.</p>
+<h3 id="stackqueue-operations">🔥 Stack/Queue operations:</h3>
+<pre class="hljs"><code>public class TradeQueue
+{
+    private Queue&lt;Trade&gt; _pendingTrades = new();
 
-// --- Usage ---
-var order = new Order { Symbol = &quot;EURUSD&quot;, Amount = 1000 };
-var trader = new Trader(new AggressiveStrategy());
-trader.Trade(order); // can switch strategy dynamically</code></pre>
-<p>✅ <strong>Why it matters:</strong></p>
-<ul><li>Switch trading behaviors (aggressive, passive, hedging) dynamically.</li><li>Avoids <code>if/else</code> hell.</li><li>New strategies plug in easily without code modification.</li></ul>
+    public void EnqueueTrade(Trade trade)
+    {
+        // O(1) - add to end
+        _pendingTrades.Enqueue(trade);
+    }
+
+    public Trade ProcessNextTrade()
+    {
+        // O(1) - remove from front
+        return _pendingTrades.Dequeue();
+    }
+}</code></pre>
+<p>👉 Queue operations are O(1) because they maintain head/tail pointers.</p>
+<p>💡 <strong>In trading systems:</strong></p>
+<ul><li>Use Dictionary<T> for <strong>order lookups by ID</strong>—critical for cancel/modify operations.</li><li>Cache <strong>latest prices</strong> in arrays or dictionaries for O(1) access.</li><li>Use HashSet<T> for <strong>duplicate detection</strong> during order validation.</li></ul>
 <p>---</p>
 <h2 id="questions-answers">Questions & Answers</h2>
-<p><strong>Q: When do you apply the Strategy pattern?</strong></p>
-<p>A: When behavior varies by configuration, tenant, or runtime data (e.g., aggressive vs passive execution) and you want to encapsulate algorithms behind a shared interface instead of branching all over the codebase.</p>
-<p><strong>Q: How do you select a strategy at runtime?</strong></p>
-<p>A: Inject a factory that chooses the correct <code>ITradeStrategy</code> based on market conditions, order metadata, or feature flags. Strategies can be swapped via DI or resolved dynamically.</p>
-<p><strong>Q: How does Strategy differ from State?</strong></p>
-<p>A: Strategy changes behavior per request/order; State models transitions over time. Strategy is stateless and pluggable, whereas State encapsulates transitions inside the object.</p>
-<p><strong>Q: How do you unit test strategies?</strong></p>
-<p>A: Instantiate each strategy with fake dependencies and assert their behavior independently. Tests stay small because the interface isolates algorithms from the rest of the system.</p>
-<p><strong>Q: What happens when strategy selection itself becomes complex?</strong></p>
-<p>A: Combine Strategy with Factory or Specification. The factory encapsulates selection logic; strategies stay focused on execution.</p>
-<p><strong>Q: How do you prevent strategy explosion?</strong></p>
-<p>A: Group related variations via configuration or policy objects, and extract shared behavior into base classes or decorators. Only add new strategies when behavior genuinely differs.</p>
-<p><strong>Q: Can strategies maintain state?</strong></p>
-<p>A: They should be stateless or encapsulate state tightly (e.g., cached calculations). For long-lived state machines, consider the State pattern or per-order context objects passed into strategies.</p>
-<p><strong>Q: How does dependency injection help?</strong></p>
-<p>A: Register strategies and inject them via constructor or keyed services, enabling easy swapping in tests and runtime. Feature flags can toggle which strategy is resolved.</p>
-<p><strong>Q: How do strategies interact with telemetry?</strong></p>
-<p>A: Decorate strategies or wrap them with interceptors to log execution time and outcomes. This keeps telemetry consistent regardless of which strategy executed.</p>
-<p><strong>Q: What’s the performance impact?</strong></p>
-<p>A: Minimal—just an extra virtual call. The clarity and extensibility gained typically outweigh the small overhead, especially compared to complex branching logic.</p>
+<p><strong>Q: Are all dictionary operations O(1)?</strong></p>
+<p>A: Average case yes, worst case O(n) if all keys hash to the same bucket. Good hash functions and load factor management keep this rare.</p>
+<p><strong>Q: What's the complexity of List<T>[index]?</strong></p>
+<p>A: O(1). Lists are backed by arrays, so indexing calculates memory address directly: <code>baseAddress + (index * elementSize)</code>.</p>
+<p><strong>Q: Is accessing a property O(1)?</strong></p>
+<p>A: Usually, if it's an auto-property or simple field access. But if the getter runs complex logic or queries a database, it could be O(n) or worse.</p>
+<p><strong>Q: What's the difference between O(1) and constant time?</strong></p>
+<p>A: They're the same. O(1) means constant time—the number of operations doesn't depend on input size.</p>
+<p><strong>Q: Can loops ever be O(1)?</strong></p>
+<p>A: Yes, if the loop count is fixed and doesn't depend on input size. For example, <code>for (int i = 0; i &lt; 10; i++)</code> is O(1) even though it loops.</p>
+<p><strong>Q: What's the complexity of checking if a HashSet<T> contains an item?</strong></p>
+<p>A: O(1) average case. HashSet uses hashing, same as Dictionary. Worst case O(n) with hash collisions, but rare.</p>
+<p><strong>Q: Is StringBuilder.Append() O(1)?</strong></p>
+<p>A: Amortized O(1). Occasional resizing costs O(n), but averaged over many appends, each append is effectively O(1).</p>
+<p><strong>Q: What's the complexity of getting List<T>.Count?</strong></p>
+<p>A: O(1). List<T> maintains a cached count that updates on Add/Remove, so accessing Count is just a field read.</p>
+<p><strong>Q: Can database queries be O(1)?</strong></p>
+<p>A: Yes, with proper indexing. A lookup by primary key or unique index is O(1) effectively (hash or B-tree root access). Without indexes, it's O(n).</p>
+<p><strong>Q: What's the tradeoff for O(1) operations?</strong></p>
+<p>A: Often space. Dictionaries use more memory than lists. Caching enables O(1) reads but increases memory footprint. Balance time vs space based on requirements.</p>
       </article>
     </main>
   </div>
