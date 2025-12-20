@@ -124,7 +124,7 @@
         <span>Practice</span>
         <span class="chevron" aria-hidden="true"></span>
       </button>
-      <ul class="sidebar-group__items"><li><a class="nav-link" href="../practice/answers.html">Answers</a></li><li><a class="nav-link" href="../practice/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link active" href="../practice/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="../practice/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="../practice/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="../practice/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="../practice/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="../practice/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="../practice/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="../practice/index.html">Practice</a></li><li><a class="nav-link" href="../practice/questions.html">Questions</a></li><li><a class="nav-link" href="../practice/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="../practice/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="../practice/system-design.html">System Design</a></li><li><a class="nav-link" href="../practice/trading-domain.html">Trading Domain</a></li></ul>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="../practice/answers.html">Answers</a></li><li><a class="nav-link" href="../practice/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link active" href="../practice/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="../practice/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="../practice/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="../practice/csharp-fundamentals.html">Csharp Fundamentals</a></li><li><a class="nav-link" href="../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="../practice/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="../practice/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="../practice/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="../practice/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="../practice/index.html">Practice</a></li><li><a class="nav-link" href="../practice/questions.html">Questions</a></li><li><a class="nav-link" href="../practice/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="../practice/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="../practice/system-design.html">System Design</a></li><li><a class="nav-link" href="../practice/trading-domain.html">Trading Domain</a></li></ul>
     </div></div></div>
       </div>
     </nav>
@@ -133,7 +133,7 @@
         <div class="breadcrumbs">practice\async-resilience.md</div>
         <h2>Async Resilience</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#async-resilience-practice-exercises">Async & Resilience Practice Exercises</a></li><li class="level-2"><a href="#foundational-async-questions">Foundational Async Questions</a></li><li class="level-2"><a href="#intermediate-async-patterns">Intermediate Async Patterns</a></li><li class="level-2"><a href="#advanced-async-patterns">Advanced Async Patterns</a></li><li class="level-2"><a href="#task-coordination-patterns">Task Coordination Patterns</a></li><li class="level-2"><a href="#error-handling-resilience">Error Handling & Resilience</a></li><li class="level-2"><a href="#real-world-scenarios">Real-World Scenarios</a></li></ul></div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#async-resilience-practice-exercises">Async & Resilience Practice Exercises</a></li><li class="level-2"><a href="#foundational-async-questions">Foundational Async Questions</a></li><li class="level-2"><a href="#intermediate-async-patterns">Intermediate Async Patterns</a></li><li class="level-2"><a href="#advanced-async-patterns">Advanced Async Patterns</a></li><li class="level-2"><a href="#task-coordination-patterns">Task Coordination Patterns</a></li><li class="level-2"><a href="#error-handling-resilience">Error Handling & Resilience</a></li><li class="level-2"><a href="#real-world-scenarios">Real-World Scenarios</a></li><li class="level-2"><a href="#advanced-resilience-scenarios">Advanced Resilience Scenarios</a></li></ul></div>
         <h1 id="async-resilience-practice-exercises">Async & Resilience Practice Exercises</h1>
 <p>Master asynchronous programming, concurrency, and resilient patterns through comprehensive exercises.</p>
 <p>---</p>
@@ -931,7 +931,92 @@ public record DownloadProgress
         : 0;
 }</code></pre>
 <p>---</p>
-<p><strong>Total Exercises: 30+</strong></p>
+<h2 id="advanced-resilience-scenarios">Advanced Resilience Scenarios</h2>
+<p><strong>Q: How do you run tasks in parallel but keep partial results when some fail?</strong></p>
+<p>A: Use <code>Task.WhenAll</code> with try/catch and record successes and failures.</p>
+<pre class="language-csharp"><code class="language-csharp">public static async Task&lt;(List&lt;T&gt; Results, List&lt;Exception&gt; Errors)&gt; WhenAllSafe&lt;T&gt;(IEnumerable&lt;Task&lt;T&gt;&gt; tasks)
+{
+    var results = new List&lt;T&gt;();
+    var errors = new List&lt;Exception&gt;();
+
+    foreach (var task in tasks)
+    {
+        try
+        {
+            results.Add(await task);
+        }
+        catch (Exception ex)
+        {
+            errors.Add(ex);
+        }
+    }
+
+    return (results, errors);
+}</code></pre>
+<p><strong>Q: Implement bounded parallelism using <code>Parallel.ForEachAsync</code>.</strong></p>
+<p>A: Use <code>MaxDegreeOfParallelism</code> to control concurrency.</p>
+<pre class="language-csharp"><code class="language-csharp">await Parallel.ForEachAsync(items, new ParallelOptions
+{
+    MaxDegreeOfParallelism = 4,
+    CancellationToken = ct
+}, async (item, token) =&gt;
+{
+    await ProcessAsync(item, token);
+});</code></pre>
+<p><strong>Q: Add jitter to retry backoff to avoid thundering herds.</strong></p>
+<p>A: Randomize the delay window per attempt.</p>
+<pre class="language-csharp"><code class="language-csharp">var rng = Random.Shared;
+var delay = TimeSpan.FromMilliseconds(initialDelayMs * Math.Pow(2, attempt));
+var jitter = TimeSpan.FromMilliseconds(rng.Next(0, 100));
+await Task.Delay(delay + jitter, ct);</code></pre>
+<p><strong>Q: Stream results with <code>IAsyncEnumerable</code> and cancellation.</strong></p>
+<p>A: Use <code>yield return</code> with <code>CancellationToken</code> support.</p>
+<pre class="language-csharp"><code class="language-csharp">public static async IAsyncEnumerable&lt;Order&gt; StreamOrdersAsync(
+    IOrderSource source,
+    [EnumeratorCancellation] CancellationToken ct)
+{
+    await foreach (var order in source.ReadAllAsync(ct))
+    {
+        yield return order;
+    }
+}</code></pre>
+<p><strong>Q: Design a simple circuit breaker state machine.</strong></p>
+<p>A: Track failures and open the circuit for a timeout window.</p>
+<pre class="language-csharp"><code class="language-csharp">public sealed class SimpleCircuitBreaker
+{
+    private int _failures;
+    private DateTime _openedAt;
+    private readonly int _threshold;
+    private readonly TimeSpan _openDuration;
+
+    public SimpleCircuitBreaker(int threshold, TimeSpan openDuration)
+    {
+        _threshold = threshold;
+        _openDuration = openDuration;
+    }
+
+    public bool CanExecute()
+    {
+        if (_failures &lt; _threshold)
+            return true;
+
+        return DateTime.UtcNow - _openedAt &gt; _openDuration;
+    }
+
+    public void RecordFailure()
+    {
+        _failures += 1;
+        if (_failures == _threshold)
+            _openedAt = DateTime.UtcNow;
+    }
+
+    public void RecordSuccess()
+    {
+        _failures = 0;
+    }
+}</code></pre>
+<p>---</p>
+<p><strong>Total Exercises: 40+</strong></p>
 <p>Focus on understanding cancellation, error handling, and coordination patterns!</p>
       </article>
     </main>

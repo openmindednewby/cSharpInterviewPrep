@@ -3157,6 +3157,132 @@ public class FixedArrayProcessor
 
 ---
 
+## Supplemental Practice Prompts
+
+**Q: Implement a token bucket rate limiter (single-threaded).**
+
+A: Use a refill timer and allow up to capacity tokens.
+
+```csharp
+public sealed class TokenBucket
+{
+    private readonly int _capacity;
+    private readonly int _refillPerSecond;
+    private int _tokens;
+    private DateTime _lastRefill;
+
+    public TokenBucket(int capacity, int refillPerSecond)
+    {
+        _capacity = capacity;
+        _refillPerSecond = refillPerSecond;
+        _tokens = capacity;
+        _lastRefill = DateTime.UtcNow;
+    }
+
+    public bool TryConsume()
+    {
+        Refill();
+        if (_tokens <= 0) return false;
+        _tokens -= 1;
+        return true;
+    }
+
+    private void Refill()
+    {
+        var now = DateTime.UtcNow;
+        var seconds = (int)(now - _lastRefill).TotalSeconds;
+        if (seconds <= 0) return;
+        _tokens = Math.Min(_capacity, _tokens + seconds * _refillPerSecond);
+        _lastRefill = now;
+    }
+}
+```
+
+**Q: Build a bounded in-memory queue with backpressure signals.**
+
+A: Track capacity and return a boolean to indicate enqueue success.
+
+```csharp
+public sealed class BoundedQueue<T>
+{
+    private readonly Queue<T> _queue = new();
+    private readonly int _capacity;
+
+    public BoundedQueue(int capacity) => _capacity = capacity;
+
+    public bool TryEnqueue(T item)
+    {
+        if (_queue.Count >= _capacity) return false;
+        _queue.Enqueue(item);
+        return true;
+    }
+
+    public bool TryDequeue(out T? item) => _queue.TryDequeue(out item);
+}
+```
+
+**Q: Implement a simple TTL cache with expiration.**
+
+A: Store expiration and evict on read.
+
+```csharp
+public sealed class TtlCache<TKey, TValue>
+{
+    private readonly Dictionary<TKey, (TValue Value, DateTime ExpiresAt)> _map = new();
+
+    public void Set(TKey key, TValue value, TimeSpan ttl)
+    {
+        _map[key] = (value, DateTime.UtcNow.Add(ttl));
+    }
+
+    public bool TryGet(TKey key, out TValue value)
+    {
+        if (_map.TryGetValue(key, out var entry) && entry.ExpiresAt > DateTime.UtcNow)
+        {
+            value = entry.Value;
+            return true;
+        }
+
+        _map.Remove(key);
+        value = default!;
+        return false;
+    }
+}
+```
+
+**Q: Parse a CSV stream into records without loading the full file.**
+
+A: Read line-by-line and yield rows.
+
+```csharp
+public static IEnumerable<string[]> ReadCsv(Stream stream)
+{
+    using var reader = new StreamReader(stream);
+    string? line;
+    while ((line = reader.ReadLine()) is not null)
+    {
+        yield return line.Split(',');
+    }
+}
+```
+
+**Q: Compute a rolling VWAP from a stream of trades.**
+
+A: Maintain running sums of price * volume and volume.
+
+```csharp
+decimal notional = 0m;
+decimal volume = 0m;
+foreach (var trade in trades)
+{
+    notional += trade.Price * trade.Volume;
+    volume += trade.Volume;
+    var vwap = volume == 0 ? 0 : notional / volume;
+}
+```
+
+---
+
 ## Summary
 
 This collection contains 50+ comprehensive coding challenges covering:
@@ -3182,6 +3308,6 @@ This collection contains 50+ comprehensive coding challenges covering:
 
 ---
 
-**Total Exercises: 50**
+**Total Exercises: 55+**
 
 Work through these systematically to build strong coding interview skills!

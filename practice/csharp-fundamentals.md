@@ -1,0 +1,247 @@
+# C# Fundamentals Practice Exercises
+
+Build strong core language fundamentals through targeted exercises.
+
+---
+
+## Types, Memory, and Immutability
+
+**Q: Explain the difference between value types and reference types with a simple example.**
+
+A: Value types copy the data; reference types copy the reference. Mutations affect only the copied value, but references point to the same object.
+
+```csharp
+var a = new Point { X = 1, Y = 2 };
+var b = a; // copy
+b.X = 99;
+// a.X is still 1
+
+var c = new Person { Name = "Ana" };
+var d = c; // reference copy
+d.Name = "Zoe";
+// c.Name is now "Zoe"
+```
+
+**Q: When should you choose a struct over a class?**
+
+A: Use structs for small, immutable, short-lived data without inheritance. Use classes for identity, polymorphism, or large mutable state.
+
+```csharp
+public readonly struct Money
+{
+    public Money(decimal amount, string currency)
+    {
+        Amount = amount;
+        Currency = currency;
+    }
+
+    public decimal Amount { get; }
+    public string Currency { get; }
+}
+```
+
+**Q: Demonstrate how to reduce copying with `in` parameters.**
+
+A: Use `in` for large structs to avoid defensive copies.
+
+```csharp
+public static decimal CalculateTax(in Money price, decimal rate)
+{
+    return price.Amount * rate;
+}
+```
+
+---
+
+## Nullability and Defensive Programming
+
+**Q: Show how nullable reference types prevent null bugs.**
+
+A: Enable nullability and use `?` for optional references.
+
+```csharp
+#nullable enable
+public string FormatName(string? name)
+{
+    if (string.IsNullOrWhiteSpace(name))
+        return "Unknown";
+
+    return name.Trim();
+}
+```
+
+**Q: Write a guard clause extension for argument validation.**
+
+A: Throw early for invalid inputs.
+
+```csharp
+public static class Guard
+{
+    public static string NotNullOrEmpty(string? value, string paramName)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            throw new ArgumentException("Value is required", paramName);
+        return value;
+    }
+}
+```
+
+---
+
+## Generics and Constraints
+
+**Q: Implement a generic method with a constraint for a parameterless constructor.**
+
+A: Use `where T : new()` when the type must be created.
+
+```csharp
+public static T Create<T>() where T : new()
+{
+    return new T();
+}
+```
+
+**Q: Write a repository interface with type constraints.**
+
+A: Constrain to a base entity so the repository can rely on shared properties.
+
+```csharp
+public interface IRepository<T> where T : Entity
+{
+    Task<T?> GetByIdAsync(int id, CancellationToken ct = default);
+    Task AddAsync(T entity, CancellationToken ct = default);
+}
+
+public abstract class Entity
+{
+    public int Id { get; set; }
+}
+```
+
+---
+
+## Delegates, Events, and Lambdas
+
+**Q: Show a simple event pattern with `EventHandler<T>`.**
+
+A: Use events to publish changes without tight coupling.
+
+```csharp
+public class PriceTicker
+{
+    public event EventHandler<decimal>? PriceUpdated;
+
+    public void Update(decimal price)
+    {
+        PriceUpdated?.Invoke(this, price);
+    }
+}
+```
+
+**Q: When would you prefer `Func<T>` over a custom delegate type?**
+
+A: Use `Func` for small, simple signatures; custom delegates for clarity and documentation.
+
+```csharp
+Func<int, int> square = x => x * x;
+```
+
+---
+
+## Pattern Matching and Switch Expressions
+
+**Q: Use pattern matching to categorize input.**
+
+A: Switch expressions make branching concise.
+
+```csharp
+public static string Classify(object input) => input switch
+{
+    null => "null",
+    int i when i < 0 => "negative int",
+    int => "positive int",
+    string s when s.Length == 0 => "empty string",
+    string => "string",
+    _ => "other"
+};
+```
+
+---
+
+## Records and Immutability
+
+**Q: Create a record and use `with` to clone it.**
+
+A: Records simplify immutable data structures.
+
+```csharp
+public record Trade(string Symbol, decimal Price, int Quantity);
+
+var original = new Trade("EURUSD", 1.0912m, 1000);
+var updated = original with { Price = 1.0920m };
+```
+
+---
+
+## Exceptions and Error Flow
+
+**Q: Show how to throw and wrap exceptions with context.**
+
+A: Use specific exceptions and include context for debugging.
+
+```csharp
+public static Order FindOrder(int id, IDictionary<int, Order> map)
+{
+    if (!map.TryGetValue(id, out var order))
+        throw new KeyNotFoundException($"Order {id} was not found.");
+
+    return order;
+}
+```
+
+---
+
+## Access Modifiers and Encapsulation
+
+**Q: Summarize access modifiers and demonstrate a safe class design.**
+
+A: Use private fields, expose behavior through public methods, and keep invariants inside.
+
+```csharp
+public class Position
+{
+    private decimal _quantity;
+
+    public decimal Quantity => _quantity;
+
+    public void Add(decimal quantity)
+    {
+        if (quantity <= 0)
+            throw new ArgumentOutOfRangeException(nameof(quantity));
+
+        _quantity += quantity;
+    }
+}
+```
+
+---
+
+## Collections and Initialization
+
+**Q: Show object and collection initialization with target-typed `new`.**
+
+A: Use concise syntax for readability.
+
+```csharp
+var orders = new List<Order>
+{
+    new("A", 10),
+    new("B", 20)
+};
+```
+
+---
+
+**Total Exercises: 12+**
+
+Practice each exercise by writing the code and explaining your choices out loud.

@@ -124,7 +124,7 @@
         <span>Practice</span>
         <span class="chevron" aria-hidden="true"></span>
       </button>
-      <ul class="sidebar-group__items"><li><a class="nav-link" href="../practice/answers.html">Answers</a></li><li><a class="nav-link" href="../practice/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="../practice/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="../practice/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="../practice/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="../practice/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="../practice/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="../practice/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="../practice/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="../practice/index.html">Practice</a></li><li><a class="nav-link" href="../practice/questions.html">Questions</a></li><li><a class="nav-link" href="../practice/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="../practice/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="../practice/system-design.html">System Design</a></li><li><a class="nav-link active" href="../practice/trading-domain.html">Trading Domain</a></li></ul>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="../practice/answers.html">Answers</a></li><li><a class="nav-link" href="../practice/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="../practice/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="../practice/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="../practice/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="../practice/csharp-fundamentals.html">Csharp Fundamentals</a></li><li><a class="nav-link" href="../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="../practice/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="../practice/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="../practice/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="../practice/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="../practice/index.html">Practice</a></li><li><a class="nav-link" href="../practice/questions.html">Questions</a></li><li><a class="nav-link" href="../practice/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="../practice/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="../practice/system-design.html">System Design</a></li><li><a class="nav-link active" href="../practice/trading-domain.html">Trading Domain</a></li></ul>
     </div></div></div>
       </div>
     </nav>
@@ -133,7 +133,7 @@
         <div class="breadcrumbs">practice\trading-domain.md</div>
         <h2>Trading Domain</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#trading-domain-practice-exercises">Trading Domain Practice Exercises</a></li><li class="level-2"><a href="#foundational-questions">Foundational Questions</a></li><li class="level-2"><a href="#trade-lifecycle-management">Trade Lifecycle Management</a></li><li class="level-2"><a href="#mt4mt5-integration">MT4/MT5 Integration</a></li><li class="level-2"><a href="#market-data-processing">Market Data Processing</a></li><li class="level-2"><a href="#risk-management">Risk Management</a></li></ul></div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#trading-domain-practice-exercises">Trading Domain Practice Exercises</a></li><li class="level-2"><a href="#foundational-questions">Foundational Questions</a></li><li class="level-2"><a href="#trade-lifecycle-management">Trade Lifecycle Management</a></li><li class="level-2"><a href="#mt4mt5-integration">MT4/MT5 Integration</a></li><li class="level-2"><a href="#market-data-processing">Market Data Processing</a></li><li class="level-2"><a href="#risk-management">Risk Management</a></li><li class="level-2"><a href="#advanced-trading-scenarios">Advanced Trading Scenarios</a></li></ul></div>
         <h1 id="trading-domain-practice-exercises">Trading Domain Practice Exercises</h1>
 <p>Master forex trading concepts, MT4/MT5 integration, market data processing, and risk management for financial trading systems.</p>
 <p>---</p>
@@ -1398,7 +1398,19 @@ public class EnhancedTickProcessor
     }
 }</code></pre>
 <p>---</p>
-<p><strong>Total Exercises: 25+</strong></p>
+<h2 id="advanced-trading-scenarios">Advanced Trading Scenarios</h2>
+<p><strong>Q: Explain slippage and how you would measure it.</strong></p>
+<p>A: Slippage is the difference between expected and executed price. Measure average slippage per symbol and market condition, and alert when it exceeds thresholds.</p>
+<p><strong>Q: How do you handle market data bursts without dropping critical updates?</strong></p>
+<p>A: Use conflation (latest per symbol), prioritize high-value symbols, and stream snapshots plus deltas.</p>
+<p><strong>Q: Design an order book snapshot + delta model.</strong></p>
+<p>A: Publish a full snapshot periodically and send incremental updates in between, keyed by sequence numbers for replay and gap detection.</p>
+<p><strong>Q: Implement a real-time PnL calculation at the account level.</strong></p>
+<p>A: Aggregate position PnL plus realized PnL; update on price ticks and trade fills.</p>
+<p><strong>Q: Describe a reconciliation workflow for executed trades.</strong></p>
+<p>A: Compare internal fills to broker confirmations, identify mismatches, and run compensating adjustments with audit logs.</p>
+<p>---</p>
+<p><strong>Total Exercises: 30+</strong></p>
 <p>Master trading domain concepts for building robust, compliant trading platforms!</p>
       </article>
     </main>

@@ -1336,6 +1336,30 @@ public class StopOutService : BackgroundService
 
 ---
 
-**Total Exercises: 25+**
+## Advanced Trading Scenarios
+
+**Q: Explain slippage and how you would measure it.**
+
+A: Slippage is the difference between expected and executed price. Measure average slippage per symbol and market condition, and alert when it exceeds thresholds.
+
+**Q: How do you handle market data bursts without dropping critical updates?**
+
+A: Use conflation (latest per symbol), prioritize high-value symbols, and stream snapshots plus deltas.
+
+**Q: Design an order book snapshot + delta model.**
+
+A: Publish a full snapshot periodically and send incremental updates in between, keyed by sequence numbers for replay and gap detection.
+
+**Q: Implement a real-time PnL calculation at the account level.**
+
+A: Aggregate position PnL plus realized PnL; update on price ticks and trade fills.
+
+**Q: Describe a reconciliation workflow for executed trades.**
+
+A: Compare internal fills to broker confirmations, identify mismatches, and run compensating adjustments with audit logs.
+
+---
+
+**Total Exercises: 30+**
 
 Master trading domain concepts for building robust, compliant trading platforms!

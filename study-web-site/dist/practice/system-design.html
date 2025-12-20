@@ -124,7 +124,7 @@
         <span>Practice</span>
         <span class="chevron" aria-hidden="true"></span>
       </button>
-      <ul class="sidebar-group__items"><li><a class="nav-link" href="../practice/answers.html">Answers</a></li><li><a class="nav-link" href="../practice/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="../practice/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="../practice/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="../practice/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="../practice/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="../practice/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="../practice/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="../practice/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="../practice/index.html">Practice</a></li><li><a class="nav-link" href="../practice/questions.html">Questions</a></li><li><a class="nav-link" href="../practice/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="../practice/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link active" href="../practice/system-design.html">System Design</a></li><li><a class="nav-link" href="../practice/trading-domain.html">Trading Domain</a></li></ul>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="../practice/answers.html">Answers</a></li><li><a class="nav-link" href="../practice/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="../practice/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="../practice/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="../practice/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="../practice/csharp-fundamentals.html">Csharp Fundamentals</a></li><li><a class="nav-link" href="../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="../practice/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="../practice/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="../practice/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="../practice/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="../practice/index.html">Practice</a></li><li><a class="nav-link" href="../practice/questions.html">Questions</a></li><li><a class="nav-link" href="../practice/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="../practice/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link active" href="../practice/system-design.html">System Design</a></li><li><a class="nav-link" href="../practice/trading-domain.html">Trading Domain</a></li></ul>
     </div></div></div>
       </div>
     </nav>
@@ -133,7 +133,7 @@
         <div class="breadcrumbs">practice\system-design.md</div>
         <h2>System Design</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#system-design-practice-exercises">System Design Practice Exercises</a></li><li class="level-2"><a href="#foundational-questions">Foundational Questions</a></li><li class="level-2"><a href="#microservices-architecture">Microservices Architecture</a></li><li class="level-2"><a href="#cqrs-event-sourcing">CQRS & Event Sourcing</a></li><li class="level-2"><a href="#caching-strategies">Caching Strategies</a></li><li class="level-2"><a href="#database-scaling">Database Scaling</a></li><li class="level-2"><a href="#high-availability-patterns">High Availability Patterns</a></li><li class="level-2"><a href="#observability">Observability</a></li></ul></div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#system-design-practice-exercises">System Design Practice Exercises</a></li><li class="level-2"><a href="#foundational-questions">Foundational Questions</a></li><li class="level-2"><a href="#microservices-architecture">Microservices Architecture</a></li><li class="level-2"><a href="#cqrs-event-sourcing">CQRS & Event Sourcing</a></li><li class="level-2"><a href="#caching-strategies">Caching Strategies</a></li><li class="level-2"><a href="#database-scaling">Database Scaling</a></li><li class="level-2"><a href="#high-availability-patterns">High Availability Patterns</a></li><li class="level-2"><a href="#observability">Observability</a></li><li class="level-2"><a href="#advanced-system-design-prompts">Advanced System Design Prompts</a></li></ul></div>
         <h1 id="system-design-practice-exercises">System Design Practice Exercises</h1>
 <p>Master distributed systems architecture, scalability patterns, and real-world system design for trading and financial applications.</p>
 <p>---</p>
@@ -1251,7 +1251,19 @@ public class CorrelationIdDelegatingHandler : DelegatingHandler
 services.AddHttpClient(&quot;DownstreamService&quot;)
     .AddHttpMessageHandler&lt;CorrelationIdDelegatingHandler&gt;();</code></pre>
 <p>---</p>
-<p><strong>Total Exercises: 25+</strong></p>
+<h2 id="advanced-system-design-prompts">Advanced System Design Prompts</h2>
+<p><strong>Q: Design a multi-region failover strategy for a trading platform.</strong></p>
+<p>A: Use active-active for read-heavy services, active-passive for write-heavy, with DNS failover, replicated data stores, and idempotent writes.</p>
+<p><strong>Q: How would you shard a multi-tenant database for scale?</strong></p>
+<p>A: Choose a shard key (tenant id), use consistent hashing, route via a shard map, and ensure cross-shard queries are minimized or handled via read models.</p>
+<p><strong>Q: Describe a cache invalidation strategy for price snapshots.</strong></p>
+<p>A: Use short TTLs, write-through cache for authoritative updates, and a pub/sub channel to invalidate per-symbol keys on updates.</p>
+<p><strong>Q: When would you use event sourcing versus state storage?</strong></p>
+<p>A: Event sourcing is useful for auditability and replay; state storage is simpler for CRUD-heavy systems. Consider storage costs, query complexity, and regulatory requirements.</p>
+<p><strong>Q: How do you handle backpressure in a streaming system?</strong></p>
+<p>A: Apply bounded queues, adaptive batching, and consumer-side flow control. Drop or coalesce low-priority updates when queues exceed thresholds.</p>
+<p>---</p>
+<p><strong>Total Exercises: 30+</strong></p>
 <p>Master these patterns to design scalable, resilient distributed systems!</p>
       </article>
     </main>

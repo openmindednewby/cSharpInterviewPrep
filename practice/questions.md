@@ -2,6 +2,9 @@
 
 Use these prompts while working through the [prep plan](../prep-plan.md). Aim to answer out loud and capture key points in your notes.
 
+For the organized, topic-by-topic version, start with the [Practice Index](index.md). This file remains as an all-in-one prompt list so none of the original questions are lost.
+
+
 ---
 
 ## LINQ & Collections

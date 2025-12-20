@@ -1467,6 +1467,96 @@ public class DynamicCorsMiddleware
 
 ---
 
-**Total Exercises: 35+**
+## Advanced API Scenarios
+
+**Q: Implement ETag support for GET endpoints with conditional requests.**
+
+A: Compute a hash and honor `If-None-Match`.
+
+```csharp
+app.MapGet("/orders/{id}", async (int id, HttpContext context, IOrderRepo repo) =>
+{
+    var order = await repo.GetByIdAsync(id);
+    if (order is null)
+        return Results.NotFound();
+
+    var etag = $"\"{order.UpdatedAt.Ticks}\"";
+    if (context.Request.Headers.IfNoneMatch == etag)
+        return Results.StatusCode(StatusCodes.Status304NotModified);
+
+    context.Response.Headers.ETag = etag;
+    return Results.Ok(order);
+});
+```
+
+**Q: Enforce request body size limits for upload endpoints.**
+
+A: Use `RequestSizeLimit` attributes or middleware.
+
+```csharp
+[RequestSizeLimit(2 * 1024 * 1024)]
+[HttpPost("upload")]
+public async Task<IActionResult> Upload(IFormFile file)
+{
+    // ...
+    return Ok();
+}
+```
+
+**Q: Create a readiness endpoint that checks dependencies.**
+
+A: Use health checks with tags.
+
+```csharp
+builder.Services.AddHealthChecks()
+    .AddSqlServer(connectionString, name: "db")
+    .AddRedis(redisConnection, name: "cache");
+
+app.MapHealthChecks("/health/ready", new HealthCheckOptions
+{
+    Predicate = check => check.Tags.Contains("ready")
+});
+```
+
+**Q: Implement resource-based authorization with policies.**
+
+A: Use `IAuthorizationService` in handlers.
+
+```csharp
+app.MapGet("/accounts/{id}", async (
+    int id,
+    ClaimsPrincipal user,
+    IAuthorizationService auth,
+    IAccountRepo repo) =>
+{
+    var account = await repo.GetByIdAsync(id);
+    var result = await auth.AuthorizeAsync(user, account, "CanReadAccount");
+    return result.Succeeded ? Results.Ok(account) : Results.Forbid();
+});
+```
+
+**Q: Apply per-tenant rate limits with a custom policy.**
+
+A: Partition limits by tenant identifier.
+
+```csharp
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddPolicy("per-tenant", context =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: context.User.FindFirst("tenant")?.Value ?? "anon",
+            factory: _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 60,
+                Window = TimeSpan.FromMinutes(1)
+            }));
+});
+
+app.UseRateLimiter();
+```
+
+---
+
+**Total Exercises: 45+**
 
 Master these patterns to build robust, scalable APIs with proper lifecycle management!

@@ -621,6 +621,68 @@ public static IEnumerable<List<Product>> FindCombinations(
 
 ---
 
-**Total Exercises: 30+**
+## Expert Extensions
+
+**Q: Use `GroupJoin` to build a customer summary with order counts and last order date.**
+
+A: GroupJoin collects orders per customer without losing customers who have no orders.
+
+```csharp
+var summaries = customers
+    .GroupJoin(
+        orders,
+        c => c.Id,
+        o => o.CustomerId,
+        (c, customerOrders) => new {
+            c.Id,
+            c.Name,
+            OrderCount = customerOrders.Count(),
+            LastOrderDate = customerOrders
+                .OrderByDescending(o => o.OrderDate)
+                .Select(o => (DateTime?)o.OrderDate)
+                .FirstOrDefault()
+        });
+```
+
+**Q: Implement `Distinct` with a custom comparer for case-insensitive strings.**
+
+A: Provide an `IEqualityComparer<T>` to normalize comparisons.
+
+```csharp
+var uniqueSymbols = symbols.Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+```
+
+**Q: Convert a list to a dictionary safely when keys can repeat.**
+
+A: Group by the key first, then choose a resolution strategy.
+
+```csharp
+var map = products
+    .GroupBy(p => p.Sku)
+    .ToDictionary(g => g.Key, g => g.OrderByDescending(p => p.UpdatedAt).First());
+```
+
+**Q: Use `Select` with index to assign ranks within a sorted sequence.**
+
+A: Sort once, then project with the index.
+
+```csharp
+var ranked = trades
+    .OrderByDescending(t => t.Notional)
+    .Select((trade, index) => new { trade.Id, Rank = index + 1 });
+```
+
+**Q: Split a sequence into a prefix and the remaining items using `TakeWhile` and `SkipWhile`.**
+
+A: Use a predicate to find the boundary.
+
+```csharp
+var prefix = prices.TakeWhile(p => p.IsValid).ToList();
+var rest = prices.SkipWhile(p => p.IsValid).ToList();
+```
+
+---
+
+**Total Exercises: 40+**
 
 Practice these exercises by actually writing the code. Don't just read—implement and test!

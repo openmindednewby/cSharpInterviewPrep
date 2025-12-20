@@ -919,6 +919,118 @@ public record DownloadProgress
 
 ---
 
-**Total Exercises: 30+**
+## Advanced Resilience Scenarios
+
+**Q: How do you run tasks in parallel but keep partial results when some fail?**
+
+A: Use `Task.WhenAll` with try/catch and record successes and failures.
+
+```csharp
+public static async Task<(List<T> Results, List<Exception> Errors)> WhenAllSafe<T>(IEnumerable<Task<T>> tasks)
+{
+    var results = new List<T>();
+    var errors = new List<Exception>();
+
+    foreach (var task in tasks)
+    {
+        try
+        {
+            results.Add(await task);
+        }
+        catch (Exception ex)
+        {
+            errors.Add(ex);
+        }
+    }
+
+    return (results, errors);
+}
+```
+
+**Q: Implement bounded parallelism using `Parallel.ForEachAsync`.**
+
+A: Use `MaxDegreeOfParallelism` to control concurrency.
+
+```csharp
+await Parallel.ForEachAsync(items, new ParallelOptions
+{
+    MaxDegreeOfParallelism = 4,
+    CancellationToken = ct
+}, async (item, token) =>
+{
+    await ProcessAsync(item, token);
+});
+```
+
+**Q: Add jitter to retry backoff to avoid thundering herds.**
+
+A: Randomize the delay window per attempt.
+
+```csharp
+var rng = Random.Shared;
+var delay = TimeSpan.FromMilliseconds(initialDelayMs * Math.Pow(2, attempt));
+var jitter = TimeSpan.FromMilliseconds(rng.Next(0, 100));
+await Task.Delay(delay + jitter, ct);
+```
+
+**Q: Stream results with `IAsyncEnumerable` and cancellation.**
+
+A: Use `yield return` with `CancellationToken` support.
+
+```csharp
+public static async IAsyncEnumerable<Order> StreamOrdersAsync(
+    IOrderSource source,
+    [EnumeratorCancellation] CancellationToken ct)
+{
+    await foreach (var order in source.ReadAllAsync(ct))
+    {
+        yield return order;
+    }
+}
+```
+
+**Q: Design a simple circuit breaker state machine.**
+
+A: Track failures and open the circuit for a timeout window.
+
+```csharp
+public sealed class SimpleCircuitBreaker
+{
+    private int _failures;
+    private DateTime _openedAt;
+    private readonly int _threshold;
+    private readonly TimeSpan _openDuration;
+
+    public SimpleCircuitBreaker(int threshold, TimeSpan openDuration)
+    {
+        _threshold = threshold;
+        _openDuration = openDuration;
+    }
+
+    public bool CanExecute()
+    {
+        if (_failures < _threshold)
+            return true;
+
+        return DateTime.UtcNow - _openedAt > _openDuration;
+    }
+
+    public void RecordFailure()
+    {
+        _failures += 1;
+        if (_failures == _threshold)
+            _openedAt = DateTime.UtcNow;
+    }
+
+    public void RecordSuccess()
+    {
+        _failures = 0;
+    }
+}
+```
+
+---
+
+**Total Exercises: 40+**
 
 Focus on understanding cancellation, error handling, and coordination patterns!

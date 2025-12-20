@@ -124,7 +124,7 @@
         <span>Practice</span>
         <span class="chevron" aria-hidden="true"></span>
       </button>
-      <ul class="sidebar-group__items"><li><a class="nav-link" href="../practice/answers.html">Answers</a></li><li><a class="nav-link active" href="../practice/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="../practice/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="../practice/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="../practice/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="../practice/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="../practice/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="../practice/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="../practice/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="../practice/index.html">Practice</a></li><li><a class="nav-link" href="../practice/questions.html">Questions</a></li><li><a class="nav-link" href="../practice/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="../practice/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="../practice/system-design.html">System Design</a></li><li><a class="nav-link" href="../practice/trading-domain.html">Trading Domain</a></li></ul>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="../practice/answers.html">Answers</a></li><li><a class="nav-link active" href="../practice/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="../practice/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="../practice/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="../practice/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="../practice/csharp-fundamentals.html">Csharp Fundamentals</a></li><li><a class="nav-link" href="../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="../practice/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="../practice/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="../practice/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="../practice/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="../practice/index.html">Practice</a></li><li><a class="nav-link" href="../practice/questions.html">Questions</a></li><li><a class="nav-link" href="../practice/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="../practice/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="../practice/system-design.html">System Design</a></li><li><a class="nav-link" href="../practice/trading-domain.html">Trading Domain</a></li></ul>
     </div></div></div>
       </div>
     </nav>
@@ -133,7 +133,7 @@
         <div class="breadcrumbs">practice\api-lifecycle.md</div>
         <h2>Api Lifecycle</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#api-lifecycle-practice-exercises">API & Lifecycle Practice Exercises</a></li><li class="level-2"><a href="#foundational-questions">Foundational Questions</a></li><li class="level-2"><a href="#intermediate-exercises">Intermediate Exercises</a></li><li class="level-2"><a href="#advanced-exercises">Advanced Exercises</a></li><li class="level-2"><a href="#rate-limiting-throttling">Rate Limiting & Throttling</a></li><li class="level-2"><a href="#real-world-scenarios">Real-World Scenarios</a></li><li class="level-2"><a href="#authorization-security">Authorization & Security</a></li></ul></div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#api-lifecycle-practice-exercises">API & Lifecycle Practice Exercises</a></li><li class="level-2"><a href="#foundational-questions">Foundational Questions</a></li><li class="level-2"><a href="#intermediate-exercises">Intermediate Exercises</a></li><li class="level-2"><a href="#advanced-exercises">Advanced Exercises</a></li><li class="level-2"><a href="#rate-limiting-throttling">Rate Limiting & Throttling</a></li><li class="level-2"><a href="#real-world-scenarios">Real-World Scenarios</a></li><li class="level-2"><a href="#authorization-security">Authorization & Security</a></li><li class="level-2"><a href="#advanced-api-scenarios">Advanced API Scenarios</a></li></ul></div>
         <h1 id="api-lifecycle-practice-exercises">API & Lifecycle Practice Exercises</h1>
 <p>Master ASP.NET Core middleware pipeline, dependency injection, API design, and request lifecycle management.</p>
 <p>---</p>
@@ -1467,7 +1467,70 @@ public class DynamicCorsMiddleware
     }
 }</code></pre>
 <p>---</p>
-<p><strong>Total Exercises: 35+</strong></p>
+<h2 id="advanced-api-scenarios">Advanced API Scenarios</h2>
+<p><strong>Q: Implement ETag support for GET endpoints with conditional requests.</strong></p>
+<p>A: Compute a hash and honor <code>If-None-Match</code>.</p>
+<pre class="language-csharp"><code class="language-csharp">app.MapGet(&quot;/orders/{id}&quot;, async (int id, HttpContext context, IOrderRepo repo) =&gt;
+{
+    var order = await repo.GetByIdAsync(id);
+    if (order is null)
+        return Results.NotFound();
+
+    var etag = $&quot;\&quot;{order.UpdatedAt.Ticks}\&quot;&quot;;
+    if (context.Request.Headers.IfNoneMatch == etag)
+        return Results.StatusCode(StatusCodes.Status304NotModified);
+
+    context.Response.Headers.ETag = etag;
+    return Results.Ok(order);
+});</code></pre>
+<p><strong>Q: Enforce request body size limits for upload endpoints.</strong></p>
+<p>A: Use <code>RequestSizeLimit</code> attributes or middleware.</p>
+<pre class="language-csharp"><code class="language-csharp">[RequestSizeLimit(2 * 1024 * 1024)]
+[HttpPost(&quot;upload&quot;)]
+public async Task&lt;IActionResult&gt; Upload(IFormFile file)
+{
+    // ...
+    return Ok();
+}</code></pre>
+<p><strong>Q: Create a readiness endpoint that checks dependencies.</strong></p>
+<p>A: Use health checks with tags.</p>
+<pre class="language-csharp"><code class="language-csharp">builder.Services.AddHealthChecks()
+    .AddSqlServer(connectionString, name: &quot;db&quot;)
+    .AddRedis(redisConnection, name: &quot;cache&quot;);
+
+app.MapHealthChecks(&quot;/health/ready&quot;, new HealthCheckOptions
+{
+    Predicate = check =&gt; check.Tags.Contains(&quot;ready&quot;)
+});</code></pre>
+<p><strong>Q: Implement resource-based authorization with policies.</strong></p>
+<p>A: Use <code>IAuthorizationService</code> in handlers.</p>
+<pre class="language-csharp"><code class="language-csharp">app.MapGet(&quot;/accounts/{id}&quot;, async (
+    int id,
+    ClaimsPrincipal user,
+    IAuthorizationService auth,
+    IAccountRepo repo) =&gt;
+{
+    var account = await repo.GetByIdAsync(id);
+    var result = await auth.AuthorizeAsync(user, account, &quot;CanReadAccount&quot;);
+    return result.Succeeded ? Results.Ok(account) : Results.Forbid();
+});</code></pre>
+<p><strong>Q: Apply per-tenant rate limits with a custom policy.</strong></p>
+<p>A: Partition limits by tenant identifier.</p>
+<pre class="language-csharp"><code class="language-csharp">builder.Services.AddRateLimiter(options =&gt;
+{
+    options.AddPolicy(&quot;per-tenant&quot;, context =&gt;
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: context.User.FindFirst(&quot;tenant&quot;)?.Value ?? &quot;anon&quot;,
+            factory: _ =&gt; new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 60,
+                Window = TimeSpan.FromMinutes(1)
+            }));
+});
+
+app.UseRateLimiter();</code></pre>
+<p>---</p>
+<p><strong>Total Exercises: 45+</strong></p>
 <p>Master these patterns to build robust, scalable APIs with proper lifecycle management!</p>
       </article>
     </main>

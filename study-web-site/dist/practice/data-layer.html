@@ -124,7 +124,7 @@
         <span>Practice</span>
         <span class="chevron" aria-hidden="true"></span>
       </button>
-      <ul class="sidebar-group__items"><li><a class="nav-link" href="../practice/answers.html">Answers</a></li><li><a class="nav-link" href="../practice/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="../practice/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="../practice/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="../practice/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link active" href="../practice/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="../practice/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="../practice/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="../practice/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="../practice/index.html">Practice</a></li><li><a class="nav-link" href="../practice/questions.html">Questions</a></li><li><a class="nav-link" href="../practice/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="../practice/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="../practice/system-design.html">System Design</a></li><li><a class="nav-link" href="../practice/trading-domain.html">Trading Domain</a></li></ul>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="../practice/answers.html">Answers</a></li><li><a class="nav-link" href="../practice/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="../practice/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="../practice/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="../practice/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="../practice/csharp-fundamentals.html">Csharp Fundamentals</a></li><li><a class="nav-link" href="../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link active" href="../practice/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="../practice/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="../practice/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="../practice/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="../practice/index.html">Practice</a></li><li><a class="nav-link" href="../practice/questions.html">Questions</a></li><li><a class="nav-link" href="../practice/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="../practice/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="../practice/system-design.html">System Design</a></li><li><a class="nav-link" href="../practice/trading-domain.html">Trading Domain</a></li></ul>
     </div></div></div>
       </div>
     </nav>
@@ -133,7 +133,7 @@
         <div class="breadcrumbs">practice\data-layer.md</div>
         <h2>Data Layer</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#data-layer-practice-exercises">Data Layer Practice Exercises</a></li><li class="level-2"><a href="#foundational-questions">Foundational Questions</a></li><li class="level-2"><a href="#entity-framework-core-fundamentals">Entity Framework Core Fundamentals</a></li><li class="level-2"><a href="#advanced-entity-framework-patterns">Advanced Entity Framework Patterns</a></li><li class="level-2"><a href="#sql-optimization">SQL Optimization</a></li><li class="level-2"><a href="#indexing-strategies">Indexing Strategies</a></li><li class="level-2"><a href="#transactions-concurrency">Transactions & Concurrency</a></li><li class="level-2"><a href="#migrations-schema-management">Migrations & Schema Management</a></li><li class="level-2"><a href="#dapper-integration">Dapper Integration</a></li></ul></div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#data-layer-practice-exercises">Data Layer Practice Exercises</a></li><li class="level-2"><a href="#foundational-questions">Foundational Questions</a></li><li class="level-2"><a href="#entity-framework-core-fundamentals">Entity Framework Core Fundamentals</a></li><li class="level-2"><a href="#advanced-entity-framework-patterns">Advanced Entity Framework Patterns</a></li><li class="level-2"><a href="#sql-optimization">SQL Optimization</a></li><li class="level-2"><a href="#indexing-strategies">Indexing Strategies</a></li><li class="level-2"><a href="#transactions-concurrency">Transactions & Concurrency</a></li><li class="level-2"><a href="#migrations-schema-management">Migrations & Schema Management</a></li><li class="level-2"><a href="#dapper-integration">Dapper Integration</a></li><li class="level-2"><a href="#advanced-data-layer-scenarios">Advanced Data Layer Scenarios</a></li></ul></div>
         <h1 id="data-layer-practice-exercises">Data Layer Practice Exercises</h1>
 <p>Master Entity Framework Core, SQL optimization, database design, and data access patterns for high-performance applications.</p>
 <p>---</p>
@@ -1401,7 +1401,40 @@ public partial class RemoveContactEmailColumn : Migration
     }
 }</code></pre>
 <p>---</p>
-<p><strong>Total Exercises: 30+</strong></p>
+<h2 id="advanced-data-layer-scenarios">Advanced Data Layer Scenarios</h2>
+<p><strong>Q: Implement optimistic concurrency control with a row version column.</strong></p>
+<p>A: Add a <code>rowversion</code> column and use EF Core concurrency tokens.</p>
+<pre class="language-csharp"><code class="language-csharp">public class Order
+{
+    public int Id { get; set; }
+    public byte[] RowVersion { get; set; } = Array.Empty&lt;byte&gt;();
+}
+
+modelBuilder.Entity&lt;Order&gt;()
+    .Property(o =&gt; o.RowVersion)
+    .IsRowVersion();</code></pre>
+<p><strong>Q: Implement soft delete with a global query filter.</strong></p>
+<p>A: Add <code>IsDeleted</code> and filter it globally.</p>
+<pre class="language-csharp"><code class="language-csharp">public class EntityBase
+{
+    public bool IsDeleted { get; set; }
+}
+
+modelBuilder.Entity&lt;EntityBase&gt;()
+    .HasQueryFilter(e =&gt; !e.IsDeleted);</code></pre>
+<p><strong>Q: Create efficient pagination for large datasets.</strong></p>
+<p>A: Use keyset pagination for stability and performance.</p>
+<pre class="language-sql"><code class="language-sql">SELECT *
+FROM Orders
+WHERE Id &gt; @LastSeenId
+ORDER BY Id
+OFFSET 0 ROWS FETCH NEXT @PageSize ROWS ONLY;</code></pre>
+<p><strong>Q: Compare isolation levels for read/write workloads.</strong></p>
+<p>A: Use Read Committed for OLTP, Snapshot for long reads, Serializable for strict consistency with higher contention.</p>
+<p><strong>Q: Diagnose a slow query regression.</strong></p>
+<p>A: Capture the execution plan, check index usage, update stats, and validate parameter sniffing.</p>
+<p>---</p>
+<p><strong>Total Exercises: 35+</strong></p>
 <p>Master data access patterns for building high-performance, scalable applications!</p>
       </article>
     </main>

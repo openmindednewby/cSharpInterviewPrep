@@ -1225,6 +1225,30 @@ services.AddHttpClient("DownstreamService")
 
 ---
 
-**Total Exercises: 25+**
+## Advanced System Design Prompts
+
+**Q: Design a multi-region failover strategy for a trading platform.**
+
+A: Use active-active for read-heavy services, active-passive for write-heavy, with DNS failover, replicated data stores, and idempotent writes.
+
+**Q: How would you shard a multi-tenant database for scale?**
+
+A: Choose a shard key (tenant id), use consistent hashing, route via a shard map, and ensure cross-shard queries are minimized or handled via read models.
+
+**Q: Describe a cache invalidation strategy for price snapshots.**
+
+A: Use short TTLs, write-through cache for authoritative updates, and a pub/sub channel to invalidate per-symbol keys on updates.
+
+**Q: When would you use event sourcing versus state storage?**
+
+A: Event sourcing is useful for auditability and replay; state storage is simpler for CRUD-heavy systems. Consider storage costs, query complexity, and regulatory requirements.
+
+**Q: How do you handle backpressure in a streaming system?**
+
+A: Apply bounded queues, adaptive batching, and consumer-side flow control. Drop or coalesce low-priority updates when queues exceed thresholds.
+
+---
+
+**Total Exercises: 30+**
 
 Master these patterns to design scalable, resilient distributed systems!

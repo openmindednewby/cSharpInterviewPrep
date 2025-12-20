@@ -1410,6 +1410,60 @@ public class HybridOrderRepository
 
 ---
 
-**Total Exercises: 30+**
+## Advanced Data Layer Scenarios
+
+**Q: Implement optimistic concurrency control with a row version column.**
+
+A: Add a `rowversion` column and use EF Core concurrency tokens.
+
+```csharp
+public class Order
+{
+    public int Id { get; set; }
+    public byte[] RowVersion { get; set; } = Array.Empty<byte>();
+}
+
+modelBuilder.Entity<Order>()
+    .Property(o => o.RowVersion)
+    .IsRowVersion();
+```
+
+**Q: Implement soft delete with a global query filter.**
+
+A: Add `IsDeleted` and filter it globally.
+
+```csharp
+public class EntityBase
+{
+    public bool IsDeleted { get; set; }
+}
+
+modelBuilder.Entity<EntityBase>()
+    .HasQueryFilter(e => !e.IsDeleted);
+```
+
+**Q: Create efficient pagination for large datasets.**
+
+A: Use keyset pagination for stability and performance.
+
+```sql
+SELECT *
+FROM Orders
+WHERE Id > @LastSeenId
+ORDER BY Id
+OFFSET 0 ROWS FETCH NEXT @PageSize ROWS ONLY;
+```
+
+**Q: Compare isolation levels for read/write workloads.**
+
+A: Use Read Committed for OLTP, Snapshot for long reads, Serializable for strict consistency with higher contention.
+
+**Q: Diagnose a slow query regression.**
+
+A: Capture the execution plan, check index usage, update stats, and validate parameter sniffing.
+
+---
+
+**Total Exercises: 35+**
 
 Master data access patterns for building high-performance, scalable applications!

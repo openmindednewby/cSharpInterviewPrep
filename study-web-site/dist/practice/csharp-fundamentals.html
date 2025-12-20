@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Senior .NET study guide for Error Handling" />
+  <meta name="description" content="Senior .NET study guide for Csharp Fundamentals" />
   <meta name="theme-color" content="#0f172a" />
-  <title>Error Handling | C# Interview Prep Cheat Sheet</title>
+  <title>Csharp Fundamentals | C# Interview Prep Cheat Sheet</title>
   <link rel="manifest" href="..\assets/manifest.webmanifest" />
   <script>
     (() => {
@@ -47,12 +47,12 @@
       <div class="sidebar-section">
         <h2>Navigation</h2>
         <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
-        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group is-open" data-group="notes">
-      <button class="sidebar-group__header" type="button" aria-expanded="true">
+        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group" data-group="notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
         <span>Notes</span>
         <span class="chevron" aria-hidden="true"></span>
       </button>
-      <ul class="sidebar-group__items"><li><a class="nav-link" href="../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link active" href="../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="../notes/logging.html">Logging</a></li><li><a class="nav-link" href="../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="../notes/logging.html">Logging</a></li><li><a class="nav-link" href="../notes/testing-strategies.html">Testing Strategies</a></li></ul>
     </div><div class="sidebar-group" data-group="notes-automapper">
       <button class="sidebar-group__header" type="button" aria-expanded="false">
         <span>Notes / Automapper</span>
@@ -119,129 +119,176 @@
         <span class="chevron" aria-hidden="true"></span>
       </button>
       <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/01-async-patterns.html">01 Async Patterns</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/02-backpressure-rate-limiting.html">02 Backpressure Rate Limiting</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/03-caching-strategies.html">03 Caching Strategies</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/04-database-scaling.html">04 Database Scaling</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/05-message-queues.html">05 Message Queues</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/06-resilience-patterns.html">06 Resilience Patterns</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/07-observability.html">07 Observability</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/08-complete-example.html">08 Complete Example</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
-    </div><div class="sidebar-group" data-group="practice">
-      <button class="sidebar-group__header" type="button" aria-expanded="false">
+    </div><div class="sidebar-group is-open" data-group="practice">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
         <span>Practice</span>
         <span class="chevron" aria-hidden="true"></span>
       </button>
-      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/answers.html">Answers</a></li><li><a class="nav-link" href="../practice/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="../practice/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="../practice/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="../practice/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="../practice/csharp-fundamentals.html">Csharp Fundamentals</a></li><li><a class="nav-link" href="../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="../practice/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="../practice/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="../practice/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="../practice/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="../practice/index.html">Practice</a></li><li><a class="nav-link" href="../practice/questions.html">Questions</a></li><li><a class="nav-link" href="../practice/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="../practice/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="../practice/system-design.html">System Design</a></li><li><a class="nav-link" href="../practice/trading-domain.html">Trading Domain</a></li></ul>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="../practice/answers.html">Answers</a></li><li><a class="nav-link" href="../practice/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="../practice/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="../practice/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="../practice/code-assessment.html">Code Assessment</a></li><li><a class="nav-link active" href="../practice/csharp-fundamentals.html">Csharp Fundamentals</a></li><li><a class="nav-link" href="../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="../practice/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="../practice/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="../practice/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="../practice/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="../practice/index.html">Practice</a></li><li><a class="nav-link" href="../practice/questions.html">Questions</a></li><li><a class="nav-link" href="../practice/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="../practice/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="../practice/system-design.html">System Design</a></li><li><a class="nav-link" href="../practice/trading-domain.html">Trading Domain</a></li></ul>
     </div></div></div>
       </div>
     </nav>
     <main class="content">
       <article class="card">
-        <div class="breadcrumbs">notes\error-handling.md</div>
-        <h2>Error Handling</h2>
+        <div class="breadcrumbs">practice\csharp-fundamentals.md</div>
+        <h2>Csharp Fundamentals</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#error-handling-for-high-performance-highly-available-net-services">Error Handling for High-Performance, Highly Available .NET Services</a></li><li class="level-2"><a href="#principles-and-goals">Principles and Goals</a></li><li class="level-2"><a href="#patterns-to-prefer">Patterns to Prefer</a></li><li class="level-2"><a href="#implementation-guidelines">Implementation Guidelines</a></li><li class="level-2"><a href="#minimal-api-example-problem-details-resilience">Minimal API Example (Problem Details + Resilience)</a></li><li class="level-2"><a href="#sample-resilient-client">Sample Resilient Client</a></li><li class="level-2"><a href="#operational-best-practices">Operational Best Practices</a></li><li class="level-2"><a href="#sample-interview-qa">Sample Interview Q&A</a></li></ul></div>
-        <h1 id="error-handling-for-high-performance-highly-available-net-services">Error Handling for High-Performance, Highly Available .NET Services</h1>
-<p>Use these notes to articulate how you design resilient error-handling flows that protect throughput, minimize tail latency, and keep services debuggable under load.</p>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#c-fundamentals-practice-exercises">C# Fundamentals Practice Exercises</a></li><li class="level-2"><a href="#types-memory-and-immutability">Types, Memory, and Immutability</a></li><li class="level-2"><a href="#nullability-and-defensive-programming">Nullability and Defensive Programming</a></li><li class="level-2"><a href="#generics-and-constraints">Generics and Constraints</a></li><li class="level-2"><a href="#delegates-events-and-lambdas">Delegates, Events, and Lambdas</a></li><li class="level-2"><a href="#pattern-matching-and-switch-expressions">Pattern Matching and Switch Expressions</a></li><li class="level-2"><a href="#records-and-immutability">Records and Immutability</a></li><li class="level-2"><a href="#exceptions-and-error-flow">Exceptions and Error Flow</a></li><li class="level-2"><a href="#access-modifiers-and-encapsulation">Access Modifiers and Encapsulation</a></li><li class="level-2"><a href="#collections-and-initialization">Collections and Initialization</a></li></ul></div>
+        <h1 id="c-fundamentals-practice-exercises">C# Fundamentals Practice Exercises</h1>
+<p>Build strong core language fundamentals through targeted exercises.</p>
 <p>---</p>
-<h2 id="principles-and-goals">Principles and Goals</h2>
-<ul><li><strong>Fail fast, fail safely:</strong> Validate inputs early and return meaningful errors without cascading failures.</li><li><strong>Deterministic paths:</strong> Prefer predictable control flow over broad exception handling; reserve exceptions for truly exceptional conditions.</li><li><strong>Low-overhead:</strong> Avoid unnecessary allocations and reflection in hot paths; keep the happy-path zero-cost when possible.</li><li><strong>Observability built-in:</strong> Emit structured errors with correlation IDs and key context (tenant, region, feature flag) for fast triage.</li><li><strong>Graceful degradation:</strong> Prefer partial availability (cached responses, degraded features) over total failure.</li></ul>
-<h2 id="patterns-to-prefer">Patterns to Prefer</h2>
-<ul><li><strong>Guard clauses:</strong> Validate arguments and state up front to keep the main logic clear and predictable.</li><li><strong>Typed results:</strong> Use <code>OneOf</code>, <code>ErrorOr</code>, or <code>Result</code>-style return types for expected domain errors; avoid exceptions for flow control.</li><li><strong>Exception filters:</strong> Use <code>catch (Exception ex) when (...)</code> to separate retryable from terminal failures and avoid broad catch blocks.</li><li><strong>Retry with jitter:</strong> Apply exponential backoff plus jitter for transient faults; cap retries to protect latency budgets.</li><li><strong>Circuit breakers and bulkheads:</strong> Short-circuit unhealthy dependencies and isolate pools to prevent resource exhaustion.</li><li><strong>Timeouts and cancellation:</strong> Set timeouts per dependency; honor <code>CancellationToken</code> to shed load quickly.</li><li><strong>Idempotency:</strong> Design operations to be retry-safe (idempotency keys, upserts) so recovery paths don't create duplicates.</li></ul>
-<h2 id="implementation-guidelines">Implementation Guidelines</h2>
-<ul><li><strong>Boundary enforcement:</strong> Validate DTOs with FluentValidation or <code>IValidatableObject</code>; return <code>400</code>-series responses with actionable messages.</li><li><strong>Centralized exception handling:</strong> Use middleware/filters to translate exceptions into consistent problem-details payloads.</li><li><strong>Structured error contracts:</strong> Standardize fields like <code>errorCode</code>, <code>correlationId</code>, <code>source</code>, and <code>retryable</code> for clients.</li><li><strong>Dependency hygiene:</strong> Wrap external calls (HTTP, DB, queues) with polly policies for retry, circuit-breaker, timeout, and fallback.</li><li><strong>Resource protection:</strong> Use bounded channels/queues; reject requests when buffers are full instead of blocking threads.</li><li><strong>Telemetry alignment:</strong> Log errors with event IDs; emit metrics for error rates, retry counts, circuit state, and fallback usage.</li></ul>
-<h2 id="minimal-api-example-problem-details-resilience">Minimal API Example (Problem Details + Resilience)</h2>
-<pre class="language-csharp"><code class="language-csharp">var builder = WebApplication.CreateBuilder(args);
+<h2 id="types-memory-and-immutability">Types, Memory, and Immutability</h2>
+<p><strong>Q: Explain the difference between value types and reference types with a simple example.</strong></p>
+<p>A: Value types copy the data; reference types copy the reference. Mutations affect only the copied value, but references point to the same object.</p>
+<pre class="language-csharp"><code class="language-csharp">var a = new Point { X = 1, Y = 2 };
+var b = a; // copy
+b.X = 99;
+// a.X is still 1
 
-builder.Services.AddProblemDetails(options =&gt;
+var c = new Person { Name = &quot;Ana&quot; };
+var d = c; // reference copy
+d.Name = &quot;Zoe&quot;;
+// c.Name is now &quot;Zoe&quot;</code></pre>
+<p><strong>Q: When should you choose a struct over a class?</strong></p>
+<p>A: Use structs for small, immutable, short-lived data without inheritance. Use classes for identity, polymorphism, or large mutable state.</p>
+<pre class="language-csharp"><code class="language-csharp">public readonly struct Money
 {
-    options.CustomizeProblemDetails = context =&gt;
+    public Money(decimal amount, string currency)
     {
-        context.ProblemDetails.Extensions[&quot;correlationId&quot;] = context.HttpContext.TraceIdentifier;
-    };
-});
-
-builder.Services.AddHttpClient&lt;InventoryClient&gt;(client =&gt;
-    client.BaseAddress = new Uri(&quot;https://inventory&quot;))
-    .AddTransientHttpErrorPolicy(policy =&gt; policy
-        .WaitAndRetryAsync(3, retry =&gt; TimeSpan.FromMilliseconds(50 * Math.Pow(2, retry)))
-        .WrapAsync(Policy.TimeoutAsync&lt;HttpResponseMessage&gt;(TimeSpan.FromSeconds(1))));
-
-var app = builder.Build();
-
-app.UseExceptionHandler();
-app.UseStatusCodePages();
-app.UseMiddleware&lt;RequestCorrelationMiddleware&gt;();
-app.UseProblemDetails();
-
-app.MapGet(&quot;/items/{sku}&quot;, async (
-    string sku,
-    InventoryClient client,
-    CancellationToken ct) =&gt;
-{
-    if (string.IsNullOrWhiteSpace(sku))
-    {
-        return Results.BadRequest(new ProblemDetails
-        {
-            Title = &quot;Invalid SKU&quot;,
-            Detail = &quot;SKU must be provided&quot;,
-            Status = StatusCodes.Status400BadRequest
-        });
+        Amount = amount;
+        Currency = currency;
     }
 
-    var result = await client.FetchAsync(sku, ct);
-    return result.Match(
-        success =&gt; Results.Ok(success),
-        notFound =&gt; Results.NotFound(),
-        _ =&gt; Results.StatusCode(StatusCodes.Status503ServiceUnavailable));
-});
-
-app.Run();</code></pre>
-<h2 id="sample-resilient-client">Sample Resilient Client</h2>
-<pre class="language-csharp"><code class="language-csharp">public sealed record InventoryResponse(string Sku, int Quantity);
-
-public class InventoryClient
+    public decimal Amount { get; }
+    public string Currency { get; }
+}</code></pre>
+<p><strong>Q: Demonstrate how to reduce copying with <code>in</code> parameters.</strong></p>
+<p>A: Use <code>in</code> for large structs to avoid defensive copies.</p>
+<pre class="language-csharp"><code class="language-csharp">public static decimal CalculateTax(in Money price, decimal rate)
 {
-    private static readonly OneOf&lt;InventoryResponse, NotFound&gt; NotFoundResult = new(new NotFound());
-    private readonly HttpClient _httpClient;
+    return price.Amount * rate;
+}</code></pre>
+<p>---</p>
+<h2 id="nullability-and-defensive-programming">Nullability and Defensive Programming</h2>
+<p><strong>Q: Show how nullable reference types prevent null bugs.</strong></p>
+<p>A: Enable nullability and use <code>?</code> for optional references.</p>
+<pre class="language-csharp"><code class="language-csharp">#nullable enable
+public string FormatName(string? name)
+{
+    if (string.IsNullOrWhiteSpace(name))
+        return &quot;Unknown&quot;;
 
-    public InventoryClient(HttpClient httpClient) =&gt; _httpClient = httpClient;
-
-    public async Task&lt;OneOf&lt;InventoryResponse, NotFound, Error&gt;&gt; FetchAsync(string sku, CancellationToken ct)
+    return name.Trim();
+}</code></pre>
+<p><strong>Q: Write a guard clause extension for argument validation.</strong></p>
+<p>A: Throw early for invalid inputs.</p>
+<pre class="language-csharp"><code class="language-csharp">public static class Guard
+{
+    public static string NotNullOrEmpty(string? value, string paramName)
     {
-        using var request = new HttpRequestMessage(HttpMethod.Get, $&quot;/inventory/{sku}&quot;);
-        request.Headers.Add(&quot;X-Correlation-ID&quot;, ct.GetHashCode().ToString());
-
-        try
-        {
-            using var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct);
-
-            if (response.StatusCode == HttpStatusCode.NotFound)
-            {
-                return NotFoundResult;
-            }
-
-            response.EnsureSuccessStatusCode();
-
-            await using var stream = await response.Content.ReadAsStreamAsync(ct);
-            var payload = await JsonSerializer.DeserializeAsync&lt;InventoryResponse&gt;(stream, cancellationToken: ct);
-
-            return payload ?? new Error(&quot;Empty response&quot;, retryable: false);
-        }
-        catch (OperationCanceledException) when (ct.IsCancellationRequested)
-        {
-            return new Error(&quot;Request canceled&quot;, retryable: true);
-        }
-        catch (HttpRequestException ex) when (ex.StatusCode is null or HttpStatusCode.TooManyRequests)
-        {
-            return new Error(&quot;Transient HTTP failure&quot;, retryable: true);
-        }
-        catch (Exception ex)
-        {
-            return new Error(ex.Message, retryable: false);
-        }
+        if (string.IsNullOrWhiteSpace(value))
+            throw new ArgumentException(&quot;Value is required&quot;, paramName);
+        return value;
     }
+}</code></pre>
+<p>---</p>
+<h2 id="generics-and-constraints">Generics and Constraints</h2>
+<p><strong>Q: Implement a generic method with a constraint for a parameterless constructor.</strong></p>
+<p>A: Use <code>where T : new()</code> when the type must be created.</p>
+<pre class="language-csharp"><code class="language-csharp">public static T Create&lt;T&gt;() where T : new()
+{
+    return new T();
+}</code></pre>
+<p><strong>Q: Write a repository interface with type constraints.</strong></p>
+<p>A: Constrain to a base entity so the repository can rely on shared properties.</p>
+<pre class="language-csharp"><code class="language-csharp">public interface IRepository&lt;T&gt; where T : Entity
+{
+    Task&lt;T?&gt; GetByIdAsync(int id, CancellationToken ct = default);
+    Task AddAsync(T entity, CancellationToken ct = default);
 }
 
-public sealed record Error(string Message, bool retryable);
-public sealed record NotFound;</code></pre>
-<h2 id="operational-best-practices">Operational Best Practices</h2>
-<ul><li><strong>SLO-aware retries:</strong> Align retry budgets with p99 latency targets; prefer 1–3 retries with jitter and a global timeout per request.</li><li><strong>Fast-path success:</strong> Keep happy-path allocations low; cache serializers and validators, pre-size collections, and avoid string formatting unless needed.</li><li><strong>Fallbacks:</strong> Serve from cache, return stale data with warnings, or downgrade features (e.g., no recommendations) when dependencies fail.</li><li><strong>Load shedding:</strong> Use request queues and concurrency limits; return <code>429</code>/<code>503</code> quickly when the system is saturated.</li><li><strong>Chaos-ready:</strong> Continuously inject faults (latency, timeouts, dependency outages) in staging to validate resilience policies.</li><li><strong>Consistent surface area:</strong> Map errors to stable codes and types so clients can automate handling and avoid brittle parsing.</li></ul>
-<h2 id="sample-interview-qa">Sample Interview Q&A</h2>
-<ul><li><strong>Q:</strong> When do you choose exceptions vs. result types?</li><li><strong>A:</strong> Use exceptions for unexpected, rare failures (null reference, protocol violation). Use <code>Result</code>/<code>OneOf</code> for expected domain outcomes (validation errors, not found) to avoid control-flow via exceptions and keep the hot path allocation-free.</li><li><strong>Q:</strong> How do you keep retries from hurting availability?</li><li><strong>A:</strong> Enforce timeouts, cap retry counts, add jitter to prevent thundering herds, and combine retries with circuit breakers and load shedding.</li><li><strong>Q:</strong> How do you propagate context for debugging?</li><li><strong>A:</strong> Attach correlation IDs and tenant/region info to log scopes and problem-details responses; ensure trace context flows through HTTP/messaging clients.</li><li><strong>Q:</strong> What makes an error contract client-friendly?</li><li><strong>A:</strong> Stable error codes, actionable messages, explicit <code>retryable</code> hints, and sample remediation steps so clients can automate retries or fallbacks.</li><li><strong>Q:</strong> How do you avoid exception cost in hot paths?</li><li><strong>A:</strong> Prefer guard clauses and result types, pre-validate inputs, avoid throwing for predictable states, and use exception filters to keep catch blocks narrow.</li><li><strong>Q:</strong> When do you choose graceful degradation over hard failure?</li><li><strong>A:</strong> If the dependency is non-critical or you can safely serve stale data, fall back to caches, simplified logic, or partial responses (e.g., show cached recommendations). For critical flows (payments, compliance), fail fast to prevent bad states. Always instrument fallbacks so you know when you’re degraded.</li><li><strong>Q:</strong> What’s your approach to cancellation and timeouts in async services?</li><li><strong>A:</strong> Flow <code>CancellationToken</code> through all async APIs, set per-dependency timeouts (Polly <code>TimeoutPolicy</code> or <code>HttpClient</code> timeouts), and treat <code>OperationCanceledException</code> as a signal to stop work quickly. Combine with load shedding so saturated servers free threads instead of hanging.</li><li><strong>Q:</strong> How do you centralize error handling in ASP.NET Core?</li><li><strong>A:</strong> Configure the exception handler middleware + <code>ProblemDetails</code> to translate unhandled exceptions into consistent payloads, add filters for domain exceptions, and wrap them with correlation IDs. This keeps controllers thin and ensures every failure path returns structured diagnostics.</li><li><strong>Q:</strong> How do you validate resilience policies before production?</li><li><strong>A:</strong> Use integration tests and chaos drills that inject latency, drop connections, and spike errors while asserting on retry counts, circuit breaker transitions, and emitted metrics/logs. Automated fault injection ensures policies fire as expected and keeps runbooks current.</li><li><strong>Q:</strong> How do you enforce idempotency across retries or duplicate messages?</li><li><strong>A:</strong> Include idempotency keys (request IDs, message IDs), use database upserts or stored procedure guards, and track processed messages in an inbox/outbox table. Consumers check for prior processing before mutating state so at-least-once delivery doesn’t double charge or double execute.</li></ul>
+public abstract class Entity
+{
+    public int Id { get; set; }
+}</code></pre>
+<p>---</p>
+<h2 id="delegates-events-and-lambdas">Delegates, Events, and Lambdas</h2>
+<p><strong>Q: Show a simple event pattern with <code>EventHandler&lt;T&gt;</code>.</strong></p>
+<p>A: Use events to publish changes without tight coupling.</p>
+<pre class="language-csharp"><code class="language-csharp">public class PriceTicker
+{
+    public event EventHandler&lt;decimal&gt;? PriceUpdated;
+
+    public void Update(decimal price)
+    {
+        PriceUpdated?.Invoke(this, price);
+    }
+}</code></pre>
+<p><strong>Q: When would you prefer <code>Func&lt;T&gt;</code> over a custom delegate type?</strong></p>
+<p>A: Use <code>Func</code> for small, simple signatures; custom delegates for clarity and documentation.</p>
+<pre class="language-csharp"><code class="language-csharp">Func&lt;int, int&gt; square = x =&gt; x * x;</code></pre>
+<p>---</p>
+<h2 id="pattern-matching-and-switch-expressions">Pattern Matching and Switch Expressions</h2>
+<p><strong>Q: Use pattern matching to categorize input.</strong></p>
+<p>A: Switch expressions make branching concise.</p>
+<pre class="language-csharp"><code class="language-csharp">public static string Classify(object input) =&gt; input switch
+{
+    null =&gt; &quot;null&quot;,
+    int i when i &lt; 0 =&gt; &quot;negative int&quot;,
+    int =&gt; &quot;positive int&quot;,
+    string s when s.Length == 0 =&gt; &quot;empty string&quot;,
+    string =&gt; &quot;string&quot;,
+    _ =&gt; &quot;other&quot;
+};</code></pre>
+<p>---</p>
+<h2 id="records-and-immutability">Records and Immutability</h2>
+<p><strong>Q: Create a record and use <code>with</code> to clone it.</strong></p>
+<p>A: Records simplify immutable data structures.</p>
+<pre class="language-csharp"><code class="language-csharp">public record Trade(string Symbol, decimal Price, int Quantity);
+
+var original = new Trade(&quot;EURUSD&quot;, 1.0912m, 1000);
+var updated = original with { Price = 1.0920m };</code></pre>
+<p>---</p>
+<h2 id="exceptions-and-error-flow">Exceptions and Error Flow</h2>
+<p><strong>Q: Show how to throw and wrap exceptions with context.</strong></p>
+<p>A: Use specific exceptions and include context for debugging.</p>
+<pre class="language-csharp"><code class="language-csharp">public static Order FindOrder(int id, IDictionary&lt;int, Order&gt; map)
+{
+    if (!map.TryGetValue(id, out var order))
+        throw new KeyNotFoundException($&quot;Order {id} was not found.&quot;);
+
+    return order;
+}</code></pre>
+<p>---</p>
+<h2 id="access-modifiers-and-encapsulation">Access Modifiers and Encapsulation</h2>
+<p><strong>Q: Summarize access modifiers and demonstrate a safe class design.</strong></p>
+<p>A: Use private fields, expose behavior through public methods, and keep invariants inside.</p>
+<pre class="language-csharp"><code class="language-csharp">public class Position
+{
+    private decimal _quantity;
+
+    public decimal Quantity =&gt; _quantity;
+
+    public void Add(decimal quantity)
+    {
+        if (quantity &lt;= 0)
+            throw new ArgumentOutOfRangeException(nameof(quantity));
+
+        _quantity += quantity;
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="collections-and-initialization">Collections and Initialization</h2>
+<p><strong>Q: Show object and collection initialization with target-typed <code>new</code>.</strong></p>
+<p>A: Use concise syntax for readability.</p>
+<pre class="language-csharp"><code class="language-csharp">var orders = new List&lt;Order&gt;
+{
+    new(&quot;A&quot;, 10),
+    new(&quot;B&quot;, 20)
+};</code></pre>
+<p>---</p>
+<p><strong>Total Exercises: 12+</strong></p>
+<p>Practice each exercise by writing the code and explaining your choices out loud.</p>
       </article>
     </main>
   </div>

@@ -287,6 +287,62 @@ public class LOHDemo
 }
 ```
 
+---
+
+## Practice Prompts (Q and A)
+
+**Q: When should you use `ArrayPool<T>`?**
+
+A: Use it for large or frequent temporary buffers to reduce GC pressure. Always return buffers in a `finally` block.
+
+```csharp
+var pool = ArrayPool<byte>.Shared;
+byte[] buffer = pool.Rent(4096);
+try
+{
+    // Use buffer
+}
+finally
+{
+    pool.Return(buffer);
+}
+```
+
+**Q: Show how `Span<T>` can avoid allocations when parsing.**
+
+A: Slice strings with spans to reduce intermediate allocations.
+
+```csharp
+ReadOnlySpan<char> line = input.AsSpan();
+var first = line.Slice(0, 3);
+```
+
+**Q: When would you use `ValueTask` instead of `Task`?**
+
+A: Use `ValueTask` for hot paths that often complete synchronously to avoid allocations.
+
+**Q: Why is string concatenation in a loop expensive, and how do you fix it?**
+
+A: Strings are immutable, so concatenation allocates new strings. Use `StringBuilder`.
+
+```csharp
+var sb = new StringBuilder();
+foreach (var part in parts)
+{
+    sb.Append(part);
+}
+var result = sb.ToString();
+```
+
+**Q: How do closures create hidden allocations?**
+
+A: Lambdas capture outer variables into heap-allocated objects. Avoid captures in hot paths or use static lambdas.
+
+```csharp
+// Avoid capture
+var count = items.Count(static i => i.IsActive);
+```
+
 **Key points:**
 - Objects >= 85KB go to LOH
 - LOH is part of Gen 2

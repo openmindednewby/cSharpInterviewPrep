@@ -124,7 +124,7 @@
         <span>Practice</span>
         <span class="chevron" aria-hidden="true"></span>
       </button>
-      <ul class="sidebar-group__items"><li><a class="nav-link" href="../practice/answers.html">Answers</a></li><li><a class="nav-link" href="../practice/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="../practice/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="../practice/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="../practice/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="../practice/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="../practice/linq-collections.html">Linq Collections</a></li><li><a class="nav-link active" href="../practice/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="../practice/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="../practice/index.html">Practice</a></li><li><a class="nav-link" href="../practice/questions.html">Questions</a></li><li><a class="nav-link" href="../practice/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="../practice/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="../practice/system-design.html">System Design</a></li><li><a class="nav-link" href="../practice/trading-domain.html">Trading Domain</a></li></ul>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="../practice/answers.html">Answers</a></li><li><a class="nav-link" href="../practice/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="../practice/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="../practice/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="../practice/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="../practice/csharp-fundamentals.html">Csharp Fundamentals</a></li><li><a class="nav-link" href="../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="../practice/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="../practice/linq-collections.html">Linq Collections</a></li><li><a class="nav-link active" href="../practice/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="../practice/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="../practice/index.html">Practice</a></li><li><a class="nav-link" href="../practice/questions.html">Questions</a></li><li><a class="nav-link" href="../practice/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="../practice/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="../practice/system-design.html">System Design</a></li><li><a class="nav-link" href="../practice/trading-domain.html">Trading Domain</a></li></ul>
     </div></div></div>
       </div>
     </nav>
@@ -133,7 +133,7 @@
         <div class="breadcrumbs">practice\messaging-integration.md</div>
         <h2>Messaging Integration</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#messaging-integration-practice-exercises">Messaging & Integration Practice Exercises</a></li><li class="level-2"><a href="#foundational-questions">Foundational Questions</a></li><li class="level-2"><a href="#rabbitmq-advanced-patterns">RabbitMQ Advanced Patterns</a></li><li class="level-2"><a href="#kafka-integration">Kafka Integration</a></li><li class="level-2"><a href="#saga-pattern">Saga Pattern</a></li><li class="level-2"><a href="#outbox-pattern">Outbox Pattern</a></li><li class="level-2"><a href="#idempotency">Idempotency</a></li><li class="level-2"><a href="#event-streaming">Event Streaming</a></li></ul></div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#messaging-integration-practice-exercises">Messaging & Integration Practice Exercises</a></li><li class="level-2"><a href="#foundational-questions">Foundational Questions</a></li><li class="level-2"><a href="#rabbitmq-advanced-patterns">RabbitMQ Advanced Patterns</a></li><li class="level-2"><a href="#kafka-integration">Kafka Integration</a></li><li class="level-2"><a href="#saga-pattern">Saga Pattern</a></li><li class="level-2"><a href="#outbox-pattern">Outbox Pattern</a></li><li class="level-2"><a href="#idempotency">Idempotency</a></li><li class="level-2"><a href="#event-streaming">Event Streaming</a></li><li class="level-2"><a href="#advanced-messaging-scenarios">Advanced Messaging Scenarios</a></li></ul></div>
         <h1 id="messaging-integration-practice-exercises">Messaging & Integration Practice Exercises</h1>
 <p>Master message-driven architecture, event-driven patterns, and reliable integration strategies for distributed systems.</p>
 <p>---</p>
@@ -1347,7 +1347,30 @@ public class OutboxProcessor : BackgroundService
     }
 }</code></pre>
 <p>---</p>
-<p><strong>Total Exercises: 30+</strong></p>
+<h2 id="advanced-messaging-scenarios">Advanced Messaging Scenarios</h2>
+<p><strong>Q: How do you handle poison messages without blocking a queue?</strong></p>
+<p>A: Use a dead letter queue (DLQ) and track retry attempts via headers.</p>
+<pre class="language-csharp"><code class="language-csharp">if (retryCount &gt;= 5)
+{
+    await _dlqPublisher.PublishAsync(message);
+    return;
+}</code></pre>
+<p><strong>Q: Describe an idempotency strategy for message consumers.</strong></p>
+<p>A: Use an idempotency key table with unique constraint and short TTL for cleanup.</p>
+<pre class="language-sql"><code class="language-sql">CREATE TABLE message_dedup (
+    message_id TEXT PRIMARY KEY,
+    processed_at TIMESTAMP NOT NULL
+);</code></pre>
+<p><strong>Q: How would you preserve ordering for a specific key in Kafka?</strong></p>
+<p>A: Use the key as the partition key and run a single consumer per partition.</p>
+<p><strong>Q: How do you evolve a message schema safely?</strong></p>
+<p>A: Use backward-compatible changes, versioned fields, and schema registry validation. Avoid breaking field removals.</p>
+<p><strong>Q: Implement a retry policy with exponential backoff and max delay.</strong></p>
+<p>A: Increase delay per attempt and cap the maximum delay.</p>
+<pre class="language-csharp"><code class="language-csharp">var delayMs = Math.Min(30_000, 200 * (int)Math.Pow(2, attempt));
+await Task.Delay(delayMs, ct);</code></pre>
+<p>---</p>
+<p><strong>Total Exercises: 35+</strong></p>
 <p>Master messaging patterns for building resilient, event-driven distributed systems!</p>
       </article>
     </main>

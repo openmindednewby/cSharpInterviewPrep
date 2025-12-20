@@ -1,6 +1,6 @@
 // Auto-generated flash card data from notes/ and practice/ folders
-// Generated on: 2025-12-20T21:57:35.185Z
-// Total cards: 1382 (687 Q&A, 633 sections, 62 concepts)
+// Generated on: 2025-12-20T22:10:30.339Z
+// Total cards: 1470 (756 Q&A, 652 sections, 62 concepts)
 
 window.FLASH_CARD_DATA = [
   {
@@ -20130,6 +20130,101 @@ window.FLASH_CARD_DATA = [
     "id": "card-1005"
   },
   {
+    "question": "Implement ETag support for GET endpoints with conditional requests.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Compute a hash and honor If-None-Match."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "app.MapGet(\"/orders/{id}\", async (int id, HttpContext context, IOrderRepo repo) =>\n{\n    var order = await repo.GetByIdAsync(id);\n    if (order is null)\n        return Results.NotFound();\n\n    var etag = $\"\\\"{order.UpdatedAt.Ticks}\\\"\";\n    if (context.Request.Headers.IfNoneMatch == etag)\n        return Results.StatusCode(StatusCodes.Status304NotModified);\n\n    context.Response.Headers.ETag = etag;\n    return Results.Ok(order);\n});",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "api-lifecycle.md",
+    "source": "practice/api-lifecycle.md",
+    "id": "card-1006"
+  },
+  {
+    "question": "Enforce request body size limits for upload endpoints.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use RequestSizeLimit attributes or middleware."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "[RequestSizeLimit(2 * 1024 * 1024)]\n[HttpPost(\"upload\")]\npublic async Task<IActionResult> Upload(IFormFile file)\n{\n    // ...\n    return Ok();\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "api-lifecycle.md",
+    "source": "practice/api-lifecycle.md",
+    "id": "card-1007"
+  },
+  {
+    "question": "Create a readiness endpoint that checks dependencies.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use health checks with tags."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "builder.Services.AddHealthChecks()\n    .AddSqlServer(connectionString, name: \"db\")\n    .AddRedis(redisConnection, name: \"cache\");\n\napp.MapHealthChecks(\"/health/ready\", new HealthCheckOptions\n{\n    Predicate = check => check.Tags.Contains(\"ready\")\n});",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "api-lifecycle.md",
+    "source": "practice/api-lifecycle.md",
+    "id": "card-1008"
+  },
+  {
+    "question": "Implement resource-based authorization with policies.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use IAuthorizationService in handlers."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "app.MapGet(\"/accounts/{id}\", async (\n    int id,\n    ClaimsPrincipal user,\n    IAuthorizationService auth,\n    IAccountRepo repo) =>\n{\n    var account = await repo.GetByIdAsync(id);\n    var result = await auth.AuthorizeAsync(user, account, \"CanReadAccount\");\n    return result.Succeeded ? Results.Ok(account) : Results.Forbid();\n});",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "api-lifecycle.md",
+    "source": "practice/api-lifecycle.md",
+    "id": "card-1009"
+  },
+  {
+    "question": "Apply per-tenant rate limits with a custom policy.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Partition limits by tenant identifier."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "builder.Services.AddRateLimiter(options =>\n{\n    options.AddPolicy(\"per-tenant\", context =>\n        RateLimitPartition.GetFixedWindowLimiter(\n            partitionKey: context.User.FindFirst(\"tenant\")?.Value ?? \"anon\",\n            factory: _ => new FixedWindowRateLimiterOptions\n            {\n                PermitLimit = 60,\n                Window = TimeSpan.FromMinutes(1)\n            }));\n});\n\napp.UseRateLimiter();",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "api-lifecycle.md",
+    "source": "practice/api-lifecycle.md",
+    "id": "card-1010"
+  },
+  {
     "question": "Foundational Questions",
     "answer": [
       {
@@ -20224,7 +20319,7 @@ window.FLASH_CARD_DATA = [
     "topic": "api-lifecycle.md",
     "source": "practice/api-lifecycle.md",
     "isSection": true,
-    "id": "card-1006"
+    "id": "card-1011"
   },
   {
     "question": "Intermediate Exercises",
@@ -20288,7 +20383,7 @@ window.FLASH_CARD_DATA = [
     "topic": "api-lifecycle.md",
     "source": "practice/api-lifecycle.md",
     "isSection": true,
-    "id": "card-1007"
+    "id": "card-1012"
   },
   {
     "question": "Advanced Exercises",
@@ -20348,7 +20443,7 @@ window.FLASH_CARD_DATA = [
     "topic": "api-lifecycle.md",
     "source": "practice/api-lifecycle.md",
     "isSection": true,
-    "id": "card-1008"
+    "id": "card-1013"
   },
   {
     "question": "Rate Limiting & Throttling",
@@ -20378,7 +20473,7 @@ window.FLASH_CARD_DATA = [
     "topic": "api-lifecycle.md",
     "source": "practice/api-lifecycle.md",
     "isSection": true,
-    "id": "card-1009"
+    "id": "card-1014"
   },
   {
     "question": "Real-World Scenarios",
@@ -20418,7 +20513,7 @@ window.FLASH_CARD_DATA = [
     "topic": "api-lifecycle.md",
     "source": "practice/api-lifecycle.md",
     "isSection": true,
-    "id": "card-1010"
+    "id": "card-1015"
   },
   {
     "question": "Authorization & Security",
@@ -20448,7 +20543,67 @@ window.FLASH_CARD_DATA = [
     "topic": "api-lifecycle.md",
     "source": "practice/api-lifecycle.md",
     "isSection": true,
-    "id": "card-1011"
+    "id": "card-1016"
+  },
+  {
+    "question": "Advanced API Scenarios",
+    "answer": [
+      {
+        "type": "text",
+        "content": "A: Compute a hash and honor If-None-Match."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "app.MapGet(\"/orders/{id}\", async (int id, HttpContext context, IOrderRepo repo) =>\n{\n    var order = await repo.GetByIdAsync(id);\n    if (order is null)\n        return Results.NotFound();\n\n    var etag = $\"\\\"{order.UpdatedAt.Ticks}\\\"\";\n    if (context.Request.Headers.IfNoneMatch == etag)\n        return Results.StatusCode(StatusCodes.Status304NotModified);\n\n    context.Response.Headers.ETag = etag;\n    return Results.Ok(order);\n});",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "A: Use RequestSizeLimit attributes or middleware."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "[RequestSizeLimit(2 * 1024 * 1024)]\n[HttpPost(\"upload\")]\npublic async Task<IActionResult> Upload(IFormFile file)\n{\n    // ...\n    return Ok();\n}",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "A: Use health checks with tags."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "builder.Services.AddHealthChecks()\n    .AddSqlServer(connectionString, name: \"db\")\n    .AddRedis(redisConnection, name: \"cache\");\n\napp.MapHealthChecks(\"/health/ready\", new HealthCheckOptions\n{\n    Predicate = check => check.Tags.Contains(\"ready\")\n});",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "A: Use IAuthorizationService in handlers."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "app.MapGet(\"/accounts/{id}\", async (\n    int id,\n    ClaimsPrincipal user,\n    IAuthorizationService auth,\n    IAccountRepo repo) =>\n{\n    var account = await repo.GetByIdAsync(id);\n    var result = await auth.AuthorizeAsync(user, account, \"CanReadAccount\");\n    return result.Succeeded ? Results.Ok(account) : Results.Forbid();\n});",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "A: Partition limits by tenant identifier."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "builder.Services.AddRateLimiter(options =>\n{\n    options.AddPolicy(\"per-tenant\", context =>\n        RateLimitPartition.GetFixedWindowLimiter(\n            partitionKey: context.User.FindFirst(\"tenant\")?.Value ?? \"anon\",\n            factory: _ => new FixedWindowRateLimiterOptions\n            {\n                PermitLimit = 60,\n                Window = TimeSpan.FromMinutes(1)\n            }));\n});\n\napp.UseRateLimiter();",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "api-lifecycle.md",
+    "source": "practice/api-lifecycle.md",
+    "isSection": true,
+    "id": "card-1017"
   },
   {
     "question": "Sketch code to call three REST endpoints concurrently, cancel if any take longer than 3 seconds, and aggregate results.",
@@ -20467,7 +20622,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "async-resilience.md",
     "source": "practice/async-resilience.md",
-    "id": "card-1012"
+    "id": "card-1018"
   },
   {
     "question": "Implement a resilient HTTP client with retry and circuit breaker policies using Polly.",
@@ -20486,7 +20641,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "async-resilience.md",
     "source": "practice/async-resilience.md",
-    "id": "card-1013"
+    "id": "card-1019"
   },
   {
     "question": "How would you handle backpressure when consuming a fast message queue with a slower downstream API?",
@@ -20505,7 +20660,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "async-resilience.md",
     "source": "practice/async-resilience.md",
-    "id": "card-1014"
+    "id": "card-1020"
   },
   {
     "question": "Explain why you might use SemaphoreSlim with async code over lock.",
@@ -20524,7 +20679,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "async-resilience.md",
     "source": "practice/async-resilience.md",
-    "id": "card-1015"
+    "id": "card-1021"
   },
   {
     "question": "Implement an async method that times out after a specified duration and returns a default value.",
@@ -20543,7 +20698,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "async-resilience.md",
     "source": "practice/async-resilience.md",
-    "id": "card-1016"
+    "id": "card-1022"
   },
   {
     "question": "Create a method that retries an operation with exponential backoff.",
@@ -20562,7 +20717,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "async-resilience.md",
     "source": "practice/async-resilience.md",
-    "id": "card-1017"
+    "id": "card-1023"
   },
   {
     "question": "Implement a method that processes items in batches with a maximum degree of parallelism.",
@@ -20581,7 +20736,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "async-resilience.md",
     "source": "practice/async-resilience.md",
-    "id": "card-1018"
+    "id": "card-1024"
   },
   {
     "question": "Create an async producer-consumer pattern using Channel<T>.",
@@ -20600,7 +20755,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "async-resilience.md",
     "source": "practice/async-resilience.md",
-    "id": "card-1019"
+    "id": "card-1025"
   },
   {
     "question": "Implement proper cancellation handling in an async method that makes multiple API calls.",
@@ -20619,7 +20774,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "async-resilience.md",
     "source": "practice/async-resilience.md",
-    "id": "card-1020"
+    "id": "card-1026"
   },
   {
     "question": "Implement an async lazy initialization pattern that ensures a resource is initialized only once.",
@@ -20638,7 +20793,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "async-resilience.md",
     "source": "practice/async-resilience.md",
-    "id": "card-1021"
+    "id": "card-1027"
   },
   {
     "question": "Create a rate limiter using SemaphoreSlim and Timer for token bucket algorithm.",
@@ -20657,7 +20812,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "async-resilience.md",
     "source": "practice/async-resilience.md",
-    "id": "card-1022"
+    "id": "card-1028"
   },
   {
     "question": "Implement async dispose pattern (IAsyncDisposable) for a resource that requires async cleanup.",
@@ -20676,7 +20831,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "async-resilience.md",
     "source": "practice/async-resilience.md",
-    "id": "card-1023"
+    "id": "card-1029"
   },
   {
     "question": "Create a circuit breaker implementation from scratch.",
@@ -20695,7 +20850,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "async-resilience.md",
     "source": "practice/async-resilience.md",
-    "id": "card-1024"
+    "id": "card-1030"
   },
   {
     "question": "Implement a parallel batch processor that maintains order of results.",
@@ -20714,7 +20869,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "async-resilience.md",
     "source": "practice/async-resilience.md",
-    "id": "card-1025"
+    "id": "card-1031"
   },
   {
     "question": "Implement a fan-out/fan-in pattern where multiple workers process items and results are aggregated.",
@@ -20733,7 +20888,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "async-resilience.md",
     "source": "practice/async-resilience.md",
-    "id": "card-1026"
+    "id": "card-1032"
   },
   {
     "question": "Create a coordinated shutdown mechanism for multiple background tasks.",
@@ -20752,7 +20907,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "async-resilience.md",
     "source": "practice/async-resilience.md",
-    "id": "card-1027"
+    "id": "card-1033"
   },
   {
     "question": "Implement async event aggregation that batches events before processing.",
@@ -20771,7 +20926,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "async-resilience.md",
     "source": "practice/async-resilience.md",
-    "id": "card-1028"
+    "id": "card-1034"
   },
   {
     "question": "Implement a bulkhead pattern to isolate failures.",
@@ -20790,7 +20945,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "async-resilience.md",
     "source": "practice/async-resilience.md",
-    "id": "card-1029"
+    "id": "card-1035"
   },
   {
     "question": "Create a fallback mechanism that returns cached data when an API call fails.",
@@ -20809,7 +20964,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "async-resilience.md",
     "source": "practice/async-resilience.md",
-    "id": "card-1030"
+    "id": "card-1036"
   },
   {
     "question": "Implement timeout policies for different types of operations (fast, medium, slow).",
@@ -20828,7 +20983,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "async-resilience.md",
     "source": "practice/async-resilience.md",
-    "id": "card-1031"
+    "id": "card-1037"
   },
   {
     "question": "Implement a download manager that downloads multiple files concurrently with progress reporting.",
@@ -20847,7 +21002,102 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "async-resilience.md",
     "source": "practice/async-resilience.md",
-    "id": "card-1032"
+    "id": "card-1038"
+  },
+  {
+    "question": "How do you run tasks in parallel but keep partial results when some fail?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use Task.WhenAll with try/catch and record successes and failures."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public static async Task<(List<T> Results, List<Exception> Errors)> WhenAllSafe<T>(IEnumerable<Task<T>> tasks)\n{\n    var results = new List<T>();\n    var errors = new List<Exception>();\n\n    foreach (var task in tasks)\n    {\n        try\n        {\n            results.Add(await task);\n        }\n        catch (Exception ex)\n        {\n            errors.Add(ex);\n        }\n    }\n\n    return (results, errors);\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "async-resilience.md",
+    "source": "practice/async-resilience.md",
+    "id": "card-1039"
+  },
+  {
+    "question": "Implement bounded parallelism using Parallel.ForEachAsync.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use MaxDegreeOfParallelism to control concurrency."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "await Parallel.ForEachAsync(items, new ParallelOptions\n{\n    MaxDegreeOfParallelism = 4,\n    CancellationToken = ct\n}, async (item, token) =>\n{\n    await ProcessAsync(item, token);\n});",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "async-resilience.md",
+    "source": "practice/async-resilience.md",
+    "id": "card-1040"
+  },
+  {
+    "question": "Add jitter to retry backoff to avoid thundering herds.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Randomize the delay window per attempt."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var rng = Random.Shared;\nvar delay = TimeSpan.FromMilliseconds(initialDelayMs * Math.Pow(2, attempt));\nvar jitter = TimeSpan.FromMilliseconds(rng.Next(0, 100));\nawait Task.Delay(delay + jitter, ct);",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "async-resilience.md",
+    "source": "practice/async-resilience.md",
+    "id": "card-1041"
+  },
+  {
+    "question": "Stream results with IAsyncEnumerable and cancellation.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use yield return with CancellationToken support."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public static async IAsyncEnumerable<Order> StreamOrdersAsync(\n    IOrderSource source,\n    [EnumeratorCancellation] CancellationToken ct)\n{\n    await foreach (var order in source.ReadAllAsync(ct))\n    {\n        yield return order;\n    }\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "async-resilience.md",
+    "source": "practice/async-resilience.md",
+    "id": "card-1042"
+  },
+  {
+    "question": "Design a simple circuit breaker state machine.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Track failures and open the circuit for a timeout window."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public sealed class SimpleCircuitBreaker\n{\n    private int _failures;\n    private DateTime _openedAt;\n    private readonly int _threshold;\n    private readonly TimeSpan _openDuration;\n\n    public SimpleCircuitBreaker(int threshold, TimeSpan openDuration)\n    {\n        _threshold = threshold;\n        _openDuration = openDuration;\n    }\n\n    public bool CanExecute()\n    {\n        if (_failures < _threshold)\n            return true;\n\n        return DateTime.UtcNow - _openedAt > _openDuration;\n    }\n\n    public void RecordFailure()\n    {\n        _failures += 1;\n        if (_failures == _threshold)\n            _openedAt = DateTime.UtcNow;\n    }\n\n    public void RecordSuccess()\n    {\n        _failures = 0;\n    }\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "async-resilience.md",
+    "source": "practice/async-resilience.md",
+    "id": "card-1043"
   },
   {
     "question": "Foundational Async Questions",
@@ -20913,7 +21163,7 @@ window.FLASH_CARD_DATA = [
     "topic": "async-resilience.md",
     "source": "practice/async-resilience.md",
     "isSection": true,
-    "id": "card-1033"
+    "id": "card-1044"
   },
   {
     "question": "Intermediate Async Patterns",
@@ -20973,7 +21223,7 @@ window.FLASH_CARD_DATA = [
     "topic": "async-resilience.md",
     "source": "practice/async-resilience.md",
     "isSection": true,
-    "id": "card-1034"
+    "id": "card-1045"
   },
   {
     "question": "Advanced Async Patterns",
@@ -21033,7 +21283,7 @@ window.FLASH_CARD_DATA = [
     "topic": "async-resilience.md",
     "source": "practice/async-resilience.md",
     "isSection": true,
-    "id": "card-1035"
+    "id": "card-1046"
   },
   {
     "question": "Task Coordination Patterns",
@@ -21073,7 +21323,7 @@ window.FLASH_CARD_DATA = [
     "topic": "async-resilience.md",
     "source": "practice/async-resilience.md",
     "isSection": true,
-    "id": "card-1036"
+    "id": "card-1047"
   },
   {
     "question": "Error Handling & Resilience",
@@ -21113,7 +21363,7 @@ window.FLASH_CARD_DATA = [
     "topic": "async-resilience.md",
     "source": "practice/async-resilience.md",
     "isSection": true,
-    "id": "card-1037"
+    "id": "card-1048"
   },
   {
     "question": "Real-World Scenarios",
@@ -21133,7 +21383,197 @@ window.FLASH_CARD_DATA = [
     "topic": "async-resilience.md",
     "source": "practice/async-resilience.md",
     "isSection": true,
-    "id": "card-1038"
+    "id": "card-1049"
+  },
+  {
+    "question": "Advanced Resilience Scenarios",
+    "answer": [
+      {
+        "type": "text",
+        "content": "A: Use Task.WhenAll with try/catch and record successes and failures."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public static async Task<(List<T> Results, List<Exception> Errors)> WhenAllSafe<T>(IEnumerable<Task<T>> tasks)\n{\n    var results = new List<T>();\n    var errors = new List<Exception>();\n\n    foreach (var task in tasks)\n    {\n        try\n        {\n            results.Add(await task);\n        }\n        catch (Exception ex)\n        {\n            errors.Add(ex);\n        }\n    }\n\n    return (results, errors);\n}",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "A: Use MaxDegreeOfParallelism to control concurrency."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "await Parallel.ForEachAsync(items, new ParallelOptions\n{\n    MaxDegreeOfParallelism = 4,\n    CancellationToken = ct\n}, async (item, token) =>\n{\n    await ProcessAsync(item, token);\n});",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "A: Randomize the delay window per attempt."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var rng = Random.Shared;\nvar delay = TimeSpan.FromMilliseconds(initialDelayMs * Math.Pow(2, attempt));\nvar jitter = TimeSpan.FromMilliseconds(rng.Next(0, 100));\nawait Task.Delay(delay + jitter, ct);",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "A: Use yield return with CancellationToken support."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public static async IAsyncEnumerable<Order> StreamOrdersAsync(\n    IOrderSource source,\n    [EnumeratorCancellation] CancellationToken ct)\n{\n    await foreach (var order in source.ReadAllAsync(ct))\n    {\n        yield return order;\n    }\n}",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "A: Track failures and open the circuit for a timeout window."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public sealed class SimpleCircuitBreaker\n{\n    private int _failures;\n    private DateTime _openedAt;\n    private readonly int _threshold;\n    private readonly TimeSpan _openDuration;\n\n    public SimpleCircuitBreaker(int threshold, TimeSpan openDuration)\n    {\n        _threshold = threshold;\n        _openDuration = openDuration;\n    }\n\n    public bool CanExecute()\n    {\n        if (_failures < _threshold)\n            return true;\n\n        return DateTime.UtcNow - _openedAt > _openDuration;\n    }\n\n    public void RecordFailure()\n    {\n        _failures += 1;\n        if (_failures == _threshold)\n            _openedAt = DateTime.UtcNow;\n    }\n\n    public void RecordSuccess()\n    {\n        _failures = 0;\n    }\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "async-resilience.md",
+    "source": "practice/async-resilience.md",
+    "isSection": true,
+    "id": "card-1050"
+  },
+  {
+    "question": "Tell me about a time you improved reliability under tight deadlines.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Emphasize triage, prioritization, and measurable reliability gains (reduced incidents, improved MTTR)."
+      }
+    ],
+    "category": "practice",
+    "topic": "behavioral-questions.md",
+    "source": "practice/behavioral-questions.md",
+    "id": "card-1051"
+  },
+  {
+    "question": "Describe a time you pushed back on a requirement.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Explain how you gathered data, offered alternatives, and aligned on a better solution."
+      }
+    ],
+    "category": "practice",
+    "topic": "behavioral-questions.md",
+    "source": "practice/behavioral-questions.md",
+    "id": "card-1052"
+  },
+  {
+    "question": "Share a story where you mentored a teammate.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Focus on coaching style, growth outcomes, and how you measured success."
+      }
+    ],
+    "category": "practice",
+    "topic": "behavioral-questions.md",
+    "source": "practice/behavioral-questions.md",
+    "id": "card-1053"
+  },
+  {
+    "question": "Describe a time you resolved a production incident.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Highlight diagnostics, clear communication, and follow-up prevention steps."
+      }
+    ],
+    "category": "practice",
+    "topic": "behavioral-questions.md",
+    "source": "practice/behavioral-questions.md",
+    "id": "card-1054"
+  },
+  {
+    "question": "Tell me about a technical decision that you later reconsidered.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Show humility, what you learned, and how you adapted your approach."
+      }
+    ],
+    "category": "practice",
+    "topic": "behavioral-questions.md",
+    "source": "practice/behavioral-questions.md",
+    "id": "card-1055"
+  },
+  {
+    "question": "Describe a time you influenced without authority.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Explain how you built trust, used data, and aligned stakeholders."
+      }
+    ],
+    "category": "practice",
+    "topic": "behavioral-questions.md",
+    "source": "practice/behavioral-questions.md",
+    "id": "card-1056"
+  },
+  {
+    "question": "How do you handle competing priorities?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Explain triage, stakeholder communication, and how you protect critical paths."
+      }
+    ],
+    "category": "practice",
+    "topic": "behavioral-questions.md",
+    "source": "practice/behavioral-questions.md",
+    "id": "card-1057"
+  },
+  {
+    "question": "Tell me about a time you improved a process.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Describe the baseline, your change, and the measurable improvement."
+      }
+    ],
+    "category": "practice",
+    "topic": "behavioral-questions.md",
+    "source": "practice/behavioral-questions.md",
+    "id": "card-1058"
+  },
+  {
+    "question": "Describe a conflict that you resolved successfully.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Focus on listening, shared goals, and outcome."
+      }
+    ],
+    "category": "practice",
+    "topic": "behavioral-questions.md",
+    "source": "practice/behavioral-questions.md",
+    "id": "card-1059"
+  },
+  {
+    "question": "Share a time you handled ambiguous requirements.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Emphasize discovery, clarifying questions, and iterative delivery."
+      }
+    ],
+    "category": "practice",
+    "topic": "behavioral-questions.md",
+    "source": "practice/behavioral-questions.md",
+    "id": "card-1060"
   },
   {
     "question": "Table of Contents",
@@ -21160,7 +21600,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1039"
+    "id": "card-1061"
   },
   {
     "question": "Tips for STAR Responses",
@@ -21183,7 +21623,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1040"
+    "id": "card-1062"
   },
   {
     "question": "Q1: Tell me about a time you led a critical production fix under pressure.",
@@ -21239,7 +21679,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1041"
+    "id": "card-1063"
   },
   {
     "question": "Q2: Describe a situation where you had to lead a team through a significant technical migration or change.",
@@ -21296,7 +21736,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1042"
+    "id": "card-1064"
   },
   {
     "question": "Q3: Tell me about a time you had to make a decision without complete information.",
@@ -21354,7 +21794,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1043"
+    "id": "card-1065"
   },
   {
     "question": "Q4: Describe a situation where you had a significant disagreement with a team member or stakeholder. How did you handle it?",
@@ -21412,7 +21852,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1044"
+    "id": "card-1066"
   },
   {
     "question": "Q5: Tell me about a time you had to deliver difficult feedback to a peer or direct report.",
@@ -21474,7 +21914,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1045"
+    "id": "card-1067"
   },
   {
     "question": "Q6: Describe a time when you had to mediate a conflict between other team members.",
@@ -21537,7 +21977,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1046"
+    "id": "card-1068"
   },
   {
     "question": "Q7: Describe a time you chose a particular technology or architecture pattern. What was your decision-making process?",
@@ -21601,7 +22041,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1047"
+    "id": "card-1069"
   },
   {
     "question": "Q8: Tell me about a time you had to make a trade-off between technical debt and delivering features. How did you approach it?",
@@ -21665,7 +22105,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1048"
+    "id": "card-1070"
   },
   {
     "question": "Q9: Describe a technical decision you made that you later regretted. What did you learn?",
@@ -21736,7 +22176,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1049"
+    "id": "card-1071"
   },
   {
     "question": "Q10: Tell me about a time you improved a process by automating manual work.",
@@ -21801,7 +22241,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1050"
+    "id": "card-1072"
   },
   {
     "question": "Q11: Describe a situation where you identified and solved a bottleneck in your team's workflow.",
@@ -21868,7 +22308,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1051"
+    "id": "card-1073"
   },
   {
     "question": "Q12: Tell me about a time you introduced a new tool, practice, or methodology to your team.",
@@ -21931,7 +22371,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1052"
+    "id": "card-1074"
   },
   {
     "question": "Q13: Tell me about a time you mentored a junior developer or helped someone grow their skills.",
@@ -21997,7 +22437,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1053"
+    "id": "card-1075"
   },
   {
     "question": "Q14: Describe a time you created documentation, a knowledge base, or runbooks to improve team effectiveness.",
@@ -22065,7 +22505,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1054"
+    "id": "card-1076"
   },
   {
     "question": "Q15: Tell me about a time you shared knowledge across teams or contributed to the broader engineering organization.",
@@ -22131,7 +22571,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1055"
+    "id": "card-1077"
   },
   {
     "question": "Q16: Walk me through your response to a critical production incident. What was your process?",
@@ -22235,7 +22675,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1056"
+    "id": "card-1078"
   },
   {
     "question": "Q17: Describe a time when you had to balance fixing a production issue vs. delivering planned features.",
@@ -22332,7 +22772,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1057"
+    "id": "card-1079"
   },
   {
     "question": "Q18: Tell me about a time you had to deliver a critical project under a tight deadline. How did you manage it?",
@@ -22431,7 +22871,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1058"
+    "id": "card-1080"
   },
   {
     "question": "Q19: Describe a situation where you had to manage multiple high-priority tasks simultaneously. How did you prioritize?",
@@ -22531,7 +22971,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1059"
+    "id": "card-1081"
   },
   {
     "question": "Q20: Tell me about a time you worked with a team outside of engineering (e.g., product, sales, support) to achieve a goal.",
@@ -22639,7 +23079,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1060"
+    "id": "card-1082"
   },
   {
     "question": "Q21: Describe a situation where you had to influence a decision without having direct authority.",
@@ -22738,7 +23178,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1061"
+    "id": "card-1083"
   },
   {
     "question": "Q22: Tell me about a time you received constructive criticism. How did you respond?",
@@ -22833,7 +23273,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1062"
+    "id": "card-1084"
   },
   {
     "question": "Q23: Describe a time you had to give feedback to someone more senior than you.",
@@ -22922,7 +23362,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1063"
+    "id": "card-1085"
   },
   {
     "question": "Q24: Tell me about a time you stepped outside your comfort zone to learn something new.",
@@ -23032,7 +23472,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1064"
+    "id": "card-1086"
   },
   {
     "question": "Q25: Describe a time you had to decide between deepening expertise in your current area vs. broadening into a new domain.",
@@ -23145,7 +23585,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1065"
+    "id": "card-1087"
   },
   {
     "question": "For Engineering Managers / Hiring Managers",
@@ -23191,7 +23631,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1066"
+    "id": "card-1088"
   },
   {
     "question": "For Technical Leads / Senior Engineers",
@@ -23236,7 +23676,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1067"
+    "id": "card-1089"
   },
   {
     "question": "For Product Managers",
@@ -23272,7 +23712,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1068"
+    "id": "card-1090"
   },
   {
     "question": "For Executives (CTO, VP Engineering)",
@@ -23308,7 +23748,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1069"
+    "id": "card-1091"
   },
   {
     "question": "For Peers / Future Teammates",
@@ -23344,7 +23784,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1070"
+    "id": "card-1092"
   },
   {
     "question": "Cross-Cutting Questions (Adapt to Any Interviewer)",
@@ -23364,7 +23804,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1071"
+    "id": "card-1093"
   },
   {
     "question": "Questions to Avoid",
@@ -23383,7 +23823,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1072"
+    "id": "card-1094"
   },
   {
     "question": "Strategy for Asking Questions",
@@ -23403,7 +23843,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1073"
+    "id": "card-1095"
   },
   {
     "question": "Before the Interview",
@@ -23424,7 +23864,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1074"
+    "id": "card-1096"
   },
   {
     "question": "During the Interview",
@@ -23446,7 +23886,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1075"
+    "id": "card-1097"
   },
   {
     "question": "After the Interview",
@@ -23465,7 +23905,7 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1076"
+    "id": "card-1098"
   },
   {
     "question": "Common Mistakes to Avoid",
@@ -23488,7 +23928,57 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1077"
+    "id": "card-1099"
+  },
+  {
+    "question": "Quick Practice Prompts",
+    "answer": [
+      {
+        "type": "text",
+        "content": "A: Emphasize triage, prioritization, and measurable reliability gains (reduced incidents, improved MTTR)."
+      },
+      {
+        "type": "text",
+        "content": "A: Explain how you gathered data, offered alternatives, and aligned on a better solution."
+      },
+      {
+        "type": "text",
+        "content": "A: Focus on coaching style, growth outcomes, and how you measured success."
+      },
+      {
+        "type": "text",
+        "content": "A: Highlight diagnostics, clear communication, and follow-up prevention steps."
+      },
+      {
+        "type": "text",
+        "content": "A: Show humility, what you learned, and how you adapted your approach."
+      },
+      {
+        "type": "text",
+        "content": "A: Explain how you built trust, used data, and aligned stakeholders."
+      },
+      {
+        "type": "text",
+        "content": "A: Explain triage, stakeholder communication, and how you protect critical paths."
+      },
+      {
+        "type": "text",
+        "content": "A: Describe the baseline, your change, and the measurable improvement."
+      },
+      {
+        "type": "text",
+        "content": "A: Focus on listening, shared goals, and outcome."
+      },
+      {
+        "type": "text",
+        "content": "A: Emphasize discovery, clarifying questions, and iterative delivery."
+      }
+    ],
+    "category": "practice",
+    "topic": "behavioral-questions.md",
+    "source": "practice/behavioral-questions.md",
+    "isSection": true,
+    "id": "card-1100"
   },
   {
     "question": "Practice Exercise",
@@ -23506,7 +23996,102 @@ window.FLASH_CARD_DATA = [
     "topic": "behavioral-questions.md",
     "source": "practice/behavioral-questions.md",
     "isSection": true,
-    "id": "card-1078"
+    "id": "card-1101"
+  },
+  {
+    "question": "Implement a token bucket rate limiter (single-threaded).",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use a refill timer and allow up to capacity tokens."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public sealed class TokenBucket\n{\n    private readonly int _capacity;\n    private readonly int _refillPerSecond;\n    private int _tokens;\n    private DateTime _lastRefill;\n\n    public TokenBucket(int capacity, int refillPerSecond)\n    {\n        _capacity = capacity;\n        _refillPerSecond = refillPerSecond;\n        _tokens = capacity;\n        _lastRefill = DateTime.UtcNow;\n    }\n\n    public bool TryConsume()\n    {\n        Refill();\n        if (_tokens <= 0) return false;\n        _tokens -= 1;\n        return true;\n    }\n\n    private void Refill()\n    {\n        var now = DateTime.UtcNow;\n        var seconds = (int)(now - _lastRefill).TotalSeconds;\n        if (seconds <= 0) return;\n        _tokens = Math.Min(_capacity, _tokens + seconds * _refillPerSecond);\n        _lastRefill = now;\n    }\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "code-assessment.md",
+    "source": "practice/code-assessment.md",
+    "id": "card-1102"
+  },
+  {
+    "question": "Build a bounded in-memory queue with backpressure signals.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Track capacity and return a boolean to indicate enqueue success."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public sealed class BoundedQueue<T>\n{\n    private readonly Queue<T> _queue = new();\n    private readonly int _capacity;\n\n    public BoundedQueue(int capacity) => _capacity = capacity;\n\n    public bool TryEnqueue(T item)\n    {\n        if (_queue.Count >= _capacity) return false;\n        _queue.Enqueue(item);\n        return true;\n    }\n\n    public bool TryDequeue(out T? item) => _queue.TryDequeue(out item);\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "code-assessment.md",
+    "source": "practice/code-assessment.md",
+    "id": "card-1103"
+  },
+  {
+    "question": "Implement a simple TTL cache with expiration.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Store expiration and evict on read."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public sealed class TtlCache<TKey, TValue>\n{\n    private readonly Dictionary<TKey, (TValue Value, DateTime ExpiresAt)> _map = new();\n\n    public void Set(TKey key, TValue value, TimeSpan ttl)\n    {\n        _map[key] = (value, DateTime.UtcNow.Add(ttl));\n    }\n\n    public bool TryGet(TKey key, out TValue value)\n    {\n        if (_map.TryGetValue(key, out var entry) && entry.ExpiresAt > DateTime.UtcNow)\n        {\n            value = entry.Value;\n            return true;\n        }\n\n        _map.Remove(key);\n        value = default!;\n        return false;\n    }\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "code-assessment.md",
+    "source": "practice/code-assessment.md",
+    "id": "card-1104"
+  },
+  {
+    "question": "Parse a CSV stream into records without loading the full file.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Read line-by-line and yield rows."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public static IEnumerable<string[]> ReadCsv(Stream stream)\n{\n    using var reader = new StreamReader(stream);\n    string? line;\n    while ((line = reader.ReadLine()) is not null)\n    {\n        yield return line.Split(',');\n    }\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "code-assessment.md",
+    "source": "practice/code-assessment.md",
+    "id": "card-1105"
+  },
+  {
+    "question": "Compute a rolling VWAP from a stream of trades.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Maintain running sums of price * volume and volume."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "decimal notional = 0m;\ndecimal volume = 0m;\nforeach (var trade in trades)\n{\n    notional += trade.Price * trade.Volume;\n    volume += trade.Volume;\n    var vwap = volume == 0 ? 0 : notional / volume;\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "code-assessment.md",
+    "source": "practice/code-assessment.md",
+    "id": "card-1106"
   },
   {
     "question": "1. Async REST Fan-Out with Cancellation and Timeout",
@@ -23534,7 +24119,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1079"
+    "id": "card-1107"
   },
   {
     "question": "2. LRU Cache for Price Lookups",
@@ -23562,7 +24147,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1080"
+    "id": "card-1108"
   },
   {
     "question": "3. Concurrent Producer/Consumer Pipeline for Order Enrichment",
@@ -23590,7 +24175,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1081"
+    "id": "card-1109"
   },
   {
     "question": "4. SQL: Find Latest Fill Per Order",
@@ -23618,7 +24203,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1082"
+    "id": "card-1110"
   },
   {
     "question": "5. Minimal API Health Endpoint with Dependency Injection",
@@ -23646,7 +24231,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1083"
+    "id": "card-1111"
   },
   {
     "question": "6. Secure Parameterized Data Access to Prevent SQL Injection",
@@ -23674,7 +24259,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1084"
+    "id": "card-1112"
   },
   {
     "question": "7. JWT Authentication with Audience Validation and Clock Skew Control",
@@ -23702,7 +24287,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1085"
+    "id": "card-1113"
   },
   {
     "question": "8. Performance: Span-Based Parsing to Reduce Allocations",
@@ -23730,7 +24315,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1086"
+    "id": "card-1114"
   },
   {
     "question": "9. Performance: Async Streaming to Lower Memory Footprint",
@@ -23758,7 +24343,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1087"
+    "id": "card-1115"
   },
   {
     "question": "10. QuickSort Implementation",
@@ -23797,7 +24382,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1088"
+    "id": "card-1116"
   },
   {
     "question": "11. Binary Search Implementation",
@@ -23832,7 +24417,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1089"
+    "id": "card-1117"
   },
   {
     "question": "12. Merge Sort Implementation",
@@ -23871,7 +24456,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1090"
+    "id": "card-1118"
   },
   {
     "question": "13. Depth-First Search (DFS) on Graph",
@@ -23906,7 +24491,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1091"
+    "id": "card-1119"
   },
   {
     "question": "14. Breadth-First Search (BFS) on Graph",
@@ -23941,7 +24526,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1092"
+    "id": "card-1120"
   },
   {
     "question": "15. Dijkstra's Shortest Path Algorithm",
@@ -23976,7 +24561,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1093"
+    "id": "card-1121"
   },
   {
     "question": "16. Custom Min Stack",
@@ -24004,7 +24589,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1094"
+    "id": "card-1122"
   },
   {
     "question": "17. Binary Search Tree Implementation",
@@ -24039,7 +24624,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1095"
+    "id": "card-1123"
   },
   {
     "question": "18. Min Heap Implementation",
@@ -24075,7 +24660,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1096"
+    "id": "card-1124"
   },
   {
     "question": "19. Trie (Prefix Tree) Implementation",
@@ -24111,7 +24696,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1097"
+    "id": "card-1125"
   },
   {
     "question": "20. LFU (Least Frequently Used) Cache",
@@ -24139,7 +24724,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1098"
+    "id": "card-1126"
   },
   {
     "question": "21. String Compression",
@@ -24174,7 +24759,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1099"
+    "id": "card-1127"
   },
   {
     "question": "22. Palindrome Check with Preprocessing",
@@ -24209,7 +24794,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1100"
+    "id": "card-1128"
   },
   {
     "question": "23. Longest Substring Without Repeating Characters",
@@ -24244,7 +24829,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1101"
+    "id": "card-1129"
   },
   {
     "question": "24. String Pattern Matching (KMP Algorithm)",
@@ -24279,7 +24864,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1102"
+    "id": "card-1130"
   },
   {
     "question": "25. Anagram Grouping",
@@ -24314,7 +24899,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1103"
+    "id": "card-1131"
   },
   {
     "question": "26. Two Sum Problem",
@@ -24349,7 +24934,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1104"
+    "id": "card-1132"
   },
   {
     "question": "27. Rotate Matrix 90 Degrees",
@@ -24384,7 +24969,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1105"
+    "id": "card-1133"
   },
   {
     "question": "28. Spiral Matrix Traversal",
@@ -24419,7 +25004,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1106"
+    "id": "card-1134"
   },
   {
     "question": "29. Maximum Subarray Sum (Kadane's Algorithm)",
@@ -24454,7 +25039,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1107"
+    "id": "card-1135"
   },
   {
     "question": "30. Merge Intervals",
@@ -24489,7 +25074,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1108"
+    "id": "card-1136"
   },
   {
     "question": "31. Object Pooling for High-Frequency Allocations",
@@ -24517,7 +25102,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1109"
+    "id": "card-1137"
   },
   {
     "question": "32. Batch Processing for Database Operations",
@@ -24545,7 +25130,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1110"
+    "id": "card-1138"
   },
   {
     "question": "33. Memoization for Expensive Calculations",
@@ -24573,7 +25158,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1111"
+    "id": "card-1139"
   },
   {
     "question": "34. ArrayPool for Reducing Array Allocations",
@@ -24601,7 +25186,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1112"
+    "id": "card-1140"
   },
   {
     "question": "35. Producer-Consumer with BlockingCollection",
@@ -24625,7 +25210,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1113"
+    "id": "card-1141"
   },
   {
     "question": "36. Parallel.ForEach with Degree of Parallelism",
@@ -24649,7 +25234,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1114"
+    "id": "card-1142"
   },
   {
     "question": "37. Async Throttling with SemaphoreSlim",
@@ -24673,7 +25258,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1115"
+    "id": "card-1143"
   },
   {
     "question": "38. Thread-Safe Lazy Initialization",
@@ -24697,7 +25282,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1116"
+    "id": "card-1144"
   },
   {
     "question": "39. Input Validation and Sanitization",
@@ -24721,7 +25306,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1117"
+    "id": "card-1145"
   },
   {
     "question": "40. Secure Password Hashing",
@@ -24745,7 +25330,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1118"
+    "id": "card-1146"
   },
   {
     "question": "41. Rate Limiting Implementation",
@@ -24769,7 +25354,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1119"
+    "id": "card-1147"
   },
   {
     "question": "42. CSRF Token Validation",
@@ -24793,7 +25378,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1120"
+    "id": "card-1148"
   },
   {
     "question": "43. Extract Method Refactoring",
@@ -24817,7 +25402,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1121"
+    "id": "card-1149"
   },
   {
     "question": "44. Replace Conditional with Polymorphism",
@@ -24841,7 +25426,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1122"
+    "id": "card-1150"
   },
   {
     "question": "45. Strategy Pattern for Algorithm Selection",
@@ -24865,7 +25450,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1123"
+    "id": "card-1151"
   },
   {
     "question": "46. Race Condition in Cache",
@@ -24889,7 +25474,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1124"
+    "id": "card-1152"
   },
   {
     "question": "47. Memory Leak from Event Handlers",
@@ -24913,7 +25498,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1125"
+    "id": "card-1153"
   },
   {
     "question": "48. Async Void Bug",
@@ -24937,7 +25522,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1126"
+    "id": "card-1154"
   },
   {
     "question": "49. Disposed Object Access",
@@ -24961,7 +25546,7 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1127"
+    "id": "card-1155"
   },
   {
     "question": "50. Off-by-One Error in Array Processing",
@@ -24985,7 +25570,67 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1128"
+    "id": "card-1156"
+  },
+  {
+    "question": "Supplemental Practice Prompts",
+    "answer": [
+      {
+        "type": "text",
+        "content": "A: Use a refill timer and allow up to capacity tokens."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public sealed class TokenBucket\n{\n    private readonly int _capacity;\n    private readonly int _refillPerSecond;\n    private int _tokens;\n    private DateTime _lastRefill;\n\n    public TokenBucket(int capacity, int refillPerSecond)\n    {\n        _capacity = capacity;\n        _refillPerSecond = refillPerSecond;\n        _tokens = capacity;\n        _lastRefill = DateTime.UtcNow;\n    }\n\n    public bool TryConsume()\n    {\n        Refill();\n        if (_tokens <= 0) return false;\n        _tokens -= 1;\n        return true;\n    }\n\n    private void Refill()\n    {\n        var now = DateTime.UtcNow;\n        var seconds = (int)(now - _lastRefill).TotalSeconds;\n        if (seconds <= 0) return;\n        _tokens = Math.Min(_capacity, _tokens + seconds * _refillPerSecond);\n        _lastRefill = now;\n    }\n}",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "A: Track capacity and return a boolean to indicate enqueue success."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public sealed class BoundedQueue<T>\n{\n    private readonly Queue<T> _queue = new();\n    private readonly int _capacity;\n\n    public BoundedQueue(int capacity) => _capacity = capacity;\n\n    public bool TryEnqueue(T item)\n    {\n        if (_queue.Count >= _capacity) return false;\n        _queue.Enqueue(item);\n        return true;\n    }\n\n    public bool TryDequeue(out T? item) => _queue.TryDequeue(out item);\n}",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "A: Store expiration and evict on read."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public sealed class TtlCache<TKey, TValue>\n{\n    private readonly Dictionary<TKey, (TValue Value, DateTime ExpiresAt)> _map = new();\n\n    public void Set(TKey key, TValue value, TimeSpan ttl)\n    {\n        _map[key] = (value, DateTime.UtcNow.Add(ttl));\n    }\n\n    public bool TryGet(TKey key, out TValue value)\n    {\n        if (_map.TryGetValue(key, out var entry) && entry.ExpiresAt > DateTime.UtcNow)\n        {\n            value = entry.Value;\n            return true;\n        }\n\n        _map.Remove(key);\n        value = default!;\n        return false;\n    }\n}",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "A: Read line-by-line and yield rows."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public static IEnumerable<string[]> ReadCsv(Stream stream)\n{\n    using var reader = new StreamReader(stream);\n    string? line;\n    while ((line = reader.ReadLine()) is not null)\n    {\n        yield return line.Split(',');\n    }\n}",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "A: Maintain running sums of price * volume and volume."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "decimal notional = 0m;\ndecimal volume = 0m;\nforeach (var trade in trades)\n{\n    notional += trade.Price * trade.Volume;\n    volume += trade.Volume;\n    var vwap = volume == 0 ? 0 : notional / volume;\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "code-assessment.md",
+    "source": "practice/code-assessment.md",
+    "isSection": true,
+    "id": "card-1157"
   },
   {
     "question": "Summary",
@@ -25029,7 +25674,503 @@ window.FLASH_CARD_DATA = [
     "topic": "code-assessment.md",
     "source": "practice/code-assessment.md",
     "isSection": true,
-    "id": "card-1129"
+    "id": "card-1158"
+  },
+  {
+    "question": "Explain the difference between value types and reference types with a simple example.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Value types copy the data; reference types copy the reference. Mutations affect only the copied value, but references point to the same object."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var a = new Point { X = 1, Y = 2 };\nvar b = a; // copy\nb.X = 99;\n// a.X is still 1\n\nvar c = new Person { Name = \"Ana\" };\nvar d = c; // reference copy\nd.Name = \"Zoe\";\n// c.Name is now \"Zoe\"",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "csharp-fundamentals.md",
+    "source": "practice/csharp-fundamentals.md",
+    "id": "card-1159"
+  },
+  {
+    "question": "When should you choose a struct over a class?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use structs for small, immutable, short-lived data without inheritance. Use classes for identity, polymorphism, or large mutable state."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public readonly struct Money\n{\n    public Money(decimal amount, string currency)\n    {\n        Amount = amount;\n        Currency = currency;\n    }\n\n    public decimal Amount { get; }\n    public string Currency { get; }\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "csharp-fundamentals.md",
+    "source": "practice/csharp-fundamentals.md",
+    "id": "card-1160"
+  },
+  {
+    "question": "Demonstrate how to reduce copying with in parameters.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use in for large structs to avoid defensive copies."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public static decimal CalculateTax(in Money price, decimal rate)\n{\n    return price.Amount * rate;\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "csharp-fundamentals.md",
+    "source": "practice/csharp-fundamentals.md",
+    "id": "card-1161"
+  },
+  {
+    "question": "Show how nullable reference types prevent null bugs.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Enable nullability and use ? for optional references."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "#nullable enable\npublic string FormatName(string? name)\n{\n    if (string.IsNullOrWhiteSpace(name))\n        return \"Unknown\";\n\n    return name.Trim();\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "csharp-fundamentals.md",
+    "source": "practice/csharp-fundamentals.md",
+    "id": "card-1162"
+  },
+  {
+    "question": "Write a guard clause extension for argument validation.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Throw early for invalid inputs."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public static class Guard\n{\n    public static string NotNullOrEmpty(string? value, string paramName)\n    {\n        if (string.IsNullOrWhiteSpace(value))\n            throw new ArgumentException(\"Value is required\", paramName);\n        return value;\n    }\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "csharp-fundamentals.md",
+    "source": "practice/csharp-fundamentals.md",
+    "id": "card-1163"
+  },
+  {
+    "question": "Implement a generic method with a constraint for a parameterless constructor.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use where T : new() when the type must be created."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public static T Create<T>() where T : new()\n{\n    return new T();\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "csharp-fundamentals.md",
+    "source": "practice/csharp-fundamentals.md",
+    "id": "card-1164"
+  },
+  {
+    "question": "Write a repository interface with type constraints.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Constrain to a base entity so the repository can rely on shared properties."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public interface IRepository<T> where T : Entity\n{\n    Task<T?> GetByIdAsync(int id, CancellationToken ct = default);\n    Task AddAsync(T entity, CancellationToken ct = default);\n}\n\npublic abstract class Entity\n{\n    public int Id { get; set; }\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "csharp-fundamentals.md",
+    "source": "practice/csharp-fundamentals.md",
+    "id": "card-1165"
+  },
+  {
+    "question": "Show a simple event pattern with EventHandler<T>.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use events to publish changes without tight coupling."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public class PriceTicker\n{\n    public event EventHandler<decimal>? PriceUpdated;\n\n    public void Update(decimal price)\n    {\n        PriceUpdated?.Invoke(this, price);\n    }\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "csharp-fundamentals.md",
+    "source": "practice/csharp-fundamentals.md",
+    "id": "card-1166"
+  },
+  {
+    "question": "When would you prefer Func<T> over a custom delegate type?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use Func for small, simple signatures; custom delegates for clarity and documentation."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "Func<int, int> square = x => x * x;",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "csharp-fundamentals.md",
+    "source": "practice/csharp-fundamentals.md",
+    "id": "card-1167"
+  },
+  {
+    "question": "Use pattern matching to categorize input.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Switch expressions make branching concise."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public static string Classify(object input) => input switch\n{\n    null => \"null\",\n    int i when i < 0 => \"negative int\",\n    int => \"positive int\",\n    string s when s.Length == 0 => \"empty string\",\n    string => \"string\",\n    _ => \"other\"\n};",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "csharp-fundamentals.md",
+    "source": "practice/csharp-fundamentals.md",
+    "id": "card-1168"
+  },
+  {
+    "question": "Create a record and use with to clone it.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Records simplify immutable data structures."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public record Trade(string Symbol, decimal Price, int Quantity);\n\nvar original = new Trade(\"EURUSD\", 1.0912m, 1000);\nvar updated = original with { Price = 1.0920m };",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "csharp-fundamentals.md",
+    "source": "practice/csharp-fundamentals.md",
+    "id": "card-1169"
+  },
+  {
+    "question": "Show how to throw and wrap exceptions with context.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use specific exceptions and include context for debugging."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public static Order FindOrder(int id, IDictionary<int, Order> map)\n{\n    if (!map.TryGetValue(id, out var order))\n        throw new KeyNotFoundException($\"Order {id} was not found.\");\n\n    return order;\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "csharp-fundamentals.md",
+    "source": "practice/csharp-fundamentals.md",
+    "id": "card-1170"
+  },
+  {
+    "question": "Summarize access modifiers and demonstrate a safe class design.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use private fields, expose behavior through public methods, and keep invariants inside."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public class Position\n{\n    private decimal _quantity;\n\n    public decimal Quantity => _quantity;\n\n    public void Add(decimal quantity)\n    {\n        if (quantity <= 0)\n            throw new ArgumentOutOfRangeException(nameof(quantity));\n\n        _quantity += quantity;\n    }\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "csharp-fundamentals.md",
+    "source": "practice/csharp-fundamentals.md",
+    "id": "card-1171"
+  },
+  {
+    "question": "Show object and collection initialization with target-typed new.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use concise syntax for readability."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var orders = new List<Order>\n{\n    new(\"A\", 10),\n    new(\"B\", 20)\n};",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "csharp-fundamentals.md",
+    "source": "practice/csharp-fundamentals.md",
+    "id": "card-1172"
+  },
+  {
+    "question": "Types, Memory, and Immutability",
+    "answer": [
+      {
+        "type": "text",
+        "content": "A: Value types copy the data; reference types copy the reference. Mutations affect only the copied value, but references point to the same object."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var a = new Point { X = 1, Y = 2 };\nvar b = a; // copy\nb.X = 99;\n// a.X is still 1\n\nvar c = new Person { Name = \"Ana\" };\nvar d = c; // reference copy\nd.Name = \"Zoe\";\n// c.Name is now \"Zoe\"",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "A: Use structs for small, immutable, short-lived data without inheritance. Use classes for identity, polymorphism, or large mutable state."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public readonly struct Money\n{\n    public Money(decimal amount, string currency)\n    {\n        Amount = amount;\n        Currency = currency;\n    }\n\n    public decimal Amount { get; }\n    public string Currency { get; }\n}",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "A: Use in for large structs to avoid defensive copies."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public static decimal CalculateTax(in Money price, decimal rate)\n{\n    return price.Amount * rate;\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "csharp-fundamentals.md",
+    "source": "practice/csharp-fundamentals.md",
+    "isSection": true,
+    "id": "card-1173"
+  },
+  {
+    "question": "Nullability and Defensive Programming",
+    "answer": [
+      {
+        "type": "text",
+        "content": "A: Enable nullability and use ? for optional references."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "#nullable enable\npublic string FormatName(string? name)\n{\n    if (string.IsNullOrWhiteSpace(name))\n        return \"Unknown\";\n\n    return name.Trim();\n}",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "A: Throw early for invalid inputs."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public static class Guard\n{\n    public static string NotNullOrEmpty(string? value, string paramName)\n    {\n        if (string.IsNullOrWhiteSpace(value))\n            throw new ArgumentException(\"Value is required\", paramName);\n        return value;\n    }\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "csharp-fundamentals.md",
+    "source": "practice/csharp-fundamentals.md",
+    "isSection": true,
+    "id": "card-1174"
+  },
+  {
+    "question": "Generics and Constraints",
+    "answer": [
+      {
+        "type": "text",
+        "content": "A: Use where T : new() when the type must be created."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public static T Create<T>() where T : new()\n{\n    return new T();\n}",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "A: Constrain to a base entity so the repository can rely on shared properties."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public interface IRepository<T> where T : Entity\n{\n    Task<T?> GetByIdAsync(int id, CancellationToken ct = default);\n    Task AddAsync(T entity, CancellationToken ct = default);\n}\n\npublic abstract class Entity\n{\n    public int Id { get; set; }\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "csharp-fundamentals.md",
+    "source": "practice/csharp-fundamentals.md",
+    "isSection": true,
+    "id": "card-1175"
+  },
+  {
+    "question": "Delegates, Events, and Lambdas",
+    "answer": [
+      {
+        "type": "text",
+        "content": "A: Use events to publish changes without tight coupling."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public class PriceTicker\n{\n    public event EventHandler<decimal>? PriceUpdated;\n\n    public void Update(decimal price)\n    {\n        PriceUpdated?.Invoke(this, price);\n    }\n}",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "A: Use Func for small, simple signatures; custom delegates for clarity and documentation."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "Func<int, int> square = x => x * x;",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "csharp-fundamentals.md",
+    "source": "practice/csharp-fundamentals.md",
+    "isSection": true,
+    "id": "card-1176"
+  },
+  {
+    "question": "Pattern Matching and Switch Expressions",
+    "answer": [
+      {
+        "type": "text",
+        "content": "A: Switch expressions make branching concise."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public static string Classify(object input) => input switch\n{\n    null => \"null\",\n    int i when i < 0 => \"negative int\",\n    int => \"positive int\",\n    string s when s.Length == 0 => \"empty string\",\n    string => \"string\",\n    _ => \"other\"\n};",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "csharp-fundamentals.md",
+    "source": "practice/csharp-fundamentals.md",
+    "isSection": true,
+    "id": "card-1177"
+  },
+  {
+    "question": "Records and Immutability",
+    "answer": [
+      {
+        "type": "text",
+        "content": "A: Records simplify immutable data structures."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public record Trade(string Symbol, decimal Price, int Quantity);\n\nvar original = new Trade(\"EURUSD\", 1.0912m, 1000);\nvar updated = original with { Price = 1.0920m };",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "csharp-fundamentals.md",
+    "source": "practice/csharp-fundamentals.md",
+    "isSection": true,
+    "id": "card-1178"
+  },
+  {
+    "question": "Exceptions and Error Flow",
+    "answer": [
+      {
+        "type": "text",
+        "content": "A: Use specific exceptions and include context for debugging."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public static Order FindOrder(int id, IDictionary<int, Order> map)\n{\n    if (!map.TryGetValue(id, out var order))\n        throw new KeyNotFoundException($\"Order {id} was not found.\");\n\n    return order;\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "csharp-fundamentals.md",
+    "source": "practice/csharp-fundamentals.md",
+    "isSection": true,
+    "id": "card-1179"
+  },
+  {
+    "question": "Access Modifiers and Encapsulation",
+    "answer": [
+      {
+        "type": "text",
+        "content": "A: Use private fields, expose behavior through public methods, and keep invariants inside."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public class Position\n{\n    private decimal _quantity;\n\n    public decimal Quantity => _quantity;\n\n    public void Add(decimal quantity)\n    {\n        if (quantity <= 0)\n            throw new ArgumentOutOfRangeException(nameof(quantity));\n\n        _quantity += quantity;\n    }\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "csharp-fundamentals.md",
+    "source": "practice/csharp-fundamentals.md",
+    "isSection": true,
+    "id": "card-1180"
+  },
+  {
+    "question": "Collections and Initialization",
+    "answer": [
+      {
+        "type": "text",
+        "content": "A: Use concise syntax for readability."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var orders = new List<Order>\n{\n    new(\"A\", 10),\n    new(\"B\", 20)\n};",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "csharp-fundamentals.md",
+    "source": "practice/csharp-fundamentals.md",
+    "isSection": true,
+    "id": "card-1181"
   },
   {
     "question": "C# Language & Runtime",
@@ -25064,7 +26205,7 @@ window.FLASH_CARD_DATA = [
     "topic": "csharp-system-design-questions.md",
     "source": "practice/csharp-system-design-questions.md",
     "isSection": true,
-    "id": "card-1130"
+    "id": "card-1182"
   },
   {
     "question": "Async, Parallelism & Concurrency",
@@ -25095,7 +26236,7 @@ window.FLASH_CARD_DATA = [
     "topic": "csharp-system-design-questions.md",
     "source": "practice/csharp-system-design-questions.md",
     "isSection": true,
-    "id": "card-1131"
+    "id": "card-1183"
   },
   {
     "question": "Collections, LINQ & Data Access",
@@ -25122,7 +26263,7 @@ window.FLASH_CARD_DATA = [
     "topic": "csharp-system-design-questions.md",
     "source": "practice/csharp-system-design-questions.md",
     "isSection": true,
-    "id": "card-1132"
+    "id": "card-1184"
   },
   {
     "question": "APIs & ASP.NET Core",
@@ -25149,7 +26290,7 @@ window.FLASH_CARD_DATA = [
     "topic": "csharp-system-design-questions.md",
     "source": "practice/csharp-system-design-questions.md",
     "isSection": true,
-    "id": "card-1133"
+    "id": "card-1185"
   },
   {
     "question": "Testing, Quality & Observability",
@@ -25174,7 +26315,7 @@ window.FLASH_CARD_DATA = [
     "topic": "csharp-system-design-questions.md",
     "source": "practice/csharp-system-design-questions.md",
     "isSection": true,
-    "id": "card-1134"
+    "id": "card-1186"
   },
   {
     "question": "Security & Performance",
@@ -25201,7 +26342,7 @@ window.FLASH_CARD_DATA = [
     "topic": "csharp-system-design-questions.md",
     "source": "practice/csharp-system-design-questions.md",
     "isSection": true,
-    "id": "card-1135"
+    "id": "card-1187"
   },
   {
     "question": "System Design Fundamentals",
@@ -25228,7 +26369,7 @@ window.FLASH_CARD_DATA = [
     "topic": "csharp-system-design-questions.md",
     "source": "practice/csharp-system-design-questions.md",
     "isSection": true,
-    "id": "card-1136"
+    "id": "card-1188"
   },
   {
     "question": "Data, Storage & Caching",
@@ -25253,7 +26394,7 @@ window.FLASH_CARD_DATA = [
     "topic": "csharp-system-design-questions.md",
     "source": "practice/csharp-system-design-questions.md",
     "isSection": true,
-    "id": "card-1137"
+    "id": "card-1189"
   },
   {
     "question": "Messaging, Eventing & Streaming",
@@ -25280,7 +26421,7 @@ window.FLASH_CARD_DATA = [
     "topic": "csharp-system-design-questions.md",
     "source": "practice/csharp-system-design-questions.md",
     "isSection": true,
-    "id": "card-1138"
+    "id": "card-1190"
   },
   {
     "question": "Reliability, Resilience & Operations",
@@ -25307,7 +26448,7 @@ window.FLASH_CARD_DATA = [
     "topic": "csharp-system-design-questions.md",
     "source": "practice/csharp-system-design-questions.md",
     "isSection": true,
-    "id": "card-1139"
+    "id": "card-1191"
   },
   {
     "question": "API & Client Experience",
@@ -25330,7 +26471,7 @@ window.FLASH_CARD_DATA = [
     "topic": "csharp-system-design-questions.md",
     "source": "practice/csharp-system-design-questions.md",
     "isSection": true,
-    "id": "card-1140"
+    "id": "card-1192"
   },
   {
     "question": "Domain-Driven Design & Architecture",
@@ -25353,7 +26494,7 @@ window.FLASH_CARD_DATA = [
     "topic": "csharp-system-design-questions.md",
     "source": "practice/csharp-system-design-questions.md",
     "isSection": true,
-    "id": "card-1141"
+    "id": "card-1193"
   },
   {
     "question": "Trade & FinTech Scenarios (if relevant)",
@@ -25376,7 +26517,7 @@ window.FLASH_CARD_DATA = [
     "topic": "csharp-system-design-questions.md",
     "source": "practice/csharp-system-design-questions.md",
     "isSection": true,
-    "id": "card-1142"
+    "id": "card-1194"
   },
   {
     "question": "Behavioral & Collaboration",
@@ -25399,7 +26540,7 @@ window.FLASH_CARD_DATA = [
     "topic": "csharp-system-design-questions.md",
     "source": "practice/csharp-system-design-questions.md",
     "isSection": true,
-    "id": "card-1143"
+    "id": "card-1195"
   },
   {
     "question": "Write a SQL query to calculate the rolling 7-day trade volume per instrument.",
@@ -25418,7 +26559,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "data-layer.md",
     "source": "practice/data-layer.md",
-    "id": "card-1144"
+    "id": "card-1196"
   },
   {
     "question": "Explain how you would choose between normalized schemas and denormalized tables for reporting.",
@@ -25431,7 +26572,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "data-layer.md",
     "source": "practice/data-layer.md",
-    "id": "card-1145"
+    "id": "card-1197"
   },
   {
     "question": "Describe the differences between clustered and non-clustered indexes and when to use covering indexes.",
@@ -25450,7 +26591,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "data-layer.md",
     "source": "practice/data-layer.md",
-    "id": "card-1146"
+    "id": "card-1198"
   },
   {
     "question": "Walk through handling a long-running report query that impacts OLTP performance.",
@@ -25463,7 +26604,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "data-layer.md",
     "source": "practice/data-layer.md",
-    "id": "card-1147"
+    "id": "card-1199"
   },
   {
     "question": "Configure a many-to-many relationship with a junction table containing additional properties.",
@@ -25482,7 +26623,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "data-layer.md",
     "source": "practice/data-layer.md",
-    "id": "card-1148"
+    "id": "card-1200"
   },
   {
     "question": "Implement soft delete with global query filters.",
@@ -25501,7 +26642,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "data-layer.md",
     "source": "practice/data-layer.md",
-    "id": "card-1149"
+    "id": "card-1201"
   },
   {
     "question": "Implement optimistic concurrency control using row versioning.",
@@ -25520,7 +26661,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "data-layer.md",
     "source": "practice/data-layer.md",
-    "id": "card-1150"
+    "id": "card-1202"
   },
   {
     "question": "Configure table splitting to map multiple entities to a single table.",
@@ -25539,7 +26680,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "data-layer.md",
     "source": "practice/data-layer.md",
-    "id": "card-1151"
+    "id": "card-1203"
   },
   {
     "question": "Implement audit trail using change tracking.",
@@ -25558,7 +26699,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "data-layer.md",
     "source": "practice/data-layer.md",
-    "id": "card-1152"
+    "id": "card-1204"
   },
   {
     "question": "Implement repository pattern with specification pattern for complex queries.",
@@ -25577,7 +26718,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "data-layer.md",
     "source": "practice/data-layer.md",
-    "id": "card-1153"
+    "id": "card-1205"
   },
   {
     "question": "Implement Unit of Work pattern for transaction management.",
@@ -25596,7 +26737,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "data-layer.md",
     "source": "practice/data-layer.md",
-    "id": "card-1154"
+    "id": "card-1206"
   },
   {
     "question": "Implement custom value converter for complex types.",
@@ -25615,7 +26756,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "data-layer.md",
     "source": "practice/data-layer.md",
-    "id": "card-1155"
+    "id": "card-1207"
   },
   {
     "question": "Optimize a query with multiple joins and aggregations.",
@@ -25634,7 +26775,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "data-layer.md",
     "source": "practice/data-layer.md",
-    "id": "card-1156"
+    "id": "card-1208"
   },
   {
     "question": "Implement pagination efficiently for large datasets.",
@@ -25653,7 +26794,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "data-layer.md",
     "source": "practice/data-layer.md",
-    "id": "card-1157"
+    "id": "card-1209"
   },
   {
     "question": "Optimize EXISTS vs IN vs JOIN.",
@@ -25672,7 +26813,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "data-layer.md",
     "source": "practice/data-layer.md",
-    "id": "card-1158"
+    "id": "card-1210"
   },
   {
     "question": "Use window functions for ranking and percentiles.",
@@ -25691,7 +26832,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "data-layer.md",
     "source": "practice/data-layer.md",
-    "id": "card-1159"
+    "id": "card-1211"
   },
   {
     "question": "Design composite index for a multi-column WHERE clause.",
@@ -25710,7 +26851,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "data-layer.md",
     "source": "practice/data-layer.md",
-    "id": "card-1160"
+    "id": "card-1212"
   },
   {
     "question": "Identify and remove unused or duplicate indexes.",
@@ -25729,7 +26870,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "data-layer.md",
     "source": "practice/data-layer.md",
-    "id": "card-1161"
+    "id": "card-1213"
   },
   {
     "question": "Implement filtered index for specific query patterns.",
@@ -25748,7 +26889,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "data-layer.md",
     "source": "practice/data-layer.md",
-    "id": "card-1162"
+    "id": "card-1214"
   },
   {
     "question": "Implement distributed transaction across multiple databases.",
@@ -25767,7 +26908,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "data-layer.md",
     "source": "practice/data-layer.md",
-    "id": "card-1163"
+    "id": "card-1215"
   },
   {
     "question": "Handle deadlocks with retry logic.",
@@ -25786,7 +26927,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "data-layer.md",
     "source": "practice/data-layer.md",
-    "id": "card-1164"
+    "id": "card-1216"
   },
   {
     "question": "Implement pessimistic locking for critical sections.",
@@ -25805,7 +26946,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "data-layer.md",
     "source": "practice/data-layer.md",
-    "id": "card-1165"
+    "id": "card-1217"
   },
   {
     "question": "Create a data migration to transform existing records.",
@@ -25824,7 +26965,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "data-layer.md",
     "source": "practice/data-layer.md",
-    "id": "card-1166"
+    "id": "card-1218"
   },
   {
     "question": "Implement zero-downtime deployment with backward-compatible migrations.",
@@ -25843,7 +26984,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "data-layer.md",
     "source": "practice/data-layer.md",
-    "id": "card-1167"
+    "id": "card-1219"
   },
   {
     "question": "Use Dapper for high-performance bulk operations.",
@@ -25862,7 +27003,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "data-layer.md",
     "source": "practice/data-layer.md",
-    "id": "card-1168"
+    "id": "card-1220"
   },
   {
     "question": "Combine EF Core and Dapper for optimal performance.",
@@ -25881,7 +27022,90 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "data-layer.md",
     "source": "practice/data-layer.md",
-    "id": "card-1169"
+    "id": "card-1221"
+  },
+  {
+    "question": "Implement optimistic concurrency control with a row version column.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Add a rowversion column and use EF Core concurrency tokens."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public class Order\n{\n    public int Id { get; set; }\n    public byte[] RowVersion { get; set; } = Array.Empty<byte>();\n}\n\nmodelBuilder.Entity<Order>()\n    .Property(o => o.RowVersion)\n    .IsRowVersion();",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "data-layer.md",
+    "source": "practice/data-layer.md",
+    "id": "card-1222"
+  },
+  {
+    "question": "Implement soft delete with a global query filter.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Add IsDeleted and filter it globally."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public class EntityBase\n{\n    public bool IsDeleted { get; set; }\n}\n\nmodelBuilder.Entity<EntityBase>()\n    .HasQueryFilter(e => !e.IsDeleted);",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "data-layer.md",
+    "source": "practice/data-layer.md",
+    "id": "card-1223"
+  },
+  {
+    "question": "Create efficient pagination for large datasets.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use keyset pagination for stability and performance."
+      },
+      {
+        "type": "code",
+        "language": "sql",
+        "code": "SELECT *\nFROM Orders\nWHERE Id > @LastSeenId\nORDER BY Id\nOFFSET 0 ROWS FETCH NEXT @PageSize ROWS ONLY;",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "data-layer.md",
+    "source": "practice/data-layer.md",
+    "id": "card-1224"
+  },
+  {
+    "question": "Compare isolation levels for read/write workloads.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use Read Committed for OLTP, Snapshot for long reads, Serializable for strict consistency with higher contention."
+      }
+    ],
+    "category": "practice",
+    "topic": "data-layer.md",
+    "source": "practice/data-layer.md",
+    "id": "card-1225"
+  },
+  {
+    "question": "Diagnose a slow query regression.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Capture the execution plan, check index usage, update stats, and validate parameter sniffing. Total Exercises: 35+ Master data access patterns for building high-performance, scalable applications!"
+      }
+    ],
+    "category": "practice",
+    "topic": "data-layer.md",
+    "source": "practice/data-layer.md",
+    "id": "card-1226"
   },
   {
     "question": "Foundational Questions",
@@ -25927,7 +27151,7 @@ window.FLASH_CARD_DATA = [
     "topic": "data-layer.md",
     "source": "practice/data-layer.md",
     "isSection": true,
-    "id": "card-1170"
+    "id": "card-1227"
   },
   {
     "question": "Entity Framework Core Fundamentals",
@@ -25987,7 +27211,7 @@ window.FLASH_CARD_DATA = [
     "topic": "data-layer.md",
     "source": "practice/data-layer.md",
     "isSection": true,
-    "id": "card-1171"
+    "id": "card-1228"
   },
   {
     "question": "Advanced Entity Framework Patterns",
@@ -26027,7 +27251,7 @@ window.FLASH_CARD_DATA = [
     "topic": "data-layer.md",
     "source": "practice/data-layer.md",
     "isSection": true,
-    "id": "card-1172"
+    "id": "card-1229"
   },
   {
     "question": "SQL Optimization",
@@ -26077,7 +27301,7 @@ window.FLASH_CARD_DATA = [
     "topic": "data-layer.md",
     "source": "practice/data-layer.md",
     "isSection": true,
-    "id": "card-1173"
+    "id": "card-1230"
   },
   {
     "question": "Indexing Strategies",
@@ -26117,7 +27341,7 @@ window.FLASH_CARD_DATA = [
     "topic": "data-layer.md",
     "source": "practice/data-layer.md",
     "isSection": true,
-    "id": "card-1174"
+    "id": "card-1231"
   },
   {
     "question": "Transactions & Concurrency",
@@ -26157,7 +27381,7 @@ window.FLASH_CARD_DATA = [
     "topic": "data-layer.md",
     "source": "practice/data-layer.md",
     "isSection": true,
-    "id": "card-1175"
+    "id": "card-1232"
   },
   {
     "question": "Migrations & Schema Management",
@@ -26187,7 +27411,7 @@ window.FLASH_CARD_DATA = [
     "topic": "data-layer.md",
     "source": "practice/data-layer.md",
     "isSection": true,
-    "id": "card-1176"
+    "id": "card-1233"
   },
   {
     "question": "Dapper Integration",
@@ -26217,7 +27441,55 @@ window.FLASH_CARD_DATA = [
     "topic": "data-layer.md",
     "source": "practice/data-layer.md",
     "isSection": true,
-    "id": "card-1177"
+    "id": "card-1234"
+  },
+  {
+    "question": "Advanced Data Layer Scenarios",
+    "answer": [
+      {
+        "type": "text",
+        "content": "A: Add a rowversion column and use EF Core concurrency tokens."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public class Order\n{\n    public int Id { get; set; }\n    public byte[] RowVersion { get; set; } = Array.Empty<byte>();\n}\n\nmodelBuilder.Entity<Order>()\n    .Property(o => o.RowVersion)\n    .IsRowVersion();",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "A: Add IsDeleted and filter it globally."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public class EntityBase\n{\n    public bool IsDeleted { get; set; }\n}\n\nmodelBuilder.Entity<EntityBase>()\n    .HasQueryFilter(e => !e.IsDeleted);",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "A: Use keyset pagination for stability and performance."
+      },
+      {
+        "type": "code",
+        "language": "sql",
+        "code": "SELECT *\nFROM Orders\nWHERE Id > @LastSeenId\nORDER BY Id\nOFFSET 0 ROWS FETCH NEXT @PageSize ROWS ONLY;",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "A: Use Read Committed for OLTP, Snapshot for long reads, Serializable for strict consistency with higher contention."
+      },
+      {
+        "type": "text",
+        "content": "A: Capture the execution plan, check index usage, update stats, and validate parameter sniffing."
+      }
+    ],
+    "category": "practice",
+    "topic": "data-layer.md",
+    "source": "practice/data-layer.md",
+    "isSection": true,
+    "id": "card-1235"
   },
   {
     "question": "How to Use This Guide",
@@ -26232,13 +27504,17 @@ window.FLASH_CARD_DATA = [
           "Review answers - Understand why each solution works",
           "Iterate - Come back to difficult topics multiple times"
         ]
+      },
+      {
+        "type": "text",
+        "content": "If you prefer a single combined list, see Practice Questions & Prompts."
       }
     ],
     "category": "practice",
     "topic": "index.md",
     "source": "practice/index.md",
     "isSection": true,
-    "id": "card-1178"
+    "id": "card-1236"
   },
   {
     "question": "C# Fundamentals",
@@ -26268,7 +27544,7 @@ window.FLASH_CARD_DATA = [
     "topic": "index.md",
     "source": "practice/index.md",
     "isSection": true,
-    "id": "card-1179"
+    "id": "card-1237"
   },
   {
     "question": "LINQ & Collections",
@@ -26298,7 +27574,7 @@ window.FLASH_CARD_DATA = [
     "topic": "index.md",
     "source": "practice/index.md",
     "isSection": true,
-    "id": "card-1180"
+    "id": "card-1238"
   },
   {
     "question": "Async & Resilience",
@@ -26329,7 +27605,7 @@ window.FLASH_CARD_DATA = [
     "topic": "index.md",
     "source": "practice/index.md",
     "isSection": true,
-    "id": "card-1181"
+    "id": "card-1239"
   },
   {
     "question": "Performance & Memory Management",
@@ -26360,7 +27636,7 @@ window.FLASH_CARD_DATA = [
     "topic": "index.md",
     "source": "practice/index.md",
     "isSection": true,
-    "id": "card-1182"
+    "id": "card-1240"
   },
   {
     "question": "API & Lifecycle",
@@ -26391,7 +27667,7 @@ window.FLASH_CARD_DATA = [
     "topic": "index.md",
     "source": "practice/index.md",
     "isSection": true,
-    "id": "card-1183"
+    "id": "card-1241"
   },
   {
     "question": "System Design",
@@ -26422,7 +27698,7 @@ window.FLASH_CARD_DATA = [
     "topic": "index.md",
     "source": "practice/index.md",
     "isSection": true,
-    "id": "card-1184"
+    "id": "card-1242"
   },
   {
     "question": "Messaging & Integration",
@@ -26453,7 +27729,7 @@ window.FLASH_CARD_DATA = [
     "topic": "index.md",
     "source": "practice/index.md",
     "isSection": true,
-    "id": "card-1185"
+    "id": "card-1243"
   },
   {
     "question": "Data Layer",
@@ -26484,7 +27760,7 @@ window.FLASH_CARD_DATA = [
     "topic": "index.md",
     "source": "practice/index.md",
     "isSection": true,
-    "id": "card-1186"
+    "id": "card-1244"
   },
   {
     "question": "Trading Domain Knowledge",
@@ -26515,7 +27791,7 @@ window.FLASH_CARD_DATA = [
     "topic": "index.md",
     "source": "practice/index.md",
     "isSection": true,
-    "id": "card-1187"
+    "id": "card-1245"
   },
   {
     "question": "Code Assessment Exercises",
@@ -26546,7 +27822,7 @@ window.FLASH_CARD_DATA = [
     "topic": "index.md",
     "source": "practice/index.md",
     "isSection": true,
-    "id": "card-1188"
+    "id": "card-1246"
   },
   {
     "question": "Behavioral Questions",
@@ -26576,7 +27852,7 @@ window.FLASH_CARD_DATA = [
     "topic": "index.md",
     "source": "practice/index.md",
     "isSection": true,
-    "id": "card-1189"
+    "id": "card-1247"
   },
   {
     "question": "Common Patterns Cheat Sheet",
@@ -26590,7 +27866,7 @@ window.FLASH_CARD_DATA = [
     "topic": "index.md",
     "source": "practice/index.md",
     "isSection": true,
-    "id": "card-1190"
+    "id": "card-1248"
   },
   {
     "question": "Interview Prep Checklist",
@@ -26604,7 +27880,7 @@ window.FLASH_CARD_DATA = [
     "topic": "index.md",
     "source": "practice/index.md",
     "isSection": true,
-    "id": "card-1191"
+    "id": "card-1249"
   },
   {
     "question": "For 1-Week Prep",
@@ -26623,7 +27899,7 @@ window.FLASH_CARD_DATA = [
     "topic": "index.md",
     "source": "practice/index.md",
     "isSection": true,
-    "id": "card-1192"
+    "id": "card-1250"
   },
   {
     "question": "For 2-Week Prep",
@@ -26640,7 +27916,7 @@ window.FLASH_CARD_DATA = [
     "topic": "index.md",
     "source": "practice/index.md",
     "isSection": true,
-    "id": "card-1193"
+    "id": "card-1251"
   },
   {
     "question": "For 1-Month Prep",
@@ -26659,7 +27935,7 @@ window.FLASH_CARD_DATA = [
     "topic": "index.md",
     "source": "practice/index.md",
     "isSection": true,
-    "id": "card-1194"
+    "id": "card-1252"
   },
   {
     "question": "Progress Tracking",
@@ -26679,7 +27955,7 @@ window.FLASH_CARD_DATA = [
     "topic": "index.md",
     "source": "practice/index.md",
     "isSection": true,
-    "id": "card-1195"
+    "id": "card-1253"
   },
   {
     "question": "Given a list of trades with timestamps, return the latest trade per account using LINQ.",
@@ -26698,7 +27974,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "linq-collections.md",
     "source": "practice/linq-collections.md",
-    "id": "card-1196"
+    "id": "card-1254"
   },
   {
     "question": "Implement a method that flattens nested lists of instrument codes while preserving ordering.",
@@ -26717,7 +27993,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "linq-collections.md",
     "source": "practice/linq-collections.md",
-    "id": "card-1197"
+    "id": "card-1255"
   },
   {
     "question": "Explain the difference between SelectMany and nested loops. When is each preferable?",
@@ -26736,7 +28012,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "linq-collections.md",
     "source": "practice/linq-collections.md",
-    "id": "card-1198"
+    "id": "card-1256"
   },
   {
     "question": "How would you detect duplicate orders in a stream using GroupBy and produce a summary?",
@@ -26755,7 +28031,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "linq-collections.md",
     "source": "practice/linq-collections.md",
-    "id": "card-1199"
+    "id": "card-1257"
   },
   {
     "question": "Find all customers who have placed orders in the last 30 days and calculate their total order value.",
@@ -26774,7 +28050,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "linq-collections.md",
     "source": "practice/linq-collections.md",
-    "id": "card-1200"
+    "id": "card-1258"
   },
   {
     "question": "Given two lists (products and categories), perform a left join to get all products with their category names (null if no category).",
@@ -26793,7 +28069,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "linq-collections.md",
     "source": "practice/linq-collections.md",
-    "id": "card-1201"
+    "id": "card-1259"
   },
   {
     "question": "Implement a LINQ query to find the top 5 most expensive products in each category.",
@@ -26812,7 +28088,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "linq-collections.md",
     "source": "practice/linq-collections.md",
-    "id": "card-1202"
+    "id": "card-1260"
   },
   {
     "question": "Find all pairs of employees who work in the same department (avoid duplicates like (A,B) and (B,A)).",
@@ -26831,7 +28107,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "linq-collections.md",
     "source": "practice/linq-collections.md",
-    "id": "card-1203"
+    "id": "card-1261"
   },
   {
     "question": "Calculate running totals for daily sales.",
@@ -26850,7 +28126,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "linq-collections.md",
     "source": "practice/linq-collections.md",
-    "id": "card-1204"
+    "id": "card-1262"
   },
   {
     "question": "Implement a custom LINQ extension method DistinctBy that takes a key selector.",
@@ -26869,7 +28145,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "linq-collections.md",
     "source": "practice/linq-collections.md",
-    "id": "card-1205"
+    "id": "card-1263"
   },
   {
     "question": "Write a LINQ query to find all employees whose salary is above the average salary in their department.",
@@ -26888,7 +28164,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "linq-collections.md",
     "source": "practice/linq-collections.md",
-    "id": "card-1206"
+    "id": "card-1264"
   },
   {
     "question": "Implement pagination with LINQ (Skip/Take) and explain potential issues with IQueryable vs IEnumerable.",
@@ -26907,7 +28183,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "linq-collections.md",
     "source": "practice/linq-collections.md",
-    "id": "card-1207"
+    "id": "card-1265"
   },
   {
     "question": "Write a LINQ query to pivot data (convert rows to columns).",
@@ -26926,7 +28202,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "linq-collections.md",
     "source": "practice/linq-collections.md",
-    "id": "card-1208"
+    "id": "card-1266"
   },
   {
     "question": "Implement a LINQ query with multiple grouping levels (hierarchical grouping).",
@@ -26945,7 +28221,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "linq-collections.md",
     "source": "practice/linq-collections.md",
-    "id": "card-1209"
+    "id": "card-1267"
   },
   {
     "question": "Find all consecutive sequences of at least 3 days where sales exceeded $10,000.",
@@ -26964,7 +28240,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "linq-collections.md",
     "source": "practice/linq-collections.md",
-    "id": "card-1210"
+    "id": "card-1268"
   },
   {
     "question": "Explain deferred execution and when it can cause performance issues.",
@@ -26983,7 +28259,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "linq-collections.md",
     "source": "practice/linq-collections.md",
-    "id": "card-1211"
+    "id": "card-1269"
   },
   {
     "question": "Compare the performance implications of Count() vs Any() for checking if a collection has items.",
@@ -27002,7 +28278,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "linq-collections.md",
     "source": "practice/linq-collections.md",
-    "id": "card-1212"
+    "id": "card-1270"
   },
   {
     "question": "Identify and fix performance issues in this query.",
@@ -27021,7 +28297,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "linq-collections.md",
     "source": "practice/linq-collections.md",
-    "id": "card-1213"
+    "id": "card-1271"
   },
   {
     "question": "Write a LINQ query that uses AsParallel appropriately for CPU-bound operations.",
@@ -27040,7 +28316,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "linq-collections.md",
     "source": "practice/linq-collections.md",
-    "id": "card-1214"
+    "id": "card-1272"
   },
   {
     "question": "When should you use List<T> vs IEnumerable<T> as a return type?",
@@ -27059,7 +28335,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "linq-collections.md",
     "source": "practice/linq-collections.md",
-    "id": "card-1215"
+    "id": "card-1273"
   },
   {
     "question": "Implement a LookupTable using ToLookup and explain when to use it vs GroupBy.",
@@ -27078,7 +28354,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "linq-collections.md",
     "source": "practice/linq-collections.md",
-    "id": "card-1216"
+    "id": "card-1274"
   },
   {
     "question": "Use Zip to combine two sequences and explain its behavior when sequences have different lengths.",
@@ -27097,7 +28373,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "linq-collections.md",
     "source": "practice/linq-collections.md",
-    "id": "card-1217"
+    "id": "card-1275"
   },
   {
     "question": "Implement a method that chunks a collection into batches of N items.",
@@ -27116,7 +28392,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "linq-collections.md",
     "source": "practice/linq-collections.md",
-    "id": "card-1218"
+    "id": "card-1276"
   },
   {
     "question": "You need to merge data from multiple sources (database, API, cache) and remove duplicates. Implement this efficiently.",
@@ -27135,7 +28411,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "linq-collections.md",
     "source": "practice/linq-collections.md",
-    "id": "card-1219"
+    "id": "card-1277"
   },
   {
     "question": "Implement a search feature with multiple optional filters (name, category, price range, tags).",
@@ -27154,7 +28430,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "linq-collections.md",
     "source": "practice/linq-collections.md",
-    "id": "card-1220"
+    "id": "card-1278"
   },
   {
     "question": "Calculate month-over-month growth percentage for sales data.",
@@ -27173,7 +28449,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "linq-collections.md",
     "source": "practice/linq-collections.md",
-    "id": "card-1221"
+    "id": "card-1279"
   },
   {
     "question": "Implement an expression builder that allows dynamic LINQ query construction from user input.",
@@ -27192,7 +28468,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "linq-collections.md",
     "source": "practice/linq-collections.md",
-    "id": "card-1222"
+    "id": "card-1280"
   },
   {
     "question": "Implement a method that finds all possible combinations of products that sum to a target price (subset sum problem).",
@@ -27211,7 +28487,102 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "linq-collections.md",
     "source": "practice/linq-collections.md",
-    "id": "card-1223"
+    "id": "card-1281"
+  },
+  {
+    "question": "Use GroupJoin to build a customer summary with order counts and last order date.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "GroupJoin collects orders per customer without losing customers who have no orders."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var summaries = customers\n    .GroupJoin(\n        orders,\n        c => c.Id,\n        o => o.CustomerId,\n        (c, customerOrders) => new {\n            c.Id,\n            c.Name,\n            OrderCount = customerOrders.Count(),\n            LastOrderDate = customerOrders\n                .OrderByDescending(o => o.OrderDate)\n                .Select(o => (DateTime?)o.OrderDate)\n                .FirstOrDefault()\n        });",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "linq-collections.md",
+    "source": "practice/linq-collections.md",
+    "id": "card-1282"
+  },
+  {
+    "question": "Implement Distinct with a custom comparer for case-insensitive strings.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Provide an IEqualityComparer<T> to normalize comparisons."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var uniqueSymbols = symbols.Distinct(StringComparer.OrdinalIgnoreCase).ToList();",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "linq-collections.md",
+    "source": "practice/linq-collections.md",
+    "id": "card-1283"
+  },
+  {
+    "question": "Convert a list to a dictionary safely when keys can repeat.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Group by the key first, then choose a resolution strategy."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var map = products\n    .GroupBy(p => p.Sku)\n    .ToDictionary(g => g.Key, g => g.OrderByDescending(p => p.UpdatedAt).First());",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "linq-collections.md",
+    "source": "practice/linq-collections.md",
+    "id": "card-1284"
+  },
+  {
+    "question": "Use Select with index to assign ranks within a sorted sequence.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Sort once, then project with the index."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var ranked = trades\n    .OrderByDescending(t => t.Notional)\n    .Select((trade, index) => new { trade.Id, Rank = index + 1 });",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "linq-collections.md",
+    "source": "practice/linq-collections.md",
+    "id": "card-1285"
+  },
+  {
+    "question": "Split a sequence into a prefix and the remaining items using TakeWhile and SkipWhile.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use a predicate to find the boundary."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var prefix = prices.TakeWhile(p => p.IsValid).ToList();\nvar rest = prices.SkipWhile(p => p.IsValid).ToList();",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "linq-collections.md",
+    "source": "practice/linq-collections.md",
+    "id": "card-1286"
   },
   {
     "question": "Foundational Questions",
@@ -27277,7 +28648,7 @@ window.FLASH_CARD_DATA = [
     "topic": "linq-collections.md",
     "source": "practice/linq-collections.md",
     "isSection": true,
-    "id": "card-1224"
+    "id": "card-1287"
   },
   {
     "question": "Intermediate Exercises",
@@ -27337,7 +28708,7 @@ window.FLASH_CARD_DATA = [
     "topic": "linq-collections.md",
     "source": "practice/linq-collections.md",
     "isSection": true,
-    "id": "card-1225"
+    "id": "card-1288"
   },
   {
     "question": "Advanced Exercises",
@@ -27420,7 +28791,7 @@ window.FLASH_CARD_DATA = [
     "topic": "linq-collections.md",
     "source": "practice/linq-collections.md",
     "isSection": true,
-    "id": "card-1226"
+    "id": "card-1289"
   },
   {
     "question": "Performance & Optimization",
@@ -27476,7 +28847,7 @@ window.FLASH_CARD_DATA = [
     "topic": "linq-collections.md",
     "source": "practice/linq-collections.md",
     "isSection": true,
-    "id": "card-1227"
+    "id": "card-1290"
   },
   {
     "question": "Collection-Specific Exercises",
@@ -27526,7 +28897,7 @@ window.FLASH_CARD_DATA = [
     "topic": "linq-collections.md",
     "source": "practice/linq-collections.md",
     "isSection": true,
-    "id": "card-1228"
+    "id": "card-1291"
   },
   {
     "question": "Real-World Scenarios",
@@ -27566,7 +28937,7 @@ window.FLASH_CARD_DATA = [
     "topic": "linq-collections.md",
     "source": "practice/linq-collections.md",
     "isSection": true,
-    "id": "card-1229"
+    "id": "card-1292"
   },
   {
     "question": "Challenge Problems",
@@ -27596,7 +28967,67 @@ window.FLASH_CARD_DATA = [
     "topic": "linq-collections.md",
     "source": "practice/linq-collections.md",
     "isSection": true,
-    "id": "card-1230"
+    "id": "card-1293"
+  },
+  {
+    "question": "Expert Extensions",
+    "answer": [
+      {
+        "type": "text",
+        "content": "A: GroupJoin collects orders per customer without losing customers who have no orders."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var summaries = customers\n    .GroupJoin(\n        orders,\n        c => c.Id,\n        o => o.CustomerId,\n        (c, customerOrders) => new {\n            c.Id,\n            c.Name,\n            OrderCount = customerOrders.Count(),\n            LastOrderDate = customerOrders\n                .OrderByDescending(o => o.OrderDate)\n                .Select(o => (DateTime?)o.OrderDate)\n                .FirstOrDefault()\n        });",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "A: Provide an IEqualityComparer<T> to normalize comparisons."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var uniqueSymbols = symbols.Distinct(StringComparer.OrdinalIgnoreCase).ToList();",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "A: Group by the key first, then choose a resolution strategy."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var map = products\n    .GroupBy(p => p.Sku)\n    .ToDictionary(g => g.Key, g => g.OrderByDescending(p => p.UpdatedAt).First());",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "A: Sort once, then project with the index."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var ranked = trades\n    .OrderByDescending(t => t.Notional)\n    .Select((trade, index) => new { trade.Id, Rank = index + 1 });",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "A: Use a predicate to find the boundary."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var prefix = prices.TakeWhile(p => p.IsValid).ToList();\nvar rest = prices.SkipWhile(p => p.IsValid).ToList();",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "linq-collections.md",
+    "source": "practice/linq-collections.md",
+    "isSection": true,
+    "id": "card-1294"
   },
   {
     "question": "Compare RabbitMQ and ZeroMQ for distributing price updates. When would you choose one over the other?",
@@ -27609,7 +29040,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "messaging-integration.md",
     "source": "practice/messaging-integration.md",
-    "id": "card-1231"
+    "id": "card-1295"
   },
   {
     "question": "Explain how to ensure at-least-once delivery with RabbitMQ while preventing duplicate processing.",
@@ -27628,7 +29059,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "messaging-integration.md",
     "source": "practice/messaging-integration.md",
-    "id": "card-1232"
+    "id": "card-1296"
   },
   {
     "question": "How would you design a saga pattern to coordinate account funding across multiple services?",
@@ -27647,7 +29078,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "messaging-integration.md",
     "source": "practice/messaging-integration.md",
-    "id": "card-1233"
+    "id": "card-1297"
   },
   {
     "question": "Discuss the outbox pattern and how it prevents message loss in event-driven systems.",
@@ -27666,7 +29097,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "messaging-integration.md",
     "source": "practice/messaging-integration.md",
-    "id": "card-1234"
+    "id": "card-1298"
   },
   {
     "question": "Implement a publisher with confirmation to ensure messages are persisted.",
@@ -27685,7 +29116,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "messaging-integration.md",
     "source": "practice/messaging-integration.md",
-    "id": "card-1235"
+    "id": "card-1299"
   },
   {
     "question": "Implement a resilient consumer with retry logic and dead letter queue.",
@@ -27704,7 +29135,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "messaging-integration.md",
     "source": "practice/messaging-integration.md",
-    "id": "card-1236"
+    "id": "card-1300"
   },
   {
     "question": "Implement priority queue pattern for urgent messages.",
@@ -27723,7 +29154,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "messaging-integration.md",
     "source": "practice/messaging-integration.md",
-    "id": "card-1237"
+    "id": "card-1301"
   },
   {
     "question": "Implement Kafka producer with idempotent writes and transactions.",
@@ -27742,7 +29173,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "messaging-integration.md",
     "source": "practice/messaging-integration.md",
-    "id": "card-1238"
+    "id": "card-1302"
   },
   {
     "question": "Implement Kafka consumer with manual offset management and exactly-once processing.",
@@ -27761,7 +29192,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "messaging-integration.md",
     "source": "practice/messaging-integration.md",
-    "id": "card-1239"
+    "id": "card-1303"
   },
   {
     "question": "Implement Kafka consumer group rebalancing with state management.",
@@ -27780,7 +29211,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "messaging-integration.md",
     "source": "practice/messaging-integration.md",
-    "id": "card-1240"
+    "id": "card-1304"
   },
   {
     "question": "Implement orchestration-based saga for order processing.",
@@ -27799,7 +29230,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "messaging-integration.md",
     "source": "practice/messaging-integration.md",
-    "id": "card-1241"
+    "id": "card-1305"
   },
   {
     "question": "Implement choreography-based saga using events.",
@@ -27818,7 +29249,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "messaging-integration.md",
     "source": "practice/messaging-integration.md",
-    "id": "card-1242"
+    "id": "card-1306"
   },
   {
     "question": "Implement transactional outbox pattern with background processor.",
@@ -27837,7 +29268,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "messaging-integration.md",
     "source": "practice/messaging-integration.md",
-    "id": "card-1243"
+    "id": "card-1307"
   },
   {
     "question": "Implement idempotency using distributed cache.",
@@ -27856,7 +29287,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "messaging-integration.md",
     "source": "practice/messaging-integration.md",
-    "id": "card-1244"
+    "id": "card-1308"
   },
   {
     "question": "Implement event store with snapshots for performance.",
@@ -27875,7 +29306,90 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "messaging-integration.md",
     "source": "practice/messaging-integration.md",
-    "id": "card-1245"
+    "id": "card-1309"
+  },
+  {
+    "question": "How do you handle poison messages without blocking a queue?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use a dead letter queue (DLQ) and track retry attempts via headers."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "if (retryCount >= 5)\n{\n    await _dlqPublisher.PublishAsync(message);\n    return;\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "messaging-integration.md",
+    "source": "practice/messaging-integration.md",
+    "id": "card-1310"
+  },
+  {
+    "question": "Describe an idempotency strategy for message consumers.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use an idempotency key table with unique constraint and short TTL for cleanup."
+      },
+      {
+        "type": "code",
+        "language": "sql",
+        "code": "CREATE TABLE message_dedup (\n    message_id TEXT PRIMARY KEY,\n    processed_at TIMESTAMP NOT NULL\n);",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "messaging-integration.md",
+    "source": "practice/messaging-integration.md",
+    "id": "card-1311"
+  },
+  {
+    "question": "How would you preserve ordering for a specific key in Kafka?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use the key as the partition key and run a single consumer per partition."
+      }
+    ],
+    "category": "practice",
+    "topic": "messaging-integration.md",
+    "source": "practice/messaging-integration.md",
+    "id": "card-1312"
+  },
+  {
+    "question": "How do you evolve a message schema safely?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use backward-compatible changes, versioned fields, and schema registry validation. Avoid breaking field removals."
+      }
+    ],
+    "category": "practice",
+    "topic": "messaging-integration.md",
+    "source": "practice/messaging-integration.md",
+    "id": "card-1313"
+  },
+  {
+    "question": "Implement a retry policy with exponential backoff and max delay.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Increase delay per attempt and cap the maximum delay."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var delayMs = Math.Min(30_000, 200 * (int)Math.Pow(2, attempt));\nawait Task.Delay(delayMs, ct);",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "messaging-integration.md",
+    "source": "practice/messaging-integration.md",
+    "id": "card-1314"
   },
   {
     "question": "Foundational Questions",
@@ -27931,7 +29445,7 @@ window.FLASH_CARD_DATA = [
     "topic": "messaging-integration.md",
     "source": "practice/messaging-integration.md",
     "isSection": true,
-    "id": "card-1246"
+    "id": "card-1315"
   },
   {
     "question": "RabbitMQ Advanced Patterns",
@@ -27971,7 +29485,7 @@ window.FLASH_CARD_DATA = [
     "topic": "messaging-integration.md",
     "source": "practice/messaging-integration.md",
     "isSection": true,
-    "id": "card-1247"
+    "id": "card-1316"
   },
   {
     "question": "Kafka Integration",
@@ -28011,7 +29525,7 @@ window.FLASH_CARD_DATA = [
     "topic": "messaging-integration.md",
     "source": "practice/messaging-integration.md",
     "isSection": true,
-    "id": "card-1248"
+    "id": "card-1317"
   },
   {
     "question": "Saga Pattern",
@@ -28041,7 +29555,7 @@ window.FLASH_CARD_DATA = [
     "topic": "messaging-integration.md",
     "source": "practice/messaging-integration.md",
     "isSection": true,
-    "id": "card-1249"
+    "id": "card-1318"
   },
   {
     "question": "Outbox Pattern",
@@ -28061,7 +29575,7 @@ window.FLASH_CARD_DATA = [
     "topic": "messaging-integration.md",
     "source": "practice/messaging-integration.md",
     "isSection": true,
-    "id": "card-1250"
+    "id": "card-1319"
   },
   {
     "question": "Idempotency",
@@ -28081,7 +29595,7 @@ window.FLASH_CARD_DATA = [
     "topic": "messaging-integration.md",
     "source": "practice/messaging-integration.md",
     "isSection": true,
-    "id": "card-1251"
+    "id": "card-1320"
   },
   {
     "question": "Event Streaming",
@@ -28101,7 +29615,144 @@ window.FLASH_CARD_DATA = [
     "topic": "messaging-integration.md",
     "source": "practice/messaging-integration.md",
     "isSection": true,
-    "id": "card-1252"
+    "id": "card-1321"
+  },
+  {
+    "question": "Advanced Messaging Scenarios",
+    "answer": [
+      {
+        "type": "text",
+        "content": "A: Use a dead letter queue (DLQ) and track retry attempts via headers."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "if (retryCount >= 5)\n{\n    await _dlqPublisher.PublishAsync(message);\n    return;\n}",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "A: Use an idempotency key table with unique constraint and short TTL for cleanup."
+      },
+      {
+        "type": "code",
+        "language": "sql",
+        "code": "CREATE TABLE message_dedup (\n    message_id TEXT PRIMARY KEY,\n    processed_at TIMESTAMP NOT NULL\n);",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "A: Use the key as the partition key and run a single consumer per partition."
+      },
+      {
+        "type": "text",
+        "content": "A: Use backward-compatible changes, versioned fields, and schema registry validation. Avoid breaking field removals."
+      },
+      {
+        "type": "text",
+        "content": "A: Increase delay per attempt and cap the maximum delay."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var delayMs = Math.Min(30_000, 200 * (int)Math.Pow(2, attempt));\nawait Task.Delay(delayMs, ct);",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "messaging-integration.md",
+    "source": "practice/messaging-integration.md",
+    "isSection": true,
+    "id": "card-1322"
+  },
+  {
+    "question": "When should you use ArrayPool<T>?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use it for large or frequent temporary buffers to reduce GC pressure. Always return buffers in a finally block."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var pool = ArrayPool<byte>.Shared;\nbyte[] buffer = pool.Rent(4096);\ntry\n{\n    // Use buffer\n}\nfinally\n{\n    pool.Return(buffer);\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "performance-memory.md",
+    "source": "practice/performance-memory.md",
+    "id": "card-1323"
+  },
+  {
+    "question": "Show how Span<T> can avoid allocations when parsing.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Slice strings with spans to reduce intermediate allocations."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "ReadOnlySpan<char> line = input.AsSpan();\nvar first = line.Slice(0, 3);",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "performance-memory.md",
+    "source": "practice/performance-memory.md",
+    "id": "card-1324"
+  },
+  {
+    "question": "When would you use ValueTask instead of Task?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use ValueTask for hot paths that often complete synchronously to avoid allocations."
+      }
+    ],
+    "category": "practice",
+    "topic": "performance-memory.md",
+    "source": "practice/performance-memory.md",
+    "id": "card-1325"
+  },
+  {
+    "question": "Why is string concatenation in a loop expensive, and how do you fix it?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Strings are immutable, so concatenation allocates new strings. Use StringBuilder."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var sb = new StringBuilder();\nforeach (var part in parts)\n{\n    sb.Append(part);\n}\nvar result = sb.ToString();",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "performance-memory.md",
+    "source": "practice/performance-memory.md",
+    "id": "card-1326"
+  },
+  {
+    "question": "How do closures create hidden allocations?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Lambdas capture outer variables into heap-allocated objects. Avoid captures in hot paths or use static lambdas."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "// Avoid capture\nvar count = items.Count(static i => i.IsActive);",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "performance-memory.md",
+    "source": "practice/performance-memory.md",
+    "id": "card-1327"
   },
   {
     "question": "Exercise 1: Stack vs Heap Allocation",
@@ -28167,7 +29818,7 @@ window.FLASH_CARD_DATA = [
     "topic": "performance-memory.md",
     "source": "practice/performance-memory.md",
     "isSection": true,
-    "id": "card-1253"
+    "id": "card-1328"
   },
   {
     "question": "Exercise 2: Boxing and Unboxing Performance",
@@ -28221,7 +29872,7 @@ window.FLASH_CARD_DATA = [
     "topic": "performance-memory.md",
     "source": "practice/performance-memory.md",
     "isSection": true,
-    "id": "card-1254"
+    "id": "card-1329"
   },
   {
     "question": "Exercise 3: Understanding GC Generations",
@@ -28262,7 +29913,7 @@ window.FLASH_CARD_DATA = [
     "topic": "performance-memory.md",
     "source": "practice/performance-memory.md",
     "isSection": true,
-    "id": "card-1255"
+    "id": "card-1330"
   },
   {
     "question": "Exercise 4: GC Modes - Workstation vs Server",
@@ -28366,7 +30017,7 @@ window.FLASH_CARD_DATA = [
     "topic": "performance-memory.md",
     "source": "practice/performance-memory.md",
     "isSection": true,
-    "id": "card-1256"
+    "id": "card-1331"
   },
   {
     "question": "Exercise 5: Large Object Heap (LOH)",
@@ -28388,6 +30039,60 @@ window.FLASH_CARD_DATA = [
         "language": "csharp",
         "code": "public class LOHDemo\n{\n    // Objects >= 85,000 bytes go to LOH\n    private const int LOH_THRESHOLD = 85000;\n\n    public static void DemonstrateLOH()\n    {\n        // This goes to LOH\n        byte[] largeArray = new byte[100000];\n        Console.WriteLine($\"Large array generation: {GC.GetGeneration(largeArray)}\"); // Gen 2\n\n        // This stays in normal heap\n        byte[] smallArray = new byte[1000];\n        Console.WriteLine($\"Small array generation: {GC.GetGeneration(smallArray)}\"); // Gen 0\n    }\n\n    // Problem: LOH fragmentation\n    public static void CauseFragmentation()\n    {\n        List<byte[]> arrays = new List<byte[]>();\n\n        for (int i = 0; i < 100; i++)\n        {\n            arrays.Add(new byte[90000]); // LOH allocation\n        }\n\n        // Release every other array - causes fragmentation\n        for (int i = 0; i < arrays.Count; i += 2)\n        {\n            arrays[i] = null;\n        }\n\n        GC.Collect();\n        // LOH is now fragmented\n    }\n\n    // Solution 1: Use ArrayPool for large arrays\n    public static void UseArrayPool()\n    {\n        var pool = ArrayPool<byte>.Shared;\n\n        byte[] buffer = pool.Rent(100000);\n        try\n        {\n            // Use buffer\n        }\n        finally\n        {\n            pool.Return(buffer);\n        }\n    }\n\n    // Solution 2: Compact LOH (NET Core 2.0+)\n    public static void CompactLOH()\n    {\n        GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;\n        GC.Collect();\n    }\n\n    // Solution 3: Split large allocations\n    public static void SplitAllocations()\n    {\n        // Instead of one 1MB array\n        // byte[] huge = new byte[1000000];\n\n        // Use multiple smaller arrays\n        byte[][] chunks = new byte[12][];\n        for (int i = 0; i < 12; i++)\n        {\n            chunks[i] = new byte[84000]; // Just under LOH threshold\n        }\n    }\n}",
         "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "performance-memory.md",
+    "source": "practice/performance-memory.md",
+    "isSection": true,
+    "id": "card-1332"
+  },
+  {
+    "question": "Practice Prompts (Q and A)",
+    "answer": [
+      {
+        "type": "text",
+        "content": "A: Use it for large or frequent temporary buffers to reduce GC pressure. Always return buffers in a finally block."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var pool = ArrayPool<byte>.Shared;\nbyte[] buffer = pool.Rent(4096);\ntry\n{\n    // Use buffer\n}\nfinally\n{\n    pool.Return(buffer);\n}",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "A: Slice strings with spans to reduce intermediate allocations."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "ReadOnlySpan<char> line = input.AsSpan();\nvar first = line.Slice(0, 3);",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "A: Use ValueTask for hot paths that often complete synchronously to avoid allocations."
+      },
+      {
+        "type": "text",
+        "content": "A: Strings are immutable, so concatenation allocates new strings. Use StringBuilder."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var sb = new StringBuilder();\nforeach (var part in parts)\n{\n    sb.Append(part);\n}\nvar result = sb.ToString();",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "A: Lambdas capture outer variables into heap-allocated objects. Avoid captures in hot paths or use static lambdas."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "// Avoid capture\nvar count = items.Count(static i => i.IsActive);",
+        "codeType": "neutral"
       },
       {
         "type": "text",
@@ -28407,7 +30112,7 @@ window.FLASH_CARD_DATA = [
     "topic": "performance-memory.md",
     "source": "practice/performance-memory.md",
     "isSection": true,
-    "id": "card-1257"
+    "id": "card-1333"
   },
   {
     "question": "Exercise 6: Span<T> Basics",
@@ -28453,7 +30158,7 @@ window.FLASH_CARD_DATA = [
     "topic": "performance-memory.md",
     "source": "practice/performance-memory.md",
     "isSection": true,
-    "id": "card-1258"
+    "id": "card-1334"
   },
   {
     "question": "Exercise 7: Memory<T> vs Span<T>",
@@ -28524,7 +30229,7 @@ window.FLASH_CARD_DATA = [
     "topic": "performance-memory.md",
     "source": "practice/performance-memory.md",
     "isSection": true,
-    "id": "card-1259"
+    "id": "card-1335"
   },
   {
     "question": "Exercise 8: Zero-Allocation String Parsing",
@@ -28564,7 +30269,7 @@ window.FLASH_CARD_DATA = [
     "topic": "performance-memory.md",
     "source": "practice/performance-memory.md",
     "isSection": true,
-    "id": "card-1260"
+    "id": "card-1336"
   },
   {
     "question": "Exercise 9: When to Use ValueTask",
@@ -28632,7 +30337,7 @@ window.FLASH_CARD_DATA = [
     "topic": "performance-memory.md",
     "source": "practice/performance-memory.md",
     "isSection": true,
-    "id": "card-1261"
+    "id": "card-1337"
   },
   {
     "question": "Exercise 10: ArrayPool<T> Usage",
@@ -28673,7 +30378,7 @@ window.FLASH_CARD_DATA = [
     "topic": "performance-memory.md",
     "source": "practice/performance-memory.md",
     "isSection": true,
-    "id": "card-1262"
+    "id": "card-1338"
   },
   {
     "question": "Exercise 11: ObjectPool<T> Pattern",
@@ -28714,7 +30419,7 @@ window.FLASH_CARD_DATA = [
     "topic": "performance-memory.md",
     "source": "practice/performance-memory.md",
     "isSection": true,
-    "id": "card-1263"
+    "id": "card-1339"
   },
   {
     "question": "Exercise 12: String Concatenation Performance",
@@ -28746,7 +30451,7 @@ window.FLASH_CARD_DATA = [
     "topic": "performance-memory.md",
     "source": "practice/performance-memory.md",
     "isSection": true,
-    "id": "card-1264"
+    "id": "card-1340"
   },
   {
     "question": "Exercise 13: Struct vs Class Performance Analysis",
@@ -28813,7 +30518,7 @@ window.FLASH_CARD_DATA = [
     "topic": "performance-memory.md",
     "source": "practice/performance-memory.md",
     "isSection": true,
-    "id": "card-1265"
+    "id": "card-1341"
   },
   {
     "question": "Exercise 14: ref, in, out Performance",
@@ -28854,7 +30559,7 @@ window.FLASH_CARD_DATA = [
     "topic": "performance-memory.md",
     "source": "practice/performance-memory.md",
     "isSection": true,
-    "id": "card-1266"
+    "id": "card-1342"
   },
   {
     "question": "Exercise 15: ref locals and Performance",
@@ -28886,7 +30591,7 @@ window.FLASH_CARD_DATA = [
     "topic": "performance-memory.md",
     "source": "practice/performance-memory.md",
     "isSection": true,
-    "id": "card-1267"
+    "id": "card-1343"
   },
   {
     "question": "Exercise 16: stackalloc for Stack Allocation",
@@ -28928,7 +30633,7 @@ window.FLASH_CARD_DATA = [
     "topic": "performance-memory.md",
     "source": "practice/performance-memory.md",
     "isSection": true,
-    "id": "card-1268"
+    "id": "card-1344"
   },
   {
     "question": "Exercise 17: BenchmarkDotNet Basics",
@@ -28970,7 +30675,7 @@ window.FLASH_CARD_DATA = [
     "topic": "performance-memory.md",
     "source": "practice/performance-memory.md",
     "isSection": true,
-    "id": "card-1269"
+    "id": "card-1345"
   },
   {
     "question": "Exercise 18: Micro-Benchmarking Pitfalls",
@@ -29002,7 +30707,7 @@ window.FLASH_CARD_DATA = [
     "topic": "performance-memory.md",
     "source": "practice/performance-memory.md",
     "isSection": true,
-    "id": "card-1270"
+    "id": "card-1346"
   },
   {
     "question": "Exercise 19: Detecting Memory Leaks",
@@ -29045,7 +30750,7 @@ window.FLASH_CARD_DATA = [
     "topic": "performance-memory.md",
     "source": "practice/performance-memory.md",
     "isSection": true,
-    "id": "card-1271"
+    "id": "card-1347"
   },
   {
     "question": "Exercise 20: Proper Dispose Pattern",
@@ -29089,7 +30794,7 @@ window.FLASH_CARD_DATA = [
     "topic": "performance-memory.md",
     "source": "practice/performance-memory.md",
     "isSection": true,
-    "id": "card-1272"
+    "id": "card-1348"
   },
   {
     "question": "Exercise 21: String.Create for Zero-Allocation Strings",
@@ -29121,7 +30826,7 @@ window.FLASH_CARD_DATA = [
     "topic": "performance-memory.md",
     "source": "practice/performance-memory.md",
     "isSection": true,
-    "id": "card-1273"
+    "id": "card-1349"
   },
   {
     "question": "Exercise 22: Collection Performance",
@@ -29153,7 +30858,7 @@ window.FLASH_CARD_DATA = [
     "topic": "performance-memory.md",
     "source": "practice/performance-memory.md",
     "isSection": true,
-    "id": "card-1274"
+    "id": "card-1350"
   },
   {
     "question": "Exercise 23: Lazy<T> vs Manual Lazy Loading",
@@ -29206,7 +30911,7 @@ window.FLASH_CARD_DATA = [
     "topic": "performance-memory.md",
     "source": "practice/performance-memory.md",
     "isSection": true,
-    "id": "card-1275"
+    "id": "card-1351"
   },
   {
     "question": "Exercise 24: Allocation-Free Async Patterns",
@@ -29238,7 +30943,7 @@ window.FLASH_CARD_DATA = [
     "topic": "performance-memory.md",
     "source": "practice/performance-memory.md",
     "isSection": true,
-    "id": "card-1276"
+    "id": "card-1352"
   },
   {
     "question": "Exercise 25: GC.Collect and GC Tuning",
@@ -29282,7 +30987,7 @@ window.FLASH_CARD_DATA = [
     "topic": "performance-memory.md",
     "source": "practice/performance-memory.md",
     "isSection": true,
-    "id": "card-1277"
+    "id": "card-1353"
   },
   {
     "question": "Summary",
@@ -29319,7 +31024,7 @@ window.FLASH_CARD_DATA = [
     "topic": "performance-memory.md",
     "source": "practice/performance-memory.md",
     "isSection": true,
-    "id": "card-1278"
+    "id": "card-1354"
   },
   {
     "question": "Given a list of trades with timestamps, return the latest trade per account using LINQ.",
@@ -29338,7 +31043,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
-    "id": "card-1279"
+    "id": "card-1355"
   },
   {
     "question": "Implement a method that flattens nested lists of instrument codes while preserving ordering.",
@@ -29357,7 +31062,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
-    "id": "card-1280"
+    "id": "card-1356"
   },
   {
     "question": "Explain the difference between SelectMany and nested loops. When is each preferable?",
@@ -29376,7 +31081,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
-    "id": "card-1281"
+    "id": "card-1357"
   },
   {
     "question": "How would you detect duplicate orders in a stream using GroupBy and produce a summary?",
@@ -29395,7 +31100,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
-    "id": "card-1282"
+    "id": "card-1358"
   },
   {
     "question": "Sketch code to call three REST endpoints concurrently, cancel if any take longer than 3 seconds, and aggregate results.",
@@ -29414,7 +31119,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
-    "id": "card-1283"
+    "id": "card-1359"
   },
   {
     "question": "Implement a resilient HTTP client with retry and circuit breaker policies using Polly.",
@@ -29433,7 +31138,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
-    "id": "card-1284"
+    "id": "card-1360"
   },
   {
     "question": "How would you handle backpressure when consuming a fast message queue with a slower downstream API?",
@@ -29452,7 +31157,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
-    "id": "card-1285"
+    "id": "card-1361"
   },
   {
     "question": "Explain why you might use SemaphoreSlim with async code over lock.",
@@ -29471,7 +31176,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
-    "id": "card-1286"
+    "id": "card-1362"
   },
   {
     "question": "Describe the ASP.NET Core middleware pipeline for a request hitting an authenticated endpoint with custom exception handling.",
@@ -29490,7 +31195,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
-    "id": "card-1287"
+    "id": "card-1363"
   },
   {
     "question": "How do you implement API versioning and backward compatibility?",
@@ -29509,7 +31214,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
-    "id": "card-1288"
+    "id": "card-1364"
   },
   {
     "question": "Discuss strategies for rate limiting and request throttling.",
@@ -29528,7 +31233,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
-    "id": "card-1289"
+    "id": "card-1365"
   },
   {
     "question": "How would you log correlation IDs across services and propagate them to downstream dependencies?",
@@ -29547,7 +31252,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
-    "id": "card-1290"
+    "id": "card-1366"
   },
   {
     "question": "Design a service that ingests MT5 tick data, normalizes it, caches latest prices, and exposes them via REST/WebSocket.",
@@ -29566,7 +31271,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
-    "id": "card-1291"
+    "id": "card-1367"
   },
   {
     "question": "Design an API that receives orders, validates, routes to MT4/MT5, and confirms execution. Include failure recovery.",
@@ -29585,7 +31290,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
-    "id": "card-1292"
+    "id": "card-1368"
   },
   {
     "question": "Architect a system to collect metrics from trading microservices and alert on anomalies.",
@@ -29604,7 +31309,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
-    "id": "card-1293"
+    "id": "card-1369"
   },
   {
     "question": "Discuss how you would integrate an external risk management engine into an existing microservices ecosystem.",
@@ -29623,7 +31328,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
-    "id": "card-1294"
+    "id": "card-1370"
   },
   {
     "question": "Compare RabbitMQ and ZeroMQ for distributing price updates. When would you choose one over the other?",
@@ -29636,7 +31341,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
-    "id": "card-1295"
+    "id": "card-1371"
   },
   {
     "question": "Explain how to ensure at-least-once delivery with RabbitMQ while preventing duplicate processing.",
@@ -29655,7 +31360,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
-    "id": "card-1296"
+    "id": "card-1372"
   },
   {
     "question": "How would you design a saga pattern to coordinate account funding across multiple services?",
@@ -29674,7 +31379,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
-    "id": "card-1297"
+    "id": "card-1373"
   },
   {
     "question": "Discuss the outbox pattern and how it prevents message loss in event-driven systems.",
@@ -29693,7 +31398,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
-    "id": "card-1298"
+    "id": "card-1374"
   },
   {
     "question": "Write a SQL query to calculate the rolling 7-day trade volume per instrument.",
@@ -29712,7 +31417,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
-    "id": "card-1299"
+    "id": "card-1375"
   },
   {
     "question": "Explain how you would choose between normalized schemas and denormalized tables for reporting.",
@@ -29725,7 +31430,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
-    "id": "card-1300"
+    "id": "card-1376"
   },
   {
     "question": "Describe the differences between clustered and non-clustered indexes and when to use covering indexes.",
@@ -29744,7 +31449,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
-    "id": "card-1301"
+    "id": "card-1377"
   },
   {
     "question": "Walk through handling a long-running report query that impacts OLTP performance.",
@@ -29757,7 +31462,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
-    "id": "card-1302"
+    "id": "card-1378"
   },
   {
     "question": "Describe the lifecycle of a forex trade from placement to settlement.",
@@ -29770,7 +31475,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
-    "id": "card-1303"
+    "id": "card-1379"
   },
   {
     "question": "How would you integrate with MT4/MT5 APIs for trade execution in C#? Mention authentication, session management, and error handling.",
@@ -29789,7 +31494,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
-    "id": "card-1304"
+    "id": "card-1380"
   },
   {
     "question": "What are common risk checks before executing a client order (e.g., margin, exposure limits)?",
@@ -29802,7 +31507,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
-    "id": "card-1305"
+    "id": "card-1381"
   },
   {
     "question": "Explain how you'd handle market data bursts without dropping updates.",
@@ -29815,7 +31520,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
-    "id": "card-1306"
+    "id": "card-1382"
   },
   {
     "question": "Tell me about a time you led a critical production fix under pressure.",
@@ -29828,7 +31533,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
-    "id": "card-1307"
+    "id": "card-1383"
   },
   {
     "question": "Describe a situation where you improved a process by automating manual work.",
@@ -29841,7 +31546,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
-    "id": "card-1308"
+    "id": "card-1384"
   },
   {
     "question": "Discuss a conflict within a team and how you resolved it.",
@@ -29854,7 +31559,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
-    "id": "card-1309"
+    "id": "card-1385"
   },
   {
     "question": "Share a story that demonstrates your commitment to documentation or knowledge sharing.",
@@ -29867,7 +31572,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
-    "id": "card-1310"
+    "id": "card-1386"
   },
   {
     "question": "LINQ & Collections",
@@ -29933,7 +31638,7 @@ window.FLASH_CARD_DATA = [
     "topic": "questions.md",
     "source": "practice/questions.md",
     "isSection": true,
-    "id": "card-1311"
+    "id": "card-1387"
   },
   {
     "question": "Async & Resilience",
@@ -29999,7 +31704,7 @@ window.FLASH_CARD_DATA = [
     "topic": "questions.md",
     "source": "practice/questions.md",
     "isSection": true,
-    "id": "card-1312"
+    "id": "card-1388"
   },
   {
     "question": "API & Lifecycle",
@@ -30065,7 +31770,7 @@ window.FLASH_CARD_DATA = [
     "topic": "questions.md",
     "source": "practice/questions.md",
     "isSection": true,
-    "id": "card-1313"
+    "id": "card-1389"
   },
   {
     "question": "System Design",
@@ -30131,7 +31836,7 @@ window.FLASH_CARD_DATA = [
     "topic": "questions.md",
     "source": "practice/questions.md",
     "isSection": true,
-    "id": "card-1314"
+    "id": "card-1390"
   },
   {
     "question": "Messaging & Integration",
@@ -30187,7 +31892,7 @@ window.FLASH_CARD_DATA = [
     "topic": "questions.md",
     "source": "practice/questions.md",
     "isSection": true,
-    "id": "card-1315"
+    "id": "card-1391"
   },
   {
     "question": "Data Layer",
@@ -30233,7 +31938,7 @@ window.FLASH_CARD_DATA = [
     "topic": "questions.md",
     "source": "practice/questions.md",
     "isSection": true,
-    "id": "card-1316"
+    "id": "card-1392"
   },
   {
     "question": "Trading Domain Knowledge",
@@ -30265,7 +31970,7 @@ window.FLASH_CARD_DATA = [
     "topic": "questions.md",
     "source": "practice/questions.md",
     "isSection": true,
-    "id": "card-1317"
+    "id": "card-1393"
   },
   {
     "question": "Behavioral & Soft Skills",
@@ -30291,7 +31996,7 @@ window.FLASH_CARD_DATA = [
     "topic": "questions.md",
     "source": "practice/questions.md",
     "isSection": true,
-    "id": "card-1318"
+    "id": "card-1394"
   },
   {
     "question": "Questions for the Interviewer",
@@ -30310,7 +32015,7 @@ window.FLASH_CARD_DATA = [
     "topic": "questions.md",
     "source": "practice/questions.md",
     "isSection": true,
-    "id": "card-1319"
+    "id": "card-1395"
   },
   {
     "question": "Access Modifiers  public, private, internal, protected (and variants)",
@@ -30357,7 +32062,7 @@ window.FLASH_CARD_DATA = [
     "topic": "questions.md",
     "source": "practice/questions.md",
     "isSection": true,
-    "id": "card-1320"
+    "id": "card-1396"
   },
   {
     "question": "Dependency Injection Lifetimes  Transient, Scoped, Singleton (and tips)",
@@ -30416,7 +32121,7 @@ window.FLASH_CARD_DATA = [
     "topic": "questions.md",
     "source": "practice/questions.md",
     "isSection": true,
-    "id": "card-1321"
+    "id": "card-1397"
   },
   {
     "question": "Code Assessment Questions & Answers (with snippets)",
@@ -30610,7 +32315,7 @@ window.FLASH_CARD_DATA = [
     "topic": "questions.md",
     "source": "practice/questions.md",
     "isSection": true,
-    "id": "card-1322"
+    "id": "card-1398"
   },
   {
     "question": "⚙️ How it works",
@@ -30628,7 +32333,7 @@ window.FLASH_CARD_DATA = [
     "topic": "replace int without variable.md",
     "source": "practice/replace int without variable.md",
     "isSection": true,
-    "id": "card-1323"
+    "id": "card-1399"
   },
   {
     "question": "⚠️ Caveat",
@@ -30644,7 +32349,7 @@ window.FLASH_CARD_DATA = [
     "topic": "replace int without variable.md",
     "source": "practice/replace int without variable.md",
     "isSection": true,
-    "id": "card-1324"
+    "id": "card-1400"
   },
   {
     "question": "🧠 How it works",
@@ -30678,7 +32383,7 @@ window.FLASH_CARD_DATA = [
     "topic": "replace int without variable.md",
     "source": "practice/replace int without variable.md",
     "isSection": true,
-    "id": "card-1325"
+    "id": "card-1401"
   },
   {
     "question": "✅ Pros",
@@ -30695,7 +32400,7 @@ window.FLASH_CARD_DATA = [
     "topic": "replace int without variable.md",
     "source": "practice/replace int without variable.md",
     "isSection": true,
-    "id": "card-1326"
+    "id": "card-1402"
   },
   {
     "question": "🔍 3️⃣ Comparison",
@@ -30731,7 +32436,7 @@ window.FLASH_CARD_DATA = [
     "topic": "replace int without variable.md",
     "source": "practice/replace int without variable.md",
     "isSection": true,
-    "id": "card-1327"
+    "id": "card-1403"
   },
   {
     "question": "🚀 Interview Tip",
@@ -30749,7 +32454,7 @@ window.FLASH_CARD_DATA = [
     "topic": "replace int without variable.md",
     "source": "practice/replace int without variable.md",
     "isSection": true,
-    "id": "card-1328"
+    "id": "card-1404"
   },
   {
     "question": "Good Practice Example",
@@ -30765,7 +32470,7 @@ window.FLASH_CARD_DATA = [
     "topic": "replace int without variable.md",
     "source": "practice/replace int without variable.md",
     "isConcept": true,
-    "id": "card-1329"
+    "id": "card-1405"
   },
   {
     "question": "Good Practice Example",
@@ -30781,7 +32486,7 @@ window.FLASH_CARD_DATA = [
     "topic": "replace int without variable.md",
     "source": "practice/replace int without variable.md",
     "isConcept": true,
-    "id": "card-1330"
+    "id": "card-1406"
   },
   {
     "question": "✅ Expected answer:",
@@ -30825,7 +32530,7 @@ window.FLASH_CARD_DATA = [
     "topic": "struct vs class questions and answers.md",
     "source": "practice/struct vs class questions and answers.md",
     "isSection": true,
-    "id": "card-1331"
+    "id": "card-1407"
   },
   {
     "question": "✅ Expected answer:",
@@ -30861,7 +32566,7 @@ window.FLASH_CARD_DATA = [
     "topic": "struct vs class questions and answers.md",
     "source": "practice/struct vs class questions and answers.md",
     "isSection": true,
-    "id": "card-1332"
+    "id": "card-1408"
   },
   {
     "question": "✅ Expected answer:",
@@ -30903,7 +32608,7 @@ window.FLASH_CARD_DATA = [
     "topic": "struct vs class questions and answers.md",
     "source": "practice/struct vs class questions and answers.md",
     "isSection": true,
-    "id": "card-1333"
+    "id": "card-1409"
   },
   {
     "question": "✅ Expected answer:",
@@ -30943,7 +32648,7 @@ window.FLASH_CARD_DATA = [
     "topic": "struct vs class questions and answers.md",
     "source": "practice/struct vs class questions and answers.md",
     "isSection": true,
-    "id": "card-1334"
+    "id": "card-1410"
   },
   {
     "question": "✅ Expected answer:",
@@ -30991,7 +32696,7 @@ window.FLASH_CARD_DATA = [
     "topic": "struct vs class questions and answers.md",
     "source": "practice/struct vs class questions and answers.md",
     "isSection": true,
-    "id": "card-1335"
+    "id": "card-1411"
   },
   {
     "question": "🎯 Bonus (for “wow” points)",
@@ -31013,7 +32718,7 @@ window.FLASH_CARD_DATA = [
     "topic": "struct vs class questions and answers.md",
     "source": "practice/struct vs class questions and answers.md",
     "isSection": true,
-    "id": "card-1336"
+    "id": "card-1412"
   },
   {
     "question": "✅ Quick Summary Answer (say this in 20 seconds)",
@@ -31039,7 +32744,7 @@ window.FLASH_CARD_DATA = [
     "topic": "struct vs class questions and answers.md",
     "source": "practice/struct vs class questions and answers.md",
     "isSection": true,
-    "id": "card-1337"
+    "id": "card-1413"
   },
   {
     "question": "🧩 2. Why can boxing destroy the performance benefits of structs?",
@@ -31055,7 +32760,7 @@ window.FLASH_CARD_DATA = [
     "topic": "struct vs class questions and answers.md",
     "source": "practice/struct vs class questions and answers.md",
     "isConcept": true,
-    "id": "card-1338"
+    "id": "card-1414"
   },
   {
     "question": "🧩 3. What happens when you mutate a struct that’s stored in a collection like a List<T>?",
@@ -31071,7 +32776,7 @@ window.FLASH_CARD_DATA = [
     "topic": "struct vs class questions and answers.md",
     "source": "practice/struct vs class questions and answers.md",
     "isConcept": true,
-    "id": "card-1339"
+    "id": "card-1415"
   },
   {
     "question": "Design a service that ingests MT5 tick data, normalizes it, caches latest prices, and exposes them via REST/WebSocket.",
@@ -31090,7 +32795,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "system-design.md",
     "source": "practice/system-design.md",
-    "id": "card-1340"
+    "id": "card-1416"
   },
   {
     "question": "Design an API that receives orders, validates, routes to MT4/MT5, and confirms execution. Include failure recovery.",
@@ -31109,7 +32814,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "system-design.md",
     "source": "practice/system-design.md",
-    "id": "card-1341"
+    "id": "card-1417"
   },
   {
     "question": "Architect a system to collect metrics from trading microservices and alert on anomalies.",
@@ -31128,7 +32833,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "system-design.md",
     "source": "practice/system-design.md",
-    "id": "card-1342"
+    "id": "card-1418"
   },
   {
     "question": "Discuss how you would integrate an external risk management engine into an existing microservices ecosystem.",
@@ -31147,7 +32852,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "system-design.md",
     "source": "practice/system-design.md",
-    "id": "card-1343"
+    "id": "card-1419"
   },
   {
     "question": "Design a microservices architecture for an e-commerce platform with orders, inventory, payments, and shipping.",
@@ -31172,7 +32877,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "system-design.md",
     "source": "practice/system-design.md",
-    "id": "card-1344"
+    "id": "card-1420"
   },
   {
     "question": "Design service-to-service communication strategy: when to use sync vs async?",
@@ -31191,7 +32896,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "system-design.md",
     "source": "practice/system-design.md",
-    "id": "card-1345"
+    "id": "card-1421"
   },
   {
     "question": "Implement service discovery pattern for dynamic service registration.",
@@ -31210,7 +32915,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "system-design.md",
     "source": "practice/system-design.md",
-    "id": "card-1346"
+    "id": "card-1422"
   },
   {
     "question": "Implement CQRS pattern for an order management system.",
@@ -31229,7 +32934,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "system-design.md",
     "source": "practice/system-design.md",
-    "id": "card-1347"
+    "id": "card-1423"
   },
   {
     "question": "Design event sourcing system for account transactions.",
@@ -31248,7 +32953,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "system-design.md",
     "source": "practice/system-design.md",
-    "id": "card-1348"
+    "id": "card-1424"
   },
   {
     "question": "Design a multi-layer caching strategy (L1: in-memory, L2: Redis, L3: database).",
@@ -31267,7 +32972,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "system-design.md",
     "source": "practice/system-design.md",
-    "id": "card-1349"
+    "id": "card-1425"
   },
   {
     "question": "Implement cache invalidation strategy for distributed systems.",
@@ -31286,7 +32991,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "system-design.md",
     "source": "practice/system-design.md",
-    "id": "card-1350"
+    "id": "card-1426"
   },
   {
     "question": "Design read replica strategy for handling high read traffic.",
@@ -31305,7 +33010,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "system-design.md",
     "source": "practice/system-design.md",
-    "id": "card-1351"
+    "id": "card-1427"
   },
   {
     "question": "Design database sharding strategy for multi-tenant application.",
@@ -31324,7 +33029,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "system-design.md",
     "source": "practice/system-design.md",
-    "id": "card-1352"
+    "id": "card-1428"
   },
   {
     "question": "Design circuit breaker pattern for external API calls.",
@@ -31343,7 +33048,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "system-design.md",
     "source": "practice/system-design.md",
-    "id": "card-1353"
+    "id": "card-1429"
   },
   {
     "question": "Implement health check aggregator for microservices.",
@@ -31362,7 +33067,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "system-design.md",
     "source": "practice/system-design.md",
-    "id": "card-1354"
+    "id": "card-1430"
   },
   {
     "question": "Design distributed tracing system using OpenTelemetry.",
@@ -31381,7 +33086,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "system-design.md",
     "source": "practice/system-design.md",
-    "id": "card-1355"
+    "id": "card-1431"
   },
   {
     "question": "Implement centralized logging with correlation IDs.",
@@ -31400,7 +33105,72 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "system-design.md",
     "source": "practice/system-design.md",
-    "id": "card-1356"
+    "id": "card-1432"
+  },
+  {
+    "question": "Design a multi-region failover strategy for a trading platform.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use active-active for read-heavy services, active-passive for write-heavy, with DNS failover, replicated data stores, and idempotent writes."
+      }
+    ],
+    "category": "practice",
+    "topic": "system-design.md",
+    "source": "practice/system-design.md",
+    "id": "card-1433"
+  },
+  {
+    "question": "How would you shard a multi-tenant database for scale?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Choose a shard key (tenant id), use consistent hashing, route via a shard map, and ensure cross-shard queries are minimized or handled via read models."
+      }
+    ],
+    "category": "practice",
+    "topic": "system-design.md",
+    "source": "practice/system-design.md",
+    "id": "card-1434"
+  },
+  {
+    "question": "Describe a cache invalidation strategy for price snapshots.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use short TTLs, write-through cache for authoritative updates, and a pub/sub channel to invalidate per-symbol keys on updates."
+      }
+    ],
+    "category": "practice",
+    "topic": "system-design.md",
+    "source": "practice/system-design.md",
+    "id": "card-1435"
+  },
+  {
+    "question": "When would you use event sourcing versus state storage?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Event sourcing is useful for auditability and replay; state storage is simpler for CRUD-heavy systems. Consider storage costs, query complexity, and regulatory requirements."
+      }
+    ],
+    "category": "practice",
+    "topic": "system-design.md",
+    "source": "practice/system-design.md",
+    "id": "card-1436"
+  },
+  {
+    "question": "How do you handle backpressure in a streaming system?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Apply bounded queues, adaptive batching, and consumer-side flow control. Drop or coalesce low-priority updates when queues exceed thresholds. Total Exercises: 30+ Master these patterns to design scalable, resilient distributed systems!"
+      }
+    ],
+    "category": "practice",
+    "topic": "system-design.md",
+    "source": "practice/system-design.md",
+    "id": "card-1437"
   },
   {
     "question": "Foundational Questions",
@@ -31466,7 +33236,7 @@ window.FLASH_CARD_DATA = [
     "topic": "system-design.md",
     "source": "practice/system-design.md",
     "isSection": true,
-    "id": "card-1357"
+    "id": "card-1438"
   },
   {
     "question": "Microservices Architecture",
@@ -31516,7 +33286,7 @@ window.FLASH_CARD_DATA = [
     "topic": "system-design.md",
     "source": "practice/system-design.md",
     "isSection": true,
-    "id": "card-1358"
+    "id": "card-1439"
   },
   {
     "question": "CQRS & Event Sourcing",
@@ -31546,7 +33316,7 @@ window.FLASH_CARD_DATA = [
     "topic": "system-design.md",
     "source": "practice/system-design.md",
     "isSection": true,
-    "id": "card-1359"
+    "id": "card-1440"
   },
   {
     "question": "Caching Strategies",
@@ -31576,7 +33346,7 @@ window.FLASH_CARD_DATA = [
     "topic": "system-design.md",
     "source": "practice/system-design.md",
     "isSection": true,
-    "id": "card-1360"
+    "id": "card-1441"
   },
   {
     "question": "Database Scaling",
@@ -31606,7 +33376,7 @@ window.FLASH_CARD_DATA = [
     "topic": "system-design.md",
     "source": "practice/system-design.md",
     "isSection": true,
-    "id": "card-1361"
+    "id": "card-1442"
   },
   {
     "question": "High Availability Patterns",
@@ -31636,7 +33406,7 @@ window.FLASH_CARD_DATA = [
     "topic": "system-design.md",
     "source": "practice/system-design.md",
     "isSection": true,
-    "id": "card-1362"
+    "id": "card-1443"
   },
   {
     "question": "Observability",
@@ -31666,7 +33436,37 @@ window.FLASH_CARD_DATA = [
     "topic": "system-design.md",
     "source": "practice/system-design.md",
     "isSection": true,
-    "id": "card-1363"
+    "id": "card-1444"
+  },
+  {
+    "question": "Advanced System Design Prompts",
+    "answer": [
+      {
+        "type": "text",
+        "content": "A: Use active-active for read-heavy services, active-passive for write-heavy, with DNS failover, replicated data stores, and idempotent writes."
+      },
+      {
+        "type": "text",
+        "content": "A: Choose a shard key (tenant id), use consistent hashing, route via a shard map, and ensure cross-shard queries are minimized or handled via read models."
+      },
+      {
+        "type": "text",
+        "content": "A: Use short TTLs, write-through cache for authoritative updates, and a pub/sub channel to invalidate per-symbol keys on updates."
+      },
+      {
+        "type": "text",
+        "content": "A: Event sourcing is useful for auditability and replay; state storage is simpler for CRUD-heavy systems. Consider storage costs, query complexity, and regulatory requirements."
+      },
+      {
+        "type": "text",
+        "content": "A: Apply bounded queues, adaptive batching, and consumer-side flow control. Drop or coalesce low-priority updates when queues exceed thresholds."
+      }
+    ],
+    "category": "practice",
+    "topic": "system-design.md",
+    "source": "practice/system-design.md",
+    "isSection": true,
+    "id": "card-1445"
   },
   {
     "question": "Describe the lifecycle of a forex trade from placement to settlement.",
@@ -31679,7 +33479,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "trading-domain.md",
     "source": "practice/trading-domain.md",
-    "id": "card-1364"
+    "id": "card-1446"
   },
   {
     "question": "How would you integrate with MT4/MT5 APIs for trade execution in C#? Mention authentication, session management, and error handling.",
@@ -31698,7 +33498,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "trading-domain.md",
     "source": "practice/trading-domain.md",
-    "id": "card-1365"
+    "id": "card-1447"
   },
   {
     "question": "What are common risk checks before executing a client order (e.g., margin, exposure limits)?",
@@ -31711,7 +33511,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "trading-domain.md",
     "source": "practice/trading-domain.md",
-    "id": "card-1366"
+    "id": "card-1448"
   },
   {
     "question": "Explain how you'd handle market data bursts without dropping updates.",
@@ -31724,7 +33524,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "trading-domain.md",
     "source": "practice/trading-domain.md",
-    "id": "card-1367"
+    "id": "card-1449"
   },
   {
     "question": "Implement order validation pipeline with multiple risk checks.",
@@ -31743,7 +33543,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "trading-domain.md",
     "source": "practice/trading-domain.md",
-    "id": "card-1368"
+    "id": "card-1450"
   },
   {
     "question": "Design state machine for order lifecycle tracking.",
@@ -31762,7 +33562,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "trading-domain.md",
     "source": "practice/trading-domain.md",
-    "id": "card-1369"
+    "id": "card-1451"
   },
   {
     "question": "Implement order reconciliation to detect missing confirmations.",
@@ -31781,7 +33581,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "trading-domain.md",
     "source": "practice/trading-domain.md",
-    "id": "card-1370"
+    "id": "card-1452"
   },
   {
     "question": "Implement MT5 Gateway with connection pooling and failover.",
@@ -31800,7 +33600,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "trading-domain.md",
     "source": "practice/trading-domain.md",
-    "id": "card-1371"
+    "id": "card-1453"
   },
   {
     "question": "Handle MT5 error codes and map to domain exceptions.",
@@ -31819,7 +33619,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "trading-domain.md",
     "source": "practice/trading-domain.md",
-    "id": "card-1372"
+    "id": "card-1454"
   },
   {
     "question": "Implement high-frequency tick data processor with conflation.",
@@ -31838,7 +33638,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "trading-domain.md",
     "source": "practice/trading-domain.md",
-    "id": "card-1373"
+    "id": "card-1455"
   },
   {
     "question": "Implement VWAP (Volume-Weighted Average Price) calculator.",
@@ -31857,7 +33657,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "trading-domain.md",
     "source": "practice/trading-domain.md",
-    "id": "card-1374"
+    "id": "card-1456"
   },
   {
     "question": "Implement real-time P&L calculator for open positions.",
@@ -31876,7 +33676,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "trading-domain.md",
     "source": "practice/trading-domain.md",
-    "id": "card-1375"
+    "id": "card-1457"
   },
   {
     "question": "Implement margin calculator with different leverage levels.",
@@ -31895,7 +33695,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "trading-domain.md",
     "source": "practice/trading-domain.md",
-    "id": "card-1376"
+    "id": "card-1458"
   },
   {
     "question": "Implement automatic stop-out mechanism.",
@@ -31914,7 +33714,72 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "trading-domain.md",
     "source": "practice/trading-domain.md",
-    "id": "card-1377"
+    "id": "card-1459"
+  },
+  {
+    "question": "Explain slippage and how you would measure it.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Slippage is the difference between expected and executed price. Measure average slippage per symbol and market condition, and alert when it exceeds thresholds."
+      }
+    ],
+    "category": "practice",
+    "topic": "trading-domain.md",
+    "source": "practice/trading-domain.md",
+    "id": "card-1460"
+  },
+  {
+    "question": "How do you handle market data bursts without dropping critical updates?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use conflation (latest per symbol), prioritize high-value symbols, and stream snapshots plus deltas."
+      }
+    ],
+    "category": "practice",
+    "topic": "trading-domain.md",
+    "source": "practice/trading-domain.md",
+    "id": "card-1461"
+  },
+  {
+    "question": "Design an order book snapshot + delta model.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Publish a full snapshot periodically and send incremental updates in between, keyed by sequence numbers for replay and gap detection."
+      }
+    ],
+    "category": "practice",
+    "topic": "trading-domain.md",
+    "source": "practice/trading-domain.md",
+    "id": "card-1462"
+  },
+  {
+    "question": "Implement a real-time PnL calculation at the account level.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Aggregate position PnL plus realized PnL; update on price ticks and trade fills."
+      }
+    ],
+    "category": "practice",
+    "topic": "trading-domain.md",
+    "source": "practice/trading-domain.md",
+    "id": "card-1463"
+  },
+  {
+    "question": "Describe a reconciliation workflow for executed trades.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Compare internal fills to broker confirmations, identify mismatches, and run compensating adjustments with audit logs. Total Exercises: 30+ Master trading domain concepts for building robust, compliant trading platforms!"
+      }
+    ],
+    "category": "practice",
+    "topic": "trading-domain.md",
+    "source": "practice/trading-domain.md",
+    "id": "card-1464"
   },
   {
     "question": "Foundational Questions",
@@ -31946,7 +33811,7 @@ window.FLASH_CARD_DATA = [
     "topic": "trading-domain.md",
     "source": "practice/trading-domain.md",
     "isSection": true,
-    "id": "card-1378"
+    "id": "card-1465"
   },
   {
     "question": "Trade Lifecycle Management",
@@ -31986,7 +33851,7 @@ window.FLASH_CARD_DATA = [
     "topic": "trading-domain.md",
     "source": "practice/trading-domain.md",
     "isSection": true,
-    "id": "card-1379"
+    "id": "card-1466"
   },
   {
     "question": "MT4/MT5 Integration",
@@ -32016,7 +33881,7 @@ window.FLASH_CARD_DATA = [
     "topic": "trading-domain.md",
     "source": "practice/trading-domain.md",
     "isSection": true,
-    "id": "card-1380"
+    "id": "card-1467"
   },
   {
     "question": "Market Data Processing",
@@ -32046,7 +33911,7 @@ window.FLASH_CARD_DATA = [
     "topic": "trading-domain.md",
     "source": "practice/trading-domain.md",
     "isSection": true,
-    "id": "card-1381"
+    "id": "card-1468"
   },
   {
     "question": "Risk Management",
@@ -32086,6 +33951,36 @@ window.FLASH_CARD_DATA = [
     "topic": "trading-domain.md",
     "source": "practice/trading-domain.md",
     "isSection": true,
-    "id": "card-1382"
+    "id": "card-1469"
+  },
+  {
+    "question": "Advanced Trading Scenarios",
+    "answer": [
+      {
+        "type": "text",
+        "content": "A: Slippage is the difference between expected and executed price. Measure average slippage per symbol and market condition, and alert when it exceeds thresholds."
+      },
+      {
+        "type": "text",
+        "content": "A: Use conflation (latest per symbol), prioritize high-value symbols, and stream snapshots plus deltas."
+      },
+      {
+        "type": "text",
+        "content": "A: Publish a full snapshot periodically and send incremental updates in between, keyed by sequence numbers for replay and gap detection."
+      },
+      {
+        "type": "text",
+        "content": "A: Aggregate position PnL plus realized PnL; update on price ticks and trade fills."
+      },
+      {
+        "type": "text",
+        "content": "A: Compare internal fills to broker confirmations, identify mismatches, and run compensating adjustments with audit logs."
+      }
+    ],
+    "category": "practice",
+    "topic": "trading-domain.md",
+    "source": "practice/trading-domain.md",
+    "isSection": true,
+    "id": "card-1470"
   }
 ];

@@ -11,6 +11,8 @@ A comprehensive collection of practice exercises organized by topic to help you 
 5. **Review answers** - Understand why each solution works
 6. **Iterate** - Come back to difficult topics multiple times
 
+If you prefer a single combined list, see [Practice Questions & Prompts](questions.md).
+
 ---
 
 ## Core C# & .NET Topics

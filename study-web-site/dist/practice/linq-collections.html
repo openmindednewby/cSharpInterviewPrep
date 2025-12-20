@@ -124,7 +124,7 @@
         <span>Practice</span>
         <span class="chevron" aria-hidden="true"></span>
       </button>
-      <ul class="sidebar-group__items"><li><a class="nav-link" href="../practice/answers.html">Answers</a></li><li><a class="nav-link" href="../practice/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="../practice/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="../practice/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="../practice/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="../practice/data-layer.html">Data Layer</a></li><li><a class="nav-link active" href="../practice/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="../practice/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="../practice/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="../practice/index.html">Practice</a></li><li><a class="nav-link" href="../practice/questions.html">Questions</a></li><li><a class="nav-link" href="../practice/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="../practice/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="../practice/system-design.html">System Design</a></li><li><a class="nav-link" href="../practice/trading-domain.html">Trading Domain</a></li></ul>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="../practice/answers.html">Answers</a></li><li><a class="nav-link" href="../practice/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="../practice/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="../practice/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="../practice/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="../practice/csharp-fundamentals.html">Csharp Fundamentals</a></li><li><a class="nav-link" href="../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="../practice/data-layer.html">Data Layer</a></li><li><a class="nav-link active" href="../practice/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="../practice/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="../practice/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="../practice/index.html">Practice</a></li><li><a class="nav-link" href="../practice/questions.html">Questions</a></li><li><a class="nav-link" href="../practice/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="../practice/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="../practice/system-design.html">System Design</a></li><li><a class="nav-link" href="../practice/trading-domain.html">Trading Domain</a></li></ul>
     </div></div></div>
       </div>
     </nav>
@@ -133,7 +133,7 @@
         <div class="breadcrumbs">practice\linq-collections.md</div>
         <h2>Linq Collections</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#linq-collections-practice-exercises">LINQ & Collections Practice Exercises</a></li><li class="level-2"><a href="#foundational-questions">Foundational Questions</a></li><li class="level-2"><a href="#intermediate-exercises">Intermediate Exercises</a></li><li class="level-2"><a href="#advanced-exercises">Advanced Exercises</a></li><li class="level-2"><a href="#performance-optimization">Performance & Optimization</a></li><li class="level-2"><a href="#collection-specific-exercises">Collection-Specific Exercises</a></li><li class="level-2"><a href="#real-world-scenarios">Real-World Scenarios</a></li><li class="level-2"><a href="#challenge-problems">Challenge Problems</a></li></ul></div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#linq-collections-practice-exercises">LINQ & Collections Practice Exercises</a></li><li class="level-2"><a href="#foundational-questions">Foundational Questions</a></li><li class="level-2"><a href="#intermediate-exercises">Intermediate Exercises</a></li><li class="level-2"><a href="#advanced-exercises">Advanced Exercises</a></li><li class="level-2"><a href="#performance-optimization">Performance & Optimization</a></li><li class="level-2"><a href="#collection-specific-exercises">Collection-Specific Exercises</a></li><li class="level-2"><a href="#real-world-scenarios">Real-World Scenarios</a></li><li class="level-2"><a href="#challenge-problems">Challenge Problems</a></li><li class="level-2"><a href="#expert-extensions">Expert Extensions</a></li></ul></div>
         <h1 id="linq-collections-practice-exercises">LINQ & Collections Practice Exercises</h1>
 <p>Master LINQ queries and collection manipulation through hands-on exercises.</p>
 <p>---</p>
@@ -589,7 +589,42 @@ query = DynamicQueryBuilder.ApplyFilter(query, &quot;Name&quot;, &quot;contains&
     }
 }</code></pre>
 <p>---</p>
-<p><strong>Total Exercises: 30+</strong></p>
+<h2 id="expert-extensions">Expert Extensions</h2>
+<p><strong>Q: Use <code>GroupJoin</code> to build a customer summary with order counts and last order date.</strong></p>
+<p>A: GroupJoin collects orders per customer without losing customers who have no orders.</p>
+<pre class="language-csharp"><code class="language-csharp">var summaries = customers
+    .GroupJoin(
+        orders,
+        c =&gt; c.Id,
+        o =&gt; o.CustomerId,
+        (c, customerOrders) =&gt; new {
+            c.Id,
+            c.Name,
+            OrderCount = customerOrders.Count(),
+            LastOrderDate = customerOrders
+                .OrderByDescending(o =&gt; o.OrderDate)
+                .Select(o =&gt; (DateTime?)o.OrderDate)
+                .FirstOrDefault()
+        });</code></pre>
+<p><strong>Q: Implement <code>Distinct</code> with a custom comparer for case-insensitive strings.</strong></p>
+<p>A: Provide an <code>IEqualityComparer&lt;T&gt;</code> to normalize comparisons.</p>
+<pre class="language-csharp"><code class="language-csharp">var uniqueSymbols = symbols.Distinct(StringComparer.OrdinalIgnoreCase).ToList();</code></pre>
+<p><strong>Q: Convert a list to a dictionary safely when keys can repeat.</strong></p>
+<p>A: Group by the key first, then choose a resolution strategy.</p>
+<pre class="language-csharp"><code class="language-csharp">var map = products
+    .GroupBy(p =&gt; p.Sku)
+    .ToDictionary(g =&gt; g.Key, g =&gt; g.OrderByDescending(p =&gt; p.UpdatedAt).First());</code></pre>
+<p><strong>Q: Use <code>Select</code> with index to assign ranks within a sorted sequence.</strong></p>
+<p>A: Sort once, then project with the index.</p>
+<pre class="language-csharp"><code class="language-csharp">var ranked = trades
+    .OrderByDescending(t =&gt; t.Notional)
+    .Select((trade, index) =&gt; new { trade.Id, Rank = index + 1 });</code></pre>
+<p><strong>Q: Split a sequence into a prefix and the remaining items using <code>TakeWhile</code> and <code>SkipWhile</code>.</strong></p>
+<p>A: Use a predicate to find the boundary.</p>
+<pre class="language-csharp"><code class="language-csharp">var prefix = prices.TakeWhile(p =&gt; p.IsValid).ToList();
+var rest = prices.SkipWhile(p =&gt; p.IsValid).ToList();</code></pre>
+<p>---</p>
+<p><strong>Total Exercises: 40+</strong></p>
 <p>Practice these exercises by actually writing the code. Don't just read—implement and test!</p>
       </article>
     </main>

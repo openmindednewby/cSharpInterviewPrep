@@ -1331,6 +1331,50 @@ Asking thoughtful questions demonstrates curiosity, preparation, and strategic t
 
 ---
 
+## Quick Practice Prompts
+
+**Q: Tell me about a time you improved reliability under tight deadlines.**
+
+A: Emphasize triage, prioritization, and measurable reliability gains (reduced incidents, improved MTTR).
+
+**Q: Describe a time you pushed back on a requirement.**
+
+A: Explain how you gathered data, offered alternatives, and aligned on a better solution.
+
+**Q: Share a story where you mentored a teammate.**
+
+A: Focus on coaching style, growth outcomes, and how you measured success.
+
+**Q: Describe a time you resolved a production incident.**
+
+A: Highlight diagnostics, clear communication, and follow-up prevention steps.
+
+**Q: Tell me about a technical decision that you later reconsidered.**
+
+A: Show humility, what you learned, and how you adapted your approach.
+
+**Q: Describe a time you influenced without authority.**
+
+A: Explain how you built trust, used data, and aligned stakeholders.
+
+**Q: How do you handle competing priorities?**
+
+A: Explain triage, stakeholder communication, and how you protect critical paths.
+
+**Q: Tell me about a time you improved a process.**
+
+A: Describe the baseline, your change, and the measurable improvement.
+
+**Q: Describe a conflict that you resolved successfully.**
+
+A: Focus on listening, shared goals, and outcome.
+
+**Q: Share a time you handled ambiguous requirements.**
+
+A: Emphasize discovery, clarifying questions, and iterative delivery.
+
+---
+
 ## Practice Exercise
 
 For each category in this guide, identify one story from your own experience and outline it using the STAR format. Practice delivering it out loud in under 2 minutes. Record yourself and refine. By the time you interview, you'll have a toolkit of polished stories ready to adapt to any behavioral question.

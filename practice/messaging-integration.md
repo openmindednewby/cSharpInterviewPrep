@@ -1303,6 +1303,50 @@ public class EventStoreWithSnapshots
 
 ---
 
-**Total Exercises: 30+**
+## Advanced Messaging Scenarios
+
+**Q: How do you handle poison messages without blocking a queue?**
+
+A: Use a dead letter queue (DLQ) and track retry attempts via headers.
+
+```csharp
+if (retryCount >= 5)
+{
+    await _dlqPublisher.PublishAsync(message);
+    return;
+}
+```
+
+**Q: Describe an idempotency strategy for message consumers.**
+
+A: Use an idempotency key table with unique constraint and short TTL for cleanup.
+
+```sql
+CREATE TABLE message_dedup (
+    message_id TEXT PRIMARY KEY,
+    processed_at TIMESTAMP NOT NULL
+);
+```
+
+**Q: How would you preserve ordering for a specific key in Kafka?**
+
+A: Use the key as the partition key and run a single consumer per partition.
+
+**Q: How do you evolve a message schema safely?**
+
+A: Use backward-compatible changes, versioned fields, and schema registry validation. Avoid breaking field removals.
+
+**Q: Implement a retry policy with exponential backoff and max delay.**
+
+A: Increase delay per attempt and cap the maximum delay.
+
+```csharp
+var delayMs = Math.Min(30_000, 200 * (int)Math.Pow(2, attempt));
+await Task.Delay(delayMs, ct);
+```
+
+---
+
+**Total Exercises: 35+**
 
 Master messaging patterns for building resilient, event-driven distributed systems!
