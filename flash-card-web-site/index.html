@@ -3,55 +3,45 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Discover a curated sanctuary of multicultural wisdom featuring annotated quotes, cultural context, and guiding principles for intentional living.">
-  <meta name="keywords" content="multicultural wisdom quotes, philosophical principles, inspirational sayings, global proverbs, mindful living">
-  <meta name="author" content="openmindednewby">
+  <meta name="description" content="C# Interview Prep Flash Cards - Auto-rotating questions, answers, and code examples for mastering senior .NET interviews.">
+  <meta name="keywords" content="C# interview prep, .NET interview questions, flash cards, coding practice, SOLID principles, design patterns">
+  <meta name="author" content="C# Interview Prep">
   <meta name="robots" content="index, follow">
-  <meta property="og:title" content="Sanctum of Wisdom">
-  <meta property="og:description" content="Step into a contemplative space where quotes from every corner of the globe fade into view, one breath at a time.">
+  <meta property="og:title" content="C# Interview Prep Flash Cards">
+  <meta property="og:description" content="Master C# and .NET concepts with auto-rotating flash cards featuring questions, answers, and code examples.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://quotes.dloizides.com">
-  <meta property="og:image" content="https://quotes.dloizides.com/quotes-preview.png">
-  <meta property="og:image:alt" content="Preview of the Sanctum of Wisdom app displaying a quote over a dark atmospheric background">
-  <meta property="og:site_name" content="Sanctum of Wisdom">
+  <meta property="og:image" content="quotes-preview.png">
+  <meta property="og:image:alt" content="Preview of C# flash cards with code examples">
+  <meta property="og:site_name" content="C# Interview Prep Flash Cards">
   <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Sanctum of Wisdom">
-  <meta name="twitter:description" content="Explore multicultural wisdom with annotated quotes, cultural context, and guiding principles for mindful living.">
-  <meta name="twitter:image" content="https://quotes.dloizides.com/quotes-preview.png">
-  <meta name="twitter:image:alt" content="Preview of the Sanctum of Wisdom app displaying a quote over a dark atmospheric background">
-  <meta name="theme-color" content="#121417">
+  <meta name="twitter:title" content="C# Interview Prep Flash Cards">
+  <meta name="twitter:description" content="Master C# and .NET concepts with auto-rotating flash cards.">
+  <meta name="twitter:image" content="quotes-preview.png">
+  <meta name="twitter:image:alt" content="Preview of C# flash cards with code examples">
+  <meta name="theme-color" content="#0f172a">
   <link rel="manifest" href="/manifest.json">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=IBM+Plex+Sans:wght@300;400;500&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
   <link rel="stylesheet" href="styles.css">
-  <link rel="canonical" href="https://quotes.dloizides.com">
-  <link rel="alternate" href="https://quotes.dloizides.com" hreflang="en">
-  <title>Sanctum of Wisdom</title>
-  <script type="application/ld+json" nonce="abc123">
+  <title>C# Interview Prep Flash Cards</title>
+  <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "Sanctum of Wisdom",
-    "url": "https://quotes.dloizides.com",
-    "description": "A curated collection of intergenerational wisdom featuring quotes, principles, and ideals from cultures around the world.",
+    "@type": "WebApplication",
+    "name": "C# Interview Prep Flash Cards",
+    "description": "Interactive flash cards for C# and .NET interview preparation with auto-rotating Q&A and code examples.",
     "inLanguage": "en",
-    "publisher": {
-      "@type": "Organization",
-      "name": "Sanctum of Wisdom"
-    },
-    "potentialAction": {
-      "@type": "ReadAction",
-      "target": "https://quotes.dloizides.com"
-    }
+    "applicationCategory": "EducationalApplication"
   }
   </script>
 </head>
 
 <body>
-  <main class="quote-container" role="main" aria-live="polite" aria-atomic="true">
-    <p class="quote-text" id="quoteOriginal">Loading ancient whispers...</p>
-    <p class="quote-translation" id="quoteTranslation"></p>
-    <p class="quote-meta" id="quoteMeta"></p>
+  <main class="flash-card-container" role="main" aria-live="polite" aria-atomic="true">
+    <div class="card-type-badge" id="cardTypeBadge"></div>
+    <p class="card-question" id="cardQuestion">Loading flash cards...</p>
+    <div class="card-answer" id="cardAnswer"></div>
+    <p class="card-meta" id="cardMeta"></p>
   </main>
 
   <script>
@@ -72,7 +62,7 @@
       });
     }
   </script>
-  <script src="quotes-data.js"></script>
+  <script src="flash-card-data.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

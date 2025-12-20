@@ -1,0 +1,20 @@
+{
+  "name": "csharp-interview-flash-cards",
+  "version": "1.0.0",
+  "description": "Auto-rotating flash cards for C# interview preparation",
+  "main": "index.html",
+  "scripts": {
+    "build": "node build.js",
+    "serve": "npx serve .",
+    "start": "npm run build && npm run serve"
+  },
+  "keywords": [
+    "flashcards",
+    "csharp",
+    "interview-prep",
+    "dotnet",
+    "study-guide"
+  ],
+  "author": "C# Interview Prep",
+  "license": "MIT"
+}

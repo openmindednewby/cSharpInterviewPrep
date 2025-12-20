@@ -1,113 +1,168 @@
-const quoteContainer = document.querySelector('.quote-container');
-const quoteOriginalEl = document.getElementById('quoteOriginal');
-const quoteTranslationEl = document.getElementById('quoteTranslation');
-const quoteMetaEl = document.getElementById('quoteMeta');
+const flashCardContainer = document.querySelector('.flash-card-container');
+const cardQuestionEl = document.getElementById('cardQuestion');
+const cardAnswerEl = document.getElementById('cardAnswer');
+const cardMetaEl = document.getElementById('cardMeta');
+const cardTypeBadgeEl = document.getElementById('cardTypeBadge');
 
-const displayDuration = 8000; // time quote stays visible
+const displayDuration = 10000; // time card stays visible (increased for code reading)
 const transitionDuration = 600; // fade-out duration before switching
-const bundledQuotes = Array.isArray(window.QUOTES_DATA) ? window.QUOTES_DATA : null;
+const bundledCards = Array.isArray(window.FLASH_CARD_DATA) ? window.FLASH_CARD_DATA : null;
 let cycleTimer = null;
-let quotes = [];
+let flashCards = [];
 let currentIndex = 0;
 
 document.addEventListener('DOMContentLoaded', () => {
-  loadQuotes();
+  loadFlashCards();
 });
 
-async function loadQuotes() {
+async function loadFlashCards() {
   try {
-    const latestQuotes = await fetchLatestQuotes();
-    const dataToUse = Array.isArray(latestQuotes) && latestQuotes.length > 0
-      ? latestQuotes
-      : bundledQuotes;
+    const latestCards = await fetchLatestCards();
+    const dataToUse = Array.isArray(latestCards) && latestCards.length > 0
+      ? latestCards
+      : bundledCards;
 
     if (!dataToUse || dataToUse.length === 0) {
-      throw new Error('The bundled quote dataset is unavailable.');
+      throw new Error('The flash card dataset is unavailable.');
     }
 
-    initializeQuotes(dataToUse);
+    initializeFlashCards(dataToUse);
   } catch (error) {
     console.error(error);
 
-    quoteOriginalEl.textContent = 'The whispers are silent for a moment.';
-    quoteTranslationEl.textContent = '';
-    quoteMetaEl.textContent = 'We could not open the book of wisdom. Please refresh to try again.';
+    cardQuestionEl.textContent = 'Flash cards could not be loaded.';
+    cardAnswerEl.textContent = '';
+    cardMetaEl.textContent = 'Please refresh to try again or run "npm run build" to generate cards.';
+    cardTypeBadgeEl.textContent = '';
 
     clearTimeout(cycleTimer);
     cycleTimer = null;
-    requestAnimationFrame(() => quoteContainer.classList.add('visible'));
+    requestAnimationFrame(() => flashCardContainer.classList.add('visible'));
   }
 }
 
-async function fetchLatestQuotes() {
+async function fetchLatestCards() {
   try {
-    const cacheBustingUrl = `quotes-data.js?refresh=${Date.now()}`;
+    const cacheBustingUrl = `flash-card-data.js?refresh=${Date.now()}`;
     const response = await fetch(cacheBustingUrl, { cache: 'no-store', credentials: 'same-origin' });
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch latest quotes dataset: ${response.status}`);
+      throw new Error(`Failed to fetch latest flash cards: ${response.status}`);
     }
 
     const datasetScript = await response.text();
-    const extractedQuotes = extractQuotesFromScript(datasetScript);
+    const extractedCards = extractCardsFromScript(datasetScript);
 
-    if (Array.isArray(extractedQuotes) && extractedQuotes.length > 0) {
-      window.QUOTES_DATA = extractedQuotes;
-      return extractedQuotes;
+    if (Array.isArray(extractedCards) && extractedCards.length > 0) {
+      window.FLASH_CARD_DATA = extractedCards;
+      return extractedCards;
     }
   } catch (error) {
-    console.warn('Falling back to bundled quotes dataset.', error);
+    console.warn('Falling back to bundled flash card dataset.', error);
   }
 
   return null;
 }
 
-function extractQuotesFromScript(scriptText) {
+function extractCardsFromScript(scriptText) {
   try {
     const sandboxWindow = {};
-    const scriptRunner = new Function('window', `${scriptText}; return window.QUOTES_DATA;`);
+    const scriptRunner = new Function('window', `${scriptText}; return window.FLASH_CARD_DATA;`);
     return scriptRunner(sandboxWindow);
   } catch (error) {
-    console.warn('Unable to parse quotes dataset script.', error);
+    console.warn('Unable to parse flash card dataset script.', error);
     return null;
   }
 }
 
-function initializeQuotes(data) {
+function initializeFlashCards(data) {
   if (!Array.isArray(data) || data.length === 0) {
-    throw new Error('The quote collection is empty or malformed.');
+    throw new Error('The flash card collection is empty or malformed.');
   }
 
-  quotes = shuffle(data.slice());
+  flashCards = shuffle(data.slice());
   currentIndex = 0;
-  setQuoteContent(quotes[currentIndex]);
-  requestAnimationFrame(() => quoteContainer.classList.add('visible'));
-  scheduleNextQuote();
+  setCardContent(flashCards[currentIndex]);
+  requestAnimationFrame(() => flashCardContainer.classList.add('visible'));
+  scheduleNextCard();
 }
 
-function setQuoteContent(quote) {
-  quoteOriginalEl.textContent = quote.quoteText || '';
-  quoteTranslationEl.textContent = quote.quoteTextEN && quote.quoteTextEN !== quote.quoteText
-    ? quote.quoteTextEN
-    : '';
-  const metaParts = [quote.author, quote.culture, quote.category]
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function setCardContent(card) {
+  // Set question
+  cardQuestionEl.textContent = card.question || '';
+
+  // Set badge based on card type
+  if (card.isConcept) {
+    cardTypeBadgeEl.textContent = 'Concept';
+    cardTypeBadgeEl.className = 'card-type-badge concept';
+  } else {
+    cardTypeBadgeEl.textContent = 'Q&A';
+    cardTypeBadgeEl.className = 'card-type-badge qa';
+  }
+
+  // Build answer content (text + code)
+  cardAnswerEl.innerHTML = '';
+
+  if (Array.isArray(card.answer)) {
+    card.answer.forEach(item => {
+      if (item.type === 'text') {
+        const p = document.createElement('p');
+        p.className = 'answer-text';
+        p.textContent = item.content;
+        cardAnswerEl.appendChild(p);
+      } else if (item.type === 'code') {
+        const codeWrapper = document.createElement('div');
+        codeWrapper.className = `code-wrapper ${item.codeType || 'neutral'}`;
+
+        // Add indicator badge
+        if (item.codeType === 'good') {
+          const badge = document.createElement('div');
+          badge.className = 'code-badge good';
+          badge.textContent = '✅ Good Practice';
+          codeWrapper.appendChild(badge);
+        } else if (item.codeType === 'bad') {
+          const badge = document.createElement('div');
+          badge.className = 'code-badge bad';
+          badge.textContent = '❌ Bad Practice';
+          codeWrapper.appendChild(badge);
+        }
+
+        const pre = document.createElement('pre');
+        const code = document.createElement('code');
+        code.className = `language-${item.language || 'csharp'}`;
+        code.textContent = item.code;
+        pre.appendChild(code);
+        codeWrapper.appendChild(pre);
+        cardAnswerEl.appendChild(codeWrapper);
+      }
+    });
+  }
+
+  // Set metadata
+  const metaParts = [card.topic, card.category]
     .map((part) => (typeof part === 'string' ? part.trim() : ''))
     .filter(Boolean);
-  quoteMetaEl.textContent = metaParts.join(' • ');
+  cardMetaEl.textContent = metaParts.join(' • ');
 }
 
-function scheduleNextQuote() {
+function scheduleNextCard() {
   clearTimeout(cycleTimer);
   cycleTimer = setTimeout(() => {
-    quoteContainer.classList.remove('visible');
+    flashCardContainer.classList.remove('visible');
     setTimeout(() => {
-      currentIndex = (currentIndex + 1) % quotes.length;
+      currentIndex = (currentIndex + 1) % flashCards.length;
       if (currentIndex === 0) {
-        quotes = shuffle(quotes.slice());
+        flashCards = shuffle(flashCards.slice());
       }
-      setQuoteContent(quotes[currentIndex]);
-      requestAnimationFrame(() => quoteContainer.classList.add('visible'));
-      scheduleNextQuote();
+      setCardContent(flashCards[currentIndex]);
+      requestAnimationFrame(() => flashCardContainer.classList.add('visible'));
+      scheduleNextCard();
     }, transitionDuration);
   }, displayDuration);
 }

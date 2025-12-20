@@ -1,0 +1,329 @@
+#!/usr/bin/env node
+/**
+ * Flash card data generator for C# interview prep.
+ * - Reads Markdown from the root-level `notes` and `practice` folders
+ * - Extracts Q&A sections, code examples (good/bad), and key concepts
+ * - Generates flash-card-data.js with questions, answers, and code snippets
+ */
+
+const fs = require('fs/promises');
+const path = require('path');
+
+const repoRoot = path.resolve(__dirname, '..');
+const outputFile = path.join(__dirname, 'flash-card-data.js');
+const contentSources = [
+  { key: 'notes', source: path.join(repoRoot, 'notes') },
+  { key: 'practice', source: path.join(repoRoot, 'practice') }
+];
+
+/**
+ * Extract Q&A pairs from markdown sections
+ */
+function extractQA(markdown, sourcePath) {
+  const cards = [];
+  const lines = markdown.split(/\r?\n/);
+  let currentQuestion = null;
+  let currentAnswer = [];
+  let inCodeBlock = false;
+  let codeLanguage = '';
+  let codeLines = [];
+  let codeType = null; // 'good' or 'bad'
+
+  const sourceFile = path.relative(repoRoot, sourcePath).replace(/\\/g, '/');
+  const category = sourceFile.split('/')[0]; // 'notes' or 'practice'
+  const topic = sourceFile.split('/')[1] || 'General';
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    // Detect code fence
+    const codeFenceMatch = line.match(/^```(\w+)?/);
+    if (codeFenceMatch) {
+      if (!inCodeBlock) {
+        inCodeBlock = true;
+        codeLanguage = codeFenceMatch[1] || '';
+        codeLines = [];
+
+        // Check previous lines for good/bad indicators
+        for (let j = i - 1; j >= Math.max(0, i - 5); j--) {
+          const prevLine = lines[j].trim().toLowerCase();
+          if (prevLine.includes('❌') || prevLine.includes('bad example')) {
+            codeType = 'bad';
+            break;
+          } else if (prevLine.includes('✅') || prevLine.includes('good example')) {
+            codeType = 'good';
+            break;
+          }
+        }
+      } else {
+        // End of code block
+        if (currentAnswer.length > 0 && codeLines.length > 0) {
+          currentAnswer.push({
+            type: 'code',
+            language: codeLanguage || 'csharp',
+            code: codeLines.join('\n'),
+            codeType: codeType || 'neutral'
+          });
+        }
+        inCodeBlock = false;
+        codeLines = [];
+        codeType = null;
+      }
+      continue;
+    }
+
+    if (inCodeBlock) {
+      codeLines.push(line);
+      continue;
+    }
+
+    // Match Q&A pattern: **Q: question text**
+    const questionMatch = line.match(/^\*\*Q:\s*(.+?)\*\*$/);
+    if (questionMatch) {
+      // Save previous Q&A if exists
+      if (currentQuestion && currentAnswer.length > 0) {
+        cards.push({
+          question: currentQuestion,
+          answer: currentAnswer,
+          category,
+          topic,
+          source: sourceFile
+        });
+      }
+
+      currentQuestion = questionMatch[1].trim();
+      currentAnswer = [];
+      continue;
+    }
+
+    // Match answer pattern: A: answer text
+    const answerMatch = line.match(/^A:\s*(.+)/);
+    if (answerMatch && currentQuestion) {
+      currentAnswer.push({
+        type: 'text',
+        content: answerMatch[1].trim()
+      });
+      continue;
+    }
+
+    // Continue answer if we have a question and the line is not empty
+    if (currentQuestion && line.trim() && !line.match(/^#+\s/) && !line.match(/^---+$/)) {
+      // Skip certain lines
+      if (line.startsWith('##') || line.startsWith('###') || line.startsWith('💡')) {
+        continue;
+      }
+
+      // If the line looks like continuation of answer
+      if (currentAnswer.length > 0) {
+        const lastItem = currentAnswer[currentAnswer.length - 1];
+        if (lastItem.type === 'text') {
+          lastItem.content += ' ' + line.trim();
+        }
+      }
+    }
+
+    // Detect section headers for key concepts
+    const headerMatch = line.match(/^##\s+(.+)/);
+    if (headerMatch) {
+      // Save any pending Q&A
+      if (currentQuestion && currentAnswer.length > 0) {
+        cards.push({
+          question: currentQuestion,
+          answer: currentAnswer,
+          category,
+          topic,
+          source: sourceFile
+        });
+        currentQuestion = null;
+        currentAnswer = [];
+      }
+    }
+  }
+
+  // Save final Q&A if exists
+  if (currentQuestion && currentAnswer.length > 0) {
+    cards.push({
+      question: currentQuestion,
+      answer: currentAnswer,
+      category,
+      topic,
+      source: sourceFile
+    });
+  }
+
+  return cards;
+}
+
+/**
+ * Extract key concepts and examples from markdown
+ */
+function extractConcepts(markdown, sourcePath) {
+  const concepts = [];
+  const lines = markdown.split(/\r?\n/);
+  let inCodeBlock = false;
+  let codeLanguage = '';
+  let codeLines = [];
+  let codeType = null;
+  let conceptTitle = null;
+  let conceptDescription = [];
+
+  const sourceFile = path.relative(repoRoot, sourcePath).replace(/\\/g, '/');
+  const category = sourceFile.split('/')[0];
+  const topic = sourceFile.split('/')[1] || 'General';
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    // Code fence detection
+    const codeFenceMatch = line.match(/^```(\w+)?/);
+    if (codeFenceMatch) {
+      if (!inCodeBlock) {
+        inCodeBlock = true;
+        codeLanguage = codeFenceMatch[1] || 'csharp';
+        codeLines = [];
+
+        // Look for good/bad indicators
+        for (let j = i - 1; j >= Math.max(0, i - 5); j--) {
+          const prevLine = lines[j].trim();
+          if (prevLine.includes('❌') || prevLine.toLowerCase().includes('bad example')) {
+            codeType = 'bad';
+            break;
+          } else if (prevLine.includes('✅') || prevLine.toLowerCase().includes('good example')) {
+            codeType = 'good';
+            break;
+          }
+        }
+      } else {
+        // End of code block - create a concept card
+        if (codeType && codeLines.length > 0) {
+          const title = conceptTitle || `${codeType === 'good' ? 'Good' : 'Bad'} Practice Example`;
+          concepts.push({
+            question: title,
+            answer: [
+              {
+                type: 'code',
+                language: codeLanguage,
+                code: codeLines.join('\n'),
+                codeType
+              }
+            ],
+            category,
+            topic,
+            source: sourceFile,
+            isConcept: true
+          });
+        }
+        inCodeBlock = false;
+        codeLines = [];
+        codeType = null;
+        conceptTitle = null;
+      }
+      continue;
+    }
+
+    if (inCodeBlock) {
+      codeLines.push(line);
+      continue;
+    }
+
+    // Capture section headers as potential concept titles
+    const headerMatch = line.match(/^##\s+(.+)/);
+    if (headerMatch) {
+      conceptTitle = headerMatch[1].replace(/\*\*/g, '').trim();
+    }
+  }
+
+  return concepts;
+}
+
+/**
+ * Recursively collect markdown files
+ */
+async function collectMarkdownFiles(baseDir, key) {
+  const entries = await fs.readdir(baseDir, { withFileTypes: true });
+  const files = [];
+
+  for (const entry of entries) {
+    const fullPath = path.join(baseDir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...await collectMarkdownFiles(fullPath, key));
+    } else if (entry.isFile() && entry.name.toLowerCase().endsWith('.md')) {
+      files.push({
+        key,
+        sourcePath: fullPath,
+        relative: path.relative(repoRoot, fullPath)
+      });
+    }
+  }
+  return files;
+}
+
+/**
+ * Main build function
+ */
+async function main() {
+  console.log('🎴 Generating flash card data from notes and practice...\n');
+
+  const allFiles = [];
+  for (const src of contentSources) {
+    const files = await collectMarkdownFiles(src.source, src.key);
+    allFiles.push(...files);
+    console.log(`📁 Found ${files.length} markdown files in ${src.key}/`);
+  }
+
+  const allCards = [];
+  let qaCount = 0;
+  let conceptCount = 0;
+
+  for (const file of allFiles) {
+    const content = await fs.readFile(file.sourcePath, 'utf-8');
+
+    // Extract Q&A pairs
+    const qaCards = extractQA(content, file.sourcePath);
+    qaCount += qaCards.length;
+    allCards.push(...qaCards);
+
+    // Extract concept cards with code examples
+    const conceptCards = extractConcepts(content, file.sourcePath);
+    conceptCount += conceptCards.length;
+    allCards.push(...conceptCards);
+  }
+
+  // Add unique IDs
+  allCards.forEach((card, index) => {
+    card.id = `card-${index + 1}`;
+  });
+
+  // Generate JavaScript file
+  const output = `// Auto-generated flash card data from notes/ and practice/ folders
+// Generated on: ${new Date().toISOString()}
+// Total cards: ${allCards.length} (${qaCount} Q&A, ${conceptCount} concepts)
+
+window.FLASH_CARD_DATA = ${JSON.stringify(allCards, null, 2)};
+`;
+
+  await fs.writeFile(outputFile, output, 'utf-8');
+
+  console.log(`\n✅ Generated ${allCards.length} flash cards:`);
+  console.log(`   - ${qaCount} Q&A pairs`);
+  console.log(`   - ${conceptCount} concept/code examples`);
+  console.log(`\n📝 Output: ${path.relative(repoRoot, outputFile)}`);
+
+  // Generate summary by category
+  const byCategory = {};
+  allCards.forEach(card => {
+    byCategory[card.category] = (byCategory[card.category] || 0) + 1;
+  });
+
+  console.log('\n📊 Cards by category:');
+  Object.entries(byCategory)
+    .sort(([, a], [, b]) => b - a)
+    .forEach(([cat, count]) => {
+      console.log(`   - ${cat}: ${count} cards`);
+    });
+}
+
+main().catch((err) => {
+  console.error('❌ Build failed:', err);
+  process.exit(1);
+});

@@ -1,0 +1,16 @@
+# Auto-generated flash card data
+flash-card-data.js
+
+# Node modules (if npm install is used for dev dependencies)
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor directories
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
