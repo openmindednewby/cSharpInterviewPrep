@@ -1,9 +1,16 @@
-:root {
+:root,
+:root[data-theme='dark'] {
   color-scheme: dark;
   --bg-primary: #0f172a;
   --bg-secondary: #1e293b;
   --bg-accent: rgba(148, 163, 184, 0.1);
+  --bg-accent-2: rgba(100, 116, 139, 0.12);
+  --bg-gradient-start: #0f172a;
+  --bg-gradient-end: #020617;
   --bg-card: rgba(15, 23, 42, 0.7);
+  --surface-muted: rgba(148, 163, 184, 0.08);
+  --surface-strong: rgba(15, 23, 42, 0.45);
+  --surface-input: rgba(15, 23, 42, 0.85);
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
   --text-accent: #cbd5e1;
@@ -14,6 +21,44 @@
   --bad-color: #ef4444;
   --badge-bg: #334155;
   --warn-color: #f59e0b;
+  --table-header-bg: rgba(86, 156, 214, 0.1);
+  --table-row-hover: rgba(255, 255, 255, 0.02);
+  --accent-soft: rgba(59, 130, 246, 0.2);
+  --accent-strong: rgba(59, 130, 246, 0.6);
+  --button-bg: rgba(148, 163, 184, 0.1);
+  --button-border-hover: rgba(148, 163, 184, 0.5);
+  --focus-ring: rgba(59, 130, 246, 0.6);
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --bg-primary: #f8fafc;
+  --bg-secondary: #e2e8f0;
+  --bg-accent: rgba(59, 130, 246, 0.16);
+  --bg-accent-2: rgba(14, 165, 233, 0.12);
+  --bg-gradient-start: #f8fafc;
+  --bg-gradient-end: #e2e8f0;
+  --bg-card: rgba(255, 255, 255, 0.92);
+  --surface-muted: rgba(15, 23, 42, 0.04);
+  --surface-strong: rgba(15, 23, 42, 0.06);
+  --surface-input: #ffffff;
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --text-accent: #1e293b;
+  --border-soft: rgba(15, 23, 42, 0.12);
+  --code-bg: #f1f5f9;
+  --code-border: #cbd5e1;
+  --good-color: #16a34a;
+  --bad-color: #dc2626;
+  --badge-bg: #e2e8f0;
+  --warn-color: #f59e0b;
+  --table-header-bg: rgba(59, 130, 246, 0.08);
+  --table-row-hover: rgba(15, 23, 42, 0.04);
+  --accent-soft: rgba(37, 99, 235, 0.12);
+  --accent-strong: rgba(37, 99, 235, 0.4);
+  --button-bg: rgba(15, 23, 42, 0.04);
+  --button-border-hover: rgba(15, 23, 42, 0.2);
+  --focus-ring: rgba(37, 99, 235, 0.5);
 }
 
 * {
@@ -27,8 +72,8 @@ body {
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background:
     radial-gradient(circle at 20% 20%, var(--bg-accent), transparent 60%),
-    radial-gradient(circle at 80% 10%, rgba(100, 116, 139, 0.12), transparent 55%),
-    linear-gradient(160deg, #0f172a 0%, #020617 100%);
+    radial-gradient(circle at 80% 10%, var(--bg-accent-2), transparent 55%),
+    linear-gradient(160deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
   color: var(--text-main);
   line-height: 1.6;
 }
@@ -93,7 +138,7 @@ body {
   border: 1px solid var(--border-soft);
   border-radius: 0.75rem;
   padding: 0.5rem 0.75rem;
-  background: rgba(15, 23, 42, 0.45);
+  background: var(--surface-strong);
 }
 
 .topic-group summary {
@@ -117,7 +162,7 @@ body {
 .question-link {
   text-align: left;
   border: 1px solid transparent;
-  background: rgba(148, 163, 184, 0.08);
+  background: var(--surface-muted);
   color: var(--text-main);
   padding: 0.5rem 0.75rem;
   border-radius: 0.6rem;
@@ -128,12 +173,12 @@ body {
 }
 
 .question-link:hover {
-  border-color: rgba(148, 163, 184, 0.4);
+  border-color: var(--button-border-hover);
 }
 
 .question-link.active {
-  background: rgba(59, 130, 246, 0.2);
-  border-color: rgba(59, 130, 246, 0.6);
+  background: var(--accent-soft);
+  border-color: var(--accent-strong);
 }
 
 .card-panel {
@@ -237,7 +282,7 @@ body {
 }
 
 .answer-table th {
-  background: rgba(86, 156, 214, 0.1);
+  background: var(--table-header-bg);
   color: #569cd6;
   font-weight: 600;
   text-transform: uppercase;
@@ -246,7 +291,7 @@ body {
 }
 
 .answer-table tbody tr:hover {
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--table-row-hover);
 }
 
 .answer-table tbody tr:last-child td {
@@ -363,7 +408,7 @@ pre[class*="language-"] {
   gap: 0.75rem;
   padding: 1rem;
   border-radius: 0.85rem;
-  background: rgba(15, 23, 42, 0.45);
+  background: var(--surface-strong);
   border: 1px solid var(--border-soft);
 }
 
@@ -377,7 +422,7 @@ pre[class*="language-"] {
   min-height: 120px;
   border-radius: 0.75rem;
   border: 1px solid var(--border-soft);
-  background: rgba(15, 23, 42, 0.85);
+  background: var(--surface-input);
   color: var(--text-main);
   padding: 0.75rem 0.9rem;
   font-size: 0.95rem;
@@ -385,7 +430,7 @@ pre[class*="language-"] {
 }
 
 .answer-check textarea:focus {
-  outline: 2px solid rgba(59, 130, 246, 0.6);
+  outline: 2px solid var(--focus-ring);
   border-color: transparent;
 }
 
@@ -417,7 +462,7 @@ pre[class*="language-"] {
   padding: 0.7rem 1rem;
   border-radius: 0.8rem;
   border: 1px solid var(--border-soft);
-  background: rgba(148, 163, 184, 0.1);
+  background: var(--button-bg);
   color: var(--text-main);
   cursor: pointer;
   font-weight: 600;
@@ -425,7 +470,7 @@ pre[class*="language-"] {
 }
 
 .btn:hover {
-  border-color: rgba(148, 163, 184, 0.5);
+  border-color: var(--button-border-hover);
   transform: translateY(-1px);
 }
 
@@ -436,6 +481,77 @@ pre[class*="language-"] {
 
 .btn.ghost {
   background: transparent;
+}
+
+.theme-switcher {
+  margin-top: 1rem;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.theme-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.theme-select {
+  background: var(--bg-secondary);
+  color: var(--text-main);
+  border: 1px solid var(--border-soft);
+  border-radius: 0.65rem;
+  padding: 0.5rem 0.75rem;
+  font-weight: 600;
+}
+
+:root[data-theme='light'] .answer-table th {
+  color: #1d4ed8;
+}
+
+:root[data-theme='light'] code,
+:root[data-theme='light'] pre,
+:root[data-theme='light'] code[class*="language-"],
+:root[data-theme='light'] pre[class*="language-"] {
+  color: #1f1f1f;
+}
+
+:root[data-theme='light'] .token.keyword {
+  color: #0000ff;
+}
+
+:root[data-theme='light'] .token.class-name,
+:root[data-theme='light'] .token.namespace,
+:root[data-theme='light'] .token.builtin {
+  color: #267f99;
+}
+
+:root[data-theme='light'] .token.string {
+  color: #a31515;
+}
+
+:root[data-theme='light'] .token.number {
+  color: #098658;
+}
+
+:root[data-theme='light'] .token.comment {
+  color: #008000;
+}
+
+:root[data-theme='light'] .token.function {
+  color: #795e26;
+}
+
+:root[data-theme='light'] .token.property,
+:root[data-theme='light'] .token.parameter,
+:root[data-theme='light'] .token.variable {
+  color: #001080;
+}
+
+:root[data-theme='light'] .token.operator,
+:root[data-theme='light'] .token.punctuation {
+  color: #000000;
 }
 
 @media (max-width: 960px) {

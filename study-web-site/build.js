@@ -243,10 +243,11 @@ function buildTemplate({ title, navHtml, tocHtml, contentHtml, meta }) {
   <link rel="manifest" href="${meta.assetBase}/manifest.webmanifest" />
   <script>
     (() => {
-      const supported = ['midnight', 'light', 'dark'];
+      const supported = ['dark2', 'light', 'dark'];
       const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
       const fallback = 'light';
-      const initial = supported.includes(saved) ? saved : fallback;
+      const initial = supported.includes(normalized) ? normalized : fallback;
       document.documentElement.dataset.theme = initial;
       window.__studyTheme = initial;
     })();
@@ -268,7 +269,7 @@ function buildTemplate({ title, navHtml, tocHtml, contentHtml, meta }) {
       <div class="theme-switcher" aria-label="Theme selector">
         <label for="theme-select" class="theme-label">Theme</label>
         <select id="theme-select" class="theme-select">
-          <option value="midnight">Current</option>
+          <option value="dark2">Dark 2</option>
           <option value="light">Light</option>
           <option value="dark">Dark</option>
         </select>
@@ -298,10 +299,11 @@ function buildTemplate({ title, navHtml, tocHtml, contentHtml, meta }) {
   <script>
     (() => {
       const select = document.getElementById('theme-select');
-      const supported = ['midnight', 'light', 'dark'];
+      const supported = ['dark2', 'light', 'dark'];
       const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
       const fallback = 'light';
-      const initial = supported.includes(saved) ? saved : (window.__studyTheme || fallback);
+      const initial = supported.includes(normalized) ? normalized : (window.__studyTheme || fallback);
       document.documentElement.dataset.theme = initial;
       if (select) {
         select.value = initial;
@@ -480,10 +482,11 @@ async function buildIndex(navGroups) {
   <title>Study Portal | C# Interview Prep</title>
   <script>
     (() => {
-      const supported = ['midnight', 'light', 'dark'];
+      const supported = ['dark2', 'light', 'dark'];
       const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
       const fallback = 'light';
-      const initial = supported.includes(saved) ? saved : fallback;
+      const initial = supported.includes(normalized) ? normalized : fallback;
       document.documentElement.dataset.theme = initial;
       window.__studyTheme = initial;
     })();
@@ -506,7 +509,7 @@ async function buildIndex(navGroups) {
       <div class="theme-switcher" aria-label="Theme selector">
         <label for="theme-select" class="theme-label">Theme</label>
         <select id="theme-select" class="theme-select">
-          <option value="midnight">Current</option>
+          <option value="dark2">Dark 2</option>
           <option value="light">Light</option>
           <option value="dark">Dark</option>
         </select>
@@ -521,10 +524,11 @@ async function buildIndex(navGroups) {
   <script>
     (() => {
       const select = document.getElementById('theme-select');
-      const supported = ['midnight', 'light', 'dark'];
+      const supported = ['dark2', 'light', 'dark'];
       const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
       const fallback = 'light';
-      const initial = supported.includes(saved) ? saved : (window.__studyTheme || fallback);
+      const initial = supported.includes(normalized) ? normalized : (window.__studyTheme || fallback);
       document.documentElement.dataset.theme = initial;
       if (select) {
         select.value = initial;

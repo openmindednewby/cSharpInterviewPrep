@@ -9,6 +9,7 @@ const checkAnswerBtn = document.getElementById('checkAnswerBtn');
 const revealAnswerBtn = document.getElementById('revealAnswerBtn');
 const randomQuestionBtn = document.getElementById('randomQuestionBtn');
 const randomTopicQuestionBtn = document.getElementById('randomTopicQuestionBtn');
+const themeSelectEl = document.getElementById('themeSelect');
 
 const bundledCards = Array.isArray(window.PRACTICE_DATA) ? window.PRACTICE_DATA : null;
 let allCards = [];
@@ -25,9 +26,29 @@ const stopWords = new Set([
 ]);
 
 document.addEventListener('DOMContentLoaded', () => {
+  initializeTheme();
   loadPracticeCards();
   wireActions();
 });
+
+function initializeTheme() {
+  const supported = ['dark', 'light'];
+  const saved = sessionStorage.getItem('practice-theme');
+  const fallback = 'dark';
+  const initial = supported.includes(saved) ? saved : (window.__practiceTheme || fallback);
+  document.documentElement.dataset.theme = initial;
+
+  if (!themeSelectEl) {
+    return;
+  }
+
+  themeSelectEl.value = initial;
+  themeSelectEl.addEventListener('change', (event) => {
+    const next = supported.includes(event.target.value) ? event.target.value : fallback;
+    document.documentElement.dataset.theme = next;
+    sessionStorage.setItem('practice-theme', next);
+  });
+}
 
 function wireActions() {
   checkAnswerBtn.addEventListener('click', handleCheckAnswer);
