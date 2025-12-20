@@ -1,7 +1,7 @@
 {
-  "name": "C# Interview Prep Flash Cards",
-  "short_name": "C# Cards",
-  "description": "Auto-rotating flash cards with senior C#/.NET interview questions, answers, and code examples.",
+  "name": "C# Interview Prep Practice Q&A",
+  "short_name": "C# Practice",
+  "description": "Practice-focused C#/.NET interview questions and answers with manual review controls.",
   "lang": "en",
   "id": "/",
   "start_url": "/",

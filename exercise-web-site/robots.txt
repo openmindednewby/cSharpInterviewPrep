@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://c-sharp-flash-cards.dloizides.com/sitemap.xml
+Sitemap: https://c-sharp-practice-qa.dloizides.com/sitemap.xml

@@ -1,18 +1,17 @@
 #!/usr/bin/env node
 /**
- * Flash card data generator for C# interview prep.
- * - Reads Markdown from the root-level `notes` and `practice` folders
- * - Extracts Q&A sections, code examples (good/bad), and key concepts
- * - Generates flash-card-data.js with questions, answers, and code snippets
+ * Practice Q&A data generator for C# interview prep.
+ * - Reads Markdown from the root-level `practice` folder
+ * - Extracts Q&A sections and code examples
+ * - Generates data.js with practice questions and answers
  */
 
 const fs = require('fs/promises');
 const path = require('path');
 
 const repoRoot = path.resolve(__dirname, '..');
-const outputFile = path.join(__dirname, 'flash-card-data.js');
+const outputFile = path.join(__dirname, 'data.js');
 const contentSources = [
-  { key: 'notes', source: path.join(repoRoot, 'notes') },
   { key: 'practice', source: path.join(repoRoot, 'practice') }
 ];
 
@@ -28,6 +27,30 @@ function cleanMarkdown(text) {
     .trim();
 }
 
+function formatTopicLabel(rawTopic) {
+  return rawTopic
+    .replace(/[-_]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(/\b\w/g, (match) => match.toUpperCase());
+}
+
+function getTopicInfo(sourcePath) {
+  const sourceFile = path.relative(repoRoot, sourcePath).replace(/\\/g, '/');
+  const fileName = path.basename(sourceFile, path.extname(sourceFile));
+  const topicId = fileName
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+  const topicLabel = formatTopicLabel(fileName || 'General');
+
+  return {
+    sourceFile,
+    topicId: topicId || 'general',
+    topicLabel
+  };
+}
+
 /**
  * Extract Q&A pairs from markdown sections
  */
@@ -41,9 +64,9 @@ function extractQA(markdown, sourcePath) {
   let codeLines = [];
   let codeType = null; // 'good' or 'bad'
 
-  const sourceFile = path.relative(repoRoot, sourcePath).replace(/\\/g, '/');
-  const category = sourceFile.split('/')[0]; // 'notes' or 'practice'
-  const topic = sourceFile.split('/')[1] || 'General';
+  const { sourceFile, topicId, topicLabel } = getTopicInfo(sourcePath);
+  const category = 'practice';
+  const topic = topicLabel;
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
@@ -99,6 +122,7 @@ function extractQA(markdown, sourcePath) {
           answer: currentAnswer,
           category,
           topic,
+          topicId,
           source: sourceFile
         });
       }
@@ -144,6 +168,7 @@ function extractQA(markdown, sourcePath) {
           answer: currentAnswer,
           category,
           topic,
+          topicId,
           source: sourceFile
         });
         currentQuestion = null;
@@ -159,6 +184,7 @@ function extractQA(markdown, sourcePath) {
       answer: currentAnswer,
       category,
       topic,
+      topicId,
       source: sourceFile
     });
   }
@@ -453,7 +479,7 @@ async function collectMarkdownFiles(baseDir, key) {
  * Main build function
  */
 async function main() {
-  console.log('🎴 Generating flash card data from notes and practice...\n');
+  console.log('📝 Generating practice Q&A data from practice folder...\n');
 
   const allFiles = [];
   for (const src of contentSources) {
@@ -464,8 +490,6 @@ async function main() {
 
   const allCards = [];
   let qaCount = 0;
-  let conceptCount = 0;
-  let sectionCount = 0;
 
   for (const file of allFiles) {
     const content = await fs.readFile(file.sourcePath, 'utf-8');
@@ -474,16 +498,6 @@ async function main() {
     const qaCards = extractQA(content, file.sourcePath);
     qaCount += qaCards.length;
     allCards.push(...qaCards);
-
-    // Extract detailed sections (h3 headers with content)
-    const sectionCards = extractSections(content, file.sourcePath);
-    sectionCount += sectionCards.length;
-    allCards.push(...sectionCards);
-
-    // Extract concept cards with code examples
-    const conceptCards = extractConcepts(content, file.sourcePath);
-    conceptCount += conceptCards.length;
-    allCards.push(...conceptCards);
   }
 
   // Add unique IDs
@@ -492,19 +506,17 @@ async function main() {
   });
 
   // Generate JavaScript file
-  const output = `// Auto-generated flash card data from notes/ and practice/ folders
+  const output = `// Auto-generated practice Q&A data from practice/ folder
 // Generated on: ${new Date().toISOString()}
-// Total cards: ${allCards.length} (${qaCount} Q&A, ${sectionCount} sections, ${conceptCount} concepts)
+// Total cards: ${allCards.length} Q&A
 
-window.FLASH_CARD_DATA = ${JSON.stringify(allCards, null, 2)};
+window.PRACTICE_DATA = ${JSON.stringify(allCards, null, 2)};
 `;
 
   await fs.writeFile(outputFile, output, 'utf-8');
 
-  console.log(`\n✅ Generated ${allCards.length} flash cards:`);
+  console.log(`\n✅ Generated ${allCards.length} practice questions:`);
   console.log(`   - ${qaCount} Q&A pairs`);
-  console.log(`   - ${sectionCount} detailed sections`);
-  console.log(`   - ${conceptCount} concept/code examples`);
   console.log(`\n📝 Output: ${path.relative(repoRoot, outputFile)}`);
 
   // Generate summary by category

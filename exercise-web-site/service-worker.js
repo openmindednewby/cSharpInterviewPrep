@@ -1,12 +1,15 @@
-const CACHE_NAME = 'ocr-scanner-v1';
+const CACHE_NAME = 'practice-qa-v1';
 const urlsToCache = [
   '/index.html',
   '/styles.css',
   '/script.js',
-  '/quotes-data.js',
-  'https://unpkg.com/tesseract.js@5.1.0/dist/tesseract.min.js',
-  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css',
-  'https://fonts.googleapis.com/css2?family=Delius&display=swap'
+  '/data.js',
+  '/icon-192x192.png',
+  '/icon-512x512.png',
+  'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap',
+  'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css',
+  'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js',
+  'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js'
 ];
 
 self.addEventListener('install', (event) => {

@@ -3,34 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="C# Interview Prep Flash Cards - Auto-rotating questions, answers, and code examples for mastering senior .NET interviews.">
-  <meta name="keywords" content="C# interview prep, .NET interview questions, flash cards, coding practice, SOLID principles, design patterns">
+  <meta name="description" content="Practice-ready C# interview questions and answers with manual review controls, topic navigation, and code examples.">
+  <meta name="keywords" content="C# interview prep, .NET interview questions, practice questions, coding practice, SOLID principles, design patterns">
   <meta name="author" content="C# Interview Prep">
   <meta name="robots" content="index, follow">
-  <meta property="og:title" content="C# Interview Prep Flash Cards">
-  <meta property="og:description" content="Master C# and .NET concepts with auto-rotating flash cards featuring questions, answers, and code examples.">
+  <meta property="og:title" content="C# Interview Prep Practice Q&A">
+  <meta property="og:description" content="Master C# and .NET concepts with practice-focused questions, answers, and code examples.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="quotes-preview.png">
-  <meta property="og:image:alt" content="Preview of C# flash cards with code examples">
-  <meta property="og:site_name" content="C# Interview Prep Flash Cards">
+  <meta property="og:image:alt" content="Preview of C# practice questions with code examples">
+  <meta property="og:site_name" content="C# Interview Prep Practice Q&A">
   <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="C# Interview Prep Flash Cards">
-  <meta name="twitter:description" content="Master C# and .NET concepts with auto-rotating flash cards.">
+  <meta name="twitter:title" content="C# Interview Prep Practice Q&A">
+  <meta name="twitter:description" content="Master C# and .NET concepts with practice-focused questions and answers.">
   <meta name="twitter:image" content="quotes-preview.png">
-  <meta name="twitter:image:alt" content="Preview of C# flash cards with code examples">
+  <meta name="twitter:image:alt" content="Preview of C# practice questions with code examples">
   <meta name="theme-color" content="#0f172a">
   <link rel="manifest" href="/manifest.json">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
   <link rel="stylesheet" href="styles.css">
-  <title>C# Interview Prep Flash Cards</title>
+  <title>C# Interview Prep Practice Q&A</title>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "name": "C# Interview Prep Flash Cards",
-    "description": "Interactive flash cards for C# and .NET interview preparation with auto-rotating Q&A and code examples.",
+    "name": "C# Interview Prep Practice Q&A",
+    "description": "Practice questions and answers for C# and .NET interview preparation with topic navigation and code examples.",
     "inLanguage": "en",
     "applicationCategory": "EducationalApplication"
   }
@@ -38,12 +38,41 @@
 </head>
 
 <body>
-  <main class="flash-card-container" role="main" aria-live="polite" aria-atomic="true">
-    <div class="card-type-badge" id="cardTypeBadge"></div>
-    <p class="card-question" id="cardQuestion">Loading flash cards...</p>
-    <div class="card-answer" id="cardAnswer"></div>
-    <p class="card-meta" id="cardMeta"></p>
-  </main>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Practice topics">
+      <div class="sidebar-header">
+        <p class="eyebrow">Practice Mode</p>
+        <h1>C# Interview Practice Q&A</h1>
+        <p class="sidebar-subtitle">Pick a topic, answer out loud, then check yourself.</p>
+      </div>
+      <div class="sidebar-section">
+        <h2>Topics</h2>
+        <div class="topic-list" id="topicList"></div>
+      </div>
+    </aside>
+
+    <main class="card-panel" role="main" aria-live="polite" aria-atomic="true">
+      <div class="card-header">
+        <div class="card-type-badge" id="cardTypeBadge"></div>
+        <p class="card-meta" id="cardMeta"></p>
+      </div>
+      <h2 class="card-question" id="cardQuestion">Loading practice questions...</h2>
+      <div class="card-answer is-hidden" id="cardAnswer"></div>
+
+      <section class="answer-check">
+        <label for="answerInput">Your answer</label>
+        <textarea id="answerInput" rows="5" placeholder="Type your response here before checking..."></textarea>
+        <div class="check-result" id="checkResult" data-tone="neutral"></div>
+      </section>
+
+      <div class="card-actions">
+        <button class="btn primary" id="checkAnswerBtn" type="button">Check Answer</button>
+        <button class="btn ghost" id="revealAnswerBtn" type="button">Reveal Answer</button>
+        <button class="btn" id="randomQuestionBtn" type="button">Random Next Question</button>
+        <button class="btn" id="randomTopicQuestionBtn" type="button">Random in This Topic</button>
+      </div>
+    </main>
+  </div>
 
   <script>
     const isServiceWorkerAllowed =
@@ -65,7 +94,7 @@
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
-  <script src="flash-card-data.js"></script>
+  <script src="data.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

@@ -1,21 +1,61 @@
-const flashCardContainer = document.querySelector('.flash-card-container');
 const cardQuestionEl = document.getElementById('cardQuestion');
 const cardAnswerEl = document.getElementById('cardAnswer');
 const cardMetaEl = document.getElementById('cardMeta');
 const cardTypeBadgeEl = document.getElementById('cardTypeBadge');
+const topicListEl = document.getElementById('topicList');
+const answerInputEl = document.getElementById('answerInput');
+const checkResultEl = document.getElementById('checkResult');
+const checkAnswerBtn = document.getElementById('checkAnswerBtn');
+const revealAnswerBtn = document.getElementById('revealAnswerBtn');
+const randomQuestionBtn = document.getElementById('randomQuestionBtn');
+const randomTopicQuestionBtn = document.getElementById('randomTopicQuestionBtn');
 
-const displayDuration = 10000; // time card stays visible (increased for code reading)
-const transitionDuration = 600; // fade-out duration before switching
-const bundledCards = Array.isArray(window.FLASH_CARD_DATA) ? window.FLASH_CARD_DATA : null;
-let cycleTimer = null;
-let flashCards = [];
-let currentIndex = 0;
+const bundledCards = Array.isArray(window.PRACTICE_DATA) ? window.PRACTICE_DATA : null;
+let allCards = [];
+let cardsByTopic = new Map();
+let currentCard = null;
+let questionButtonsById = new Map();
+
+const stopWords = new Set([
+  'the', 'and', 'for', 'with', 'that', 'this', 'from', 'into', 'when', 'where',
+  'then', 'than', 'also', 'just', 'your', 'you', 'use', 'using', 'used', 'over',
+  'are', 'was', 'were', 'is', 'be', 'been', 'being', 'has', 'have', 'had', 'not',
+  'can', 'will', 'should', 'would', 'could', 'it', 'its', 'of', 'to', 'in', 'on',
+  'by', 'or', 'as', 'at', 'if', 'an', 'a'
+]);
 
 document.addEventListener('DOMContentLoaded', () => {
-  loadFlashCards();
+  loadPracticeCards();
+  wireActions();
 });
 
-async function loadFlashCards() {
+function wireActions() {
+  checkAnswerBtn.addEventListener('click', handleCheckAnswer);
+  revealAnswerBtn.addEventListener('click', handleRevealAnswer);
+  randomQuestionBtn.addEventListener('click', () => {
+    const next = pickRandomCard(allCards, currentCard?.id);
+    if (next) {
+      setCardContent(next);
+    }
+  });
+  randomTopicQuestionBtn.addEventListener('click', () => {
+    if (!currentCard) {
+      showCheckResult('Select a question first to pick within a topic.', 'warning');
+      return;
+    }
+    const topicCards = cardsByTopic.get(currentCard.topicId || currentCard.topic);
+    if (!topicCards || topicCards.length === 0) {
+      showCheckResult('No other questions found for this topic.', 'warning');
+      return;
+    }
+    const next = pickRandomCard(topicCards, currentCard.id);
+    if (next) {
+      setCardContent(next);
+    }
+  });
+}
+
+async function loadPracticeCards() {
   try {
     const latestCards = await fetchLatestCards();
     const dataToUse = Array.isArray(latestCards) && latestCards.length > 0
@@ -23,42 +63,37 @@ async function loadFlashCards() {
       : bundledCards;
 
     if (!dataToUse || dataToUse.length === 0) {
-      throw new Error('The flash card dataset is unavailable.');
+      throw new Error('The practice Q&A dataset is unavailable.');
     }
 
-    initializeFlashCards(dataToUse);
+    initializePracticeCards(dataToUse);
   } catch (error) {
     console.error(error);
-
-    cardQuestionEl.textContent = 'Flash cards could not be loaded.';
+    cardQuestionEl.textContent = 'Practice questions could not be loaded.';
     cardAnswerEl.textContent = '';
-    cardMetaEl.textContent = 'Please refresh to try again or run "npm run build" to generate cards.';
+    cardMetaEl.textContent = 'Please refresh to try again or run "npm run build" to generate data.';
     cardTypeBadgeEl.textContent = '';
-
-    clearTimeout(cycleTimer);
-    cycleTimer = null;
-    requestAnimationFrame(() => flashCardContainer.classList.add('visible'));
   }
 }
 
 async function fetchLatestCards() {
   try {
-    const cacheBustingUrl = `flash-card-data.js?refresh=${Date.now()}`;
+    const cacheBustingUrl = `data.js?refresh=${Date.now()}`;
     const response = await fetch(cacheBustingUrl, { cache: 'no-store', credentials: 'same-origin' });
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch latest flash cards: ${response.status}`);
+      throw new Error(`Failed to fetch latest practice data: ${response.status}`);
     }
 
     const datasetScript = await response.text();
     const extractedCards = extractCardsFromScript(datasetScript);
 
     if (Array.isArray(extractedCards) && extractedCards.length > 0) {
-      window.FLASH_CARD_DATA = extractedCards;
+      window.PRACTICE_DATA = extractedCards;
       return extractedCards;
     }
   } catch (error) {
-    console.warn('Falling back to bundled flash card dataset.', error);
+    console.warn('Falling back to bundled practice dataset.', error);
   }
 
   return null;
@@ -67,53 +102,100 @@ async function fetchLatestCards() {
 function extractCardsFromScript(scriptText) {
   try {
     const sandboxWindow = {};
-    const scriptRunner = new Function('window', `${scriptText}; return window.FLASH_CARD_DATA;`);
+    const scriptRunner = new Function('window', `${scriptText}; return window.PRACTICE_DATA;`);
     return scriptRunner(sandboxWindow);
   } catch (error) {
-    console.warn('Unable to parse flash card dataset script.', error);
+    console.warn('Unable to parse practice dataset script.', error);
     return null;
   }
 }
 
-function initializeFlashCards(data) {
-  if (!Array.isArray(data) || data.length === 0) {
-    throw new Error('The flash card collection is empty or malformed.');
-  }
+function initializePracticeCards(data) {
+  allCards = data.slice();
+  cardsByTopic = buildTopicMap(allCards);
+  buildSidebar(cardsByTopic);
 
-  flashCards = shuffle(data.slice());
-  currentIndex = 0;
-  setCardContent(flashCards[currentIndex]);
-  requestAnimationFrame(() => flashCardContainer.classList.add('visible'));
-  scheduleNextCard();
+  const initialCard = pickRandomCard(allCards);
+  if (initialCard) {
+    setCardContent(initialCard);
+  }
 }
 
-function escapeHtml(str) {
-  const div = document.createElement('div');
-  div.textContent = str;
-  return div.innerHTML;
+function buildTopicMap(cards) {
+  const topics = new Map();
+  cards.forEach((card) => {
+    const topicKey = card.topicId || card.topic || 'General';
+    const topicLabel = card.topic || 'General';
+    if (!topics.has(topicKey)) {
+      topics.set(topicKey, { label: topicLabel, cards: [] });
+    }
+    topics.get(topicKey).cards.push(card);
+  });
+
+  return topics;
+}
+
+function buildSidebar(topics) {
+  topicListEl.innerHTML = '';
+  questionButtonsById.clear();
+
+  const sortedTopics = Array.from(topics.entries()).sort((a, b) => {
+    return a[1].label.localeCompare(b[1].label);
+  });
+
+  sortedTopics.forEach(([topicKey, topicData]) => {
+    const details = document.createElement('details');
+    details.className = 'topic-group';
+
+    const summary = document.createElement('summary');
+    summary.textContent = `${topicData.label} (${topicData.cards.length})`;
+    details.appendChild(summary);
+
+    const list = document.createElement('div');
+    list.className = 'topic-questions';
+
+    topicData.cards.forEach((card) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'question-link';
+      button.textContent = card.question;
+      button.dataset.cardId = card.id;
+      button.addEventListener('click', () => {
+        setCardContent(card);
+      });
+
+      questionButtonsById.set(card.id, button);
+      list.appendChild(button);
+    });
+
+    details.appendChild(list);
+    topicListEl.appendChild(details);
+
+    if (topicKey === currentCard?.topicId) {
+      details.open = true;
+    }
+  });
 }
 
 function setCardContent(card) {
-  // Set question
+  currentCard = card;
   cardQuestionEl.textContent = card.question || '';
+  cardMetaEl.textContent = card.topic ? `${card.topic} • Practice` : 'Practice';
+  cardTypeBadgeEl.textContent = 'Practice';
+  cardTypeBadgeEl.className = 'card-type-badge practice';
 
-  // Set badge based on card type
-  if (card.isConcept) {
-    cardTypeBadgeEl.textContent = 'Concept';
-    cardTypeBadgeEl.className = 'card-type-badge concept';
-  } else if (card.isSection) {
-    cardTypeBadgeEl.textContent = 'Section';
-    cardTypeBadgeEl.className = 'card-type-badge section';
-  } else {
-    cardTypeBadgeEl.textContent = 'Q&A';
-    cardTypeBadgeEl.className = 'card-type-badge qa';
-  }
+  renderAnswer(card);
+  hideAnswer();
+  clearCheckResult();
+  answerInputEl.value = '';
+  highlightCurrentQuestion(card.id);
+}
 
-  // Build answer content (text + code)
+function renderAnswer(card) {
   cardAnswerEl.innerHTML = '';
 
   if (Array.isArray(card.answer)) {
-    card.answer.forEach(item => {
+    card.answer.forEach((item) => {
       if (item.type === 'text') {
         const p = document.createElement('p');
         p.className = 'answer-text';
@@ -122,7 +204,7 @@ function setCardContent(card) {
       } else if (item.type === 'list') {
         const ul = document.createElement('ul');
         ul.className = 'answer-list';
-        item.items.forEach(listItem => {
+        item.items.forEach((listItem) => {
           const li = document.createElement('li');
           li.textContent = listItem;
           ul.appendChild(li);
@@ -135,10 +217,9 @@ function setCardContent(card) {
         const table = document.createElement('table');
         table.className = 'answer-table';
 
-        // Create header
         const thead = document.createElement('thead');
         const headerRow = document.createElement('tr');
-        item.headers.forEach(header => {
+        item.headers.forEach((header) => {
           const th = document.createElement('th');
           th.textContent = header;
           headerRow.appendChild(th);
@@ -146,11 +227,10 @@ function setCardContent(card) {
         thead.appendChild(headerRow);
         table.appendChild(thead);
 
-        // Create body
         const tbody = document.createElement('tbody');
-        item.rows.forEach(row => {
+        item.rows.forEach((row) => {
           const tr = document.createElement('tr');
-          row.forEach(cell => {
+          row.forEach((cell) => {
             const td = document.createElement('td');
             td.textContent = cell;
             tr.appendChild(td);
@@ -165,7 +245,6 @@ function setCardContent(card) {
         const codeWrapper = document.createElement('div');
         codeWrapper.className = `code-wrapper ${item.codeType || 'neutral'}`;
 
-        // Add indicator badge
         if (item.codeType === 'good') {
           const badge = document.createElement('div');
           badge.className = 'code-badge good';
@@ -186,41 +265,145 @@ function setCardContent(card) {
         codeWrapper.appendChild(pre);
         cardAnswerEl.appendChild(codeWrapper);
 
-        // Apply Prism syntax highlighting
         if (typeof Prism !== 'undefined') {
           Prism.highlightElement(code);
         }
       }
     });
   }
-
-  // Set metadata
-  const metaParts = [card.topic, card.category]
-    .map((part) => (typeof part === 'string' ? part.trim() : ''))
-    .filter(Boolean);
-  cardMetaEl.textContent = metaParts.join(' • ');
 }
 
-function scheduleNextCard() {
-  clearTimeout(cycleTimer);
-  cycleTimer = setTimeout(() => {
-    flashCardContainer.classList.remove('visible');
-    setTimeout(() => {
-      currentIndex = (currentIndex + 1) % flashCards.length;
-      if (currentIndex === 0) {
-        flashCards = shuffle(flashCards.slice());
-      }
-      setCardContent(flashCards[currentIndex]);
-      requestAnimationFrame(() => flashCardContainer.classList.add('visible'));
-      scheduleNextCard();
-    }, transitionDuration);
-  }, displayDuration);
+function hideAnswer() {
+  cardAnswerEl.classList.add('is-hidden');
+  revealAnswerBtn.textContent = 'Reveal Answer';
 }
 
-function shuffle(array) {
-  for (let i = array.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
+function handleRevealAnswer() {
+  cardAnswerEl.classList.remove('is-hidden');
+  revealAnswerBtn.textContent = 'Answer Revealed';
+}
+
+function handleCheckAnswer() {
+  if (!currentCard) {
+    showCheckResult('Select a question to check your answer.', 'warning');
+    return;
   }
-  return array;
+
+  const userInput = answerInputEl.value.trim();
+  if (!userInput) {
+    showCheckResult('Type your answer before checking.', 'warning');
+    return;
+  }
+
+  const expectedText = extractAnswerText(currentCard);
+  if (!expectedText) {
+    showCheckResult('This question has no text answer to compare.', 'warning');
+    return;
+  }
+
+  const expectedTokens = tokenize(expectedText);
+  const userTokens = tokenize(userInput);
+
+  if (expectedTokens.length === 0) {
+    showCheckResult('No comparable text found in the reference answer.', 'warning');
+    return;
+  }
+
+  const expectedSet = new Set(expectedTokens);
+  const userSet = new Set(userTokens);
+  let matchCount = 0;
+  expectedSet.forEach((token) => {
+    if (userSet.has(token)) {
+      matchCount += 1;
+    }
+  });
+
+  const ratio = matchCount / expectedSet.size;
+  const percent = Math.round(ratio * 100);
+  let tone = 'neutral';
+  let message = 'Keep refining your answer.';
+
+  if (ratio >= 0.7) {
+    tone = 'good';
+    message = 'Strong coverage of key points.';
+  } else if (ratio >= 0.4) {
+    tone = 'okay';
+    message = 'Decent coverage. Add more specifics.';
+  }
+
+  showCheckResult(`Match ${percent}% (${matchCount}/${expectedSet.size} key terms). ${message}`, tone);
+}
+
+function extractAnswerText(card) {
+  if (!Array.isArray(card.answer)) {
+    return '';
+  }
+
+  return card.answer
+    .filter((item) => item.type === 'text' || item.type === 'list' || item.type === 'table')
+    .map((item) => {
+      if (item.type === 'text') {
+        return item.content;
+      }
+      if (item.type === 'list') {
+        return item.items.join(' ');
+      }
+      if (item.type === 'table') {
+        return [...item.headers, ...item.rows.flat()].join(' ');
+      }
+      return '';
+    })
+    .join(' ');
+}
+
+function tokenize(text) {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .split(/\s+/)
+    .filter((token) => token.length > 2 && !stopWords.has(token));
+}
+
+function pickRandomCard(cards, excludeId) {
+  if (!Array.isArray(cards) || cards.length === 0) {
+    return null;
+  }
+  if (cards.length === 1) {
+    return cards[0];
+  }
+
+  let candidate = null;
+  let guard = 0;
+  do {
+    candidate = cards[Math.floor(Math.random() * cards.length)];
+    guard += 1;
+  } while (candidate.id === excludeId && guard < 10);
+
+  return candidate;
+}
+
+function highlightCurrentQuestion(cardId) {
+  questionButtonsById.forEach((button) => {
+    if (button.dataset.cardId === cardId) {
+      button.classList.add('active');
+      button.setAttribute('aria-current', 'true');
+      const topicGroup = button.closest('details');
+      if (topicGroup) {
+        topicGroup.open = true;
+      }
+    } else {
+      button.classList.remove('active');
+      button.removeAttribute('aria-current');
+    }
+  });
+}
+
+function showCheckResult(message, tone) {
+  checkResultEl.textContent = message;
+  checkResultEl.dataset.tone = tone || 'neutral';
+}
+
+function clearCheckResult() {
+  checkResultEl.textContent = '';
+  checkResultEl.dataset.tone = 'neutral';
 }

@@ -1,7 +1,7 @@
 {
-  "name": "csharp-interview-flash-cards",
+  "name": "csharp-interview-practice-qa",
   "version": "1.0.0",
-  "description": "Auto-rotating flash cards for C# interview preparation",
+  "description": "Practice-focused Q&A for C# interview preparation",
   "main": "index.html",
   "scripts": {
     "build": "node build.js",
@@ -9,7 +9,7 @@
     "start": "npm run build && npm run serve"
   },
   "keywords": [
-    "flashcards",
+    "practice",
     "csharp",
     "interview-prep",
     "dotnet",
