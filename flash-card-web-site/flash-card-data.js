@@ -1,5 +1,5 @@
 // Auto-generated flash card data from notes/ and practice/ folders
-// Generated on: 2025-12-20T20:38:44.101Z
+// Generated on: 2025-12-20T20:45:02.135Z
 // Total cards: 1058 (544 Q&A, 452 sections, 62 concepts)
 
 window.FLASH_CARD_DATA = [
@@ -21291,8 +21291,8 @@ window.FLASH_CARD_DATA = [
       }
     ],
     "category": "practice",
-    "topic": "real exam questions answers",
-    "source": "practice/real exam questions answers/replace int without variable.md",
+    "topic": "replace int without variable.md",
+    "source": "practice/replace int without variable.md",
     "isSection": true,
     "id": "card-1042"
   },
@@ -21307,8 +21307,8 @@ window.FLASH_CARD_DATA = [
       }
     ],
     "category": "practice",
-    "topic": "real exam questions answers",
-    "source": "practice/real exam questions answers/replace int without variable.md",
+    "topic": "replace int without variable.md",
+    "source": "practice/replace int without variable.md",
     "isSection": true,
     "id": "card-1043"
   },
@@ -21341,8 +21341,8 @@ window.FLASH_CARD_DATA = [
       }
     ],
     "category": "practice",
-    "topic": "real exam questions answers",
-    "source": "practice/real exam questions answers/replace int without variable.md",
+    "topic": "replace int without variable.md",
+    "source": "practice/replace int without variable.md",
     "isSection": true,
     "id": "card-1044"
   },
@@ -21358,8 +21358,8 @@ window.FLASH_CARD_DATA = [
       }
     ],
     "category": "practice",
-    "topic": "real exam questions answers",
-    "source": "practice/real exam questions answers/replace int without variable.md",
+    "topic": "replace int without variable.md",
+    "source": "practice/replace int without variable.md",
     "isSection": true,
     "id": "card-1045"
   },
@@ -21394,8 +21394,8 @@ window.FLASH_CARD_DATA = [
       }
     ],
     "category": "practice",
-    "topic": "real exam questions answers",
-    "source": "practice/real exam questions answers/replace int without variable.md",
+    "topic": "replace int without variable.md",
+    "source": "practice/replace int without variable.md",
     "isSection": true,
     "id": "card-1046"
   },
@@ -21412,8 +21412,8 @@ window.FLASH_CARD_DATA = [
       }
     ],
     "category": "practice",
-    "topic": "real exam questions answers",
-    "source": "practice/real exam questions answers/replace int without variable.md",
+    "topic": "replace int without variable.md",
+    "source": "practice/replace int without variable.md",
     "isSection": true,
     "id": "card-1047"
   },
@@ -21428,8 +21428,8 @@ window.FLASH_CARD_DATA = [
       }
     ],
     "category": "practice",
-    "topic": "real exam questions answers",
-    "source": "practice/real exam questions answers/replace int without variable.md",
+    "topic": "replace int without variable.md",
+    "source": "practice/replace int without variable.md",
     "isConcept": true,
     "id": "card-1048"
   },
@@ -21444,8 +21444,8 @@ window.FLASH_CARD_DATA = [
       }
     ],
     "category": "practice",
-    "topic": "real exam questions answers",
-    "source": "practice/real exam questions answers/replace int without variable.md",
+    "topic": "replace int without variable.md",
+    "source": "practice/replace int without variable.md",
     "isConcept": true,
     "id": "card-1049"
   },
@@ -21488,8 +21488,8 @@ window.FLASH_CARD_DATA = [
       }
     ],
     "category": "practice",
-    "topic": "real exam questions answers",
-    "source": "practice/real exam questions answers/struct vs class questions and answers.md",
+    "topic": "struct vs class questions and answers.md",
+    "source": "practice/struct vs class questions and answers.md",
     "isSection": true,
     "id": "card-1050"
   },
@@ -21524,8 +21524,8 @@ window.FLASH_CARD_DATA = [
       }
     ],
     "category": "practice",
-    "topic": "real exam questions answers",
-    "source": "practice/real exam questions answers/struct vs class questions and answers.md",
+    "topic": "struct vs class questions and answers.md",
+    "source": "practice/struct vs class questions and answers.md",
     "isSection": true,
     "id": "card-1051"
   },
@@ -21566,8 +21566,8 @@ window.FLASH_CARD_DATA = [
       }
     ],
     "category": "practice",
-    "topic": "real exam questions answers",
-    "source": "practice/real exam questions answers/struct vs class questions and answers.md",
+    "topic": "struct vs class questions and answers.md",
+    "source": "practice/struct vs class questions and answers.md",
     "isSection": true,
     "id": "card-1052"
   },
@@ -21606,8 +21606,8 @@ window.FLASH_CARD_DATA = [
       }
     ],
     "category": "practice",
-    "topic": "real exam questions answers",
-    "source": "practice/real exam questions answers/struct vs class questions and answers.md",
+    "topic": "struct vs class questions and answers.md",
+    "source": "practice/struct vs class questions and answers.md",
     "isSection": true,
     "id": "card-1053"
   },
@@ -21654,8 +21654,8 @@ window.FLASH_CARD_DATA = [
       }
     ],
     "category": "practice",
-    "topic": "real exam questions answers",
-    "source": "practice/real exam questions answers/struct vs class questions and answers.md",
+    "topic": "struct vs class questions and answers.md",
+    "source": "practice/struct vs class questions and answers.md",
     "isSection": true,
     "id": "card-1054"
   },
@@ -21676,8 +21676,8 @@ window.FLASH_CARD_DATA = [
       }
     ],
     "category": "practice",
-    "topic": "real exam questions answers",
-    "source": "practice/real exam questions answers/struct vs class questions and answers.md",
+    "topic": "struct vs class questions and answers.md",
+    "source": "practice/struct vs class questions and answers.md",
     "isSection": true,
     "id": "card-1055"
   },
@@ -21702,8 +21702,8 @@ window.FLASH_CARD_DATA = [
       }
     ],
     "category": "practice",
-    "topic": "real exam questions answers",
-    "source": "practice/real exam questions answers/struct vs class questions and answers.md",
+    "topic": "struct vs class questions and answers.md",
+    "source": "practice/struct vs class questions and answers.md",
     "isSection": true,
     "id": "card-1056"
   },
@@ -21718,8 +21718,8 @@ window.FLASH_CARD_DATA = [
       }
     ],
     "category": "practice",
-    "topic": "real exam questions answers",
-    "source": "practice/real exam questions answers/struct vs class questions and answers.md",
+    "topic": "struct vs class questions and answers.md",
+    "source": "practice/struct vs class questions and answers.md",
     "isConcept": true,
     "id": "card-1057"
   },
@@ -21734,8 +21734,8 @@ window.FLASH_CARD_DATA = [
       }
     ],
     "category": "practice",
-    "topic": "real exam questions answers",
-    "source": "practice/real exam questions answers/struct vs class questions and answers.md",
+    "topic": "struct vs class questions and answers.md",
+    "source": "practice/struct vs class questions and answers.md",
     "isConcept": true,
     "id": "card-1058"
   }
