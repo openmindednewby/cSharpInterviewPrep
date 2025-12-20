@@ -1,6 +1,6 @@
 // Auto-generated flash card data from notes/ and practice/ folders
-// Generated on: 2025-12-20T13:27:29.158Z
-// Total cards: 1027 (512 Q&A, 453 sections, 62 concepts)
+// Generated on: 2025-12-20T20:38:44.101Z
+// Total cards: 1058 (544 Q&A, 452 sections, 62 concepts)
 
 window.FLASH_CARD_DATA = [
   {
@@ -19618,50 +19618,62 @@ window.FLASH_CARD_DATA = [
     "id": "card-983"
   },
   {
-    "question": "Questions for the Interviewer",
-    "answer": [
-      {
-        "type": "list",
-        "items": [
-          "Collaboration structure question demonstrates interest in cross-team dynamics.",
-          "MT4/MT5 challenges question reveals curiosity about domain complexities.",
-          "Success metrics question aligns expectations.",
-          "Continuous learning question shows growth mindset."
-        ]
-      }
-    ],
-    "category": "practice",
-    "topic": "answers.md",
-    "source": "practice/answers.md",
-    "isSection": true,
-    "id": "card-984"
-  },
-  {
     "question": "C# Language & Runtime",
     "answer": [
       {
         "type": "list",
         "items": [
-          "Explain the difference between value types and reference types. How do ref, out, and in parameters influence behavior?",
+          "Question: Explain the difference between value types and reference types. How do ref, out, and in parameters influence behavior?",
           "Answer: Value types live inline and copy by value; reference types live on the managed heap and are passed by reference to objects. ref passes a variable by reference for both read/write, out requires assignment inside the method, and in passes by readonly reference to avoid copies for large structs.",
-          "How does the garbage collector work (generations, LOH, GC modes), and when would you use GC.TryStartNoGCRegion?",
+          "Question: How does the garbage collector work (generations, LOH, GC modes), and when would you use GC.TryStartNoGCRegion?",
           "Answer: .NET uses generational GC (0/1/2) plus the Large Object Heap; short-lived objects stay in gen0/1, long-lived survive to gen2/LOH. Workstation vs server modes tune throughput/latency. Use GC.TryStartNoGCRegion for short, allocation-free critical windows (e.g., low-latency operations) and call EndNoGCRegion afterward.",
-          "Describe how IDisposable and the using/await using patterns work. When do you need a finalizer?",
+          "Question: Describe how IDisposable and the using/await using patterns work. When do you need a finalizer?",
           "Answer: IDisposable.Dispose releases unmanaged resources deterministically via using/await using to ensure disposal on success or exception. Finalizers are a safety net for unmanaged handles when Dispose is missed; combine with SafeHandle and GC.SuppressFinalize after successful disposal.",
-          "Compare struct vs class trade-offs. When is readonly struct appropriate?",
+          "Question: Compare struct vs class trade-offs. When is readonly struct appropriate?",
           "Answer: Structs avoid heap allocations and have value semantics but can copy frequently and suffer boxing; classes allow inheritance, reference semantics, and polymorphism. Use readonly struct for small immutable value objects (e.g., coordinates, money types) to prevent defensive copies.",
-          "How do you design immutable types in C#? What are common pitfalls when exposing collections?",
+          "Question: How do you design immutable types in C#? What are common pitfalls when exposing collections?",
           "Answer: Make fields private, set via constructor, expose get-only properties, avoid setters/mutable state, and return defensive copies or IReadOnlyCollection<T>/ImmutableArray<T>. Avoid exposing mutable lists or arrays directly to prevent external mutation.",
-          "Explain covariance and contravariance in generics. How do in and out keywords affect interfaces and delegates?",
+          "Question: Explain covariance and contravariance in generics. How do in and out keywords affect interfaces and delegates?",
           "Answer: Covariance (out) lets you use a more derived return type (e.g., IEnumerable<Derived> as IEnumerable<Base>); contravariance (in) allows consuming base types (e.g., IComparer<Base> for Derived). Delegates/interfaces marked out support producing types; in supports consuming types; both restrict usage (no in params on out types).",
-          "When would you use Span<T>/Memory<T>? What are their constraints in async and iterator methods?",
+          "Question: When would you use Span<T>/Memory<T>? What are their constraints in async and iterator methods?",
           "Answer: Use for high-performance, allocation-free slicing over contiguous memory (stackalloc, arrays, native buffers). Span<T> is stack-only and cannot escape to async/iterator state machines; use Memory<T>/ReadOnlyMemory<T> for heap-backed, async-friendly scenarios.",
-          "How do nullable reference types work? How do you enable them and handle warnings effectively?",
+          "Question: How do nullable reference types work? How do you enable them and handle warnings effectively?",
           "Answer: Enable via #nullable enable or <Nullable>enable</Nullable> to distinguish nullable vs non-nullable references. The compiler tracks null flow and issues warnings; address via proper initialization, null checks (! sparingly), and annotations (?, [NotNull], [MaybeNull]).",
-          "What are the differences between dynamic dispatch (virtual/override), explicit interface implementation, and pattern matching dispatch?",
+          "Question: What are the differences between dynamic dispatch (virtual/override), explicit interface implementation, and pattern matching dispatch?",
           "Answer: Virtual/override uses v-table dispatch on runtime type; explicit interface implementation hides members unless accessed through the interface; pattern matching dispatch uses switch expressions/is checks to branch on types/shapes at runtime without inheritance.",
-          "How do records differ from classes and structs? When would you choose each?",
+          "Question: How do records differ from classes and structs? When would you choose each?",
           "Answer: Records prioritize value-based equality and with-expressions; record class is reference-based, record struct is value-based. Use records for immutable data models/DTOs with equality semantics; use classes for behavior-heavy types; structs for small value types where copying is cheap."
+        ]
+      }
+    ],
+    "category": "practice",
+    "topic": "csharp-system-design-questions.md",
+    "source": "practice/csharp-system-design-questions.md",
+    "isSection": true,
+    "id": "card-984"
+  },
+  {
+    "question": "Async, Parallelism & Concurrency",
+    "answer": [
+      {
+        "type": "list",
+        "items": [
+          "Question: Describe the async/await state machine and how the SynchronizationContext affects continuations.",
+          "Answer: The compiler rewrites async methods into state machines that schedule continuations on await completion. SynchronizationContext (or TaskScheduler) determines where continuations run; in ASP.NET Core the context is minimal so continuations may hop threads, while UI contexts marshal back to the UI thread unless ConfigureAwait(false) is used.",
+          "Question: When would you use Task.Run versus async I/O? How do you avoid thread pool starvation?",
+          "Answer: Use Task.Run for CPU-bound work; prefer async I/O to avoid blocking threads for I/O. Avoid starvation by keeping synchronous blocking off async paths, using ConfigureAwait(false) where appropriate, and measuring thread pool queues (EventCounters/PerfView) to detect exhaustion.",
+          "Question: How do you handle cancellation and timeouts cooperatively? Show how to link multiple CancellationTokenSource instances.",
+          "Answer: Pass CancellationToken through APIs, check ThrowIfCancellationRequested, and use using var cts = CancellationTokenSource.CreateLinkedTokenSource(token1, token2); combined with CancelAfter for timeouts. Ensure resources are disposed and operations honor the token.",
+          "Question: Compare SemaphoreSlim, lock, Monitor, and ReaderWriterLockSlim. When is each appropriate?",
+          "Answer: lock/Monitor provide mutual exclusion within a process; Monitor offers advanced features (pulse/wait). SemaphoreSlim supports async waiting and limited concurrency; ReaderWriterLockSlim allows multiple readers/single writer. Choose based on async support and contention patterns.",
+          "Question: How do you design a producer/consumer pipeline in C#? When would you pick System.Threading.Channels over TPL Dataflow or Reactive Extensions?",
+          "Answer: Use bounded/unbounded channels, async readers/writers, and background consumers with cancellation and backpressure. Channels give low-overhead primitives; TPL Dataflow adds richer blocks/linking; Rx suits push-based composable queries. Use channels for lightweight server pipelines with tight control.",
+          "Question: Explain the difference between IAsyncEnumerable<T> and IEnumerable<T>. How do you cancel async streams?",
+          "Answer: IEnumerable<T> is synchronous pull; IAsyncEnumerable<T> is async pull with await foreach. Cancel via await foreach (var item in source.WithCancellation(token)) or pass tokens into producers; dispose async enumerators to stop work.",
+          "Question: How do you detect and mitigate deadlocks in async code (e.g., ConfigureAwait(false), avoiding .Result/.Wait(), using timeouts)?",
+          "Answer: Avoid blocking on async (.Result/.Wait()), use ConfigureAwait(false) to prevent context captures where safe, add timeouts and cancellation, use async all the way. Detect via dump analysis (Sync-over-async stacks), ETW traces, and logging of pending tasks.",
+          "Question: What tools and techniques do you use for profiling and diagnosing performance issues in async-heavy services?",
+          "Answer: Use dotnet-trace/dotnet-counters, PerfView, EventPipe, Application Insights/OpenTelemetry traces, and BenchmarkDotNet for microbenchmarks. Correlate spans/logs and sample flame graphs to find hotspots/allocations."
         ]
       }
     ],
@@ -19672,27 +19684,23 @@ window.FLASH_CARD_DATA = [
     "id": "card-985"
   },
   {
-    "question": "Async, Parallelism & Concurrency",
+    "question": "Collections, LINQ & Data Access",
     "answer": [
       {
         "type": "list",
         "items": [
-          "Describe the async/await state machine and how the SynchronizationContext affects continuations.",
-          "Answer: The compiler rewrites async methods into state machines that schedule continuations on await completion. SynchronizationContext (or TaskScheduler) determines where continuations run; in ASP.NET Core the context is minimal so continuations may hop threads, while UI contexts marshal back to the UI thread unless ConfigureAwait(false) is used.",
-          "When would you use Task.Run versus async I/O? How do you avoid thread pool starvation?",
-          "Answer: Use Task.Run for CPU-bound work; prefer async I/O to avoid blocking threads for I/O. Avoid starvation by keeping synchronous blocking off async paths, using ConfigureAwait(false) where appropriate, and measuring thread pool queues (EventCounters/PerfView) to detect exhaustion.",
-          "How do you handle cancellation and timeouts cooperatively? Show how to link multiple CancellationTokenSource instances.",
-          "Answer: Pass CancellationToken through APIs, check ThrowIfCancellationRequested, and use using var cts = CancellationTokenSource.CreateLinkedTokenSource(token1, token2); combined with CancelAfter for timeouts. Ensure resources are disposed and operations honor the token.",
-          "Compare SemaphoreSlim, lock, Monitor, and ReaderWriterLockSlim. When is each appropriate?",
-          "Answer: lock/Monitor provide mutual exclusion within a process; Monitor offers advanced features (pulse/wait). SemaphoreSlim supports async waiting and limited concurrency; ReaderWriterLockSlim allows multiple readers/single writer. Choose based on async support and contention patterns.",
-          "How do you design a producer/consumer pipeline in C#? When would you pick System.Threading.Channels over TPL Dataflow or Reactive Extensions?",
-          "Answer: Use bounded/unbounded channels, async readers/writers, and background consumers with cancellation and backpressure. Channels give low-overhead primitives; TPL Dataflow adds richer blocks/linking; Rx suits push-based composable queries. Use channels for lightweight server pipelines with tight control.",
-          "Explain the difference between IAsyncEnumerable<T> and IEnumerable<T>. How do you cancel async streams?",
-          "Answer: IEnumerable<T> is synchronous pull; IAsyncEnumerable<T> is async pull with await foreach. Cancel via await foreach (var item in source.WithCancellation(token)) or pass tokens into producers; dispose async enumerators to stop work.",
-          "How do you detect and mitigate deadlocks in async code (e.g., ConfigureAwait(false), avoiding .Result/.Wait(), using timeouts)?",
-          "Answer: Avoid blocking on async (.Result/.Wait()), use ConfigureAwait(false) to prevent context captures where safe, add timeouts and cancellation, use async all the way. Detect via dump analysis (Sync-over-async stacks), ETW traces, and logging of pending tasks.",
-          "What tools and techniques do you use for profiling and diagnosing performance issues in async-heavy services?",
-          "Answer: Use dotnet-trace/dotnet-counters, PerfView, EventPipe, Application Insights/OpenTelemetry traces, and BenchmarkDotNet for microbenchmarks. Correlate spans/logs and sample flame graphs to find hotspots/allocations."
+          "Question: How do IEnumerable<T>, IQueryable<T>, and IAsyncEnumerable<T> differ? When is deferred execution helpful or harmful?",
+          "Answer: IEnumerable<T> is in-memory synchronous enumeration; IQueryable<T> builds expression trees for remote providers; IAsyncEnumerable<T> streams asynchronously. Deferred execution enables composability and avoids work until iteration but can surprise with repeated queries or side effects; materialize when needed.",
+          "Question: Explain how LINQ query operators translate to SQL in EF Core. What are common pitfalls (client eval, N+1 queries, Include vs projection)?",
+          "Answer: EF Core converts expression trees to SQL; unsupported methods fall back to client eval (often disabled). Avoid N+1 by using projections or Include judiciously; prefer shape-specific projections for performance and to reduce payloads.",
+          "Question: How do you design efficient pagination and filtering for large datasets? Compare keyset pagination to offset/limit.",
+          "Answer: Use indexed filters, stable sort keys, and limit projections. Offset/limit is simple but slow at high offsets; keyset (seek) pagination uses WHERE key > lastKey ORDER BY key for faster scans and consistent latency.",
+          "Question: What strategies help manage memory when processing large collections (buffering, streaming, batching)?",
+          "Answer: Stream results with AsAsyncEnumerable, process in batches, use pagination, avoid materializing large lists, and use ArrayPool<T>/MemoryPool<T> when appropriate.",
+          "Question: How do you model relationships in EF Core (owned types, value objects, many-to-many) and enforce invariants?",
+          "Answer: Use owned types/value objects for aggregate-internal concepts, configure many-to-many with join entities when extra data is needed, and enforce invariants in the domain layer (constructors/factories) with validation in DbContext configurations.",
+          "Question: Describe optimistic concurrency control in EF Core. How do you detect and resolve conflicts?",
+          "Answer: Use concurrency tokens (rowversion/timestamps) so EF includes them in WHERE clauses; conflicts throw DbUpdateConcurrencyException. Resolve by refreshing values, client- Question: or store-wins policies, or merging changes before retrying."
         ]
       }
     ],
@@ -19703,23 +19711,23 @@ window.FLASH_CARD_DATA = [
     "id": "card-986"
   },
   {
-    "question": "Collections, LINQ & Data Access",
+    "question": "APIs & ASP.NET Core",
     "answer": [
       {
         "type": "list",
         "items": [
-          "How do IEnumerable<T>, IQueryable<T>, and IAsyncEnumerable<T> differ? When is deferred execution helpful or harmful?",
-          "Answer: IEnumerable<T> is in-memory synchronous enumeration; IQueryable<T> builds expression trees for remote providers; IAsyncEnumerable<T> streams asynchronously. Deferred execution enables composability and avoids work until iteration but can surprise with repeated queries or side effects; materialize when needed.",
-          "Explain how LINQ query operators translate to SQL in EF Core. What are common pitfalls (client eval, N+1 queries, Include vs projection)?",
-          "Answer: EF Core converts expression trees to SQL; unsupported methods fall back to client eval (often disabled). Avoid N+1 by using projections or Include judiciously; prefer shape-specific projections for performance and to reduce payloads.",
-          "How do you design efficient pagination and filtering for large datasets? Compare keyset pagination to offset/limit.",
-          "Answer: Use indexed filters, stable sort keys, and limit projections. Offset/limit is simple but slow at high offsets; keyset (seek) pagination uses WHERE key > lastKey ORDER BY key for faster scans and consistent latency.",
-          "What strategies help manage memory when processing large collections (buffering, streaming, batching)?",
-          "Answer: Stream results with AsAsyncEnumerable, process in batches, use pagination, avoid materializing large lists, and use ArrayPool<T>/MemoryPool<T> when appropriate.",
-          "How do you model relationships in EF Core (owned types, value objects, many-to-many) and enforce invariants?",
-          "Answer: Use owned types/value objects for aggregate-internal concepts, configure many-to-many with join entities when extra data is needed, and enforce invariants in the domain layer (constructors/factories) with validation in DbContext configurations.",
-          "Describe optimistic concurrency control in EF Core. How do you detect and resolve conflicts?",
-          "Answer: Use concurrency tokens (rowversion/timestamps) so EF includes them in WHERE clauses; conflicts throw DbUpdateConcurrencyException. Resolve by refreshing values, client- or store-wins policies, or merging changes before retrying."
+          "Question: Walk through the ASP.NET Core middleware pipeline. How do you add global exception handling and request logging?",
+          "Answer: Requests flow through middleware in order. Add early middleware for correlation IDs and logging, use UseExceptionHandler/UseDeveloperExceptionPage for global handling, and UseSerilogRequestLogging or custom middleware for structured logs before routing.",
+          "Question: How do you implement authentication and authorization (JWT, cookies, policies, claims transformations)?",
+          "Answer: Configure authentication schemes (JWT bearer, cookies, OAuth/OIDC). Add authorization policies with requirements/handlers, use [Authorize(Policy=\"name\")], and add claims transformation for enrichment after authentication.",
+          "Question: Compare minimal APIs, traditional controllers, and gRPC services. When would you choose each?",
+          "Answer: Minimal APIs are lightweight for small services/HTTP endpoints; controllers provide structure, filters, and model binding for larger REST APIs; gRPC offers strongly-typed, high-performance contracts for service-to-service communication.",
+          "Question: How do you version APIs and deprecate endpoints gracefully? What contract testing approaches do you use?",
+          "Answer: Use URL or header-based versioning, maintain parallel controllers/handlers, document deprecations, and add Sunset headers. Use consumer-driven contract tests (e.g., Pact), OpenAPI-based validation, and integration tests to guard contracts.",
+          "Question: How do you secure APIs against common attacks (CSRF, SSRF, SQL injection, deserialization issues, header validation)?",
+          "Answer: Enable antiforgery for cookie-authenticated state-changing actions, validate/whitelist outbound URLs, use parameterized queries/EF Core to avoid injection, restrict JSON options (known types, max depth), validate headers, and apply input validation.",
+          "Question: Describe strategies for rate limiting, throttling, and backpressure in APIs.",
+          "Answer: Use fixed/windowed/token-bucket rate limiting per client/API key, return 429 with Retry-After, apply circuit breakers and queue bounds, and shed load with graceful degradation or priority queues."
         ]
       }
     ],
@@ -19730,23 +19738,21 @@ window.FLASH_CARD_DATA = [
     "id": "card-987"
   },
   {
-    "question": "APIs & ASP.NET Core",
+    "question": "Testing, Quality & Observability",
     "answer": [
       {
         "type": "list",
         "items": [
-          "Walk through the ASP.NET Core middleware pipeline. How do you add global exception handling and request logging?",
-          "Answer: Requests flow through middleware in order. Add early middleware for correlation IDs and logging, use UseExceptionHandler/UseDeveloperExceptionPage for global handling, and UseSerilogRequestLogging or custom middleware for structured logs before routing.",
-          "How do you implement authentication and authorization (JWT, cookies, policies, claims transformations)?",
-          "Answer: Configure authentication schemes (JWT bearer, cookies, OAuth/OIDC). Add authorization policies with requirements/handlers, use [Authorize(Policy=\"name\")], and add claims transformation for enrichment after authentication.",
-          "Compare minimal APIs, traditional controllers, and gRPC services. When would you choose each?",
-          "Answer: Minimal APIs are lightweight for small services/HTTP endpoints; controllers provide structure, filters, and model binding for larger REST APIs; gRPC offers strongly-typed, high-performance contracts for service-to-service communication.",
-          "How do you version APIs and deprecate endpoints gracefully? What contract testing approaches do you use?",
-          "Answer: Use URL or header-based versioning, maintain parallel controllers/handlers, document deprecations, and add Sunset headers. Use consumer-driven contract tests (e.g., Pact), OpenAPI-based validation, and integration tests to guard contracts.",
-          "How do you secure APIs against common attacks (CSRF, SSRF, SQL injection, deserialization issues, header validation)?",
-          "Answer: Enable antiforgery for cookie-authenticated state-changing actions, validate/whitelist outbound URLs, use parameterized queries/EF Core to avoid injection, restrict JSON options (known types, max depth), validate headers, and apply input validation.",
-          "Describe strategies for rate limiting, throttling, and backpressure in APIs.",
-          "Answer: Use fixed/windowed/token-bucket rate limiting per client/API key, return 429 with Retry-After, apply circuit breakers and queue bounds, and shed load with graceful degradation or priority queues."
+          "Question: How do you structure unit, integration, and contract tests in a .NET solution? What belongs in each layer?",
+          "Answer: Unit tests target pure logic with mocks; integration tests cover real infrastructure (DB, messaging) and API endpoints; contract tests validate external contracts/consumers. Organize by project with parallel test assemblies and shared fixtures.",
+          "Question: When should you use test doubles (mocks/stubs/fakes) versus in-memory providers? What are the trade-offs of using TestServer or WebApplicationFactory?",
+          "Answer: Use mocks/stubs for isolated logic; in-memory providers can mask behavior differences (e.g., EF in-memory vs SQL). TestServer/WebApplicationFactory enable end-to-end HTTP tests without network; trade-offs are slower execution but higher fidelity.",
+          "Question: How do you test async code and ensure deterministic timing (e.g., virtual time, Task.Delay wrappers)?",
+          "Answer: Avoid real sleeps; abstract timers/delays, use virtual schedulers (Rx TestScheduler), and assert with Task.WhenAny plus timeouts. Use FakeTimeProvider in .NET 8 for deterministic time.",
+          "Question: What metrics, logs, and traces do you collect in production services? How do you correlate them (structured logging, OpenTelemetry)?",
+          "Answer: Collect request rates/latency, error rates, resource utilization, and domain KPIs. Use structured logging with correlation IDs/trace IDs; emit OTLP traces/metrics and link logs via trace context.",
+          "Question: How do you design feature flags and configuration rollouts? How do you test them safely?",
+          "Answer: Use centralized flag service with targeting and audit trails; default to safe values; wrap features with guard rails. Test via dark launches, A/B cohorts, and staged rollouts; implement kill switches and config validation on startup."
         ]
       }
     ],
@@ -19757,21 +19763,23 @@ window.FLASH_CARD_DATA = [
     "id": "card-988"
   },
   {
-    "question": "Testing, Quality & Observability",
+    "question": "Security & Performance",
     "answer": [
       {
         "type": "list",
         "items": [
-          "How do you structure unit, integration, and contract tests in a .NET solution? What belongs in each layer?",
-          "Answer: Unit tests target pure logic with mocks; integration tests cover real infrastructure (DB, messaging) and API endpoints; contract tests validate external contracts/consumers. Organize by project with parallel test assemblies and shared fixtures.",
-          "When should you use test doubles (mocks/stubs/fakes) versus in-memory providers? What are the trade-offs of using TestServer or WebApplicationFactory?",
-          "Answer: Use mocks/stubs for isolated logic; in-memory providers can mask behavior differences (e.g., EF in-memory vs SQL). TestServer/WebApplicationFactory enable end-to-end HTTP tests without network; trade-offs are slower execution but higher fidelity.",
-          "How do you test async code and ensure deterministic timing (e.g., virtual time, Task.Delay wrappers)?",
-          "Answer: Avoid real sleeps; abstract timers/delays, use virtual schedulers (Rx TestScheduler), and assert with Task.WhenAny plus timeouts. Use FakeTimeProvider in .NET 8 for deterministic time.",
-          "What metrics, logs, and traces do you collect in production services? How do you correlate them (structured logging, OpenTelemetry)?",
-          "Answer: Collect request rates/latency, error rates, resource utilization, and domain KPIs. Use structured logging with correlation IDs/trace IDs; emit OTLP traces/metrics and link logs via trace context.",
-          "How do you design feature flags and configuration rollouts? How do you test them safely?",
-          "Answer: Use centralized flag service with targeting and audit trails; default to safe values; wrap features with guard rails. Test via dark launches, A/B cohorts, and staged rollouts; implement kill switches and config validation on startup."
+          "Question: How do you handle secrets in .NET apps (user secrets, Key Vault, environment variables, Kubernetes secrets)?",
+          "Answer: Store secrets outside code in user secrets for local dev, environment variables for simple deployments, managed secret stores (Azure Key Vault, AWS Secrets Manager), or Kubernetes secrets mounted/injected. Use IConfiguration binding and rotation-friendly design.",
+          "Question: What are common pitfalls with HttpClient? When would you use HttpClientFactory and why?",
+          "Answer: Creating per-request clients causes socket exhaustion; forgetting timeouts leads to hung calls. HttpClientFactory manages handler lifetimes, pooling, Polly policies, and typed/named clients for configuration reuse.",
+          "Question: How do you cache effectively in .NET (MemoryCache, distributed cache, cache invalidation strategies, cache stampede prevention)?",
+          "Answer: Choose MemoryCache for single-instance, distributed cache (Redis) for multi-instance. Set TTLs, use versioned keys, and handle stampedes with locks/async initialization. Implement cache-aside or write-through/write-behind depending on consistency needs.",
+          "Question: How do you approach performance tuning (benchmarking with BenchmarkDotNet, profiling allocations, minimizing boxing)?",
+          "Answer: Benchmark critical code with BenchmarkDotNet, profile CPU/allocations with PerfView/dotnet-trace, reduce allocations/boxing, pool objects, and measure before/after with metrics.",
+          "Question: Describe strategies for minimizing locking and contention in high-throughput services.",
+          "Answer: Prefer lock-free/low-contention structures (Concurrent collections, channels), shard state, reduce shared mutable data, use async I/O to free threads, and batch work.",
+          "Question: How do you approach secure serialization/deserialization (System.Text.Json settings, preserving type safety, limiting payload size)?",
+          "Answer: Restrict known types, set max depth/buffer size, validate input, avoid polymorphic deserialization of untrusted data, and use JsonSerializerOptions with safe defaults (ignore comments, forbid trailing commas if needed)."
         ]
       }
     ],
@@ -19782,23 +19790,23 @@ window.FLASH_CARD_DATA = [
     "id": "card-989"
   },
   {
-    "question": "Security & Performance",
+    "question": "System Design Fundamentals",
     "answer": [
       {
         "type": "list",
         "items": [
-          "How do you handle secrets in .NET apps (user secrets, Key Vault, environment variables, Kubernetes secrets)?",
-          "Answer: Store secrets outside code in user secrets for local dev, environment variables for simple deployments, managed secret stores (Azure Key Vault, AWS Secrets Manager), or Kubernetes secrets mounted/injected. Use IConfiguration binding and rotation-friendly design.",
-          "What are common pitfalls with HttpClient? When would you use HttpClientFactory and why?",
-          "Answer: Creating per-request clients causes socket exhaustion; forgetting timeouts leads to hung calls. HttpClientFactory manages handler lifetimes, pooling, Polly policies, and typed/named clients for configuration reuse.",
-          "How do you cache effectively in .NET (MemoryCache, distributed cache, cache invalidation strategies, cache stampede prevention)?",
-          "Answer: Choose MemoryCache for single-instance, distributed cache (Redis) for multi-instance. Set TTLs, use versioned keys, and handle stampedes with locks/async initialization. Implement cache-aside or write-through/write-behind depending on consistency needs.",
-          "How do you approach performance tuning (benchmarking with BenchmarkDotNet, profiling allocations, minimizing boxing)?",
-          "Answer: Benchmark critical code with BenchmarkDotNet, profile CPU/allocations with PerfView/dotnet-trace, reduce allocations/boxing, pool objects, and measure before/after with metrics.",
-          "Describe strategies for minimizing locking and contention in high-throughput services.",
-          "Answer: Prefer lock-free/low-contention structures (Concurrent collections, channels), shard state, reduce shared mutable data, use async I/O to free threads, and batch work.",
-          "How do you approach secure serialization/deserialization (System.Text.Json settings, preserving type safety, limiting payload size)?",
-          "Answer: Restrict known types, set max depth/buffer size, validate input, avoid polymorphic deserialization of untrusted data, and use JsonSerializerOptions with safe defaults (ignore comments, forbid trailing commas if needed)."
+          "Question: How do you clarify functional and non-functional requirements before proposing an architecture?",
+          "Answer: Elicit user journeys, data flows, SLAs (latency, availability), throughput goals, compliance, and constraints. Confirm priorities and success metrics before sketching architecture.",
+          "Question: Compare monolith, modular monolith, and microservices. What criteria drive the choice?",
+          "Answer: Monolith is simplest to deploy; modular monolith enforces boundaries while staying single-deployable; microservices enable independent scaling and team autonomy but add ops/observability overhead. Choose based on team size, domain complexity, deployment independence, and reliability needs.",
+          "Question: How do you approach capacity planning and load estimation? What metrics do you need before sizing components?",
+          "Answer: Gather QPS/RPS targets, payload sizes, P99 latency goals, growth rates, and traffic patterns. Model peak vs average, back-of-envelope compute/storage estimates, and validate with load tests.",
+          "Question: How do you design for elasticity and fault isolation? When do you use horizontal vs vertical scaling?",
+          "Answer: Use stateless services with autoscaling, bulkheads per resource, and isolation per tenant/feature. Prefer horizontal scaling for resilience and elasticity; vertical scaling for quick wins or stateful components when horizontal is hard.",
+          "Question: Explain consistency models (strong vs eventual). When is each acceptable? How would you implement them?",
+          "Answer: Strong consistency guarantees immediate visibility; eventual allows stale reads for availability/latency. Use strong for critical invariants (payments, inventory) and eventual for read-heavy, latency-sensitive scenarios via async replication, caches, or queues.",
+          "Question: How would you handle schema evolution and backward compatibility in distributed systems?",
+          "Answer: Use additive changes first, versioned contracts/schemas, tolerant readers, feature flags, and dual-write/read paths during migrations. Maintain backward compatibility until all consumers upgrade; use blue/green migrations and data backfills."
         ]
       }
     ],
@@ -19809,23 +19817,21 @@ window.FLASH_CARD_DATA = [
     "id": "card-990"
   },
   {
-    "question": "System Design Fundamentals",
+    "question": "Data, Storage & Caching",
     "answer": [
       {
         "type": "list",
         "items": [
-          "How do you clarify functional and non-functional requirements before proposing an architecture?",
-          "Answer: Elicit user journeys, data flows, SLAs (latency, availability), throughput goals, compliance, and constraints. Confirm priorities and success metrics before sketching architecture.",
-          "Compare monolith, modular monolith, and microservices. What criteria drive the choice?",
-          "Answer: Monolith is simplest to deploy; modular monolith enforces boundaries while staying single-deployable; microservices enable independent scaling and team autonomy but add ops/observability overhead. Choose based on team size, domain complexity, deployment independence, and reliability needs.",
-          "How do you approach capacity planning and load estimation? What metrics do you need before sizing components?",
-          "Answer: Gather QPS/RPS targets, payload sizes, P99 latency goals, growth rates, and traffic patterns. Model peak vs average, back-of-envelope compute/storage estimates, and validate with load tests.",
-          "How do you design for elasticity and fault isolation? When do you use horizontal vs vertical scaling?",
-          "Answer: Use stateless services with autoscaling, bulkheads per resource, and isolation per tenant/feature. Prefer horizontal scaling for resilience and elasticity; vertical scaling for quick wins or stateful components when horizontal is hard.",
-          "Explain consistency models (strong vs eventual). When is each acceptable? How would you implement them?",
-          "Answer: Strong consistency guarantees immediate visibility; eventual allows stale reads for availability/latency. Use strong for critical invariants (payments, inventory) and eventual for read-heavy, latency-sensitive scenarios via async replication, caches, or queues.",
-          "How would you handle schema evolution and backward compatibility in distributed systems?",
-          "Answer: Use additive changes first, versioned contracts/schemas, tolerant readers, feature flags, and dual-write/read paths during migrations. Maintain backward compatibility until all consumers upgrade; use blue/green migrations and data backfills."
+          "Question: How do you choose between relational and NoSQL stores for a given workload? When would you pair them (polyglot persistence)?",
+          "Answer: Relational offers strong consistency and rich queries; NoSQL offers scalability and flexible schemas. Use polyglot when different workloads need different guarantees (e.g., SQL for transactions, NoSQL for analytics/search or high-velocity writes).",
+          "Question: How do you design read/write paths for high-traffic services (CQRS, read replicas, write-through vs write-behind caching)?",
+          "Answer: Separate reads/writes with CQRS, use read replicas for scale, and apply caching. Write-through updates cache synchronously; write-behind buffers writes for throughput but risks loss—guard with durable queues/outbox.",
+          "Question: How would you design a multi-tenant data model? What isolation strategies do you consider?",
+          "Answer: Options: shared schema with tenant keys, separate schemas, or separate databases. Consider noisy-neighbor isolation, encryption per tenant, throttling, and routing based on tenant metadata.",
+          "Question: What strategies ensure data durability and disaster recovery (backups, snapshots, multi-region replication, RPO/RTO)?",
+          "Answer: Automate backups with tested restores, snapshots for speed, multi-AZ/region replication, and define RPO/RTO targets with failover runbooks and chaos drills.",
+          "Question: How do you design cache invalidation and freshness policies (TTL, versioned keys, soft expiration, cache warming)?",
+          "Answer: Use TTLs with jitter, version keys on schema changes, apply soft expiration with background refresh, and warm caches on deploy/scale events for consistent latency."
         ]
       }
     ],
@@ -19836,21 +19842,23 @@ window.FLASH_CARD_DATA = [
     "id": "card-991"
   },
   {
-    "question": "Data, Storage & Caching",
+    "question": "Messaging, Eventing & Streaming",
     "answer": [
       {
         "type": "list",
         "items": [
-          "How do you choose between relational and NoSQL stores for a given workload? When would you pair them (polyglot persistence)?",
-          "Answer: Relational offers strong consistency and rich queries; NoSQL offers scalability and flexible schemas. Use polyglot when different workloads need different guarantees (e.g., SQL for transactions, NoSQL for analytics/search or high-velocity writes).",
-          "How do you design read/write paths for high-traffic services (CQRS, read replicas, write-through vs write-behind caching)?",
-          "Answer: Separate reads/writes with CQRS, use read replicas for scale, and apply caching. Write-through updates cache synchronously; write-behind buffers writes for throughput but risks loss—guard with durable queues/outbox.",
-          "How would you design a multi-tenant data model? What isolation strategies do you consider?",
-          "Answer: Options: shared schema with tenant keys, separate schemas, or separate databases. Consider noisy-neighbor isolation, encryption per tenant, throttling, and routing based on tenant metadata.",
-          "What strategies ensure data durability and disaster recovery (backups, snapshots, multi-region replication, RPO/RTO)?",
-          "Answer: Automate backups with tested restores, snapshots for speed, multi-AZ/region replication, and define RPO/RTO targets with failover runbooks and chaos drills.",
-          "How do you design cache invalidation and freshness policies (TTL, versioned keys, soft expiration, cache warming)?",
-          "Answer: Use TTLs with jitter, version keys on schema changes, apply soft expiration with background refresh, and warm caches on deploy/scale events for consistent latency."
+          "Question: Compare message brokers (RabbitMQ, Kafka, Azure Service Bus). How do you choose among them?",
+          "Answer: RabbitMQ excels at flexible routing/low latency; Kafka offers high-throughput ordered logs and retention; Service Bus provides managed queues/topics with dead-lettering. Choose based on throughput, ordering, retention, and operational preferences.",
+          "Question: How do you design at-least-once, at-most-once, and exactly-once processing semantics? What trade-offs exist?",
+          "Answer: At-least-once retries can duplicate work—requires idempotency. At-most-once avoids duplicates but risks loss. Exactly-once is approximated via idempotent writes/transactions; increases complexity and latency.",
+          "Question: How would you implement the outbox pattern? When is it necessary?",
+          "Answer: Store outgoing events in the same DB transaction as state changes, then relay via background publisher to the broker, marking sent messages. Necessary when bridging DB and message broker to avoid lost/duplicated events.",
+          "Question: How do you design idempotent consumers and handle poison messages? What is a dead-letter queue strategy?",
+          "Answer: Use idempotency keys, dedup tables, or UPSERTs; make handlers side-effect-safe. Send repeatedly failing messages to DLQ with metadata, alert, and provide replay/fix workflow.",
+          "Question: How do you handle ordering guarantees in distributed event streams? When do you shard by key vs use single partitions?",
+          "Answer: Preserve order per key by routing to the same partition; single partition guarantees order globally but limits throughput. Shard by key for scalability while maintaining per-entity ordering; include sequence checks to detect gaps.",
+          "Question: How would you build a real-time streaming pipeline for pricing or telemetry data? How do you manage backpressure?",
+          "Answer: Ingest via Kafka/Event Hubs, process with streaming processors, and serve via caches/WebSockets. Manage backpressure with bounded queues, rate limits, scaling consumers, and dropping/aggregating non-critical data when overloaded."
         ]
       }
     ],
@@ -19861,23 +19869,23 @@ window.FLASH_CARD_DATA = [
     "id": "card-992"
   },
   {
-    "question": "Messaging, Eventing & Streaming",
+    "question": "Reliability, Resilience & Operations",
     "answer": [
       {
         "type": "list",
         "items": [
-          "Compare message brokers (RabbitMQ, Kafka, Azure Service Bus). How do you choose among them?",
-          "Answer: RabbitMQ excels at flexible routing/low latency; Kafka offers high-throughput ordered logs and retention; Service Bus provides managed queues/topics with dead-lettering. Choose based on throughput, ordering, retention, and operational preferences.",
-          "How do you design at-least-once, at-most-once, and exactly-once processing semantics? What trade-offs exist?",
-          "Answer: At-least-once retries can duplicate work—requires idempotency. At-most-once avoids duplicates but risks loss. Exactly-once is approximated via idempotent writes/transactions; increases complexity and latency.",
-          "How would you implement the outbox pattern? When is it necessary?",
-          "Answer: Store outgoing events in the same DB transaction as state changes, then relay via background publisher to the broker, marking sent messages. Necessary when bridging DB and message broker to avoid lost/duplicated events.",
-          "How do you design idempotent consumers and handle poison messages? What is a dead-letter queue strategy?",
-          "Answer: Use idempotency keys, dedup tables, or UPSERTs; make handlers side-effect-safe. Send repeatedly failing messages to DLQ with metadata, alert, and provide replay/fix workflow.",
-          "How do you handle ordering guarantees in distributed event streams? When do you shard by key vs use single partitions?",
-          "Answer: Preserve order per key by routing to the same partition; single partition guarantees order globally but limits throughput. Shard by key for scalability while maintaining per-entity ordering; include sequence checks to detect gaps.",
-          "How would you build a real-time streaming pipeline for pricing or telemetry data? How do you manage backpressure?",
-          "Answer: Ingest via Kafka/Event Hubs, process with streaming processors, and serve via caches/WebSockets. Manage backpressure with bounded queues, rate limits, scaling consumers, and dropping/aggregating non-critical data when overloaded."
+          "Question: How do you design circuit breakers, retries with jitter, and bulkheads? When should retries be disabled?",
+          "Answer: Circuit breakers open on failure thresholds to stop thundering herds; retries with jitter spread load; bulkheads isolate resources (connection pools, queues). Disable retries for non-idempotent operations or when failures are persistent (e.g., validation errors).",
+          "Question: What strategies help with graceful degradation and feature kill switches during incidents?",
+          "Answer: Provide fallback responses, disable non-essential features via flags, reduce quality (smaller payloads), and prioritize core paths. Kill switches should be fast, central, and auditable.",
+          "Question: How do you design health checks, readiness checks, and liveness checks for microservices? How should orchestrators react?",
+          "Answer: Liveness detects stuck processes (restart); readiness ensures dependencies are available before traffic; health checks cover domain-level checks. Orchestrators should remove from load balancers on readiness fail and restart on liveness fail.",
+          "Question: How do you approach blue/green or canary deployments? What telemetry do you watch during rollouts?",
+          "Answer: Deploy to a green environment or small canary slice, route partial traffic, and compare metrics. Watch error rates, latency, saturation, and business KPIs; roll back quickly on regressions.",
+          "Question: How do you perform chaos testing or game days? What metrics indicate resilience?",
+          "Answer: Inject faults (latency, outages) in lower environments or controlled prod; observe recovery times, alerting, and SLO adherence. Metrics: success rate, recovery time, saturation, error budgets consumed.",
+          "Question: How do you detect and mitigate cascading failures in distributed systems?",
+          "Answer: Use bulkheads, timeouts, circuit breakers, load shedding, and backpressure. Monitor dependency health and propagate cancellation; design graceful degradation to localize failures."
         ]
       }
     ],
@@ -19888,23 +19896,19 @@ window.FLASH_CARD_DATA = [
     "id": "card-993"
   },
   {
-    "question": "Reliability, Resilience & Operations",
+    "question": "API & Client Experience",
     "answer": [
       {
         "type": "list",
         "items": [
-          "How do you design circuit breakers, retries with jitter, and bulkheads? When should retries be disabled?",
-          "Answer: Circuit breakers open on failure thresholds to stop thundering herds; retries with jitter spread load; bulkheads isolate resources (connection pools, queues). Disable retries for non-idempotent operations or when failures are persistent (e.g., validation errors).",
-          "What strategies help with graceful degradation and feature kill switches during incidents?",
-          "Answer: Provide fallback responses, disable non-essential features via flags, reduce quality (smaller payloads), and prioritize core paths. Kill switches should be fast, central, and auditable.",
-          "How do you design health checks, readiness checks, and liveness checks for microservices? How should orchestrators react?",
-          "Answer: Liveness detects stuck processes (restart); readiness ensures dependencies are available before traffic; health checks cover domain-level checks. Orchestrators should remove from load balancers on readiness fail and restart on liveness fail.",
-          "How do you approach blue/green or canary deployments? What telemetry do you watch during rollouts?",
-          "Answer: Deploy to a green environment or small canary slice, route partial traffic, and compare metrics. Watch error rates, latency, saturation, and business KPIs; roll back quickly on regressions.",
-          "How do you perform chaos testing or game days? What metrics indicate resilience?",
-          "Answer: Inject faults (latency, outages) in lower environments or controlled prod; observe recovery times, alerting, and SLO adherence. Metrics: success rate, recovery time, saturation, error budgets consumed.",
-          "How do you detect and mitigate cascading failures in distributed systems?",
-          "Answer: Use bulkheads, timeouts, circuit breakers, load shedding, and backpressure. Monitor dependency health and propagate cancellation; design graceful degradation to localize failures."
+          "Question: How do you design contracts for longevity (e.g., tolerant readers, additive changes, schema registries)?",
+          "Answer: Favor additive, backward-compatible changes; require tolerant readers; use versioned schemas/OpenAPI and registries; deprecate slowly with clear communication.",
+          "Question: What strategies help ensure backward compatibility for mobile or desktop clients with long upgrade cycles?",
+          "Answer: Maintain old versions, use feature flags/capability negotiation, avoid breaking changes, and design server defaults to match legacy behavior. Provide migration guides and staged sunsets.",
+          "Question: How do you design pagination, filtering, and sorting APIs at scale? When would you expose GraphQL vs REST?",
+          "Answer: Provide consistent pagination models (cursor/keyset preferred), allow filter/sort on indexed fields, and cap page sizes. Use GraphQL for flexible client-driven data shaping; REST for simpler, cache-friendly endpoints.",
+          "Question: How do you model eventual consistency to users (progress states, compensating actions, retries in UI)?",
+          "Answer: Show intermediate states (pending/processing), allow idempotent retries, surface tracking IDs, and implement compensating actions (undo/cancel) when background work fails."
         ]
       }
     ],
@@ -19915,19 +19919,19 @@ window.FLASH_CARD_DATA = [
     "id": "card-994"
   },
   {
-    "question": "API & Client Experience",
+    "question": "Domain-Driven Design & Architecture",
     "answer": [
       {
         "type": "list",
         "items": [
-          "How do you design contracts for longevity (e.g., tolerant readers, additive changes, schema registries)?",
-          "Answer: Favor additive, backward-compatible changes; require tolerant readers; use versioned schemas/OpenAPI and registries; deprecate slowly with clear communication.",
-          "What strategies help ensure backward compatibility for mobile or desktop clients with long upgrade cycles?",
-          "Answer: Maintain old versions, use feature flags/capability negotiation, avoid breaking changes, and design server defaults to match legacy behavior. Provide migration guides and staged sunsets.",
-          "How do you design pagination, filtering, and sorting APIs at scale? When would you expose GraphQL vs REST?",
-          "Answer: Provide consistent pagination models (cursor/keyset preferred), allow filter/sort on indexed fields, and cap page sizes. Use GraphQL for flexible client-driven data shaping; REST for simpler, cache-friendly endpoints.",
-          "How do you model eventual consistency to users (progress states, compensating actions, retries in UI)?",
-          "Answer: Show intermediate states (pending/processing), allow idempotent retries, surface tracking IDs, and implement compensating actions (undo/cancel) when background work fails."
+          "Question: How do you identify bounded contexts and anti-corruption layers? When would you use domain events?",
+          "Answer: Map language and workflows to find cohesive domains; use ACLs to translate between contexts and protect models. Emit domain events to decouple side effects within a boundary.",
+          "Question: How do you enforce invariants and aggregate boundaries? What belongs inside vs outside an aggregate?",
+          "Answer: Keep invariants enforced inside aggregate methods/constructors; only expose behaviors that preserve rules. Keep transactional consistency within aggregates; reference others by ID; put long-running workflows outside (sagas/process managers).",
+          "Question: How do you design module boundaries to reduce coupling in a large solution? How do you keep assemblies from becoming god projects?",
+          "Answer: Use clear namespaces, internal visibility, and dependency rules (architecture tests). Limit shared kernels, favor feature folders/modules, and enforce public APIs per module.",
+          "Question: What is your approach to layering (API, application, domain, infrastructure) and cross-cutting concerns?",
+          "Answer: API layer handles transport, application orchestrates use cases, domain holds business logic, infrastructure implements persistence/messaging. Cross-cutting concerns use decorators/middleware/aspects without leaking into domain."
         ]
       }
     ],
@@ -19938,19 +19942,19 @@ window.FLASH_CARD_DATA = [
     "id": "card-995"
   },
   {
-    "question": "Domain-Driven Design & Architecture",
+    "question": "Trade & FinTech Scenarios (if relevant)",
     "answer": [
       {
         "type": "list",
         "items": [
-          "How do you identify bounded contexts and anti-corruption layers? When would you use domain events?",
-          "Answer: Map language and workflows to find cohesive domains; use ACLs to translate between contexts and protect models. Emit domain events to decouple side effects within a boundary.",
-          "How do you enforce invariants and aggregate boundaries? What belongs inside vs outside an aggregate?",
-          "Answer: Keep invariants enforced inside aggregate methods/constructors; only expose behaviors that preserve rules. Keep transactional consistency within aggregates; reference others by ID; put long-running workflows outside (sagas/process managers).",
-          "How do you design module boundaries to reduce coupling in a large solution? How do you keep assemblies from becoming god projects?",
-          "Answer: Use clear namespaces, internal visibility, and dependency rules (architecture tests). Limit shared kernels, favor feature folders/modules, and enforce public APIs per module.",
-          "What is your approach to layering (API, application, domain, infrastructure) and cross-cutting concerns?",
-          "Answer: API layer handles transport, application orchestrates use cases, domain holds business logic, infrastructure implements persistence/messaging. Cross-cutting concerns use decorators/middleware/aspects without leaking into domain."
+          "Question: How would you design a price streaming service with fan-out to WebSocket clients and downstream analytics?",
+          "Answer: Ingest market data into a durable bus (Kafka), normalize, cache latest prices, and fan-out via WebSockets/SignalR with backpressure. Persist ticks for analytics and snapshots; shard by symbol for ordering.",
+          "Question: How do you design an order lifecycle with validation, risk checks, routing, and post-trade reconciliation?",
+          "Answer: Use a state machine per order, apply pre-trade validations and risk limits, route via smart router to venues, capture executions, and reconcile with clearing/ledgers. Ensure idempotent events and audit trails.",
+          "Question: How do you build a reliable FIX/FAST/REST gateway for external brokers? How do you handle sequence gaps and retries?",
+          "Answer: Implement session management, heartbeats, and sequence tracking; persist session state; recover gaps via resend requests; throttle/resend with backoff; isolate tenants; and validate messages strictly.",
+          "Question: How would you ensure auditability and traceability for regulatory requirements? What storage and retention strategies do you use?",
+          "Answer: Use append-only logs, immutability (WORM storage), signed/hashed records, and durable retention per regulation. Include correlation IDs for events, maintain tamper-evident trails, and automate exports for compliance."
         ]
       }
     ],
@@ -19961,19 +19965,19 @@ window.FLASH_CARD_DATA = [
     "id": "card-996"
   },
   {
-    "question": "Trade & FinTech Scenarios (if relevant)",
+    "question": "Behavioral & Collaboration",
     "answer": [
       {
         "type": "list",
         "items": [
-          "How would you design a price streaming service with fan-out to WebSocket clients and downstream analytics?",
-          "Answer: Ingest market data into a durable bus (Kafka), normalize, cache latest prices, and fan-out via WebSockets/SignalR with backpressure. Persist ticks for analytics and snapshots; shard by symbol for ordering.",
-          "How do you design an order lifecycle with validation, risk checks, routing, and post-trade reconciliation?",
-          "Answer: Use a state machine per order, apply pre-trade validations and risk limits, route via smart router to venues, capture executions, and reconcile with clearing/ledgers. Ensure idempotent events and audit trails.",
-          "How do you build a reliable FIX/FAST/REST gateway for external brokers? How do you handle sequence gaps and retries?",
-          "Answer: Implement session management, heartbeats, and sequence tracking; persist session state; recover gaps via resend requests; throttle/resend with backoff; isolate tenants; and validate messages strictly.",
-          "How would you ensure auditability and traceability for regulatory requirements? What storage and retention strategies do you use?",
-          "Answer: Use append-only logs, immutability (WORM storage), signed/hashed records, and durable retention per regulation. Include correlation IDs for events, maintain tamper-evident trails, and automate exports for compliance."
+          "Question: Describe a time you had to simplify an over-engineered solution. How did you influence stakeholders?",
+          "Answer: Explain the problem/impact, propose a simpler alternative with cost/benefit, present data (performance/maintainability), run a spike/prototype, and align stakeholders via demos and risk analysis.",
+          "Question: How do you lead technical design reviews? What artifacts do you produce and how do you gather feedback?",
+          "Answer: Prepare a concise design doc (problem, goals, options, trade-offs), diagrams, and risks; share ahead of time, run a structured meeting, capture decisions, and follow up with action items.",
+          "Question: How do you prioritize refactoring and tech debt without slowing feature delivery?",
+          "Answer: Tie debt to measurable risk/impact, bundle refactors with feature work, use small iterative changes, and maintain a prioritized debt backlog with dedicated capacity.",
+          "Question: When mentoring junior engineers, how do you balance guidance with letting them learn through mistakes?",
+          "Answer: Provide guardrails (tests, checklists), pair program, set clear goals, allow safe experiments, and conduct constructive retros to reinforce learning while protecting quality."
         ]
       }
     ],
@@ -19984,179 +19988,976 @@ window.FLASH_CARD_DATA = [
     "id": "card-997"
   },
   {
-    "question": "Behavioral & Collaboration",
+    "question": "Given a list of trades with timestamps, return the latest trade per account using LINQ.",
     "answer": [
       {
-        "type": "list",
-        "items": [
-          "Describe a time you had to simplify an over-engineered solution. How did you influence stakeholders?",
-          "Answer: Explain the problem/impact, propose a simpler alternative with cost/benefit, present data (performance/maintainability), run a spike/prototype, and align stakeholders via demos and risk analysis.",
-          "How do you lead technical design reviews? What artifacts do you produce and how do you gather feedback?",
-          "Answer: Prepare a concise design doc (problem, goals, options, trade-offs), diagrams, and risks; share ahead of time, run a structured meeting, capture decisions, and follow up with action items.",
-          "How do you prioritize refactoring and tech debt without slowing feature delivery?",
-          "Answer: Tie debt to measurable risk/impact, bundle refactors with feature work, use small iterative changes, and maintain a prioritized debt backlog with dedicated capacity.",
-          "When mentoring junior engineers, how do you balance guidance with letting them learn through mistakes?",
-          "Answer: Provide guardrails (tests, checklists), pair program, set clear goals, allow safe experiments, and conduct constructive retros to reinforce learning while protecting quality."
-        ]
+        "type": "text",
+        "content": "Sort or group by account and pick the trade with the max timestamp using GroupBy + OrderByDescending/MaxBy. This keeps the logic declarative and pushes the temporal ordering into the query rather than manual loops."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var latestTrades = trades\n    .GroupBy(t => t.AccountId)\n    .Select(g => g.OrderByDescending(t => t.Timestamp).First());",
+        "codeType": "neutral"
       }
     ],
     "category": "practice",
-    "topic": "csharp-system-design-questions.md",
-    "source": "practice/csharp-system-design-questions.md",
-    "isSection": true,
+    "topic": "questions.md",
+    "source": "practice/questions.md",
     "id": "card-998"
+  },
+  {
+    "question": "Implement a method that flattens nested lists of instrument codes while preserving ordering.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use SelectMany to flatten while keeping inner order."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var flat = nestedCodes.SelectMany(list => list);",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "questions.md",
+    "source": "practice/questions.md",
+    "id": "card-999"
+  },
+  {
+    "question": "Explain the difference between SelectMany and nested loops. When is each preferable?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "SelectMany projects each element to a sequence and flattens; nested loops make iteration explicit and allow more control over flow."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "// SelectMany\nvar pairs = accounts.SelectMany(a => a.Orders, (a, o) => new { a.Id, o.Id });\n\n// Nested loops\nforeach (var a in accounts)\n    foreach (var o in a.Orders)\n        yield return (a.Id, o.Id);",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "questions.md",
+    "source": "practice/questions.md",
+    "id": "card-1000"
+  },
+  {
+    "question": "How would you detect duplicate orders in a stream using GroupBy and produce a summary?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Group by unique order keys and filter groups with count > 1. Summaries can include counts, timestamps, and other aggregate metadata that drive remediation."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var duplicates = orders\n    .GroupBy(o => new { o.AccountId, o.ClientOrderId })\n    .Where(g => g.Count() > 1)\n    .Select(g => new {\n        g.Key.AccountId,\n        g.Key.ClientOrderId,\n        Count = g.Count(),\n        LatestTimestamp = g.Max(o => o.Timestamp)\n    });",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "questions.md",
+    "source": "practice/questions.md",
+    "id": "card-1001"
+  },
+  {
+    "question": "Sketch code to call three REST endpoints concurrently, cancel if any take longer than 3 seconds, and aggregate results.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use Task.WhenAll with CancellationTokenSource + timeout. Ensure the HttpClient is a singleton to avoid socket exhaustion and that partial results are handled gracefully when cancellation occurs."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3));\nvar tasks = endpoints.Select(url => httpClient.GetStringAsync(url, cts.Token));\nstring[] responses = await Task.WhenAll(tasks);",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "questions.md",
+    "source": "practice/questions.md",
+    "id": "card-1002"
+  },
+  {
+    "question": "Implement a resilient HTTP client with retry and circuit breaker policies using Polly.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Define policies and wrap HTTP calls."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var policy = Policy.WrapAsync(\n    Policy.Handle<HttpRequestException>()\n          .OrResult<HttpResponseMessage>(r => (int)r.StatusCode >= 500)\n          .WaitAndRetryAsync(3, attempt => TimeSpan.FromMilliseconds(200 * attempt)),\n    Policy.Handle<HttpRequestException>()\n          .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30))\n);\n\nvar response = await policy.ExecuteAsync(() => httpClient.SendAsync(request));",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "questions.md",
+    "source": "practice/questions.md",
+    "id": "card-1003"
+  },
+  {
+    "question": "How would you handle backpressure when consuming a fast message queue with a slower downstream API?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use bounded channels, buffering, or throttling. Consider load shedding by dropping low-priority messages or scaling consumers horizontally when queue lengths grow."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var channel = Channel.CreateBounded<Message>(new BoundedChannelOptions(100)\n{\n    FullMode = BoundedChannelFullMode.Wait\n});\n\n// Producer\n_ = Task.Run(async () =>\n{\n    await foreach (var msg in source.ReadAllAsync())\n        await channel.Writer.WriteAsync(msg);\n});\n\n// Consumer\nawait foreach (var msg in channel.Reader.ReadAllAsync())\n{\n    await ProcessAsync(msg);\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "questions.md",
+    "source": "practice/questions.md",
+    "id": "card-1004"
+  },
+  {
+    "question": "Explain why you might use SemaphoreSlim with async code over lock.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "SemaphoreSlim supports async waiting and throttling concurrency. It can represent both mutual exclusion (1 permit) and limited resource pools (>1 permits)."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "private readonly SemaphoreSlim _mutex = new(1, 1);\n\npublic async Task UseSharedAsync()\n{\n    await _mutex.WaitAsync();\n    try { await SharedAsyncOperation(); }\n    finally { _mutex.Release(); }\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "questions.md",
+    "source": "practice/questions.md",
+    "id": "card-1005"
+  },
+  {
+    "question": "Describe the ASP.NET Core middleware pipeline for a request hitting an authenticated endpoint with custom exception handling.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Typical order: UseRouting → auth middleware → custom exception handling (usually early) → UseAuthentication/UseAuthorization → endpoint execution. Static file middleware, response compression, and caching can be interleaved before routing. Include correlation logging, caching, validation, and telemetry instrumentation."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "app.UseMiddleware<CorrelationMiddleware>();\napp.UseMiddleware<ExceptionHandlingMiddleware>();\napp.UseRouting();\napp.UseAuthentication();\napp.UseAuthorization();\napp.MapControllers();",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "questions.md",
+    "source": "practice/questions.md",
+    "id": "card-1006"
+  },
+  {
+    "question": "How do you implement API versioning and backward compatibility?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Strategies: URL segment (/v1/), header, query string. Use Asp.Versioning package."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "services.AddApiVersioning(options =>\n{\n    options.DefaultApiVersion = new ApiVersion(1, 0);\n    options.AssumeDefaultVersionWhenUnspecified = true;\n    options.ReportApiVersions = true;\n});\nservices.AddVersionedApiExplorer();",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "questions.md",
+    "source": "practice/questions.md",
+    "id": "card-1007"
+  },
+  {
+    "question": "Discuss strategies for rate limiting and request throttling.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use ASP.NET rate limiting middleware or gateway. Techniques: token bucket, fixed window, sliding window."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "services.AddRateLimiter(options =>\n{\n    options.AddFixedWindowLimiter(\"per-account\", opt =>\n    {\n        opt.Window = TimeSpan.FromMinutes(1);\n        opt.PermitLimit = 60;\n        opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;\n        opt.QueueLimit = 20;\n    });\n});\n\napp.UseRateLimiter();",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "questions.md",
+    "source": "practice/questions.md",
+    "id": "card-1008"
+  },
+  {
+    "question": "How would you log correlation IDs across services and propagate them to downstream dependencies?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Generate ID in middleware, add to headers/log context, forward via HttpClient. Ensure asynchronous logging frameworks flow the correlation ID across threads (e.g., using AsyncLocal)."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "context.TraceIdentifier = context.TraceIdentifier ?? Guid.NewGuid().ToString();\n_logger.LogInformation(\"{CorrelationId} handling {Path}\", context.TraceIdentifier, context.Request.Path);\nhttpClient.DefaultRequestHeaders.Add(\"X-Correlation-ID\", context.TraceIdentifier);",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "questions.md",
+    "source": "practice/questions.md",
+    "id": "card-1009"
+  },
+  {
+    "question": "Design a service that ingests MT5 tick data, normalizes it, caches latest prices, and exposes them via REST/WebSocket.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Components: Ingestion (connectors to MT5), normalization workers, cache (Redis), API (REST/WebSocket), persistence. Add replay storage (Kafka topic or time-series DB) for audit and late subscribers. Use message queue (Kafka) for fan-out and resilient decoupling of ingestion from delivery."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "while (await mt5Stream.MoveNextAsync())\n{\n    var normalized = Normalize(mt5Stream.Current);\n    await cache.SetAsync(normalized.Symbol, normalized.Price);\n    await hubContext.Clients.Group(normalized.Symbol)\n        .SendAsync(\"price\", normalized);\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "questions.md",
+    "source": "practice/questions.md",
+    "id": "card-1010"
+  },
+  {
+    "question": "Design an API that receives orders, validates, routes to MT4/MT5, and confirms execution. Include failure recovery.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Steps: receive REST order → validate (risk, compliance) → persist pending state → route to MT4/MT5 → await ack → publish result. Include idempotency keys on inbound requests and a reconciliation process for missing confirmations. Use saga/outbox for reliability and to coordinate compensating actions when downstream legs fail."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public async Task<IActionResult> Submit(OrderRequest dto)\n{\n    var order = await _validator.ValidateAsync(dto);\n    await _repository.SavePending(order);\n    var result = await _mtGateway.SendAsync(order);\n    await _repository.UpdateStatus(order.Id, result.Status);\n    await _bus.Publish(new OrderStatusChanged(order.Id, result.Status));\n    return Ok(result);\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "questions.md",
+    "source": "practice/questions.md",
+    "id": "card-1011"
+  },
+  {
+    "question": "Architect a system to collect metrics from trading microservices and alert on anomalies.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Collect metrics via OpenTelemetry exporters, push to time-series DB (Prometheus), visualize in Grafana, alert via Alertmanager. Tag metrics with dimensions (service, region, environment) to support slicing and alert thresholds. Include streaming logs via ELK stack and trace sampling via Jaeger/Tempo."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var meter = new Meter(\"Trading.Services\");\nvar orderLatency = meter.CreateHistogram<double>(\"order_latency_ms\");\norderLatency.Record(latencyMs, KeyValuePair.Create<string, object?>(\"service\", serviceName));",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "questions.md",
+    "source": "practice/questions.md",
+    "id": "card-1012"
+  },
+  {
+    "question": "Discuss how you would integrate an external risk management engine into an existing microservices ecosystem.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use async messaging or REST; maintain schema adapters; ensure idempotency. Map risk statuses to domain-specific responses and version contracts to avoid breaking changes. Add caching for rules, circuit breakers, fallback decisions, and health checks to remove unhealthy nodes from rotation."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var riskResponse = await _riskClient.EvaluateAsync(order, ct);\nif (!riskResponse.Approved)\n    return OrderDecision.Rejected(riskResponse.Reason);",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "questions.md",
+    "source": "practice/questions.md",
+    "id": "card-1013"
+  },
+  {
+    "question": "Compare RabbitMQ and ZeroMQ for distributing price updates. When would you choose one over the other?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "RabbitMQ: brokered, supports persistence, routing, acknowledgments, management UI, plugins. ZeroMQ: brokerless sockets, ultra-low latency but manual patterns, no persistence out of the box. Use RabbitMQ for durable, complex routing, enterprise integration, where administrators need visibility and security. Use ZeroMQ for high-throughput, in-process/edge messaging; avoid if you need persistence or central management."
+      }
+    ],
+    "category": "practice",
+    "topic": "questions.md",
+    "source": "practice/questions.md",
+    "id": "card-1014"
+  },
+  {
+    "question": "Explain how to ensure at-least-once delivery with RabbitMQ while preventing duplicate processing.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use durable queues, persistent messages, manual ack, idempotent consumers. Enable publisher confirms to ensure the broker persisted the message before acknowledging to the producer."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "channel.BasicConsume(queue, autoAck: false, consumer);\nconsumer.Received += (sender, ea) =>\n{\n    Handle(ea.Body);\n    channel.BasicAck(ea.DeliveryTag, multiple: false);\n};",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "questions.md",
+    "source": "practice/questions.md",
+    "id": "card-1015"
+  },
+  {
+    "question": "How would you design a saga pattern to coordinate account funding across multiple services?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Orchestrator or choreography; manage compensations (reverse ledger entry, refund payment)."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public async Task Handle(FundAccount command)\n{\n    var transferId = await _payments.DebitAsync(command.PaymentId);\n    try\n    {\n        await _ledger.CreditAsync(command.AccountId, command.Amount);\n        await _notifications.SendAsync(command.AccountId, \"Funding complete\");\n    }\n    catch\n    {\n        await _payments.RefundAsync(transferId);\n        throw;\n    }\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "questions.md",
+    "source": "practice/questions.md",
+    "id": "card-1016"
+  },
+  {
+    "question": "Discuss the outbox pattern and how it prevents message loss in event-driven systems.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Write domain event to outbox table within same transaction, then relay to message bus. A background dispatcher polls the outbox table, publishes events, and marks them as processed (with retries and exponential backoff)."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "await using var tx = await db.Database.BeginTransactionAsync();\norder.Status = OrderStatus.Accepted;\ndb.Outbox.Add(new OutboxMessage(order.Id, new OrderAccepted(order.Id)));\nawait db.SaveChangesAsync();\nawait tx.CommitAsync();",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "questions.md",
+    "source": "practice/questions.md",
+    "id": "card-1017"
+  },
+  {
+    "question": "Write a SQL query to calculate the rolling 7-day trade volume per instrument.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use window functions to calculate rolling aggregates."
+      },
+      {
+        "type": "code",
+        "language": "sql",
+        "code": "WITH daily AS (\n    SELECT instrument_id,\n           trade_timestamp::date AS trade_date,\n           SUM(volume) AS daily_volume\n    FROM trades\n    GROUP BY instrument_id, trade_timestamp::date\n)\nSELECT instrument_id,\n       trade_date,\n       daily_volume,\n       SUM(daily_volume) OVER (\n           PARTITION BY instrument_id\n           ORDER BY trade_date\n           ROWS BETWEEN 6 PRECEDING AND CURRENT ROW\n       ) AS rolling_7d_volume\nFROM daily\nORDER BY instrument_id, trade_date;",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "questions.md",
+    "source": "practice/questions.md",
+    "id": "card-1018"
+  },
+  {
+    "question": "Explain how you would choose between normalized schemas and denormalized tables for reporting.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Normalized: reduces redundancy, good for OLTP. Changes cascade predictably, but reporting joins can be expensive. Denormalized: duplicates data for fast reads (reporting, analytics). Updates are more complex; rely on ETL pipelines to keep facts in sync. Choose based on workload: mixed? use hybrid star schema or CQRS approach with read-optimized projections."
+      }
+    ],
+    "category": "practice",
+    "topic": "questions.md",
+    "source": "practice/questions.md",
+    "id": "card-1019"
+  },
+  {
+    "question": "Describe the differences between clustered and non-clustered indexes and when to use covering indexes.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Clustered: defines physical order, one per table; great for range scans. Non-clustered: separate structure pointing to data; can include columns."
+      },
+      {
+        "type": "code",
+        "language": "sql",
+        "code": "CREATE NONCLUSTERED INDEX IX_Orders_Account_Status\n    ON Orders(AccountId, Status)\n    INCLUDE (CreatedAt, Amount);",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "questions.md",
+    "source": "practice/questions.md",
+    "id": "card-1020"
+  },
+  {
+    "question": "Walk through handling a long-running report query that impacts OLTP performance.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Strategies: read replicas, materialized views, batching, query hints, schedule off-peak. Consider breaking the query into smaller windowed segments and streaming results to avoid locking. Implement caching, pre-aggregation, and monitor execution plans for regressions."
+      }
+    ],
+    "category": "practice",
+    "topic": "questions.md",
+    "source": "practice/questions.md",
+    "id": "card-1021"
+  },
+  {
+    "question": "Describe the lifecycle of a forex trade from placement to settlement.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Steps: quote, order placement, validation, routing, execution (fill/partial), confirmation, settlement (T+2), P&L updates. Post-trade, apply trade capture in back-office systems and reconcile with liquidity providers. Include margin checks and clearing, corporate actions, and overnight financing (swap) adjustments."
+      }
+    ],
+    "category": "practice",
+    "topic": "questions.md",
+    "source": "practice/questions.md",
+    "id": "card-1022"
+  },
+  {
+    "question": "How would you integrate with MT4/MT5 APIs for trade execution in C#? Mention authentication, session management, and error handling.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use MetaTrader Manager/Server APIs via C# wrappers; handle session auth, keep-alive, throttle requests. Manage connections via dedicated service accounts and pre-allocate connection pools. Implement reconnect logic, map errors, ensure idempotent order submission. Translate MT-specific error codes into domain-level responses for clients."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "using var session = new Mt5Gateway(credentials);\nawait session.ConnectAsync();\nvar ticket = await session.SendOrderAsync(request);",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "questions.md",
+    "source": "practice/questions.md",
+    "id": "card-1023"
+  },
+  {
+    "question": "What are common risk checks before executing a client order (e.g., margin, exposure limits)?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Margin availability, max exposure per instrument, credit limits, duplicate orders, fat-finger (price deviation). Implement pre-trade risk service."
+      }
+    ],
+    "category": "practice",
+    "topic": "questions.md",
+    "source": "practice/questions.md",
+    "id": "card-1024"
+  },
+  {
+    "question": "Explain how you'd handle market data bursts without dropping updates.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use batching, diff updates, UDP multicast ingestion, prioritized queues, snapshot + incremental updates. Utilize adaptive sampling—send every tick to VIP clients while throttling retail feeds. Apply throttling per client, drop non-critical updates after stale, and monitor queue depths to trigger auto-scaling."
+      }
+    ],
+    "category": "practice",
+    "topic": "questions.md",
+    "source": "practice/questions.md",
+    "id": "card-1025"
+  },
+  {
+    "question": "Tell me about a time you led a critical production fix under pressure.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Discuss scenario: triage, swarm, communication, root cause, postmortem. Highlight proactive rollback plans and customer communication cadence."
+      }
+    ],
+    "category": "practice",
+    "topic": "questions.md",
+    "source": "practice/questions.md",
+    "id": "card-1026"
+  },
+  {
+    "question": "Describe a situation where you improved a process by automating manual work.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Example: build CI pipeline, reduce manual deployment, measured time saved. Emphasize KPIs such as deployment frequency and lead time."
+      }
+    ],
+    "category": "practice",
+    "topic": "questions.md",
+    "source": "practice/questions.md",
+    "id": "card-1027"
+  },
+  {
+    "question": "Discuss a conflict within a team and how you resolved it.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Example: align on goals, active listening, data-driven decision, mediation. Demonstrate neutral facilitation and follow-up agreements."
+      }
+    ],
+    "category": "practice",
+    "topic": "questions.md",
+    "source": "practice/questions.md",
+    "id": "card-1028"
+  },
+  {
+    "question": "Share a story that demonstrates your commitment to documentation or knowledge sharing.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Example: created runbooks, knowledge base, improved onboarding. Include metrics such as onboarding time reduction and support ticket deflection."
+      }
+    ],
+    "category": "practice",
+    "topic": "questions.md",
+    "source": "practice/questions.md",
+    "id": "card-1029"
   },
   {
     "question": "LINQ & Collections",
     "answer": [
       {
-        "type": "list",
-        "items": [
-          "Given a list of trades with timestamps, return the latest trade per account using LINQ.",
-          "Implement a method that flattens nested lists of instrument codes while preserving ordering.",
-          "Explain the difference between SelectMany and nested loops. When is each preferable?",
-          "How would you detect duplicate orders in a stream using GroupBy and produce a summary?"
-        ]
+        "type": "text",
+        "content": "A: Sort or group by account and pick the trade with the max timestamp using GroupBy + OrderByDescending/MaxBy. This keeps the logic declarative and pushes the temporal ordering into the query rather than manual loops."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var latestTrades = trades\n    .GroupBy(t => t.AccountId)\n    .Select(g => g.OrderByDescending(t => t.Timestamp).First());",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when you need the most recent entry per key without mutating state, such as building dashboards or reconciling snapshots. Avoid when the dataset is huge and you'd benefit from streaming/SQL aggregation; consider database query with ROW_NUMBER or a materialized view to avoid loading everything into memory."
+      },
+      {
+        "type": "text",
+        "content": "A: Use SelectMany to flatten while keeping inner order."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var flat = nestedCodes.SelectMany(list => list);",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when you have nested enumerables and simply need to concatenate them. Avoid when you must retain hierarchy boundaries—use nested loops instead."
+      },
+      {
+        "type": "text",
+        "content": "A: SelectMany projects each element to a sequence and flattens; nested loops make iteration explicit and allow more control over flow."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "// SelectMany\nvar pairs = accounts.SelectMany(a => a.Orders, (a, o) => new { a.Id, o.Id });\n\n// Nested loops\nforeach (var a in accounts)\n    foreach (var o in a.Orders)\n        yield return (a.Id, o.Id);",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use SelectMany when you want a fluent declarative pipeline or need joins. Use loops when performance-critical, complex control flow, or break/continue needed."
+      },
+      {
+        "type": "text",
+        "content": "A: Group by unique order keys and filter groups with count > 1. Summaries can include counts, timestamps, and other aggregate metadata that drive remediation."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var duplicates = orders\n    .GroupBy(o => new { o.AccountId, o.ClientOrderId })\n    .Where(g => g.Count() > 1)\n    .Select(g => new {\n        g.Key.AccountId,\n        g.Key.ClientOrderId,\n        Count = g.Count(),\n        LatestTimestamp = g.Max(o => o.Timestamp)\n    });",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when you need summaries and easy grouping. Avoid when data volume exceeds in-memory capabilities—use database aggregates or streaming dedup."
       }
     ],
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
     "isSection": true,
-    "id": "card-999"
+    "id": "card-1030"
   },
   {
     "question": "Async & Resilience",
     "answer": [
       {
-        "type": "list",
-        "items": [
-          "Sketch code to call three REST endpoints concurrently, cancel if any take longer than 3 seconds, and aggregate results.",
-          "Implement a resilient HTTP client with retry and circuit breaker policies using Polly.",
-          "How would you handle backpressure when consuming a fast message queue with a slower downstream API?",
-          "Explain why you might use SemaphoreSlim with async code over lock."
-        ]
+        "type": "text",
+        "content": "A: Use Task.WhenAll with CancellationTokenSource + timeout. Ensure the HttpClient is a singleton to avoid socket exhaustion and that partial results are handled gracefully when cancellation occurs."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3));\nvar tasks = endpoints.Select(url => httpClient.GetStringAsync(url, cts.Token));\nstring[] responses = await Task.WhenAll(tasks);",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when limited number of independent calls; want fail-fast. Avoid when endpoints depend on each other or you must gracefully degrade per-call."
+      },
+      {
+        "type": "text",
+        "content": "A: Define policies and wrap HTTP calls."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var policy = Policy.WrapAsync(\n    Policy.Handle<HttpRequestException>()\n          .OrResult<HttpResponseMessage>(r => (int)r.StatusCode >= 500)\n          .WaitAndRetryAsync(3, attempt => TimeSpan.FromMilliseconds(200 * attempt)),\n    Policy.Handle<HttpRequestException>()\n          .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30))\n);\n\nvar response = await policy.ExecuteAsync(() => httpClient.SendAsync(request));",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when downstream instability; need resilience. Avoid when operations must not be retried (e.g., non-idempotent commands without safeguards)."
+      },
+      {
+        "type": "text",
+        "content": "A: Use bounded channels, buffering, or throttling. Consider load shedding by dropping low-priority messages or scaling consumers horizontally when queue lengths grow."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var channel = Channel.CreateBounded<Message>(new BoundedChannelOptions(100)\n{\n    FullMode = BoundedChannelFullMode.Wait\n});\n\n// Producer\n_ = Task.Run(async () =>\n{\n    await foreach (var msg in source.ReadAllAsync())\n        await channel.Writer.WriteAsync(msg);\n});\n\n// Consumer\nawait foreach (var msg in channel.Reader.ReadAllAsync())\n{\n    await ProcessAsync(msg);\n}",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when consumer slower than producer; need to avoid overload. Avoid when throughput must be maximized with zero buffering—consider scaling consumers instead."
+      },
+      {
+        "type": "text",
+        "content": "A: SemaphoreSlim supports async waiting and throttling concurrency. It can represent both mutual exclusion (1 permit) and limited resource pools (>1 permits)."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "private readonly SemaphoreSlim _mutex = new(1, 1);\n\npublic async Task UseSharedAsync()\n{\n    await _mutex.WaitAsync();\n    try { await SharedAsyncOperation(); }\n    finally { _mutex.Release(); }\n}",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use SemaphoreSlim when async code needs mutual exclusion or limited parallelism. Avoid when code is synchronous—lock has less overhead."
       }
     ],
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
     "isSection": true,
-    "id": "card-1000"
+    "id": "card-1031"
   },
   {
     "question": "API & Lifecycle",
     "answer": [
       {
-        "type": "list",
-        "items": [
-          "Describe the ASP.NET Core middleware pipeline for a request hitting an authenticated endpoint with custom exception handling.",
-          "How do you implement API versioning and backward compatibility?",
-          "Discuss strategies for rate limiting and request throttling.",
-          "How would you log correlation IDs across services and propagate them to downstream dependencies?"
-        ]
+        "type": "text",
+        "content": "A: Typical order: UseRouting → auth middleware → custom exception handling (usually early) → UseAuthentication/UseAuthorization → endpoint execution. Static file middleware, response compression, and caching can be interleaved before routing. Include correlation logging, caching, validation, and telemetry instrumentation."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "app.UseMiddleware<CorrelationMiddleware>();\napp.UseMiddleware<ExceptionHandlingMiddleware>();\napp.UseRouting();\napp.UseAuthentication();\napp.UseAuthorization();\napp.MapControllers();",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when building consistent request handling. Avoid when for minimal APIs you might use delegate pipeline but still similar."
+      },
+      {
+        "type": "text",
+        "content": "A: Strategies: URL segment (/v1/), header, query string. Use Asp.Versioning package."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "services.AddApiVersioning(options =>\n{\n    options.DefaultApiVersion = new ApiVersion(1, 0);\n    options.AssumeDefaultVersionWhenUnspecified = true;\n    options.ReportApiVersions = true;\n});\nservices.AddVersionedApiExplorer();",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when breaking changes; maintain backward compatibility by keeping old controllers. Avoid when internal services with clients you control; choose contract-first to avoid version explosion."
+      },
+      {
+        "type": "text",
+        "content": "A: Use ASP.NET rate limiting middleware or gateway. Techniques: token bucket, fixed window, sliding window."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "services.AddRateLimiter(options =>\n{\n    options.AddFixedWindowLimiter(\"per-account\", opt =>\n    {\n        opt.Window = TimeSpan.FromMinutes(1);\n        opt.PermitLimit = 60;\n        opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;\n        opt.QueueLimit = 20;\n    });\n});\n\napp.UseRateLimiter();",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when protecting downstream resources. Avoid when latency-critical internal traffic; consider other forms of protection."
+      },
+      {
+        "type": "text",
+        "content": "A: Generate ID in middleware, add to headers/log context, forward via HttpClient. Ensure asynchronous logging frameworks flow the correlation ID across threads (e.g., using AsyncLocal)."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "context.TraceIdentifier = context.TraceIdentifier ?? Guid.NewGuid().ToString();\n_logger.LogInformation(\"{CorrelationId} handling {Path}\", context.TraceIdentifier, context.Request.Path);\nhttpClient.DefaultRequestHeaders.Add(\"X-Correlation-ID\", context.TraceIdentifier);",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when need distributed tracing. Avoid when truly isolated services—rare."
       }
     ],
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
     "isSection": true,
-    "id": "card-1001"
+    "id": "card-1032"
   },
   {
     "question": "System Design",
     "answer": [
       {
-        "type": "list",
-        "items": [
-          "Price Streaming Service: Design a service that ingests MT5 tick data, normalizes it, caches latest prices, and exposes them via REST/WebSocket.",
-          "Order Execution Workflow: Design an API that receives orders, validates, routes to MT4/MT5, and confirms execution. Include failure recovery.",
-          "Real-Time Monitoring Dashboard: Architect a system to collect metrics from trading microservices and alert on anomalies.",
-          "Discuss how you would integrate an external risk management engine into an existing microservices ecosystem."
-        ]
+        "type": "text",
+        "content": "A: Components: Ingestion (connectors to MT5), normalization workers, cache (Redis), API (REST/WebSocket), persistence. Add replay storage (Kafka topic or time-series DB) for audit and late subscribers. Use message queue (Kafka) for fan-out and resilient decoupling of ingestion from delivery."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "while (await mt5Stream.MoveNextAsync())\n{\n    var normalized = Normalize(mt5Stream.Current);\n    await cache.SetAsync(normalized.Symbol, normalized.Price);\n    await hubContext.Clients.Group(normalized.Symbol)\n        .SendAsync(\"price\", normalized);\n}",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when need low-latency price dissemination. Avoid when low-frequency batch updates suffice."
+      },
+      {
+        "type": "text",
+        "content": "A: Steps: receive REST order → validate (risk, compliance) → persist pending state → route to MT4/MT5 → await ack → publish result. Include idempotency keys on inbound requests and a reconciliation process for missing confirmations. Use saga/outbox for reliability and to coordinate compensating actions when downstream legs fail."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public async Task<IActionResult> Submit(OrderRequest dto)\n{\n    var order = await _validator.ValidateAsync(dto);\n    await _repository.SavePending(order);\n    var result = await _mtGateway.SendAsync(order);\n    await _repository.UpdateStatus(order.Id, result.Status);\n    await _bus.Publish(new OrderStatusChanged(order.Id, result.Status));\n    return Ok(result);\n}",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when real-time trading with external platforms. Avoid when simple internal workflows—overkill."
+      },
+      {
+        "type": "text",
+        "content": "A: Collect metrics via OpenTelemetry exporters, push to time-series DB (Prometheus), visualize in Grafana, alert via Alertmanager. Tag metrics with dimensions (service, region, environment) to support slicing and alert thresholds. Include streaming logs via ELK stack and trace sampling via Jaeger/Tempo."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var meter = new Meter(\"Trading.Services\");\nvar orderLatency = meter.CreateHistogram<double>(\"order_latency_ms\");\norderLatency.Record(latencyMs, KeyValuePair.Create<string, object?>(\"service\", serviceName));",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when need proactive observability. Avoid when prototype with low SLA."
+      },
+      {
+        "type": "text",
+        "content": "A: Use async messaging or REST; maintain schema adapters; ensure idempotency. Map risk statuses to domain-specific responses and version contracts to avoid breaking changes. Add caching for rules, circuit breakers, fallback decisions, and health checks to remove unhealthy nodes from rotation."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var riskResponse = await _riskClient.EvaluateAsync(order, ct);\nif (!riskResponse.Approved)\n    return OrderDecision.Rejected(riskResponse.Reason);",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when external compliance requirement. Avoid when latency-critical path can't tolerate external dependency—consider in-process rules."
       }
     ],
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
     "isSection": true,
-    "id": "card-1002"
+    "id": "card-1033"
   },
   {
     "question": "Messaging & Integration",
     "answer": [
       {
-        "type": "list",
-        "items": [
-          "Compare RabbitMQ and ZeroMQ for distributing price updates. When would you choose one over the other?",
-          "Explain how to ensure at-least-once delivery with RabbitMQ while preventing duplicate processing.",
-          "How would you design a saga pattern to coordinate account funding across multiple services?",
-          "Discuss the outbox pattern and how it prevents message loss in event-driven systems."
-        ]
+        "type": "text",
+        "content": "A: RabbitMQ: brokered, supports persistence, routing, acknowledgments, management UI, plugins. ZeroMQ: brokerless sockets, ultra-low latency but manual patterns, no persistence out of the box. Use RabbitMQ for durable, complex routing, enterprise integration, where administrators need visibility and security. Use ZeroMQ for high-throughput, in-process/edge messaging; avoid if you need persistence or central management."
+      },
+      {
+        "type": "text",
+        "content": "A: Use durable queues, persistent messages, manual ack, idempotent consumers. Enable publisher confirms to ensure the broker persisted the message before acknowledging to the producer."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "channel.BasicConsume(queue, autoAck: false, consumer);\nconsumer.Received += (sender, ea) =>\n{\n    Handle(ea.Body);\n    channel.BasicAck(ea.DeliveryTag, multiple: false);\n};",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when you can tolerate duplicates; critical to ensure no loss. Avoid when exactly-once semantics required—use transactional outbox + dedup."
+      },
+      {
+        "type": "text",
+        "content": "A: Orchestrator or choreography; manage compensations (reverse ledger entry, refund payment)."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public async Task Handle(FundAccount command)\n{\n    var transferId = await _payments.DebitAsync(command.PaymentId);\n    try\n    {\n        await _ledger.CreditAsync(command.AccountId, command.Amount);\n        await _notifications.SendAsync(command.AccountId, \"Funding complete\");\n    }\n    catch\n    {\n        await _payments.RefundAsync(transferId);\n        throw;\n    }\n}",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when multi-step, distributed transactions. Avoid when single system handles all steps—simple ACID transaction suffices."
+      },
+      {
+        "type": "text",
+        "content": "A: Write domain event to outbox table within same transaction, then relay to message bus. A background dispatcher polls the outbox table, publishes events, and marks them as processed (with retries and exponential backoff)."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "await using var tx = await db.Database.BeginTransactionAsync();\norder.Status = OrderStatus.Accepted;\ndb.Outbox.Add(new OutboxMessage(order.Id, new OrderAccepted(order.Id)));\nawait db.SaveChangesAsync();\nawait tx.CommitAsync();",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when need atomic DB + message publish. Avoid when no shared database or eventual consistency acceptable without duplication."
       }
     ],
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
     "isSection": true,
-    "id": "card-1003"
+    "id": "card-1034"
   },
   {
     "question": "Data Layer",
     "answer": [
       {
-        "type": "list",
-        "items": [
-          "Write a SQL query to calculate the rolling 7-day trade volume per instrument.",
-          "Explain how you would choose between normalized schemas and denormalized tables for reporting.",
-          "Describe the differences between clustered and non-clustered indexes and when to use covering indexes.",
-          "Walk through handling a long-running report query that impacts OLTP performance."
-        ]
+        "type": "text",
+        "content": "A: Use window functions to calculate rolling aggregates."
+      },
+      {
+        "type": "code",
+        "language": "sql",
+        "code": "WITH daily AS (\n    SELECT instrument_id,\n           trade_timestamp::date AS trade_date,\n           SUM(volume) AS daily_volume\n    FROM trades\n    GROUP BY instrument_id, trade_timestamp::date\n)\nSELECT instrument_id,\n       trade_date,\n       daily_volume,\n       SUM(daily_volume) OVER (\n           PARTITION BY instrument_id\n           ORDER BY trade_date\n           ROWS BETWEEN 6 PRECEDING AND CURRENT ROW\n       ) AS rolling_7d_volume\nFROM daily\nORDER BY instrument_id, trade_date;",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when need rolling metrics in SQL. Avoid when database lacks window functions—use app-side aggregation."
+      },
+      {
+        "type": "text",
+        "content": "A: Normalized: reduces redundancy, good for OLTP. Changes cascade predictably, but reporting joins can be expensive. Denormalized: duplicates data for fast reads (reporting, analytics). Updates are more complex; rely on ETL pipelines to keep facts in sync. Choose based on workload: mixed? use hybrid star schema or CQRS approach with read-optimized projections."
+      },
+      {
+        "type": "text",
+        "content": "A: Clustered: defines physical order, one per table; great for range scans. Non-clustered: separate structure pointing to data; can include columns."
+      },
+      {
+        "type": "code",
+        "language": "sql",
+        "code": "CREATE NONCLUSTERED INDEX IX_Orders_Account_Status\n    ON Orders(AccountId, Status)\n    INCLUDE (CreatedAt, Amount);",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use covering index when query needs subset of columns; avoid extra lookups. Avoid when frequent writes—maintaining many indexes hurts performance."
+      },
+      {
+        "type": "text",
+        "content": "A: Strategies: read replicas, materialized views, batching, query hints, schedule off-peak. Consider breaking the query into smaller windowed segments and streaming results to avoid locking. Implement caching, pre-aggregation, and monitor execution plans for regressions."
       }
     ],
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
     "isSection": true,
-    "id": "card-1004"
+    "id": "card-1035"
   },
   {
     "question": "Trading Domain Knowledge",
     "answer": [
       {
-        "type": "list",
-        "items": [
-          "Describe the lifecycle of a forex trade from placement to settlement.",
-          "How would you integrate with MT4/MT5 APIs for trade execution in C#? Mention authentication, session management, and error handling.",
-          "What are common risk checks before executing a client order (e.g., margin, exposure limits)?",
-          "Explain how youd handle market data bursts without dropping updates."
-        ]
+        "type": "text",
+        "content": "A: Steps: quote, order placement, validation, routing, execution (fill/partial), confirmation, settlement (T+2), P&L updates. Post-trade, apply trade capture in back-office systems and reconcile with liquidity providers. Include margin checks and clearing, corporate actions, and overnight financing (swap) adjustments."
+      },
+      {
+        "type": "text",
+        "content": "A: Use MetaTrader Manager/Server APIs via C# wrappers; handle session auth, keep-alive, throttle requests. Manage connections via dedicated service accounts and pre-allocate connection pools. Implement reconnect logic, map errors, ensure idempotent order submission. Translate MT-specific error codes into domain-level responses for clients."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "using var session = new Mt5Gateway(credentials);\nawait session.ConnectAsync();\nvar ticket = await session.SendOrderAsync(request);",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "A: Margin availability, max exposure per instrument, credit limits, duplicate orders, fat-finger (price deviation). Implement pre-trade risk service."
+      },
+      {
+        "type": "text",
+        "content": "A: Use batching, diff updates, UDP multicast ingestion, prioritized queues, snapshot + incremental updates. Utilize adaptive sampling—send every tick to VIP clients while throttling retail feeds. Apply throttling per client, drop non-critical updates after stale, and monitor queue depths to trigger auto-scaling."
       }
     ],
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
     "isSection": true,
-    "id": "card-1005"
+    "id": "card-1036"
   },
   {
     "question": "Behavioral & Soft Skills",
     "answer": [
       {
-        "type": "list",
-        "items": [
-          "Tell me about a time you led a critical production fix under pressure.",
-          "Describe a situation where you improved a process by automating manual work.",
-          "Discuss a conflict within a team and how you resolved it.",
-          "Share a story that demonstrates your commitment to documentation or knowledge sharing."
-        ]
+        "type": "text",
+        "content": "A: Discuss scenario: triage, swarm, communication, root cause, postmortem. Highlight proactive rollback plans and customer communication cadence."
+      },
+      {
+        "type": "text",
+        "content": "A: Example: build CI pipeline, reduce manual deployment, measured time saved. Emphasize KPIs such as deployment frequency and lead time."
+      },
+      {
+        "type": "text",
+        "content": "A: Example: align on goals, active listening, data-driven decision, mediation. Demonstrate neutral facilitation and follow-up agreements."
+      },
+      {
+        "type": "text",
+        "content": "A: Example: created runbooks, knowledge base, improved onboarding. Include metrics such as onboarding time reduction and support ticket deflection."
       }
     ],
     "category": "practice",
     "topic": "questions.md",
     "source": "practice/questions.md",
     "isSection": true,
-    "id": "card-1006"
+    "id": "card-1037"
   },
   {
     "question": "Questions for the Interviewer",
@@ -20175,7 +20976,7 @@ window.FLASH_CARD_DATA = [
     "topic": "questions.md",
     "source": "practice/questions.md",
     "isSection": true,
-    "id": "card-1007"
+    "id": "card-1038"
   },
   {
     "question": "Access Modifiers  public, private, internal, protected (and variants)",
@@ -20222,7 +21023,7 @@ window.FLASH_CARD_DATA = [
     "topic": "questions.md",
     "source": "practice/questions.md",
     "isSection": true,
-    "id": "card-1008"
+    "id": "card-1039"
   },
   {
     "question": "Dependency Injection Lifetimes  Transient, Scoped, Singleton (and tips)",
@@ -20281,7 +21082,7 @@ window.FLASH_CARD_DATA = [
     "topic": "questions.md",
     "source": "practice/questions.md",
     "isSection": true,
-    "id": "card-1009"
+    "id": "card-1040"
   },
   {
     "question": "Code Assessment Questions & Answers (with snippets)",
@@ -20388,7 +21189,7 @@ window.FLASH_CARD_DATA = [
       },
       {
         "type": "text",
-        "content": "Notes: Mapping the health check keeps the app’s composition root small. Consider adding UseHealthChecks or custom readiness/liveness probes for Kubernetes deployments."
+        "content": "Notes: Mapping the health check keeps the app's composition root small. Consider adding UseHealthChecks or custom readiness/liveness probes for Kubernetes deployments."
       },
       {
         "type": "list",
@@ -20475,7 +21276,7 @@ window.FLASH_CARD_DATA = [
     "topic": "questions.md",
     "source": "practice/questions.md",
     "isSection": true,
-    "id": "card-1010"
+    "id": "card-1041"
   },
   {
     "question": "⚙️ How it works",
@@ -20493,7 +21294,7 @@ window.FLASH_CARD_DATA = [
     "topic": "real exam questions answers",
     "source": "practice/real exam questions answers/replace int without variable.md",
     "isSection": true,
-    "id": "card-1011"
+    "id": "card-1042"
   },
   {
     "question": "⚠️ Caveat",
@@ -20509,7 +21310,7 @@ window.FLASH_CARD_DATA = [
     "topic": "real exam questions answers",
     "source": "practice/real exam questions answers/replace int without variable.md",
     "isSection": true,
-    "id": "card-1012"
+    "id": "card-1043"
   },
   {
     "question": "🧠 How it works",
@@ -20543,7 +21344,7 @@ window.FLASH_CARD_DATA = [
     "topic": "real exam questions answers",
     "source": "practice/real exam questions answers/replace int without variable.md",
     "isSection": true,
-    "id": "card-1013"
+    "id": "card-1044"
   },
   {
     "question": "✅ Pros",
@@ -20560,7 +21361,7 @@ window.FLASH_CARD_DATA = [
     "topic": "real exam questions answers",
     "source": "practice/real exam questions answers/replace int without variable.md",
     "isSection": true,
-    "id": "card-1014"
+    "id": "card-1045"
   },
   {
     "question": "🔍 3️⃣ Comparison",
@@ -20596,7 +21397,7 @@ window.FLASH_CARD_DATA = [
     "topic": "real exam questions answers",
     "source": "practice/real exam questions answers/replace int without variable.md",
     "isSection": true,
-    "id": "card-1015"
+    "id": "card-1046"
   },
   {
     "question": "🚀 Interview Tip",
@@ -20614,7 +21415,7 @@ window.FLASH_CARD_DATA = [
     "topic": "real exam questions answers",
     "source": "practice/real exam questions answers/replace int without variable.md",
     "isSection": true,
-    "id": "card-1016"
+    "id": "card-1047"
   },
   {
     "question": "Good Practice Example",
@@ -20630,7 +21431,7 @@ window.FLASH_CARD_DATA = [
     "topic": "real exam questions answers",
     "source": "practice/real exam questions answers/replace int without variable.md",
     "isConcept": true,
-    "id": "card-1017"
+    "id": "card-1048"
   },
   {
     "question": "Good Practice Example",
@@ -20646,7 +21447,7 @@ window.FLASH_CARD_DATA = [
     "topic": "real exam questions answers",
     "source": "practice/real exam questions answers/replace int without variable.md",
     "isConcept": true,
-    "id": "card-1018"
+    "id": "card-1049"
   },
   {
     "question": "✅ Expected answer:",
@@ -20690,7 +21491,7 @@ window.FLASH_CARD_DATA = [
     "topic": "real exam questions answers",
     "source": "practice/real exam questions answers/struct vs class questions and answers.md",
     "isSection": true,
-    "id": "card-1019"
+    "id": "card-1050"
   },
   {
     "question": "✅ Expected answer:",
@@ -20726,7 +21527,7 @@ window.FLASH_CARD_DATA = [
     "topic": "real exam questions answers",
     "source": "practice/real exam questions answers/struct vs class questions and answers.md",
     "isSection": true,
-    "id": "card-1020"
+    "id": "card-1051"
   },
   {
     "question": "✅ Expected answer:",
@@ -20768,7 +21569,7 @@ window.FLASH_CARD_DATA = [
     "topic": "real exam questions answers",
     "source": "practice/real exam questions answers/struct vs class questions and answers.md",
     "isSection": true,
-    "id": "card-1021"
+    "id": "card-1052"
   },
   {
     "question": "✅ Expected answer:",
@@ -20808,7 +21609,7 @@ window.FLASH_CARD_DATA = [
     "topic": "real exam questions answers",
     "source": "practice/real exam questions answers/struct vs class questions and answers.md",
     "isSection": true,
-    "id": "card-1022"
+    "id": "card-1053"
   },
   {
     "question": "✅ Expected answer:",
@@ -20856,7 +21657,7 @@ window.FLASH_CARD_DATA = [
     "topic": "real exam questions answers",
     "source": "practice/real exam questions answers/struct vs class questions and answers.md",
     "isSection": true,
-    "id": "card-1023"
+    "id": "card-1054"
   },
   {
     "question": "🎯 Bonus (for “wow” points)",
@@ -20878,7 +21679,7 @@ window.FLASH_CARD_DATA = [
     "topic": "real exam questions answers",
     "source": "practice/real exam questions answers/struct vs class questions and answers.md",
     "isSection": true,
-    "id": "card-1024"
+    "id": "card-1055"
   },
   {
     "question": "✅ Quick Summary Answer (say this in 20 seconds)",
@@ -20904,7 +21705,7 @@ window.FLASH_CARD_DATA = [
     "topic": "real exam questions answers",
     "source": "practice/real exam questions answers/struct vs class questions and answers.md",
     "isSection": true,
-    "id": "card-1025"
+    "id": "card-1056"
   },
   {
     "question": "🧩 2. Why can boxing destroy the performance benefits of structs?",
@@ -20920,7 +21721,7 @@ window.FLASH_CARD_DATA = [
     "topic": "real exam questions answers",
     "source": "practice/real exam questions answers/struct vs class questions and answers.md",
     "isConcept": true,
-    "id": "card-1026"
+    "id": "card-1057"
   },
   {
     "question": "🧩 3. What happens when you mutate a struct that’s stored in a collection like a List<T>?",
@@ -20936,6 +21737,6 @@ window.FLASH_CARD_DATA = [
     "topic": "real exam questions answers",
     "source": "practice/real exam questions answers/struct vs class questions and answers.md",
     "isConcept": true,
-    "id": "card-1027"
+    "id": "card-1058"
   }
 ];

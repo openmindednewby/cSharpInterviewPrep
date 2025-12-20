@@ -5,54 +5,430 @@ Use these prompts while working through the [prep plan](../prep-plan.md). Aim to
 ---
 
 ## LINQ & Collections
-1. Given a list of trades with timestamps, return the latest trade per account using LINQ.
-2. Implement a method that flattens nested lists of instrument codes while preserving ordering.
-3. Explain the difference between `SelectMany` and nested loops. When is each preferable?
-4. How would you detect duplicate orders in a stream using `GroupBy` and produce a summary?
+
+**Q: Given a list of trades with timestamps, return the latest trade per account using LINQ.**
+
+A: Sort or group by account and pick the trade with the max timestamp using `GroupBy` + `OrderByDescending`/`MaxBy`. This keeps the logic declarative and pushes the temporal ordering into the query rather than manual loops.
+
+```csharp
+var latestTrades = trades
+    .GroupBy(t => t.AccountId)
+    .Select(g => g.OrderByDescending(t => t.Timestamp).First());
+```
+
+Use when you need the most recent entry per key without mutating state, such as building dashboards or reconciling snapshots. Avoid when the dataset is huge and you'd benefit from streaming/SQL aggregation; consider database query with `ROW_NUMBER` or a materialized view to avoid loading everything into memory.
+
+**Q: Implement a method that flattens nested lists of instrument codes while preserving ordering.**
+
+A: Use `SelectMany` to flatten while keeping inner order.
+
+```csharp
+var flat = nestedCodes.SelectMany(list => list);
+```
+
+Use when you have nested enumerables and simply need to concatenate them. Avoid when you must retain hierarchy boundaries—use nested loops instead.
+
+**Q: Explain the difference between `SelectMany` and nested loops. When is each preferable?**
+
+A: `SelectMany` projects each element to a sequence and flattens; nested loops make iteration explicit and allow more control over flow.
+
+```csharp
+// SelectMany
+var pairs = accounts.SelectMany(a => a.Orders, (a, o) => new { a.Id, o.Id });
+
+// Nested loops
+foreach (var a in accounts)
+    foreach (var o in a.Orders)
+        yield return (a.Id, o.Id);
+```
+
+Use `SelectMany` when you want a fluent declarative pipeline or need joins. Use loops when performance-critical, complex control flow, or break/continue needed.
+
+**Q: How would you detect duplicate orders in a stream using `GroupBy` and produce a summary?**
+
+A: Group by unique order keys and filter groups with count > 1. Summaries can include counts, timestamps, and other aggregate metadata that drive remediation.
+
+```csharp
+var duplicates = orders
+    .GroupBy(o => new { o.AccountId, o.ClientOrderId })
+    .Where(g => g.Count() > 1)
+    .Select(g => new {
+        g.Key.AccountId,
+        g.Key.ClientOrderId,
+        Count = g.Count(),
+        LatestTimestamp = g.Max(o => o.Timestamp)
+    });
+```
+
+Use when you need summaries and easy grouping. Avoid when data volume exceeds in-memory capabilities—use database aggregates or streaming dedup.
+
+---
 
 ## Async & Resilience
-1. Sketch code to call three REST endpoints concurrently, cancel if any take longer than 3 seconds, and aggregate results.
-2. Implement a resilient HTTP client with retry and circuit breaker policies using Polly.
-3. How would you handle backpressure when consuming a fast message queue with a slower downstream API?
-4. Explain why you might use `SemaphoreSlim` with async code over `lock`.
+
+**Q: Sketch code to call three REST endpoints concurrently, cancel if any take longer than 3 seconds, and aggregate results.**
+
+A: Use `Task.WhenAll` with `CancellationTokenSource` + timeout. Ensure the `HttpClient` is a singleton to avoid socket exhaustion and that partial results are handled gracefully when cancellation occurs.
+
+```csharp
+using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3));
+var tasks = endpoints.Select(url => httpClient.GetStringAsync(url, cts.Token));
+string[] responses = await Task.WhenAll(tasks);
+```
+
+Use when limited number of independent calls; want fail-fast. Avoid when endpoints depend on each other or you must gracefully degrade per-call.
+
+**Q: Implement a resilient HTTP client with retry and circuit breaker policies using Polly.**
+
+A: Define policies and wrap HTTP calls.
+
+```csharp
+var policy = Policy.WrapAsync(
+    Policy.Handle<HttpRequestException>()
+          .OrResult<HttpResponseMessage>(r => (int)r.StatusCode >= 500)
+          .WaitAndRetryAsync(3, attempt => TimeSpan.FromMilliseconds(200 * attempt)),
+    Policy.Handle<HttpRequestException>()
+          .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30))
+);
+
+var response = await policy.ExecuteAsync(() => httpClient.SendAsync(request));
+```
+
+Use when downstream instability; need resilience. Avoid when operations must not be retried (e.g., non-idempotent commands without safeguards).
+
+**Q: How would you handle backpressure when consuming a fast message queue with a slower downstream API?**
+
+A: Use bounded channels, buffering, or throttling. Consider load shedding by dropping low-priority messages or scaling consumers horizontally when queue lengths grow.
+
+```csharp
+var channel = Channel.CreateBounded<Message>(new BoundedChannelOptions(100)
+{
+    FullMode = BoundedChannelFullMode.Wait
+});
+
+// Producer
+_ = Task.Run(async () =>
+{
+    await foreach (var msg in source.ReadAllAsync())
+        await channel.Writer.WriteAsync(msg);
+});
+
+// Consumer
+await foreach (var msg in channel.Reader.ReadAllAsync())
+{
+    await ProcessAsync(msg);
+}
+```
+
+Use when consumer slower than producer; need to avoid overload. Avoid when throughput must be maximized with zero buffering—consider scaling consumers instead.
+
+**Q: Explain why you might use `SemaphoreSlim` with async code over `lock`.**
+
+A: `SemaphoreSlim` supports async waiting and throttling concurrency. It can represent both mutual exclusion (1 permit) and limited resource pools (>1 permits).
+
+```csharp
+private readonly SemaphoreSlim _mutex = new(1, 1);
+
+public async Task UseSharedAsync()
+{
+    await _mutex.WaitAsync();
+    try { await SharedAsyncOperation(); }
+    finally { _mutex.Release(); }
+}
+```
+
+Use `SemaphoreSlim` when async code needs mutual exclusion or limited parallelism. Avoid when code is synchronous—`lock` has less overhead.
+
+---
 
 ## API & Lifecycle
-1. Describe the ASP.NET Core middleware pipeline for a request hitting an authenticated endpoint with custom exception handling.
-2. How do you implement API versioning and backward compatibility?
-3. Discuss strategies for rate limiting and request throttling.
-4. How would you log correlation IDs across services and propagate them to downstream dependencies?
+
+**Q: Describe the ASP.NET Core middleware pipeline for a request hitting an authenticated endpoint with custom exception handling.**
+
+A: Typical order: `UseRouting` → auth middleware → custom exception handling (usually early) → `UseAuthentication`/`UseAuthorization` → endpoint execution. Static file middleware, response compression, and caching can be interleaved before routing. Include correlation logging, caching, validation, and telemetry instrumentation.
+
+```csharp
+app.UseMiddleware<CorrelationMiddleware>();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapControllers();
+```
+
+Use when building consistent request handling. Avoid when for minimal APIs you might use delegate pipeline but still similar.
+
+**Q: How do you implement API versioning and backward compatibility?**
+
+A: Strategies: URL segment (`/v1/`), header, query string. Use `Asp.Versioning` package.
+
+```csharp
+services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ReportApiVersions = true;
+});
+services.AddVersionedApiExplorer();
+```
+
+Use when breaking changes; maintain backward compatibility by keeping old controllers. Avoid when internal services with clients you control; choose contract-first to avoid version explosion.
+
+**Q: Discuss strategies for rate limiting and request throttling.**
+
+A: Use ASP.NET rate limiting middleware or gateway. Techniques: token bucket, fixed window, sliding window.
+
+```csharp
+services.AddRateLimiter(options =>
+{
+    options.AddFixedWindowLimiter("per-account", opt =>
+    {
+        opt.Window = TimeSpan.FromMinutes(1);
+        opt.PermitLimit = 60;
+        opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        opt.QueueLimit = 20;
+    });
+});
+
+app.UseRateLimiter();
+```
+
+Use when protecting downstream resources. Avoid when latency-critical internal traffic; consider other forms of protection.
+
+**Q: How would you log correlation IDs across services and propagate them to downstream dependencies?**
+
+A: Generate ID in middleware, add to headers/log context, forward via `HttpClient`. Ensure asynchronous logging frameworks flow the correlation ID across threads (e.g., using `AsyncLocal`).
+
+```csharp
+context.TraceIdentifier = context.TraceIdentifier ?? Guid.NewGuid().ToString();
+_logger.LogInformation("{CorrelationId} handling {Path}", context.TraceIdentifier, context.Request.Path);
+httpClient.DefaultRequestHeaders.Add("X-Correlation-ID", context.TraceIdentifier);
+```
+
+Use when need distributed tracing. Avoid when truly isolated services—rare.
+
+---
 
 ## System Design
-1. **Price Streaming Service:** Design a service that ingests MT5 tick data, normalizes it, caches latest prices, and exposes them via REST/WebSocket.
-2. **Order Execution Workflow:** Design an API that receives orders, validates, routes to MT4/MT5, and confirms execution. Include failure recovery.
-3. **Real-Time Monitoring Dashboard:** Architect a system to collect metrics from trading microservices and alert on anomalies.
-4. Discuss how you would integrate an external risk management engine into an existing microservices ecosystem.
+
+**Q: Design a service that ingests MT5 tick data, normalizes it, caches latest prices, and exposes them via REST/WebSocket.**
+
+A: Components: Ingestion (connectors to MT5), normalization workers, cache (Redis), API (REST/WebSocket), persistence. Add replay storage (Kafka topic or time-series DB) for audit and late subscribers. Use message queue (Kafka) for fan-out and resilient decoupling of ingestion from delivery.
+
+```csharp
+while (await mt5Stream.MoveNextAsync())
+{
+    var normalized = Normalize(mt5Stream.Current);
+    await cache.SetAsync(normalized.Symbol, normalized.Price);
+    await hubContext.Clients.Group(normalized.Symbol)
+        .SendAsync("price", normalized);
+}
+```
+
+Use when need low-latency price dissemination. Avoid when low-frequency batch updates suffice.
+
+**Q: Design an API that receives orders, validates, routes to MT4/MT5, and confirms execution. Include failure recovery.**
+
+A: Steps: receive REST order → validate (risk, compliance) → persist pending state → route to MT4/MT5 → await ack → publish result. Include idempotency keys on inbound requests and a reconciliation process for missing confirmations. Use saga/outbox for reliability and to coordinate compensating actions when downstream legs fail.
+
+```csharp
+public async Task<IActionResult> Submit(OrderRequest dto)
+{
+    var order = await _validator.ValidateAsync(dto);
+    await _repository.SavePending(order);
+    var result = await _mtGateway.SendAsync(order);
+    await _repository.UpdateStatus(order.Id, result.Status);
+    await _bus.Publish(new OrderStatusChanged(order.Id, result.Status));
+    return Ok(result);
+}
+```
+
+Use when real-time trading with external platforms. Avoid when simple internal workflows—overkill.
+
+**Q: Architect a system to collect metrics from trading microservices and alert on anomalies.**
+
+A: Collect metrics via OpenTelemetry exporters, push to time-series DB (Prometheus), visualize in Grafana, alert via Alertmanager. Tag metrics with dimensions (service, region, environment) to support slicing and alert thresholds. Include streaming logs via ELK stack and trace sampling via Jaeger/Tempo.
+
+```csharp
+var meter = new Meter("Trading.Services");
+var orderLatency = meter.CreateHistogram<double>("order_latency_ms");
+orderLatency.Record(latencyMs, KeyValuePair.Create<string, object?>("service", serviceName));
+```
+
+Use when need proactive observability. Avoid when prototype with low SLA.
+
+**Q: Discuss how you would integrate an external risk management engine into an existing microservices ecosystem.**
+
+A: Use async messaging or REST; maintain schema adapters; ensure idempotency. Map risk statuses to domain-specific responses and version contracts to avoid breaking changes. Add caching for rules, circuit breakers, fallback decisions, and health checks to remove unhealthy nodes from rotation.
+
+```csharp
+var riskResponse = await _riskClient.EvaluateAsync(order, ct);
+if (!riskResponse.Approved)
+    return OrderDecision.Rejected(riskResponse.Reason);
+```
+
+Use when external compliance requirement. Avoid when latency-critical path can't tolerate external dependency—consider in-process rules.
+
+---
 
 ## Messaging & Integration
-1. Compare RabbitMQ and ZeroMQ for distributing price updates. When would you choose one over the other?
-2. Explain how to ensure at-least-once delivery with RabbitMQ while preventing duplicate processing.
-3. How would you design a saga pattern to coordinate account funding across multiple services?
-4. Discuss the outbox pattern and how it prevents message loss in event-driven systems.
+
+**Q: Compare RabbitMQ and ZeroMQ for distributing price updates. When would you choose one over the other?**
+
+A: RabbitMQ: brokered, supports persistence, routing, acknowledgments, management UI, plugins. ZeroMQ: brokerless sockets, ultra-low latency but manual patterns, no persistence out of the box. Use RabbitMQ for durable, complex routing, enterprise integration, where administrators need visibility and security. Use ZeroMQ for high-throughput, in-process/edge messaging; avoid if you need persistence or central management.
+
+**Q: Explain how to ensure at-least-once delivery with RabbitMQ while preventing duplicate processing.**
+
+A: Use durable queues, persistent messages, manual ack, idempotent consumers. Enable publisher confirms to ensure the broker persisted the message before acknowledging to the producer.
+
+```csharp
+channel.BasicConsume(queue, autoAck: false, consumer);
+consumer.Received += (sender, ea) =>
+{
+    Handle(ea.Body);
+    channel.BasicAck(ea.DeliveryTag, multiple: false);
+};
+```
+
+Use when you can tolerate duplicates; critical to ensure no loss. Avoid when exactly-once semantics required—use transactional outbox + dedup.
+
+**Q: How would you design a saga pattern to coordinate account funding across multiple services?**
+
+A: Orchestrator or choreography; manage compensations (reverse ledger entry, refund payment).
+
+```csharp
+public async Task Handle(FundAccount command)
+{
+    var transferId = await _payments.DebitAsync(command.PaymentId);
+    try
+    {
+        await _ledger.CreditAsync(command.AccountId, command.Amount);
+        await _notifications.SendAsync(command.AccountId, "Funding complete");
+    }
+    catch
+    {
+        await _payments.RefundAsync(transferId);
+        throw;
+    }
+}
+```
+
+Use when multi-step, distributed transactions. Avoid when single system handles all steps—simple ACID transaction suffices.
+
+**Q: Discuss the outbox pattern and how it prevents message loss in event-driven systems.**
+
+A: Write domain event to outbox table within same transaction, then relay to message bus. A background dispatcher polls the outbox table, publishes events, and marks them as processed (with retries and exponential backoff).
+
+```csharp
+await using var tx = await db.Database.BeginTransactionAsync();
+order.Status = OrderStatus.Accepted;
+db.Outbox.Add(new OutboxMessage(order.Id, new OrderAccepted(order.Id)));
+await db.SaveChangesAsync();
+await tx.CommitAsync();
+```
+
+Use when need atomic DB + message publish. Avoid when no shared database or eventual consistency acceptable without duplication.
+
+---
 
 ## Data Layer
-1. Write a SQL query to calculate the rolling 7-day trade volume per instrument.
-2. Explain how you would choose between normalized schemas and denormalized tables for reporting.
-3. Describe the differences between clustered and non-clustered indexes and when to use covering indexes.
-4. Walk through handling a long-running report query that impacts OLTP performance.
+
+**Q: Write a SQL query to calculate the rolling 7-day trade volume per instrument.**
+
+A: Use window functions to calculate rolling aggregates.
+
+```sql
+WITH daily AS (
+    SELECT instrument_id,
+           trade_timestamp::date AS trade_date,
+           SUM(volume) AS daily_volume
+    FROM trades
+    GROUP BY instrument_id, trade_timestamp::date
+)
+SELECT instrument_id,
+       trade_date,
+       daily_volume,
+       SUM(daily_volume) OVER (
+           PARTITION BY instrument_id
+           ORDER BY trade_date
+           ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+       ) AS rolling_7d_volume
+FROM daily
+ORDER BY instrument_id, trade_date;
+```
+
+Use when need rolling metrics in SQL. Avoid when database lacks window functions—use app-side aggregation.
+
+**Q: Explain how you would choose between normalized schemas and denormalized tables for reporting.**
+
+A: Normalized: reduces redundancy, good for OLTP. Changes cascade predictably, but reporting joins can be expensive. Denormalized: duplicates data for fast reads (reporting, analytics). Updates are more complex; rely on ETL pipelines to keep facts in sync. Choose based on workload: mixed? use hybrid star schema or CQRS approach with read-optimized projections.
+
+**Q: Describe the differences between clustered and non-clustered indexes and when to use covering indexes.**
+
+A: Clustered: defines physical order, one per table; great for range scans. Non-clustered: separate structure pointing to data; can include columns.
+
+```sql
+CREATE NONCLUSTERED INDEX IX_Orders_Account_Status
+    ON Orders(AccountId, Status)
+    INCLUDE (CreatedAt, Amount);
+```
+
+Use covering index when query needs subset of columns; avoid extra lookups. Avoid when frequent writes—maintaining many indexes hurts performance.
+
+**Q: Walk through handling a long-running report query that impacts OLTP performance.**
+
+A: Strategies: read replicas, materialized views, batching, query hints, schedule off-peak. Consider breaking the query into smaller windowed segments and streaming results to avoid locking. Implement caching, pre-aggregation, and monitor execution plans for regressions.
+
+---
 
 ## Trading Domain Knowledge
-1. Describe the lifecycle of a forex trade from placement to settlement.
-2. How would you integrate with MT4/MT5 APIs for trade execution in C#? Mention authentication, session management, and error handling.
-3. What are common risk checks before executing a client order (e.g., margin, exposure limits)?
-4. Explain how youd handle market data bursts without dropping updates.
+
+**Q: Describe the lifecycle of a forex trade from placement to settlement.**
+
+A: Steps: quote, order placement, validation, routing, execution (fill/partial), confirmation, settlement (T+2), P&L updates. Post-trade, apply trade capture in back-office systems and reconcile with liquidity providers. Include margin checks and clearing, corporate actions, and overnight financing (swap) adjustments.
+
+**Q: How would you integrate with MT4/MT5 APIs for trade execution in C#? Mention authentication, session management, and error handling.**
+
+A: Use MetaTrader Manager/Server APIs via C# wrappers; handle session auth, keep-alive, throttle requests. Manage connections via dedicated service accounts and pre-allocate connection pools. Implement reconnect logic, map errors, ensure idempotent order submission. Translate MT-specific error codes into domain-level responses for clients.
+
+```csharp
+using var session = new Mt5Gateway(credentials);
+await session.ConnectAsync();
+var ticket = await session.SendOrderAsync(request);
+```
+
+**Q: What are common risk checks before executing a client order (e.g., margin, exposure limits)?**
+
+A: Margin availability, max exposure per instrument, credit limits, duplicate orders, fat-finger (price deviation). Implement pre-trade risk service.
+
+**Q: Explain how you'd handle market data bursts without dropping updates.**
+
+A: Use batching, diff updates, UDP multicast ingestion, prioritized queues, snapshot + incremental updates. Utilize adaptive sampling—send every tick to VIP clients while throttling retail feeds. Apply throttling per client, drop non-critical updates after stale, and monitor queue depths to trigger auto-scaling.
+
+---
 
 ## Behavioral & Soft Skills
-1. Tell me about a time you led a critical production fix under pressure.
-2. Describe a situation where you improved a process by automating manual work.
-3. Discuss a conflict within a team and how you resolved it.
-4. Share a story that demonstrates your commitment to documentation or knowledge sharing.
+
+**Q: Tell me about a time you led a critical production fix under pressure.**
+
+A: Discuss scenario: triage, swarm, communication, root cause, postmortem. Highlight proactive rollback plans and customer communication cadence.
+
+**Q: Describe a situation where you improved a process by automating manual work.**
+
+A: Example: build CI pipeline, reduce manual deployment, measured time saved. Emphasize KPIs such as deployment frequency and lead time.
+
+**Q: Discuss a conflict within a team and how you resolved it.**
+
+A: Example: align on goals, active listening, data-driven decision, mediation. Demonstrate neutral facilitation and follow-up agreements.
+
+**Q: Share a story that demonstrates your commitment to documentation or knowledge sharing.**
+
+A: Example: created runbooks, knowledge base, improved onboarding. Include metrics such as onboarding time reduction and support ticket deflection.
+
+---
 
 ## Questions for the Interviewer
+
 1. How does structure collaboration between developers, QA, and trading desks?
 2. What are the biggest technical challenges facing the MT4/MT5 integration team right now?
 3. How do you measure success for developers in this role within the first 6 months?
@@ -219,7 +595,7 @@ Notes: `Put` and `TryGet` are O(1). Thread-safety can be added with `SemaphoreSl
 
 3. **Concurrent producer/consumer pipeline for order enrichment**
 
-   *Question (real-life style):* "We ingest orders into a channel and need to enrich them via an async call before publishing. Write the enrichment pipeline so it can fan out work and push enriched orders to the outbound channel." 
+   *Question (real-life style):* "We ingest orders into a channel and need to enrich them via an async call before publishing. Write the enrichment pipeline so it can fan out work and push enriched orders to the outbound channel."
 
 ```csharp
 public static async Task StartEnrichmentPipeline(Channel<Order> inbound, Func<Order, Task<Order>> enrich, Channel<Order> outbound)
@@ -265,11 +641,11 @@ app.MapGet("/health", (IPriceFeed feed) => feed.IsConnected
 await app.RunAsync();
 ```
 
-Notes: Mapping the health check keeps the app’s composition root small. Consider adding `UseHealthChecks` or custom readiness/liveness probes for Kubernetes deployments.
+Notes: Mapping the health check keeps the app's composition root small. Consider adding `UseHealthChecks` or custom readiness/liveness probes for Kubernetes deployments.
 
 6. **Secure parameterized data access to prevent SQL injection**
 
-   *Question (real-life style):* "Refactor a repository method that currently concatenates `accountId` into SQL. Show a safe, parameterized implementation that streams results asynchronously." 
+   *Question (real-life style):* "Refactor a repository method that currently concatenates `accountId` into SQL. Show a safe, parameterized implementation that streams results asynchronously."
 
 ```csharp
 public async Task<IReadOnlyList<Order>> GetOrdersAsync(
@@ -327,7 +703,7 @@ Notes: Tighten `ClockSkew` to reduce replay windows, ensure HTTPS-only transport
 
 8. **Performance: span-based parsing to reduce allocations**
 
-   *Question (real-life style):* "We parse numeric quantities from protocol buffers and want to avoid string allocations. Implement a span-based parser that returns `-1` on invalid input." 
+   *Question (real-life style):* "We parse numeric quantities from protocol buffers and want to avoid string allocations. Implement a span-based parser that returns `-1` on invalid input."
 
 ```csharp
 public static int ParseQuantity(ReadOnlySpan<char> span)
@@ -347,7 +723,7 @@ Notes: Using `ReadOnlySpan<char>` avoids string allocations when parsing slices 
 
 9. **Performance: async streaming to lower memory footprint**
 
-   *Question (real-life style):* "Show how you would stream trades from an HTTP endpoint without buffering the whole payload, yielding trades as they arrive and honoring cancellation." 
+   *Question (real-life style):* "Show how you would stream trades from an HTTP endpoint without buffering the whole payload, yielding trades as they arrive and honoring cancellation."
 
 ```csharp
 public static async IAsyncEnumerable<Trade> StreamTradesAsync(
@@ -364,6 +740,3 @@ public static async IAsyncEnumerable<Trade> StreamTradesAsync(
 ```
 
 Notes: Streaming deserialization prevents buffering large payloads. Combine with `HttpClientFactory` for connection reuse and set `MaxResponseContentBufferSize` when buffering is unavoidable. Add defensive cancellation to avoid stuck I/O.
-
-
-

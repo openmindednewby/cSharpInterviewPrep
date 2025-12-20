@@ -391,11 +391,3 @@
 
 4. **Commitment to documentation**
    - Example: created runbooks, knowledge base, improved onboarding. Include metrics such as onboarding time reduction and support ticket deflection.
-
-## Questions for the Interviewer
-
-1. Collaboration structure question demonstrates interest in cross-team dynamics.
-2. MT4/MT5 challenges question reveals curiosity about domain complexities.
-3. Success metrics question aligns expectations.
-4. Continuous learning question shows growth mindset.
-
