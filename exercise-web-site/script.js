@@ -64,7 +64,8 @@ function wireActions() {
       showCheckResult('Select a question first to pick within a topic.', 'warning');
       return;
     }
-    const topicCards = cardsByTopic.get(currentCard.topicId || currentCard.topic);
+    const topicGroup = cardsByTopic.get(currentCard.topicId || currentCard.topic);
+    const topicCards = topicGroup?.cards;
     if (!topicCards || topicCards.length === 0) {
       showCheckResult('No other questions found for this topic.', 'warning');
       return;
@@ -192,7 +193,7 @@ function buildSidebar(topics) {
     details.appendChild(list);
     topicListEl.appendChild(details);
 
-    if (topicKey === currentCard?.topicId) {
+    if (topicKey === (currentCard?.topicId || currentCard?.topic)) {
       details.open = true;
     }
   });

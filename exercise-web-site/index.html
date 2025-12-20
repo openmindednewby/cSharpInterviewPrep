@@ -50,16 +50,18 @@
   <div class="app-shell">
     <aside class="sidebar" aria-label="Practice topics">
       <div class="sidebar-header">
-        <p class="eyebrow">Practice Mode</p>
+        <div class="header-top">
+          <p class="eyebrow">Practice Mode</p>
+          <div class="theme-switcher" aria-label="Theme selector">
+            <label for="themeSelect" class="theme-label">Theme</label>
+            <select id="themeSelect" class="theme-select">
+              <option value="dark">Dark</option>
+              <option value="light">Light</option>
+            </select>
+          </div>
+        </div>
         <h1>C# Interview Practice Q&A</h1>
         <p class="sidebar-subtitle">Pick a topic, answer out loud, then check yourself.</p>
-        <div class="theme-switcher" aria-label="Theme selector">
-          <label for="themeSelect" class="theme-label">Theme</label>
-          <select id="themeSelect" class="theme-select">
-            <option value="dark">Dark</option>
-            <option value="light">Light</option>
-          </select>
-        </div>
       </div>
       <div class="sidebar-section">
         <h2>Topics</h2>
