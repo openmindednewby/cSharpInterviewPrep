@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -144,7 +145,7 @@
 <blockquote><p>“High-level modules should not depend on low-level modules. Both should depend on abstractions. Abstractions should not depend on details. Details should depend on abstractions.”</p></blockquote>
 <p>The Dependency Inversion Principle shifts coupling away from concrete implementations toward stable abstractions (interfaces or abstract classes). This reduces the ripple effect when implementation details change and makes code easier to test and extend.</p>
 <h3 id="bad-example-high-level-depends-on-low-level-concrete-types">❌ Bad example (high-level depends on low-level concrete types)</h3>
-<pre class="hljs"><code>public class SqlOrderRepository
+<pre class="language-csharp"><code class="language-csharp">public class SqlOrderRepository
 {
 	public void Save(Order order) { /* writes to SQL */ }
 }
@@ -162,7 +163,7 @@ public class OrderService
 }</code></pre>
 <p>Problems: <code>OrderService</code> is tightly coupled to <code>SqlOrderRepository</code>. You cannot easily replace persistence (e.g., with an in-memory repo for tests or a different database) without changing <code>OrderService</code>.</p>
 <h3 id="good-example-depend-on-abstractions-constructor-injection">✅ Good example (depend on abstractions — constructor injection)</h3>
-<pre class="hljs"><code>public interface IOrderRepository { void Save(Order order); }
+<pre class="language-csharp"><code class="language-csharp">public interface IOrderRepository { void Save(Order order); }
 
 public class SqlOrderRepository : IOrderRepository
 {
@@ -279,5 +280,7 @@ public class OrderService
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

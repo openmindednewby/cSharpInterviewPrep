@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -146,7 +147,7 @@
 <h3 id="struct">🧩 <code>struct</code></h3>
 <ul><li>Lives <strong>inline</strong> — if it’s a local variable, it’s on the <strong>stack</strong>; if it’s a field in another object, it’s inside that object’s memory layout.</li><li>When passed to a method, <strong>a full copy is made</strong> (unless passed by <code>ref</code> or <code>in</code>).</li><li>Ideal for <strong>small, immutable, lightweight data</strong> — e.g., coordinates, ticks, prices, GUIDs.</li></ul>
 <p><strong>Example:</strong></p>
-<pre class="hljs"><code>struct Point
+<pre class="language-csharp"><code class="language-csharp">struct Point
 {
     public int X;
     public int Y;
@@ -156,7 +157,7 @@
 <h3 id="class">🧩 <code>class</code></h3>
 <ul><li>Lives on the <strong>managed heap</strong>. Variables hold a <strong>reference (pointer)</strong> to the actual object.</li><li>Passed around by reference, so multiple variables can point to the same instance.</li><li>Managed by the <strong>Garbage Collector</strong>.</li></ul>
 <p><strong>Example:</strong></p>
-<pre class="hljs"><code>class Order
+<pre class="language-csharp"><code class="language-csharp">class Order
 {
     public string Symbol { get; set; }
     public double Price { get; set; }
@@ -168,7 +169,7 @@
 <p>Use when:</p>
 <ul><li>The object is <strong>small (≤ 16 bytes typically)</strong>.</li><li>It’s <strong>immutable</strong>.</li><li>You’ll create <strong>many</strong> of them (e.g., millions per second) and want <strong>no GC overhead</strong>.</li><li>Value semantics make sense (copying creates independence).</li></ul>
 <p><strong>Example (trading context):</strong></p>
-<pre class="hljs"><code>readonly struct Tick
+<pre class="language-csharp"><code class="language-csharp">readonly struct Tick
 {
     public string Symbol { get; }
     public double Bid { get; }
@@ -182,7 +183,7 @@
 <p>---</p>
 <h3 id="boxing-and-hidden-allocations">⚠️ Boxing and Hidden Allocations</h3>
 <p>When a struct is treated as an <code>object</code> or cast to an interface, it gets <strong>boxed</strong> — copied onto the heap.</p>
-<pre class="hljs"><code>struct Point { public int X, Y; }
+<pre class="language-csharp"><code class="language-csharp">struct Point { public int X, Y; }
 
 object obj = new Point(); // BOXED: allocates on heap
 Point p = (Point)obj;     // UNBOXED: copy back to stack</code></pre>
@@ -192,7 +193,7 @@ Point p = (Point)obj;     // UNBOXED: copy back to stack</code></pre>
 <p>If you’re processing <strong>millions of tick messages</strong> per second:</p>
 <ul><li>Use a <code>struct</code> (or <code>readonly struct</code>) for individual ticks (lightweight, immutable).</li><li>Use a <code>class</code> for services and entities that manage state, like <code>OrderBook</code>, <code>TradeSession</code>, or <code>CacheManager</code>.</li></ul>
 <p><strong>Example:</strong></p>
-<pre class="hljs"><code>readonly struct Tick
+<pre class="language-csharp"><code class="language-csharp">readonly struct Tick
 {
     public string Symbol { get; init; }
     public double Bid { get; init; }
@@ -207,7 +208,7 @@ class PriceFeedProcessor
 }</code></pre>
 <p>---</p>
 <h2 id="memory-visualization">🧩 Memory Visualization</h2>
-<pre class="hljs"><code>Stack:
+<pre class="language-csharp"><code class="language-csharp">Stack:
  ├─ Tick t1 { X=1, Y=2 }   (struct: inline)
  ├─ Tick t2 = t1 (copied!)
  └─ Order ref ─┐
@@ -224,7 +225,7 @@ Heap:
 <p>---</p>
 <h1 id="memory-behavior-struct-vs-class">🧩 Memory Behavior: <code>struct</code> vs <code>class</code></h1>
 <h2 id="1-basic-memory-layout">1️⃣ Basic memory layout</h2>
-<pre class="hljs"><code>┌──────────────────────────────┐
+<pre class="language-csharp"><code class="language-csharp">┌──────────────────────────────┐
 │          Stack               │
 │ ┌─────────────────────────┐  │
 │ │ int x = 10;             │  │
@@ -270,44 +271,44 @@ Heap:
 <p>---</p>
 <h2 id="2-assignment-behavior">2️⃣ Assignment behavior</h2>
 <h3 id="struct-value-type">✅ Struct (value type)</h3>
-<pre class="hljs"><code>Point a = new Point { X = 1, Y = 2 };
+<pre class="language-csharp"><code class="language-csharp">Point a = new Point { X = 1, Y = 2 };
 Point b = a;    // copy!
 b.X = 99;
 Console.WriteLine(a.X); // 1 (a unaffected)</code></pre>
 <p><strong>Memory:</strong></p>
-<pre class="hljs"><code>Stack:
+<pre class="language-csharp"><code class="language-csharp">Stack:
  a { X=1, Y=2 }
  b { X=99, Y=2 }   ← completely separate copy</code></pre>
 <ul><li>Structs are <strong>copied by value</strong>.</li><li>Each variable has its <strong>own independent copy</strong>.</li><li>No heap allocation → no GC pressure.</li></ul>
 <p>---</p>
 <h3 id="class-reference-type">✅ Class (reference type)</h3>
-<pre class="hljs"><code>Order o1 = new Order { Id = 1, Price = 99 };
+<pre class="language-csharp"><code class="language-csharp">Order o1 = new Order { Id = 1, Price = 99 };
 Order o2 = o1;  // copy reference!
 o2.Price = 120;
 Console.WriteLine(o1.Price); // 120</code></pre>
 <p><strong>Memory:</strong></p>
-<pre class="hljs"><code>Stack:
+<pre class="language-csharp"><code class="language-csharp">Stack:
  o1 ─┐
  o2 ─┘──► Heap: { Id=1, Price=120 }</code></pre>
 <ul><li>Classes are <strong>copied by reference</strong> — both variables point to the same heap object.</li><li>Modifying one affects the other.</li></ul>
 <p>---</p>
 <h2 id="3-struct-inside-a-class-inline-layout">3️⃣ Struct inside a class (inline layout)</h2>
-<pre class="hljs"><code>class Trade
+<pre class="language-csharp"><code class="language-csharp">class Trade
 {
     public string Symbol;
     public Point Position;
 }</code></pre>
 <p><strong>Memory:</strong></p>
-<pre class="hljs"><code>Heap: Trade
+<pre class="language-csharp"><code class="language-csharp">Heap: Trade
  ├─ Symbol → &quot;EURUSD&quot;   (heap reference)
  └─ Position { X=10, Y=20 }  (inline in Trade object)</code></pre>
 <p><strong>Insight:</strong> Even though the struct is inside a class (on heap), its <strong>fields are embedded inline</strong> — not separate allocations. This reduces pointer indirection and helps cache locality.</p>
 <p>---</p>
 <h2 id="4-passing-to-methods">4️⃣ Passing to methods</h2>
-<pre class="hljs"><code>void Move(Point p) { p.X += 10; } // copy!
+<pre class="language-csharp"><code class="language-csharp">void Move(Point p) { p.X += 10; } // copy!
 void MoveRef(ref Point p) { p.X += 10; } // modifies original</code></pre>
 <p><strong>Memory visualization:</strong></p>
-<pre class="hljs"><code>By value (copy):
+<pre class="language-csharp"><code class="language-csharp">By value (copy):
  Caller: a { X=1 }
  Method: p { X=1 } → modified to X=11 (copy destroyed)
 
@@ -319,7 +320,7 @@ By ref:
 <blockquote><p>“Structs are copied on method calls unless passed by <code>ref</code> or <code>in</code>. Large structs should be passed by <code>in</code> to avoid copy overhead — especially in tight loops or latency-critical code.”</p></blockquote>
 <p>---</p>
 <h2 id="5-heap-fragmentation-and-gc-difference">5️⃣ Heap fragmentation and GC difference</h2>
-<pre class="hljs"><code>Structs:
+<pre class="language-csharp"><code class="language-csharp">Structs:
 [Stack]
 [Stack frame destroyed → data gone instantly]
 → No GC involvement.
@@ -332,7 +333,7 @@ Classes:
 <ul><li>Structs vanish when they go out of scope → <strong>predictable lifetime</strong>.</li><li>Classes depend on GC cycles → <strong>non-deterministic</strong> reclamation.</li><li>Overusing classes in a high-frequency path (like market ticks) causes <strong>GC churn and pauses</strong>.</li></ul>
 <p>---</p>
 <h2 id="6-summary-diagram">6️⃣ ⚙️ Summary Diagram</h2>
-<pre class="hljs"><code>STRUCT (Value Type)
+<pre class="language-csharp"><code class="language-csharp">STRUCT (Value Type)
  ┌──────────────┐
  │ Inline Data  │
  ├──────────────┤
@@ -434,5 +435,7 @@ CLASS (Reference Type)
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

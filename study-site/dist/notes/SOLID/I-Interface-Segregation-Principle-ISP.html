@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -142,7 +143,7 @@
         <h2 id="i-interface-segregation-principle-isp"><strong>I — Interface Segregation Principle (ISP)</strong></h2>
 <blockquote><p>“Clients should not be forced to depend on methods they do not use.”</p></blockquote>
 <h3 id="bad-example">❌ Bad example:</h3>
-<pre class="hljs"><code>public interface ITradingPlatform
+<pre class="language-csharp"><code class="language-csharp">public interface ITradingPlatform
 {
     void ExecuteOrder(Order order);
     void StreamMarketData();
@@ -150,7 +151,7 @@
 }</code></pre>
 <p>Each implementation is forced to implement everything, even if it doesn’t need to.</p>
 <h3 id="good-example">✅ Good example:</h3>
-<pre class="hljs"><code>public interface ITradeExecutor { void ExecuteOrder(Order order); }
+<pre class="language-csharp"><code class="language-csharp">public interface ITradeExecutor { void ExecuteOrder(Order order); }
 public interface IMarketDataFeed { void StreamMarketData(); }
 public interface INotifier { void SendNotification(); }</code></pre>
 <p>💡 <strong>In trading:</strong></p>
@@ -250,5 +251,7 @@ public interface INotifier { void SendNotification(); }</code></pre>
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

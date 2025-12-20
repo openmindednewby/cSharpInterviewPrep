@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -140,7 +141,7 @@
         <div class="toc-label">Rapid overview</div>
         <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#forcing-garbage-collection-rarely-needed">Forcing Garbage Collection (Rarely Needed)</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
         <h1 id="forcing-garbage-collection-rarely-needed">Forcing Garbage Collection (Rarely Needed)</h1>
-<pre class="hljs"><code>GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, blocking: true, compacting: true);
+<pre class="language-csharp"><code class="language-csharp">GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, blocking: true, compacting: true);
 GC.WaitForPendingFinalizers();
 GC.Collect();</code></pre>
 <ul><li>Forces collection of <strong>all generations</strong> and waits for finalizers. Use only for diagnostic tools or when transitioning between phases (e.g., benchmark setup vs measurement).</li><li>In production code, let the GC run heuristically—manual collection can hurt throughput and latency.</li></ul>
@@ -238,5 +239,7 @@ GC.Collect();</code></pre>
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

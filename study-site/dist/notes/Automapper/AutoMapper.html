@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -147,7 +148,7 @@
 <ul><li>Reduces repetitive property-to-property assignment code.</li><li>Centralizes mapping rules in <code>Profile</code> classes.</li><li>Supports projection (e.g., <code>.ProjectTo&lt;T&gt;()</code>) for efficient queries with LINQ providers.</li></ul>
 <p>---</p>
 <h3 id="example-dto-domain-mapping-with-a-profile">🧩 Example — DTO ↔ Domain mapping with a Profile</h3>
-<pre class="hljs"><code>public class Order
+<pre class="language-csharp"><code class="language-csharp">public class Order
 {
     public int Id { get; set; }
     public string Symbol { get; set; }
@@ -179,7 +180,7 @@ public class OrderProfile : Profile
 }</code></pre>
 <p>---</p>
 <h3 id="di-registration-aspnet-core">DI registration (ASP.NET Core)</h3>
-<pre class="hljs"><code>// Program.cs / Startup.cs
+<pre class="language-csharp"><code class="language-csharp">// Program.cs / Startup.cs
 services.AddAutoMapper(typeof(OrderProfile));
 
 // or scan the assembly
@@ -187,7 +188,7 @@ services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());</code></pre>
 <p>AutoMapper will discover <code>Profile</code> classes and register <code>IMapper</code> in the DI container.</p>
 <p>---</p>
 <h3 id="usage-examples">Usage examples</h3>
-<pre class="hljs"><code>public class OrdersController : ControllerBase
+<pre class="language-csharp"><code class="language-csharp">public class OrdersController : ControllerBase
 {
     private readonly IMapper _mapper;
     public OrdersController(IMapper mapper) =&gt; _mapper = mapper;
@@ -209,7 +210,7 @@ services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());</code></pre>
     }
 }</code></pre>
 <p>Projection example (Entity Framework Core):</p>
-<pre class="hljs"><code>var dtos = dbContext.Orders
+<pre class="language-csharp"><code class="language-csharp">var dtos = dbContext.Orders
     .Where(o =&gt; o.Amount &gt; 1000)
     .ProjectTo&lt;OrderDto&gt;(configuration) // translates to SQL-select projection
     .ToList();</code></pre>
@@ -312,5 +313,7 @@ services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());</code></pre>
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

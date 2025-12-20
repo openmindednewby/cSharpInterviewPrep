@@ -152,6 +152,11 @@ function setCardContent(card) {
         pre.appendChild(code);
         codeWrapper.appendChild(pre);
         cardAnswerEl.appendChild(codeWrapper);
+
+        // Apply Prism syntax highlighting
+        if (typeof Prism !== 'undefined') {
+          Prism.highlightElement(code);
+        }
       }
     });
   }

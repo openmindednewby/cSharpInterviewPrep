@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -173,7 +174,7 @@
 <p>---</p>
 <h2 id="a-concrete-interview-ready-coding-example-c-rate-limit-bounded-concurrency-cache-aside">A concrete “interview-ready” coding example (C#): rate limit + bounded concurrency + cache-aside</h2>
 <h3 id="a-cache-aside-with-stampede-protection-per-key-lock">A) Cache-aside with stampede protection (per-key lock)</h3>
-<pre class="hljs"><code>using Microsoft.Extensions.Caching.Memory;
+<pre class="language-csharp"><code class="language-csharp">using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Concurrent;
 
 public class CachedProfileService
@@ -217,7 +218,7 @@ public record UserProfile(string Id, string Name);</code></pre>
 <p>What this shows:</p>
 <ul><li>async I/O</li><li>caching</li><li>stampede prevention (critical at scale)</li></ul>
 <h3 id="b-concurrency-limit-around-an-expensive-call-backpressure">B) Concurrency limit around an expensive call (backpressure)</h3>
-<pre class="hljs"><code>public class ExpensiveGateway
+<pre class="language-csharp"><code class="language-csharp">public class ExpensiveGateway
 {
     private readonly SemaphoreSlim _limit = new(initialCount: 200); // tune based on load tests
 
@@ -318,5 +319,7 @@ public class TooManyRequestsException : Exception { }</code></pre>
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

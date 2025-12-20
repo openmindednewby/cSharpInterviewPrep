@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -146,14 +147,14 @@
 <p>---</p>
 <h2 id="the-scenario">⚙️ The scenario</h2>
 <p>Imagine a trading feed sending data like this:</p>
-<pre class="hljs"><code>EURUSD,1.07432,1.07436\n
+<pre class="language-csharp"><code class="language-csharp">EURUSD,1.07432,1.07436\n
 GBPUSD,1.24587,1.24592\n
 USDJPY,151.229,151.238\n</code></pre>
 <p>We want to:</p>
 <ol><li>Read from a network stream continuously</li><li>Parse each tick line as it arrives (may arrive in chunks!)</li><li>Process it with zero extra allocations</li></ol>
 <p>---</p>
 <h2 id="full-example-asynctickstreamprocessorcs">📄 Full Example: <code>AsyncTickStreamProcessor.cs</code></h2>
-<pre class="hljs"><code>using System;
+<pre class="language-csharp"><code class="language-csharp">using System;
 using System.Buffers;
 using System.Buffers.Text;
 using System.IO;
@@ -404,5 +405,7 @@ public static class Program
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

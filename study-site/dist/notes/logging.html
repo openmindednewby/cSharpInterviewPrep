@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -149,7 +150,7 @@
 <h2 id="patterns-to-prefer">Patterns to Prefer</h2>
 <ul><li><strong>Message templates over interpolation:</strong> <code>logger.LogInformation(&quot;Processed {Count} items&quot;, count);</code> avoids unnecessary string formatting when disabled.</li><li><strong>Enriched scopes:</strong> Wrap requests with <code>using var scope = logger.BeginScope(new { CorrelationId = traceId, Tenant = tenant });</code> so child logs inherit fields.</li><li><strong>Categorized loggers:</strong> Request typed loggers per class (<code>ILogger&lt;CheckoutHandler&gt;</code>) for filters and metrics alignment.</li><li><strong>Level hygiene:</strong></li><li><code>Critical/Error</code>: actionable failures only.</li><li><code>Warning</code>: degradation/path to failure.</li><li><code>Information</code>: business milestones.</li><li><code>Debug/Trace</code>: development and short-term diagnostics; gate behind config.</li><li><strong>Async/buffered sinks:</strong> Use non-blocking background queues with bounded capacity; drop oldest or sample when full.</li><li><strong>Health/availability focus:</strong> Emit heartbeats and dependency outcome events (latency, status, retries) to support SLO dashboards.</li></ul>
 <h2 id="configuration-example-minimal-api">Configuration Example (Minimal API)</h2>
-<pre class="hljs"><code>var builder = WebApplication.CreateBuilder(args);
+<pre class="language-csharp"><code class="language-csharp">var builder = WebApplication.CreateBuilder(args);
 
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole(options =&gt;
@@ -195,7 +196,7 @@ app.Run();</code></pre>
 <h2 id="operational-best-practices">Operational Best Practices</h2>
 <ul><li><strong>Correlate everything:</strong> Propagate trace/span IDs across HTTP, messaging, and background jobs.</li><li><strong>Schema discipline:</strong> Maintain a central log schema (event name, category, correlation, tenant, outcome, duration).</li><li><strong>PII controls:</strong> Classify fields and redact at the edge; log tokens/credentials only in secure staging with strict retention.</li><li><strong>Deployment safety:</strong> Use configuration-driven sinks/levels; favor hot-reloadable changes (appsettings, feature flags) over redeploys.</li><li><strong>Alerting:</strong> Alert on error-rate deltas, burst of dropped events, and missing heartbeats rather than raw log volume.</li><li><strong>What to log (and not):</strong></li><li><strong>Log:</strong> Request/response envelope metadata (not bodies) for public APIs, dependency outcomes (latency/status/retries), domain milestones (order accepted/settled), security-relevant events (authn/z decisions), and <strong>drop reason</strong> when sampling/discarding.</li><li><strong>Avoid:</strong> Large payloads, secrets, personal data, high-cardinality values (raw GUID lists), and repetitive success spam in hot loops. Summarize counts instead.</li><li><strong>Environments:</strong></li><li><strong>Local/dev:</strong> Enable <code>Debug/Trace</code>, file/console targets, and payload logging only with synthetic data.</li><li><strong>Staging:</strong> Mirror production sinks/levels; allow short-term <code>Debug</code> with sampling for reproductions.</li><li><strong>Production:</strong> Default to <code>Information</code> for business events and <code>Warning/Error</code> for issues; enable <code>Debug/Trace</code> only via time-bound flags with sampling to protect throughput and cost.</li><li><strong>Performance guardrails:</strong> Keep hot-path logging off by default, prefer structured summaries, and set per-rule rate limits so troubleshooting toggles don't DOS the service.</li></ul>
 <h2 id="sample-diagnostic-pattern-resilient-http-client">Sample Diagnostic Pattern (Resilient HTTP Client)</h2>
-<pre class="hljs"><code>public class InventoryClient
+<pre class="language-csharp"><code class="language-csharp">public class InventoryClient
 {
     private static readonly EventId FetchInventory = new(1001, nameof(FetchAsync));
     private readonly HttpClient _httpClient;
@@ -316,5 +317,7 @@ app.Run();</code></pre>
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

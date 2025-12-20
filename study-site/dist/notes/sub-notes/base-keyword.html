@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -149,7 +150,7 @@
 <p>…even if they are hidden or overridden in the derived class.</p>
 <p>---</p>
 <h3 id="example">📌 Example</h3>
-<pre class="hljs"><code>class Animal
+<pre class="language-csharp"><code class="language-csharp">class Animal
 {
     public void MakeSound()
     {
@@ -174,7 +175,7 @@ class Dog : Animal
 <p>---</p>
 <h3 id="why-immediate-base-class">📌 Why "immediate" base class?</h3>
 <p>If there is a long inheritance chain, like:</p>
-<pre class="hljs"><code>Animal → Mammal → Dog</code></pre>
+<pre class="language-csharp"><code class="language-csharp">Animal → Mammal → Dog</code></pre>
 <p>Inside <code>Dog</code>, <code>base</code> always means <strong>Mammal</strong>, not Animal. So <code>base</code> refers only to the <strong>direct</strong> parent class.</p>
 <p>---</p>
 <h3 id="summary">✔ Summary</h3>
@@ -275,5 +276,7 @@ class Dog : Animal
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

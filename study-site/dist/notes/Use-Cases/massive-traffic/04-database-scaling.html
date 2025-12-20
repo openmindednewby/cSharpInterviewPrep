@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -147,7 +148,7 @@
 <p>---</p>
 <h2 id="1-indexing-the-foundation-of-fast-queries">1. Indexing: The Foundation of Fast Queries</h2>
 <h3 id="the-problem-missing-indexes">The Problem: Missing Indexes</h3>
-<pre class="hljs"><code>-- SLOW: Full table scan on 10 million rows
+<pre class="language-sql"><code class="language-sql">-- SLOW: Full table scan on 10 million rows
 SELECT * FROM Orders
 WHERE UserId = 12345
   AND Status = &#39;Pending&#39;
@@ -155,14 +156,14 @@ WHERE UserId = 12345
 
 -- Execution plan shows: Table Scan (cost: 10,000,000)</code></pre>
 <h3 id="the-solution-composite-indexes">The Solution: Composite Indexes</h3>
-<pre class="hljs"><code>-- Create covering index (index contains all needed columns)
+<pre class="language-sql"><code class="language-sql">-- Create covering index (index contains all needed columns)
 CREATE NONCLUSTERED INDEX IX_Orders_UserId_Status_CreatedAt
 ON Orders (UserId, Status, CreatedAt)
 INCLUDE (OrderTotal, ShippingAddress); -- Add frequently selected columns
 
 -- Now query uses index seek (cost: 10)</code></pre>
 <h3 id="c-code-ensure-queries-use-indexes">C# Code: Ensure Queries Use Indexes</h3>
-<pre class="hljs"><code>public class OrderRepository
+<pre class="language-csharp"><code class="language-csharp">public class OrderRepository
 {
     private readonly IDbConnection _db;
 
@@ -220,7 +221,7 @@ INCLUDE (OrderTotal, ShippingAddress); -- Add frequently selected columns
 <p>---</p>
 <h2 id="2-avoid-n1-query-problem">2. Avoid N+1 Query Problem</h2>
 <h3 id="the-problem">❌ The Problem</h3>
-<pre class="hljs"><code>// Loads 1 query for users, then 1 query per user for orders = N+1 queries
+<pre class="language-csharp"><code class="language-csharp">// Loads 1 query for users, then 1 query per user for orders = N+1 queries
 public async Task&lt;List&lt;UserWithOrders&gt;&gt; GetUsersWithOrdersBad(CancellationToken ct)
 {
     var users = await _db.QueryAsync&lt;User&gt;(&quot;SELECT * FROM Users&quot;);
@@ -241,7 +242,7 @@ public async Task&lt;List&lt;UserWithOrders&gt;&gt; GetUsersWithOrdersBad(Cancel
 }
 // 1 + N queries for N users = 1,001 queries for 1,000 users</code></pre>
 <h3 id="solution-1-join-in-sql">✅ Solution 1: Join in SQL</h3>
-<pre class="hljs"><code>public async Task&lt;List&lt;UserWithOrders&gt;&gt; GetUsersWithOrdersJoin(CancellationToken ct)
+<pre class="language-csharp"><code class="language-csharp">public async Task&lt;List&lt;UserWithOrders&gt;&gt; GetUsersWithOrdersJoin(CancellationToken ct)
 {
     var sql = @&quot;
         SELECT
@@ -276,7 +277,7 @@ public async Task&lt;List&lt;UserWithOrders&gt;&gt; GetUsersWithOrdersBad(Cancel
 }
 // 1 query total</code></pre>
 <h3 id="solution-2-batch-load-when-join-is-impractical">✅ Solution 2: Batch Load (when JOIN is impractical)</h3>
-<pre class="hljs"><code>public async Task&lt;List&lt;UserWithOrders&gt;&gt; GetUsersWithOrdersBatched(CancellationToken ct)
+<pre class="language-csharp"><code class="language-csharp">public async Task&lt;List&lt;UserWithOrders&gt;&gt; GetUsersWithOrdersBatched(CancellationToken ct)
 {
     // 1 query: get all users
     var users = (await _db.QueryAsync&lt;User&gt;(&quot;SELECT * FROM Users&quot;)).ToList();
@@ -300,7 +301,7 @@ public async Task&lt;List&lt;UserWithOrders&gt;&gt; GetUsersWithOrdersBad(Cancel
 }
 // 2 queries total, regardless of number of users</code></pre>
 <h3 id="ef-core-use-include-to-avoid-n1">EF Core: Use Include to avoid N+1</h3>
-<pre class="hljs"><code>public async Task&lt;List&lt;User&gt;&gt; GetUsersWithOrdersEFCore(CancellationToken ct)
+<pre class="language-csharp"><code class="language-csharp">public async Task&lt;List&lt;User&gt;&gt; GetUsersWithOrdersEFCore(CancellationToken ct)
 {
     return await _dbContext.Users
         .Include(u =&gt; u.Orders) // Single query with JOIN
@@ -319,7 +320,7 @@ public async Task&lt;List&lt;Order&gt;&gt; GetOrdersWithDetailsEFCore(Cancellati
 <p>---</p>
 <h2 id="3-pagination-never-use-offset-for-large-tables">3. Pagination: Never Use OFFSET for Large Tables</h2>
 <h3 id="bad-offset-gets-slower-as-offset-increases">❌ Bad: OFFSET (gets slower as offset increases)</h3>
-<pre class="hljs"><code>// Page 1,000 of 10,000,000 records = scans 1,000,000 rows
+<pre class="language-csharp"><code class="language-csharp">// Page 1,000 of 10,000,000 records = scans 1,000,000 rows
 public async Task&lt;PagedResult&lt;Order&gt;&gt; GetOrdersOffset(int page, int pageSize, CancellationToken ct)
 {
     var offset = (page - 1) * pageSize;
@@ -344,7 +345,7 @@ public async Task&lt;PagedResult&lt;Order&gt;&gt; GetOrdersOffset(int page, int 
 }
 // Performance degrades linearly with page number</code></pre>
 <h3 id="good-keyset-pagination-seek-method">✅ Good: Keyset Pagination (Seek Method)</h3>
-<pre class="hljs"><code>public async Task&lt;PagedResult&lt;Order&gt;&gt; GetOrdersKeyset(
+<pre class="language-csharp"><code class="language-csharp">public async Task&lt;PagedResult&lt;Order&gt;&gt; GetOrdersKeyset(
     DateTime? lastCreatedAt,
     int? lastOrderId,
     int pageSize,
@@ -382,7 +383,7 @@ public async Task&lt;PagedResult&lt;Order&gt;&gt; GetOrdersOffset(int page, int 
 <p>---</p>
 <h2 id="4-connection-pooling-management">4. Connection Pooling & Management</h2>
 <h3 id="configure-connection-pool">Configure Connection Pool</h3>
-<pre class="hljs"><code>// appsettings.json
+<pre class="language-csharp"><code class="language-csharp">// appsettings.json
 {
   &quot;ConnectionStrings&quot;: {
     &quot;DefaultConnection&quot;: &quot;Server=myserver;Database=mydb;User Id=user;Password=pass;
@@ -394,7 +395,7 @@ public async Task&lt;PagedResult&lt;Order&gt;&gt; GetOrdersOffset(int page, int 
   }
 }</code></pre>
 <h3 id="pool-size-guidelines">Pool Size Guidelines</h3>
-<pre class="hljs"><code>// Rule of thumb: Max Pool Size = (Number of CPU cores * 2) + effective spindle count
+<pre class="language-csharp"><code class="language-csharp">// Rule of thumb: Max Pool Size = (Number of CPU cores * 2) + effective spindle count
 // For cloud databases with connection limits:
 
 public static class DatabaseConfig
@@ -414,7 +415,7 @@ public static class DatabaseConfig
 // Running 4 instances
 // Max pool size per instance = (100 * 0.8) / 4 = 20 connections</code></pre>
 <h3 id="monitor-connection-pool">Monitor Connection Pool</h3>
-<pre class="hljs"><code>public class DatabaseHealthCheck : IHealthCheck
+<pre class="language-csharp"><code class="language-csharp">public class DatabaseHealthCheck : IHealthCheck
 {
     private readonly IDbConnection _db;
 
@@ -443,7 +444,7 @@ public static class DatabaseConfig
 <p>---</p>
 <h2 id="5-read-replicas-for-read-heavy-workloads">5. Read Replicas for Read-Heavy Workloads</h2>
 <h3 id="setup-multi-database-routing">Setup Multi-Database Routing</h3>
-<pre class="hljs"><code>public enum DatabaseRole
+<pre class="language-csharp"><code class="language-csharp">public enum DatabaseRole
 {
     Primary,
     Replica
@@ -495,7 +496,7 @@ public class OrderRepository
     }
 }</code></pre>
 <h3 id="handle-replication-lag">Handle Replication Lag</h3>
-<pre class="hljs"><code>public class ReplicationAwareRepository
+<pre class="language-csharp"><code class="language-csharp">public class ReplicationAwareRepository
 {
     private readonly IDatabaseConnectionFactory _dbFactory;
 
@@ -547,7 +548,7 @@ public class OrderRepository
 <p>---</p>
 <h2 id="6-database-partitioningsharding">6. Database Partitioning/Sharding</h2>
 <h3 id="horizontal-partitioning-sharding-by-user-id">Horizontal Partitioning (Sharding by User ID)</h3>
-<pre class="hljs"><code>public interface IShardingStrategy
+<pre class="language-csharp"><code class="language-csharp">public interface IShardingStrategy
 {
     int GetShardId(int userId);
     IDbConnection GetConnection(int shardId);
@@ -619,7 +620,7 @@ public class ShardedOrderRepository
 <p>---</p>
 <h2 id="7-query-optimization-techniques">7. Query Optimization Techniques</h2>
 <h3 id="use-compiled-queries-ef-core">Use Compiled Queries (EF Core)</h3>
-<pre class="hljs"><code>public class OrderQueries
+<pre class="language-csharp"><code class="language-csharp">public class OrderQueries
 {
     // Compiled query: parsed once, executed many times
     private static readonly Func&lt;AppDbContext, int, Task&lt;Order?&gt;&gt; _getOrderById =
@@ -632,13 +633,13 @@ public class ShardedOrderRepository
     }
 }</code></pre>
 <h3 id="use-asnotracking-for-read-only-queries">Use AsNoTracking for Read-Only Queries</h3>
-<pre class="hljs"><code>// ❌ Bad: Change tracking overhead for read-only data
+<pre class="language-csharp"><code class="language-csharp">// ❌ Bad: Change tracking overhead for read-only data
 var orders = await _dbContext.Orders.ToListAsync();
 
 // ✅ Good: No tracking = faster
 var orders = await _dbContext.Orders.AsNoTracking().ToListAsync();</code></pre>
 <h3 id="project-only-needed-columns">Project Only Needed Columns</h3>
-<pre class="hljs"><code>// ❌ Bad: Selects all columns, loads entire object graph
+<pre class="language-csharp"><code class="language-csharp">// ❌ Bad: Selects all columns, loads entire object graph
 var users = await _dbContext.Users
     .Include(u =&gt; u.Orders)
     .Include(u =&gt; u.Addresses)
@@ -730,5 +731,7 @@ var users = await _dbContext.Users
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

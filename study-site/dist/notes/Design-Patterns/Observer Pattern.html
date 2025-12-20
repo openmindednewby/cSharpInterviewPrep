@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -143,7 +144,7 @@
 <blockquote><p>Let multiple subscribers react to market data updates in real-time.</p></blockquote>
 <p>---</p>
 <h3 id="example-pricefeed-with-multiple-subscribers">🧩 Example — PriceFeed with multiple subscribers</h3>
-<pre class="hljs"><code>public class Tick
+<pre class="language-csharp"><code class="language-csharp">public class Tick
 {
     public string Symbol { get; init; }
     public double Bid { get; init; }
@@ -285,5 +286,7 @@ feed.Publish(new Tick { Symbol = &quot;GBPUSD&quot;, Bid = 1.2520, Ask = 1.2522 
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -149,7 +150,7 @@
 <h2 id="core-concepts-and-api">Core concepts and API</h2>
 <ul><li>Create a validator by implementing <code>AbstractValidator&lt;T&gt;</code>.</li><li>Add rules with <code>RuleFor(x =&gt; x.Property).NotEmpty().Length(5, 50).Must(...);</code></li><li>Supports <code>When</code>, <code>Unless</code>, <code>CascadeMode</code> and <code>RuleSet</code> for conditional and grouped validation.</li><li>Validators support async via <code>MustAsync</code>, custom <code>IValidator&lt;T&gt;</code> implementations, and <code>SetValidator</code> to compose nested validators.</li></ul>
 <p>Example:</p>
-<pre class="hljs"><code>public class CreateOrderDto
+<pre class="language-csharp"><code class="language-csharp">public class CreateOrderDto
 {
     public string Symbol { get; set; }
     public decimal Amount { get; set; }
@@ -192,20 +193,20 @@ public class CreateOrderDtoValidator : AbstractValidator&lt;CreateOrderDto&gt;
 <p>---</p>
 <h2 id="integration-with-aspnet-core">Integration with ASP.NET Core</h2>
 <ul><li>Register validators in DI and enable automatic model validation.</li></ul>
-<pre class="hljs"><code>services.AddControllers()
+<pre class="language-csharp"><code class="language-csharp">services.AddControllers()
         .AddFluentValidation(fv =&gt; fv.RegisterValidatorsFromAssemblyContaining&lt;CreateOrderDtoValidator&gt;());</code></pre>
 <ul><li>You can also register <code>IValidator&lt;T&gt;</code> explicitly:</li></ul>
-<pre class="hljs"><code>services.AddTransient&lt;IValidator&lt;CreateOrderDto&gt;, CreateOrderDtoValidator&gt;();</code></pre>
+<pre class="language-csharp"><code class="language-csharp">services.AddTransient&lt;IValidator&lt;CreateOrderDto&gt;, CreateOrderDtoValidator&gt;();</code></pre>
 <ul><li>By default FluentValidation integrates with ASP.NET Core's model validation pipeline. Customize behavior with <code>FluentValidationModelValidatorProvider.Configure(...)</code> or by disabling automatic validation and invoking validators manually.</li></ul>
 <p>---</p>
 <h2 id="senior-level-best-practices">Senior-level best practices</h2>
 <ul><li>Keep validators thin: validation expresses rules, not business processes. Avoid embedding heavy domain logic or side effects in validators.</li><li>Prefer composition: extract reusable rule sets and nested validators via <code>SetValidator</code> or separate <code>AbstractValidator&lt;T&gt;</code> types.</li><li>Use <code>CascadeMode.Stop</code> when you want to short-circuit rules to reduce noise and unnecessary checks.</li><li>Use <code>When</code>/<code>Unless</code> sparingly for conditional validation; prefer explicit DTOs per use-case if the validation surface differs greatly.</li><li>For cross-field validation, use <code>DependentRules</code> or <code>Must</code> on a root object:</li></ul>
-<pre class="hljs"><code>RuleFor(x =&gt; x).Must(x =&gt; IsValidCombination(x.Some, x.Other));</code></pre>
+<pre class="language-csharp"><code class="language-csharp">RuleFor(x =&gt; x).Must(x =&gt; IsValidCombination(x.Some, x.Other));</code></pre>
 <ul><li>Validate externally for expensive checks (network/db) and consider running them asynchronously with <code>MustAsync</code>.</li><li>Use <code>RuleForEach</code> for collection items and <code>Include</code> to reuse other validators.</li></ul>
 <p>---</p>
 <h2 id="testing-validators">Testing validators</h2>
 <ul><li>Unit test validators directly — instantiating the validator and calling <code>Validate</code>/<code>ValidateAsync</code> is fast and deterministic.</li></ul>
-<pre class="hljs"><code>var validator = new CreateOrderDtoValidator();
+<pre class="language-csharp"><code class="language-csharp">var validator = new CreateOrderDtoValidator();
 var result = validator.Validate(dto);
 Assert.False(result.IsValid);
 Assert.Contains(result.Errors, e =&gt; e.PropertyName == &quot;Amount&quot;);</code></pre>
@@ -220,7 +221,7 @@ Assert.Contains(result.Errors, e =&gt; e.PropertyName == &quot;Amount&quot;);</c
 <h2 id="advanced-topics-senior-level">Advanced topics (senior-level)</h2>
 <ul><li>Custom property validators: implement <code>IPropertyValidator</code> for reusable complex checks.</li><li>Interceptors: use <code>IValidatorInterceptor</code> to hook into validation execution for logging or transformation.</li><li>Validators as filters: using validators within a MediatR pipeline behavior to validate requests before handlers run.</li></ul>
 <p>Example MediatR pipeline registration:</p>
-<pre class="hljs"><code>public class ValidationBehavior&lt;TRequest, TResponse&gt; : IPipelineBehavior&lt;TRequest, TResponse&gt;
+<pre class="language-csharp"><code class="language-csharp">public class ValidationBehavior&lt;TRequest, TResponse&gt; : IPipelineBehavior&lt;TRequest, TResponse&gt;
 {
     private readonly IEnumerable&lt;IValidator&lt;TRequest&gt;&gt; _validators;
     public ValidationBehavior(IEnumerable&lt;IValidator&lt;TRequest&gt;&gt; validators) =&gt; _validators = validators;
@@ -248,14 +249,14 @@ Assert.Contains(result.Errors, e =&gt; e.PropertyName == &quot;Amount&quot;);</c
 <p>---</p>
 <h2 id="quick-code-snippets">Quick code snippets</h2>
 <p>Register validators:</p>
-<pre class="hljs"><code>services.AddFluentValidationAutoValidation();
+<pre class="language-csharp"><code class="language-csharp">services.AddFluentValidationAutoValidation();
 services.AddValidatorsFromAssemblyContaining&lt;CreateOrderDtoValidator&gt;();</code></pre>
 <p>Conditional rule example:</p>
-<pre class="hljs"><code>RuleFor(x =&gt; x.Discount)
+<pre class="language-csharp"><code class="language-csharp">RuleFor(x =&gt; x.Discount)
     .GreaterThan(0)
     .When(x =&gt; x.HasDiscount);</code></pre>
 <p>Async rule example:</p>
-<pre class="hljs"><code>RuleFor(x =&gt; x.CustomerId)
+<pre class="language-csharp"><code class="language-csharp">RuleFor(x =&gt; x.CustomerId)
     .MustAsync(async (id, ct) =&gt; await _customerService.Exists(id))
     .WithMessage(&quot;Customer not found&quot;);</code></pre>
 <p>---</p>
@@ -358,5 +359,7 @@ services.AddValidatorsFromAssemblyContaining&lt;CreateOrderDtoValidator&gt;();</
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

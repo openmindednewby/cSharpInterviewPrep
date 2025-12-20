@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -149,7 +150,7 @@
 <h2 id="1-aspnet-core-built-in-rate-limiting-net-7">1. ASP.NET Core Built-in Rate Limiting (.NET 7+)</h2>
 <p>The framework includes rate limiting middleware. Use it.</p>
 <h3 id="basic-setup">Basic Setup</h3>
-<pre class="hljs"><code>// Program.cs
+<pre class="language-csharp"><code class="language-csharp">// Program.cs
 using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.RateLimiting;
 
@@ -220,7 +221,7 @@ app.UseRateLimiter();
 app.MapControllers();
 app.Run();</code></pre>
 <h3 id="apply-to-specific-endpoints">Apply to Specific Endpoints</h3>
-<pre class="hljs"><code>[ApiController]
+<pre class="language-csharp"><code class="language-csharp">[ApiController]
 [Route(&quot;api/[controller]&quot;)]
 public class OrdersController : ControllerBase
 {
@@ -256,7 +257,7 @@ public class OrdersController : ControllerBase
 <p>---</p>
 <h2 id="2-per-userper-ip-rate-limiting">2. Per-User/Per-IP Rate Limiting</h2>
 <p>Prevent a single user from monopolizing resources.</p>
-<pre class="hljs"><code>// Custom partition key resolver
+<pre class="language-csharp"><code class="language-csharp">// Custom partition key resolver
 builder.Services.AddRateLimiter(options =&gt;
 {
     options.AddSlidingWindowLimiter(&quot;per-user&quot;, opt =&gt;
@@ -297,7 +298,7 @@ public class UserController : ControllerBase
 <h2 id="3-concurrency-limiter-semaphore-pattern">3. Concurrency Limiter (Semaphore Pattern)</h2>
 <p>When rate limiting by time isn't enough (e.g., expensive operations), limit <strong>how many run simultaneously</strong>.</p>
 <h3 id="manual-semaphore-implementation">Manual Semaphore Implementation</h3>
-<pre class="hljs"><code>public interface IExpensiveService
+<pre class="language-csharp"><code class="language-csharp">public interface IExpensiveService
 {
     Task&lt;ReportData&gt; GenerateReportAsync(int userId, CancellationToken ct);
 }
@@ -395,7 +396,7 @@ public class TooManyRequestsException : Exception
     public TooManyRequestsException(string message) : base(message) { }
 }</code></pre>
 <h3 id="middleware-for-global-concurrency-limit">Middleware for Global Concurrency Limit</h3>
-<pre class="hljs"><code>public class ConcurrencyLimitMiddleware
+<pre class="language-csharp"><code class="language-csharp">public class ConcurrencyLimitMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly SemaphoreSlim _semaphore;
@@ -452,7 +453,7 @@ app.UseMiddleware&lt;ConcurrencyLimitMiddleware&gt;(maxConcurrency: 2000);</code
 <p>---</p>
 <h2 id="4-bounded-queues-for-background-work">4. Bounded Queues for Background Work</h2>
 <p>Don't let background job queues grow unbounded.</p>
-<pre class="hljs"><code>public interface IBackgroundJobQueue
+<pre class="language-csharp"><code class="language-csharp">public interface IBackgroundJobQueue
 {
     ValueTask&lt;bool&gt; QueueAsync(Func&lt;CancellationToken, Task&gt; workItem, CancellationToken ct);
     ValueTask&lt;Func&lt;CancellationToken, Task&gt;?&gt; DequeueAsync(CancellationToken ct);
@@ -607,7 +608,7 @@ builder.Services.AddHostedService&lt;BackgroundJobProcessor&gt;();</code></pre>
 <p>---</p>
 <h2 id="5-distributed-rate-limiting-with-redis">5. Distributed Rate Limiting with Redis</h2>
 <p>For multi-instance deployments, use Redis for shared rate limit state.</p>
-<pre class="hljs"><code>public interface IDistributedRateLimiter
+<pre class="language-csharp"><code class="language-csharp">public interface IDistributedRateLimiter
 {
     Task&lt;bool&gt; AllowRequestAsync(string key, int limit, TimeSpan window, CancellationToken ct);
 }
@@ -840,5 +841,7 @@ public class DistributedRateLimitMiddleware
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

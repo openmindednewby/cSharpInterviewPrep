@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -142,7 +143,7 @@
         <h1 id="what-they-are-in-practice">What they are (in practice)</h1>
 <table><thead><tr><th>Aspect</th><th><strong>Server GC</strong></th><th><strong>Workstation GC</strong></th></tr></thead><tbody><tr><td>Goal</td><td><strong>Throughput</strong> for multi-core servers</td><td><strong>Responsiveness</strong> for desktop/interactive apps</td></tr><tr><td>Threads</td><td><strong>1 GC thread per logical core</strong> (+ background GC)</td><td><strong>1 GC thread total</strong> (+ background GC)</td></tr><tr><td>Segment sizes</td><td><strong>Larger</strong> heap segments → fewer GCs, longer pauses</td><td><strong>Smaller</strong> segments → more frequent, shorter pauses</td></tr><tr><td>Compaction</td><td>Parallel, wide</td><td>Serial, narrower</td></tr><tr><td>Default in ASP.NET Core</td><td>Usually <strong>enabled</strong></td><td>Not typical</td></tr><tr><td>Best for</td><td>Web APIs, services, batch jobs, high QPS</td><td>WPF/WinForms, tools, dev utilities</td></tr></tbody></table>
 <blockquote><p>Quick check at runtime:</p></blockquote>
-<pre class="hljs"><code>Console.WriteLine(System.Runtime.GCSettings.IsServerGC); // true = Server GC</code></pre>
+<pre class="language-csharp"><code class="language-csharp">Console.WriteLine(System.Runtime.GCSettings.IsServerGC); // true = Server GC</code></pre>
 <p>---</p>
 <h1 id="how-they-actually-run">How they actually run</h1>
 <h2 id="server-gc">Server GC</h2>
@@ -154,7 +155,7 @@
 <ul><li><strong>Background GC</strong> (Gen2) is on by default; it overlaps some GC work with your app.</li><li><strong>Latency modes</strong> via <code>GCSettings.LatencyMode</code>:</li></ul>
 <ul><li><code>Interactive</code> (balance; default for workstation).</li><li><code>Batch</code> (maximize throughput; longer pauses OK—common with server GC).</li><li><code>SustainedLowLatency</code> (reduce Gen2 frequency; good around critical windows).</li><li><code>NoGCRegion</code> (attempt zero collections during a critical section—must pre-reserve memory; avoid if you’ll hit LOH or exceed reservation).</li></ul>
 <p>Example:</p>
-<pre class="hljs"><code>using System.Runtime;
+<pre class="language-csharp"><code class="language-csharp">using System.Runtime;
 GCSettings.LatencyMode = GCLatencyMode.SustainedLowLatency;</code></pre>
 <p>---</p>
 <h1 id="container-hosting-notes-very-relevant-today">Container & hosting notes (very relevant today)</h1>
@@ -280,5 +281,7 @@ GCSettings.LatencyMode = GCLatencyMode.SustainedLowLatency;</code></pre>
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

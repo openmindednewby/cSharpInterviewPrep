@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -148,7 +149,7 @@
 <p>---</p>
 <h2 id="1-multi-layer-caching-architecture">1. Multi-Layer Caching Architecture</h2>
 <p>Use multiple cache layers for different access patterns:</p>
-<pre class="hljs"><code>Request → In-Memory (L1) → Redis (L2) → Database (L3)
+<pre class="language-csharp"><code class="language-csharp">Request → In-Memory (L1) → Redis (L2) → Database (L3)
    ↓           ↓               ↓             ↓
   10μs        1-2ms          50ms        100ms+</code></pre>
 <h3 id="why-multiple-layers">Why Multiple Layers?</h3>
@@ -156,7 +157,7 @@
 <p>---</p>
 <h2 id="2-in-memory-caching-imemorycache">2. In-Memory Caching (IMemoryCache)</h2>
 <p>Best for: Frequently accessed, rarely changing data per instance.</p>
-<pre class="hljs"><code>using Microsoft.Extensions.Caching.Memory;
+<pre class="language-csharp"><code class="language-csharp">using Microsoft.Extensions.Caching.Memory;
 
 public class ProductService
 {
@@ -222,7 +223,7 @@ builder.Services.AddMemoryCache(options =&gt;
 });</code></pre>
 <h3 id="cache-stampede-protection-critical">Cache Stampede Protection (Critical!)</h3>
 <p>When cache expires and 1000 requests hit at once, they all query the DB. Use per-key locking.</p>
-<pre class="hljs"><code>public class StampededProofCacheService&lt;T&gt; where T : class
+<pre class="language-csharp"><code class="language-csharp">public class StampededProofCacheService&lt;T&gt; where T : class
 {
     private readonly IMemoryCache _cache;
     private static readonly ConcurrentDictionary&lt;string, SemaphoreSlim&gt; _locks = new();
@@ -312,7 +313,7 @@ public class UserService
 <h2 id="3-distributed-caching-with-redis">3. Distributed Caching with Redis</h2>
 <p>Best for: Shared state across instances, session data, high-traffic reads.</p>
 <h3 id="setup-stackexchangeredis">Setup StackExchange.Redis</h3>
-<pre class="hljs"><code>// Program.cs
+<pre class="language-csharp"><code class="language-csharp">// Program.cs
 builder.Services.AddSingleton&lt;IConnectionMultiplexer&gt;(sp =&gt;
 {
     var config = ConfigurationOptions.Parse(
@@ -360,7 +361,7 @@ builder.Services.AddSingleton&lt;IDistributedCache&gt;(sp =&gt;
     });
 });</code></pre>
 <h3 id="cache-aside-pattern">Cache-Aside Pattern</h3>
-<pre class="hljs"><code>public interface ICacheService
+<pre class="language-csharp"><code class="language-csharp">public interface ICacheService
 {
     Task&lt;T?&gt; GetAsync&lt;T&gt;(string key, CancellationToken ct) where T : class;
     Task SetAsync&lt;T&gt;(string key, T value, TimeSpan expiration, CancellationToken ct) where T : class;
@@ -479,7 +480,7 @@ public class OrderService
 <p>---</p>
 <h2 id="4-two-layer-cache-l1-l2">4. Two-Layer Cache (L1 + L2)</h2>
 <p>Combine in-memory and Redis for best performance.</p>
-<pre class="hljs"><code>public class TwoLayerCacheService
+<pre class="language-csharp"><code class="language-csharp">public class TwoLayerCacheService
 {
     private readonly IMemoryCache _l1Cache;
     private readonly IDatabase _redis;
@@ -563,7 +564,7 @@ public class OrderService
 <p><strong>The two hard problems in computer science:</strong></p>
 <ol><li>Cache invalidation</li><li>Naming things</li><li>Off-by-one errors</li></ol>
 <h3 id="strategy-1-ttl-with-jitter">Strategy 1: TTL with Jitter</h3>
-<pre class="hljs"><code>public static TimeSpan GetTTLWithJitter(TimeSpan baseTTL)
+<pre class="language-csharp"><code class="language-csharp">public static TimeSpan GetTTLWithJitter(TimeSpan baseTTL)
 {
     var jitterSeconds = Random.Shared.Next(0, (int)(baseTTL.TotalSeconds * 0.1));
     return baseTTL + TimeSpan.FromSeconds(jitterSeconds);
@@ -574,7 +575,7 @@ var ttl = GetTTLWithJitter(TimeSpan.FromMinutes(10)); // 10-11 minutes
 await _cache.SetAsync(key, value, ttl, ct);</code></pre>
 <p><strong>Why jitter:</strong> Prevents cache stampede when many entries expire simultaneously.</p>
 <h3 id="strategy-2-write-through-update-cache-on-write">Strategy 2: Write-Through (Update cache on write)</h3>
-<pre class="hljs"><code>public async Task UpdateUserAsync(User user, CancellationToken ct)
+<pre class="language-csharp"><code class="language-csharp">public async Task UpdateUserAsync(User user, CancellationToken ct)
 {
     // Update database
     await _repo.UpdateAsync(user, ct);
@@ -584,7 +585,7 @@ await _cache.SetAsync(key, value, ttl, ct);</code></pre>
     await _cache.SetAsync(cacheKey, user, TimeSpan.FromMinutes(10), ct);
 }</code></pre>
 <h3 id="strategy-3-cache-invalidation-via-events">Strategy 3: Cache Invalidation via Events</h3>
-<pre class="hljs"><code>public class UserUpdatedEvent
+<pre class="language-csharp"><code class="language-csharp">public class UserUpdatedEvent
 {
     public int UserId { get; set; }
 }
@@ -600,7 +601,7 @@ public class UserCacheInvalidationHandler : INotificationHandler&lt;UserUpdatedE
     }
 }</code></pre>
 <h3 id="strategy-4-tag-based-invalidation-redis">Strategy 4: Tag-Based Invalidation (Redis)</h3>
-<pre class="hljs"><code>public class TaggedCacheService
+<pre class="language-csharp"><code class="language-csharp">public class TaggedCacheService
 {
     private readonly IDatabase _redis;
 
@@ -653,7 +654,7 @@ await _taggedCache.InvalidateByTagAsync(&quot;brand:apple&quot;, ct);</code></pr
 <p>---</p>
 <h2 id="6-http-caching-etags-304-not-modified">6. HTTP Caching (ETags & 304 Not Modified)</h2>
 <p>Reduce bandwidth and processing for GET requests.</p>
-<pre class="hljs"><code>public class ProductsController : ControllerBase
+<pre class="language-csharp"><code class="language-csharp">public class ProductsController : ControllerBase
 {
     private readonly IProductService _productService;
 
@@ -720,7 +721,7 @@ public class ETagMiddleware
 <p>---</p>
 <h2 id="7-cdn-for-static-content">7. CDN for Static Content</h2>
 <p>Serve static files (images, CSS, JS) from edge locations.</p>
-<pre class="hljs"><code>// Serve images with far-future expires
+<pre class="language-csharp"><code class="language-csharp">// Serve images with far-future expires
 app.UseStaticFiles(new StaticFileOptions
 {
     OnPrepareResponse = ctx =&gt;
@@ -809,5 +810,7 @@ app.UseStaticFiles(new StaticFileOptions
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -146,7 +147,7 @@
 <ul><li><strong>Refactor-safe:</strong> <code>nameof(SomeProperty)</code> is updated by refactoring tools (or will fail to compile if renamed), while <code>&quot;SomeProperty&quot;</code> can become stale and lead to bugs.</li><li><strong>Compile-time checked:</strong> If the symbol doesn't exist, code using <code>nameof</code> will not compile.</li><li><strong>Clear intent:</strong> It expresses that the string is a program symbol name (not arbitrary text).</li></ul>
 <p>---</p>
 <h3 id="basic-examples">📌 Basic examples</h3>
-<pre class="hljs"><code>public class Order
+<pre class="language-csharp"><code class="language-csharp">public class Order
 {
     public int Id { get; set; }
 }
@@ -163,12 +164,12 @@ var typeName = nameof(Dictionary&lt;int, string&gt;); // &quot;Dictionary&quot;<
 <p>---</p>
 <h3 id="common-usages">Common usages</h3>
 <ul><li>Argument validation and exceptions:</li></ul>
-<pre class="hljs"><code>public void SetPrice(decimal price)
+<pre class="language-csharp"><code class="language-csharp">public void SetPrice(decimal price)
 {
     if (price &lt;= 0) throw new ArgumentOutOfRangeException(nameof(price), &quot;Price must be positive&quot;);
 }</code></pre>
 <ul><li>INotifyPropertyChanged implementations:</li></ul>
-<pre class="hljs"><code>private void Notify(string property) =&gt; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
+<pre class="language-csharp"><code class="language-csharp">private void Notify(string property) =&gt; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
 
 public void UpdateName(string name)
 {
@@ -176,7 +177,7 @@ public void UpdateName(string name)
     Notify(nameof(Name));
 }</code></pre>
 <ul><li>Logging and diagnostics (to avoid stale literal names):</li></ul>
-<pre class="hljs"><code>_logger.LogInformation(&quot;Started processing {Handler}&quot;, nameof(MyHandler));</code></pre>
+<pre class="language-csharp"><code class="language-csharp">_logger.LogInformation(&quot;Started processing {Handler}&quot;, nameof(MyHandler));</code></pre>
 <p>---</p>
 <h3 id="edge-cases-notes">Edge cases & notes</h3>
 <ul><li><code>nameof</code> is evaluated at compile time and produces a <code>string</code> literal in the compiled IL.</li><li><code>nameof</code> does not evaluate expressions — only identifiers (types, members, local variables, parameters).</li><li>Using <code>nameof</code> on overloaded member groups (e.g., methods with same name) yields the single name string; it does not encode the signature.</li><li>For nested types <code>nameof(Outer.Inner)</code> returns <code>Inner</code>.</li></ul>
@@ -279,5 +280,7 @@ public void UpdateName(string name)
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

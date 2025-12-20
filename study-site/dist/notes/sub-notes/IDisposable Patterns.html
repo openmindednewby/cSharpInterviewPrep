@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -141,7 +142,7 @@
         <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#idisposable-deterministic-cleanup">`IDisposable` & Deterministic Cleanup</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
         <h1 id="idisposable-deterministic-cleanup"><code>IDisposable</code> & Deterministic Cleanup</h1>
 <ul><li>Implement <code>IDisposable</code> when you own unmanaged resources (file handles, sockets, DB connections) or wrap disposables.</li><li>Pattern:</li></ul>
-<pre class="hljs"><code>public sealed class PriceFeed : IDisposable
+<pre class="language-csharp"><code class="language-csharp">public sealed class PriceFeed : IDisposable
 {
     private bool _disposed;
     private readonly Timer _timer;
@@ -160,7 +161,7 @@
     }
 }</code></pre>
 <ul><li><strong>Usage:</strong> Wrap with <code>using</code>/<code>await using</code> so cleanup runs even on exceptions.</li></ul>
-<pre class="hljs"><code>await using var connection = await _dbFactory.CreateConnectionAsync();</code></pre>
+<pre class="language-csharp"><code class="language-csharp">await using var connection = await _dbFactory.CreateConnectionAsync();</code></pre>
 <p>---</p>
 <h2 id="questions-answers">Questions & Answers</h2>
 <p><strong>Q: When should a class implement <code>IDisposable</code>?</strong></p>
@@ -255,5 +256,7 @@
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

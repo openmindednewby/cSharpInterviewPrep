@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -144,13 +145,13 @@
 <p>---</p>
 <h2 id="1-the-scenario">🧩 1. The scenario</h2>
 <p>You receive a TCP stream of bytes like this:</p>
-<pre class="hljs"><code>EURUSD,1.07432,1.07436
+<pre class="language-csharp"><code class="language-csharp">EURUSD,1.07432,1.07436
 GBPUSD,1.24587,1.24592</code></pre>
 <p>You need to:</p>
 <ol><li>Parse each line into fields (symbol, bid, ask)</li><li>Convert to typed data (<code>struct Tick</code>)</li><li>Reuse buffers instead of new allocations</li><li>Avoid string allocations except for the final symbol if needed</li></ol>
 <p>---</p>
 <h2 id="2-the-c-code">💻 2. The C# code</h2>
-<pre class="hljs"><code>using System;
+<pre class="language-csharp"><code class="language-csharp">using System;
 using System.Buffers;
 using System.Buffers.Text;
 using System.Text;
@@ -246,7 +247,7 @@ class Program
 <p>---</p>
 <h2 id="5-optional-5-min-extension-counter-check">🧩 5. Optional 5-min extension: Counter check</h2>
 <p>If you have .NET SDK, run:</p>
-<pre class="hljs"><code>dotnet-counters monitor System.Runtime</code></pre>
+<pre class="language-bash"><code class="language-bash">dotnet-counters monitor System.Runtime</code></pre>
 <p>Then run your parser. Watch:</p>
 <ul><li><code>Gen0 GC Count</code> barely increases</li><li><code>Gen2 GC Count</code> stays at 0</li><li><code>Allocated Bytes/sec</code> minimal</li></ul>
 <p>That’s your <strong>evidence</strong> you’ve optimized allocations correctly.</p>
@@ -346,5 +347,7 @@ class Program
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

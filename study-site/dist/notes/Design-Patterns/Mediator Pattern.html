@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -144,7 +145,7 @@
 <blockquote><p>Define an object that encapsulates how a set of objects interact. The mediator promotes loose coupling by keeping objects from referring to each other explicitly.</p></blockquote>
 <p>---</p>
 <h3 id="example-mediator-coordinating-order-validation-risk-and-execution">🧩 Example — Mediator coordinating order validation, risk and execution</h3>
-<pre class="hljs"><code>public interface ITradeMediator
+<pre class="language-csharp"><code class="language-csharp">public interface ITradeMediator
 {
     void Notify(object sender, string ev, Order order);
 }
@@ -304,5 +305,7 @@ public class TradeExecutor
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

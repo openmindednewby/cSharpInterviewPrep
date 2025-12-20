@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -143,7 +144,7 @@
 <blockquote><p>Centralize creation of objects (like API handlers or executors) based on configuration or environment.</p></blockquote>
 <p>---</p>
 <h3 id="example-trading-platform-executor-factory">🧩 Example — Trading platform executor factory</h3>
-<pre class="hljs"><code>public interface ITradeExecutor
+<pre class="language-csharp"><code class="language-csharp">public interface ITradeExecutor
 {
     void Execute(Order order);
 }
@@ -270,5 +271,7 @@ executor.Execute(new Order { Symbol = &quot;USDJPY&quot;, Amount = 5000 });</cod
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -143,7 +144,7 @@
 <p>Use this sheet to unpack what happens when the compiler rewrites an <code>async</code> method and how to keep code responsive under load.</p>
 <h2 id="compiler-generated-state-machine">Compiler-Generated State Machine</h2>
 <ul><li>The compiler transforms every <code>async</code> method into a <strong>struct-based state machine</strong> implementing <code>IAsyncStateMachine</code>.</li><li>Local variables become fields on the state machine; <code>await</code> points split the method into states that resume via <code>MoveNext</code>.</li><li>Hot-path tip: keep locals small (e.g., avoid large structs) to limit the generated state machine size.</li></ul>
-<pre class="hljs"><code>public async Task&lt;int&gt; SumAsync(int a, int b)
+<pre class="language-csharp"><code class="language-csharp">public async Task&lt;int&gt; SumAsync(int a, int b)
 {
     await Task.Yield();
     return a + b;
@@ -151,12 +152,12 @@
 <blockquote><p>Decompile with ILSpy/dotnet-ildasm to show the generated <code>MoveNext</code> method when interviewing.</p></blockquote>
 <h2 id="synchronization-context-capture">Synchronization Context Capture</h2>
 <ul><li><strong>UI/WPF/WinForms & ASP.NET (pre-Core)</strong> capture a <code>SynchronizationContext</code>; continuations post back to the captured context.</li><li>In ASP.NET Core/background services, the default context is the thread pool so no extra marshaling is needed.</li><li>Call <code>.ConfigureAwait(false)</code> inside reusable libraries/background jobs to avoid deadlocks and reduce context switches.</li></ul>
-<pre class="hljs"><code>public async Task&lt;string&gt; DownloadAsync(HttpClient client, Uri uri)
+<pre class="language-csharp"><code class="language-csharp">public async Task&lt;string&gt; DownloadAsync(HttpClient client, Uri uri)
     =&gt; await (await client.GetAsync(uri).ConfigureAwait(false))
         .Content.ReadAsStringAsync().ConfigureAwait(false);</code></pre>
 <h2 id="deadlocks-blocking-calls">Deadlocks & Blocking Calls</h2>
 <ul><li>Blocking on <code>Task.Result</code> or <code>.Wait()</code> inside a context that disallows re-entrancy prevents the continuation from running.</li><li>Fix deadlocks by keeping the call chain <code>async</code> all the way up or by using <code>ConfigureAwait(false)</code> in library code.</li></ul>
-<pre class="hljs"><code>// ❌ Deadlocks on UI thread
+<pre class="language-csharp"><code class="language-csharp">// ❌ Deadlocks on UI thread
 var content = client.GetStringAsync(url).Result;
 
 // ✅ Allow the message loop to process the continuation
@@ -165,7 +166,7 @@ var content = await client.GetStringAsync(url).ConfigureAwait(false);</code></pr
 <ul><li>Exceptions thrown inside an <code>async</code> method are captured and placed on the returned <code>Task</code>.</li><li>Always <code>await</code> the task to observe the exception; otherwise you risk unobserved task exceptions.</li><li>For fire-and-forget work, log via <code>Task.Run(...).ContinueWith</code> or use <code>IHostedService</code>/background queue patterns.</li></ul>
 <h2 id="locks-async-coordination">Locks & Async Coordination</h2>
 <ul><li><code>lock</code>/<code>Monitor</code> stay synchronous—only use around code that never <code>await</code>s.</li><li>Reach for <code>SemaphoreSlim</code>, <code>AsyncLock</code>, or channels when coordinating asynchronous work.</li></ul>
-<pre class="hljs"><code>private readonly SemaphoreSlim _mutex = new(1, 1);
+<pre class="language-csharp"><code class="language-csharp">private readonly SemaphoreSlim _mutex = new(1, 1);
 
 public async Task UpdateAsync()
 {
@@ -183,7 +184,7 @@ public async Task UpdateAsync()
 <ul><li><code>await</code> frees the thread to return to the pool while the I/O operation runs (HTTP, DB, queues).</li><li>For CPU-bound workloads, offload to <code>Task.Run</code> or dedicated worker threads to avoid blocking the caller.</li></ul>
 <h2 id="performance-considerations">Performance Considerations</h2>
 <ul><li>Prefer <code>ValueTask</code> when the result often completes synchronously (e.g., cached data) to avoid allocating a <code>Task</code>.</li><li>Avoid capturing the current context by default in library code—<code>ConfigureAwait(false)</code> becomes muscle memory.</li><li>Use <code>Task.WhenAll</code>/<code>Task.WhenAny</code> to fan out concurrent operations without repeated awaits.</li><li><strong>Cancellation:</strong> Accept <code>CancellationToken</code> parameters and forward them to downstream async APIs.</li></ul>
-<pre class="hljs"><code>public async Task&lt;Order&gt; PlaceAsync(OrderRequest request, CancellationToken cancellationToken)
+<pre class="language-csharp"><code class="language-csharp">public async Task&lt;Order&gt; PlaceAsync(OrderRequest request, CancellationToken cancellationToken)
 {
     using var activity = _activitySource.StartActivity(&quot;PlaceOrder&quot;);
 
@@ -290,5 +291,7 @@ public async Task UpdateAsync()
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

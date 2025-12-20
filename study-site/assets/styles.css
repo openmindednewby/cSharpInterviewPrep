@@ -464,3 +464,171 @@ footer.footer {
     padding: 18px;
   }
 }
+
+/* ================================================
+   Visual Studio Dark Theme Syntax Highlighting
+   ================================================ */
+
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #dcdcdc;
+  background: none;
+  font-family: 'JetBrains Mono', 'Fira Code', 'SFMono-Regular', Consolas, monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.6;
+  tab-size: 4;
+}
+
+/* Override Prism's default background */
+pre[class*="language-"] {
+  background: var(--code-bg) !important;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  overflow: auto;
+  margin: 16px 0;
+}
+
+/* Keywords: if, else, return, public, private, class, namespace, using, etc. */
+.token.keyword {
+  color: #569cd6;
+  font-weight: normal;
+}
+
+/* Class names, types, interfaces */
+.token.class-name {
+  color: #4ec9b0;
+}
+
+/* Strings */
+.token.string {
+  color: #ce9178;
+}
+
+/* Numbers */
+.token.number {
+  color: #b5cea8;
+}
+
+/* Comments */
+.token.comment {
+  color: #6a9955;
+  font-style: italic;
+}
+
+/* Functions, method names */
+.token.function {
+  color: #dcdcaa;
+}
+
+/* Operators: =, +, -, etc. */
+.token.operator {
+  color: #d4d4d4;
+}
+
+/* Punctuation: {}, (), [], etc. */
+.token.punctuation {
+  color: #d4d4d4;
+}
+
+/* Properties */
+.token.property {
+  color: #9cdcfe;
+}
+
+/* Variables, parameters */
+.token.parameter,
+.token.variable {
+  color: #9cdcfe;
+}
+
+/* Attributes like [HttpGet], [Route] */
+.token.annotation,
+.token.attr-name {
+  color: #4ec9b0;
+}
+
+/* Boolean, null, true, false */
+.token.boolean,
+.token.constant,
+.token.null {
+  color: #569cd6;
+}
+
+/* Namespaces */
+.token.namespace {
+  color: #4ec9b0;
+}
+
+/* Generics <T> */
+.token.generic {
+  color: #4ec9b0;
+}
+
+/* Built-in types: int, string, decimal, etc. */
+.token.builtin {
+  color: #4ec9b0;
+}
+
+/* Preprocessor directives: #region, #if, etc. */
+.token.preprocessor {
+  color: #9b9b9b;
+}
+
+/* Regex patterns */
+.token.regex {
+  color: #d16969;
+}
+
+/* XML documentation comments */
+.token.doctype,
+.token.prolog {
+  color: #6a9955;
+}
+
+/* Light theme adjustments */
+:root[data-theme='light'] code[class*="language-"],
+:root[data-theme='light'] pre[class*="language-"] {
+  color: #1f1f1f;
+}
+
+:root[data-theme='light'] .token.keyword {
+  color: #0000ff;
+}
+
+:root[data-theme='light'] .token.class-name,
+:root[data-theme='light'] .token.namespace,
+:root[data-theme='light'] .token.builtin {
+  color: #267f99;
+}
+
+:root[data-theme='light'] .token.string {
+  color: #a31515;
+}
+
+:root[data-theme='light'] .token.number {
+  color: #098658;
+}
+
+:root[data-theme='light'] .token.comment {
+  color: #008000;
+}
+
+:root[data-theme='light'] .token.function {
+  color: #795e26;
+}
+
+:root[data-theme='light'] .token.property,
+:root[data-theme='light'] .token.parameter,
+:root[data-theme='light'] .token.variable {
+  color: #001080;
+}
+
+:root[data-theme='light'] .token.operator,
+:root[data-theme='light'] .token.punctuation {
+  color: #000000;
+}

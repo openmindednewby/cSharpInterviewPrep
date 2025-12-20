@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -144,7 +145,7 @@
 <ul><li><strong>Two main heaps:</strong></li></ul>
 <ul><li><strong>SOH (Small Object Heap):</strong> most objects. Split into <strong>Gen0</strong>, <strong>Gen1</strong>, <strong>Gen2</strong>.</li><li><strong>LOH (Large Object Heap):</strong> objects <strong>≥ ~85,000 bytes</strong> (arrays/large strings). Allocating on LOH skips Gen0/Gen1.</li><li><strong>Promotion rule:</strong> survive a collection → promoted (Gen0 → Gen1 → Gen2). Long-lived objects end up in Gen2.</li><li><strong>Segments:</strong> The GC manages memory in <strong>segments</strong> (ephemeral segments hold Gen0/Gen1). Collections reclaim from the youngest gen that’s “full enough”.</li><li><strong>Compaction:</strong> SOH is compacted by default (reduces fragmentation). <strong>LOH is not compacted by default</strong>; it can fragment—there is an opt-in compaction knob (see tuning).</li></ul>
 <p><strong>Mental model</strong></p>
-<pre class="hljs"><code>Stack → short-lived refs
+<pre class="language-csharp"><code class="language-csharp">Stack → short-lived refs
          │
          ▼
  Gen0 ──► Gen1 ──► Gen2        LOH (≥ ~85 KB)
@@ -276,5 +277,7 @@
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

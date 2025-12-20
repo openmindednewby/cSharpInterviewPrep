@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -143,7 +144,7 @@
 <blockquote><p>"Every piece of knowledge must have a single, unambiguous, authoritative representation within a system." — Andy Hunt & Dave Thomas</p></blockquote>
 <p>The DRY principle encourages reducing duplication in code, documentation, and design. Duplicate logic leads to more bugs, harder maintenance, and inconsistent behavior when requirements change.</p>
 <h3 id="common-anti-pattern-duplicated-code">❌ Common anti-pattern (duplicated code)</h3>
-<pre class="hljs"><code>public class OrderService
+<pre class="language-csharp"><code class="language-csharp">public class OrderService
 {
 	public void PlaceOrder(Order order)
 	{
@@ -167,7 +168,7 @@
 }</code></pre>
 <p>Problems: validation and notification logic are duplicated across methods — bug fixes or behaviour changes must be applied in multiple places.</p>
 <h3 id="dry-refactor-single-source-of-truth">✅ DRY refactor (single source of truth)</h3>
-<pre class="hljs"><code>public class OrderService
+<pre class="language-csharp"><code class="language-csharp">public class OrderService
 {
 	public void PlaceOrder(Order order)
 	{
@@ -284,5 +285,7 @@
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -145,7 +146,7 @@
 <h2 id="runtime-language-essentials">Runtime & Language Essentials</h2>
 <h3 id="net-core-vs-net-framework">.NET Core vs .NET Framework</h3>
 <ul><li><strong>Platform reach:</strong> .NET Core/.NET (5+) is cross-platform and ships a self-contained runtime. .NET Framework stays Windows-only and upgrades via the OS.</li><li><strong>Deployment model:</strong> Publish as framework-dependent or self-contained. Self-contained bundles the runtime so each service can run side-by-side (<code>dotnet publish -r linux-x64 --self-contained</code>).</li><li><strong>Performance tooling:</strong></li><li><strong>Kestrel</strong> is the default cross-platform web server—highlight HTTPS, HTTP/2, and libuv/socket transport choices.</li><li><strong>GC improvements</strong> (background server GC, heap compaction modes) arrive first in .NET Core.</li><li><strong>Trimming</strong> and ReadyToRun images shrink microservices and speed cold starts.</li><li><strong>When to pick which:</strong> Keep legacy WinForms/WPF on .NET Framework; new services, cloud workloads, or containerized apps go with .NET.</li><li><strong>Example:</strong> Containerized pricing API published as self-contained for deterministic runtime, while legacy back-office WinForms app remains on .NET Framework 4.8.</li></ul>
-<pre class="hljs"><code>            ┌────────────────────┐
+<pre class="language-csharp"><code class="language-csharp">            ┌────────────────────┐
             │   .NET Framework   │  Windows only, machine-wide
             └────────────────────┘
                      ▲
@@ -156,7 +157,7 @@
 <h3 id="clr-garbage-collector-gc">CLR & Garbage Collector (GC)</h3>
 <ul><li><a href="./sub-notes/CLR%20&%20Garbage%20Collector%20(GC">CLR & Garbage Collector (GC)</a>.md)</li><li><a href="./sub-notes/CLR%20&%20Garbage%20Collector%20(GC">CLR & Garbage Collector (GC) Practical Example</a>%20Practical%20Example.md)</li><li><a href="./sub-notes/struct%20vs%20class%20when%20to%20use%20which.md">struct vs class when to use which.md</a></li><li><a href="./sub-notes/struct%20vs%20class%20questions%20and%20answers.md">struct vs class questions and answers.md</a></li><li><a href="./sub-notes/IDisposable%20Patterns.md"><code>IDisposable</code> & Deterministic Cleanup</a></li><li><a href="./sub-notes/Forcing%20Garbage%20Collection.md">Forcing Garbage Collection (Rarely Needed)</a></li></ul>
 <ul><li><strong>Generational model:</strong> Short-lived objects die young (Gen 0/1), long-lived promote to Gen 2. Large Object Heap (LOH) stores objects > 85 KB. <a href="./sub-notes/NET%20Generational%20Garbage%20Collection%20(GC">NET Generational Garbage Collection (GC) Deep Dive.md</a>%20Deep%20Dive.md)</li><li><strong>Server vs workstation GC:</strong> Server GC uses dedicated background threads per core—great for ASP.NET services. Workstation GC favors desktop responsiveness. <a href="./sub-notes/Server vs Workstation GC.md">Server vs Workstation GC.md</a></li><li><strong>Allocation discipline:</strong> Reduce allocations in hot paths (e.g., reuse buffers, pool objects, prefer <code>Span&lt;T&gt;</code>/<code>Memory&lt;T&gt;</code> to avoid copying).</li><li><strong><code>Span&lt;T&gt;</code> usage:</strong> Operates on stack or native memory without allocations—perfect for parsing protocol frames or slicing arrays. Remember <code>Span&lt;T&gt;</code> is stack-only; use <code>Memory&lt;T&gt;</code> for async boundaries.</li><li><strong>Diagram:</strong></li></ul>
-<pre class="hljs"><code>Gen0 ──► Gen1 ──► Gen2 ──► LOH
+<pre class="language-csharp"><code class="language-csharp">Gen0 ──► Gen1 ──► Gen2 ──► LOH
  small    medium   long     massive arrays/strings</code></pre>
 <h3 id="type-choices-class-record-struct-static-where-why">Type Choices — <code>class</code>, <code>record</code>, <code>struct</code>, <code>static</code> (where & why)</h3>
 <p>The detailed guidance for choosing <code>class</code>, <code>record</code>, <code>struct</code>, and <code>static</code> types has been moved to a dedicated sub-note for easier maintenance and reuse:</p>
@@ -164,7 +165,7 @@
 <p>If you'd like the content kept inline instead, I can revert this change; otherwise the sub-note is ready for expansion.</p>
 <h3 id="asyncawait-deep-dive">Async/Await Deep Dive</h3>
 <ul><li><a href="./sub-notes/Async%20Await%20Deep%20Dive.md">Async/Await Deep Dive reference</a></li><li><strong>State machine transformation:</strong> The compiler rewrites <code>async</code> methods into a struct-based state machine that awaits continuations. Local variables become fields, so keep them light.</li><li><strong>Context capture:</strong> UI/ASP.NET SynchronizationContext captures by default. Use <code>ConfigureAwait(false)</code> in libraries/background work to avoid deadlocks and excess marshaling.</li><li><strong>Exception propagation:</strong> Exceptions bubble through the returned <code>Task</code>; always await to observe them. For fire-and-forget work, capture exceptions via continuations or hosted services.</li><li><strong>Deadlock scenario:</strong> Blocking on <code>task.Result</code> inside a context that disallows re-entry (e.g., UI thread) stalls the continuation—keep the call chain async end-to-end.</li><li><strong>Lock coordination:</strong> <code>lock</code> is synchronous. Use <code>SemaphoreSlim</code>/<code>AsyncLock</code> when awaiting inside critical sections.</li><li><strong>Fan-out patterns:</strong> Use <code>Task.WhenAll</code>/<code>Task.WhenAny</code> to parallelize I/O and accept <code>CancellationToken</code> all the way through.</li><li><strong>I/O-bound gains:</strong> Use <code>await</code> for database calls, HTTP requests—threads return to the pool while awaiting.</li><li><strong>Example:</strong></li></ul>
-<pre class="hljs"><code>public async Task&lt;Order&gt; PlaceAsync(OrderRequest request)
+<pre class="language-csharp"><code class="language-csharp">public async Task&lt;Order&gt; PlaceAsync(OrderRequest request)
 {
     using var activity = _activitySource.StartActivity(&quot;PlaceOrder&quot;);
     var quote = await _pricingClient.GetQuoteAsync(request.Symbol)
@@ -176,7 +177,7 @@
 <ul><li><a href="./sub-notes/Reflection%20Overview.md">Reflection Overview</a></li><li><strong>When to reach for it:</strong> Discover handlers, apply attributes, build dynamic proxies or serializers.</li><li><strong>Performance tip:</strong> Cache <code>PropertyInfo</code>/<code>MethodInfo</code> lookups or emit delegates to avoid repeated reflection overhead.</li></ul>
 <h3 id="value-vs-reference-types">Value vs Reference Types</h3>
 <ul><li><strong>Stack vs heap:</strong> Value types (<code>struct</code>, <code>record struct</code>) live inline; reference types allocate on the heap.</li><li><strong>Boxing/unboxing:</strong> Converting a value type to <code>object</code> boxes; avoid in hot loops (e.g., use generic collections over <code>ArrayList</code>).</li><li><strong>When to use structs:</strong> Keep them small (<16 bytes), immutable, and logically represent a single value (e.g., <code>PriceTick</code> with <code>decimal Bid</code>/<code>Ask</code>).</li><li><strong><code>record struct</code>:</strong> Offers value semantics with concise syntax and generated equality members.</li><li><strong>Heap vs stack visualization:</strong></li></ul>
-<pre class="hljs"><code>Stack Frame
+<pre class="language-csharp"><code class="language-csharp">Stack Frame
 ┌─────────────────────┐
 │ PriceTick tick;     │◄─ value copied
 └─────────────────────┘
@@ -188,7 +189,7 @@ Managed Heap
 └──────────────────┴──┘</code></pre>
 <h3 id="collections-linq">Collections & LINQ</h3>
 <ul><li><strong>Deferred execution:</strong> Query operators (e.g., <code>Where</code>, <code>Select</code>) defer work until enumerated. Beware of multiple iterations.</li><li><strong><code>IEnumerable&lt;T&gt;</code> vs <code>IQueryable&lt;T&gt;</code>:</strong> <code>IQueryable&lt;T&gt;</code> builds an expression tree for remote providers (EF Core). Avoid running client-side filters inadvertently.</li><li><strong>Materialization:</strong> Use <code>ToList()</code>/<code>ToArray()</code> when you need a snapshot (e.g., before caching or multi-pass traversal).</li><li><strong>Avoid multiple enumeration:</strong> Cache results with <code>var list = source.ToList();</code> if you'll iterate twice.</li><li><a href="./sub-notes/Sorted%20Collections%20Interview%20Notes.md">Sorted Collections & Interview Talking Points</a></li><li><a href="./sub-notes/Sorting%20Algorithms.md">Sorting Algorithms Interview Primer</a></li><li><a href="./sub-notes/FIFO%20Queues%20in%20.NET.md">FIFO Queues in .NET</a></li><li><strong>Example:</strong></li></ul>
-<pre class="hljs"><code>var recentOrders = await _dbContext.Orders
+<pre class="language-csharp"><code class="language-csharp">var recentOrders = await _dbContext.Orders
     .Where(o =&gt; o.ExecutedAt &gt;= cutoff)
     .OrderByDescending(o =&gt; o.ExecutedAt)
     .Take(100)
@@ -315,5 +316,7 @@ var topSymbols = recentOrders
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -142,7 +143,7 @@
         <h2 id="olog-n-logarithmic-time"><strong>O(log n) — Logarithmic Time</strong></h2>
 <blockquote><p>"Operation time grows logarithmically—doubling input size adds only one more step."</p></blockquote>
 <h3 id="bad-example">❌ Bad example:</h3>
-<pre class="hljs"><code>public class PriceLookup
+<pre class="language-csharp"><code class="language-csharp">public class PriceLookup
 {
     private List&lt;PriceLevel&gt; _prices = new(); // unsorted
 
@@ -160,7 +161,7 @@
 var price = lookup.FindPriceNearTarget(150.00m);</code></pre>
 <p>Linear search doesn't exploit any structure—wasteful for large datasets.</p>
 <h3 id="good-example">✅ Good example:</h3>
-<pre class="hljs"><code>public class PriceLookup
+<pre class="language-csharp"><code class="language-csharp">public class PriceLookup
 {
     private List&lt;PriceLevel&gt; _prices = new(); // sorted
 
@@ -186,7 +187,7 @@ var price = lookup.FindPriceNearTarget(150.00m);</code></pre>
 var price = lookup.FindPriceNearTarget(150.00m);</code></pre>
 <p>👉 Binary search halves the search space each step: O(log₂ n).</p>
 <h3 id="sortedset-for-automatic-ordering">🔥 SortedSet for automatic ordering:</h3>
-<pre class="hljs"><code>public class OrderPriceIndex
+<pre class="language-csharp"><code class="language-csharp">public class OrderPriceIndex
 {
     private SortedSet&lt;decimal&gt; _buyPrices = new();
     private SortedSet&lt;decimal&gt; _sellPrices = new();
@@ -211,7 +212,7 @@ var price = lookup.FindPriceNearTarget(150.00m);</code></pre>
 }</code></pre>
 <p>👉 SortedSet (red-black tree) maintains order with O(log n) operations.</p>
 <h3 id="dictionary-resizing">🔥 Dictionary resizing:</h3>
-<pre class="hljs"><code>public class TradeCache
+<pre class="language-csharp"><code class="language-csharp">public class TradeCache
 {
     // Dictionary internal resizing is O(n), but happens O(log n) times
     // as capacity doubles: 4, 8, 16, 32, 64...
@@ -320,5 +321,7 @@ var price = lookup.FindPriceNearTarget(150.00m);</code></pre>
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

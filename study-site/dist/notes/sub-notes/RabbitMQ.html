@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -147,7 +148,7 @@
 <h2 id="designing-for-reliability-throughput">Designing for Reliability & Throughput</h2>
 <ul><li><strong>Durable queues + persistent messages:</strong> <code>durable: true</code> queues and <code>IBasicProperties.Persistent = true</code> survive broker restarts.</li><li><strong>Publisher confirms:</strong> Use <code>ConfirmSelect</code> + <code>WaitForConfirmsOrDie</code> (or async confirms) to ensure the broker received and persisted the publish.</li><li><strong>Consumer acknowledgements:</strong> Manual <code>BasicAck</code>/<code>BasicNack</code> lets you avoid losing work; pair with <strong>idempotent handlers</strong> to tolerate redelivery.</li><li><strong>Prefetch/QoS:</strong> Set <code>BasicQos(prefetchCount: N)</code> to avoid overwhelming consumers and to enable fair dispatch.</li><li><strong>Ordering:</strong> RabbitMQ preserves per-queue order; multiple consumers can reorder. Keep a single consumer per queue if strict ordering matters.</li><li><strong>Retries:</strong> Prefer <strong>delayed queues</strong> or <strong>dead-letter routing</strong> to a retry queue with backoff instead of immediate requeue loops.</li><li><strong>Idempotency & dedupe:</strong> Use message IDs + idempotent writes (upserts), or an outbox table feeding RabbitMQ to ensure at-least-once delivery without duplication.</li></ul>
 <h2 id="how-to-use-it-from-net-rabbitmqclient">How to Use It from .NET (RabbitMQ.Client)</h2>
-<pre class="hljs"><code>var factory = new ConnectionFactory
+<pre class="language-csharp"><code class="language-csharp">var factory = new ConnectionFactory
 {
     HostName = &quot;rabbitmq&quot;, // or URI via Uri property
     DispatchConsumersAsync = true,
@@ -165,7 +166,7 @@ var props = channel.CreateBasicProperties();
 props.Persistent = true; // durable message
 channel.BasicPublish(&quot;orders&quot;, routingKey: &quot;order.new&quot;, basicProperties: props, body: body);</code></pre>
 <h3 id="consumer-async-eventingbasicconsumer">Consumer (Async EventingBasicConsumer)</h3>
-<pre class="hljs"><code>var consumer = new AsyncEventingBasicConsumer(channel);
+<pre class="language-csharp"><code class="language-csharp">var consumer = new AsyncEventingBasicConsumer(channel);
 consumer.Received += async (sender, ea) =&gt;
 {
     var payload = Encoding.UTF8.GetString(ea.Body.ToArray());
@@ -276,5 +277,7 @@ channel.BasicConsume(&quot;orders.matching&quot;, autoAck: false, consumer: cons
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

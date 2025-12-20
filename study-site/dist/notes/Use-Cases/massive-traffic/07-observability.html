@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -149,7 +150,7 @@
 <h2 id="1-structured-logging-with-serilog">1. Structured Logging with Serilog</h2>
 <p>Stop using <code>Console.WriteLine</code>. Use structured logs with correlation IDs.</p>
 <h3 id="setup-serilog">Setup Serilog</h3>
-<pre class="hljs"><code>// Install: Serilog.AspNetCore, Serilog.Sinks.Console, Serilog.Sinks.File, Serilog.Sinks.Seq
+<pre class="language-csharp"><code class="language-csharp">// Install: Serilog.AspNetCore, Serilog.Sinks.Console, Serilog.Sinks.File, Serilog.Sinks.Seq
 
 // Program.cs
 using Serilog;
@@ -196,7 +197,7 @@ app.UseSerilogRequestLogging(options =&gt;
 app.MapControllers();
 app.Run();</code></pre>
 <h3 id="structured-logging-in-code">Structured Logging in Code</h3>
-<pre class="hljs"><code>public class OrderService
+<pre class="language-csharp"><code class="language-csharp">public class OrderService
 {
     private readonly ILogger&lt;OrderService&gt; _logger;
 
@@ -247,7 +248,7 @@ app.Run();</code></pre>
     }
 }</code></pre>
 <h3 id="correlation-ids-for-request-tracking">Correlation IDs for Request Tracking</h3>
-<pre class="hljs"><code>// Middleware to add correlation ID
+<pre class="language-csharp"><code class="language-csharp">// Middleware to add correlation ID
 public class CorrelationIdMiddleware
 {
     private readonly RequestDelegate _next;
@@ -278,7 +279,7 @@ app.UseMiddleware&lt;CorrelationIdMiddleware&gt;();
 <h2 id="2-metrics-with-prometheus-grafana">2. Metrics with Prometheus & Grafana</h2>
 <p>Track system health in real-time: requests per second, latency, error rate.</p>
 <h3 id="setup-prometheus-metrics">Setup Prometheus Metrics</h3>
-<pre class="hljs"><code>// Install: prometheus-net.AspNetCore
+<pre class="language-csharp"><code class="language-csharp">// Install: prometheus-net.AspNetCore
 
 // Program.cs
 using Prometheus;
@@ -296,7 +297,7 @@ app.MapMetrics();
 app.MapControllers();
 app.Run();</code></pre>
 <h3 id="custom-metrics">Custom Metrics</h3>
-<pre class="hljs"><code>using Prometheus;
+<pre class="language-csharp"><code class="language-csharp">using Prometheus;
 
 public class OrderMetrics
 {
@@ -368,7 +369,7 @@ public class OrderService
     }
 }</code></pre>
 <h3 id="key-metrics-to-track">Key Metrics to Track</h3>
-<pre class="hljs"><code>public static class ApplicationMetrics
+<pre class="language-csharp"><code class="language-csharp">public static class ApplicationMetrics
 {
     // RED method: Rate, Errors, Duration
     public static readonly Counter RequestsTotal = Metrics.CreateCounter(
@@ -440,7 +441,7 @@ public class OrderService
     );
 }</code></pre>
 <h3 id="background-service-for-system-metrics">Background Service for System Metrics</h3>
-<pre class="hljs"><code>public class SystemMetricsCollector : BackgroundService
+<pre class="language-csharp"><code class="language-csharp">public class SystemMetricsCollector : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -479,7 +480,7 @@ builder.Services.AddHostedService&lt;SystemMetricsCollector&gt;();</code></pre>
 <h2 id="3-distributed-tracing-with-opentelemetry">3. Distributed Tracing with OpenTelemetry</h2>
 <p>Track requests across multiple services (microservices, databases, queues).</p>
 <h3 id="setup-opentelemetry">Setup OpenTelemetry</h3>
-<pre class="hljs"><code>// Install: OpenTelemetry.Exporter.Console, OpenTelemetry.Exporter.Jaeger,
+<pre class="language-csharp"><code class="language-csharp">// Install: OpenTelemetry.Exporter.Console, OpenTelemetry.Exporter.Jaeger,
 //          OpenTelemetry.Instrumentation.AspNetCore, OpenTelemetry.Instrumentation.Http,
 //          OpenTelemetry.Instrumentation.SqlClient
 
@@ -515,7 +516,7 @@ builder.Services.AddOpenTelemetry()
         })
     );</code></pre>
 <h3 id="manual-instrumentation">Manual Instrumentation</h3>
-<pre class="hljs"><code>using System.Diagnostics;
+<pre class="language-csharp"><code class="language-csharp">using System.Diagnostics;
 
 public class OrderService
 {
@@ -571,7 +572,7 @@ public class OrderService
 <h2 id="4-application-performance-monitoring-apm">4. Application Performance Monitoring (APM)</h2>
 <p>For production, use a full APM solution.</p>
 <h3 id="setup-application-insights-azure">Setup Application Insights (Azure)</h3>
-<pre class="hljs"><code>// Install: Microsoft.ApplicationInsights.AspNetCore
+<pre class="language-csharp"><code class="language-csharp">// Install: Microsoft.ApplicationInsights.AspNetCore
 
 builder.Services.AddApplicationInsightsTelemetry(options =&gt;
 {
@@ -622,7 +623,7 @@ public class OrderService
 <p>---</p>
 <h2 id="5-alerting-know-when-things-break">5. Alerting: Know When Things Break</h2>
 <h3 id="prometheus-alerting-rules">Prometheus Alerting Rules</h3>
-<pre class="hljs"><code># prometheus-alerts.yml
+<pre class="language-yaml"><code class="language-yaml"># prometheus-alerts.yml
 groups:
   - name: api_alerts
     interval: 30s
@@ -667,7 +668,7 @@ groups:
 <p>---</p>
 <h2 id="6-dashboards-visualize-system-health">6. Dashboards: Visualize System Health</h2>
 <h3 id="grafana-dashboard-key-panels">Grafana Dashboard (Key Panels)</h3>
-<pre class="hljs"><code>{
+<pre class="language-json"><code class="language-json">{
   &quot;dashboard&quot;: {
     &quot;title&quot;: &quot;Order Service Dashboard&quot;,
     &quot;panels&quot;: [
@@ -795,5 +796,7 @@ groups:
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

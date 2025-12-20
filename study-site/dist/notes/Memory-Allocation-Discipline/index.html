@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -161,7 +162,7 @@
 <h2 id="4-reuse-patterns-that-eliminate-gc-churn">4️⃣ Reuse patterns that eliminate GC churn</h2>
 <h3 id="object-pooling">✅ <strong>Object pooling</strong></h3>
 <p>.NET has built-in pools for common cases:</p>
-<pre class="hljs"><code>using Microsoft.Extensions.ObjectPool;
+<pre class="language-csharp"><code class="language-csharp">using Microsoft.Extensions.ObjectPool;
 
 var pool = ObjectPool.Create&lt;MyReusableObject&gt;();
 var item = pool.Get();
@@ -169,14 +170,14 @@ var item = pool.Get();
 pool.Return(item);</code></pre>
 <p>💡 Great for: serializers, parsers, <code>StringBuilder</code>s, temp containers.</p>
 <p><strong>Example:</strong></p>
-<pre class="hljs"><code>var sb = StringBuilderCache.Acquire();
+<pre class="language-csharp"><code class="language-csharp">var sb = StringBuilderCache.Acquire();
 // build a string
 var result = StringBuilderCache.GetStringAndRelease(sb);</code></pre>
 <p>→ zero allocations between calls.</p>
 <p>---</p>
 <h3 id="buffer-pooling">✅ <strong>Buffer pooling</strong></h3>
 <p>The <code>ArrayPool&lt;T&gt;</code> API lets you rent and return arrays instead of allocating new ones.</p>
-<pre class="hljs"><code>var pool = ArrayPool&lt;byte&gt;.Shared;
+<pre class="language-csharp"><code class="language-csharp">var pool = ArrayPool&lt;byte&gt;.Shared;
 byte[] buffer = pool.Rent(1024);
 // use it
 pool.Return(buffer);</code></pre>
@@ -186,13 +187,13 @@ pool.Return(buffer);</code></pre>
 <p>---</p>
 <h3 id="string-interning-or-caching">✅ <strong>String interning or caching</strong></h3>
 <p>Instead of creating new string instances for common identifiers (e.g., “EURUSD”):</p>
-<pre class="hljs"><code>string symbol = string.Intern(&quot;EURUSD&quot;);</code></pre>
+<pre class="language-csharp"><code class="language-csharp">string symbol = string.Intern(&quot;EURUSD&quot;);</code></pre>
 <p>Or better — store common symbols in a static <code>Dictionary&lt;string, string&gt;</code> and reuse the reference.</p>
 <p>---</p>
 <h3 id="structs-and-value-types">✅ <strong>Structs and value types</strong></h3>
 <p>For small, immutable data (ticks, coordinates, etc.), use <strong>structs</strong>:</p>
 <ul><li>Stored inline → no GC tracking</li><li>Can live and die on the stack</li><li>No heap allocations for short-lived data</li></ul>
-<pre class="hljs"><code>readonly struct Tick
+<pre class="language-csharp"><code class="language-csharp">readonly struct Tick
 {
     public string Symbol { get; }
     public double Bid { get; }
@@ -203,7 +204,7 @@ pool.Return(buffer);</code></pre>
 <h3 id="using-spant-memoryt-for-zero-copy">✅ <strong>Using <code>Span&lt;T&gt;</code> / <code>Memory&lt;T&gt;</code> for zero-copy</strong></h3>
 <p><code>Span&lt;T&gt;</code> and <code>Memory&lt;T&gt;</code> let you <strong>operate directly on existing memory</strong> — without allocating new arrays or substrings.</p>
 <p>Example: parsing a price line</p>
-<pre class="hljs"><code>ReadOnlySpan&lt;byte&gt; span = Encoding.ASCII.GetBytes(&quot;EURUSD,1.0743,1.0745&quot;);
+<pre class="language-csharp"><code class="language-csharp">ReadOnlySpan&lt;byte&gt; span = Encoding.ASCII.GetBytes(&quot;EURUSD,1.0743,1.0745&quot;);
 
 int comma = span.IndexOf((byte)&#39;,&#39;);
 var symbol = Encoding.ASCII.GetString(span[..comma]); // one allocation
@@ -216,7 +217,7 @@ Utf8Parser.TryParse(span[(comma + 1)..], out double bid, out _);</code></pre>
 <p>Even code that <em>looks innocent</em> can allocate. Some hidden examples:</p>
 <table><thead><tr><th>Code</th><th>Hidden allocation</th></tr></thead><tbody><tr><td><code>foreach (var x in list)</code></td><td>Enumerator struct may box</td></tr><tr><td><code>async</code> methods</td><td>Allocates a state machine object</td></tr><tr><td><code>lambda</code> or <code>delegate</code> captures variable</td><td>Allocates closure object</td></tr><tr><td><code>ToString()</code></td><td>Often allocates new string</td></tr><tr><td><code>Task.FromResult(...)</code></td><td>Reuses task, good ✅</td></tr><tr><td><code>await</code> on <code>Task</code> that already completed</td><td>Allocates continuation unless optimized</td></tr></tbody></table>
 <p>💡 Use tools like:</p>
-<pre class="hljs"><code>dotnet-trace collect --process-id &lt;pid&gt;
+<pre class="language-bash"><code class="language-bash">dotnet-trace collect --process-id &lt;pid&gt;
 dotnet-counters monitor System.Runtime</code></pre>
 <p>to watch <strong>Allocated Bytes/sec</strong>.</p>
 <p>---</p>
@@ -229,13 +230,13 @@ dotnet-counters monitor System.Runtime</code></pre>
 <p>---</p>
 <h2 id="7-measuring-validating-allocation-discipline">7️⃣ Measuring & validating allocation discipline</h2>
 <p>Use:</p>
-<pre class="hljs"><code>dotnet-counters monitor System.Runtime</code></pre>
+<pre class="language-bash"><code class="language-bash">dotnet-counters monitor System.Runtime</code></pre>
 <p>Watch:</p>
-<pre class="hljs"><code>Allocated Bytes/sec
+<pre class="language-csharp"><code class="language-csharp">Allocated Bytes/sec
 Gen 0 GC Count
 % Time in GC</code></pre>
 <p>or use code:</p>
-<pre class="hljs"><code>Console.WriteLine(GC.GetTotalAllocatedBytes(true));</code></pre>
+<pre class="language-csharp"><code class="language-csharp">Console.WriteLine(GC.GetTotalAllocatedBytes(true));</code></pre>
 <p>✅ Healthy pattern:</p>
 <ul><li>High throughput with low Allocated Bytes/sec</li><li>Frequent Gen0, rare Gen1/2</li><li>% Time in GC < 2–3%</li></ul>
 <p>---</p>
@@ -244,7 +245,7 @@ Gen 0 GC Count
 <p>---</p>
 <h2 id="9-trading-system-tie-in-concrete-example">9️⃣ Trading-system tie-in (concrete example)</h2>
 <p><strong>Without discipline:</strong></p>
-<pre class="hljs"><code>foreach (var msg in feed)
+<pre class="language-csharp"><code class="language-csharp">foreach (var msg in feed)
 {
     var parts = msg.Split(&#39;,&#39;);
     var tick = new Tick(parts[0], double.Parse(parts[1]), double.Parse(parts[2]));
@@ -252,7 +253,7 @@ Gen 0 GC Count
 }</code></pre>
 <p>→ Creates new string arrays, substrings, doubles → Gen0/Gen1 churn.</p>
 <p><strong>With discipline:</strong></p>
-<pre class="hljs"><code>byte[] buffer = ArrayPool&lt;byte&gt;.Shared.Rent(1024);
+<pre class="language-csharp"><code class="language-csharp">byte[] buffer = ArrayPool&lt;byte&gt;.Shared.Rent(1024);
 ReadOnlySpan&lt;byte&gt; span = buffer.AsSpan(0, bytesRead);
 ParseTick(span);
 ArrayPool&lt;byte&gt;.Shared.Return(buffer);</code></pre>
@@ -356,5 +357,7 @@ ArrayPool&lt;byte&gt;.Shared.Return(buffer);</code></pre>
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

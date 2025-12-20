@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -142,7 +143,7 @@
         <h2 id="o1-constant-time"><strong>O(1) — Constant Time</strong></h2>
 <blockquote><p>"Operation time is independent of input size—always takes the same number of steps."</p></blockquote>
 <h3 id="bad-example">❌ Bad example:</h3>
-<pre class="hljs"><code>public class OrderBook
+<pre class="language-csharp"><code class="language-csharp">public class OrderBook
 {
     private List&lt;Order&gt; _orders = new();
 
@@ -157,7 +158,7 @@
 var order = orderBook.FindOrderById(12345); // slow!</code></pre>
 <p>Linear search scales poorly—doubling orders doubles search time.</p>
 <h3 id="good-example">✅ Good example:</h3>
-<pre class="hljs"><code>public class OrderBook
+<pre class="language-csharp"><code class="language-csharp">public class OrderBook
 {
     private Dictionary&lt;int, Order&gt; _orders = new();
 
@@ -179,7 +180,7 @@ var order = orderBook.FindOrderById(12345); // slow!</code></pre>
 var order = orderBook.FindOrderById(12345); // fast!</code></pre>
 <p>👉 Dictionary uses hashing for O(1) lookups regardless of size.</p>
 <h3 id="array-indexing">🔥 Array indexing:</h3>
-<pre class="hljs"><code>public class PriceHistory
+<pre class="language-csharp"><code class="language-csharp">public class PriceHistory
 {
     private decimal[] _prices = new decimal[1000];
 
@@ -197,7 +198,7 @@ var order = orderBook.FindOrderById(12345); // fast!</code></pre>
 }</code></pre>
 <p>👉 Array indexing is O(1)—memory address is calculated directly.</p>
 <h3 id="stackqueue-operations">🔥 Stack/Queue operations:</h3>
-<pre class="hljs"><code>public class TradeQueue
+<pre class="language-csharp"><code class="language-csharp">public class TradeQueue
 {
     private Queue&lt;Trade&gt; _pendingTrades = new();
 
@@ -310,5 +311,7 @@ var order = orderBook.FindOrderById(12345); // fast!</code></pre>
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

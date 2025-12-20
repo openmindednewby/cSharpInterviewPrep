@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -149,7 +150,7 @@
 <h3 id="practical-guidance-trade-offs">Practical guidance & trade-offs</h3>
 <ul><li>Prefer <code>record</code> for DTOs and immutable data transfer where content equality is useful.</li><li>Prefer <code>class</code> for domain entities that have an identity (database ID) and lifecycle; they usually need to be mutable or proxied by ORMs.</li><li>Use <code>struct</code>/<code>record struct</code> for very small value objects (e.g., <code>PriceTick</code>, <code>Timestamp</code>) to avoid heap allocation when copying is cheap.</li><li>Favour immutability for simple data carriers — it reduces shared-state bugs and simplifies reasoning, especially across threads.</li><li>Avoid mutable singletons or <code>static</code> mutable fields; prefer injected, testable services with clear lifetimes.</li></ul>
 <h3 id="quick-examples">Quick examples</h3>
-<pre class="hljs"><code>// record for DTO
+<pre class="language-csharp"><code class="language-csharp">// record for DTO
 public record OrderDto(int Id, string Symbol, decimal Amount);
 
 // class for entity
@@ -264,5 +265,7 @@ public static class MathHelpers { public static decimal RoundPrice(decimal p) =&
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

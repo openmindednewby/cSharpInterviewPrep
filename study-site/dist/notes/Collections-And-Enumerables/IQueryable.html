@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -142,7 +143,7 @@
         <h2 id="iqueryablet-expression-trees-for-remote-queries"><strong>IQueryable<T> — Expression Trees for Remote Queries</strong></h2>
 <blockquote><p>"Use IQueryable<T> when queries should be translated and executed remotely (databases, APIs), not in memory."</p></blockquote>
 <h3 id="bad-example">❌ Bad example:</h3>
-<pre class="hljs"><code>public IEnumerable&lt;Trade&gt; GetTradesForSymbol(string symbol)
+<pre class="language-csharp"><code class="language-csharp">public IEnumerable&lt;Trade&gt; GetTradesForSymbol(string symbol)
 {
     return _dbContext.Trades.ToList() // loads ALL trades into memory
                             .Where(t =&gt; t.Symbol == symbol); // filters in memory
@@ -152,7 +153,7 @@
 var trades = repository.GetTradesForSymbol(&quot;AAPL&quot;); // loads millions of rows</code></pre>
 <p>Using IEnumerable<T> forces full materialization before filtering—catastrophic for large datasets.</p>
 <h3 id="good-example">✅ Good example:</h3>
-<pre class="hljs"><code>public IQueryable&lt;Trade&gt; GetTradesForSymbol(string symbol)
+<pre class="language-csharp"><code class="language-csharp">public IQueryable&lt;Trade&gt; GetTradesForSymbol(string symbol)
 {
     return _dbContext.Trades.Where(t =&gt; t.Symbol == symbol); // builds expression tree
 }
@@ -163,7 +164,7 @@ var trades = repository.GetTradesForSymbol(&quot;AAPL&quot;)
                        .Take(100); // SQL: SELECT TOP 100 ... WHERE Symbol = &#39;AAPL&#39; ORDER BY ...</code></pre>
 <p>👉 IQueryable<T> builds expression trees; EF Core translates to SQL and executes on database.</p>
 <h3 id="composing-queries-before-execution">🔥 Composing queries before execution:</h3>
-<pre class="hljs"><code>public IQueryable&lt;Order&gt; GetOrders()
+<pre class="language-csharp"><code class="language-csharp">public IQueryable&lt;Order&gt; GetOrders()
 {
     return _dbContext.Orders;
 }
@@ -177,7 +178,7 @@ var recentLargeOrders = orderService.GetOrders()
 var results = recentLargeOrders.ToList(); // NOW executes as single SQL query</code></pre>
 <p>👉 Query composition is deferred until materialization (.ToList(), .First(), foreach).</p>
 <h3 id="avoiding-n1-queries">🔥 Avoiding N+1 queries:</h3>
-<pre class="hljs"><code>// ❌ Bad: N+1 problem
+<pre class="language-csharp"><code class="language-csharp">// ❌ Bad: N+1 problem
 public IEnumerable&lt;Order&gt; GetOrdersWithCustomers()
 {
     var orders = _dbContext.Orders.ToList(); // 1 query
@@ -290,5 +291,7 @@ public IQueryable&lt;Order&gt; GetOrdersWithCustomers()
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

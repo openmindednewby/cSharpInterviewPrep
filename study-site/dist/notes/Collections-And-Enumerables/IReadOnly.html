@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -142,7 +143,7 @@
         <h2 id="ireadonlycollectiont-ireadonlylistt-immutable-access"><strong>IReadOnlyCollection<T> & IReadOnlyList<T> — Immutable Access</strong></h2>
 <blockquote><p>"Use IReadOnly* interfaces to expose collections without allowing modification."</p></blockquote>
 <h3 id="bad-example">❌ Bad example:</h3>
-<pre class="hljs"><code>public class Portfolio
+<pre class="language-csharp"><code class="language-csharp">public class Portfolio
 {
     private List&lt;Position&gt; _positions = new();
 
@@ -155,7 +156,7 @@ portfolio.Positions.Add(new Position()); // breaks encapsulation
 portfolio.Positions.Clear(); // disaster!</code></pre>
 <p>Exposing mutable collections lets callers break invariants and bypass validation.</p>
 <h3 id="good-example">✅ Good example:</h3>
-<pre class="hljs"><code>public class Portfolio
+<pre class="language-csharp"><code class="language-csharp">public class Portfolio
 {
     private List&lt;Position&gt; _positions = new();
 
@@ -174,7 +175,7 @@ int count = portfolio.Positions.Count; // ✅ allowed
 // portfolio.Positions.Add(...); // ❌ compiler error</code></pre>
 <p>👉 IReadOnlyCollection<T> provides Count and iteration, but no Add/Remove.</p>
 <h3 id="using-ireadonlylistt-for-indexed-access">🔥 Using IReadOnlyList<T> for indexed access:</h3>
-<pre class="hljs"><code>public class TradingDay
+<pre class="language-csharp"><code class="language-csharp">public class TradingDay
 {
     private List&lt;Trade&gt; _trades = new();
 
@@ -193,7 +194,7 @@ int count = day.Trades.Count;   // ✅ count
 // day.Trades.Add(...);          // ❌ compiler error</code></pre>
 <p>👉 IReadOnlyList<T> adds indexed access without exposing mutability.</p>
 <h3 id="avoiding-defensive-copies">🔥 Avoiding defensive copies:</h3>
-<pre class="hljs"><code>// ❌ Bad: creates unnecessary copy
+<pre class="language-csharp"><code class="language-csharp">// ❌ Bad: creates unnecessary copy
 public IEnumerable&lt;Order&gt; GetOrders()
 {
     return _orders.ToList(); // allocates new list every call
@@ -301,5 +302,7 @@ public IReadOnlyCollection&lt;Order&gt; GetOrders()
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

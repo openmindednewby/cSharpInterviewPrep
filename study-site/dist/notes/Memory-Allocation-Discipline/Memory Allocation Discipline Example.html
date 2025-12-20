@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -144,7 +145,7 @@
 <ul><li><strong>Naive</strong>: uses <code>string.Split()</code> and <code>double.Parse()</code></li><li><strong>Optimized</strong>: uses <code>Span&lt;byte&gt;</code> + <code>Utf8Parser</code> (zero allocations)</li></ul>
 <p>---</p>
 <h3 id="tickparsingbenchmarkscs">📄 <code>TickParsingBenchmarks.cs</code></h3>
-<pre class="hljs"><code>using System;
+<pre class="language-csharp"><code class="language-csharp">using System;
 using System.Buffers;
 using System.Buffers.Text;
 using System.Text;
@@ -185,11 +186,11 @@ public class TickParsingBenchmarks
 }</code></pre>
 <p>---</p>
 <h3 id="run-it">⚙️ Run it:</h3>
-<pre class="hljs"><code>dotnet add package BenchmarkDotNet
+<pre class="language-bash"><code class="language-bash">dotnet add package BenchmarkDotNet
 dotnet run -c Release</code></pre>
 <p>---</p>
 <h3 id="expected-results-typical-output">🧾 Expected results (typical output):</h3>
-<pre class="hljs"><code>|    Method |       Mean |   Allocated |
+<pre class="language-csharp"><code class="language-csharp">|    Method |       Mean |   Allocated |
 |----------- |-----------:|------------:|
 | NaiveParse |   1.200 μs |     1.24 KB |
 | SpanParse  |   0.245 μs |       32 B  |</code></pre>
@@ -200,7 +201,7 @@ dotnet run -c Release</code></pre>
 <p>Now let’s build a <strong>GC-efficient Tick parser</strong> — something you can confidently mention if they ask, “How would you design a real-time price feed handler?”</p>
 <p>---</p>
 <h3 id="tickprocessorcs">📄 <code>TickProcessor.cs</code></h3>
-<pre class="hljs"><code>using System;
+<pre class="language-csharp"><code class="language-csharp">using System;
 using System.Buffers;
 using System.Buffers.Text;
 using System.Text;
@@ -391,5 +392,7 @@ public static class Program
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

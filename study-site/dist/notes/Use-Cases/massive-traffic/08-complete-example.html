@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -142,7 +143,7 @@
         <h1 id="complete-example-high-traffic-e-commerce-order-api">Complete Example: High-Traffic E-Commerce Order API</h1>
 <p>This is a production-ready implementation combining all patterns: async I/O, caching, rate limiting, resilience, queues, and observability.</p>
 <h2 id="system-architecture">System Architecture</h2>
-<pre class="hljs"><code>Client Request
+<pre class="language-csharp"><code class="language-csharp">Client Request
     ↓
 Load Balancer (NGINX/AWS ALB)
     ↓
@@ -158,7 +159,7 @@ Order Service (Stateless, Horizontal Scaling)
 Background Workers (Order Processing, Notifications)</code></pre>
 <p>---</p>
 <h2 id="project-structure">Project Structure</h2>
-<pre class="hljs"><code>OrderService/
+<pre class="language-csharp"><code class="language-csharp">OrderService/
 ├── Controllers/
 │   └── OrdersController.cs
 ├── Services/
@@ -188,7 +189,7 @@ Background Workers (Order Processing, Notifications)</code></pre>
 <p>---</p>
 <h2 id="complete-implementation">Complete Implementation</h2>
 <h3 id="programcs---bootstrap-everything">Program.cs - Bootstrap Everything</h3>
-<pre class="hljs"><code>using System.Data;
+<pre class="language-csharp"><code class="language-csharp">using System.Data;
 using Dapper;
 using Microsoft.AspNetCore.RateLimiting;
 using Npgsql;
@@ -362,7 +363,7 @@ static IAsyncPolicy&lt;HttpResponseMessage&gt; GetCircuitBreakerPolicy()
 }</code></pre>
 <p>---</p>
 <h3 id="orderscontrollercs">OrdersController.cs</h3>
-<pre class="hljs"><code>using Microsoft.AspNetCore.Mvc;
+<pre class="language-csharp"><code class="language-csharp">using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using OrderService.Models;
 using OrderService.Services;
@@ -468,7 +469,7 @@ public class OrdersController : ControllerBase
 }</code></pre>
 <p>---</p>
 <h3 id="orderservicecs---business-logic">OrderService.cs - Business Logic</h3>
-<pre class="hljs"><code>using System.Diagnostics;
+<pre class="language-csharp"><code class="language-csharp">using System.Diagnostics;
 using OrderService.Infrastructure;
 using OrderService.Models;
 using OrderService.Repositories;
@@ -623,7 +624,7 @@ public class OrderService : IOrderService
 }</code></pre>
 <p>---</p>
 <h3 id="orderrepositorycs---database-access">OrderRepository.cs - Database Access</h3>
-<pre class="hljs"><code>using System.Data;
+<pre class="language-csharp"><code class="language-csharp">using System.Data;
 using Dapper;
 using OrderService.Models;
 
@@ -713,7 +714,7 @@ public class OrderRepository : IOrderRepository
 }</code></pre>
 <p>---</p>
 <h3 id="orderprocessingworkercs---background-processing">OrderProcessingWorker.cs - Background Processing</h3>
-<pre class="hljs"><code>using RabbitMQ.Client;
+<pre class="language-csharp"><code class="language-csharp">using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
 using System.Text.Json;
@@ -818,7 +819,7 @@ public class OrderProcessingWorker : BackgroundService
 }</code></pre>
 <p>---</p>
 <h2 id="database-schema">Database Schema</h2>
-<pre class="hljs"><code>CREATE TABLE Orders (
+<pre class="language-sql"><code class="language-sql">CREATE TABLE Orders (
     Id SERIAL PRIMARY KEY,
     UserId INT NOT NULL,
     ProductId INT NOT NULL,
@@ -833,7 +834,7 @@ CREATE INDEX IX_Orders_UserId_CreatedAt ON Orders (UserId, CreatedAt DESC);
 CREATE INDEX IX_Orders_Status ON Orders (Status);</code></pre>
 <p>---</p>
 <h2 id="configuration-appsettingsjson">Configuration (appsettings.json)</h2>
-<pre class="hljs"><code>{
+<pre class="language-json"><code class="language-json">{
   &quot;ConnectionStrings&quot;: {
     &quot;DefaultConnection&quot;: &quot;Host=localhost;Database=orderdb;Username=postgres;Password=password;Max Pool Size=100&quot;,
     &quot;Redis&quot;: &quot;localhost:6379&quot;
@@ -922,5 +923,7 @@ CREATE INDEX IX_Orders_Status ON Orders (Status);</code></pre>
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

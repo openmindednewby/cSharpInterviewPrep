@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -146,7 +147,7 @@
 <ul><li>Default thread pool: ~hundreds of threads (varies by cores)</li><li>Average database query: 50ms</li><li>If threads block waiting: <strong>200 threads = 4,000 requests/second max</strong></li><li>With async/await (no blocking): <strong>Same threads = 50,000+ requests/second</strong></li></ul>
 <h2 id="rule-1-never-block-threads-on-io">Rule #1: Never Block Threads on I/O</h2>
 <h3 id="bad-blocking-code-thread-starvation">❌ Bad: Blocking Code (Thread Starvation)</h3>
-<pre class="hljs"><code>public class OrderController : ControllerBase
+<pre class="language-csharp"><code class="language-csharp">public class OrderController : ControllerBase
 {
     private readonly HttpClient _httpClient;
     private readonly IDbConnection _db;
@@ -174,7 +175,7 @@
 <p><strong>What happens under load:</strong></p>
 <ol><li>500 concurrent requests come in</li><li>All 500 grab a thread and block</li><li>Thread pool exhausted</li><li>New requests queue up or timeout</li><li><strong>System dies under load</strong></li></ol>
 <h3 id="good-async-all-the-way">✅ Good: Async All The Way</h3>
-<pre class="hljs"><code>public class OrderController : ControllerBase
+<pre class="language-csharp"><code class="language-csharp">public class OrderController : ControllerBase
 {
     private readonly HttpClient _httpClient;
     private readonly IDbConnection _db;
@@ -242,7 +243,7 @@
 <p>---</p>
 <h2 id="rule-2-use-httpclientfactory-prevent-socket-exhaustion">Rule #2: Use HttpClientFactory (Prevent Socket Exhaustion)</h2>
 <h3 id="bad-creating-httpclient-instances">❌ Bad: Creating HttpClient Instances</h3>
-<pre class="hljs"><code>// WRONG: Creates new sockets, doesn&#39;t respect DNS TTL
+<pre class="language-csharp"><code class="language-csharp">// WRONG: Creates new sockets, doesn&#39;t respect DNS TTL
 public class PaymentService
 {
     public async Task&lt;PaymentResult&gt; ChargeCardAsync(string cardToken)
@@ -260,7 +261,7 @@ public class PaymentService
 <p><strong>Problems:</strong></p>
 <ul><li><strong>Socket exhaustion</strong>: Each instance creates new sockets</li><li><strong>DNS changes ignored</strong>: Doesn't respect DNS TTL</li><li>Under load: <strong>TIME_WAIT sockets pile up → connection failures</strong></li></ul>
 <h3 id="good-httpclientfactory">✅ Good: HttpClientFactory</h3>
-<pre class="hljs"><code>// Startup.cs / Program.cs
+<pre class="language-csharp"><code class="language-csharp">// Startup.cs / Program.cs
 builder.Services.AddHttpClient&lt;PaymentService&gt;(client =&gt;
 {
     client.BaseAddress = new Uri(&quot;https://payment-gateway&quot;);
@@ -309,7 +310,7 @@ public class PaymentService
 <h2 id="rule-3-always-pass-cancellationtoken">Rule #3: Always Pass CancellationToken</h2>
 <p>Cancellation lets you stop work that's no longer needed (user disconnected, timeout hit).</p>
 <h3 id="proper-cancellation-propagation">✅ Proper Cancellation Propagation</h3>
-<pre class="hljs"><code>public class ReportController : ControllerBase
+<pre class="language-csharp"><code class="language-csharp">public class ReportController : ControllerBase
 {
     private readonly IReportGenerator _reportGen;
     private readonly IDbConnection _db;
@@ -372,7 +373,7 @@ public class ReportGenerator : IReportGenerator
 <ul><li>.Result</li><li>.Wait()</li><li>.GetAwaiter().GetResult()</li></ul>
 <p>This defeats the entire purpose of async.</p>
 <h3 id="deadly-antipatterns">❌ Deadly Antipatterns</h3>
-<pre class="hljs"><code>// ANTIPATTERN #1: .Result / .Wait()
+<pre class="language-csharp"><code class="language-csharp">// ANTIPATTERN #1: .Result / .Wait()
 var user = _userService.GetUserAsync(id).Result; // Deadlock risk + blocks thread
 
 // ANTIPATTERN #2: .GetAwaiter().GetResult()
@@ -391,7 +392,7 @@ public async Task&lt;User&gt; GetUserAsync(int id)
 }</code></pre>
 <h3 id="correct-patterns">✅ Correct Patterns</h3>
 <p><strong>If a method is async, everything below it must be async.</strong></p>
-<pre class="hljs"><code>// Use truly async libraries
+<pre class="language-csharp"><code class="language-csharp">// Use truly async libraries
 public async Task&lt;User&gt; GetUserAsync(int id, CancellationToken ct)
 {
     // EF Core - truly async
@@ -418,7 +419,7 @@ public async Task&lt;User&gt; GetUserAsync(int id, CancellationToken ct)
 <p>---</p>
 <h2 id="advanced-valuetask-for-hot-paths">Advanced: ValueTask for Hot Paths</h2>
 <p>When an operation <strong>completes synchronously most of the time</strong> (e.g., cache hit), use <code>ValueTask&lt;T&gt;</code> to avoid Task allocation.</p>
-<pre class="hljs"><code>public interface ICacheService
+<pre class="language-csharp"><code class="language-csharp">public interface ICacheService
 {
     ValueTask&lt;T?&gt; GetAsync&lt;T&gt;(string key, CancellationToken ct);
     ValueTask SetAsync&lt;T&gt;(string key, T value, CancellationToken ct);
@@ -475,7 +476,7 @@ public class UserService
 <h2 id="thread-pool-tuning-last-resort">Thread Pool Tuning (Last Resort)</h2>
 <p><strong>Default settings work for 99% of cases</strong>. Only tune if you've:</p>
 <ol><li>Measured with profiling</li><li>Confirmed thread pool starvation</li><li>Made everything async first</li></ol>
-<pre class="hljs"><code>// Program.cs - ONLY if measurements show it&#39;s needed
+<pre class="language-csharp"><code class="language-csharp">// Program.cs - ONLY if measurements show it&#39;s needed
 ThreadPool.GetMinThreads(out var minWorker, out var minIOCP);
 Console.WriteLine($&quot;Default min threads: Worker={minWorker}, IOCP={minIOCP}&quot;);
 
@@ -562,5 +563,7 @@ ThreadPool.SetMinThreads(
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

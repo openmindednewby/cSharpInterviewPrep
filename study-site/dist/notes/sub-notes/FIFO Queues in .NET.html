@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -141,7 +142,7 @@
         <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#fifo-queues-in-net">FIFO Queues in .NET</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
         <h1 id="fifo-queues-in-net">FIFO Queues in .NET</h1>
 <ul><li><strong>Definition:</strong> <em>First-In, First-Out</em> data structure where the earliest enqueued item is dequeued first.</li><li><strong>API Surface:</strong> Use <code>Queue&lt;T&gt;</code> for in-memory work, <code>Channel&lt;T&gt;</code> for async producers/consumers, and <code>ConcurrentQueue&lt;T&gt;</code> in multi-threaded scenarios.</li></ul>
-<pre class="hljs"><code>var orders = new Queue&lt;Order&gt;();
+<pre class="language-csharp"><code class="language-csharp">var orders = new Queue&lt;Order&gt;();
 orders.Enqueue(new Order(&quot;EURUSD&quot;, 1_000_000m));
 orders.Enqueue(new Order(&quot;GBPUSD&quot;, 750_000m));
 
@@ -244,5 +245,7 @@ while (orders.TryDequeue(out var next))
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

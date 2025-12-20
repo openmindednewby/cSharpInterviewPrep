@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -149,7 +150,7 @@
 <h2 id="1-timeouts-the-foundation-of-resilience">1. Timeouts: The Foundation of Resilience</h2>
 <p>Never call external services without a timeout. A hanging request is worse than a failed request.</p>
 <h3 id="bad-no-timeout">❌ Bad: No Timeout</h3>
-<pre class="hljs"><code>public class PaymentService
+<pre class="language-csharp"><code class="language-csharp">public class PaymentService
 {
     private readonly HttpClient _httpClient;
 
@@ -166,7 +167,7 @@
 }
 // Under load: all threads hang waiting for slow gateway → system dies</code></pre>
 <h3 id="good-always-set-timeouts">✅ Good: Always Set Timeouts</h3>
-<pre class="hljs"><code>public class PaymentService
+<pre class="language-csharp"><code class="language-csharp">public class PaymentService
 {
     private readonly HttpClient _httpClient;
     private readonly ILogger&lt;PaymentService&gt; _logger;
@@ -212,7 +213,7 @@
     }
 }</code></pre>
 <h3 id="database-timeouts">Database Timeouts</h3>
-<pre class="hljs"><code>public class OrderRepository
+<pre class="language-csharp"><code class="language-csharp">public class OrderRepository
 {
     private readonly IDbConnection _db;
 
@@ -247,14 +248,14 @@ public class AppDbContext : DbContext
 <h2 id="2-circuit-breaker-stop-hammering-failed-services">2. Circuit Breaker: Stop Hammering Failed Services</h2>
 <p>When a dependency fails, stop calling it temporarily to let it recover.</p>
 <h3 id="the-pattern">The Pattern</h3>
-<pre class="hljs"><code>Closed (normal) → failures exceed threshold → Open (reject immediately)
+<pre class="language-csharp"><code class="language-csharp">Closed (normal) → failures exceed threshold → Open (reject immediately)
                 ↓
 Open → after timeout → Half-Open (try one request)
                 ↓
 Half-Open → success → Closed (resume normal)
 Half-Open → failure → Open (back to rejecting)</code></pre>
 <h3 id="using-polly-library">Using Polly Library</h3>
-<pre class="hljs"><code>// Install: Polly, Microsoft.Extensions.Http.Polly
+<pre class="language-csharp"><code class="language-csharp">// Install: Polly, Microsoft.Extensions.Http.Polly
 
 // Program.cs
 builder.Services.AddHttpClient&lt;IInventoryService, InventoryService&gt;(client =&gt;
@@ -307,7 +308,7 @@ public class InventoryService : IInventoryService
     }
 }</code></pre>
 <h3 id="manual-circuit-breaker-implementation">Manual Circuit Breaker Implementation</h3>
-<pre class="hljs"><code>public class CircuitBreaker
+<pre class="language-csharp"><code class="language-csharp">public class CircuitBreaker
 {
     private readonly int _threshold;
     private readonly TimeSpan _timeout;
@@ -387,7 +388,7 @@ public class CircuitBreakerOpenException : Exception
 <h2 id="3-retry-policies-handling-transient-failures">3. Retry Policies: Handling Transient Failures</h2>
 <p>Retry transient failures (network glitches, temporary overload), but not permanent failures (404, 401).</p>
 <h3 id="good-retry-strategy">✅ Good Retry Strategy</h3>
-<pre class="hljs"><code>builder.Services.AddHttpClient&lt;IEmailService, EmailService&gt;()
+<pre class="language-csharp"><code class="language-csharp">builder.Services.AddHttpClient&lt;IEmailService, EmailService&gt;()
     .AddTransientHttpErrorPolicy(policyBuilder =&gt;
         policyBuilder.WaitAndRetryAsync(
             retryCount: 3,
@@ -406,7 +407,7 @@ public class CircuitBreakerOpenException : Exception
         )
     );</code></pre>
 <h3 id="advanced-retry-with-jitter">Advanced: Retry with Jitter</h3>
-<pre class="hljs"><code>public static class RetryPolicies
+<pre class="language-csharp"><code class="language-csharp">public static class RetryPolicies
 {
     private static readonly Random _jitterer = new();
 
@@ -435,7 +436,7 @@ public class CircuitBreakerOpenException : Exception
 }</code></pre>
 <p><strong>Why jitter?</strong> Prevents thundering herd (all clients retrying at exactly the same time).</p>
 <h3 id="database-retries-ef-core">Database Retries (EF Core)</h3>
-<pre class="hljs"><code>public class AppDbContext : DbContext
+<pre class="language-csharp"><code class="language-csharp">public class AppDbContext : DbContext
 {
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -458,7 +459,7 @@ public class CircuitBreakerOpenException : Exception
 <h2 id="4-bulkhead-pattern-isolate-failures">4. Bulkhead Pattern: Isolate Failures</h2>
 <p>Don't let one failing dependency exhaust all resources.</p>
 <h3 id="thread-pool-bulkheads">Thread Pool Bulkheads</h3>
-<pre class="hljs"><code>public class BulkheadService
+<pre class="language-csharp"><code class="language-csharp">public class BulkheadService
 {
     private readonly SemaphoreSlim _paymentSemaphore = new(20, 20); // 20 concurrent payments
     private readonly SemaphoreSlim _emailSemaphore = new(50, 50);   // 50 concurrent emails
@@ -501,7 +502,7 @@ public class CircuitBreakerOpenException : Exception
 }</code></pre>
 <p><strong>Why bulkheads?</strong> If payment gateway is slow/down, it won't prevent emails from being sent. Failures are isolated.</p>
 <h3 id="polly-bulkhead">Polly Bulkhead</h3>
-<pre class="hljs"><code>var bulkheadPolicy = Policy.BulkheadAsync&lt;HttpResponseMessage&gt;(
+<pre class="language-csharp"><code class="language-csharp">var bulkheadPolicy = Policy.BulkheadAsync&lt;HttpResponseMessage&gt;(
     maxParallelization: 20,
     maxQueuingActions: 10,
     onBulkheadRejectedAsync: context =&gt;
@@ -525,7 +526,7 @@ var result = await resilientPolicy.ExecuteAsync(() =&gt;
 <h2 id="5-fallback-graceful-degradation">5. Fallback: Graceful Degradation</h2>
 <p>When a dependency fails, serve degraded functionality instead of crashing.</p>
 <h3 id="fallback-examples">Fallback Examples</h3>
-<pre class="hljs"><code>public class RecommendationService
+<pre class="language-csharp"><code class="language-csharp">public class RecommendationService
 {
     private readonly HttpClient _httpClient;
     private readonly ICache _cache;
@@ -570,7 +571,7 @@ var result = await resilientPolicy.ExecuteAsync(() =&gt;
     }
 }</code></pre>
 <h3 id="polly-fallback-policy">Polly Fallback Policy</h3>
-<pre class="hljs"><code>var fallbackPolicy = Policy&lt;List&lt;Product&gt;&gt;
+<pre class="language-csharp"><code class="language-csharp">var fallbackPolicy = Policy&lt;List&lt;Product&gt;&gt;
     .Handle&lt;Exception&gt;()
     .FallbackAsync(
         fallbackValue: new List&lt;Product&gt;(), // Empty list
@@ -591,7 +592,7 @@ var recommendations = await fallbackPolicy.ExecuteAsync(async () =&gt;
 <p>---</p>
 <h2 id="6-health-checks-monitor-dependency-health">6. Health Checks: Monitor Dependency Health</h2>
 <p>Expose health check endpoints for load balancers and monitoring.</p>
-<pre class="hljs"><code>// Program.cs
+<pre class="language-csharp"><code class="language-csharp">// Program.cs
 builder.Services.AddHealthChecks()
     .AddCheck(&quot;self&quot;, () =&gt; HealthCheckResult.Healthy())
     .AddSqlServer(
@@ -640,7 +641,7 @@ app.MapHealthChecks(&quot;/health/detailed&quot;, new HealthCheckOptions
     }
 });</code></pre>
 <h3 id="custom-health-check">Custom Health Check</h3>
-<pre class="hljs"><code>public class MessageQueueHealthCheck : IHealthCheck
+<pre class="language-csharp"><code class="language-csharp">public class MessageQueueHealthCheck : IHealthCheck
 {
     private readonly IRabbitMQConnection _rabbitConnection;
 
@@ -671,7 +672,7 @@ app.MapHealthChecks(&quot;/health/detailed&quot;, new HealthCheckOptions
 }</code></pre>
 <p>---</p>
 <h2 id="7-combining-resilience-patterns-the-full-stack">7. Combining Resilience Patterns (The Full Stack)</h2>
-<pre class="hljs"><code>// Program.cs - Production-ready HTTP client configuration
+<pre class="language-csharp"><code class="language-csharp">// Program.cs - Production-ready HTTP client configuration
 builder.Services.AddHttpClient&lt;IPaymentService, PaymentService&gt;(client =&gt;
 {
     client.BaseAddress = new Uri(&quot;https://payment-gateway&quot;);
@@ -787,5 +788,7 @@ builder.Services.AddHttpClient&lt;IPaymentService, PaymentService&gt;(client =&g
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

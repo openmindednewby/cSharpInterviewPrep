@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -144,7 +145,7 @@
 <p>Let’s go through both 👇</p>
 <p>---</p>
 <h2 id="1-method-1-using-arithmetic-addition-subtraction">🧮 1️⃣ Method 1 — Using Arithmetic (Addition & Subtraction)</h2>
-<pre class="hljs"><code>int a = 5;
+<pre class="language-csharp"><code class="language-csharp">int a = 5;
 int b = 10;
 
 a = a + b; // a = 15
@@ -153,14 +154,14 @@ a = a - b; // a = 10
 
 Console.WriteLine($&quot;a = {a}, b = {b}&quot;);</code></pre>
 <p>✅ Output:</p>
-<pre class="hljs"><code>a = 10, b = 5</code></pre>
+<pre class="language-csharp"><code class="language-csharp">a = 10, b = 5</code></pre>
 <h3 id="how-it-works">⚙️ How it works</h3>
 <ul><li>Step 1: <code>a</code> temporarily holds the sum of both.</li><li>Step 2: Subtracting <code>b</code> from sum gives original <code>a</code>.</li><li>Step 3: Subtracting new <code>b</code> gives original <code>b</code>.</li></ul>
 <h3 id="caveat">⚠️ Caveat</h3>
 <ul><li>Risk of <strong>integer overflow</strong> if <code>a + b</code> exceeds the data type’s range.</li></ul>
 <p>---</p>
 <h2 id="2-method-2-using-bitwise-xor">⚡ 2️⃣ Method 2 — Using Bitwise XOR</h2>
-<pre class="hljs"><code>int a = 5;
+<pre class="language-csharp"><code class="language-csharp">int a = 5;
 int b = 10;
 
 a = a ^ b;
@@ -169,7 +170,7 @@ a = a ^ b;
 
 Console.WriteLine($&quot;a = {a}, b = {b}&quot;);</code></pre>
 <p>✅ Output:</p>
-<pre class="hljs"><code>a = 10, b = 5</code></pre>
+<pre class="language-csharp"><code class="language-csharp">a = 10, b = 5</code></pre>
 <h3 id="how-it-works">🧠 How it works</h3>
 <p>XOR has a neat property:</p>
 <ul><li><code>x ^ x = 0</code></li><li><code>x ^ 0 = x</code></li><li><code>x ^ y ^ y = x</code></li></ul>
@@ -258,5 +259,7 @@ Console.WriteLine($&quot;a = {a}, b = {b}&quot;);</code></pre>
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

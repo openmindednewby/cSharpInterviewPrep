@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -143,7 +144,7 @@
 <blockquote><p>“Derived classes should be substitutable for their base classes.”</p></blockquote>
 <p>Derived classes must behave consistently with their base abstraction.</p>
 <h3 id="bad-example">❌ Bad example:</h3>
-<pre class="hljs"><code>public abstract class Order
+<pre class="language-csharp"><code class="language-csharp">public abstract class Order
 {
     public abstract void Cancel();
 }
@@ -159,7 +160,7 @@ public class InstantOrder : Order
 }</code></pre>
 <p>❌ Violates LSP — an <code>InstantOrder</code> cannot cancel, so substituting it breaks code.</p>
 <h3 id="good-example">✅ Good example:</h3>
-<pre class="hljs"><code>public interface ICancelableOrder
+<pre class="language-csharp"><code class="language-csharp">public interface ICancelableOrder
 {
     void Cancel();
 }
@@ -259,5 +260,7 @@ public class MarketOrder : ICancelableOrder { public void Cancel() { /* ... */ }
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

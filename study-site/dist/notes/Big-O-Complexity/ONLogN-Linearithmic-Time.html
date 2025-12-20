@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -142,7 +143,7 @@
         <h2 id="on-log-n-linearithmic-time"><strong>O(n log n) — Linearithmic Time</strong></h2>
 <blockquote><p>"Combines linear and logarithmic—typical of efficient sorting and divide-and-conquer algorithms."</p></blockquote>
 <h3 id="bad-example">❌ Bad example:</h3>
-<pre class="hljs"><code>public class TradeProcessor
+<pre class="language-csharp"><code class="language-csharp">public class TradeProcessor
 {
     public List&lt;Trade&gt; SortTradesByPriceBubbleSort(List&lt;Trade&gt; trades)
     {
@@ -167,7 +168,7 @@
 // Sorting 10,000 trades: ~100 million comparisons</code></pre>
 <p>Bubble sort is O(n²)—catastrophic for large datasets.</p>
 <h3 id="good-example">✅ Good example:</h3>
-<pre class="hljs"><code>public class TradeProcessor
+<pre class="language-csharp"><code class="language-csharp">public class TradeProcessor
 {
     public List&lt;Trade&gt; SortTradesByPrice(List&lt;Trade&gt; trades)
     {
@@ -194,7 +195,7 @@
 // Sorting 10,000 trades: ~133,000 comparisons (10,000 * log₂(10,000) ≈ 133K)</code></pre>
 <p>👉 Built-in sorting uses optimized O(n log n) algorithms (quicksort, mergesort, heapsort).</p>
 <h3 id="merge-sorted-sequences">🔥 Merge sorted sequences:</h3>
-<pre class="hljs"><code>public class MarketDataMerger
+<pre class="language-csharp"><code class="language-csharp">public class MarketDataMerger
 {
     public List&lt;Trade&gt; MergeSortedFeeds(List&lt;Trade&gt; feed1, List&lt;Trade&gt; feed2)
     {
@@ -218,7 +219,7 @@
 }</code></pre>
 <p>👉 Merging pre-sorted data is O(n), but initial sorting is O(n log n).</p>
 <h3 id="groupby-with-sorting">🔥 GroupBy with sorting:</h3>
-<pre class="hljs"><code>public class OrderAnalyzer
+<pre class="language-csharp"><code class="language-csharp">public class OrderAnalyzer
 {
     public Dictionary&lt;string, List&lt;Order&gt;&gt; GroupAndSortOrders(List&lt;Order&gt; orders)
     {
@@ -233,7 +234,7 @@
 }</code></pre>
 <p>👉 Combining O(n) operations with O(log n) sorting yields O(n log n).</p>
 <h3 id="finding-median-requires-sorting">🔥 Finding median (requires sorting):</h3>
-<pre class="hljs"><code>public class StatisticsCalculator
+<pre class="language-csharp"><code class="language-csharp">public class StatisticsCalculator
 {
     public decimal CalculateMedianPrice(List&lt;Trade&gt; trades)
     {
@@ -346,5 +347,7 @@
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

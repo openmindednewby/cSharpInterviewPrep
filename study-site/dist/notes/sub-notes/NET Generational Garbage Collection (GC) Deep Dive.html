@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -153,7 +154,7 @@
 <table><thead><tr><th>Generation</th><th>Description</th><th>Frequency</th><th>Typical objects</th></tr></thead><tbody><tr><td><strong>Gen 0</strong></td><td>Newest, youngest objects</td><td>Collected <strong>most frequently</strong></td><td>Locals, temp lists, short-lived data</td></tr><tr><td><strong>Gen 1</strong></td><td>“Middle-aged” survivors from Gen 0</td><td>Collected occasionally</td><td>Transient mid-term data</td></tr><tr><td><strong>Gen 2</strong></td><td>Long-lived survivors</td><td>Collected <strong>rarely</strong> (full GC)</td><td>Caches, singletons, static data</td></tr><tr><td><strong>LOH</strong></td><td>Large Object Heap (≥ 85,000 bytes)</td><td>Collected <strong>with Gen 2</strong></td><td>Large arrays, strings, buffers</td></tr></tbody></table>
 <p>---</p>
 <h2 id="3-visual-mental-model">3️⃣ Visual mental model</h2>
-<pre class="hljs"><code>Gen0 ──► Gen1 ──► Gen2 ──► LOH
+<pre class="language-csharp"><code class="language-csharp">Gen0 ──► Gen1 ──► Gen2 ──► LOH
  short   medium   long     very large (&gt;85KB)
  lived   lived    lived    objects (arrays, strings)</code></pre>
 <p>Each arrow means <em>“survive one more collection → promoted”</em>.</p>
@@ -161,13 +162,13 @@
 <h2 id="4-how-it-works-step-by-step">4️⃣ How it works step by step</h2>
 <h3 id="allocation">🧩 Allocation</h3>
 <p>When you create a new object:</p>
-<pre class="hljs"><code>var o = new object();</code></pre>
+<pre class="language-csharp"><code class="language-csharp">var o = new object();</code></pre>
 <ul><li>Memory is allocated in <strong>Gen 0</strong> segment (on the heap).</li><li>.NET uses a <strong>bump pointer</strong> allocator — incredibly fast (just moves a pointer).</li></ul>
 <p>---</p>
 <h3 id="gen-0-collection">🧩 Gen 0 Collection</h3>
 <p>When Gen 0 is full:</p>
 <ul><li>GC pauses threads (short pause, typically sub-millisecond).</li><li>It scans Gen 0 roots (stack references, static fields, registers).</li><li><strong>Live objects survive → promoted to Gen 1</strong>.</li><li><strong>Dead objects → reclaimed</strong>.</li></ul>
-<pre class="hljs"><code>Before:
+<pre class="language-text"><code class="language-text">Before:
 Gen0: [A, B, C]
 After GC0:
   A dead, B/C alive → B,C moved to Gen1</code></pre>
@@ -190,7 +191,7 @@ After GC0:
 <p>➜ Can fragment over time.</p>
 <ul><li><strong>SOH (Small Object Heap)</strong> — compacts after GC (moves survivors to eliminate gaps).</li><li><strong>LOH (Large Object Heap)</strong> — <strong>does not compact by default</strong>, to avoid moving huge memory blocks.</li></ul>
 <p>Optional: You can compact LOH manually (rarely needed):</p>
-<pre class="hljs"><code>GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+<pre class="language-csharp"><code class="language-csharp">GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
 GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);</code></pre>
 <p>---</p>
 <h2 id="6-what-triggers-a-gc">6️⃣ What triggers a GC?</h2>
@@ -200,9 +201,9 @@ GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);</code></pre>
 <p>---</p>
 <h2 id="7-gc-stats-and-diagnostics">7️⃣ GC stats and diagnostics</h2>
 <p>You can observe GC behavior in real-time:</p>
-<pre class="hljs"><code>dotnet-counters monitor System.Runtime</code></pre>
+<pre class="language-bash"><code class="language-bash">dotnet-counters monitor System.Runtime</code></pre>
 <p>You’ll see counters like:</p>
-<pre class="hljs"><code>Gen 0 GC Count: 345
+<pre class="language-csharp"><code class="language-csharp">Gen 0 GC Count: 345
 Gen 1 GC Count: 12
 Gen 2 GC Count: 1
 % Time in GC: 0.25
@@ -216,14 +217,14 @@ Allocated Bytes/sec: 1,024,000</code></pre>
 <h2 id="9-trading-system-example-hfm-context">9️⃣ Trading-system example (HFM context)</h2>
 <p>In a <strong>price feed processor</strong> that handles thousands of ticks per second:</p>
 <p>❌ <strong>Bad design:</strong></p>
-<pre class="hljs"><code>foreach (var msg in messages)
+<pre class="language-csharp"><code class="language-csharp">foreach (var msg in messages)
 {
     var parts = msg.Split(&#39;,&#39;); // allocates string[] and substrings each iteration
     var tick = new Tick { Symbol = parts[0], Bid = double.Parse(parts[1]) };
 }</code></pre>
 <ul><li>Massive Gen 0 churn</li><li>Frequent Gen 1/2 GCs under load</li></ul>
 <p>✅ <strong>Good design:</strong></p>
-<pre class="hljs"><code>var buffer = ArrayPool&lt;byte&gt;.Shared.Rent(4096);
+<pre class="language-csharp"><code class="language-csharp">var buffer = ArrayPool&lt;byte&gt;.Shared.Rent(4096);
 ReadOnlySpan&lt;byte&gt; span = buffer.AsSpan(0, length);
 ParseSpan(span); // no allocations
 ArrayPool&lt;byte&gt;.Shared.Return(buffer);</code></pre>
@@ -327,5 +328,7 @@ ArrayPool&lt;byte&gt;.Shared.Return(buffer);</code></pre>
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

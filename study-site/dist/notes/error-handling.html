@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -149,7 +150,7 @@
 <h2 id="implementation-guidelines">Implementation Guidelines</h2>
 <ul><li><strong>Boundary enforcement:</strong> Validate DTOs with FluentValidation or <code>IValidatableObject</code>; return <code>400</code>-series responses with actionable messages.</li><li><strong>Centralized exception handling:</strong> Use middleware/filters to translate exceptions into consistent problem-details payloads.</li><li><strong>Structured error contracts:</strong> Standardize fields like <code>errorCode</code>, <code>correlationId</code>, <code>source</code>, and <code>retryable</code> for clients.</li><li><strong>Dependency hygiene:</strong> Wrap external calls (HTTP, DB, queues) with polly policies for retry, circuit-breaker, timeout, and fallback.</li><li><strong>Resource protection:</strong> Use bounded channels/queues; reject requests when buffers are full instead of blocking threads.</li><li><strong>Telemetry alignment:</strong> Log errors with event IDs; emit metrics for error rates, retry counts, circuit state, and fallback usage.</li></ul>
 <h2 id="minimal-api-example-problem-details-resilience">Minimal API Example (Problem Details + Resilience)</h2>
-<pre class="hljs"><code>var builder = WebApplication.CreateBuilder(args);
+<pre class="language-csharp"><code class="language-csharp">var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddProblemDetails(options =&gt;
 {
@@ -196,7 +197,7 @@ app.MapGet(&quot;/items/{sku}&quot;, async (
 
 app.Run();</code></pre>
 <h2 id="sample-resilient-client">Sample Resilient Client</h2>
-<pre class="hljs"><code>public sealed record InventoryResponse(string Sku, int Quantity);
+<pre class="language-csharp"><code class="language-csharp">public sealed record InventoryResponse(string Sku, int Quantity);
 
 public class InventoryClient
 {
@@ -319,5 +320,7 @@ public sealed record NotFound;</code></pre>
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

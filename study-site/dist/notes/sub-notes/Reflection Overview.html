@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -141,7 +142,7 @@
         <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#reflection-overview">Reflection Overview</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
         <h1 id="reflection-overview">Reflection Overview</h1>
 <ul><li><strong>Concept:</strong> Inspect metadata and interact with types at runtime via <code>System.Reflection</code>.</li><li><strong>Use Cases:</strong> Plugin discovery, serialization, mapping attributes to behavior, building DI containers.</li><li><strong>Cost:</strong> Reflection is slower—cache <code>PropertyInfo</code>/<code>MethodInfo</code> or emit delegates (<code>CreateDelegate</code>) for hot paths.</li></ul>
-<pre class="hljs"><code>var assembly = Assembly.Load(&quot;Trading.Services&quot;);
+<pre class="language-csharp"><code class="language-csharp">var assembly = Assembly.Load(&quot;Trading.Services&quot;);
 var handlers = assembly.GetTypes()
     .Where(t =&gt; typeof(ICommandHandler).IsAssignableFrom(t) &amp;&amp; !t.IsAbstract);
 
@@ -244,5 +245,7 @@ foreach (var handler in handlers)
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

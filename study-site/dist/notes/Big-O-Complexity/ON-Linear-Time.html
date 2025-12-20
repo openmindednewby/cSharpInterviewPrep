@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -142,7 +143,7 @@
         <h2 id="on-linear-time"><strong>O(n) — Linear Time</strong></h2>
 <blockquote><p>"Operation time grows proportionally with input size—doubling input doubles execution time."</p></blockquote>
 <h3 id="bad-example">❌ Bad example:</h3>
-<pre class="hljs"><code>public class TradeAnalyzer
+<pre class="language-csharp"><code class="language-csharp">public class TradeAnalyzer
 {
     public decimal CalculateAveragePrice(List&lt;Trade&gt; trades)
     {
@@ -163,7 +164,7 @@
 }</code></pre>
 <p>Two separate O(n) passes when one would suffice—wasted cycles.</p>
 <h3 id="good-example">✅ Good example:</h3>
-<pre class="hljs"><code>public class TradeAnalyzer
+<pre class="language-csharp"><code class="language-csharp">public class TradeAnalyzer
 {
     public decimal CalculateAveragePrice(List&lt;Trade&gt; trades)
     {
@@ -187,7 +188,7 @@
 }</code></pre>
 <p>👉 Single pass through data, use cached Count for O(1) access.</p>
 <h3 id="filtering-with-where">🔥 Filtering with Where:</h3>
-<pre class="hljs"><code>public class OrderFilter
+<pre class="language-csharp"><code class="language-csharp">public class OrderFilter
 {
     public IEnumerable&lt;Order&gt; GetLargeOrders(IEnumerable&lt;Order&gt; orders, decimal threshold)
     {
@@ -208,7 +209,7 @@
 }</code></pre>
 <p>👉 LINQ Where() is O(n) during enumeration—iterates once through all items.</p>
 <h3 id="finding-maximum">🔥 Finding maximum:</h3>
-<pre class="hljs"><code>public class PriceTracker
+<pre class="language-csharp"><code class="language-csharp">public class PriceTracker
 {
     public decimal FindMaxPrice(decimal[] prices)
     {
@@ -231,7 +232,7 @@
 }</code></pre>
 <p>👉 Finding min/max in unsorted data requires checking every element.</p>
 <h3 id="string-operations">🔥 String operations:</h3>
-<pre class="hljs"><code>public class SymbolValidator
+<pre class="language-csharp"><code class="language-csharp">public class SymbolValidator
 {
     public bool IsValidSymbol(string symbol)
     {
@@ -342,5 +343,7 @@
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

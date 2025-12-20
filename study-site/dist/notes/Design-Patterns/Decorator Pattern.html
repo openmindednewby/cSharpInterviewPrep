@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -143,7 +144,7 @@
 <blockquote><p>Wrap existing services with additional behavior without changing them.</p></blockquote>
 <p>---</p>
 <h3 id="example-logging-caching-decorators-for-an-api-service">🧩 Example — Logging + Caching decorators for an API service</h3>
-<pre class="hljs"><code>public interface IPriceService
+<pre class="language-csharp"><code class="language-csharp">public interface IPriceService
 {
     double GetPrice(string symbol);
 }
@@ -300,5 +301,7 @@ Console.WriteLine(service.GetPrice(&quot;EURUSD&quot;)); // second call cached</
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

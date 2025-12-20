@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -142,7 +143,7 @@
         <h2 id="ienumerablet-read-only-forward-iteration"><strong>IEnumerable<T> — Read-Only Forward Iteration</strong></h2>
 <blockquote><p>"Use IEnumerable<T> when you only need to iterate once, forward-only, and want lazy evaluation."</p></blockquote>
 <h3 id="bad-example">❌ Bad example:</h3>
-<pre class="hljs"><code>public List&lt;Order&gt; GetActiveOrders()
+<pre class="language-csharp"><code class="language-csharp">public List&lt;Order&gt; GetActiveOrders()
 {
     var orders = _repository.GetAll(); // loads everything
     return orders.Where(o =&gt; o.IsActive).ToList(); // filters in memory
@@ -156,7 +157,7 @@ public void ProcessOrders()
 }</code></pre>
 <p>Returning <code>List&lt;T&gt;</code> exposes mutability, couples caller to implementation, and forces immediate materialization.</p>
 <h3 id="good-example">✅ Good example:</h3>
-<pre class="hljs"><code>public IEnumerable&lt;Order&gt; GetActiveOrders()
+<pre class="language-csharp"><code class="language-csharp">public IEnumerable&lt;Order&gt; GetActiveOrders()
 {
     var orders = _repository.GetAll();
     return orders.Where(o =&gt; o.IsActive); // deferred execution
@@ -170,7 +171,7 @@ public void ProcessOrders()
 }</code></pre>
 <p>👉 Returns interface, enables lazy evaluation, and hides implementation.</p>
 <h3 id="using-yield-return-for-streaming">🔥 Using <code>yield return</code> for streaming:</h3>
-<pre class="hljs"><code>public IEnumerable&lt;Trade&gt; GetTradesForDate(DateTime date)
+<pre class="language-csharp"><code class="language-csharp">public IEnumerable&lt;Trade&gt; GetTradesForDate(DateTime date)
 {
     using var reader = _database.ExecuteReader($&quot;SELECT * FROM Trades WHERE Date = &#39;{date}&#39;&quot;);
     while (reader.Read())
@@ -280,5 +281,7 @@ public void ProcessOrders()
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

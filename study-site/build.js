@@ -57,6 +57,7 @@ function renderMarkdown(markdown) {
   const headings = [];
   let inCode = false;
   let codeLines = [];
+  let codeLanguage = '';
   let listType = null;
   let listBuffer = [];
   let paragraph = [];
@@ -110,25 +111,27 @@ function renderMarkdown(markdown) {
   };
 
   for (const line of lines) {
-    if (inCode) {
-      if (line.trim().startsWith('```')) {
-        html.push(`<pre class="hljs"><code>${escapeHtml(codeLines.join('\n'))}</code></pre>`);
+    const fenceMatch = line.match(/^```(\w+)?/);
+    if (fenceMatch) {
+      if (!inCode) {
+        flushParagraph();
+        flushList();
+        flushBlockquote();
+        flushTable();
+        inCode = true;
+        codeLines = [];
+        codeLanguage = fenceMatch[1] || 'csharp';
+      } else {
+        html.push(`<pre class="language-${codeLanguage}"><code class="language-${codeLanguage}">${escapeHtml(codeLines.join('\n'))}</code></pre>`);
         inCode = false;
         codeLines = [];
-      } else {
-        codeLines.push(line);
+        codeLanguage = '';
       }
       continue;
     }
 
-    const fenceMatch = line.match(/^```/);
-    if (fenceMatch) {
-      flushParagraph();
-      flushList();
-      flushBlockquote();
-      flushTable();
-      inCode = true;
-      codeLines = [];
+    if (inCode) {
+      codeLines.push(line);
       continue;
     }
 
@@ -249,6 +252,7 @@ function buildTemplate({ title, navHtml, tocHtml, contentHtml, meta }) {
     })();
   </script>
   <link rel="stylesheet" href="${meta.assetBase}/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -359,6 +363,8 @@ function buildTemplate({ title, navHtml, tocHtml, contentHtml, meta }) {
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>`;
 }
@@ -484,6 +490,7 @@ async function buildIndex(navGroups) {
   </script>
   <link rel="manifest" href="./assets/manifest.webmanifest" />
   <link rel="stylesheet" href="./assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -537,6 +544,8 @@ async function buildIndex(navGroups) {
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>`;
 

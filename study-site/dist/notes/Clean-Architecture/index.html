@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -144,7 +145,7 @@
 <p>Clean Architecture (from Uncle Bob) organizes your system into <strong>layers</strong> that isolate business logic from infrastructure.</p>
 <p>---</p>
 <h3 id="layers-overview">🏗️ Layers Overview</h3>
-<pre class="hljs"><code>┌───────────────────────────────┐
+<pre class="language-csharp"><code class="language-csharp">┌───────────────────────────────┐
 │       Presentation Layer      │ → Controllers, APIs, UI
 ├───────────────────────────────┤
 │     Application Layer         │ → Use cases, CQRS handlers, services
@@ -156,14 +157,14 @@
 <p>---</p>
 <h3 id="example-in-a-trading-context">Example in a Trading Context</h3>
 <h4 id="domain-layer">🧩 Domain Layer</h4>
-<pre class="hljs"><code>public class Order
+<pre class="language-csharp"><code class="language-csharp">public class Order
 {
     public Guid Id { get; } = Guid.NewGuid();
     public string Symbol { get; set; }
     public double Amount { get; set; }
 }</code></pre>
 <h4 id="application-layer">🧩 Application Layer</h4>
-<pre class="hljs"><code>public class PlaceOrderHandler
+<pre class="language-csharp"><code class="language-csharp">public class PlaceOrderHandler
 {
     private readonly ITradeExecutor _executor;
     private readonly IOrderValidator _validator;
@@ -182,12 +183,12 @@
     }
 }</code></pre>
 <h4 id="infrastructure-layer">🧩 Infrastructure Layer</h4>
-<pre class="hljs"><code>public class Mt5Executor : ITradeExecutor
+<pre class="language-csharp"><code class="language-csharp">public class Mt5Executor : ITradeExecutor
 {
     public void Execute(Order order) =&gt; Console.WriteLine($&quot;[MT5] Executing {order.Symbol}&quot;);
 }</code></pre>
 <h4 id="presentation-layer">🧩 Presentation Layer</h4>
-<pre class="hljs"><code>[ApiController]
+<pre class="language-csharp"><code class="language-csharp">[ApiController]
 [Route(&quot;api/[controller]&quot;)]
 public class OrdersController : ControllerBase
 {
@@ -300,5 +301,7 @@ public class OrdersController : ControllerBase
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

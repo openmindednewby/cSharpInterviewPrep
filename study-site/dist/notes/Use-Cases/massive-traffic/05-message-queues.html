@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -151,7 +152,7 @@
 <h2 id="1-in-process-background-queues-simple-cases">1. In-Process Background Queues (Simple Cases)</h2>
 <p>For lightweight background work within a single application.</p>
 <h3 id="channel-based-background-queue">Channel-Based Background Queue</h3>
-<pre class="hljs"><code>public interface IBackgroundTaskQueue
+<pre class="language-csharp"><code class="language-csharp">public interface IBackgroundTaskQueue
 {
     ValueTask QueueAsync(Func&lt;CancellationToken, ValueTask&gt; workItem);
     ValueTask&lt;Func&lt;CancellationToken, ValueTask&gt;&gt; DequeueAsync(CancellationToken ct);
@@ -265,7 +266,7 @@ builder.Services.AddHostedService&lt;QueuedHostedService&gt;();</code></pre>
 <h2 id="2-rabbitmq-for-distributed-work-queues">2. RabbitMQ for Distributed Work Queues</h2>
 <p>Production-grade message queue with durability, retries, and acknowledgments.</p>
 <h3 id="setup-rabbitmq-client">Setup RabbitMQ Client</h3>
-<pre class="hljs"><code>// Install: RabbitMQ.Client
+<pre class="language-csharp"><code class="language-csharp">// Install: RabbitMQ.Client
 // appsettings.json
 {
   &quot;RabbitMQ&quot;: {
@@ -328,7 +329,7 @@ public class RabbitMQConnection : IRabbitMQConnection, IDisposable
     }
 }</code></pre>
 <h3 id="publisher-queue-messages">Publisher: Queue Messages</h3>
-<pre class="hljs"><code>public interface IMessagePublisher
+<pre class="language-csharp"><code class="language-csharp">public interface IMessagePublisher
 {
     Task PublishAsync&lt;T&gt;(string queueName, T message, CancellationToken ct);
 }
@@ -392,7 +393,7 @@ public class RabbitMQPublisher : IMessagePublisher
     }
 }</code></pre>
 <h3 id="consumer-process-messages">Consumer: Process Messages</h3>
-<pre class="hljs"><code>public class OrderProcessingConsumer : BackgroundService
+<pre class="language-csharp"><code class="language-csharp">public class OrderProcessingConsumer : BackgroundService
 {
     private readonly IRabbitMQConnection _rabbitConnection;
     private readonly IServiceProvider _serviceProvider;
@@ -489,7 +490,7 @@ public class RabbitMQPublisher : IMessagePublisher
 
 public record OrderMessage(int OrderId, int UserId, decimal Total);</code></pre>
 <h3 id="dead-letter-queue-dlq-for-failed-messages">Dead Letter Queue (DLQ) for Failed Messages</h3>
-<pre class="hljs"><code>public class QueueSetup
+<pre class="language-csharp"><code class="language-csharp">public class QueueSetup
 {
     public static void ConfigureQueuesWithDLQ(IModel channel)
     {
@@ -526,7 +527,7 @@ public record OrderMessage(int OrderId, int UserId, decimal Total);</code></pre>
 <h2 id="3-idempotency-critical-for-retries">3. Idempotency: Critical for Retries</h2>
 <p>Messages may be delivered more than once. Ensure operations are idempotent.</p>
 <h3 id="idempotency-key-pattern">Idempotency Key Pattern</h3>
-<pre class="hljs"><code>public class IdempotentOrderService
+<pre class="language-csharp"><code class="language-csharp">public class IdempotentOrderService
 {
     private readonly IDbConnection _db;
     private readonly ILogger&lt;IdempotentOrderService&gt; _logger;
@@ -603,11 +604,11 @@ CREATE TABLE ProcessedMessages (
 <h2 id="4-outbox-pattern-transactional-messaging">4. Outbox Pattern (Transactional Messaging)</h2>
 <p>Ensure database changes and message publishing are atomic.</p>
 <h3 id="the-problem">The Problem</h3>
-<pre class="hljs"><code>// ❌ Race condition: DB commits but message publish fails
+<pre class="language-csharp"><code class="language-csharp">// ❌ Race condition: DB commits but message publish fails
 await _db.ExecuteAsync(&quot;INSERT INTO Orders ...&quot;);
 await _messagePublisher.PublishAsync(&quot;order-created&quot;, orderMessage); // Fails = lost event</code></pre>
 <h3 id="the-solution-outbox-pattern">The Solution: Outbox Pattern</h3>
-<pre class="hljs"><code>public class OutboxMessage
+<pre class="language-csharp"><code class="language-csharp">public class OutboxMessage
 {
     public Guid Id { get; set; }
     public string QueueName { get; set; } = string.Empty;
@@ -733,7 +734,7 @@ public class OutboxPublisher : BackgroundService
 <h2 id="5-masstransit-abstraction-over-message-brokers">5. MassTransit: Abstraction Over Message Brokers</h2>
 <p>Production-ready library with retry, saga, and observability built-in.</p>
 <h3 id="setup-masstransit-with-rabbitmq">Setup MassTransit with RabbitMQ</h3>
-<pre class="hljs"><code>// Install: MassTransit.RabbitMQ
+<pre class="language-csharp"><code class="language-csharp">// Install: MassTransit.RabbitMQ
 
 builder.Services.AddMassTransit(x =&gt;
 {
@@ -875,5 +876,7 @@ public class OrderService
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

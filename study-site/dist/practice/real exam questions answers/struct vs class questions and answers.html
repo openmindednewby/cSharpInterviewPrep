@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -147,7 +148,7 @@
 <h3 id="expected-answer">✅ Expected answer:</h3>
 <p>By default, structs are <strong>passed by value</strong>, meaning a <strong>copy</strong> of all their fields is made. If the struct is large, this creates <strong>CPU overhead</strong> from copying.</p>
 <p>To avoid this, pass by <strong>reference</strong> using <code>in</code>, <code>ref</code>, or <code>out</code>.</p>
-<pre class="hljs"><code>readonly struct Tick
+<pre class="language-csharp"><code class="language-csharp">readonly struct Tick
 {
     public string Symbol { get; }
     public double Bid { get; }
@@ -165,7 +166,7 @@ void Process(in Tick tick)
 <h2 id="2-why-can-boxing-destroy-the-performance-benefits-of-structs">🧩 2. Why can boxing destroy the performance benefits of structs?</h2>
 <h3 id="expected-answer">✅ Expected answer:</h3>
 <p>Boxing occurs when a value type (struct) is <strong>converted to an <code>object</code> or interface type</strong>. The runtime must <strong>allocate a new object on the heap</strong> and <strong>copy the struct</strong> into it → triggering GC pressure.</p>
-<pre class="hljs"><code>struct Point { public int X, Y; }
+<pre class="language-csharp"><code class="language-csharp">struct Point { public int X, Y; }
 
 object o = new Point();  // boxing (heap allocation)</code></pre>
 <p>Unboxing (<code>(Point)o</code>) copies it back — so you get <strong>two allocations + copies</strong>.</p>
@@ -175,11 +176,11 @@ object o = new Point();  // boxing (heap allocation)</code></pre>
 <h2 id="3-what-happens-when-you-mutate-a-struct-thats-stored-in-a-collection-like-a-listt">🧩 3. What happens when you mutate a struct that’s stored in a collection like a <code>List&lt;T&gt;</code>?</h2>
 <h3 id="expected-answer">✅ Expected answer:</h3>
 <p>When you access a struct in a collection, you get a <strong>copy</strong> — not the original instance. So mutating it <strong>does not change the element inside the collection</strong>.</p>
-<pre class="hljs"><code>var list = new List&lt;Point&gt; { new Point { X = 1, Y = 1 } };
+<pre class="language-csharp"><code class="language-csharp">var list = new List&lt;Point&gt; { new Point { X = 1, Y = 1 } };
 list[0].X = 99; // modifies the copy, not the original!
 Console.WriteLine(list[0].X); // prints 1, not 99</code></pre>
 <p>To modify it properly, reassign:</p>
-<pre class="hljs"><code>var p = list[0];
+<pre class="language-csharp"><code class="language-csharp">var p = list[0];
 p.X = 99;
 list[0] = p;</code></pre>
 <p>💡 <strong>Mention:</strong></p>
@@ -189,7 +190,7 @@ list[0] = p;</code></pre>
 <h3 id="expected-answer">✅ Expected answer:</h3>
 <p>A <code>readonly struct</code> guarantees <strong>no field will change</strong> after construction. This allows:</p>
 <ul><li>Safer by-ref passing (<code>in</code>).</li><li>The JIT to optimize away defensive copies.</li><li>Reduced bugs in concurrent code.</li></ul>
-<pre class="hljs"><code>readonly struct Price
+<pre class="language-csharp"><code class="language-csharp">readonly struct Price
 {
     public double Bid { get; }
     public double Ask { get; }
@@ -203,7 +204,7 @@ list[0] = p;</code></pre>
 <ul><li><strong>Small structs (≤ 16–32 bytes)</strong> → fast to copy, GC-friendly.</li><li><strong>Large structs (> 64 bytes)</strong> → expensive to copy by value, slower to pass around.</li><li>Structs don’t hit GC directly, but large structs stored inside heap objects (like arrays/lists) <strong>increase heap size</strong>.</li></ul>
 <p>💡 <strong>Rule of thumb:</strong> Use structs for <strong>tiny, immutable data packets</strong> (ticks, coordinates, color, timestamps). Use classes for <strong>entities with identity, behavior, or shared references</strong>.</p>
 <p><strong>Example (HFM context):</strong></p>
-<pre class="hljs"><code>readonly struct Tick
+<pre class="language-csharp"><code class="language-csharp">readonly struct Tick
 {
     public string Symbol { get; init; }
     public double Bid { get; init; }
@@ -293,5 +294,7 @@ class TickStreamProcessor { /* class that manages state */ }</code></pre>
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

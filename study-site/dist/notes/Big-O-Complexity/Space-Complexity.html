@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -142,7 +143,7 @@
         <h2 id="space-complexity-memory-usage"><strong>Space Complexity — Memory Usage</strong></h2>
 <blockquote><p>"Space complexity measures memory used by an algorithm relative to input size—critical for large datasets."</p></blockquote>
 <h3 id="bad-example">❌ Bad example:</h3>
-<pre class="hljs"><code>public class TradeTransformer
+<pre class="language-csharp"><code class="language-csharp">public class TradeTransformer
 {
     public List&lt;Trade&gt; FilterAndTransform(List&lt;Trade&gt; trades)
     {
@@ -163,7 +164,7 @@
 // Processing 1 million trades: ~3 million Trade objects in memory</code></pre>
 <p>Multiple intermediate collections waste memory—especially bad for large datasets.</p>
 <h3 id="good-example">✅ Good example:</h3>
-<pre class="hljs"><code>public class TradeTransformer
+<pre class="language-csharp"><code class="language-csharp">public class TradeTransformer
 {
     public IEnumerable&lt;Trade&gt; FilterAndTransform(IEnumerable&lt;Trade&gt; trades)
     {
@@ -196,7 +197,7 @@
 }</code></pre>
 <p>👉 LINQ deferred execution avoids intermediate collections—only final result is allocated.</p>
 <h3 id="in-place-operations-o1-space">🔥 In-place operations (O(1) space):</h3>
-<pre class="hljs"><code>public class ArrayProcessor
+<pre class="language-csharp"><code class="language-csharp">public class ArrayProcessor
 {
     public void ReverseArray(int[] array)
     {
@@ -220,7 +221,7 @@
 }</code></pre>
 <p>👉 In-place algorithms minimize memory allocation—critical for embedded systems or low-latency paths.</p>
 <h3 id="trading-space-for-time">🔥 Trading space for time:</h3>
-<pre class="hljs"><code>public class PriceCache
+<pre class="language-csharp"><code class="language-csharp">public class PriceCache
 {
     // O(n) space - cache all prices for O(1) lookups
     private Dictionary&lt;string, decimal&gt; _priceCache = new();
@@ -254,7 +255,7 @@ public class PriceLookupNoCache
 }</code></pre>
 <p>👉 Caching uses O(n) space but reduces lookups from O(n) to O(1) time.</p>
 <h3 id="recursive-space-complexity">🔥 Recursive space complexity:</h3>
-<pre class="hljs"><code>public class TreeProcessor
+<pre class="language-csharp"><code class="language-csharp">public class TreeProcessor
 {
     public int CalculateDepth(TreeNode node)
     {
@@ -292,7 +293,7 @@ public class PriceLookupNoCache
 }</code></pre>
 <p>👉 Recursion uses call stack—O(h) where h is recursion depth.</p>
 <h3 id="avoiding-memory-leaks">🔥 Avoiding memory leaks:</h3>
-<pre class="hljs"><code>public class EventProcessor
+<pre class="language-csharp"><code class="language-csharp">public class EventProcessor
 {
     // ❌ Bad: event handlers create memory leaks
     public void ProcessEvents(IEventSource source)
@@ -415,5 +416,7 @@ public class PriceLookupNoCache
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

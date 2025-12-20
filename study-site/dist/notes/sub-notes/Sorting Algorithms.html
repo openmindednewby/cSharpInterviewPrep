@@ -18,6 +18,7 @@
     })();
   </script>
   <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -143,7 +144,7 @@
 <p>Use this sheet to describe trade-offs quickly and reference C# examples when whiteboarding or coding live.</p>
 <h2 id="comparison-sorts">Comparison Sorts</h2>
 <table><thead><tr><th>Algorithm</th><th>Time (avg)</th><th>Time (worst)</th><th>Space</th><th>Stable</th><th>Notes</th></tr></thead><tbody><tr><td><strong>Insertion Sort</strong></td><td><code>O(n²)</code></td><td><code>O(n²)</code></td><td><code>O(1)</code></td><td>✅</td><td>Fast on nearly sorted data; used for small partitions within hybrid sorts.</td></tr><tr><td><strong>Selection Sort</strong></td><td><code>O(n²)</code></td><td><code>O(n²)</code></td><td><code>O(1)</code></td><td>❌</td><td>Minimal swaps—works when writing to flash memory where writes are expensive.</td></tr><tr><td><strong>Bubble Sort</strong></td><td><code>O(n²)</code></td><td><code>O(n²)</code></td><td><code>O(1)</code></td><td>✅</td><td>Easy to explain; mention the flag optimization for already-sorted input.</td></tr><tr><td><strong>Heap Sort</strong></td><td><code>O(n log n)</code></td><td><code>O(n log n)</code></td><td><code>O(1)</code></td><td>❌</td><td>Deterministic <code>O(n log n)</code> with no extra space; basis for priority queues.</td></tr><tr><td><strong>Merge Sort</strong></td><td><code>O(n log n)</code></td><td><code>O(n log n)</code></td><td><code>O(n)</code></td><td>✅</td><td>Streaming-friendly; <code>Enumerable.OrderBy</code> pipelines to merge sort under the hood.</td></tr><tr><td><strong>Quick Sort / Introsort</strong></td><td><code>O(n log n)</code></td><td><code>O(n²)</code></td><td><code>O(log n)</code></td><td>❌</td><td>.NET’s <code>Array.Sort</code> uses introspective sort (quick + heap + insertion) to avoid worst-case.</td></tr></tbody></table>
-<pre class="hljs"><code>// In-place quicksort with Hoare partitioning
+<pre class="language-csharp"><code class="language-csharp">// In-place quicksort with Hoare partitioning
 public static void QuickSort(Span&lt;int&gt; data)
 {
     if (data.Length &lt;= 1) return;
@@ -164,7 +165,7 @@ public static void QuickSort(Span&lt;int&gt; data)
 }</code></pre>
 <h2 id="non-comparison-sorts">Non-Comparison Sorts</h2>
 <table><thead><tr><th>Algorithm</th><th>Complexity</th><th>Stable</th><th>When to Use</th></tr></thead><tbody><tr><td><strong>Counting Sort</strong></td><td><code>O(n + k)</code></td><td>✅</td><td>Small integer ranges (e.g., enum buckets, ASCII chars).</td></tr><tr><td><strong>Radix Sort</strong></td><td><code>O(d * (n + k))</code></td><td>✅</td><td>Fixed-length integers/strings; combine with counting sort per digit.</td></tr><tr><td><strong>Bucket Sort</strong></td><td><code>O(n)</code> avg</td><td>✅</td><td>Uniformly distributed floats (0–1); use for histograms or frequency analysis.</td></tr></tbody></table>
-<pre class="hljs"><code>public static int[] CountingSort(int[] source, int maxValue)
+<pre class="language-csharp"><code class="language-csharp">public static int[] CountingSort(int[] source, int maxValue)
 {
     var counts = new int[maxValue + 1];
     foreach (var value in source)
@@ -279,5 +280,7 @@ public static void QuickSort(Span&lt;int&gt; data)
       });
     }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
 </body>
 </html>

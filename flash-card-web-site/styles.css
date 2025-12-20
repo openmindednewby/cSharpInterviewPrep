@@ -167,21 +167,97 @@ pre {
 
 code {
   font-family: inherit;
-  color: #e2e8f0;
+  color: #dcdcdc;
 }
 
-/* Basic syntax highlighting for C# */
-.language-csharp .keyword {
-  color: #c792ea;
+/* Visual Studio Dark Theme Colors for C# */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #dcdcdc;
+  background: none;
+  font-family: 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.6;
+  tab-size: 4;
 }
 
-.language-csharp .string {
-  color: #c3e88d;
+/* Keywords: if, else, return, public, private, class, etc. */
+.token.keyword {
+  color: #569cd6;
 }
 
-.language-csharp .comment {
-  color: #546e7a;
+/* Class names, types */
+.token.class-name {
+  color: #4ec9b0;
+}
+
+/* Strings */
+.token.string {
+  color: #d69d85;
+}
+
+/* Numbers */
+.token.number {
+  color: #b5cea8;
+}
+
+/* Comments */
+.token.comment {
+  color: #6a9955;
   font-style: italic;
+}
+
+/* Functions, method names */
+.token.function {
+  color: #dcdcaa;
+}
+
+/* Operators: =, +, -, etc. */
+.token.operator {
+  color: #d4d4d4;
+}
+
+/* Punctuation: {}, (), [], etc. */
+.token.punctuation {
+  color: #d4d4d4;
+}
+
+/* Properties */
+.token.property {
+  color: #9cdcfe;
+}
+
+/* Variables, parameters */
+.token.parameter,
+.token.variable {
+  color: #9cdcfe;
+}
+
+/* Attributes like [HttpGet] */
+.token.annotation,
+.token.attr-name {
+  color: #4ec9b0;
+}
+
+/* Boolean, null, etc. */
+.token.boolean,
+.token.constant,
+.token.null {
+  color: #569cd6;
+}
+
+/* Namespaces */
+.token.namespace {
+  color: #4ec9b0;
+}
+
+/* Generics <T> */
+.token.generic {
+  color: #4ec9b0;
 }
 
 .card-meta {
