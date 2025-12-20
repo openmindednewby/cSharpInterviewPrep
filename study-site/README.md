@@ -16,6 +16,7 @@
    ```bash
    npm run build
    ```
+
    - Output lands in `study-site/dist`. Content mirrors the Markdown tree and is ready to drop into static hosting.
 
 ## Structure

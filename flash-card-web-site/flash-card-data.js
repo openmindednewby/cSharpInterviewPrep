@@ -1,5 +1,5 @@
 // Auto-generated flash card data from notes/ and practice/ folders
-// Generated on: 2025-12-20T21:17:48.751Z
+// Generated on: 2025-12-20T21:21:15.445Z
 // Total cards: 1382 (687 Q&A, 633 sections, 62 concepts)
 
 window.FLASH_CARD_DATA = [
@@ -19103,7 +19103,32 @@ window.FLASH_CARD_DATA = [
         "items": [
           "Latest trade per account",
           "Approach: Sort or group by account and pick the trade with the max timestamp using GroupBy + OrderByDescending/MaxBy. This keeps the logic declarative and pushes the temporal ordering into the query rather than manual loops.",
-          "Sample code: `csharp var latestTrades = trades .GroupBy(t => t.AccountId) .Select(g => g.OrderByDescending(t => t.Timestamp).First()); `",
+          "Sample code:"
+        ]
+      },
+      {
+        "type": "text",
+        "content": "`csharp"
+      },
+      {
+        "type": "text",
+        "content": "var latestTrades = trades"
+      },
+      {
+        "type": "text",
+        "content": ".GroupBy(t => t.AccountId)"
+      },
+      {
+        "type": "text",
+        "content": ".Select(g => g.OrderByDescending(t => t.Timestamp).First());"
+      },
+      {
+        "type": "text",
+        "content": "`"
+      },
+      {
+        "type": "list",
+        "items": [
           "Use when: You need the most recent entry per key without mutating state, such as building dashboards or reconciling snapshots.",
           "Avoid when: The dataset is huge and you'd benefit from streaming/SQL aggregation; consider database query with ROW_NUMBER or a materialized view to avoid loading everything into memory."
         ]
@@ -19113,7 +19138,24 @@ window.FLASH_CARD_DATA = [
         "items": [
           "Flatten nested instrument codes",
           "Approach: Use SelectMany to flatten while keeping inner order.",
-          "Sample code: `csharp var flat = nestedCodes.SelectMany(list => list); `",
+          "Sample code:"
+        ]
+      },
+      {
+        "type": "text",
+        "content": "`csharp"
+      },
+      {
+        "type": "text",
+        "content": "var flat = nestedCodes.SelectMany(list => list);"
+      },
+      {
+        "type": "text",
+        "content": "`"
+      },
+      {
+        "type": "list",
+        "items": [
           "Use when: You have nested enumerables and simply need to concatenate them.",
           "Avoid when: You must retain hierarchy boundaries—use nested loops instead."
         ]
@@ -19123,8 +19165,20 @@ window.FLASH_CARD_DATA = [
         "items": [
           "SelectMany vs nested loops",
           "SelectMany projects each element to a sequence and flattens; nested loops make iteration explicit and allow more control over flow.",
-          "Sample code: `csharp // SelectMany var pairs = accounts.SelectMany(a => a.Orders, (a, o) => new { a.Id, o.Id });"
+          "Sample code:"
         ]
+      },
+      {
+        "type": "text",
+        "content": "`csharp"
+      },
+      {
+        "type": "text",
+        "content": "// SelectMany"
+      },
+      {
+        "type": "text",
+        "content": "var pairs = accounts.SelectMany(a => a.Orders, (a, o) => new { a.Id, o.Id });"
       },
       {
         "type": "text",
@@ -19158,7 +19212,56 @@ window.FLASH_CARD_DATA = [
         "items": [
           "Detect duplicate orders with GroupBy",
           "Group by unique order keys and filter groups with count > 1. Summaries can include counts, timestamps, and other aggregate metadata that drive remediation.",
-          "Sample code: `csharp var duplicates = orders .GroupBy(o => new { o.AccountId, o.ClientOrderId }) .Where(g => g.Count() > 1) .Select(g => new { g.Key.AccountId, g.Key.ClientOrderId, Count = g.Count(), LatestTimestamp = g.Max(o => o.Timestamp) }); `",
+          "Sample code:"
+        ]
+      },
+      {
+        "type": "text",
+        "content": "`csharp"
+      },
+      {
+        "type": "text",
+        "content": "var duplicates = orders"
+      },
+      {
+        "type": "text",
+        "content": ".GroupBy(o => new { o.AccountId, o.ClientOrderId })"
+      },
+      {
+        "type": "text",
+        "content": ".Where(g => g.Count() > 1)"
+      },
+      {
+        "type": "text",
+        "content": ".Select(g => new {"
+      },
+      {
+        "type": "text",
+        "content": "g.Key.AccountId,"
+      },
+      {
+        "type": "text",
+        "content": "g.Key.ClientOrderId,"
+      },
+      {
+        "type": "text",
+        "content": "Count = g.Count(),"
+      },
+      {
+        "type": "text",
+        "content": "LatestTimestamp = g.Max(o => o.Timestamp)"
+      },
+      {
+        "type": "text",
+        "content": "});"
+      },
+      {
+        "type": "text",
+        "content": "`"
+      },
+      {
+        "type": "list",
+        "items": [
           "Use when: You need summaries and easy grouping.",
           "Avoid when: Data volume exceeds in-memory capabilities—use database aggregates or streaming dedup."
         ]
@@ -19178,7 +19281,32 @@ window.FLASH_CARD_DATA = [
         "items": [
           "Parallel REST calls with cancellation",
           "Approach: Use Task.WhenAll with CancellationTokenSource + timeout. Ensure the HttpClient is a singleton to avoid socket exhaustion and that partial results are handled gracefully when cancellation occurs.",
-          "Sample code: `csharp using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3)); var tasks = endpoints.Select(url => httpClient.GetStringAsync(url, cts.Token)); string[] responses = await Task.WhenAll(tasks); `",
+          "Sample code:"
+        ]
+      },
+      {
+        "type": "text",
+        "content": "`csharp"
+      },
+      {
+        "type": "text",
+        "content": "using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3));"
+      },
+      {
+        "type": "text",
+        "content": "var tasks = endpoints.Select(url => httpClient.GetStringAsync(url, cts.Token));"
+      },
+      {
+        "type": "text",
+        "content": "string[] responses = await Task.WhenAll(tasks);"
+      },
+      {
+        "type": "text",
+        "content": "`"
+      },
+      {
+        "type": "list",
+        "items": [
           "Use when: Limited number of independent calls; want fail-fast.",
           "Avoid when: Endpoints depend on each other or you must gracefully degrade per-call."
         ]
@@ -19188,8 +19316,40 @@ window.FLASH_CARD_DATA = [
         "items": [
           "Polly retry + circuit breaker",
           "Define policies and wrap HTTP calls.",
-          "Sample code: `csharp var policy = Policy.WrapAsync( Policy.Handle<HttpRequestException>() .OrResult<HttpResponseMessage>(r => (int)r.StatusCode >= 500) .WaitAndRetryAsync(3, attempt => TimeSpan.FromMilliseconds(200 * attempt)), Policy.Handle<HttpRequestException>() .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)) );"
+          "Sample code:"
         ]
+      },
+      {
+        "type": "text",
+        "content": "`csharp"
+      },
+      {
+        "type": "text",
+        "content": "var policy = Policy.WrapAsync("
+      },
+      {
+        "type": "text",
+        "content": "Policy.Handle<HttpRequestException>()"
+      },
+      {
+        "type": "text",
+        "content": ".OrResult<HttpResponseMessage>(r => (int)r.StatusCode >= 500)"
+      },
+      {
+        "type": "text",
+        "content": ".WaitAndRetryAsync(3, attempt => TimeSpan.FromMilliseconds(200 * attempt)),"
+      },
+      {
+        "type": "text",
+        "content": "Policy.Handle<HttpRequestException>()"
+      },
+      {
+        "type": "text",
+        "content": ".CircuitBreakerAsync(5, TimeSpan.FromSeconds(30))"
+      },
+      {
+        "type": "text",
+        "content": ");"
       },
       {
         "type": "text",
@@ -19211,8 +19371,28 @@ window.FLASH_CARD_DATA = [
         "items": [
           "Backpressure handling",
           "Use bounded channels, buffering, or throttling. Consider load shedding by dropping low-priority messages or scaling consumers horizontally when queue lengths grow.",
-          "Sample code: `csharp var channel = Channel.CreateBounded<Message>(new BoundedChannelOptions(100) { FullMode = BoundedChannelFullMode.Wait });"
+          "Sample code:"
         ]
+      },
+      {
+        "type": "text",
+        "content": "`csharp"
+      },
+      {
+        "type": "text",
+        "content": "var channel = Channel.CreateBounded<Message>(new BoundedChannelOptions(100)"
+      },
+      {
+        "type": "text",
+        "content": "{"
+      },
+      {
+        "type": "text",
+        "content": "FullMode = BoundedChannelFullMode.Wait"
+      },
+      {
+        "type": "text",
+        "content": "});"
       },
       {
         "type": "text",
@@ -19274,8 +19454,16 @@ window.FLASH_CARD_DATA = [
         "items": [
           "SemaphoreSlim vs lock",
           "SemaphoreSlim supports async waiting and throttling concurrency. It can represent both mutual exclusion (1 permit) and limited resource pools (>1 permits).",
-          "Sample code: `csharp private readonly SemaphoreSlim _mutex = new(1, 1);"
+          "Sample code:"
         ]
+      },
+      {
+        "type": "text",
+        "content": "`csharp"
+      },
+      {
+        "type": "text",
+        "content": "private readonly SemaphoreSlim _mutex = new(1, 1);"
       },
       {
         "type": "text",
@@ -19328,7 +19516,44 @@ window.FLASH_CARD_DATA = [
           "Middleware pipeline description",
           "Typical order: UseRouting → auth middleware → custom exception handling (usually early) → UseAuthentication/UseAuthorization → endpoint execution. Static file middleware, response compression, and caching can be interleaved before routing.",
           "Include correlation logging, caching, validation, and telemetry instrumentation.",
-          "Sample code: `csharp app.UseMiddleware<CorrelationMiddleware>(); app.UseMiddleware<ExceptionHandlingMiddleware>(); app.UseRouting(); app.UseAuthentication(); app.UseAuthorization(); app.MapControllers(); `",
+          "Sample code:"
+        ]
+      },
+      {
+        "type": "text",
+        "content": "`csharp"
+      },
+      {
+        "type": "text",
+        "content": "app.UseMiddleware<CorrelationMiddleware>();"
+      },
+      {
+        "type": "text",
+        "content": "app.UseMiddleware<ExceptionHandlingMiddleware>();"
+      },
+      {
+        "type": "text",
+        "content": "app.UseRouting();"
+      },
+      {
+        "type": "text",
+        "content": "app.UseAuthentication();"
+      },
+      {
+        "type": "text",
+        "content": "app.UseAuthorization();"
+      },
+      {
+        "type": "text",
+        "content": "app.MapControllers();"
+      },
+      {
+        "type": "text",
+        "content": "`"
+      },
+      {
+        "type": "list",
+        "items": [
           "Use when: Building consistent request handling.",
           "Avoid when: For minimal APIs you might use delegate pipeline but still similar."
         ]
@@ -19339,7 +19564,48 @@ window.FLASH_CARD_DATA = [
           "API versioning",
           "Strategies: URL segment (/v1/), header, query string.",
           "Use Asp.Versioning package.",
-          "Sample code: `csharp services.AddApiVersioning(options => { options.DefaultApiVersion = new ApiVersion(1, 0); options.AssumeDefaultVersionWhenUnspecified = true; options.ReportApiVersions = true; }); services.AddVersionedApiExplorer(); `",
+          "Sample code:"
+        ]
+      },
+      {
+        "type": "text",
+        "content": "`csharp"
+      },
+      {
+        "type": "text",
+        "content": "services.AddApiVersioning(options =>"
+      },
+      {
+        "type": "text",
+        "content": "{"
+      },
+      {
+        "type": "text",
+        "content": "options.DefaultApiVersion = new ApiVersion(1, 0);"
+      },
+      {
+        "type": "text",
+        "content": "options.AssumeDefaultVersionWhenUnspecified = true;"
+      },
+      {
+        "type": "text",
+        "content": "options.ReportApiVersions = true;"
+      },
+      {
+        "type": "text",
+        "content": "});"
+      },
+      {
+        "type": "text",
+        "content": "services.AddVersionedApiExplorer();"
+      },
+      {
+        "type": "text",
+        "content": "`"
+      },
+      {
+        "type": "list",
+        "items": [
           "Use when: Breaking changes; maintain backward compatibility by keeping old controllers.",
           "Avoid when: Internal services with clients you control; choose contract-first to avoid version explosion."
         ]
@@ -19350,8 +19616,52 @@ window.FLASH_CARD_DATA = [
           "Rate limiting & throttling",
           "Use ASP.NET rate limiting middleware or gateway.",
           "Techniques: token bucket, fixed window, sliding window.",
-          "Sample code: `csharp services.AddRateLimiter(options => { options.AddFixedWindowLimiter(\"per-account\", opt => { opt.Window = TimeSpan.FromMinutes(1); opt.PermitLimit = 60; opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst; opt.QueueLimit = 20; }); });"
+          "Sample code:"
         ]
+      },
+      {
+        "type": "text",
+        "content": "`csharp"
+      },
+      {
+        "type": "text",
+        "content": "services.AddRateLimiter(options =>"
+      },
+      {
+        "type": "text",
+        "content": "{"
+      },
+      {
+        "type": "text",
+        "content": "options.AddFixedWindowLimiter(\"per-account\", opt =>"
+      },
+      {
+        "type": "text",
+        "content": "{"
+      },
+      {
+        "type": "text",
+        "content": "opt.Window = TimeSpan.FromMinutes(1);"
+      },
+      {
+        "type": "text",
+        "content": "opt.PermitLimit = 60;"
+      },
+      {
+        "type": "text",
+        "content": "opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;"
+      },
+      {
+        "type": "text",
+        "content": "opt.QueueLimit = 20;"
+      },
+      {
+        "type": "text",
+        "content": "});"
+      },
+      {
+        "type": "text",
+        "content": "});"
       },
       {
         "type": "text",
@@ -19373,7 +19683,32 @@ window.FLASH_CARD_DATA = [
         "items": [
           "Correlation IDs propagation",
           "Generate ID in middleware, add to headers/log context, forward via HttpClient. Ensure asynchronous logging frameworks flow the correlation ID across threads (e.g., using AsyncLocal).",
-          "Sample code: `csharp context.TraceIdentifier = context.TraceIdentifier ?? Guid.NewGuid().ToString(); _logger.LogInformation(\"{CorrelationId} handling {Path}\", context.TraceIdentifier, context.Request.Path); httpClient.DefaultRequestHeaders.Add(\"X-Correlation-ID\", context.TraceIdentifier); `",
+          "Sample code:"
+        ]
+      },
+      {
+        "type": "text",
+        "content": "`csharp"
+      },
+      {
+        "type": "text",
+        "content": "context.TraceIdentifier = context.TraceIdentifier ?? Guid.NewGuid().ToString();"
+      },
+      {
+        "type": "text",
+        "content": "_logger.LogInformation(\"{CorrelationId} handling {Path}\", context.TraceIdentifier, context.Request.Path);"
+      },
+      {
+        "type": "text",
+        "content": "httpClient.DefaultRequestHeaders.Add(\"X-Correlation-ID\", context.TraceIdentifier);"
+      },
+      {
+        "type": "text",
+        "content": "`"
+      },
+      {
+        "type": "list",
+        "items": [
           "Use when: Need distributed tracing.",
           "Avoid when: Truly isolated services—rare."
         ]
@@ -19394,7 +19729,48 @@ window.FLASH_CARD_DATA = [
           "Price Streaming Service",
           "Components: Ingestion (connectors to MT5), normalization workers, cache (Redis), API (REST/WebSocket), persistence. Add replay storage (Kafka topic or time-series DB) for audit and late subscribers.",
           "Use message queue (Kafka) for fan-out and resilient decoupling of ingestion from delivery.",
-          "Sample pseudo-code: `csharp while (await mt5Stream.MoveNextAsync()) { var normalized = Normalize(mt5Stream.Current); await cache.SetAsync(normalized.Symbol, normalized.Price); await hubContext.Clients.Group(normalized.Symbol) .SendAsync(\"price\", normalized); } `",
+          "Sample pseudo-code:"
+        ]
+      },
+      {
+        "type": "text",
+        "content": "`csharp"
+      },
+      {
+        "type": "text",
+        "content": "while (await mt5Stream.MoveNextAsync())"
+      },
+      {
+        "type": "text",
+        "content": "{"
+      },
+      {
+        "type": "text",
+        "content": "var normalized = Normalize(mt5Stream.Current);"
+      },
+      {
+        "type": "text",
+        "content": "await cache.SetAsync(normalized.Symbol, normalized.Price);"
+      },
+      {
+        "type": "text",
+        "content": "await hubContext.Clients.Group(normalized.Symbol)"
+      },
+      {
+        "type": "text",
+        "content": ".SendAsync(\"price\", normalized);"
+      },
+      {
+        "type": "text",
+        "content": "}"
+      },
+      {
+        "type": "text",
+        "content": "`"
+      },
+      {
+        "type": "list",
+        "items": [
           "Use when: Need low-latency price dissemination.",
           "Avoid when: Low-frequency batch updates suffice."
         ]
@@ -19405,7 +19781,56 @@ window.FLASH_CARD_DATA = [
           "Order Execution Workflow",
           "Steps: receive REST order → validate (risk, compliance) → persist pending state → route to MT4/MT5 → await ack → publish result. Include idempotency keys on inbound requests and a reconciliation process for missing confirmations.",
           "Use saga/outbox for reliability and to coordinate compensating actions when downstream legs fail.",
-          "Sample flow snippet: `csharp public async Task<IActionResult> Submit(OrderRequest dto) { var order = await _validator.ValidateAsync(dto); await _repository.SavePending(order); var result = await _mtGateway.SendAsync(order); await _repository.UpdateStatus(order.Id, result.Status); await _bus.Publish(new OrderStatusChanged(order.Id, result.Status)); return Ok(result); } `",
+          "Sample flow snippet:"
+        ]
+      },
+      {
+        "type": "text",
+        "content": "`csharp"
+      },
+      {
+        "type": "text",
+        "content": "public async Task<IActionResult> Submit(OrderRequest dto)"
+      },
+      {
+        "type": "text",
+        "content": "{"
+      },
+      {
+        "type": "text",
+        "content": "var order = await _validator.ValidateAsync(dto);"
+      },
+      {
+        "type": "text",
+        "content": "await _repository.SavePending(order);"
+      },
+      {
+        "type": "text",
+        "content": "var result = await _mtGateway.SendAsync(order);"
+      },
+      {
+        "type": "text",
+        "content": "await _repository.UpdateStatus(order.Id, result.Status);"
+      },
+      {
+        "type": "text",
+        "content": "await _bus.Publish(new OrderStatusChanged(order.Id, result.Status));"
+      },
+      {
+        "type": "text",
+        "content": "return Ok(result);"
+      },
+      {
+        "type": "text",
+        "content": "}"
+      },
+      {
+        "type": "text",
+        "content": "`"
+      },
+      {
+        "type": "list",
+        "items": [
           "Use when: Real-time trading with external platforms.",
           "Avoid when: Simple internal workflows—overkill."
         ]
@@ -19416,7 +19841,32 @@ window.FLASH_CARD_DATA = [
           "Real-Time Monitoring Dashboard",
           "Collect metrics via OpenTelemetry exporters, push to time-series DB (Prometheus), visualize in Grafana, alert via Alertmanager. Tag metrics with dimensions (service, region, environment) to support slicing and alert thresholds.",
           "Include streaming logs via ELK stack and trace sampling via Jaeger/Tempo.",
-          "Sample instrumentation: `csharp var meter = new Meter(\"Trading.Services\"); var orderLatency = meter.CreateHistogram<double>(\"order_latency_ms\"); orderLatency.Record(latencyMs, KeyValuePair.Create<string, object?>(\"service\", serviceName)); `",
+          "Sample instrumentation:"
+        ]
+      },
+      {
+        "type": "text",
+        "content": "`csharp"
+      },
+      {
+        "type": "text",
+        "content": "var meter = new Meter(\"Trading.Services\");"
+      },
+      {
+        "type": "text",
+        "content": "var orderLatency = meter.CreateHistogram<double>(\"order_latency_ms\");"
+      },
+      {
+        "type": "text",
+        "content": "orderLatency.Record(latencyMs, KeyValuePair.Create<string, object?>(\"service\", serviceName));"
+      },
+      {
+        "type": "text",
+        "content": "`"
+      },
+      {
+        "type": "list",
+        "items": [
           "Use when: Need proactive observability.",
           "Avoid when: Prototype with low SLA."
         ]
@@ -19427,7 +19877,32 @@ window.FLASH_CARD_DATA = [
           "Integrating external risk engine",
           "Use async messaging or REST; maintain schema adapters; ensure idempotency. Map risk statuses to domain-specific responses and version contracts to avoid breaking changes.",
           "Add caching for rules, circuit breakers, fallback decisions, and health checks to remove unhealthy nodes from rotation.",
-          "Sample interaction: `csharp var riskResponse = await _riskClient.EvaluateAsync(order, ct); if (!riskResponse.Approved) return OrderDecision.Rejected(riskResponse.Reason); `",
+          "Sample interaction:"
+        ]
+      },
+      {
+        "type": "text",
+        "content": "`csharp"
+      },
+      {
+        "type": "text",
+        "content": "var riskResponse = await _riskClient.EvaluateAsync(order, ct);"
+      },
+      {
+        "type": "text",
+        "content": "if (!riskResponse.Approved)"
+      },
+      {
+        "type": "text",
+        "content": "return OrderDecision.Rejected(riskResponse.Reason);"
+      },
+      {
+        "type": "text",
+        "content": "`"
+      },
+      {
+        "type": "list",
+        "items": [
           "Use when: External compliance requirement.",
           "Avoid when: Latency-critical path can't tolerate external dependency—consider in-process rules."
         ]
@@ -19457,7 +19932,44 @@ window.FLASH_CARD_DATA = [
         "items": [
           "At-least-once with RabbitMQ",
           "Use durable queues, persistent messages, manual ack, idempotent consumers. Enable publisher confirms to ensure the broker persisted the message before acknowledging to the producer.",
-          "Sample code: `csharp channel.BasicConsume(queue, autoAck: false, consumer); consumer.Received += (sender, ea) => { Handle(ea.Body); channel.BasicAck(ea.DeliveryTag, multiple: false); }; `",
+          "Sample code:"
+        ]
+      },
+      {
+        "type": "text",
+        "content": "`csharp"
+      },
+      {
+        "type": "text",
+        "content": "channel.BasicConsume(queue, autoAck: false, consumer);"
+      },
+      {
+        "type": "text",
+        "content": "consumer.Received += (sender, ea) =>"
+      },
+      {
+        "type": "text",
+        "content": "{"
+      },
+      {
+        "type": "text",
+        "content": "Handle(ea.Body);"
+      },
+      {
+        "type": "text",
+        "content": "channel.BasicAck(ea.DeliveryTag, multiple: false);"
+      },
+      {
+        "type": "text",
+        "content": "};"
+      },
+      {
+        "type": "text",
+        "content": "`"
+      },
+      {
+        "type": "list",
+        "items": [
           "Use when: You can tolerate duplicates; critical to ensure no loss.",
           "Avoid when: Exactly-once semantics required—use transactional outbox + dedup."
         ]
@@ -19467,7 +19979,76 @@ window.FLASH_CARD_DATA = [
         "items": [
           "Saga pattern for account funding",
           "Orchestrator or choreography; manage compensations (reverse ledger entry, refund payment).",
-          "Sample orchestrator: `csharp public async Task Handle(FundAccount command) { var transferId = await _payments.DebitAsync(command.PaymentId); try { await _ledger.CreditAsync(command.AccountId, command.Amount); await _notifications.SendAsync(command.AccountId, \"Funding complete\"); } catch { await _payments.RefundAsync(transferId); throw; } } `",
+          "Sample orchestrator:"
+        ]
+      },
+      {
+        "type": "text",
+        "content": "`csharp"
+      },
+      {
+        "type": "text",
+        "content": "public async Task Handle(FundAccount command)"
+      },
+      {
+        "type": "text",
+        "content": "{"
+      },
+      {
+        "type": "text",
+        "content": "var transferId = await _payments.DebitAsync(command.PaymentId);"
+      },
+      {
+        "type": "text",
+        "content": "try"
+      },
+      {
+        "type": "text",
+        "content": "{"
+      },
+      {
+        "type": "text",
+        "content": "await _ledger.CreditAsync(command.AccountId, command.Amount);"
+      },
+      {
+        "type": "text",
+        "content": "await _notifications.SendAsync(command.AccountId, \"Funding complete\");"
+      },
+      {
+        "type": "text",
+        "content": "}"
+      },
+      {
+        "type": "text",
+        "content": "catch"
+      },
+      {
+        "type": "text",
+        "content": "{"
+      },
+      {
+        "type": "text",
+        "content": "await _payments.RefundAsync(transferId);"
+      },
+      {
+        "type": "text",
+        "content": "throw;"
+      },
+      {
+        "type": "text",
+        "content": "}"
+      },
+      {
+        "type": "text",
+        "content": "}"
+      },
+      {
+        "type": "text",
+        "content": "`"
+      },
+      {
+        "type": "list",
+        "items": [
           "Use when: Multi-step, distributed transactions.",
           "Avoid when: Single system handles all steps—simple ACID transaction suffices."
         ]
@@ -19477,7 +20058,40 @@ window.FLASH_CARD_DATA = [
         "items": [
           "Outbox pattern",
           "Write domain event to outbox table within same transaction, then relay to message bus. A background dispatcher polls the outbox table, publishes events, and marks them as processed (with retries and exponential backoff).",
-          "Sample code: `csharp await using var tx = await db.Database.BeginTransactionAsync(); order.Status = OrderStatus.Accepted; db.Outbox.Add(new OutboxMessage(order.Id, new OrderAccepted(order.Id))); await db.SaveChangesAsync(); await tx.CommitAsync(); `",
+          "Sample code:"
+        ]
+      },
+      {
+        "type": "text",
+        "content": "`csharp"
+      },
+      {
+        "type": "text",
+        "content": "await using var tx = await db.Database.BeginTransactionAsync();"
+      },
+      {
+        "type": "text",
+        "content": "order.Status = OrderStatus.Accepted;"
+      },
+      {
+        "type": "text",
+        "content": "db.Outbox.Add(new OutboxMessage(order.Id, new OrderAccepted(order.Id)));"
+      },
+      {
+        "type": "text",
+        "content": "await db.SaveChangesAsync();"
+      },
+      {
+        "type": "text",
+        "content": "await tx.CommitAsync();"
+      },
+      {
+        "type": "text",
+        "content": "`"
+      },
+      {
+        "type": "list",
+        "items": [
           "Use when: Need atomic DB + message publish.",
           "Avoid when: No shared database or eventual consistency acceptable without duplication."
         ]
@@ -19496,7 +20110,12 @@ window.FLASH_CARD_DATA = [
         "type": "list",
         "items": [
           "Rolling 7-day trade volume",
-          "SQL: `sql WITH daily AS ( SELECT instrument_id, trade_timestamp::date AS trade_date, SUM(volume) AS daily_volume FROM trades GROUP BY instrument_id, trade_timestamp::date ) SELECT instrument_id, trade_date, daily_volume, SUM(daily_volume) OVER ( PARTITION BY instrument_id ORDER BY trade_date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW ) AS rolling_7d_volume FROM daily ORDER BY instrument_id, trade_date; `",
+          "SQL: `sql WITH daily AS ( SELECT instrument_id, trade_timestamp::date AS trade_date, SUM(volume) AS daily_volume FROM trades GROUP BY instrument_id, trade_timestamp::date ) SELECT instrument_id, trade_date, daily_volume, SUM(daily_volume) OVER ( PARTITION BY instrument_id ORDER BY trade_date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW ) AS rolling_7d_volume FROM daily ORDER BY instrument_id, trade_date; `"
+        ]
+      },
+      {
+        "type": "list",
+        "items": [
           "Use when: Need rolling metrics in SQL.",
           "Avoid when: Database lacks window functions—use app-side aggregation."
         ]
@@ -19516,7 +20135,12 @@ window.FLASH_CARD_DATA = [
           "Clustered vs non-clustered indexes",
           "Clustered: defines physical order, one per table; great for range scans.",
           "Non-clustered: separate structure pointing to data; can include columns.",
-          "Covering index example: `sql CREATE NONCLUSTERED INDEX IX_Orders_Account_Status ON Orders(AccountId, Status) INCLUDE (CreatedAt, Amount); `",
+          "Covering index example: `sql CREATE NONCLUSTERED INDEX IX_Orders_Account_Status ON Orders(AccountId, Status) INCLUDE (CreatedAt, Amount); `"
+        ]
+      },
+      {
+        "type": "list",
+        "items": [
           "Use covering index when: Query needs subset of columns; avoid extra lookups.",
           "Avoid when: Frequent writes—maintaining many indexes hurts performance."
         ]
@@ -19553,8 +20177,28 @@ window.FLASH_CARD_DATA = [
           "Integrating with MT4/MT5",
           "Use MetaTrader Manager/Server APIs via C# wrappers; handle session auth, keep-alive, throttle requests. Manage connections via dedicated service accounts and pre-allocate connection pools.",
           "Implement reconnect logic, map errors, ensure idempotent order submission. Translate MT-specific error codes into domain-level responses for clients.",
-          "Sample pseudo-code: `csharp using var session = new Mt5Gateway(credentials); await session.ConnectAsync(); var ticket = await session.SendOrderAsync(request); `"
+          "Sample pseudo-code:"
         ]
+      },
+      {
+        "type": "text",
+        "content": "`csharp"
+      },
+      {
+        "type": "text",
+        "content": "using var session = new Mt5Gateway(credentials);"
+      },
+      {
+        "type": "text",
+        "content": "await session.ConnectAsync();"
+      },
+      {
+        "type": "text",
+        "content": "var ticket = await session.SendOrderAsync(request);"
+      },
+      {
+        "type": "text",
+        "content": "`"
       },
       {
         "type": "list",
