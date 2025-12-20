@@ -10,7 +10,7 @@
 
 This repository serves a dual purpose:
 1. **Production-quality code examples** demonstrating Clean Architecture with CQRS patterns
-2. **Interview preparation materials** for HFM Senior C#/.NET Developer positions
+2. **Interview preparation materials** for Senior C#/.NET Developer positions
 
 ### Target Context
 - **Domain**: High-frequency trading and fintech systems (MT4/MT5 platforms)

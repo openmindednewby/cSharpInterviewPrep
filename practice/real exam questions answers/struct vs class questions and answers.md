@@ -141,7 +141,7 @@ class TickStreamProcessor { /* class that manages state */ }
 
 💡 **Mention:**
 
-> “At HFM scale — where millions of ticks flow per second — keeping structs small and readonly helps stay in Gen0 and reduces GC load. If a struct becomes too big, I switch to a reference type.”
+> “At scale — where millions of ticks flow per second — keeping structs small and readonly helps stay in Gen0 and reduces GC load. If a struct becomes too big, I switch to a reference type.”
 
 ---
 

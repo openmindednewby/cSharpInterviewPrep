@@ -164,7 +164,7 @@ That’s your **evidence** you’ve optimized allocations correctly.
 
 ---
 
-Would you like me to follow up with a **bonus version using `System.IO.Pipelines`** — the way you’d implement this in a real HFM-style backend (async, streaming, zero-copy)?
+Would you like me to follow up with a **bonus version using `System.IO.Pipelines`** — the way you’d implement this in a real-style backend (async, streaming, zero-copy)?
 That’s often a **senior-level differentiator question**.
 
 ---

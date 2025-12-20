@@ -1,6 +1,6 @@
-# HFM Senior C#/.NET Interview Crash Prep
+# Senior C#/.NET Interview Crash Prep
 
-Welcome! This repository packs everything you need for a focused two-hour preparation sprint before your HFM Senior C#/.NET Developer interview. Follow the schedule, skim the notes, and drill the practice questions to build confidence fast.
+Welcome! This repository packs everything you need for a focused two-hour preparation sprint before your Senior C#/.NET Developer interview. Follow the schedule, skim the notes, and drill the practice questions to build confidence fast.
 
 ## How to Use This Repository
 1. **Start with the [Two-Hour Plan](prep-plan.md)** – follow it step-by-step.

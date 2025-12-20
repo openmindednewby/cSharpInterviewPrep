@@ -1,6 +1,6 @@
-# Two-Hour HFM Interview Prep Plan
+# Two-Hour Interview Prep Plan
 
-> **Goal:** Refresh critical senior-level C#/.NET knowledge, rehearse coding/system design answers, and align your experience with HFM's trading domain—all in 120 minutes.
+> **Goal:** Refresh critical senior-level C#/.NET knowledge, rehearse coding/system design answers, and align your experience with trading domain—all in 120 minutes.
 
 ---
 
@@ -100,10 +100,10 @@ Focus on quickly refreshing the concepts you must articulate clearly.
 - Draft two STAR stories: one for leadership/ownership, one for teamwork under pressure.
 - Use prompts in [Practice Questions](practice/questions.md#behavioral--soft-skills).
 
-### 5.3 Questions for HFM (3 minutes)
+### 5.3 Questions for (3 minutes)
 - Choose 2-3 questions from [Practice Questions](practice/questions.md#questions-for-the-interviewer) that show genuine interest.
 
-> 🎯 **Checkpoint:** You can now connect your background to HFM’s needs and demonstrate cultural fit.
+> 🎯 **Checkpoint:** You can now connect your background to’s needs and demonstrate cultural fit.
 
 ---
 
@@ -111,7 +111,7 @@ Focus on quickly refreshing the concepts you must articulate clearly.
 Follow the [Final Interview Checklist](checklists/final-checklist.md) to ensure logistics, mindset, and materials are locked in.
 
 - Confirm environment, resume copy, and portfolio links.
-- Rehearse 60-second pitch: who you are, what you’ve done, why HFM.
+- Rehearse 60-second pitch: who you are, what you’ve done, why.
 - Practice a calm breathing exercise to reset before joining the call.
 
 > ✅ **Done!** Take a short break, hydrate, and approach the interview with confidence.

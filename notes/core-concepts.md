@@ -1,6 +1,6 @@
 # Core Concepts Cheat Sheet
 
-Use these snapshots alongside the [prep plan](../prep-plan.md). Each section includes talking points, tips, and quick reminders tailored to the HFM Senior C#/.NET role.
+Use these snapshots alongside the [prep plan](../prep-plan.md). Each section includes talking points, tips, and quick reminders tailored to the Senior C#/.NET role.
 
 ---
 

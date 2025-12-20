@@ -159,9 +159,9 @@ Heap:
 
 ---
 
-Would you like me to give you **5 advanced interview questions** around `struct` vs `class` (with answers), the kind HFM might use to test your understanding of **memory, GC, and performance**?
+Would you like me to give you **5 advanced interview questions** around `struct` vs `class` (with answers), the kind might use to test your understanding of **memory, GC, and performance**?
 
-Excellent — this visual explanation will make your answer **stand out instantly** in a senior-level C# interview (especially at HFM, where they care about performance, GC, and data flow).
+Excellent — this visual explanation will make your answer **stand out instantly** in a senior-level C# interview (especially at, where they care about performance, GC, and data flow).
 
 Let’s walk through it step by step, from memory layout to how structs and classes behave under assignment and method calls.
 

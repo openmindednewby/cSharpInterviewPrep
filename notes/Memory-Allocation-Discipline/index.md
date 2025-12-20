@@ -229,7 +229,7 @@ Console.WriteLine(GC.GetTotalAllocatedBytes(true));
 
 ---
 
-## 8️⃣ Interview-ready example (say this at HFM)
+## 8️⃣ Interview-ready example (say this at)
 
 > “Allocation discipline means being intentional about where and how you allocate.
 > In latency-sensitive systems, even Gen0 collections matter. I use `ArrayPool<T>` and `ObjectPool<T>` to reuse memory, `Span<T>` for parsing binary and textual data, and avoid LINQ or string concatenation in tight loops.

@@ -1,5 +1,5 @@
 // Auto-generated flash card data from notes/ and practice/ folders
-// Generated on: 2025-12-20T12:51:06.019Z
+// Generated on: 2025-12-20T13:21:11.465Z
 // Total cards: 1027 (512 Q&A, 453 sections, 62 concepts)
 
 window.FLASH_CARD_DATA = [
@@ -7822,7 +7822,7 @@ window.FLASH_CARD_DATA = [
     "id": "card-419"
   },
   {
-    "question": "8️⃣ Interview-ready example (say this at HFM)",
+    "question": "8️⃣ Interview-ready example (say this at)",
     "answer": [
       {
         "type": "text",
@@ -20164,7 +20164,7 @@ window.FLASH_CARD_DATA = [
       {
         "type": "list",
         "items": [
-          "How does HFM structure collaboration between developers, QA, and trading desks?",
+          "How does structure collaboration between developers, QA, and trading desks?",
           "What are the biggest technical challenges facing the MT4/MT5 integration team right now?",
           "How do you measure success for developers in this role within the first 6 months?",
           "What opportunities exist for continuous learning and innovation within the engineering org?"
@@ -20849,7 +20849,7 @@ window.FLASH_CARD_DATA = [
       },
       {
         "type": "text",
-        "content": "> “At HFM scale — where millions of ticks flow per second — keeping structs small and readonly helps stay in Gen0 and reduces GC load. If a struct becomes too big, I switch to a reference type.”"
+        "content": "> “At scale — where millions of ticks flow per second — keeping structs small and readonly helps stay in Gen0 and reduces GC load. If a struct becomes too big, I switch to a reference type.”"
       }
     ],
     "category": "practice",

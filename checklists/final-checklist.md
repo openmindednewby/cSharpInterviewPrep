@@ -28,7 +28,7 @@ Use this quick rundown to ensure you are mentally, technically, and logistically
 - [ ] STAR notes for collaboration under pressure.
 - [ ] Example of process improvement or automation effort.
 
-## 6. Questions for HFM
+## 6. Questions for
 - [ ] Two thoughtful questions ready (team collaboration, technical roadmap, growth).
 - [ ] Confirm you know the interviewer names/roles if provided.
 

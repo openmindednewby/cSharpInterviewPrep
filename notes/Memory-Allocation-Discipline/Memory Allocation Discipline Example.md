@@ -215,7 +215,7 @@ You can mention:
 ---
 
 Would you like me to extend this by showing the **async version** — i.e., reading ticks from a `NetworkStream` using `System.IO.Pipelines` (zero-copy streaming, ideal for high-throughput trading systems)?
-That’s *exactly* the kind of system HFM might ask you to describe.
+That’s *exactly* the kind of system might ask you to describe.
 
 ---
 

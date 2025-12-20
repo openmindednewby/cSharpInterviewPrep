@@ -53,7 +53,7 @@ Use these prompts while working through the [prep plan](../prep-plan.md). Aim to
 4. Share a story that demonstrates your commitment to documentation or knowledge sharing.
 
 ## Questions for the Interviewer
-1. How does HFM structure collaboration between developers, QA, and trading desks?
+1. How does structure collaboration between developers, QA, and trading desks?
 2. What are the biggest technical challenges facing the MT4/MT5 integration team right now?
 3. How do you measure success for developers in this role within the first 6 months?
 4. What opportunities exist for continuous learning and innovation within the engineering org?
