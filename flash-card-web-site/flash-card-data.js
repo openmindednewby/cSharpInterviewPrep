@@ -1,5 +1,5 @@
 // Auto-generated flash card data from notes/ and practice/ folders
-// Generated on: 2025-12-20T21:21:15.445Z
+// Generated on: 2025-12-20T21:40:06.613Z
 // Total cards: 1382 (687 Q&A, 633 sections, 62 concepts)
 
 window.FLASH_CARD_DATA = [
@@ -19107,24 +19107,10 @@ window.FLASH_CARD_DATA = [
         ]
       },
       {
-        "type": "text",
-        "content": "`csharp"
-      },
-      {
-        "type": "text",
-        "content": "var latestTrades = trades"
-      },
-      {
-        "type": "text",
-        "content": ".GroupBy(t => t.AccountId)"
-      },
-      {
-        "type": "text",
-        "content": ".Select(g => g.OrderByDescending(t => t.Timestamp).First());"
-      },
-      {
-        "type": "text",
-        "content": "`"
+        "type": "code",
+        "language": "csharp",
+        "code": "     var latestTrades = trades\n         .GroupBy(t => t.AccountId)\n         .Select(g => g.OrderByDescending(t => t.Timestamp).First());",
+        "codeType": "neutral"
       },
       {
         "type": "list",
@@ -19142,16 +19128,10 @@ window.FLASH_CARD_DATA = [
         ]
       },
       {
-        "type": "text",
-        "content": "`csharp"
-      },
-      {
-        "type": "text",
-        "content": "var flat = nestedCodes.SelectMany(list => list);"
-      },
-      {
-        "type": "text",
-        "content": "`"
+        "type": "code",
+        "language": "csharp",
+        "code": "     var flat = nestedCodes.SelectMany(list => list);",
+        "codeType": "neutral"
       },
       {
         "type": "list",
@@ -19169,36 +19149,10 @@ window.FLASH_CARD_DATA = [
         ]
       },
       {
-        "type": "text",
-        "content": "`csharp"
-      },
-      {
-        "type": "text",
-        "content": "// SelectMany"
-      },
-      {
-        "type": "text",
-        "content": "var pairs = accounts.SelectMany(a => a.Orders, (a, o) => new { a.Id, o.Id });"
-      },
-      {
-        "type": "text",
-        "content": "// Nested loops"
-      },
-      {
-        "type": "text",
-        "content": "foreach (var a in accounts)"
-      },
-      {
-        "type": "text",
-        "content": "foreach (var o in a.Orders)"
-      },
-      {
-        "type": "text",
-        "content": "yield return (a.Id, o.Id);"
-      },
-      {
-        "type": "text",
-        "content": "`"
+        "type": "code",
+        "language": "csharp",
+        "code": "     // SelectMany\n     var pairs = accounts.SelectMany(a => a.Orders, (a, o) => new { a.Id, o.Id });\n\n     // Nested loops\n     foreach (var a in accounts)\n         foreach (var o in a.Orders)\n             yield return (a.Id, o.Id);",
+        "codeType": "neutral"
       },
       {
         "type": "list",
@@ -19216,48 +19170,10 @@ window.FLASH_CARD_DATA = [
         ]
       },
       {
-        "type": "text",
-        "content": "`csharp"
-      },
-      {
-        "type": "text",
-        "content": "var duplicates = orders"
-      },
-      {
-        "type": "text",
-        "content": ".GroupBy(o => new { o.AccountId, o.ClientOrderId })"
-      },
-      {
-        "type": "text",
-        "content": ".Where(g => g.Count() > 1)"
-      },
-      {
-        "type": "text",
-        "content": ".Select(g => new {"
-      },
-      {
-        "type": "text",
-        "content": "g.Key.AccountId,"
-      },
-      {
-        "type": "text",
-        "content": "g.Key.ClientOrderId,"
-      },
-      {
-        "type": "text",
-        "content": "Count = g.Count(),"
-      },
-      {
-        "type": "text",
-        "content": "LatestTimestamp = g.Max(o => o.Timestamp)"
-      },
-      {
-        "type": "text",
-        "content": "});"
-      },
-      {
-        "type": "text",
-        "content": "`"
+        "type": "code",
+        "language": "csharp",
+        "code": "     var duplicates = orders\n         .GroupBy(o => new { o.AccountId, o.ClientOrderId })\n         .Where(g => g.Count() > 1)\n         .Select(g => new {\n             g.Key.AccountId,\n             g.Key.ClientOrderId,\n             Count = g.Count(),\n             LatestTimestamp = g.Max(o => o.Timestamp)\n         });",
+        "codeType": "neutral"
       },
       {
         "type": "list",
@@ -19285,24 +19201,10 @@ window.FLASH_CARD_DATA = [
         ]
       },
       {
-        "type": "text",
-        "content": "`csharp"
-      },
-      {
-        "type": "text",
-        "content": "using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3));"
-      },
-      {
-        "type": "text",
-        "content": "var tasks = endpoints.Select(url => httpClient.GetStringAsync(url, cts.Token));"
-      },
-      {
-        "type": "text",
-        "content": "string[] responses = await Task.WhenAll(tasks);"
-      },
-      {
-        "type": "text",
-        "content": "`"
+        "type": "code",
+        "language": "csharp",
+        "code": "     using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3));\n     var tasks = endpoints.Select(url => httpClient.GetStringAsync(url, cts.Token));\n     string[] responses = await Task.WhenAll(tasks);",
+        "codeType": "neutral"
       },
       {
         "type": "list",
@@ -19320,44 +19222,10 @@ window.FLASH_CARD_DATA = [
         ]
       },
       {
-        "type": "text",
-        "content": "`csharp"
-      },
-      {
-        "type": "text",
-        "content": "var policy = Policy.WrapAsync("
-      },
-      {
-        "type": "text",
-        "content": "Policy.Handle<HttpRequestException>()"
-      },
-      {
-        "type": "text",
-        "content": ".OrResult<HttpResponseMessage>(r => (int)r.StatusCode >= 500)"
-      },
-      {
-        "type": "text",
-        "content": ".WaitAndRetryAsync(3, attempt => TimeSpan.FromMilliseconds(200 * attempt)),"
-      },
-      {
-        "type": "text",
-        "content": "Policy.Handle<HttpRequestException>()"
-      },
-      {
-        "type": "text",
-        "content": ".CircuitBreakerAsync(5, TimeSpan.FromSeconds(30))"
-      },
-      {
-        "type": "text",
-        "content": ");"
-      },
-      {
-        "type": "text",
-        "content": "var response = await policy.ExecuteAsync(() => httpClient.SendAsync(request));"
-      },
-      {
-        "type": "text",
-        "content": "`"
+        "type": "code",
+        "language": "csharp",
+        "code": "     var policy = Policy.WrapAsync(\n         Policy.Handle<HttpRequestException>()\n               .OrResult<HttpResponseMessage>(r => (int)r.StatusCode >= 500)\n               .WaitAndRetryAsync(3, attempt => TimeSpan.FromMilliseconds(200 * attempt)),\n         Policy.Handle<HttpRequestException>()\n               .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30))\n     );\n\n     var response = await policy.ExecuteAsync(() => httpClient.SendAsync(request));",
+        "codeType": "neutral"
       },
       {
         "type": "list",
@@ -19375,72 +19243,10 @@ window.FLASH_CARD_DATA = [
         ]
       },
       {
-        "type": "text",
-        "content": "`csharp"
-      },
-      {
-        "type": "text",
-        "content": "var channel = Channel.CreateBounded<Message>(new BoundedChannelOptions(100)"
-      },
-      {
-        "type": "text",
-        "content": "{"
-      },
-      {
-        "type": "text",
-        "content": "FullMode = BoundedChannelFullMode.Wait"
-      },
-      {
-        "type": "text",
-        "content": "});"
-      },
-      {
-        "type": "text",
-        "content": "// Producer"
-      },
-      {
-        "type": "text",
-        "content": "_ = Task.Run(async () =>"
-      },
-      {
-        "type": "text",
-        "content": "{"
-      },
-      {
-        "type": "text",
-        "content": "await foreach (var msg in source.ReadAllAsync())"
-      },
-      {
-        "type": "text",
-        "content": "await channel.Writer.WriteAsync(msg);"
-      },
-      {
-        "type": "text",
-        "content": "});"
-      },
-      {
-        "type": "text",
-        "content": "// Consumer"
-      },
-      {
-        "type": "text",
-        "content": "await foreach (var msg in channel.Reader.ReadAllAsync())"
-      },
-      {
-        "type": "text",
-        "content": "{"
-      },
-      {
-        "type": "text",
-        "content": "await ProcessAsync(msg);"
-      },
-      {
-        "type": "text",
-        "content": "}"
-      },
-      {
-        "type": "text",
-        "content": "`"
+        "type": "code",
+        "language": "csharp",
+        "code": "     var channel = Channel.CreateBounded<Message>(new BoundedChannelOptions(100)\n     {\n         FullMode = BoundedChannelFullMode.Wait\n     });\n\n     // Producer\n     _ = Task.Run(async () =>\n     {\n         await foreach (var msg in source.ReadAllAsync())\n             await channel.Writer.WriteAsync(msg);\n     });\n\n     // Consumer\n     await foreach (var msg in channel.Reader.ReadAllAsync())\n     {\n         await ProcessAsync(msg);\n     }",
+        "codeType": "neutral"
       },
       {
         "type": "list",
@@ -19458,40 +19264,10 @@ window.FLASH_CARD_DATA = [
         ]
       },
       {
-        "type": "text",
-        "content": "`csharp"
-      },
-      {
-        "type": "text",
-        "content": "private readonly SemaphoreSlim _mutex = new(1, 1);"
-      },
-      {
-        "type": "text",
-        "content": "public async Task UseSharedAsync()"
-      },
-      {
-        "type": "text",
-        "content": "{"
-      },
-      {
-        "type": "text",
-        "content": "await _mutex.WaitAsync();"
-      },
-      {
-        "type": "text",
-        "content": "try { await SharedAsyncOperation(); }"
-      },
-      {
-        "type": "text",
-        "content": "finally { _mutex.Release(); }"
-      },
-      {
-        "type": "text",
-        "content": "}"
-      },
-      {
-        "type": "text",
-        "content": "`"
+        "type": "code",
+        "language": "csharp",
+        "code": "     private readonly SemaphoreSlim _mutex = new(1, 1);\n\n     public async Task UseSharedAsync()\n     {\n         await _mutex.WaitAsync();\n         try { await SharedAsyncOperation(); }\n         finally { _mutex.Release(); }\n     }",
+        "codeType": "neutral"
       },
       {
         "type": "list",
@@ -19520,36 +19296,10 @@ window.FLASH_CARD_DATA = [
         ]
       },
       {
-        "type": "text",
-        "content": "`csharp"
-      },
-      {
-        "type": "text",
-        "content": "app.UseMiddleware<CorrelationMiddleware>();"
-      },
-      {
-        "type": "text",
-        "content": "app.UseMiddleware<ExceptionHandlingMiddleware>();"
-      },
-      {
-        "type": "text",
-        "content": "app.UseRouting();"
-      },
-      {
-        "type": "text",
-        "content": "app.UseAuthentication();"
-      },
-      {
-        "type": "text",
-        "content": "app.UseAuthorization();"
-      },
-      {
-        "type": "text",
-        "content": "app.MapControllers();"
-      },
-      {
-        "type": "text",
-        "content": "`"
+        "type": "code",
+        "language": "csharp",
+        "code": "     app.UseMiddleware<CorrelationMiddleware>();\n     app.UseMiddleware<ExceptionHandlingMiddleware>();\n     app.UseRouting();\n     app.UseAuthentication();\n     app.UseAuthorization();\n     app.MapControllers();",
+        "codeType": "neutral"
       },
       {
         "type": "list",
@@ -19568,40 +19318,10 @@ window.FLASH_CARD_DATA = [
         ]
       },
       {
-        "type": "text",
-        "content": "`csharp"
-      },
-      {
-        "type": "text",
-        "content": "services.AddApiVersioning(options =>"
-      },
-      {
-        "type": "text",
-        "content": "{"
-      },
-      {
-        "type": "text",
-        "content": "options.DefaultApiVersion = new ApiVersion(1, 0);"
-      },
-      {
-        "type": "text",
-        "content": "options.AssumeDefaultVersionWhenUnspecified = true;"
-      },
-      {
-        "type": "text",
-        "content": "options.ReportApiVersions = true;"
-      },
-      {
-        "type": "text",
-        "content": "});"
-      },
-      {
-        "type": "text",
-        "content": "services.AddVersionedApiExplorer();"
-      },
-      {
-        "type": "text",
-        "content": "`"
+        "type": "code",
+        "language": "csharp",
+        "code": "     services.AddApiVersioning(options =>\n     {\n         options.DefaultApiVersion = new ApiVersion(1, 0);\n         options.AssumeDefaultVersionWhenUnspecified = true;\n         options.ReportApiVersions = true;\n     });\n     services.AddVersionedApiExplorer();",
+        "codeType": "neutral"
       },
       {
         "type": "list",
@@ -19620,56 +19340,10 @@ window.FLASH_CARD_DATA = [
         ]
       },
       {
-        "type": "text",
-        "content": "`csharp"
-      },
-      {
-        "type": "text",
-        "content": "services.AddRateLimiter(options =>"
-      },
-      {
-        "type": "text",
-        "content": "{"
-      },
-      {
-        "type": "text",
-        "content": "options.AddFixedWindowLimiter(\"per-account\", opt =>"
-      },
-      {
-        "type": "text",
-        "content": "{"
-      },
-      {
-        "type": "text",
-        "content": "opt.Window = TimeSpan.FromMinutes(1);"
-      },
-      {
-        "type": "text",
-        "content": "opt.PermitLimit = 60;"
-      },
-      {
-        "type": "text",
-        "content": "opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;"
-      },
-      {
-        "type": "text",
-        "content": "opt.QueueLimit = 20;"
-      },
-      {
-        "type": "text",
-        "content": "});"
-      },
-      {
-        "type": "text",
-        "content": "});"
-      },
-      {
-        "type": "text",
-        "content": "app.UseRateLimiter();"
-      },
-      {
-        "type": "text",
-        "content": "`"
+        "type": "code",
+        "language": "csharp",
+        "code": "     services.AddRateLimiter(options =>\n     {\n         options.AddFixedWindowLimiter(\"per-account\", opt =>\n         {\n             opt.Window = TimeSpan.FromMinutes(1);\n             opt.PermitLimit = 60;\n             opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;\n             opt.QueueLimit = 20;\n         });\n     });\n\n     app.UseRateLimiter();",
+        "codeType": "neutral"
       },
       {
         "type": "list",
@@ -19687,24 +19361,10 @@ window.FLASH_CARD_DATA = [
         ]
       },
       {
-        "type": "text",
-        "content": "`csharp"
-      },
-      {
-        "type": "text",
-        "content": "context.TraceIdentifier = context.TraceIdentifier ?? Guid.NewGuid().ToString();"
-      },
-      {
-        "type": "text",
-        "content": "_logger.LogInformation(\"{CorrelationId} handling {Path}\", context.TraceIdentifier, context.Request.Path);"
-      },
-      {
-        "type": "text",
-        "content": "httpClient.DefaultRequestHeaders.Add(\"X-Correlation-ID\", context.TraceIdentifier);"
-      },
-      {
-        "type": "text",
-        "content": "`"
+        "type": "code",
+        "language": "csharp",
+        "code": "     context.TraceIdentifier = context.TraceIdentifier ?? Guid.NewGuid().ToString();\n     _logger.LogInformation(\"{CorrelationId} handling {Path}\", context.TraceIdentifier, context.Request.Path);\n     httpClient.DefaultRequestHeaders.Add(\"X-Correlation-ID\", context.TraceIdentifier);",
+        "codeType": "neutral"
       },
       {
         "type": "list",
@@ -19733,40 +19393,10 @@ window.FLASH_CARD_DATA = [
         ]
       },
       {
-        "type": "text",
-        "content": "`csharp"
-      },
-      {
-        "type": "text",
-        "content": "while (await mt5Stream.MoveNextAsync())"
-      },
-      {
-        "type": "text",
-        "content": "{"
-      },
-      {
-        "type": "text",
-        "content": "var normalized = Normalize(mt5Stream.Current);"
-      },
-      {
-        "type": "text",
-        "content": "await cache.SetAsync(normalized.Symbol, normalized.Price);"
-      },
-      {
-        "type": "text",
-        "content": "await hubContext.Clients.Group(normalized.Symbol)"
-      },
-      {
-        "type": "text",
-        "content": ".SendAsync(\"price\", normalized);"
-      },
-      {
-        "type": "text",
-        "content": "}"
-      },
-      {
-        "type": "text",
-        "content": "`"
+        "type": "code",
+        "language": "csharp",
+        "code": "     while (await mt5Stream.MoveNextAsync())\n     {\n         var normalized = Normalize(mt5Stream.Current);\n         await cache.SetAsync(normalized.Symbol, normalized.Price);\n         await hubContext.Clients.Group(normalized.Symbol)\n             .SendAsync(\"price\", normalized);\n     }",
+        "codeType": "neutral"
       },
       {
         "type": "list",
@@ -19785,48 +19415,10 @@ window.FLASH_CARD_DATA = [
         ]
       },
       {
-        "type": "text",
-        "content": "`csharp"
-      },
-      {
-        "type": "text",
-        "content": "public async Task<IActionResult> Submit(OrderRequest dto)"
-      },
-      {
-        "type": "text",
-        "content": "{"
-      },
-      {
-        "type": "text",
-        "content": "var order = await _validator.ValidateAsync(dto);"
-      },
-      {
-        "type": "text",
-        "content": "await _repository.SavePending(order);"
-      },
-      {
-        "type": "text",
-        "content": "var result = await _mtGateway.SendAsync(order);"
-      },
-      {
-        "type": "text",
-        "content": "await _repository.UpdateStatus(order.Id, result.Status);"
-      },
-      {
-        "type": "text",
-        "content": "await _bus.Publish(new OrderStatusChanged(order.Id, result.Status));"
-      },
-      {
-        "type": "text",
-        "content": "return Ok(result);"
-      },
-      {
-        "type": "text",
-        "content": "}"
-      },
-      {
-        "type": "text",
-        "content": "`"
+        "type": "code",
+        "language": "csharp",
+        "code": "     public async Task<IActionResult> Submit(OrderRequest dto)\n     {\n         var order = await _validator.ValidateAsync(dto);\n         await _repository.SavePending(order);\n         var result = await _mtGateway.SendAsync(order);\n         await _repository.UpdateStatus(order.Id, result.Status);\n         await _bus.Publish(new OrderStatusChanged(order.Id, result.Status));\n         return Ok(result);\n     }",
+        "codeType": "neutral"
       },
       {
         "type": "list",
@@ -19845,24 +19437,10 @@ window.FLASH_CARD_DATA = [
         ]
       },
       {
-        "type": "text",
-        "content": "`csharp"
-      },
-      {
-        "type": "text",
-        "content": "var meter = new Meter(\"Trading.Services\");"
-      },
-      {
-        "type": "text",
-        "content": "var orderLatency = meter.CreateHistogram<double>(\"order_latency_ms\");"
-      },
-      {
-        "type": "text",
-        "content": "orderLatency.Record(latencyMs, KeyValuePair.Create<string, object?>(\"service\", serviceName));"
-      },
-      {
-        "type": "text",
-        "content": "`"
+        "type": "code",
+        "language": "csharp",
+        "code": "     var meter = new Meter(\"Trading.Services\");\n     var orderLatency = meter.CreateHistogram<double>(\"order_latency_ms\");\n     orderLatency.Record(latencyMs, KeyValuePair.Create<string, object?>(\"service\", serviceName));",
+        "codeType": "neutral"
       },
       {
         "type": "list",
@@ -19881,24 +19459,10 @@ window.FLASH_CARD_DATA = [
         ]
       },
       {
-        "type": "text",
-        "content": "`csharp"
-      },
-      {
-        "type": "text",
-        "content": "var riskResponse = await _riskClient.EvaluateAsync(order, ct);"
-      },
-      {
-        "type": "text",
-        "content": "if (!riskResponse.Approved)"
-      },
-      {
-        "type": "text",
-        "content": "return OrderDecision.Rejected(riskResponse.Reason);"
-      },
-      {
-        "type": "text",
-        "content": "`"
+        "type": "code",
+        "language": "csharp",
+        "code": "     var riskResponse = await _riskClient.EvaluateAsync(order, ct);\n     if (!riskResponse.Approved)\n         return OrderDecision.Rejected(riskResponse.Reason);",
+        "codeType": "neutral"
       },
       {
         "type": "list",
@@ -19936,36 +19500,10 @@ window.FLASH_CARD_DATA = [
         ]
       },
       {
-        "type": "text",
-        "content": "`csharp"
-      },
-      {
-        "type": "text",
-        "content": "channel.BasicConsume(queue, autoAck: false, consumer);"
-      },
-      {
-        "type": "text",
-        "content": "consumer.Received += (sender, ea) =>"
-      },
-      {
-        "type": "text",
-        "content": "{"
-      },
-      {
-        "type": "text",
-        "content": "Handle(ea.Body);"
-      },
-      {
-        "type": "text",
-        "content": "channel.BasicAck(ea.DeliveryTag, multiple: false);"
-      },
-      {
-        "type": "text",
-        "content": "};"
-      },
-      {
-        "type": "text",
-        "content": "`"
+        "type": "code",
+        "language": "csharp",
+        "code": "     channel.BasicConsume(queue, autoAck: false, consumer);\n     consumer.Received += (sender, ea) =>\n     {\n         Handle(ea.Body);\n         channel.BasicAck(ea.DeliveryTag, multiple: false);\n     };",
+        "codeType": "neutral"
       },
       {
         "type": "list",
@@ -19983,68 +19521,10 @@ window.FLASH_CARD_DATA = [
         ]
       },
       {
-        "type": "text",
-        "content": "`csharp"
-      },
-      {
-        "type": "text",
-        "content": "public async Task Handle(FundAccount command)"
-      },
-      {
-        "type": "text",
-        "content": "{"
-      },
-      {
-        "type": "text",
-        "content": "var transferId = await _payments.DebitAsync(command.PaymentId);"
-      },
-      {
-        "type": "text",
-        "content": "try"
-      },
-      {
-        "type": "text",
-        "content": "{"
-      },
-      {
-        "type": "text",
-        "content": "await _ledger.CreditAsync(command.AccountId, command.Amount);"
-      },
-      {
-        "type": "text",
-        "content": "await _notifications.SendAsync(command.AccountId, \"Funding complete\");"
-      },
-      {
-        "type": "text",
-        "content": "}"
-      },
-      {
-        "type": "text",
-        "content": "catch"
-      },
-      {
-        "type": "text",
-        "content": "{"
-      },
-      {
-        "type": "text",
-        "content": "await _payments.RefundAsync(transferId);"
-      },
-      {
-        "type": "text",
-        "content": "throw;"
-      },
-      {
-        "type": "text",
-        "content": "}"
-      },
-      {
-        "type": "text",
-        "content": "}"
-      },
-      {
-        "type": "text",
-        "content": "`"
+        "type": "code",
+        "language": "csharp",
+        "code": "     public async Task Handle(FundAccount command)\n     {\n         var transferId = await _payments.DebitAsync(command.PaymentId);\n         try\n         {\n             await _ledger.CreditAsync(command.AccountId, command.Amount);\n             await _notifications.SendAsync(command.AccountId, \"Funding complete\");\n         }\n         catch\n         {\n             await _payments.RefundAsync(transferId);\n             throw;\n         }\n     }",
+        "codeType": "neutral"
       },
       {
         "type": "list",
@@ -20062,32 +19542,10 @@ window.FLASH_CARD_DATA = [
         ]
       },
       {
-        "type": "text",
-        "content": "`csharp"
-      },
-      {
-        "type": "text",
-        "content": "await using var tx = await db.Database.BeginTransactionAsync();"
-      },
-      {
-        "type": "text",
-        "content": "order.Status = OrderStatus.Accepted;"
-      },
-      {
-        "type": "text",
-        "content": "db.Outbox.Add(new OutboxMessage(order.Id, new OrderAccepted(order.Id)));"
-      },
-      {
-        "type": "text",
-        "content": "await db.SaveChangesAsync();"
-      },
-      {
-        "type": "text",
-        "content": "await tx.CommitAsync();"
-      },
-      {
-        "type": "text",
-        "content": "`"
+        "type": "code",
+        "language": "csharp",
+        "code": "     await using var tx = await db.Database.BeginTransactionAsync();\n     order.Status = OrderStatus.Accepted;\n     db.Outbox.Add(new OutboxMessage(order.Id, new OrderAccepted(order.Id)));\n     await db.SaveChangesAsync();\n     await tx.CommitAsync();",
+        "codeType": "neutral"
       },
       {
         "type": "list",
@@ -20130,12 +19588,18 @@ window.FLASH_CARD_DATA = [
         ]
       },
       {
+        "type": "code",
+        "language": "sql",
+        "code": "     CREATE NONCLUSTERED INDEX IX_Orders_Account_Status\n         ON Orders(AccountId, Status)\n         INCLUDE (CreatedAt, Amount);",
+        "codeType": "neutral"
+      },
+      {
         "type": "list",
         "items": [
           "Clustered vs non-clustered indexes",
           "Clustered: defines physical order, one per table; great for range scans.",
           "Non-clustered: separate structure pointing to data; can include columns.",
-          "Covering index example: `sql CREATE NONCLUSTERED INDEX IX_Orders_Account_Status ON Orders(AccountId, Status) INCLUDE (CreatedAt, Amount); `"
+          "Covering index example:"
         ]
       },
       {
@@ -20181,24 +19645,10 @@ window.FLASH_CARD_DATA = [
         ]
       },
       {
-        "type": "text",
-        "content": "`csharp"
-      },
-      {
-        "type": "text",
-        "content": "using var session = new Mt5Gateway(credentials);"
-      },
-      {
-        "type": "text",
-        "content": "await session.ConnectAsync();"
-      },
-      {
-        "type": "text",
-        "content": "var ticket = await session.SendOrderAsync(request);"
-      },
-      {
-        "type": "text",
-        "content": "`"
+        "type": "code",
+        "language": "csharp",
+        "code": "     using var session = new Mt5Gateway(credentials);\n     await session.ConnectAsync();\n     var ticket = await session.SendOrderAsync(request);",
+        "codeType": "neutral"
       },
       {
         "type": "list",
