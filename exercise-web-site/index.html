@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="C# Interview Prep Flash Cards - Auto-rotating questions, answers, and code examples for mastering senior .NET interviews.">
+  <meta name="keywords" content="C# interview prep, .NET interview questions, flash cards, coding practice, SOLID principles, design patterns">
+  <meta name="author" content="C# Interview Prep">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="C# Interview Prep Flash Cards">
+  <meta property="og:description" content="Master C# and .NET concepts with auto-rotating flash cards featuring questions, answers, and code examples.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="quotes-preview.png">
+  <meta property="og:image:alt" content="Preview of C# flash cards with code examples">
+  <meta property="og:site_name" content="C# Interview Prep Flash Cards">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="C# Interview Prep Flash Cards">
+  <meta name="twitter:description" content="Master C# and .NET concepts with auto-rotating flash cards.">
+  <meta name="twitter:image" content="quotes-preview.png">
+  <meta name="twitter:image:alt" content="Preview of C# flash cards with code examples">
+  <meta name="theme-color" content="#0f172a">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <title>C# Interview Prep Flash Cards</title>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "C# Interview Prep Flash Cards",
+    "description": "Interactive flash cards for C# and .NET interview preparation with auto-rotating Q&A and code examples.",
+    "inLanguage": "en",
+    "applicationCategory": "EducationalApplication"
+  }
+  </script>
+</head>
+
+<body>
+  <main class="flash-card-container" role="main" aria-live="polite" aria-atomic="true">
+    <div class="card-type-badge" id="cardTypeBadge"></div>
+    <p class="card-question" id="cardQuestion">Loading flash cards...</p>
+    <div class="card-answer" id="cardAnswer"></div>
+    <p class="card-meta" id="cardMeta"></p>
+  </main>
+
+  <script>
+    const isServiceWorkerAllowed =
+      ('isSecureContext' in window && window.isSecureContext) ||
+      window.location.protocol === 'https:' ||
+      window.location.hostname === 'localhost';
+
+    if ('serviceWorker' in navigator && isServiceWorkerAllowed) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then((registration) => {
+            console.log('Service Worker registered:', registration);
+          })
+          .catch((error) => {
+            console.error('Service Worker registration failed:', error);
+          });
+      });
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+  <script src="flash-card-data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

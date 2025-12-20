@@ -1,0 +1,26 @@
+{
+  "name": "C# Interview Prep Flash Cards",
+  "short_name": "C# Cards",
+  "description": "Auto-rotating flash cards with senior C#/.NET interview questions, answers, and code examples.",
+  "lang": "en",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0f1014",
+  "theme_color": "#121417",
+  "categories": ["education", "productivity"],
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
