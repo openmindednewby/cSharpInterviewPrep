@@ -15,4 +15,8 @@ WORKDIR /webgl
 # the folder with the build results
 COPY . .
 
+# Include SEO + PWA metadata alongside the static build
+COPY robots.txt ./robots.txt
+COPY sitemap.xml ./sitemap.xml
+COPY manifest.webmanifest ./manifest.webmanifest
 
