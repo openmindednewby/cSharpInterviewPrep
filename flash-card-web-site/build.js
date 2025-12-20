@@ -155,6 +155,137 @@ function extractQA(markdown, sourcePath) {
 }
 
 /**
+ * Extract detailed sections (h3 headers with content)
+ */
+function extractSections(markdown, sourcePath) {
+  const sections = [];
+  const lines = markdown.split(/\r?\n/);
+  let currentSection = null;
+  let sectionContent = [];
+  let inCodeBlock = false;
+  let codeLanguage = '';
+  let codeLines = [];
+  let inList = false;
+  let listItems = [];
+
+  const sourceFile = path.relative(repoRoot, sourcePath).replace(/\\/g, '/');
+  const category = sourceFile.split('/')[0];
+  const topic = sourceFile.split('/')[1] || 'General';
+
+  const saveSection = () => {
+    if (currentSection && sectionContent.length > 0) {
+      sections.push({
+        question: currentSection,
+        answer: sectionContent,
+        category,
+        topic,
+        source: sourceFile,
+        isSection: true
+      });
+    }
+    currentSection = null;
+    sectionContent = [];
+  };
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    // Detect h3 headers (###)
+    const h3Match = line.match(/^###\s+(.+)/);
+    if (h3Match) {
+      // Save previous section
+      saveSection();
+
+      // Start new section
+      currentSection = h3Match[1].replace(/\*\*/g, '').trim();
+      sectionContent = [];
+      inList = false;
+      continue;
+    }
+
+    // If we have a current section, collect content
+    if (currentSection) {
+      // Handle code blocks
+      const codeFenceMatch = line.match(/^```(\w+)?/);
+      if (codeFenceMatch) {
+        if (!inCodeBlock) {
+          inCodeBlock = true;
+          codeLanguage = codeFenceMatch[1] || 'csharp';
+          codeLines = [];
+        } else {
+          // End of code block
+          if (codeLines.length > 0) {
+            sectionContent.push({
+              type: 'code',
+              language: codeLanguage,
+              code: codeLines.join('\n'),
+              codeType: 'neutral'
+            });
+          }
+          inCodeBlock = false;
+          codeLines = [];
+        }
+        continue;
+      }
+
+      if (inCodeBlock) {
+        codeLines.push(line);
+        continue;
+      }
+
+      // Handle lists
+      const listMatch = line.match(/^\s*[-*]\s+(.+)/);
+      if (listMatch) {
+        if (!inList) {
+          inList = true;
+          listItems = [];
+        }
+        listItems.push(listMatch[1].trim());
+        continue;
+      } else if (inList && line.trim() === '') {
+        // End of list
+        if (listItems.length > 0) {
+          sectionContent.push({
+            type: 'list',
+            items: [...listItems]
+          });
+        }
+        inList = false;
+        listItems = [];
+        continue;
+      } else if (inList && line.trim()) {
+        // Continuation of list item
+        if (listItems.length > 0) {
+          listItems[listItems.length - 1] += ' ' + line.trim();
+        }
+        continue;
+      }
+
+      // Handle regular text paragraphs
+      if (line.trim() && !line.startsWith('#') && !line.match(/^---+$/)) {
+        // Skip if it's a separator or another header type
+        if (!line.startsWith('##') && !line.startsWith('**Q:')) {
+          sectionContent.push({
+            type: 'text',
+            content: line.trim()
+          });
+        }
+      }
+
+      // Stop section at horizontal rule or h2 header
+      if (line.match(/^---+$/) || line.match(/^##\s+/)) {
+        saveSection();
+      }
+    }
+  }
+
+  // Save final section
+  saveSection();
+
+  return sections;
+}
+
+/**
  * Extract key concepts and examples from markdown
  */
 function extractConcepts(markdown, sourcePath) {
@@ -274,6 +405,7 @@ async function main() {
   const allCards = [];
   let qaCount = 0;
   let conceptCount = 0;
+  let sectionCount = 0;
 
   for (const file of allFiles) {
     const content = await fs.readFile(file.sourcePath, 'utf-8');
@@ -282,6 +414,11 @@ async function main() {
     const qaCards = extractQA(content, file.sourcePath);
     qaCount += qaCards.length;
     allCards.push(...qaCards);
+
+    // Extract detailed sections (h3 headers with content)
+    const sectionCards = extractSections(content, file.sourcePath);
+    sectionCount += sectionCards.length;
+    allCards.push(...sectionCards);
 
     // Extract concept cards with code examples
     const conceptCards = extractConcepts(content, file.sourcePath);
@@ -297,7 +434,7 @@ async function main() {
   // Generate JavaScript file
   const output = `// Auto-generated flash card data from notes/ and practice/ folders
 // Generated on: ${new Date().toISOString()}
-// Total cards: ${allCards.length} (${qaCount} Q&A, ${conceptCount} concepts)
+// Total cards: ${allCards.length} (${qaCount} Q&A, ${sectionCount} sections, ${conceptCount} concepts)
 
 window.FLASH_CARD_DATA = ${JSON.stringify(allCards, null, 2)};
 `;
@@ -306,6 +443,7 @@ window.FLASH_CARD_DATA = ${JSON.stringify(allCards, null, 2)};
 
   console.log(`\n✅ Generated ${allCards.length} flash cards:`);
   console.log(`   - ${qaCount} Q&A pairs`);
+  console.log(`   - ${sectionCount} detailed sections`);
   console.log(`   - ${conceptCount} concept/code examples`);
   console.log(`\n📝 Output: ${path.relative(repoRoot, outputFile)}`);
 

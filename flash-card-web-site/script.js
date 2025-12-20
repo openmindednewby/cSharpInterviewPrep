@@ -101,6 +101,9 @@ function setCardContent(card) {
   if (card.isConcept) {
     cardTypeBadgeEl.textContent = 'Concept';
     cardTypeBadgeEl.className = 'card-type-badge concept';
+  } else if (card.isSection) {
+    cardTypeBadgeEl.textContent = 'Section';
+    cardTypeBadgeEl.className = 'card-type-badge section';
   } else {
     cardTypeBadgeEl.textContent = 'Q&A';
     cardTypeBadgeEl.className = 'card-type-badge qa';
@@ -116,6 +119,15 @@ function setCardContent(card) {
         p.className = 'answer-text';
         p.textContent = item.content;
         cardAnswerEl.appendChild(p);
+      } else if (item.type === 'list') {
+        const ul = document.createElement('ul');
+        ul.className = 'answer-list';
+        item.items.forEach(listItem => {
+          const li = document.createElement('li');
+          li.textContent = listItem;
+          ul.appendChild(li);
+        });
+        cardAnswerEl.appendChild(ul);
       } else if (item.type === 'code') {
         const codeWrapper = document.createElement('div');
         codeWrapper.className = `code-wrapper ${item.codeType || 'neutral'}`;
