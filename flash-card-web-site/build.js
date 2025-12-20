@@ -17,6 +17,18 @@ const contentSources = [
 ];
 
 /**
+ * Clean markdown formatting from text
+ */
+function cleanMarkdown(text) {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, '$1')  // Remove bold **text**
+    .replace(/\*(.+?)\*/g, '$1')      // Remove italic *text*
+    .replace(/`(.+?)`/g, '$1')        // Remove inline code `text`
+    .replace(/\[(.+?)\]\(.+?\)/g, '$1') // Remove links [text](url)
+    .trim();
+}
+
+/**
  * Extract Q&A pairs from markdown sections
  */
 function extractQA(markdown, sourcePath) {
@@ -91,7 +103,7 @@ function extractQA(markdown, sourcePath) {
         });
       }
 
-      currentQuestion = questionMatch[1].trim();
+      currentQuestion = cleanMarkdown(questionMatch[1]);
       currentAnswer = [];
       continue;
     }
@@ -101,7 +113,7 @@ function extractQA(markdown, sourcePath) {
     if (answerMatch && currentQuestion) {
       currentAnswer.push({
         type: 'text',
-        content: answerMatch[1].trim()
+        content: cleanMarkdown(answerMatch[1])
       });
       continue;
     }
@@ -117,7 +129,7 @@ function extractQA(markdown, sourcePath) {
       if (currentAnswer.length > 0) {
         const lastItem = currentAnswer[currentAnswer.length - 1];
         if (lastItem.type === 'text') {
-          lastItem.content += ' ' + line.trim();
+          lastItem.content += ' ' + cleanMarkdown(line);
         }
       }
     }
@@ -197,7 +209,7 @@ function extractSections(markdown, sourcePath) {
       saveSection();
 
       // Start new section
-      currentSection = h3Match[1].replace(/\*\*/g, '').trim();
+      currentSection = cleanMarkdown(h3Match[1]);
       sectionContent = [];
       inList = false;
       continue;
@@ -240,7 +252,7 @@ function extractSections(markdown, sourcePath) {
           inList = true;
           listItems = [];
         }
-        listItems.push(listMatch[1].trim());
+        listItems.push(cleanMarkdown(listMatch[1]));
         continue;
       } else if (inList && line.trim() === '') {
         // End of list
@@ -256,7 +268,7 @@ function extractSections(markdown, sourcePath) {
       } else if (inList && line.trim()) {
         // Continuation of list item
         if (listItems.length > 0) {
-          listItems[listItems.length - 1] += ' ' + line.trim();
+          listItems[listItems.length - 1] += ' ' + cleanMarkdown(line);
         }
         continue;
       }
@@ -267,7 +279,7 @@ function extractSections(markdown, sourcePath) {
         if (!line.startsWith('##') && !line.startsWith('**Q:')) {
           sectionContent.push({
             type: 'text',
-            content: line.trim()
+            content: cleanMarkdown(line)
           });
         }
       }
@@ -360,7 +372,7 @@ function extractConcepts(markdown, sourcePath) {
     // Capture section headers as potential concept titles
     const headerMatch = line.match(/^##\s+(.+)/);
     if (headerMatch) {
-      conceptTitle = headerMatch[1].replace(/\*\*/g, '').trim();
+      conceptTitle = cleanMarkdown(headerMatch[1]);
     }
   }
 
