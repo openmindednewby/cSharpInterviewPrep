@@ -1,5 +1,5 @@
 // Auto-generated practice Q&A data from practice/ folder
-// Generated on: 2025-12-21T15:44:35.650Z
+// Generated on: 2025-12-21T16:49:57.971Z
 // Total cards: 312 Q&A
 
 window.PRACTICE_DATA = [
@@ -3455,12 +3455,24 @@ window.PRACTICE_DATA = [
     "answer": [
       {
         "type": "text",
-        "content": "Use structs for small, immutable, short-lived data without inheritance. Use classes for identity, polymorphism, or large mutable state. Structs reduce GC pressure by living inline and being collected with stack frames."
+        "content": "Use structs for small, immutable, short-lived data without inheritance. Use classes for identity, polymorphism, or large mutable state. Structs reduce GC pressure by living inline and being collected with stack frames. Its data is stored on the stack (for locals), or inline inside another object (as part of that object’s memory). This means"
+      },
+      {
+        "type": "list",
+        "items": [
+          "No separate heap allocation",
+          "No object header",
+          "No pointer indirection"
+        ]
+      },
+      {
+        "type": "text",
+        "content": "Stack memory is automatically reclaimed when a method returns. No garbage collection is needed for stack-allocated data. This is much cheaper than heap allocation + GC."
       },
       {
         "type": "code",
         "language": "csharp",
-        "code": "public readonly struct Money\n{\n    public Money(decimal amount, string currency)\n    {\n        Amount = amount;\n        Currency = currency;\n    }\n\n    public decimal Amount { get; }\n    public string Currency { get; }\n}",
+        "code": "public readonly struct Money\n{\n    public Money(decimal amount, string currency)\n    {\n        Amount = amount;\n        Currency = currency;\n    }\n\n    public decimal Amount { get; }\n    public string Currency { get; }\n}\n\nvoid Calculate()\n{\n    Money price = new Money(100, \"USD\");\n    // price is on the stack\n} // stack frame is popped → memory reclaimed immediately",
         "codeType": "neutral"
       }
     ],

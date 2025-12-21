@@ -217,7 +217,9 @@ var d = c; // reference copy
 d.Name = &quot;Zoe&quot;;
 // c.Name is now &quot;Zoe&quot;</code></pre>
 <p><strong>Q: When should you choose a struct over a class?</strong></p>
-<p>A: Use structs for small, immutable, short-lived data without inheritance. Use classes for identity, polymorphism, or large mutable state. Structs reduce GC pressure by living inline and being collected with stack frames.</p>
+<p>A: Use structs for small, immutable, short-lived data without inheritance. Use classes for identity, polymorphism, or large mutable state. Structs reduce GC pressure by living inline and being collected with stack frames. Its data is stored on the stack (for locals), or inline inside another object (as part of that object’s memory). This means</p>
+<ul><li>No separate heap allocation</li><li>No object header</li><li>No pointer indirection</li></ul>
+<p>Stack memory is automatically reclaimed when a method returns. No garbage collection is needed for stack-allocated data. This is much cheaper than heap allocation + GC.</p>
 <pre class="language-csharp"><code class="language-csharp">public readonly struct Money
 {
     public Money(decimal amount, string currency)
@@ -228,7 +230,13 @@ d.Name = &quot;Zoe&quot;;
 
     public decimal Amount { get; }
     public string Currency { get; }
-}</code></pre>
+}
+
+void Calculate()
+{
+    Money price = new Money(100, &quot;USD&quot;);
+    // price is on the stack
+} // stack frame is popped → memory reclaimed immediately</code></pre>
 <p><strong>Q: Demonstrate how to reduce copying with <code>in</code> parameters.</strong></p>
 <p>A: Use <code>in</code> for large structs to avoid defensive copies. A defensive copy is an automatic copy the runtime or compiler makes to protect data from being modified.</p>
 <pre class="language-csharp"><code class="language-csharp">public static decimal CalculateTax(in Money price, decimal rate)

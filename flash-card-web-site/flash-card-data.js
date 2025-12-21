@@ -1,5 +1,5 @@
 // Auto-generated flash card data from notes/ and practice/ folders
-// Generated on: 2025-12-21T15:44:34.983Z
+// Generated on: 2025-12-21T16:49:57.214Z
 // Total cards: 2124 (824 Q&A, 1238 sections, 62 concepts)
 
 window.FLASH_CARD_DATA = [
@@ -14726,7 +14726,13 @@ window.FLASH_CARD_DATA = [
     "answer": [
       {
         "type": "text",
-        "content": "When the data is small (≤16 bytes), immutable, frequently created, and benefits from value semantics. Structs reduce GC pressure by living inline and being collected with stack frames."
+        "content": "When the data is small (≤16 bytes), immutable, frequently created, and benefits from value semantics. Structs reduce GC pressure by living inline and being collected with stack frames. Its data is stored on the stack (for locals), or inline inside another object (as part of that object’s memory). This means - No separate heap allocation - No object header - No pointer indirection Stack memory is automatically reclaimed when a method returns. No garbage collection is needed for stack-allocated data. This is much cheaper than heap allocation + GC."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public readonly struct Money\n{\n    public Money(decimal amount, string currency)\n    {\n        Amount = amount;\n        Currency = currency;\n    }\n\n    public decimal Amount { get; }\n    public string Currency { get; }\n}\n\nvoid Calculate()\n{\n    Money price = new Money(100, \"USD\");\n    // price is on the stack\n} // stack frame is popped → memory reclaimed immediately",
+        "codeType": "neutral"
       }
     ],
     "category": "notes",
@@ -15178,7 +15184,25 @@ window.FLASH_CARD_DATA = [
     "answer": [
       {
         "type": "text",
-        "content": "A: When the data is small (≤16 bytes), immutable, frequently created, and benefits from value semantics. Structs reduce GC pressure by living inline and being collected with stack frames."
+        "content": "A: When the data is small (≤16 bytes), immutable, frequently created, and benefits from value semantics. Structs reduce GC pressure by living inline and being collected with stack frames. Its data is stored on the stack (for locals), or inline inside another object (as part of that object’s memory). This means"
+      },
+      {
+        "type": "list",
+        "items": [
+          "No separate heap allocation",
+          "No object header",
+          "No pointer indirection"
+        ]
+      },
+      {
+        "type": "text",
+        "content": "Stack memory is automatically reclaimed when a method returns. No garbage collection is needed for stack-allocated data. This is much cheaper than heap allocation + GC."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public readonly struct Money\n{\n    public Money(decimal amount, string currency)\n    {\n        Amount = amount;\n        Currency = currency;\n    }\n\n    public decimal Amount { get; }\n    public string Currency { get; }\n}\n\nvoid Calculate()\n{\n    Money price = new Money(100, \"USD\");\n    // price is on the stack\n} // stack frame is popped → memory reclaimed immediately",
+        "codeType": "neutral"
       },
       {
         "type": "text",
@@ -44502,12 +44526,12 @@ window.FLASH_CARD_DATA = [
     "answer": [
       {
         "type": "text",
-        "content": "Use structs for small, immutable, short-lived data without inheritance. Use classes for identity, polymorphism, or large mutable state. Structs reduce GC pressure by living inline and being collected with stack frames."
+        "content": "Use structs for small, immutable, short-lived data without inheritance. Use classes for identity, polymorphism, or large mutable state. Structs reduce GC pressure by living inline and being collected with stack frames. Its data is stored on the stack (for locals), or inline inside another object (as part of that object’s memory). This means - No separate heap allocation - No object header - No pointer indirection Stack memory is automatically reclaimed when a method returns. No garbage collection is needed for stack-allocated data. This is much cheaper than heap allocation + GC."
       },
       {
         "type": "code",
         "language": "csharp",
-        "code": "public readonly struct Money\n{\n    public Money(decimal amount, string currency)\n    {\n        Amount = amount;\n        Currency = currency;\n    }\n\n    public decimal Amount { get; }\n    public string Currency { get; }\n}",
+        "code": "public readonly struct Money\n{\n    public Money(decimal amount, string currency)\n    {\n        Amount = amount;\n        Currency = currency;\n    }\n\n    public decimal Amount { get; }\n    public string Currency { get; }\n}\n\nvoid Calculate()\n{\n    Money price = new Money(100, \"USD\");\n    // price is on the stack\n} // stack frame is popped → memory reclaimed immediately",
         "codeType": "neutral"
       }
     ],
@@ -44829,12 +44853,24 @@ window.FLASH_CARD_DATA = [
       },
       {
         "type": "text",
-        "content": "A: Use structs for small, immutable, short-lived data without inheritance. Use classes for identity, polymorphism, or large mutable state. Structs reduce GC pressure by living inline and being collected with stack frames."
+        "content": "A: Use structs for small, immutable, short-lived data without inheritance. Use classes for identity, polymorphism, or large mutable state. Structs reduce GC pressure by living inline and being collected with stack frames. Its data is stored on the stack (for locals), or inline inside another object (as part of that object’s memory). This means"
+      },
+      {
+        "type": "list",
+        "items": [
+          "No separate heap allocation",
+          "No object header",
+          "No pointer indirection"
+        ]
+      },
+      {
+        "type": "text",
+        "content": "Stack memory is automatically reclaimed when a method returns. No garbage collection is needed for stack-allocated data. This is much cheaper than heap allocation + GC."
       },
       {
         "type": "code",
         "language": "csharp",
-        "code": "public readonly struct Money\n{\n    public Money(decimal amount, string currency)\n    {\n        Amount = amount;\n        Currency = currency;\n    }\n\n    public decimal Amount { get; }\n    public string Currency { get; }\n}",
+        "code": "public readonly struct Money\n{\n    public Money(decimal amount, string currency)\n    {\n        Amount = amount;\n        Currency = currency;\n    }\n\n    public decimal Amount { get; }\n    public string Currency { get; }\n}\n\nvoid Calculate()\n{\n    Money price = new Money(100, \"USD\");\n    // price is on the stack\n} // stack frame is popped → memory reclaimed immediately",
         "codeType": "neutral"
       },
       {

@@ -24,7 +24,13 @@ d.Name = "Zoe";
 
 **Q: When should you choose a struct over a class?**
 
-A: Use structs for small, immutable, short-lived data without inheritance. Use classes for identity, polymorphism, or large mutable state. Structs reduce GC pressure by living inline and being collected with stack frames.
+A: Use structs for small, immutable, short-lived data without inheritance. Use classes for identity, polymorphism, or large mutable state. Structs reduce GC pressure by living inline and being collected with stack frames. Its data is stored on the stack (for locals), or inline inside another object (as part of that object’s memory). This means 
+
+- No separate heap allocation
+- No object header
+- No pointer indirection
+
+Stack memory is automatically reclaimed when a method returns. No garbage collection is needed for stack-allocated data. This is much cheaper than heap allocation + GC.
 
 ```csharp
 public readonly struct Money
@@ -38,6 +44,12 @@ public readonly struct Money
     public decimal Amount { get; }
     public string Currency { get; }
 }
+
+void Calculate()
+{
+    Money price = new Money(100, "USD");
+    // price is on the stack
+} // stack frame is popped → memory reclaimed immediately
 ```
 
 **Q: Demonstrate how to reduce copying with `in` parameters.**

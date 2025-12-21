@@ -310,7 +310,26 @@ Heap:
 <p>---</p>
 <h2 id="questions-answers">Questions & Answers</h2>
 <p><strong>Q: When should you choose a struct over a class?</strong></p>
-<p>A: When the data is small (≤16 bytes), immutable, frequently created, and benefits from value semantics. Structs reduce GC pressure by living inline and being collected with stack frames.</p>
+<p>A: When the data is small (≤16 bytes), immutable, frequently created, and benefits from value semantics. Structs reduce GC pressure by living inline and being collected with stack frames. Its data is stored on the stack (for locals), or inline inside another object (as part of that object’s memory). This means</p>
+<ul><li>No separate heap allocation</li><li>No object header</li><li>No pointer indirection</li></ul>
+<p>Stack memory is automatically reclaimed when a method returns. No garbage collection is needed for stack-allocated data. This is much cheaper than heap allocation + GC.</p>
+<pre class="language-csharp"><code class="language-csharp">public readonly struct Money
+{
+    public Money(decimal amount, string currency)
+    {
+        Amount = amount;
+        Currency = currency;
+    }
+
+    public decimal Amount { get; }
+    public string Currency { get; }
+}
+
+void Calculate()
+{
+    Money price = new Money(100, &quot;USD&quot;);
+    // price is on the stack
+} // stack frame is popped → memory reclaimed immediately</code></pre>
 <p><strong>Q: What pitfalls occur when structs are too large?</strong></p>
 <p>A: Copies become expensive, especially when passing by value. This can negate performance gains and increase stack usage. Use <code>in</code>/<code>ref</code> parameters or switch to classes if the struct grows.</p>
 <p><strong>Q: How does boxing affect struct performance?</strong></p>
