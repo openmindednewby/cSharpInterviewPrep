@@ -1,5 +1,5 @@
 // Auto-generated flash card data from notes/ and practice/ folders
-// Generated on: 2025-12-21T18:52:45.419Z
+// Generated on: 2025-12-21T19:42:17.479Z
 // Total cards: 2226 (845 Q&A, 1316 sections, 65 concepts)
 
 window.FLASH_CARD_DATA = [

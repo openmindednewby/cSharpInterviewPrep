@@ -246,6 +246,10 @@ body {
   text-align: left;
 }
 
+.card-question.is-hidden {
+  display: none;
+}
+
 .card-answer {
   display: flex;
   flex-direction: column;
@@ -518,11 +522,26 @@ pre[class*="language-"] {
   font-size: 0.9rem;
 }
 
+.answer-code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.answer-code-header label {
+  margin: 0;
+}
+
 .code-preview {
   background: var(--code-bg);
   border: 1px solid var(--code-border);
   border-radius: 0.75rem;
   overflow: hidden;
+}
+
+.code-preview.is-hidden {
+  display: none;
 }
 
 .preview-label {

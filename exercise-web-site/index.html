@@ -87,6 +87,9 @@
                   <path d="M7 14l5-5 5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>
               </button>
+              <button class="btn ghost small" id="toggleQuestionBtn" type="button" aria-pressed="false">
+                Hide Question
+              </button>
               <button class="btn ghost small" id="toggleCodeInputBtn" type="button" aria-pressed="false">
                 Add C# Code
               </button>
@@ -95,9 +98,14 @@
           <div class="answer-body">
             <textarea id="answerInput" rows="5" placeholder="Type your response here before checking..."></textarea>
             <div class="answer-code is-hidden" id="answerCodeBlock">
-              <label for="answerCodeInput">C# code (optional)</label>
+              <div class="answer-code-header">
+                <label for="answerCodeInput">C# code (optional)</label>
+                <button class="btn ghost small" id="toggleCodePreviewBtn" type="button" aria-pressed="false">
+                  Hide Preview
+                </button>
+              </div>
               <textarea id="answerCodeInput" rows="6" placeholder="Paste your C# code here..."></textarea>
-              <div class="code-preview">
+              <div class="code-preview" id="answerCodePreviewBlock">
                 <p class="preview-label">C# preview</p>
                 <pre class="inline-preview"><code class="language-csharp" id="answerCodePreview"></code></pre>
               </div>

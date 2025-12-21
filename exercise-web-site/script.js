@@ -8,10 +8,13 @@ const answerFooterEl = document.getElementById('answerFooter');
 const answerCheckEl = document.getElementById('answerCheck');
 const answerInputEl = document.getElementById('answerInput');
 const toggleAnswerSectionBtn = document.getElementById('toggleAnswerSectionBtn');
+const toggleQuestionBtn = document.getElementById('toggleQuestionBtn');
 const toggleCodeInputBtn = document.getElementById('toggleCodeInputBtn');
 const answerCodeBlockEl = document.getElementById('answerCodeBlock');
 const answerCodeInputEl = document.getElementById('answerCodeInput');
+const answerCodePreviewBlockEl = document.getElementById('answerCodePreviewBlock');
 const answerCodePreviewEl = document.getElementById('answerCodePreview');
+const toggleCodePreviewBtn = document.getElementById('toggleCodePreviewBtn');
 const checkResultEl = document.getElementById('checkResult');
 const checkAnswerBtn = document.getElementById('checkAnswerBtn');
 const revealAnswerBtn = document.getElementById('revealAnswerBtn');
@@ -64,8 +67,14 @@ function wireActions() {
   if (toggleCodeInputBtn && answerCodeBlockEl) {
     toggleCodeInputBtn.addEventListener('click', toggleCodeInput);
   }
+  if (toggleQuestionBtn) {
+    toggleQuestionBtn.addEventListener('click', toggleQuestionVisibility);
+  }
   if (answerCodeInputEl && answerCodePreviewEl) {
     answerCodeInputEl.addEventListener('input', updateAnswerCodePreview);
+  }
+  if (toggleCodePreviewBtn && answerCodePreviewBlockEl) {
+    toggleCodePreviewBtn.addEventListener('click', toggleCodePreview);
   }
   if (toggleAnswerSectionBtn && answerCheckEl) {
     toggleAnswerSectionBtn.addEventListener('click', toggleAnswerSection);
@@ -228,6 +237,7 @@ function setCardContent(card) {
   hideAnswer();
   clearCheckResult();
   answerInputEl.value = '';
+  resetQuestionVisibility();
   resetAnswerCodeSection();
   resetAnswerSection();
   updateScrollableLayout();
@@ -486,6 +496,28 @@ function toggleCodeInput() {
   updateScrollableLayout();
 }
 
+function toggleQuestionVisibility() {
+  if (!cardQuestionEl || !toggleQuestionBtn) {
+    return;
+  }
+
+  const isHidden = cardQuestionEl.classList.toggle('is-hidden');
+  toggleQuestionBtn.textContent = isHidden ? 'Show Question' : 'Hide Question';
+  toggleQuestionBtn.setAttribute('aria-pressed', String(!isHidden));
+  updateScrollableLayout();
+}
+
+function toggleCodePreview() {
+  if (!answerCodePreviewBlockEl || !toggleCodePreviewBtn) {
+    return;
+  }
+
+  const isHidden = answerCodePreviewBlockEl.classList.toggle('is-hidden');
+  toggleCodePreviewBtn.textContent = isHidden ? 'Show Preview' : 'Hide Preview';
+  toggleCodePreviewBtn.setAttribute('aria-pressed', String(!isHidden));
+  updateScrollableLayout();
+}
+
 function updateAnswerCodePreview() {
   if (!answerCodePreviewEl || !answerCodeInputEl) {
     return;
@@ -505,12 +537,19 @@ function resetAnswerCodeSection() {
   if (answerCodePreviewEl) {
     answerCodePreviewEl.textContent = '';
   }
+  if (answerCodePreviewBlockEl) {
+    answerCodePreviewBlockEl.classList.remove('is-hidden');
+  }
   if (answerCodeBlockEl) {
     answerCodeBlockEl.classList.add('is-hidden');
   }
   if (toggleCodeInputBtn) {
     toggleCodeInputBtn.textContent = 'Add C# Code';
     toggleCodeInputBtn.setAttribute('aria-pressed', 'false');
+  }
+  if (toggleCodePreviewBtn) {
+    toggleCodePreviewBtn.textContent = 'Hide Preview';
+    toggleCodePreviewBtn.setAttribute('aria-pressed', 'false');
   }
 }
 
@@ -527,6 +566,16 @@ function toggleAnswerSection() {
   );
 
   updateScrollableLayout();
+}
+
+function resetQuestionVisibility() {
+  if (!cardQuestionEl || !toggleQuestionBtn) {
+    return;
+  }
+
+  cardQuestionEl.classList.remove('is-hidden');
+  toggleQuestionBtn.textContent = 'Hide Question';
+  toggleQuestionBtn.setAttribute('aria-pressed', 'false');
 }
 
 function resetAnswerSection() {
