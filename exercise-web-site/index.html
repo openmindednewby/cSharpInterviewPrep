@@ -77,30 +77,32 @@
       <h2 class="card-question" id="cardQuestion">Loading practice questions...</h2>
       <div class="card-answer is-hidden" id="cardAnswer"></div>
 
-      <section class="answer-check">
-        <div class="answer-header">
-          <label for="answerInput">Your answer</label>
-          <button class="btn ghost small" id="toggleCodeInputBtn" type="button" aria-pressed="false">
-            Add C# Code
-          </button>
-        </div>
-        <textarea id="answerInput" rows="5" placeholder="Type your response here before checking..."></textarea>
-        <div class="answer-code is-hidden" id="answerCodeBlock">
-          <label for="answerCodeInput">C# code (optional)</label>
-          <textarea id="answerCodeInput" rows="6" placeholder="Paste your C# code here..."></textarea>
-          <div class="code-preview">
-            <p class="preview-label">C# preview</p>
-            <pre class="inline-preview"><code class="language-csharp" id="answerCodePreview"></code></pre>
+      <div class="answer-footer" id="answerFooter">
+        <section class="answer-check">
+          <div class="answer-header">
+            <label for="answerInput">Your answer</label>
+            <button class="btn ghost small" id="toggleCodeInputBtn" type="button" aria-pressed="false">
+              Add C# Code
+            </button>
           </div>
-        </div>
-        <div class="check-result" id="checkResult" data-tone="neutral"></div>
-      </section>
+          <textarea id="answerInput" rows="5" placeholder="Type your response here before checking..."></textarea>
+          <div class="answer-code is-hidden" id="answerCodeBlock">
+            <label for="answerCodeInput">C# code (optional)</label>
+            <textarea id="answerCodeInput" rows="6" placeholder="Paste your C# code here..."></textarea>
+            <div class="code-preview">
+              <p class="preview-label">C# preview</p>
+              <pre class="inline-preview"><code class="language-csharp" id="answerCodePreview"></code></pre>
+            </div>
+          </div>
+          <div class="check-result" id="checkResult" data-tone="neutral"></div>
+        </section>
 
-      <div class="card-actions">
-        <button class="btn primary" id="checkAnswerBtn" type="button">Check Answer</button>
-        <button class="btn ghost" id="revealAnswerBtn" type="button">Reveal Answer</button>
-        <button class="btn" id="randomQuestionBtn" type="button">Random Next Question</button>
-        <button class="btn" id="randomTopicQuestionBtn" type="button">Random in This Topic</button>
+        <div class="card-actions">
+          <button class="btn primary" id="checkAnswerBtn" type="button">Check Answer</button>
+          <button class="btn ghost" id="revealAnswerBtn" type="button">Reveal Answer</button>
+          <button class="btn" id="randomQuestionBtn" type="button">Random Next Question</button>
+          <button class="btn" id="randomTopicQuestionBtn" type="button">Random in This Topic</button>
+        </div>
       </div>
     </main>
   </div>

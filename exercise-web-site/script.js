@@ -3,6 +3,8 @@ const cardAnswerEl = document.getElementById('cardAnswer');
 const cardMetaEl = document.getElementById('cardMeta');
 const cardTypeBadgeEl = document.getElementById('cardTypeBadge');
 const topicListEl = document.getElementById('topicList');
+const cardPanelEl = document.querySelector('.card-panel');
+const answerFooterEl = document.getElementById('answerFooter');
 const answerInputEl = document.getElementById('answerInput');
 const toggleCodeInputBtn = document.getElementById('toggleCodeInputBtn');
 const answerCodeBlockEl = document.getElementById('answerCodeBlock');
@@ -63,6 +65,7 @@ function wireActions() {
   if (answerCodeInputEl && answerCodePreviewEl) {
     answerCodeInputEl.addEventListener('input', updateAnswerCodePreview);
   }
+  window.addEventListener('resize', updateScrollableLayout);
   randomQuestionBtn.addEventListener('click', () => {
     const next = pickRandomCard(allCards, currentCard?.id);
     if (next) {
@@ -221,6 +224,7 @@ function setCardContent(card) {
   clearCheckResult();
   answerInputEl.value = '';
   resetAnswerCodeSection();
+  updateScrollableLayout();
   highlightCurrentQuestion(card.id);
 }
 
@@ -314,6 +318,7 @@ function hideAnswer() {
 function handleRevealAnswer() {
   cardAnswerEl.classList.remove('is-hidden');
   revealAnswerBtn.textContent = 'Answer Revealed';
+  updateScrollableLayout();
 }
 
 function handleCheckAnswer() {
@@ -441,6 +446,24 @@ function clearCheckResult() {
   checkResultEl.dataset.tone = 'neutral';
 }
 
+function updateScrollableLayout() {
+  if (!cardPanelEl || !answerFooterEl) {
+    return;
+  }
+
+  cardPanelEl.classList.remove('scroll-lock');
+  cardPanelEl.style.removeProperty('--panel-max-height');
+
+  const naturalHeight = cardPanelEl.scrollHeight;
+  const containerHeight = cardPanelEl.parentElement?.clientHeight || window.innerHeight;
+  const maxHeight = Math.round(containerHeight);
+
+  if (naturalHeight > maxHeight) {
+    cardPanelEl.classList.add('scroll-lock');
+    cardPanelEl.style.setProperty('--panel-max-height', `${maxHeight}px`);
+  }
+}
+
 function toggleCodeInput() {
   if (!answerCodeBlockEl || !toggleCodeInputBtn) {
     return;
@@ -453,6 +476,8 @@ function toggleCodeInput() {
   if (!isHidden && answerCodeInputEl) {
     answerCodeInputEl.focus();
   }
+
+  updateScrollableLayout();
 }
 
 function updateAnswerCodePreview() {
