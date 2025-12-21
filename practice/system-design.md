@@ -1231,21 +1231,46 @@ services.AddHttpClient("DownstreamService")
 
 A: Use active-active for read-heavy services, active-passive for write-heavy, with DNS failover, replicated data stores, and idempotent writes.
 
+Reads (market data, reporting) can be served locally for low latency, while writes go to a single primary region to avoid conflicts.
+Failover is handled via health checks and traffic rerouting, with idempotency preventing duplicate orders during retries.
+
+---
+
 **Q: How would you shard a multi-tenant database for scale?**
 
 A: Choose a shard key (tenant id), use consistent hashing, route via a shard map, and ensure cross-shard queries are minimized or handled via read models.
+
+A shard map allows moving or isolating large tenants without code changes.
+Global queries are usually served from aggregated read models instead of live cross-shard joins.
+
+---
 
 **Q: Describe a cache invalidation strategy for price snapshots.**
 
 A: Use short TTLs, write-through cache for authoritative updates, and a pub/sub channel to invalidate per-symbol keys on updates.
 
+Short TTLs limit staleness, while pub/sub ensures fast propagation of price changes.
+Versioning or timestamps help prevent out-of-order updates from overwriting newer prices.
+
+---
+
 **Q: When would you use event sourcing versus state storage?**
 
 A: Event sourcing is useful for auditability and replay; state storage is simpler for CRUD-heavy systems. Consider storage costs, query complexity, and regulatory requirements.
 
+Event sourcing fits domains like orders and trades where history and traceability matter.
+State storage is preferred when simplicity, performance, and direct querying are more important.
+
+---
+
 **Q: How do you handle backpressure in a streaming system?**
 
 A: Apply bounded queues, adaptive batching, and consumer-side flow control. Drop or coalesce low-priority updates when queues exceed thresholds.
+
+Market data streams often coalesce updates per symbol to keep only the latest value.
+Critical messages are prioritized so correctness is preserved under load.
+
+
 
 ---
 
