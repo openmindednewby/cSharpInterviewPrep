@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for Defensive Programming Vs Fail Fast" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>Defensive Programming Vs Fail Fast | C# Interview Prep Cheat Sheet</title>
+  <link rel="manifest" href="..\assets/manifest.webmanifest" />
+  <script>
+    (() => {
+      const supported = ['dark2', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
+      const fallback = 'light';
+      const initial = supported.includes(normalized) ? normalized : fallback;
+      document.documentElement.dataset.theme = initial;
+      window.__studyTheme = initial;
+    })();
+  </script>
+  <link rel="stylesheet" href="..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="dark2">Dark 2</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group is-open" data-group="notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
+        <span>Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link active" href="../notes/defensive-programming-vs-fail-fast.html">Defensive Programming Vs Fail Fast</a></li><li><a class="nav-link" href="../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="../notes/logging.html">Logging</a></li><li><a class="nav-link" href="../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/O1-Constant-Time.html">O1 Constant Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/OLogN-Logarithmic-Time.html">OLogN Logarithmic Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/ON-Linear-Time.html">ON Linear Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/ON2-Quadratic-Time.html">ON2 Quadratic Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/ONLogN-Linearithmic-Time.html">ONLogN Linearithmic Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/Space-Complexity.html">Space Complexity</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/ICollection.html">ICollection</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IEnumerable.html">IEnumerable</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IList.html">IList</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IQueryable.html">IQueryable</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IReadOnly.html">IReadOnly</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a class="nav-link" href="../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a class="nav-link" href="../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a class="nav-link" href="../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a class="nav-link" href="../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a class="nav-link" href="../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a class="nav-link" href="../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a class="nav-link" href="../notes/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a class="nav-link" href="../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a class="nav-link" href="../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a class="nav-link" href="../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a class="nav-link" href="../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a class="nav-link" href="../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a class="nav-link" href="../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a class="nav-link" href="../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a class="nav-link" href="../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a class="nav-link" href="../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a class="nav-link" href="../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a class="nav-link" href="../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a class="nav-link" href="../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a class="nav-link" href="../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a class="nav-link" href="../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a class="nav-link" href="../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a class="nav-link" href="../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/01-async-patterns.html">01 Async Patterns</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/02-backpressure-rate-limiting.html">02 Backpressure Rate Limiting</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/03-caching-strategies.html">03 Caching Strategies</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/04-database-scaling.html">04 Database Scaling</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/05-message-queues.html">05 Message Queues</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/06-resilience-patterns.html">06 Resilience Patterns</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/07-observability.html">07 Observability</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/08-complete-example.html">08 Complete Example</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/answers.html">Answers</a></li><li><a class="nav-link" href="../practice/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="../practice/defensive-programming-vs-fail-fast-exercises.html">Defensive Programming Vs Fail Fast Exercises</a></li><li><a class="nav-link" href="../practice/error-handling-exercises.html">Error Handling Exercises</a></li><li><a class="nav-link" href="../practice/logging-exercises.html">Logging Exercises</a></li><li><a class="nav-link" href="../practice/index.html">Practice</a></li><li><a class="nav-link" href="../practice/PRACTICE-STRUCTURE.html">PRACTICE STRUCTURE</a></li><li><a class="nav-link" href="../practice/questions.html">Questions</a></li><li><a class="nav-link" href="../practice/README.html">README</a></li><li><a class="nav-link" href="../practice/testing-strategies-exercises.html">Testing Strategies Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/Automapper/index.html">Automapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="../practice/Big-O-Complexity/O1-Constant-Time-Exercises.html">O1 Constant Time Exercises</a></li><li><a class="nav-link" href="../practice/Big-O-Complexity/OLogN-Logarithmic-Time-Exercises.html">OLogN Logarithmic Time Exercises</a></li><li><a class="nav-link" href="../practice/Big-O-Complexity/ON-Linear-Time-Exercises.html">ON Linear Time Exercises</a></li><li><a class="nav-link" href="../practice/Big-O-Complexity/ON2-Quadratic-Time-Exercises.html">ON2 Quadratic Time Exercises</a></li><li><a class="nav-link" href="../practice/Big-O-Complexity/ONLogN-Linearithmic-Time-Exercises.html">ONLogN Linearithmic Time Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/Design-Patterns/Decorator-Pattern-Exercises.html">Decorator Pattern Exercises</a></li><li><a class="nav-link" href="../practice/Design-Patterns/index.html">Design Patterns</a></li><li><a class="nav-link" href="../practice/Design-Patterns/Factory-Pattern-Exercises.html">Factory Pattern Exercises</a></li><li><a class="nav-link" href="../practice/Design-Patterns/Mediator-Pattern-Exercises.html">Mediator Pattern Exercises</a></li><li><a class="nav-link" href="../practice/Design-Patterns/Observer-Pattern-Exercises.html">Observer Pattern Exercises</a></li><li><a class="nav-link" href="../practice/Design-Patterns/Strategy-Pattern-Exercises.html">Strategy Pattern Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/FluentValidation/index.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/SOLID/S-Single-Responsibility-Principle-Exercises.html">S Single Responsibility Principle Exercises</a></li><li><a class="nav-link" href="../practice/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/sub-notes/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="../practice/sub-notes/async-await-exercises.html">Async Await Exercises</a></li><li><a class="nav-link" href="../practice/sub-notes/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="../practice/sub-notes/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="../practice/sub-notes/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="../practice/sub-notes/csharp-fundamentals.html">Csharp Fundamentals</a></li><li><a class="nav-link" href="../practice/sub-notes/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="../practice/sub-notes/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="../practice/sub-notes/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="../practice/sub-notes/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="../practice/sub-notes/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="../practice/sub-notes/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="../practice/sub-notes/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="../practice/sub-notes/system-design.html">System Design</a></li><li><a class="nav-link" href="../practice/sub-notes/trading-domain.html">Trading Domain</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+    </div></div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">notes\defensive-programming-vs-fail-fast.md</div>
+        <h2>Defensive Programming Vs Fail Fast</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#defensive-programming-vs-fail-fast">Defensive Programming vs Fail-Fast</a></li><li class="level-2"><a href="#quick-comparison">Quick Comparison</a></li><li class="level-2"><a href="#defensive-programming">Defensive Programming</a></li><li class="level-3"><a href="#core-principles">Core Principles</a></li><li class="level-3"><a href="#example-basic-defensive-check">Example: Basic Defensive Check</a></li><li class="level-3"><a href="#example-api-controller-defensive-layer">Example: API Controller (Defensive Layer)</a></li><li class="level-3"><a href="#example-external-data-integration">Example: External Data Integration</a></li><li class="level-3"><a href="#pros">Pros</a></li><li class="level-3"><a href="#cons">Cons</a></li><li class="level-3"><a href="#best-used-when">Best Used When</a></li><li class="level-2"><a href="#fail-fast">Fail-Fast</a></li><li class="level-3"><a href="#core-principles">Core Principles</a></li><li class="level-3"><a href="#example-basic-fail-fast">Example: Basic Fail-Fast</a></li><li class="level-3"><a href="#example-domain-entity-fail-fast-validation">Example: Domain Entity (Fail-Fast Validation)</a></li><li class="level-3"><a href="#example-trading-risk-validation">Example: Trading Risk Validation</a></li><li class="level-3"><a href="#pros">Pros</a></li><li class="level-3"><a href="#cons">Cons</a></li><li class="level-3"><a href="#best-used-when">Best Used When</a></li><li class="level-2"><a href="#combining-both-approaches">Combining Both Approaches</a></li><li class="level-3"><a href="#architecture-pattern-defensive-at-edges-fail-fast-at-core">Architecture Pattern: Defensive at Edges, Fail-Fast at Core</a></li><li class="level-3"><a href="#example-complete-order-flow">Example: Complete Order Flow</a></li><li class="level-3"><a href="#example-external-integration-with-fallback">Example: External Integration with Fallback</a></li><li class="level-2"><a href="#decision-matrix">Decision Matrix</a></li><li class="level-3"><a href="#use-defensive-programming-when">Use Defensive Programming When:</a></li><li class="level-3"><a href="#use-fail-fast-when">Use Fail-Fast When:</a></li><li class="level-2"><a href="#real-world-trading-system-example">Real-World Trading System Example</a></li><li class="level-2"><a href="#interview-one-liner">Interview One-Liner</a></li><li class="level-2"><a href="#common-anti-patterns">Common Anti-Patterns</a></li><li class="level-3"><a href="#anti-pattern-1-overly-defensive-core-logic">❌ Anti-Pattern 1: Overly Defensive Core Logic</a></li><li class="level-3"><a href="#anti-pattern-2-fail-fast-at-api-boundaries">❌ Anti-Pattern 2: Fail-Fast at API Boundaries</a></li><li class="level-3"><a href="#anti-pattern-3-silent-failures">❌ Anti-Pattern 3: Silent Failures</a></li><li class="level-2"><a href="#summary">Summary</a></li></ul></div>
+        <h1 id="defensive-programming-vs-fail-fast">Defensive Programming vs Fail-Fast</h1>
+<p>A comprehensive guide to two fundamental error handling philosophies in software development.</p>
+<p>---</p>
+<h2 id="quick-comparison">Quick Comparison</h2>
+<table><thead><tr><th>Aspect</th><th>Defensive Programming</th><th>Fail-Fast</th></tr></thead><tbody><tr><td><strong>Philosophy</strong></td><td>Anticipate and handle invalid input</td><td>Detect invalid state early and stop immediately</td></tr><tr><td><strong>When to use</strong></td><td>System boundaries, external input</td><td>Core business logic, internal contracts</td></tr><tr><td><strong>Error handling</strong></td><td>Graceful degradation</td><td>Immediate exception</td></tr><tr><td><strong>Example</strong></td><td><code>if (price &lt;= 0) return 0;</code></td><td><code>if (price &lt;= 0) throw new ArgumentException();</code></td></tr><tr><td><strong>Goal</strong></td><td>Keep system running</td><td>Surface bugs early</td></tr></tbody></table>
+<p>---</p>
+<h2 id="defensive-programming">Defensive Programming</h2>
+<p><strong>Definition:</strong> Defensive programming means <strong>anticipating invalid or unexpected input</strong> and handling it safely to keep the system running.</p>
+<h3 id="core-principles">Core Principles</h3>
+<ol><li><strong>Never trust external input</strong></li><li><strong>Validate at boundaries</strong></li><li><strong>Provide fallback values</strong></li><li><strong>Log anomalies but continue</strong></li><li><strong>Protect against nulls and edge cases</strong></li></ol>
+<h3 id="example-basic-defensive-check">Example: Basic Defensive Check</h3>
+<pre class="language-csharp"><code class="language-csharp">public decimal CalculateDiscount(decimal? price)
+{
+    // Defensive: handle null and invalid values gracefully
+    if (price == null || price &lt;= 0)
+    {
+        _logger.LogWarning(&quot;Invalid price received: {Price}&quot;, price);
+        return 0;
+    }
+
+    return price.Value * 0.1m;
+}</code></pre>
+<h3 id="example-api-controller-defensive-layer">Example: API Controller (Defensive Layer)</h3>
+<pre class="language-csharp"><code class="language-csharp">[HttpPost(&quot;orders&quot;)]
+public async Task&lt;IActionResult&gt; CreateOrder([FromBody] CreateOrderRequest request)
+{
+    // Defensive programming at the API boundary
+    if (request == null)
+    {
+        return BadRequest(&quot;Request body is required&quot;);
+    }
+
+    if (string.IsNullOrWhiteSpace(request.Symbol))
+    {
+        return BadRequest(&quot;Symbol is required&quot;);
+    }
+
+    if (request.Quantity &lt;= 0)
+    {
+        return BadRequest(&quot;Quantity must be positive&quot;);
+    }
+
+    if (request.Price &lt; 0)
+    {
+        return BadRequest(&quot;Price cannot be negative&quot;);
+    }
+
+    try
+    {
+        var order = await _orderService.CreateOrderAsync(request);
+        return Ok(order);
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, &quot;Failed to create order&quot;);
+        return StatusCode(500, &quot;An error occurred while processing your request&quot;);
+    }
+}</code></pre>
+<h3 id="example-external-data-integration">Example: External Data Integration</h3>
+<pre class="language-csharp"><code class="language-csharp">public class MarketDataAdapter
+{
+    public decimal? ParsePrice(string priceData)
+    {
+        // Defensive: external data may be malformed
+        if (string.IsNullOrWhiteSpace(priceData))
+        {
+            _logger.LogWarning(&quot;Empty price data received&quot;);
+            return null;
+        }
+
+        if (!decimal.TryParse(priceData, out var price))
+        {
+            _logger.LogWarning(&quot;Could not parse price: {PriceData}&quot;, priceData);
+            return null;
+        }
+
+        if (price &lt; 0)
+        {
+            _logger.LogWarning(&quot;Negative price received: {Price}&quot;, price);
+            return null;
+        }
+
+        return price;
+    }
+}</code></pre>
+<h3 id="pros">Pros</h3>
+<p>✅ Prevents runtime crashes ✅ More resilient to bad input or external systems ✅ Useful at system boundaries (APIs, user input, integrations) ✅ Keeps services running under adverse conditions ✅ Good for production stability</p>
+<h3 id="cons">Cons</h3>
+<p>❌ Can hide bugs if overused ❌ Adds extra checks and complexity ❌ May mask incorrect usage instead of fixing it ❌ Silent failures can be hard to debug ❌ Performance overhead from excessive validation</p>
+<h3 id="best-used-when">Best Used When</h3>
+<ul><li>Dealing with <strong>user input</strong></li><li>Handling <strong>third-party or external data</strong></li><li><strong>System must stay up</strong> at all costs</li><li>At <strong>API boundaries and controllers</strong></li><li>Integrating with <strong>unreliable external systems</strong></li><li>Processing <strong>untrusted data</strong> (webhooks, file uploads)</li></ul>
+<p>---</p>
+<h2 id="fail-fast">Fail-Fast</h2>
+<p><strong>Definition:</strong> Fail-fast means <strong>detecting invalid states early and stopping execution immediately</strong> rather than trying to recover.</p>
+<h3 id="core-principles">Core Principles</h3>
+<ol><li><strong>Validate assumptions immediately</strong></li><li><strong>Fail loudly with clear errors</strong></li><li><strong>Enforce invariants strictly</strong></li><li><strong>Don't silently absorb errors</strong></li><li><strong>Make bugs visible</strong></li></ol>
+<h3 id="example-basic-fail-fast">Example: Basic Fail-Fast</h3>
+<pre class="language-csharp"><code class="language-csharp">public decimal CalculateDiscount(decimal price)
+{
+    // Fail-fast: enforce preconditions strictly
+    if (price &lt;= 0)
+        throw new ArgumentException(&quot;Price must be positive&quot;, nameof(price));
+
+    return price * 0.1m;
+}</code></pre>
+<h3 id="example-domain-entity-fail-fast-validation">Example: Domain Entity (Fail-Fast Validation)</h3>
+<pre class="language-csharp"><code class="language-csharp">public class Order
+{
+    public Guid Id { get; private set; }
+    public string Symbol { get; private set; }
+    public decimal Quantity { get; private set; }
+    public decimal Price { get; private set; }
+    public OrderStatus Status { get; private set; }
+
+    public Order(string symbol, decimal quantity, decimal price)
+    {
+        // Fail-fast: enforce invariants at construction
+        if (string.IsNullOrWhiteSpace(symbol))
+            throw new ArgumentException(&quot;Symbol cannot be empty&quot;, nameof(symbol));
+
+        if (symbol.Length &gt; 10)
+            throw new ArgumentException(&quot;Symbol too long&quot;, nameof(symbol));
+
+        if (quantity &lt;= 0)
+            throw new ArgumentException(&quot;Quantity must be positive&quot;, nameof(quantity));
+
+        if (price &lt; 0)
+            throw new ArgumentException(&quot;Price cannot be negative&quot;, nameof(price));
+
+        Id = Guid.NewGuid();
+        Symbol = symbol.ToUpperInvariant();
+        Quantity = quantity;
+        Price = price;
+        Status = OrderStatus.Pending;
+    }
+
+    public void Execute(decimal executedPrice)
+    {
+        // Fail-fast: enforce state machine rules
+        if (Status != OrderStatus.Pending)
+            throw new InvalidOperationException(
+                $&quot;Cannot execute order in {Status} status&quot;);
+
+        if (executedPrice &lt; 0)
+            throw new ArgumentException(
+                &quot;Executed price cannot be negative&quot;, nameof(executedPrice));
+
+        Price = executedPrice;
+        Status = OrderStatus.Executed;
+    }
+}</code></pre>
+<h3 id="example-trading-risk-validation">Example: Trading Risk Validation</h3>
+<pre class="language-csharp"><code class="language-csharp">public class RiskValidator
+{
+    public void ValidateTradeRisk(Trade trade, Account account)
+    {
+        // Fail-fast: critical business rules must be enforced
+
+        if (trade == null)
+            throw new ArgumentNullException(nameof(trade));
+
+        if (account == null)
+            throw new ArgumentNullException(nameof(account));
+
+        // Position limit check
+        var currentExposure = account.GetExposure(trade.Symbol);
+        var newExposure = currentExposure + trade.Notional;
+
+        if (newExposure &gt; account.MaxExposurePerSymbol)
+            throw new RiskLimitExceededException(
+                $&quot;Position limit exceeded for {trade.Symbol}. &quot; +
+                $&quot;Current: {currentExposure:C}, New: {newExposure:C}, &quot; +
+                $&quot;Limit: {account.MaxExposurePerSymbol:C}&quot;);
+
+        // Margin check
+        var requiredMargin = trade.CalculateRequiredMargin();
+        if (account.AvailableMargin &lt; requiredMargin)
+            throw new InsufficientMarginException(
+                $&quot;Insufficient margin. Required: {requiredMargin:C}, &quot; +
+                $&quot;Available: {account.AvailableMargin:C}&quot;);
+
+        // Credit limit check
+        if (account.TotalExposure + trade.Notional &gt; account.CreditLimit)
+            throw new CreditLimitExceededException(
+                $&quot;Credit limit would be exceeded. &quot; +
+                $&quot;Limit: {account.CreditLimit:C}&quot;);
+    }
+}</code></pre>
+<h3 id="pros">Pros</h3>
+<p>✅ Bugs surface early and clearly ✅ Easier debugging ✅ Enforces correct usage and invariants ✅ Clear contract violations ✅ Prevents invalid state propagation ✅ Better for development and testing</p>
+<h3 id="cons">Cons</h3>
+<p>❌ Can cause crashes if not handled ❌ Not suitable for user-facing or unstable inputs ❌ Requires proper exception handling strategy ❌ May reduce system availability ❌ Needs mature error handling infrastructure</p>
+<h3 id="best-used-when">Best Used When</h3>
+<ul><li>Inside <strong>core business logic</strong></li><li>In <strong>internal services</strong> with strong contracts</li><li>Enforcing <strong>domain invariants</strong></li><li><strong>Critical calculations</strong> (pricing, risk, settlements)</li><li>During <strong>development and testing</strong></li><li>When <strong>correctness > availability</strong></li></ul>
+<p>---</p>
+<h2 id="combining-both-approaches">Combining Both Approaches</h2>
+<p>Good systems <strong>combine both</strong> strategies appropriately:</p>
+<h3 id="architecture-pattern-defensive-at-edges-fail-fast-at-core">Architecture Pattern: Defensive at Edges, Fail-Fast at Core</h3>
+<pre class="language-csharp"><code class="language-csharp">┌─────────────────────────────────────────┐
+│   API Layer (Defensive)                 │
+│   - Validate user input                 │
+│   - Handle malformed requests           │
+│   - Return friendly error messages      │
+└─────────────┬───────────────────────────┘
+              │
+┌─────────────▼───────────────────────────┐
+│   Application Layer (Mixed)             │
+│   - Validate business rules             │
+│   - Transform external to internal      │
+│   - Orchestrate workflows               │
+└─────────────┬───────────────────────────┘
+              │
+┌─────────────▼───────────────────────────┐
+│   Domain Layer (Fail-Fast)              │
+│   - Enforce invariants strictly         │
+│   - Protect aggregate consistency       │
+│   - Validate state transitions          │
+└─────────────────────────────────────────┘</code></pre>
+<h3 id="example-complete-order-flow">Example: Complete Order Flow</h3>
+<pre class="language-csharp"><code class="language-csharp">// 1. API Layer - Defensive Programming
+[HttpPost(&quot;orders&quot;)]
+public async Task&lt;IActionResult&gt; CreateOrder([FromBody] CreateOrderRequest request)
+{
+    // Defensive: protect against bad client input
+    if (request == null)
+        return BadRequest(&quot;Request is required&quot;);
+
+    var validationResult = await _validator.ValidateAsync(request);
+    if (!validationResult.IsValid)
+        return BadRequest(validationResult.Errors);
+
+    try
+    {
+        var order = await _orderService.CreateOrderAsync(request);
+        return Ok(order);
+    }
+    catch (RiskLimitExceededException ex)
+    {
+        // Expected business exception - return appropriate error
+        return BadRequest(new { error = ex.Message });
+    }
+    catch (Exception ex)
+    {
+        // Unexpected - log and return generic error
+        _logger.LogError(ex, &quot;Unexpected error creating order&quot;);
+        return StatusCode(500, &quot;An unexpected error occurred&quot;);
+    }
+}
+
+// 2. Application Layer - Mixed Approach
+public class OrderService
+{
+    public async Task&lt;OrderDto&gt; CreateOrderAsync(CreateOrderRequest request)
+    {
+        // Defensive: external data might be unreliable
+        var account = await _accountRepository.GetByIdAsync(request.AccountId);
+        if (account == null)
+        {
+            _logger.LogWarning(&quot;Account not found: {AccountId}&quot;, request.AccountId);
+            throw new NotFoundException($&quot;Account {request.AccountId} not found&quot;);
+        }
+
+        // Fail-fast: domain object creation with strict validation
+        var order = new Order(
+            request.Symbol,
+            request.Quantity,
+            request.Price
+        ); // Throws if invalid
+
+        // Fail-fast: business rule enforcement
+        _riskValidator.ValidateTradeRisk(order, account); // Throws if risk limits exceeded
+
+        await _orderRepository.AddAsync(order);
+        await _unitOfWork.CommitAsync();
+
+        return _mapper.Map&lt;OrderDto&gt;(order);
+    }
+}
+
+// 3. Domain Layer - Fail-Fast
+public class Order
+{
+    public Order(string symbol, decimal quantity, decimal price)
+    {
+        // Fail-fast: enforce invariants strictly
+        if (string.IsNullOrWhiteSpace(symbol))
+            throw new ArgumentException(&quot;Symbol is required&quot;, nameof(symbol));
+
+        if (quantity &lt;= 0)
+            throw new ArgumentException(&quot;Quantity must be positive&quot;, nameof(quantity));
+
+        if (price &lt; 0)
+            throw new ArgumentException(&quot;Price cannot be negative&quot;, nameof(price));
+
+        Symbol = symbol;
+        Quantity = quantity;
+        Price = price;
+    }
+}</code></pre>
+<h3 id="example-external-integration-with-fallback">Example: External Integration with Fallback</h3>
+<pre class="language-csharp"><code class="language-csharp">public class PriceService
+{
+    private readonly IExternalPriceProvider _primaryProvider;
+    private readonly IExternalPriceProvider _fallbackProvider;
+    private readonly IMemoryCache _cache;
+
+    public async Task&lt;decimal&gt; GetPriceAsync(string symbol)
+    {
+        // Fail-fast: validate internal contract
+        if (string.IsNullOrWhiteSpace(symbol))
+            throw new ArgumentException(&quot;Symbol is required&quot;, nameof(symbol));
+
+        // Defensive: try cache first
+        if (_cache.TryGetValue($&quot;price:{symbol}&quot;, out decimal cachedPrice))
+            return cachedPrice;
+
+        // Defensive: try primary provider with fallback
+        try
+        {
+            var price = await _primaryProvider.GetPriceAsync(symbol);
+
+            // Defensive: validate external data
+            if (price &lt;= 0)
+            {
+                _logger.LogWarning(&quot;Invalid price from primary provider: {Price}&quot;, price);
+                return await TryFallbackProvider(symbol);
+            }
+
+            _cache.Set($&quot;price:{symbol}&quot;, price, TimeSpan.FromSeconds(30));
+            return price;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, &quot;Primary provider failed for {Symbol}&quot;, symbol);
+            return await TryFallbackProvider(symbol);
+        }
+    }
+
+    private async Task&lt;decimal&gt; TryFallbackProvider(string symbol)
+    {
+        try
+        {
+            var price = await _fallbackProvider.GetPriceAsync(symbol);
+
+            if (price &lt;= 0)
+            {
+                // Fail-fast: both providers failed
+                throw new PriceUnavailableException(
+                    $&quot;Could not get valid price for {symbol}&quot;);
+            }
+
+            _cache.Set($&quot;price:{symbol}&quot;, price, TimeSpan.FromSeconds(30));
+            return price;
+        }
+        catch (PriceUnavailableException)
+        {
+            throw; // Re-throw business exception
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, &quot;Fallback provider failed for {Symbol}&quot;, symbol);
+            throw new PriceUnavailableException(
+                $&quot;All price providers failed for {symbol}&quot;, ex);
+        }
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="decision-matrix">Decision Matrix</h2>
+<h3 id="use-defensive-programming-when">Use Defensive Programming When:</h3>
+<table><thead><tr><th>Scenario</th><th>Reason</th></tr></thead><tbody><tr><td>Parsing user input</td><td>Users make mistakes</td></tr><tr><td>Reading configuration files</td><td>Files may be corrupted or edited incorrectly</td></tr><tr><td>Consuming external APIs</td><td>APIs may change or return unexpected data</td></tr><tr><td>Handling file uploads</td><td>Files may be malformed or malicious</td></tr><tr><td>Processing third-party data feeds</td><td>Data quality varies</td></tr><tr><td>Legacy system integration</td><td>Unknown edge cases</td></tr></tbody></table>
+<h3 id="use-fail-fast-when">Use Fail-Fast When:</h3>
+<table><thead><tr><th>Scenario</th><th>Reason</th></tr></thead><tbody><tr><td>Domain entity construction</td><td>Enforce invariants</td></tr><tr><td>Internal service contracts</td><td>Catch programming errors early</td></tr><tr><td>Critical calculations</td><td>Ensure correctness</td></tr><tr><td>State machine transitions</td><td>Prevent invalid states</td></tr><tr><td>Aggregate root methods</td><td>Maintain consistency</td></tr><tr><td>Unit tests</td><td>Validate assumptions</td></tr></tbody></table>
+<p>---</p>
+<h2 id="real-world-trading-system-example">Real-World Trading System Example</h2>
+<pre class="language-csharp"><code class="language-csharp">public class TradingSystem
+{
+    // Defensive: External market data feed
+    public async Task&lt;MarketPrice&gt; GetMarketPriceAsync(string symbol)
+    {
+        try
+        {
+            var rawData = await _marketDataFeed.GetPriceAsync(symbol);
+
+            // Defensive: validate external data
+            if (rawData == null || string.IsNullOrEmpty(rawData.Price))
+            {
+                _logger.LogWarning(&quot;Invalid market data for {Symbol}&quot;, symbol);
+                return await GetCachedPriceAsync(symbol); // Fallback
+            }
+
+            if (!decimal.TryParse(rawData.Price, out var price) || price &lt;= 0)
+            {
+                _logger.LogWarning(&quot;Invalid price format: {Price}&quot;, rawData.Price);
+                return await GetCachedPriceAsync(symbol); // Fallback
+            }
+
+            return new MarketPrice(symbol, price, DateTime.UtcNow);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, &quot;Market data feed error for {Symbol}&quot;, symbol);
+            return await GetCachedPriceAsync(symbol); // Fallback
+        }
+    }
+
+    // Fail-Fast: Internal order execution
+    public async Task ExecuteOrderAsync(Order order, decimal executionPrice)
+    {
+        // Fail-fast: validate preconditions
+        if (order == null)
+            throw new ArgumentNullException(nameof(order));
+
+        if (order.Status != OrderStatus.Pending)
+            throw new InvalidOperationException(
+                $&quot;Cannot execute order in {order.Status} status&quot;);
+
+        if (executionPrice &lt;= 0)
+            throw new ArgumentException(
+                &quot;Execution price must be positive&quot;, nameof(executionPrice));
+
+        // Fail-fast: check risk limits
+        var account = await _accountRepository.GetByIdAsync(order.AccountId);
+        if (account == null)
+            throw new InvalidOperationException(
+                $&quot;Account {order.AccountId} not found&quot;);
+
+        _riskValidator.ValidateExecution(order, account, executionPrice);
+
+        // Execute
+        order.Execute(executionPrice);
+        account.UpdatePosition(order);
+
+        await _unitOfWork.CommitAsync();
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="interview-one-liner">Interview One-Liner</h2>
+<blockquote><p><strong>"Defensive programming protects the system from bad input at boundaries, while fail-fast exposes bugs early by enforcing strict contracts in core logic. Use defensive at the edges, fail-fast at the core."</strong></p></blockquote>
+<p>---</p>
+<h2 id="common-anti-patterns">Common Anti-Patterns</h2>
+<h3 id="anti-pattern-1-overly-defensive-core-logic">❌ Anti-Pattern 1: Overly Defensive Core Logic</h3>
+<pre class="language-csharp"><code class="language-csharp">// Bad: Hiding bugs with defensive checks in domain logic
+public class Order
+{
+    public void SetQuantity(decimal quantity)
+    {
+        // Too defensive - silently ignoring invalid input
+        if (quantity &lt;= 0)
+        {
+            _logger.LogWarning(&quot;Invalid quantity ignored&quot;);
+            return; // BUG IS HIDDEN!
+        }
+        Quantity = quantity;
+    }
+}
+
+// Good: Fail-fast in domain logic
+public class Order
+{
+    public void SetQuantity(decimal quantity)
+    {
+        if (quantity &lt;= 0)
+            throw new ArgumentException(&quot;Quantity must be positive&quot;);
+
+        Quantity = quantity;
+    }
+}</code></pre>
+<h3 id="anti-pattern-2-fail-fast-at-api-boundaries">❌ Anti-Pattern 2: Fail-Fast at API Boundaries</h3>
+<pre class="language-csharp"><code class="language-csharp">// Bad: Throwing raw exceptions from controller
+[HttpPost]
+public IActionResult CreateOrder([FromBody] CreateOrderRequest request)
+{
+    // Too fail-fast - letting exceptions crash through
+    var order = new Order(request.Symbol, request.Quantity, request.Price);
+    // ArgumentException crashes the request
+    return Ok(order);
+}
+
+// Good: Defensive at boundary
+[HttpPost]
+public IActionResult CreateOrder([FromBody] CreateOrderRequest request)
+{
+    try
+    {
+        var order = new Order(request.Symbol, request.Quantity, request.Price);
+        return Ok(order);
+    }
+    catch (ArgumentException ex)
+    {
+        return BadRequest(ex.Message);
+    }
+}</code></pre>
+<h3 id="anti-pattern-3-silent-failures">❌ Anti-Pattern 3: Silent Failures</h3>
+<pre class="language-csharp"><code class="language-csharp">// Bad: Swallowing exceptions
+public decimal CalculatePrice()
+{
+    try
+    {
+        return _priceCalculator.Calculate();
+    }
+    catch
+    {
+        return 0; // Silent failure - debugging nightmare
+    }
+}
+
+// Good: Log and re-throw or handle appropriately
+public decimal CalculatePrice()
+{
+    try
+    {
+        return _priceCalculator.Calculate();
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, &quot;Price calculation failed&quot;);
+        throw new PriceCalculationException(&quot;Failed to calculate price&quot;, ex);
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="summary">Summary</h2>
+<table><thead><tr><th>Layer</th><th>Strategy</th><th>Example</th></tr></thead><tbody><tr><td><strong>API/Controllers</strong></td><td>Defensive</td><td>Validate input, return user-friendly errors</td></tr><tr><td><strong>Application Services</strong></td><td>Mixed</td><td>Transform external data (defensive), enforce business rules (fail-fast)</td></tr><tr><td><strong>Domain Entities</strong></td><td>Fail-Fast</td><td>Enforce invariants strictly</td></tr><tr><td><strong>External Integrations</strong></td><td>Defensive</td><td>Handle unreliable data, provide fallbacks</td></tr><tr><td><strong>Critical Calculations</strong></td><td>Fail-Fast</td><td>Ensure correctness, fail loudly on errors</td></tr></tbody></table>
+<p><strong>Key Takeaway:</strong> Balance resilience (defensive) with correctness (fail-fast) based on the layer and criticality of the operation.</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['dark2', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
+      const fallback = 'light';
+      const initial = supported.includes(normalized) ? normalized : (window.__studyTheme || fallback);
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          sessionStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+    (() => {
+      const groups = document.querySelectorAll('.sidebar-group');
+      if (!groups.length) return;
+      const storageKey = 'study-open-groups';
+      const saved = sessionStorage.getItem(storageKey);
+      const openFromStorage = new Set(saved ? JSON.parse(saved) : []);
+
+      const activeLink = document.querySelector('.nav-link.active');
+      const activeGroup = activeLink?.closest('.sidebar-group');
+      if (activeGroup?.dataset.group) {
+        openFromStorage.add(activeGroup.dataset.group);
+      }
+
+      const syncStorage = () => {
+        const openIds = Array.from(document.querySelectorAll('.sidebar-group.is-open'))
+          .map((group) => group.dataset.group)
+          .filter(Boolean);
+        sessionStorage.setItem(storageKey, JSON.stringify(openIds));
+      };
+
+      const setExpanded = (group, expanded) => {
+        const header = group.querySelector('.sidebar-group__header');
+        const list = group.querySelector('.sidebar-group__items');
+        group.classList.toggle('is-open', expanded);
+        header?.setAttribute('aria-expanded', expanded);
+        if (list) {
+          list.hidden = !expanded;
+        }
+      };
+
+      groups.forEach((group) => {
+        const shouldOpen = openFromStorage.has(group.dataset.group);
+        setExpanded(group, shouldOpen);
+        const header = group.querySelector('.sidebar-group__header');
+        header?.addEventListener('click', () => {
+          const next = !group.classList.contains('is-open');
+          setExpanded(group, next);
+          syncStorage();
+        });
+      });
+    })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swPath = '../service-worker.js';
+        navigator.serviceWorker.register(swPath).catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+</body>
+</html>

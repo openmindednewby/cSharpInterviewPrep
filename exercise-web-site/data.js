@@ -1,6 +1,6 @@
 // Auto-generated practice Q&A data from practice/ folder
-// Generated on: 2025-12-21T17:13:15.006Z
-// Total cards: 313 Q&A
+// Generated on: 2025-12-21T18:22:50.632Z
+// Total cards: 323 Q&A
 
 window.PRACTICE_DATA = [
   {
@@ -707,6 +707,232 @@ window.PRACTICE_DATA = [
     "id": "card-33"
   },
   {
+    "question": "Explain the difference between defensive programming and fail-fast. When should each be used?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Defensive programming anticipates and handles invalid input gracefully to keep the system running. Use it at system boundaries (APIs, external integrations, user input)."
+      },
+      {
+        "type": "text",
+        "content": "Fail-fast detects invalid states early and throws exceptions immediately. Use it in core business logic to enforce invariants and surface bugs early."
+      },
+      {
+        "type": "text",
+        "content": "Key principle: Defensive at the edges, fail-fast at the core."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "// Defensive: API boundary\n[HttpPost]\npublic IActionResult CreateOrder([FromBody] OrderRequest request)\n{\n    if (request == null || request.Quantity <= 0)\n        return BadRequest(\"Invalid request\");\n\n    // Call domain logic...\n}\n\n// Fail-Fast: Domain entity\npublic class Order\n{\n    public Order(decimal quantity)\n    {\n        if (quantity <= 0)\n            throw new ArgumentException(\"Quantity must be positive\");\n        Quantity = quantity;\n    }\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Defensive Programming Vs Fail Fast Exercises",
+    "topicId": "defensive-programming-vs-fail-fast-exercises",
+    "source": "practice/defensive-programming-vs-fail-fast-exercises.md",
+    "id": "card-34"
+  },
+  {
+    "question": "What are the risks of being overly defensive in core business logic?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Overly defensive code in the core can:"
+      },
+      {
+        "type": "list",
+        "items": [
+          "Hide bugs by silently ignoring invalid states",
+          "Make debugging difficult due to silent failures",
+          "Allow invalid data to propagate through the system",
+          "Create false sense of security",
+          "Violate fail-fast principle that catches errors early"
+        ]
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "// ❌ Bad: Too defensive in domain logic\npublic class PriceCalculator\n{\n    public decimal Calculate(decimal price, decimal quantity)\n    {\n        // Silently returning 0 hides programming errors\n        if (price <= 0 || quantity <= 0)\n            return 0;\n\n        return price * quantity;\n    }\n}\n\n// ✅ Good: Fail-fast exposes the bug\npublic class PriceCalculator\n{\n    public decimal Calculate(decimal price, decimal quantity)\n    {\n        if (price <= 0)\n            throw new ArgumentException(\"Price must be positive\");\n        if (quantity <= 0)\n            throw new ArgumentException(\"Quantity must be positive\");\n\n        return price * quantity;\n    }\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Defensive Programming Vs Fail Fast Exercises",
+    "topicId": "defensive-programming-vs-fail-fast-exercises",
+    "source": "practice/defensive-programming-vs-fail-fast-exercises.md",
+    "id": "card-35"
+  },
+  {
+    "question": "How do you handle exceptions from fail-fast code at the API layer?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Catch domain exceptions at the API layer and translate them into appropriate HTTP responses."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "[HttpPost(\"orders\")]\npublic async Task<IActionResult> CreateOrder([FromBody] CreateOrderRequest request)\n{\n    try\n    {\n        // Domain code may throw (fail-fast)\n        var order = new Order(request.Symbol, request.Quantity, request.Price);\n        await _orderService.CreateAsync(order);\n        return Ok(order);\n    }\n    catch (ArgumentException ex)\n    {\n        // Translate to user-friendly error\n        return BadRequest(new { error = ex.Message });\n    }\n    catch (RiskLimitExceededException ex)\n    {\n        return BadRequest(new { error = ex.Message, code = \"RISK_LIMIT_EXCEEDED\" });\n    }\n    catch (Exception ex)\n    {\n        _logger.LogError(ex, \"Unexpected error creating order\");\n        return StatusCode(500, \"An unexpected error occurred\");\n    }\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Defensive Programming Vs Fail Fast Exercises",
+    "topicId": "defensive-programming-vs-fail-fast-exercises",
+    "source": "practice/defensive-programming-vs-fail-fast-exercises.md",
+    "id": "card-36"
+  },
+  {
+    "question": "Implement a defensive wrapper around an unreliable external price feed API.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Create a defensive adapter that handles failures gracefully with fallback mechanisms."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public class ResilientPriceFeedAdapter\n{\n    private readonly IPriceFeedClient _primaryFeed;\n    private readonly IPriceFeedClient _fallbackFeed;\n    private readonly IMemoryCache _cache;\n    private readonly ILogger _logger;\n\n    public async Task<decimal?> GetPriceAsync(string symbol)\n    {\n        // Defensive: validate input\n        if (string.IsNullOrWhiteSpace(symbol))\n        {\n            _logger.LogWarning(\"Empty symbol provided\");\n            return null;\n        }\n\n        // Try cache first\n        if (_cache.TryGetValue($\"price:{symbol}\", out decimal cachedPrice))\n        {\n            return cachedPrice;\n        }\n\n        // Try primary feed\n        try\n        {\n            var price = await _primaryFeed.GetPriceAsync(symbol);\n\n            // Defensive: validate response\n            if (price.HasValue && price.Value > 0)\n            {\n                _cache.Set($\"price:{symbol}\", price.Value, TimeSpan.FromSeconds(30));\n                return price;\n            }\n\n            _logger.LogWarning(\"Invalid price from primary feed: {Price}\", price);\n        }\n        catch (HttpRequestException ex)\n        {\n            _logger.LogWarning(ex, \"Primary feed failed for {Symbol}\", symbol);\n        }\n        catch (TimeoutException ex)\n        {\n            _logger.LogWarning(ex, \"Primary feed timeout for {Symbol}\", symbol);\n        }\n\n        // Try fallback feed\n        try\n        {\n            var price = await _fallbackFeed.GetPriceAsync(symbol);\n\n            if (price.HasValue && price.Value > 0)\n            {\n                _cache.Set($\"price:{symbol}\", price.Value, TimeSpan.FromSeconds(30));\n                return price;\n            }\n        }\n        catch (Exception ex)\n        {\n            _logger.LogError(ex, \"Fallback feed failed for {Symbol}\", symbol);\n        }\n\n        // All sources failed - return null to indicate unavailability\n        return null;\n    }\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Defensive Programming Vs Fail Fast Exercises",
+    "topicId": "defensive-programming-vs-fail-fast-exercises",
+    "source": "practice/defensive-programming-vs-fail-fast-exercises.md",
+    "id": "card-37"
+  },
+  {
+    "question": "Create a fail-fast domain entity for a trading Order with strict invariant enforcement.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Implement an Order aggregate root that fails fast on any invariant violation."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public class Order\n{\n    public Guid Id { get; private set; }\n    public string Symbol { get; private set; }\n    public decimal Quantity { get; private set; }\n    public decimal Price { get; private set; }\n    public OrderSide Side { get; private set; }\n    public OrderStatus Status { get; private set; }\n    public DateTime CreatedAt { get; private set; }\n    public DateTime? ExecutedAt { get; private set; }\n\n    public Order(string symbol, decimal quantity, decimal price, OrderSide side)\n    {\n        // Fail-fast: enforce construction invariants\n        if (string.IsNullOrWhiteSpace(symbol))\n            throw new ArgumentException(\"Symbol is required\", nameof(symbol));\n\n        if (symbol.Length > 20)\n            throw new ArgumentException(\"Symbol too long (max 20 characters)\", nameof(symbol));\n\n        if (quantity <= 0)\n            throw new ArgumentException(\"Quantity must be positive\", nameof(quantity));\n\n        if (quantity > 1_000_000)\n            throw new ArgumentException(\"Quantity exceeds maximum allowed\", nameof(quantity));\n\n        if (price < 0)\n            throw new ArgumentException(\"Price cannot be negative\", nameof(price));\n\n        if (price > 1_000_000)\n            throw new ArgumentException(\"Price exceeds maximum allowed\", nameof(price));\n\n        Id = Guid.NewGuid();\n        Symbol = symbol.ToUpperInvariant();\n        Quantity = quantity;\n        Price = price;\n        Side = side;\n        Status = OrderStatus.Pending;\n        CreatedAt = DateTime.UtcNow;\n    }\n\n    public void Execute(decimal executedPrice, DateTime executedAt)\n    {\n        // Fail-fast: enforce state transitions\n        if (Status != OrderStatus.Pending)\n            throw new InvalidOperationException(\n                $\"Cannot execute order in {Status} status. Only Pending orders can be executed.\");\n\n        if (executedPrice <= 0)\n            throw new ArgumentException(\"Executed price must be positive\", nameof(executedPrice));\n\n        if (executedAt < CreatedAt)\n            throw new ArgumentException(\"Execution time cannot be before creation time\", nameof(executedAt));\n\n        if (executedAt > DateTime.UtcNow.AddMinutes(1))\n            throw new ArgumentException(\"Execution time cannot be in the future\", nameof(executedAt));\n\n        Price = executedPrice;\n        ExecutedAt = executedAt;\n        Status = OrderStatus.Executed;\n    }\n\n    public void Cancel(string reason)\n    {\n        if (string.IsNullOrWhiteSpace(reason))\n            throw new ArgumentException(\"Cancellation reason is required\", nameof(reason));\n\n        if (Status == OrderStatus.Executed)\n            throw new InvalidOperationException(\"Cannot cancel executed order\");\n\n        if (Status == OrderStatus.Cancelled)\n            throw new InvalidOperationException(\"Order is already cancelled\");\n\n        Status = OrderStatus.Cancelled;\n    }\n}\n\npublic enum OrderStatus { Pending, Executed, Cancelled }\npublic enum OrderSide { Buy, Sell }",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Defensive Programming Vs Fail Fast Exercises",
+    "topicId": "defensive-programming-vs-fail-fast-exercises",
+    "source": "practice/defensive-programming-vs-fail-fast-exercises.md",
+    "id": "card-38"
+  },
+  {
+    "question": "Design a multi-layer validation strategy combining defensive and fail-fast approaches.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Implement validation at multiple layers with appropriate strategy for each."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "// Layer 1: API Controller - Defensive\n[ApiController]\n[Route(\"api/[controller]\")]\npublic class OrdersController : ControllerBase\n{\n    private readonly IOrderService _orderService;\n    private readonly IValidator<CreateOrderRequest> _validator;\n\n    [HttpPost]\n    public async Task<IActionResult> CreateOrder([FromBody] CreateOrderRequest request)\n    {\n        // Defensive: validate DTO\n        if (request == null)\n            return BadRequest(\"Request body is required\");\n\n        var validationResult = await _validator.ValidateAsync(request);\n        if (!validationResult.IsValid)\n            return BadRequest(validationResult.Errors);\n\n        try\n        {\n            var order = await _orderService.CreateOrderAsync(request);\n            return Ok(order);\n        }\n        catch (RiskLimitExceededException ex)\n        {\n            return BadRequest(new { error = ex.Message, code = \"RISK_LIMIT\" });\n        }\n        catch (InsufficientFundsException ex)\n        {\n            return BadRequest(new { error = ex.Message, code = \"INSUFFICIENT_FUNDS\" });\n        }\n        catch (ArgumentException ex)\n        {\n            return BadRequest(new { error = ex.Message });\n        }\n        catch (Exception ex)\n        {\n            _logger.LogError(ex, \"Unexpected error creating order\");\n            return StatusCode(500, \"An unexpected error occurred\");\n        }\n    }\n}\n\n// Layer 2: FluentValidation - Defensive\npublic class CreateOrderRequestValidator : AbstractValidator<CreateOrderRequest>\n{\n    public CreateOrderRequestValidator()\n    {\n        RuleFor(x => x.Symbol)\n            .NotEmpty().WithMessage(\"Symbol is required\")\n            .MaximumLength(20).WithMessage(\"Symbol too long\");\n\n        RuleFor(x => x.Quantity)\n            .GreaterThan(0).WithMessage(\"Quantity must be positive\")\n            .LessThanOrEqualTo(1_000_000).WithMessage(\"Quantity too large\");\n\n        RuleFor(x => x.Price)\n            .GreaterThanOrEqualTo(0).WithMessage(\"Price cannot be negative\")\n            .LessThanOrEqualTo(1_000_000).WithMessage(\"Price too large\");\n\n        RuleFor(x => x.AccountId)\n            .NotEmpty().WithMessage(\"Account ID is required\");\n    }\n}\n\n// Layer 3: Application Service - Mixed\npublic class OrderService : IOrderService\n{\n    public async Task<OrderDto> CreateOrderAsync(CreateOrderRequest request)\n    {\n        // Defensive: check account exists\n        var account = await _accountRepository.GetByIdAsync(request.AccountId);\n        if (account == null)\n            throw new NotFoundException($\"Account {request.AccountId} not found\");\n\n        // Fail-fast: create domain entity (enforces invariants)\n        var order = new Order(\n            request.Symbol,\n            request.Quantity,\n            request.Price,\n            request.Side\n        );\n\n        // Fail-fast: business rules\n        _riskValidator.ValidateOrder(order, account); // Throws on violation\n        _marginValidator.ValidateMargin(order, account); // Throws on violation\n\n        // Defensive: external system integration\n        var reservationResult = await TryReserveFundsAsync(account, order);\n        if (!reservationResult.Success)\n        {\n            throw new InsufficientFundsException(\n                $\"Failed to reserve funds: {reservationResult.Reason}\");\n        }\n\n        await _orderRepository.AddAsync(order);\n        await _unitOfWork.CommitAsync();\n\n        return _mapper.Map<OrderDto>(order);\n    }\n\n    private async Task<ReservationResult> TryReserveFundsAsync(Account account, Order order)\n    {\n        try\n        {\n            return await _fundingService.ReserveFundsAsync(account.Id, order.TotalValue);\n        }\n        catch (Exception ex)\n        {\n            _logger.LogError(ex, \"Failed to reserve funds for order\");\n            return ReservationResult.Failure(\"Service unavailable\");\n        }\n    }\n}\n\n// Layer 4: Domain Entity - Fail-Fast (shown above)",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Defensive Programming Vs Fail Fast Exercises",
+    "topicId": "defensive-programming-vs-fail-fast-exercises",
+    "source": "practice/defensive-programming-vs-fail-fast-exercises.md",
+    "id": "card-39"
+  },
+  {
+    "question": "Implement a circuit breaker pattern that uses defensive programming for external services but fail-fast for internal state.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Create a circuit breaker that protects against external failures defensively while enforcing internal state transitions with fail-fast."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public class CircuitBreaker\n{\n    private CircuitState _state = CircuitState.Closed;\n    private int _failureCount;\n    private DateTime _lastFailureTime;\n    private readonly int _failureThreshold;\n    private readonly TimeSpan _openDuration;\n    private readonly SemaphoreSlim _lock = new(1, 1);\n\n    public CircuitBreaker(int failureThreshold, TimeSpan openDuration)\n    {\n        // Fail-fast: validate constructor parameters\n        if (failureThreshold <= 0)\n            throw new ArgumentException(\"Failure threshold must be positive\", nameof(failureThreshold));\n\n        if (openDuration <= TimeSpan.Zero)\n            throw new ArgumentException(\"Open duration must be positive\", nameof(openDuration));\n\n        _failureThreshold = failureThreshold;\n        _openDuration = openDuration;\n    }\n\n    public async Task<T> ExecuteAsync<T>(Func<Task<T>> operation)\n    {\n        // Fail-fast: null check\n        if (operation == null)\n            throw new ArgumentNullException(nameof(operation));\n\n        await _lock.WaitAsync();\n        try\n        {\n            // Check if we should transition from Open to HalfOpen\n            if (_state == CircuitState.Open &&\n                DateTime.UtcNow - _lastFailureTime >= _openDuration)\n            {\n                _state = CircuitState.HalfOpen;\n            }\n\n            // Fail-fast: enforce circuit state\n            if (_state == CircuitState.Open)\n            {\n                throw new CircuitBreakerOpenException(\n                    $\"Circuit breaker is open. Will retry after {_openDuration}\");\n            }\n        }\n        finally\n        {\n            _lock.Release();\n        }\n\n        // Defensive: try operation and handle failures gracefully\n        try\n        {\n            var result = await operation();\n\n            // Success - reset if in HalfOpen\n            if (_state == CircuitState.HalfOpen)\n            {\n                await ResetAsync();\n            }\n\n            return result;\n        }\n        catch (Exception ex) when (!(ex is CircuitBreakerOpenException))\n        {\n            // Defensive: record failure and decide state transition\n            await RecordFailureAsync(ex);\n            throw; // Re-throw original exception\n        }\n    }\n\n    private async Task RecordFailureAsync(Exception ex)\n    {\n        await _lock.WaitAsync();\n        try\n        {\n            _failureCount++;\n            _lastFailureTime = DateTime.UtcNow;\n\n            if (_state == CircuitState.HalfOpen)\n            {\n                // Fail immediately on failure in HalfOpen state\n                _state = CircuitState.Open;\n            }\n            else if (_failureCount >= _failureThreshold)\n            {\n                _state = CircuitState.Open;\n            }\n        }\n        finally\n        {\n            _lock.Release();\n        }\n    }\n\n    private async Task ResetAsync()\n    {\n        await _lock.WaitAsync();\n        try\n        {\n            _failureCount = 0;\n            _state = CircuitState.Closed;\n        }\n        finally\n        {\n            _lock.Release();\n        }\n    }\n}\n\npublic enum CircuitState { Closed, Open, HalfOpen }",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Defensive Programming Vs Fail Fast Exercises",
+    "topicId": "defensive-programming-vs-fail-fast-exercises",
+    "source": "practice/defensive-programming-vs-fail-fast-exercises.md",
+    "id": "card-40"
+  },
+  {
+    "question": "Design a price validation system that combines defensive parsing with fail-fast business rule enforcement.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Implement defensive parsing for external data and fail-fast validation for business rules."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public class PriceValidationService\n{\n    public ValidatedPrice ValidateAndParsePrice(string symbol, string priceData)\n    {\n        // Fail-fast: validate inputs\n        if (string.IsNullOrWhiteSpace(symbol))\n            throw new ArgumentException(\"Symbol is required\", nameof(symbol));\n\n        // Defensive: parse external data\n        if (string.IsNullOrWhiteSpace(priceData))\n        {\n            _logger.LogWarning(\"Empty price data for {Symbol}\", symbol);\n            return ValidatedPrice.Invalid(\"Price data is empty\");\n        }\n\n        if (!decimal.TryParse(priceData, NumberStyles.Any, CultureInfo.InvariantCulture, out var price))\n        {\n            _logger.LogWarning(\"Invalid price format for {Symbol}: {PriceData}\", symbol, priceData);\n            return ValidatedPrice.Invalid($\"Invalid price format: {priceData}\");\n        }\n\n        // Fail-fast: enforce business rules\n        if (price < 0)\n            throw new InvalidPriceException($\"Price cannot be negative: {price}\");\n\n        if (price == 0)\n            throw new InvalidPriceException(\"Price cannot be zero\");\n\n        if (price > 1_000_000)\n            throw new InvalidPriceException($\"Price exceeds maximum allowed: {price}\");\n\n        // Defensive: check for suspicious prices (but don't fail)\n        var previousPrice = _priceHistory.GetLastPrice(symbol);\n        if (previousPrice.HasValue)\n        {\n            var change = Math.Abs((price - previousPrice.Value) / previousPrice.Value);\n            if (change > 0.5m) // 50% change\n            {\n                _logger.LogWarning(\n                    \"Suspicious price change for {Symbol}: {PreviousPrice} -> {NewPrice} ({ChangePercent:P})\",\n                    symbol, previousPrice, price, change);\n\n                // Flag for review but allow it\n                return ValidatedPrice.Valid(price, isSuspicious: true);\n            }\n        }\n\n        return ValidatedPrice.Valid(price, isSuspicious: false);\n    }\n}\n\npublic class ValidatedPrice\n{\n    public bool IsValid { get; }\n    public decimal? Value { get; }\n    public string ErrorMessage { get; }\n    public bool IsSuspicious { get; }\n\n    private ValidatedPrice(bool isValid, decimal? value, string errorMessage, bool isSuspicious)\n    {\n        IsValid = isValid;\n        Value = value;\n        ErrorMessage = errorMessage;\n        IsSuspicious = isSuspicious;\n    }\n\n    public static ValidatedPrice Valid(decimal value, bool isSuspicious) =>\n        new(true, value, null, isSuspicious);\n\n    public static ValidatedPrice Invalid(string errorMessage) =>\n        new(false, null, errorMessage, false);\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Defensive Programming Vs Fail Fast Exercises",
+    "topicId": "defensive-programming-vs-fail-fast-exercises",
+    "source": "practice/defensive-programming-vs-fail-fast-exercises.md",
+    "id": "card-41"
+  },
+  {
+    "question": "Implement defensive retry logic with fail-fast on non-retryable errors.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Create a retry mechanism that defensively handles transient failures but fails fast on permanent errors."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public class ResilientHttpClient\n{\n    private readonly HttpClient _httpClient;\n    private readonly ILogger _logger;\n\n    public async Task<T> GetWithRetryAsync<T>(\n        string url,\n        int maxRetries = 3,\n        CancellationToken cancellationToken = default)\n    {\n        // Fail-fast: validate parameters\n        if (string.IsNullOrWhiteSpace(url))\n            throw new ArgumentException(\"URL is required\", nameof(url));\n\n        if (maxRetries < 0)\n            throw new ArgumentException(\"Max retries cannot be negative\", nameof(maxRetries));\n\n        Exception lastException = null;\n\n        for (int attempt = 0; attempt <= maxRetries; attempt++)\n        {\n            try\n            {\n                var response = await _httpClient.GetAsync(url, cancellationToken);\n\n                // Fail-fast: 4xx errors are not retryable (client errors)\n                if ((int)response.StatusCode >= 400 && (int)response.StatusCode < 500)\n                {\n                    var content = await response.Content.ReadAsStringAsync();\n                    throw new HttpRequestException(\n                        $\"Client error {response.StatusCode}: {content}. This is not retryable.\");\n                }\n\n                // Defensive: 5xx errors are retryable (server errors)\n                if (!response.IsSuccessStatusCode)\n                {\n                    _logger.LogWarning(\n                        \"Request failed with {StatusCode} on attempt {Attempt}/{MaxRetries}\",\n                        response.StatusCode, attempt + 1, maxRetries + 1);\n\n                    if (attempt < maxRetries)\n                    {\n                        await DelayWithJitterAsync(attempt);\n                        continue;\n                    }\n\n                    throw new HttpRequestException($\"Request failed after {maxRetries + 1} attempts\");\n                }\n\n                return await response.Content.ReadFromJsonAsync<T>(cancellationToken);\n            }\n            catch (HttpRequestException) when ((int?)null >= 400 && (int?)null < 500)\n            {\n                // Re-throw client errors immediately (fail-fast)\n                throw;\n            }\n            catch (OperationCanceledException)\n            {\n                // Re-throw cancellation immediately (fail-fast)\n                throw;\n            }\n            catch (Exception ex)\n            {\n                // Defensive: log and retry on transient errors\n                lastException = ex;\n                _logger.LogWarning(\n                    ex,\n                    \"Transient error on attempt {Attempt}/{MaxRetries}\",\n                    attempt + 1, maxRetries + 1);\n\n                if (attempt < maxRetries)\n                {\n                    await DelayWithJitterAsync(attempt);\n                }\n            }\n        }\n\n        throw new HttpRequestException(\n            $\"Request failed after {maxRetries + 1} attempts\", lastException);\n    }\n\n    private async Task DelayWithJitterAsync(int attempt)\n    {\n        var baseDelay = TimeSpan.FromMilliseconds(100 * Math.Pow(2, attempt));\n        var jitter = TimeSpan.FromMilliseconds(Random.Shared.Next(0, 100));\n        await Task.Delay(baseDelay + jitter);\n    }\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Defensive Programming Vs Fail Fast Exercises",
+    "topicId": "defensive-programming-vs-fail-fast-exercises",
+    "source": "practice/defensive-programming-vs-fail-fast-exercises.md",
+    "id": "card-42"
+  },
+  {
+    "question": "Implement order validation with defensive checks for external data and fail-fast for business rules.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Create a comprehensive order validator for a trading system."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public class OrderValidator\n{\n    private readonly IAccountRepository _accountRepository;\n    private readonly IMarketDataService _marketDataService;\n    private readonly IRiskLimitService _riskLimitService;\n    private readonly ILogger _logger;\n\n    public async Task<ValidationResult> ValidateOrderAsync(CreateOrderRequest request)\n    {\n        // Fail-fast: null check\n        if (request == null)\n            throw new ArgumentNullException(nameof(request));\n\n        var errors = new List<string>();\n\n        // Defensive: validate symbol format\n        if (string.IsNullOrWhiteSpace(request.Symbol))\n        {\n            errors.Add(\"Symbol is required\");\n        }\n        else if (request.Symbol.Length > 20)\n        {\n            errors.Add(\"Symbol too long (max 20 characters)\");\n        }\n\n        // Defensive: validate quantity\n        if (request.Quantity <= 0)\n        {\n            errors.Add(\"Quantity must be positive\");\n        }\n        else if (request.Quantity > 10_000_000)\n        {\n            errors.Add(\"Quantity exceeds maximum allowed\");\n        }\n\n        // Defensive: validate price\n        if (request.Price < 0)\n        {\n            errors.Add(\"Price cannot be negative\");\n        }\n        else if (request.Price > 1_000_000)\n        {\n            errors.Add(\"Price exceeds maximum allowed\");\n        }\n\n        // Return early if basic validation failed\n        if (errors.Any())\n        {\n            return ValidationResult.Failure(errors);\n        }\n\n        // Defensive: check account exists\n        var account = await _accountRepository.GetByIdAsync(request.AccountId);\n        if (account == null)\n        {\n            errors.Add($\"Account {request.AccountId} not found\");\n            return ValidationResult.Failure(errors);\n        }\n\n        // Fail-fast: account must be active\n        if (!account.IsActive)\n        {\n            throw new InvalidOperationException($\"Account {request.AccountId} is not active\");\n        }\n\n        // Defensive: check if symbol is tradeable\n        var marketData = await _marketDataService.GetMarketDataAsync(request.Symbol);\n        if (marketData == null)\n        {\n            _logger.LogWarning(\"Market data not available for {Symbol}\", request.Symbol);\n            errors.Add($\"Market data not available for {request.Symbol}\");\n        }\n        else if (!marketData.IsTradeable)\n        {\n            errors.Add($\"{request.Symbol} is not currently tradeable\");\n        }\n        else\n        {\n            // Defensive: check price deviation\n            var deviation = Math.Abs(request.Price - marketData.LastPrice) / marketData.LastPrice;\n            if (deviation > 0.1m) // 10% deviation\n            {\n                _logger.LogWarning(\n                    \"Large price deviation for {Symbol}: requested {RequestPrice}, market {MarketPrice}\",\n                    request.Symbol, request.Price, marketData.LastPrice);\n                errors.Add($\"Price deviates significantly from market price ({deviation:P})\");\n            }\n        }\n\n        // Fail-fast: check risk limits (business rules)\n        try\n        {\n            var orderValue = request.Quantity * request.Price;\n            _riskLimitService.ValidateOrderValue(account, orderValue);\n            _riskLimitService.ValidatePositionLimit(account, request.Symbol, request.Quantity);\n            _riskLimitService.ValidateMarginRequirement(account, orderValue);\n        }\n        catch (RiskLimitException ex)\n        {\n            // Convert business rule violations to validation errors\n            errors.Add(ex.Message);\n        }\n\n        return errors.Any()\n            ? ValidationResult.Failure(errors)\n            : ValidationResult.Success();\n    }\n}\n\npublic class ValidationResult\n{\n    public bool IsValid { get; }\n    public IReadOnlyList<string> Errors { get; }\n\n    private ValidationResult(bool isValid, IReadOnlyList<string> errors)\n    {\n        IsValid = isValid;\n        Errors = errors ?? new List<string>();\n    }\n\n    public static ValidationResult Success() =>\n        new(true, Array.Empty<string>());\n\n    public static ValidationResult Failure(List<string> errors) =>\n        new(false, errors);\n}",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Total Exercises: 15+ comprehensive scenarios"
+      },
+      {
+        "type": "text",
+        "content": "Practice implementing the right balance between defensive programming and fail-fast for different layers of your application!"
+      }
+    ],
+    "category": "practice",
+    "topic": "Defensive Programming Vs Fail Fast Exercises",
+    "topicId": "defensive-programming-vs-fail-fast-exercises",
+    "source": "practice/defensive-programming-vs-fail-fast-exercises.md",
+    "id": "card-43"
+  },
+  {
     "question": "When should you use ArrayPool<T>?",
     "answer": [
       {
@@ -724,7 +950,7 @@ window.PRACTICE_DATA = [
     "topic": "Index",
     "topicId": "index",
     "source": "practice/Memory-Allocation-Discipline/index.md",
-    "id": "card-34"
+    "id": "card-44"
   },
   {
     "question": "Show how Span<T> can avoid allocations when parsing.",
@@ -744,7 +970,7 @@ window.PRACTICE_DATA = [
     "topic": "Index",
     "topicId": "index",
     "source": "practice/Memory-Allocation-Discipline/index.md",
-    "id": "card-35"
+    "id": "card-45"
   },
   {
     "question": "When would you use ValueTask instead of Task?",
@@ -758,7 +984,7 @@ window.PRACTICE_DATA = [
     "topic": "Index",
     "topicId": "index",
     "source": "practice/Memory-Allocation-Discipline/index.md",
-    "id": "card-36"
+    "id": "card-46"
   },
   {
     "question": "Why is string concatenation in a loop expensive, and how do you fix it?",
@@ -778,7 +1004,7 @@ window.PRACTICE_DATA = [
     "topic": "Index",
     "topicId": "index",
     "source": "practice/Memory-Allocation-Discipline/index.md",
-    "id": "card-37"
+    "id": "card-47"
   },
   {
     "question": "How do closures create hidden allocations?",
@@ -811,7 +1037,7 @@ window.PRACTICE_DATA = [
     "topic": "Index",
     "topicId": "index",
     "source": "practice/Memory-Allocation-Discipline/index.md",
-    "id": "card-38"
+    "id": "card-48"
   },
   {
     "question": "Given a list of trades with timestamps, return the latest trade per account using LINQ.",
@@ -835,7 +1061,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-39"
+    "id": "card-49"
   },
   {
     "question": "Implement a method that flattens nested lists of instrument codes while preserving ordering.",
@@ -859,7 +1085,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-40"
+    "id": "card-50"
   },
   {
     "question": "Explain the difference between SelectMany and nested loops. When is each preferable?",
@@ -883,7 +1109,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-41"
+    "id": "card-51"
   },
   {
     "question": "How would you detect duplicate orders in a stream using GroupBy and produce a summary?",
@@ -907,7 +1133,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-42"
+    "id": "card-52"
   },
   {
     "question": "Sketch code to call three REST endpoints concurrently, cancel if any take longer than 3 seconds, and aggregate results.",
@@ -931,7 +1157,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-43"
+    "id": "card-53"
   },
   {
     "question": "Implement a resilient HTTP client with retry and circuit breaker policies using Polly.",
@@ -955,7 +1181,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-44"
+    "id": "card-54"
   },
   {
     "question": "How would you handle backpressure when consuming a fast message queue with a slower downstream API?",
@@ -979,7 +1205,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-45"
+    "id": "card-55"
   },
   {
     "question": "Explain why you might use SemaphoreSlim with async code over lock.",
@@ -1003,7 +1229,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-46"
+    "id": "card-56"
   },
   {
     "question": "Describe the ASP.NET Core middleware pipeline for a request hitting an authenticated endpoint with custom exception handling.",
@@ -1027,7 +1253,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-47"
+    "id": "card-57"
   },
   {
     "question": "How do you implement API versioning and backward compatibility?",
@@ -1051,7 +1277,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-48"
+    "id": "card-58"
   },
   {
     "question": "Discuss strategies for rate limiting and request throttling.",
@@ -1075,7 +1301,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-49"
+    "id": "card-59"
   },
   {
     "question": "How would you log correlation IDs across services and propagate them to downstream dependencies?",
@@ -1099,7 +1325,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-50"
+    "id": "card-60"
   },
   {
     "question": "Design a service that ingests MT5 tick data, normalizes it, caches latest prices, and exposes them via REST/WebSocket.",
@@ -1123,7 +1349,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-51"
+    "id": "card-61"
   },
   {
     "question": "Design an API that receives orders, validates, routes to MT4/MT5, and confirms execution. Include failure recovery.",
@@ -1147,7 +1373,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-52"
+    "id": "card-62"
   },
   {
     "question": "Architect a system to collect metrics from trading microservices and alert on anomalies.",
@@ -1171,7 +1397,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-53"
+    "id": "card-63"
   },
   {
     "question": "Discuss how you would integrate an external risk management engine into an existing microservices ecosystem.",
@@ -1195,7 +1421,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-54"
+    "id": "card-64"
   },
   {
     "question": "Compare RabbitMQ and ZeroMQ for distributing price updates. When would you choose one over the other?",
@@ -1209,7 +1435,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-55"
+    "id": "card-65"
   },
   {
     "question": "Explain how to ensure at-least-once delivery with RabbitMQ while preventing duplicate processing.",
@@ -1233,7 +1459,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-56"
+    "id": "card-66"
   },
   {
     "question": "How would you design a saga pattern to coordinate account funding across multiple services?",
@@ -1257,7 +1483,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-57"
+    "id": "card-67"
   },
   {
     "question": "Discuss the outbox pattern and how it prevents message loss in event-driven systems.",
@@ -1281,7 +1507,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-58"
+    "id": "card-68"
   },
   {
     "question": "Write a SQL query to calculate the rolling 7-day trade volume per instrument.",
@@ -1305,7 +1531,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-59"
+    "id": "card-69"
   },
   {
     "question": "Explain how you would choose between normalized schemas and denormalized tables for reporting.",
@@ -1319,7 +1545,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-60"
+    "id": "card-70"
   },
   {
     "question": "Describe the differences between clustered and non-clustered indexes and when to use covering indexes.",
@@ -1343,7 +1569,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-61"
+    "id": "card-71"
   },
   {
     "question": "Walk through handling a long-running report query that impacts OLTP performance.",
@@ -1357,7 +1583,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-62"
+    "id": "card-72"
   },
   {
     "question": "Describe the lifecycle of a forex trade from placement to settlement.",
@@ -1371,7 +1597,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-63"
+    "id": "card-73"
   },
   {
     "question": "How would you integrate with MT4/MT5 APIs for trade execution in C#? Mention authentication, session management, and error handling.",
@@ -1391,7 +1617,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-64"
+    "id": "card-74"
   },
   {
     "question": "What are common risk checks before executing a client order (e.g., margin, exposure limits)?",
@@ -1405,7 +1631,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-65"
+    "id": "card-75"
   },
   {
     "question": "Explain how you'd handle market data bursts without dropping updates.",
@@ -1419,7 +1645,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-66"
+    "id": "card-76"
   },
   {
     "question": "Tell me about a time you led a critical production fix under pressure.",
@@ -1433,7 +1659,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-67"
+    "id": "card-77"
   },
   {
     "question": "Describe a situation where you improved a process by automating manual work.",
@@ -1447,7 +1673,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-68"
+    "id": "card-78"
   },
   {
     "question": "Discuss a conflict within a team and how you resolved it.",
@@ -1461,7 +1687,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-69"
+    "id": "card-79"
   },
   {
     "question": "Share a story that demonstrates your commitment to documentation or knowledge sharing.",
@@ -1475,7 +1701,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-70"
+    "id": "card-80"
   },
   {
     "question": "Identify the SRP violations in this User class and refactor it.",
@@ -1505,7 +1731,7 @@ window.PRACTICE_DATA = [
     "topic": "S Single Responsibility Principle Exercises",
     "topicId": "s-single-responsibility-principle-exercises",
     "source": "practice/SOLID/S-Single-Responsibility-Principle-Exercises.md",
-    "id": "card-71"
+    "id": "card-81"
   },
   {
     "question": "Refactor this OrderProcessor class to follow SRP.",
@@ -1531,7 +1757,7 @@ window.PRACTICE_DATA = [
     "topic": "S Single Responsibility Principle Exercises",
     "topicId": "s-single-responsibility-principle-exercises",
     "source": "practice/SOLID/S-Single-Responsibility-Principle-Exercises.md",
-    "id": "card-72"
+    "id": "card-82"
   },
   {
     "question": "Identify SRP violations in this ReportGenerator class.",
@@ -1557,7 +1783,7 @@ window.PRACTICE_DATA = [
     "topic": "S Single Responsibility Principle Exercises",
     "topicId": "s-single-responsibility-principle-exercises",
     "source": "practice/SOLID/S-Single-Responsibility-Principle-Exercises.md",
-    "id": "card-73"
+    "id": "card-83"
   },
   {
     "question": "Refactor this Employee class that handles both employee data and payroll calculations.",
@@ -1583,7 +1809,7 @@ window.PRACTICE_DATA = [
     "topic": "S Single Responsibility Principle Exercises",
     "topicId": "s-single-responsibility-principle-exercises",
     "source": "practice/SOLID/S-Single-Responsibility-Principle-Exercises.md",
-    "id": "card-74"
+    "id": "card-84"
   },
   {
     "question": "Design a logging system that follows SRP. It should support multiple log levels, formats, and destinations.",
@@ -1603,7 +1829,7 @@ window.PRACTICE_DATA = [
     "topic": "S Single Responsibility Principle Exercises",
     "topicId": "s-single-responsibility-principle-exercises",
     "source": "practice/SOLID/S-Single-Responsibility-Principle-Exercises.md",
-    "id": "card-75"
+    "id": "card-85"
   },
   {
     "question": "Create a file processing system that reads, validates, transforms, and stores data while following SRP.",
@@ -1623,7 +1849,7 @@ window.PRACTICE_DATA = [
     "topic": "S Single Responsibility Principle Exercises",
     "topicId": "s-single-responsibility-principle-exercises",
     "source": "practice/SOLID/S-Single-Responsibility-Principle-Exercises.md",
-    "id": "card-76"
+    "id": "card-86"
   },
   {
     "question": "Design an e-commerce checkout system following SRP. Include inventory checking, payment processing, order creation, and notifications.",
@@ -1651,7 +1877,7 @@ window.PRACTICE_DATA = [
     "topic": "S Single Responsibility Principle Exercises",
     "topicId": "s-single-responsibility-principle-exercises",
     "source": "practice/SOLID/S-Single-Responsibility-Principle-Exercises.md",
-    "id": "card-77"
+    "id": "card-87"
   },
   {
     "question": "Describe the ASP.NET Core middleware pipeline for a request hitting an authenticated endpoint with custom exception handling.",
@@ -1675,7 +1901,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-78"
+    "id": "card-88"
   },
   {
     "question": "How do you implement API versioning and backward compatibility?",
@@ -1699,7 +1925,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-79"
+    "id": "card-89"
   },
   {
     "question": "Discuss strategies for rate limiting and request throttling.",
@@ -1723,7 +1949,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-80"
+    "id": "card-90"
   },
   {
     "question": "How would you log correlation IDs across services and propagate them to downstream dependencies?",
@@ -1747,7 +1973,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-81"
+    "id": "card-91"
   },
   {
     "question": "Explain the difference between Transient, Scoped, and Singleton dependency injection lifetimes.",
@@ -1788,7 +2014,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-82"
+    "id": "card-92"
   },
   {
     "question": "Create custom middleware that validates API keys from request headers.",
@@ -1808,7 +2034,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-83"
+    "id": "card-93"
   },
   {
     "question": "Implement global exception handling middleware that returns consistent error responses.",
@@ -1828,7 +2054,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-84"
+    "id": "card-94"
   },
   {
     "question": "Design a health check endpoint that verifies database connectivity, external API availability, and cache status.",
@@ -1848,7 +2074,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-85"
+    "id": "card-95"
   },
   {
     "question": "Implement request/response logging middleware with performance tracking.",
@@ -1868,7 +2094,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-86"
+    "id": "card-96"
   },
   {
     "question": "Create a minimal API health endpoint with dependency injection.",
@@ -1892,7 +2118,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-87"
+    "id": "card-97"
   },
   {
     "question": "Implement middleware that enforces request size limits and prevents large payload attacks.",
@@ -1912,7 +2138,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-88"
+    "id": "card-98"
   },
   {
     "question": "Design a dependency injection container configuration that uses factory patterns for complex object creation.",
@@ -1932,7 +2158,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-89"
+    "id": "card-99"
   },
   {
     "question": "Implement multi-tenant support using scoped service provider per tenant.",
@@ -1952,7 +2178,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-90"
+    "id": "card-100"
   },
   {
     "question": "Create request validation middleware using FluentValidation.",
@@ -1972,7 +2198,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-91"
+    "id": "card-101"
   },
   {
     "question": "Implement authentication with multiple schemes (JWT + API Key).",
@@ -1992,7 +2218,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-92"
+    "id": "card-102"
   },
   {
     "question": "Implement a custom rate limiting policy based on user subscription tier.",
@@ -2012,7 +2238,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-93"
+    "id": "card-103"
   },
   {
     "question": "Create a distributed rate limiter using Redis.",
@@ -2032,7 +2258,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-94"
+    "id": "card-104"
   },
   {
     "question": "Design an API gateway pattern that routes requests to different microservices based on path.",
@@ -2052,7 +2278,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-95"
+    "id": "card-105"
   },
   {
     "question": "Implement request deduplication middleware using distributed cache.",
@@ -2072,7 +2298,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-96"
+    "id": "card-106"
   },
   {
     "question": "Create a background service that performs periodic health checks on external dependencies.",
@@ -2092,7 +2318,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-97"
+    "id": "card-107"
   },
   {
     "question": "Implement resource-based authorization for multi-tenant applications.",
@@ -2112,7 +2338,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-98"
+    "id": "card-108"
   },
   {
     "question": "Implement CORS policy dynamically based on database configuration.",
@@ -2132,7 +2358,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-99"
+    "id": "card-109"
   },
   {
     "question": "Implement ETag support for GET endpoints with conditional requests.",
@@ -2152,7 +2378,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-100"
+    "id": "card-110"
   },
   {
     "question": "Enforce request body size limits for upload endpoints.",
@@ -2172,7 +2398,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-101"
+    "id": "card-111"
   },
   {
     "question": "Create a readiness endpoint that checks dependencies.",
@@ -2192,7 +2418,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-102"
+    "id": "card-112"
   },
   {
     "question": "Implement resource-based authorization with policies.",
@@ -2212,7 +2438,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-103"
+    "id": "card-113"
   },
   {
     "question": "Apply per-tenant rate limits with a custom policy.",
@@ -2240,7 +2466,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-104"
+    "id": "card-114"
   },
   {
     "question": "Sketch code to call three REST endpoints concurrently, cancel if any take longer than 3 seconds, and aggregate results.",
@@ -2264,7 +2490,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-105"
+    "id": "card-115"
   },
   {
     "question": "Implement a resilient HTTP client with retry and circuit breaker policies using Polly.",
@@ -2288,7 +2514,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-106"
+    "id": "card-116"
   },
   {
     "question": "How would you handle backpressure when consuming a fast message queue with a slower downstream API?",
@@ -2312,7 +2538,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-107"
+    "id": "card-117"
   },
   {
     "question": "Explain why you might use SemaphoreSlim with async code over lock.",
@@ -2336,7 +2562,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-108"
+    "id": "card-118"
   },
   {
     "question": "Implement an async method that times out after a specified duration and returns a default value.",
@@ -2356,7 +2582,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-109"
+    "id": "card-119"
   },
   {
     "question": "Create a method that retries an operation with exponential backoff.",
@@ -2376,7 +2602,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-110"
+    "id": "card-120"
   },
   {
     "question": "Implement a method that processes items in batches with a maximum degree of parallelism.",
@@ -2396,7 +2622,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-111"
+    "id": "card-121"
   },
   {
     "question": "Create an async producer-consumer pattern using Channel<T>.",
@@ -2416,7 +2642,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-112"
+    "id": "card-122"
   },
   {
     "question": "Implement proper cancellation handling in an async method that makes multiple API calls.",
@@ -2436,7 +2662,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-113"
+    "id": "card-123"
   },
   {
     "question": "Implement an async lazy initialization pattern that ensures a resource is initialized only once.",
@@ -2456,7 +2682,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-114"
+    "id": "card-124"
   },
   {
     "question": "Create a rate limiter using SemaphoreSlim and Timer for token bucket algorithm.",
@@ -2476,7 +2702,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-115"
+    "id": "card-125"
   },
   {
     "question": "Implement async dispose pattern (IAsyncDisposable) for a resource that requires async cleanup.",
@@ -2496,7 +2722,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-116"
+    "id": "card-126"
   },
   {
     "question": "Create a circuit breaker implementation from scratch.",
@@ -2516,7 +2742,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-117"
+    "id": "card-127"
   },
   {
     "question": "Implement a parallel batch processor that maintains order of results.",
@@ -2536,7 +2762,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-118"
+    "id": "card-128"
   },
   {
     "question": "Implement a fan-out/fan-in pattern where multiple workers process items and results are aggregated.",
@@ -2556,7 +2782,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-119"
+    "id": "card-129"
   },
   {
     "question": "Create a coordinated shutdown mechanism for multiple background tasks.",
@@ -2576,7 +2802,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-120"
+    "id": "card-130"
   },
   {
     "question": "Implement async event aggregation that batches events before processing.",
@@ -2596,7 +2822,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-121"
+    "id": "card-131"
   },
   {
     "question": "Implement a bulkhead pattern to isolate failures.",
@@ -2616,7 +2842,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-122"
+    "id": "card-132"
   },
   {
     "question": "Create a fallback mechanism that returns cached data when an API call fails.",
@@ -2644,7 +2870,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-123"
+    "id": "card-133"
   },
   {
     "question": "Sketch code to call three REST endpoints concurrently, cancel if any take longer than 3 seconds, and aggregate results.",
@@ -2668,7 +2894,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-124"
+    "id": "card-134"
   },
   {
     "question": "Implement a resilient HTTP client with retry and circuit breaker policies using Polly.",
@@ -2692,7 +2918,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-125"
+    "id": "card-135"
   },
   {
     "question": "How would you handle backpressure when consuming a fast message queue with a slower downstream API?",
@@ -2716,7 +2942,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-126"
+    "id": "card-136"
   },
   {
     "question": "Explain why you might use SemaphoreSlim with async code over lock.",
@@ -2740,7 +2966,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-127"
+    "id": "card-137"
   },
   {
     "question": "Implement an async method that times out after a specified duration and returns a default value.",
@@ -2760,7 +2986,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-128"
+    "id": "card-138"
   },
   {
     "question": "Create a method that retries an operation with exponential backoff.",
@@ -2780,7 +3006,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-129"
+    "id": "card-139"
   },
   {
     "question": "Implement a method that processes items in batches with a maximum degree of parallelism.",
@@ -2800,7 +3026,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-130"
+    "id": "card-140"
   },
   {
     "question": "Create an async producer-consumer pattern using Channel<T>.",
@@ -2820,7 +3046,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-131"
+    "id": "card-141"
   },
   {
     "question": "Implement proper cancellation handling in an async method that makes multiple API calls.",
@@ -2840,7 +3066,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-132"
+    "id": "card-142"
   },
   {
     "question": "Implement an async lazy initialization pattern that ensures a resource is initialized only once.",
@@ -2860,7 +3086,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-133"
+    "id": "card-143"
   },
   {
     "question": "Create a rate limiter using SemaphoreSlim and Timer for token bucket algorithm.",
@@ -2880,7 +3106,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-134"
+    "id": "card-144"
   },
   {
     "question": "Implement async dispose pattern (IAsyncDisposable) for a resource that requires async cleanup.",
@@ -2900,7 +3126,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-135"
+    "id": "card-145"
   },
   {
     "question": "Create a circuit breaker implementation from scratch.",
@@ -2920,7 +3146,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-136"
+    "id": "card-146"
   },
   {
     "question": "Implement a parallel batch processor that maintains order of results.",
@@ -2940,7 +3166,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-137"
+    "id": "card-147"
   },
   {
     "question": "Implement a fan-out/fan-in pattern where multiple workers process items and results are aggregated.",
@@ -2960,7 +3186,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-138"
+    "id": "card-148"
   },
   {
     "question": "Create a coordinated shutdown mechanism for multiple background tasks.",
@@ -2980,7 +3206,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-139"
+    "id": "card-149"
   },
   {
     "question": "Implement async event aggregation that batches events before processing.",
@@ -3000,7 +3226,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-140"
+    "id": "card-150"
   },
   {
     "question": "Implement a bulkhead pattern to isolate failures.",
@@ -3020,7 +3246,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-141"
+    "id": "card-151"
   },
   {
     "question": "Create a fallback mechanism that returns cached data when an API call fails.",
@@ -3040,7 +3266,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-142"
+    "id": "card-152"
   },
   {
     "question": "Implement timeout policies for different types of operations (fast, medium, slow).",
@@ -3060,7 +3286,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-143"
+    "id": "card-153"
   },
   {
     "question": "Implement a download manager that downloads multiple files concurrently with progress reporting.",
@@ -3080,7 +3306,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-144"
+    "id": "card-154"
   },
   {
     "question": "How do you run tasks in parallel but keep partial results when some fail?",
@@ -3100,7 +3326,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-145"
+    "id": "card-155"
   },
   {
     "question": "Implement bounded parallelism using Parallel.ForEachAsync.",
@@ -3120,7 +3346,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-146"
+    "id": "card-156"
   },
   {
     "question": "Add jitter to retry backoff to avoid thundering herds.",
@@ -3140,7 +3366,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-147"
+    "id": "card-157"
   },
   {
     "question": "Stream results with IAsyncEnumerable and cancellation.",
@@ -3160,7 +3386,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-148"
+    "id": "card-158"
   },
   {
     "question": "Design a simple circuit breaker state machine.",
@@ -3188,7 +3414,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-149"
+    "id": "card-159"
   },
   {
     "question": "Tell me about a time you improved reliability under tight deadlines.",
@@ -3202,7 +3428,7 @@ window.PRACTICE_DATA = [
     "topic": "Behavioral Questions",
     "topicId": "behavioral-questions",
     "source": "practice/sub-notes/behavioral-questions.md",
-    "id": "card-150"
+    "id": "card-160"
   },
   {
     "question": "Describe a time you pushed back on a requirement.",
@@ -3216,7 +3442,7 @@ window.PRACTICE_DATA = [
     "topic": "Behavioral Questions",
     "topicId": "behavioral-questions",
     "source": "practice/sub-notes/behavioral-questions.md",
-    "id": "card-151"
+    "id": "card-161"
   },
   {
     "question": "Share a story where you mentored a teammate.",
@@ -3230,7 +3456,7 @@ window.PRACTICE_DATA = [
     "topic": "Behavioral Questions",
     "topicId": "behavioral-questions",
     "source": "practice/sub-notes/behavioral-questions.md",
-    "id": "card-152"
+    "id": "card-162"
   },
   {
     "question": "Describe a time you resolved a production incident.",
@@ -3244,7 +3470,7 @@ window.PRACTICE_DATA = [
     "topic": "Behavioral Questions",
     "topicId": "behavioral-questions",
     "source": "practice/sub-notes/behavioral-questions.md",
-    "id": "card-153"
+    "id": "card-163"
   },
   {
     "question": "Tell me about a technical decision that you later reconsidered.",
@@ -3258,7 +3484,7 @@ window.PRACTICE_DATA = [
     "topic": "Behavioral Questions",
     "topicId": "behavioral-questions",
     "source": "practice/sub-notes/behavioral-questions.md",
-    "id": "card-154"
+    "id": "card-164"
   },
   {
     "question": "Describe a time you influenced without authority.",
@@ -3272,7 +3498,7 @@ window.PRACTICE_DATA = [
     "topic": "Behavioral Questions",
     "topicId": "behavioral-questions",
     "source": "practice/sub-notes/behavioral-questions.md",
-    "id": "card-155"
+    "id": "card-165"
   },
   {
     "question": "How do you handle competing priorities?",
@@ -3286,7 +3512,7 @@ window.PRACTICE_DATA = [
     "topic": "Behavioral Questions",
     "topicId": "behavioral-questions",
     "source": "practice/sub-notes/behavioral-questions.md",
-    "id": "card-156"
+    "id": "card-166"
   },
   {
     "question": "Tell me about a time you improved a process.",
@@ -3300,7 +3526,7 @@ window.PRACTICE_DATA = [
     "topic": "Behavioral Questions",
     "topicId": "behavioral-questions",
     "source": "practice/sub-notes/behavioral-questions.md",
-    "id": "card-157"
+    "id": "card-167"
   },
   {
     "question": "Describe a conflict that you resolved successfully.",
@@ -3314,7 +3540,7 @@ window.PRACTICE_DATA = [
     "topic": "Behavioral Questions",
     "topicId": "behavioral-questions",
     "source": "practice/sub-notes/behavioral-questions.md",
-    "id": "card-158"
+    "id": "card-168"
   },
   {
     "question": "Share a time you handled ambiguous requirements.",
@@ -3328,7 +3554,7 @@ window.PRACTICE_DATA = [
     "topic": "Behavioral Questions",
     "topicId": "behavioral-questions",
     "source": "practice/sub-notes/behavioral-questions.md",
-    "id": "card-159"
+    "id": "card-169"
   },
   {
     "question": "Implement a token bucket rate limiter (single-threaded).",
@@ -3348,7 +3574,7 @@ window.PRACTICE_DATA = [
     "topic": "Code Assessment",
     "topicId": "code-assessment",
     "source": "practice/sub-notes/code-assessment.md",
-    "id": "card-160"
+    "id": "card-170"
   },
   {
     "question": "Build a bounded in-memory queue with backpressure signals.",
@@ -3368,7 +3594,7 @@ window.PRACTICE_DATA = [
     "topic": "Code Assessment",
     "topicId": "code-assessment",
     "source": "practice/sub-notes/code-assessment.md",
-    "id": "card-161"
+    "id": "card-171"
   },
   {
     "question": "Implement a simple TTL cache with expiration.",
@@ -3388,7 +3614,7 @@ window.PRACTICE_DATA = [
     "topic": "Code Assessment",
     "topicId": "code-assessment",
     "source": "practice/sub-notes/code-assessment.md",
-    "id": "card-162"
+    "id": "card-172"
   },
   {
     "question": "Parse a CSV stream into records without loading the full file.",
@@ -3408,7 +3634,7 @@ window.PRACTICE_DATA = [
     "topic": "Code Assessment",
     "topicId": "code-assessment",
     "source": "practice/sub-notes/code-assessment.md",
-    "id": "card-163"
+    "id": "card-173"
   },
   {
     "question": "Compute a rolling VWAP from a stream of trades.",
@@ -3428,7 +3654,7 @@ window.PRACTICE_DATA = [
     "topic": "Code Assessment",
     "topicId": "code-assessment",
     "source": "practice/sub-notes/code-assessment.md",
-    "id": "card-164"
+    "id": "card-174"
   },
   {
     "question": "Explain the difference between value types and reference types with a simple example.",
@@ -3448,7 +3674,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-165"
+    "id": "card-175"
   },
   {
     "question": "When should you choose a struct over a class?",
@@ -3492,7 +3718,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-166"
+    "id": "card-176"
   },
   {
     "question": "Demonstrate how to reduce copying with in parameters.",
@@ -3536,7 +3762,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-167"
+    "id": "card-177"
   },
   {
     "question": "What is defensive programming?",
@@ -3563,7 +3789,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-168"
+    "id": "card-178"
   },
   {
     "question": "Show how nullable reference types prevent null bugs.",
@@ -3595,7 +3821,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-169"
+    "id": "card-179"
   },
   {
     "question": "Write a guard clause extension for argument validation.",
@@ -3615,7 +3841,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-170"
+    "id": "card-180"
   },
   {
     "question": "Implement a generic method with a constraint for a parameterless constructor.",
@@ -3635,7 +3861,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-171"
+    "id": "card-181"
   },
   {
     "question": "Write a repository interface with type constraints.",
@@ -3655,7 +3881,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-172"
+    "id": "card-182"
   },
   {
     "question": "Show a simple event pattern with EventHandler<T>.",
@@ -3675,7 +3901,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-173"
+    "id": "card-183"
   },
   {
     "question": "When would you prefer Func<T> over a custom delegate type?",
@@ -3695,7 +3921,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-174"
+    "id": "card-184"
   },
   {
     "question": "Use pattern matching to categorize input.",
@@ -3715,7 +3941,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-175"
+    "id": "card-185"
   },
   {
     "question": "Create a record and use with to clone it.",
@@ -3735,7 +3961,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-176"
+    "id": "card-186"
   },
   {
     "question": "Show how to throw and wrap exceptions with context.",
@@ -3755,7 +3981,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-177"
+    "id": "card-187"
   },
   {
     "question": "Summarize access modifiers and demonstrate a safe class design.",
@@ -3775,7 +4001,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-178"
+    "id": "card-188"
   },
   {
     "question": "Demonstrate inheritance with a base order type and a specialized derived type.",
@@ -3795,7 +4021,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-179"
+    "id": "card-189"
   },
   {
     "question": "Show polymorphism by swapping fee calculators via an interface.",
@@ -3815,7 +4041,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-180"
+    "id": "card-190"
   },
   {
     "question": "Use abstraction to define a minimal contract for a price feed.",
@@ -3835,7 +4061,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-181"
+    "id": "card-191"
   },
   {
     "question": "When should you prefer composition over inheritance?",
@@ -3849,7 +4075,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-182"
+    "id": "card-192"
   },
   {
     "question": "Show object and collection initialization with target-typed new.",
@@ -3877,7 +4103,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-183"
+    "id": "card-193"
   },
   {
     "question": "Write a SQL query to calculate the rolling 7-day trade volume per instrument.",
@@ -3901,7 +4127,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-184"
+    "id": "card-194"
   },
   {
     "question": "Explain how you would choose between normalized schemas and denormalized tables for reporting.",
@@ -3915,7 +4141,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-185"
+    "id": "card-195"
   },
   {
     "question": "Describe the differences between clustered and non-clustered indexes and when to use covering indexes.",
@@ -3939,7 +4165,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-186"
+    "id": "card-196"
   },
   {
     "question": "Walk through handling a long-running report query that impacts OLTP performance.",
@@ -3953,7 +4179,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-187"
+    "id": "card-197"
   },
   {
     "question": "Configure a many-to-many relationship with a junction table containing additional properties.",
@@ -3973,7 +4199,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-188"
+    "id": "card-198"
   },
   {
     "question": "Implement soft delete with global query filters.",
@@ -3993,7 +4219,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-189"
+    "id": "card-199"
   },
   {
     "question": "Implement optimistic concurrency control using row versioning.",
@@ -4013,7 +4239,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-190"
+    "id": "card-200"
   },
   {
     "question": "Configure table splitting to map multiple entities to a single table.",
@@ -4033,7 +4259,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-191"
+    "id": "card-201"
   },
   {
     "question": "Implement audit trail using change tracking.",
@@ -4053,7 +4279,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-192"
+    "id": "card-202"
   },
   {
     "question": "Implement repository pattern with specification pattern for complex queries.",
@@ -4073,7 +4299,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-193"
+    "id": "card-203"
   },
   {
     "question": "Implement Unit of Work pattern for transaction management.",
@@ -4093,7 +4319,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-194"
+    "id": "card-204"
   },
   {
     "question": "Implement custom value converter for complex types.",
@@ -4113,7 +4339,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-195"
+    "id": "card-205"
   },
   {
     "question": "Optimize a query with multiple joins and aggregations.",
@@ -4133,7 +4359,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-196"
+    "id": "card-206"
   },
   {
     "question": "Implement pagination efficiently for large datasets.",
@@ -4153,7 +4379,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-197"
+    "id": "card-207"
   },
   {
     "question": "Optimize EXISTS vs IN vs JOIN.",
@@ -4173,7 +4399,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-198"
+    "id": "card-208"
   },
   {
     "question": "Use window functions for ranking and percentiles.",
@@ -4193,7 +4419,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-199"
+    "id": "card-209"
   },
   {
     "question": "Design composite index for a multi-column WHERE clause.",
@@ -4213,7 +4439,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-200"
+    "id": "card-210"
   },
   {
     "question": "Identify and remove unused or duplicate indexes.",
@@ -4233,7 +4459,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-201"
+    "id": "card-211"
   },
   {
     "question": "Implement filtered index for specific query patterns.",
@@ -4253,7 +4479,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-202"
+    "id": "card-212"
   },
   {
     "question": "Implement distributed transaction across multiple databases.",
@@ -4273,7 +4499,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-203"
+    "id": "card-213"
   },
   {
     "question": "Handle deadlocks with retry logic.",
@@ -4293,7 +4519,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-204"
+    "id": "card-214"
   },
   {
     "question": "Implement pessimistic locking for critical sections.",
@@ -4313,7 +4539,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-205"
+    "id": "card-215"
   },
   {
     "question": "Create a data migration to transform existing records.",
@@ -4333,7 +4559,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-206"
+    "id": "card-216"
   },
   {
     "question": "Implement zero-downtime deployment with backward-compatible migrations.",
@@ -4353,7 +4579,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-207"
+    "id": "card-217"
   },
   {
     "question": "Use Dapper for high-performance bulk operations.",
@@ -4373,7 +4599,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-208"
+    "id": "card-218"
   },
   {
     "question": "Combine EF Core and Dapper for optimal performance.",
@@ -4393,7 +4619,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-209"
+    "id": "card-219"
   },
   {
     "question": "Implement optimistic concurrency control with a row version column.",
@@ -4413,7 +4639,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-210"
+    "id": "card-220"
   },
   {
     "question": "Implement soft delete with a global query filter.",
@@ -4433,7 +4659,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-211"
+    "id": "card-221"
   },
   {
     "question": "Create efficient pagination for large datasets.",
@@ -4453,7 +4679,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-212"
+    "id": "card-222"
   },
   {
     "question": "Compare isolation levels for read/write workloads.",
@@ -4467,7 +4693,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-213"
+    "id": "card-223"
   },
   {
     "question": "Diagnose a slow query regression.",
@@ -4489,7 +4715,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-214"
+    "id": "card-224"
   },
   {
     "question": "Given a list of trades with timestamps, return the latest trade per account using LINQ.",
@@ -4513,7 +4739,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-215"
+    "id": "card-225"
   },
   {
     "question": "Implement a method that flattens nested lists of instrument codes while preserving ordering.",
@@ -4537,7 +4763,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-216"
+    "id": "card-226"
   },
   {
     "question": "Explain the difference between SelectMany and nested loops. When is each preferable?",
@@ -4561,7 +4787,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-217"
+    "id": "card-227"
   },
   {
     "question": "How would you detect duplicate orders in a stream using GroupBy and produce a summary?",
@@ -4585,7 +4811,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-218"
+    "id": "card-228"
   },
   {
     "question": "Find all customers who have placed orders in the last 30 days and calculate their total order value.",
@@ -4605,7 +4831,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-219"
+    "id": "card-229"
   },
   {
     "question": "Given two lists (products and categories), perform a left join to get all products with their category names (null if no category).",
@@ -4625,7 +4851,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-220"
+    "id": "card-230"
   },
   {
     "question": "Implement a LINQ query to find the top 5 most expensive products in each category.",
@@ -4645,7 +4871,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-221"
+    "id": "card-231"
   },
   {
     "question": "Find all pairs of employees who work in the same department (avoid duplicates like (A,B) and (B,A)).",
@@ -4665,7 +4891,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-222"
+    "id": "card-232"
   },
   {
     "question": "Calculate running totals for daily sales.",
@@ -4685,7 +4911,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-223"
+    "id": "card-233"
   },
   {
     "question": "Implement a custom LINQ extension method DistinctBy that takes a key selector.",
@@ -4705,7 +4931,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-224"
+    "id": "card-234"
   },
   {
     "question": "Write a LINQ query to find all employees whose salary is above the average salary in their department.",
@@ -4725,7 +4951,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-225"
+    "id": "card-235"
   },
   {
     "question": "Implement pagination with LINQ (Skip/Take) and explain potential issues with IQueryable vs IEnumerable.",
@@ -4758,7 +4984,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-226"
+    "id": "card-236"
   },
   {
     "question": "Write a LINQ query to pivot data (convert rows to columns).",
@@ -4778,7 +5004,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-227"
+    "id": "card-237"
   },
   {
     "question": "Implement a LINQ query with multiple grouping levels (hierarchical grouping).",
@@ -4798,7 +5024,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-228"
+    "id": "card-238"
   },
   {
     "question": "Find all consecutive sequences of at least 3 days where sales exceeded $10,000.",
@@ -4818,7 +5044,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-229"
+    "id": "card-239"
   },
   {
     "question": "Explain deferred execution and when it can cause performance issues.",
@@ -4838,7 +5064,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-230"
+    "id": "card-240"
   },
   {
     "question": "Compare the performance implications of Count() vs Any() for checking if a collection has items.",
@@ -4858,7 +5084,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-231"
+    "id": "card-241"
   },
   {
     "question": "Identify and fix performance issues in this query.",
@@ -4884,7 +5110,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-232"
+    "id": "card-242"
   },
   {
     "question": "Write a LINQ query that uses AsParallel appropriately for CPU-bound operations.",
@@ -4904,7 +5130,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-233"
+    "id": "card-243"
   },
   {
     "question": "When should you use List<T> vs IEnumerable<T> as a return type?",
@@ -4924,7 +5150,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-234"
+    "id": "card-244"
   },
   {
     "question": "Implement a LookupTable using ToLookup and explain when to use it vs GroupBy.",
@@ -4944,7 +5170,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-235"
+    "id": "card-245"
   },
   {
     "question": "Use Zip to combine two sequences and explain its behavior when sequences have different lengths.",
@@ -4964,7 +5190,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-236"
+    "id": "card-246"
   },
   {
     "question": "Implement a method that chunks a collection into batches of N items.",
@@ -4984,7 +5210,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-237"
+    "id": "card-247"
   },
   {
     "question": "You need to merge data from multiple sources (database, API, cache) and remove duplicates. Implement this efficiently.",
@@ -5004,7 +5230,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-238"
+    "id": "card-248"
   },
   {
     "question": "Implement a search feature with multiple optional filters (name, category, price range, tags).",
@@ -5024,7 +5250,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-239"
+    "id": "card-249"
   },
   {
     "question": "Calculate month-over-month growth percentage for sales data.",
@@ -5044,7 +5270,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-240"
+    "id": "card-250"
   },
   {
     "question": "Implement an expression builder that allows dynamic LINQ query construction from user input.",
@@ -5064,7 +5290,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-241"
+    "id": "card-251"
   },
   {
     "question": "Implement a method that finds all possible combinations of products that sum to a target price (subset sum problem).",
@@ -5084,7 +5310,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-242"
+    "id": "card-252"
   },
   {
     "question": "Use GroupJoin to build a customer summary with order counts and last order date.",
@@ -5104,7 +5330,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-243"
+    "id": "card-253"
   },
   {
     "question": "Implement Distinct with a custom comparer for case-insensitive strings.",
@@ -5124,7 +5350,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-244"
+    "id": "card-254"
   },
   {
     "question": "Convert a list to a dictionary safely when keys can repeat.",
@@ -5144,7 +5370,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-245"
+    "id": "card-255"
   },
   {
     "question": "Use Select with index to assign ranks within a sorted sequence.",
@@ -5164,7 +5390,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-246"
+    "id": "card-256"
   },
   {
     "question": "Split a sequence into a prefix and the remaining items using TakeWhile and SkipWhile.",
@@ -5192,7 +5418,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-247"
+    "id": "card-257"
   },
   {
     "question": "Compare RabbitMQ and ZeroMQ for distributing price updates. When would you choose one over the other?",
@@ -5206,7 +5432,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-248"
+    "id": "card-258"
   },
   {
     "question": "Explain how to ensure at-least-once delivery with RabbitMQ while preventing duplicate processing.",
@@ -5230,7 +5456,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-249"
+    "id": "card-259"
   },
   {
     "question": "How would you design a saga pattern to coordinate account funding across multiple services?",
@@ -5254,7 +5480,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-250"
+    "id": "card-260"
   },
   {
     "question": "Discuss the outbox pattern and how it prevents message loss in event-driven systems.",
@@ -5278,7 +5504,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-251"
+    "id": "card-261"
   },
   {
     "question": "Implement a publisher with confirmation to ensure messages are persisted.",
@@ -5298,7 +5524,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-252"
+    "id": "card-262"
   },
   {
     "question": "Implement a resilient consumer with retry logic and dead letter queue.",
@@ -5318,7 +5544,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-253"
+    "id": "card-263"
   },
   {
     "question": "Implement priority queue pattern for urgent messages.",
@@ -5338,7 +5564,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-254"
+    "id": "card-264"
   },
   {
     "question": "Implement Kafka producer with idempotent writes and transactions.",
@@ -5358,7 +5584,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-255"
+    "id": "card-265"
   },
   {
     "question": "Implement Kafka consumer with manual offset management and exactly-once processing.",
@@ -5378,7 +5604,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-256"
+    "id": "card-266"
   },
   {
     "question": "Implement Kafka consumer group rebalancing with state management.",
@@ -5398,7 +5624,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-257"
+    "id": "card-267"
   },
   {
     "question": "Implement orchestration-based saga for order processing.",
@@ -5418,7 +5644,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-258"
+    "id": "card-268"
   },
   {
     "question": "Implement choreography-based saga using events.",
@@ -5438,7 +5664,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-259"
+    "id": "card-269"
   },
   {
     "question": "Implement transactional outbox pattern with background processor.",
@@ -5458,7 +5684,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-260"
+    "id": "card-270"
   },
   {
     "question": "Implement idempotency using distributed cache.",
@@ -5478,7 +5704,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-261"
+    "id": "card-271"
   },
   {
     "question": "Implement event store with snapshots for performance.",
@@ -5498,7 +5724,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-262"
+    "id": "card-272"
   },
   {
     "question": "How do you handle poison messages without blocking a queue?",
@@ -5518,7 +5744,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-263"
+    "id": "card-273"
   },
   {
     "question": "Describe an idempotency strategy for message consumers.",
@@ -5538,7 +5764,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-264"
+    "id": "card-274"
   },
   {
     "question": "How would you preserve ordering for a specific key in Kafka?",
@@ -5552,7 +5778,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-265"
+    "id": "card-275"
   },
   {
     "question": "How do you evolve a message schema safely?",
@@ -5566,7 +5792,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-266"
+    "id": "card-276"
   },
   {
     "question": "Implement a retry policy with exponential backoff and max delay.",
@@ -5594,7 +5820,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-267"
+    "id": "card-277"
   },
   {
     "question": "When should you use ArrayPool<T>?",
@@ -5614,7 +5840,7 @@ window.PRACTICE_DATA = [
     "topic": "Performance Memory",
     "topicId": "performance-memory",
     "source": "practice/sub-notes/performance-memory.md",
-    "id": "card-268"
+    "id": "card-278"
   },
   {
     "question": "Show how Span<T> can avoid allocations when parsing.",
@@ -5634,7 +5860,7 @@ window.PRACTICE_DATA = [
     "topic": "Performance Memory",
     "topicId": "performance-memory",
     "source": "practice/sub-notes/performance-memory.md",
-    "id": "card-269"
+    "id": "card-279"
   },
   {
     "question": "When would you use ValueTask instead of Task?",
@@ -5648,7 +5874,7 @@ window.PRACTICE_DATA = [
     "topic": "Performance Memory",
     "topicId": "performance-memory",
     "source": "practice/sub-notes/performance-memory.md",
-    "id": "card-270"
+    "id": "card-280"
   },
   {
     "question": "Why is string concatenation in a loop expensive, and how do you fix it?",
@@ -5668,7 +5894,7 @@ window.PRACTICE_DATA = [
     "topic": "Performance Memory",
     "topicId": "performance-memory",
     "source": "practice/sub-notes/performance-memory.md",
-    "id": "card-271"
+    "id": "card-281"
   },
   {
     "question": "How do closures create hidden allocations?",
@@ -5701,7 +5927,7 @@ window.PRACTICE_DATA = [
     "topic": "Performance Memory",
     "topicId": "performance-memory",
     "source": "practice/sub-notes/performance-memory.md",
-    "id": "card-272"
+    "id": "card-282"
   },
   {
     "question": "Design a service that ingests MT5 tick data, normalizes it, caches latest prices, and exposes them via REST/WebSocket.",
@@ -5725,7 +5951,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-273"
+    "id": "card-283"
   },
   {
     "question": "Design an API that receives orders, validates, routes to MT4/MT5, and confirms execution. Include failure recovery.",
@@ -5749,7 +5975,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-274"
+    "id": "card-284"
   },
   {
     "question": "Architect a system to collect metrics from trading microservices and alert on anomalies.",
@@ -5773,7 +5999,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-275"
+    "id": "card-285"
   },
   {
     "question": "Discuss how you would integrate an external risk management engine into an existing microservices ecosystem.",
@@ -5797,7 +6023,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-276"
+    "id": "card-286"
   },
   {
     "question": "Design a microservices architecture for an e-commerce platform with orders, inventory, payments, and shipping.",
@@ -5827,7 +6053,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-277"
+    "id": "card-287"
   },
   {
     "question": "Design service-to-service communication strategy: when to use sync vs async?",
@@ -5847,7 +6073,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-278"
+    "id": "card-288"
   },
   {
     "question": "Implement service discovery pattern for dynamic service registration.",
@@ -5867,7 +6093,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-279"
+    "id": "card-289"
   },
   {
     "question": "Implement CQRS pattern for an order management system.",
@@ -5887,7 +6113,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-280"
+    "id": "card-290"
   },
   {
     "question": "Design event sourcing system for account transactions.",
@@ -5907,7 +6133,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-281"
+    "id": "card-291"
   },
   {
     "question": "Design a multi-layer caching strategy (L1: in-memory, L2: Redis, L3: database).",
@@ -5927,7 +6153,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-282"
+    "id": "card-292"
   },
   {
     "question": "Implement cache invalidation strategy for distributed systems.",
@@ -5947,7 +6173,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-283"
+    "id": "card-293"
   },
   {
     "question": "Design read replica strategy for handling high read traffic.",
@@ -5967,7 +6193,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-284"
+    "id": "card-294"
   },
   {
     "question": "Design database sharding strategy for multi-tenant application.",
@@ -5987,7 +6213,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-285"
+    "id": "card-295"
   },
   {
     "question": "Design circuit breaker pattern for external API calls.",
@@ -6007,7 +6233,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-286"
+    "id": "card-296"
   },
   {
     "question": "Implement health check aggregator for microservices.",
@@ -6027,7 +6253,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-287"
+    "id": "card-297"
   },
   {
     "question": "Design distributed tracing system using OpenTelemetry.",
@@ -6047,7 +6273,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-288"
+    "id": "card-298"
   },
   {
     "question": "Implement centralized logging with correlation IDs.",
@@ -6067,7 +6293,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-289"
+    "id": "card-299"
   },
   {
     "question": "Design a multi-region failover strategy for a trading platform.",
@@ -6085,7 +6311,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-290"
+    "id": "card-300"
   },
   {
     "question": "How would you shard a multi-tenant database for scale?",
@@ -6103,7 +6329,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-291"
+    "id": "card-301"
   },
   {
     "question": "Describe a cache invalidation strategy for price snapshots.",
@@ -6121,7 +6347,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-292"
+    "id": "card-302"
   },
   {
     "question": "When would you use event sourcing versus state storage?",
@@ -6139,7 +6365,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-293"
+    "id": "card-303"
   },
   {
     "question": "How do you handle backpressure in a streaming system?",
@@ -6165,7 +6391,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-294"
+    "id": "card-304"
   },
   {
     "question": "Describe the lifecycle of a forex trade from placement to settlement.",
@@ -6179,7 +6405,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-295"
+    "id": "card-305"
   },
   {
     "question": "How would you integrate with MT4/MT5 APIs for trade execution in C#? Mention authentication, session management, and error handling.",
@@ -6199,7 +6425,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-296"
+    "id": "card-306"
   },
   {
     "question": "What are common risk checks before executing a client order (e.g., margin, exposure limits)?",
@@ -6213,7 +6439,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-297"
+    "id": "card-307"
   },
   {
     "question": "Explain how you'd handle market data bursts without dropping updates.",
@@ -6227,7 +6453,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-298"
+    "id": "card-308"
   },
   {
     "question": "Implement order validation pipeline with multiple risk checks.",
@@ -6247,7 +6473,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-299"
+    "id": "card-309"
   },
   {
     "question": "Design state machine for order lifecycle tracking.",
@@ -6267,7 +6493,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-300"
+    "id": "card-310"
   },
   {
     "question": "Implement order reconciliation to detect missing confirmations.",
@@ -6287,7 +6513,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-301"
+    "id": "card-311"
   },
   {
     "question": "Implement MT5 Gateway with connection pooling and failover.",
@@ -6307,7 +6533,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-302"
+    "id": "card-312"
   },
   {
     "question": "Handle MT5 error codes and map to domain exceptions.",
@@ -6327,7 +6553,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-303"
+    "id": "card-313"
   },
   {
     "question": "Implement high-frequency tick data processor with conflation.",
@@ -6347,7 +6573,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-304"
+    "id": "card-314"
   },
   {
     "question": "Implement VWAP (Volume-Weighted Average Price) calculator.",
@@ -6367,7 +6593,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-305"
+    "id": "card-315"
   },
   {
     "question": "Implement real-time P&L calculator for open positions.",
@@ -6387,7 +6613,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-306"
+    "id": "card-316"
   },
   {
     "question": "Implement margin calculator with different leverage levels.",
@@ -6407,7 +6633,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-307"
+    "id": "card-317"
   },
   {
     "question": "Implement automatic stop-out mechanism.",
@@ -6427,7 +6653,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-308"
+    "id": "card-318"
   },
   {
     "question": "Explain slippage and how you would measure it.",
@@ -6441,7 +6667,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-309"
+    "id": "card-319"
   },
   {
     "question": "How do you handle market data bursts without dropping critical updates?",
@@ -6455,7 +6681,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-310"
+    "id": "card-320"
   },
   {
     "question": "Design an order book snapshot + delta model.",
@@ -6469,7 +6695,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-311"
+    "id": "card-321"
   },
   {
     "question": "Implement a real-time PnL calculation at the account level.",
@@ -6483,7 +6709,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-312"
+    "id": "card-322"
   },
   {
     "question": "Describe a reconciliation workflow for executed trades.",
@@ -6505,6 +6731,6 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-313"
+    "id": "card-323"
   }
 ];

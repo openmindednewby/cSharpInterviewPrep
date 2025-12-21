@@ -4,6 +4,26 @@ Use these snapshots alongside the [prep plan](../prep-plan.md). Each section inc
 
 ---
 
+## Error Handling Philosophy
+
+### Defensive Programming vs Fail-Fast
+
+**Key principle:** Defensive at the edges, fail-fast at the core.
+
+- **Defensive Programming:** Anticipate and handle invalid input gracefully at system boundaries
+  - Use at: API controllers, external integrations, user input
+  - Example: `if (price == null || price <= 0) return BadRequest("Invalid price");`
+  - Keeps system running despite bad input
+
+- **Fail-Fast:** Detect invalid states early and throw exceptions immediately in core logic
+  - Use in: Domain entities, business rules, internal contracts
+  - Example: `if (price <= 0) throw new ArgumentException("Price must be positive");`
+  - Surfaces bugs early for easier debugging
+
+See [Defensive Programming vs Fail-Fast](./defensive-programming-vs-fail-fast.md) for comprehensive examples and decision matrix.
+
+---
+
 ## Runtime & Language Essentials
 
 ### .NET Core vs .NET Framework

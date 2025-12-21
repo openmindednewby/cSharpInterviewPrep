@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for Defensive Programming Vs Fail Fast Exercises" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>Defensive Programming Vs Fail Fast Exercises | C# Interview Prep Cheat Sheet</title>
+  <link rel="manifest" href="..\assets/manifest.webmanifest" />
+  <script>
+    (() => {
+      const supported = ['dark2', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
+      const fallback = 'light';
+      const initial = supported.includes(normalized) ? normalized : fallback;
+      document.documentElement.dataset.theme = initial;
+      window.__studyTheme = initial;
+    })();
+  </script>
+  <link rel="stylesheet" href="..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="dark2">Dark 2</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group" data-group="notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="../notes/defensive-programming-vs-fail-fast.html">Defensive Programming Vs Fail Fast</a></li><li><a class="nav-link" href="../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="../notes/logging.html">Logging</a></li><li><a class="nav-link" href="../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/O1-Constant-Time.html">O1 Constant Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/OLogN-Logarithmic-Time.html">OLogN Logarithmic Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/ON-Linear-Time.html">ON Linear Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/ON2-Quadratic-Time.html">ON2 Quadratic Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/ONLogN-Linearithmic-Time.html">ONLogN Linearithmic Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/Space-Complexity.html">Space Complexity</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/ICollection.html">ICollection</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IEnumerable.html">IEnumerable</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IList.html">IList</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IQueryable.html">IQueryable</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IReadOnly.html">IReadOnly</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a class="nav-link" href="../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a class="nav-link" href="../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a class="nav-link" href="../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a class="nav-link" href="../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a class="nav-link" href="../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a class="nav-link" href="../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a class="nav-link" href="../notes/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a class="nav-link" href="../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a class="nav-link" href="../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a class="nav-link" href="../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a class="nav-link" href="../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a class="nav-link" href="../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a class="nav-link" href="../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a class="nav-link" href="../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a class="nav-link" href="../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a class="nav-link" href="../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a class="nav-link" href="../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a class="nav-link" href="../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a class="nav-link" href="../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a class="nav-link" href="../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a class="nav-link" href="../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a class="nav-link" href="../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a class="nav-link" href="../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/01-async-patterns.html">01 Async Patterns</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/02-backpressure-rate-limiting.html">02 Backpressure Rate Limiting</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/03-caching-strategies.html">03 Caching Strategies</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/04-database-scaling.html">04 Database Scaling</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/05-message-queues.html">05 Message Queues</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/06-resilience-patterns.html">06 Resilience Patterns</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/07-observability.html">07 Observability</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/08-complete-example.html">08 Complete Example</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+    </div><div class="sidebar-group is-open" data-group="practice">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
+        <span>Practice</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="../practice/answers.html">Answers</a></li><li><a class="nav-link" href="../practice/core-concepts.html">Core Concepts</a></li><li><a class="nav-link active" href="../practice/defensive-programming-vs-fail-fast-exercises.html">Defensive Programming Vs Fail Fast Exercises</a></li><li><a class="nav-link" href="../practice/error-handling-exercises.html">Error Handling Exercises</a></li><li><a class="nav-link" href="../practice/logging-exercises.html">Logging Exercises</a></li><li><a class="nav-link" href="../practice/index.html">Practice</a></li><li><a class="nav-link" href="../practice/PRACTICE-STRUCTURE.html">PRACTICE STRUCTURE</a></li><li><a class="nav-link" href="../practice/questions.html">Questions</a></li><li><a class="nav-link" href="../practice/README.html">README</a></li><li><a class="nav-link" href="../practice/testing-strategies-exercises.html">Testing Strategies Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/Automapper/index.html">Automapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="../practice/Big-O-Complexity/O1-Constant-Time-Exercises.html">O1 Constant Time Exercises</a></li><li><a class="nav-link" href="../practice/Big-O-Complexity/OLogN-Logarithmic-Time-Exercises.html">OLogN Logarithmic Time Exercises</a></li><li><a class="nav-link" href="../practice/Big-O-Complexity/ON-Linear-Time-Exercises.html">ON Linear Time Exercises</a></li><li><a class="nav-link" href="../practice/Big-O-Complexity/ON2-Quadratic-Time-Exercises.html">ON2 Quadratic Time Exercises</a></li><li><a class="nav-link" href="../practice/Big-O-Complexity/ONLogN-Linearithmic-Time-Exercises.html">ONLogN Linearithmic Time Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/Design-Patterns/Decorator-Pattern-Exercises.html">Decorator Pattern Exercises</a></li><li><a class="nav-link" href="../practice/Design-Patterns/index.html">Design Patterns</a></li><li><a class="nav-link" href="../practice/Design-Patterns/Factory-Pattern-Exercises.html">Factory Pattern Exercises</a></li><li><a class="nav-link" href="../practice/Design-Patterns/Mediator-Pattern-Exercises.html">Mediator Pattern Exercises</a></li><li><a class="nav-link" href="../practice/Design-Patterns/Observer-Pattern-Exercises.html">Observer Pattern Exercises</a></li><li><a class="nav-link" href="../practice/Design-Patterns/Strategy-Pattern-Exercises.html">Strategy Pattern Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/FluentValidation/index.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/SOLID/S-Single-Responsibility-Principle-Exercises.html">S Single Responsibility Principle Exercises</a></li><li><a class="nav-link" href="../practice/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/sub-notes/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="../practice/sub-notes/async-await-exercises.html">Async Await Exercises</a></li><li><a class="nav-link" href="../practice/sub-notes/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="../practice/sub-notes/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="../practice/sub-notes/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="../practice/sub-notes/csharp-fundamentals.html">Csharp Fundamentals</a></li><li><a class="nav-link" href="../practice/sub-notes/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="../practice/sub-notes/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="../practice/sub-notes/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="../practice/sub-notes/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="../practice/sub-notes/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="../practice/sub-notes/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="../practice/sub-notes/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="../practice/sub-notes/system-design.html">System Design</a></li><li><a class="nav-link" href="../practice/sub-notes/trading-domain.html">Trading Domain</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+    </div></div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">practice\defensive-programming-vs-fail-fast-exercises.md</div>
+        <h2>Defensive Programming Vs Fail Fast Exercises</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#defensive-programming-vs-fail-fast---practice-exercises">Defensive Programming vs Fail-Fast - Practice Exercises</a></li><li class="level-2"><a href="#foundational-understanding">Foundational Understanding</a></li><li class="level-2"><a href="#intermediate-scenarios">Intermediate Scenarios</a></li><li class="level-2"><a href="#advanced-scenarios">Advanced Scenarios</a></li><li class="level-2"><a href="#real-world-trading-scenarios">Real-World Trading Scenarios</a></li></ul></div>
+        <h1 id="defensive-programming-vs-fail-fast---practice-exercises">Defensive Programming vs Fail-Fast - Practice Exercises</h1>
+<p>Comprehensive exercises to master when to use defensive programming vs fail-fast approaches.</p>
+<p>---</p>
+<h2 id="foundational-understanding">Foundational Understanding</h2>
+<p><strong>Q: Explain the difference between defensive programming and fail-fast. When should each be used?</strong></p>
+<p>A: <strong>Defensive programming</strong> anticipates and handles invalid input gracefully to keep the system running. Use it at system boundaries (APIs, external integrations, user input).</p>
+<p><strong>Fail-fast</strong> detects invalid states early and throws exceptions immediately. Use it in core business logic to enforce invariants and surface bugs early.</p>
+<p><strong>Key principle:</strong> Defensive at the edges, fail-fast at the core.</p>
+<pre class="language-csharp"><code class="language-csharp">// Defensive: API boundary
+[HttpPost]
+public IActionResult CreateOrder([FromBody] OrderRequest request)
+{
+    if (request == null || request.Quantity &lt;= 0)
+        return BadRequest(&quot;Invalid request&quot;);
+
+    // Call domain logic...
+}
+
+// Fail-Fast: Domain entity
+public class Order
+{
+    public Order(decimal quantity)
+    {
+        if (quantity &lt;= 0)
+            throw new ArgumentException(&quot;Quantity must be positive&quot;);
+        Quantity = quantity;
+    }
+}</code></pre>
+<p><strong>Q: What are the risks of being overly defensive in core business logic?</strong></p>
+<p>A: Overly defensive code in the core can:</p>
+<ol><li>Hide bugs by silently ignoring invalid states</li><li>Make debugging difficult due to silent failures</li><li>Allow invalid data to propagate through the system</li><li>Create false sense of security</li><li>Violate fail-fast principle that catches errors early</li></ol>
+<pre class="language-csharp"><code class="language-csharp">// ❌ Bad: Too defensive in domain logic
+public class PriceCalculator
+{
+    public decimal Calculate(decimal price, decimal quantity)
+    {
+        // Silently returning 0 hides programming errors
+        if (price &lt;= 0 || quantity &lt;= 0)
+            return 0;
+
+        return price * quantity;
+    }
+}
+
+// ✅ Good: Fail-fast exposes the bug
+public class PriceCalculator
+{
+    public decimal Calculate(decimal price, decimal quantity)
+    {
+        if (price &lt;= 0)
+            throw new ArgumentException(&quot;Price must be positive&quot;);
+        if (quantity &lt;= 0)
+            throw new ArgumentException(&quot;Quantity must be positive&quot;);
+
+        return price * quantity;
+    }
+}</code></pre>
+<p><strong>Q: How do you handle exceptions from fail-fast code at the API layer?</strong></p>
+<p>A: Catch domain exceptions at the API layer and translate them into appropriate HTTP responses.</p>
+<pre class="language-csharp"><code class="language-csharp">[HttpPost(&quot;orders&quot;)]
+public async Task&lt;IActionResult&gt; CreateOrder([FromBody] CreateOrderRequest request)
+{
+    try
+    {
+        // Domain code may throw (fail-fast)
+        var order = new Order(request.Symbol, request.Quantity, request.Price);
+        await _orderService.CreateAsync(order);
+        return Ok(order);
+    }
+    catch (ArgumentException ex)
+    {
+        // Translate to user-friendly error
+        return BadRequest(new { error = ex.Message });
+    }
+    catch (RiskLimitExceededException ex)
+    {
+        return BadRequest(new { error = ex.Message, code = &quot;RISK_LIMIT_EXCEEDED&quot; });
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, &quot;Unexpected error creating order&quot;);
+        return StatusCode(500, &quot;An unexpected error occurred&quot;);
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="intermediate-scenarios">Intermediate Scenarios</h2>
+<p><strong>Q: Implement a defensive wrapper around an unreliable external price feed API.</strong></p>
+<p>A: Create a defensive adapter that handles failures gracefully with fallback mechanisms.</p>
+<pre class="language-csharp"><code class="language-csharp">public class ResilientPriceFeedAdapter
+{
+    private readonly IPriceFeedClient _primaryFeed;
+    private readonly IPriceFeedClient _fallbackFeed;
+    private readonly IMemoryCache _cache;
+    private readonly ILogger _logger;
+
+    public async Task&lt;decimal?&gt; GetPriceAsync(string symbol)
+    {
+        // Defensive: validate input
+        if (string.IsNullOrWhiteSpace(symbol))
+        {
+            _logger.LogWarning(&quot;Empty symbol provided&quot;);
+            return null;
+        }
+
+        // Try cache first
+        if (_cache.TryGetValue($&quot;price:{symbol}&quot;, out decimal cachedPrice))
+        {
+            return cachedPrice;
+        }
+
+        // Try primary feed
+        try
+        {
+            var price = await _primaryFeed.GetPriceAsync(symbol);
+
+            // Defensive: validate response
+            if (price.HasValue &amp;&amp; price.Value &gt; 0)
+            {
+                _cache.Set($&quot;price:{symbol}&quot;, price.Value, TimeSpan.FromSeconds(30));
+                return price;
+            }
+
+            _logger.LogWarning(&quot;Invalid price from primary feed: {Price}&quot;, price);
+        }
+        catch (HttpRequestException ex)
+        {
+            _logger.LogWarning(ex, &quot;Primary feed failed for {Symbol}&quot;, symbol);
+        }
+        catch (TimeoutException ex)
+        {
+            _logger.LogWarning(ex, &quot;Primary feed timeout for {Symbol}&quot;, symbol);
+        }
+
+        // Try fallback feed
+        try
+        {
+            var price = await _fallbackFeed.GetPriceAsync(symbol);
+
+            if (price.HasValue &amp;&amp; price.Value &gt; 0)
+            {
+                _cache.Set($&quot;price:{symbol}&quot;, price.Value, TimeSpan.FromSeconds(30));
+                return price;
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, &quot;Fallback feed failed for {Symbol}&quot;, symbol);
+        }
+
+        // All sources failed - return null to indicate unavailability
+        return null;
+    }
+}</code></pre>
+<p><strong>Q: Create a fail-fast domain entity for a trading Order with strict invariant enforcement.</strong></p>
+<p>A: Implement an Order aggregate root that fails fast on any invariant violation.</p>
+<pre class="language-csharp"><code class="language-csharp">public class Order
+{
+    public Guid Id { get; private set; }
+    public string Symbol { get; private set; }
+    public decimal Quantity { get; private set; }
+    public decimal Price { get; private set; }
+    public OrderSide Side { get; private set; }
+    public OrderStatus Status { get; private set; }
+    public DateTime CreatedAt { get; private set; }
+    public DateTime? ExecutedAt { get; private set; }
+
+    public Order(string symbol, decimal quantity, decimal price, OrderSide side)
+    {
+        // Fail-fast: enforce construction invariants
+        if (string.IsNullOrWhiteSpace(symbol))
+            throw new ArgumentException(&quot;Symbol is required&quot;, nameof(symbol));
+
+        if (symbol.Length &gt; 20)
+            throw new ArgumentException(&quot;Symbol too long (max 20 characters)&quot;, nameof(symbol));
+
+        if (quantity &lt;= 0)
+            throw new ArgumentException(&quot;Quantity must be positive&quot;, nameof(quantity));
+
+        if (quantity &gt; 1_000_000)
+            throw new ArgumentException(&quot;Quantity exceeds maximum allowed&quot;, nameof(quantity));
+
+        if (price &lt; 0)
+            throw new ArgumentException(&quot;Price cannot be negative&quot;, nameof(price));
+
+        if (price &gt; 1_000_000)
+            throw new ArgumentException(&quot;Price exceeds maximum allowed&quot;, nameof(price));
+
+        Id = Guid.NewGuid();
+        Symbol = symbol.ToUpperInvariant();
+        Quantity = quantity;
+        Price = price;
+        Side = side;
+        Status = OrderStatus.Pending;
+        CreatedAt = DateTime.UtcNow;
+    }
+
+    public void Execute(decimal executedPrice, DateTime executedAt)
+    {
+        // Fail-fast: enforce state transitions
+        if (Status != OrderStatus.Pending)
+            throw new InvalidOperationException(
+                $&quot;Cannot execute order in {Status} status. Only Pending orders can be executed.&quot;);
+
+        if (executedPrice &lt;= 0)
+            throw new ArgumentException(&quot;Executed price must be positive&quot;, nameof(executedPrice));
+
+        if (executedAt &lt; CreatedAt)
+            throw new ArgumentException(&quot;Execution time cannot be before creation time&quot;, nameof(executedAt));
+
+        if (executedAt &gt; DateTime.UtcNow.AddMinutes(1))
+            throw new ArgumentException(&quot;Execution time cannot be in the future&quot;, nameof(executedAt));
+
+        Price = executedPrice;
+        ExecutedAt = executedAt;
+        Status = OrderStatus.Executed;
+    }
+
+    public void Cancel(string reason)
+    {
+        if (string.IsNullOrWhiteSpace(reason))
+            throw new ArgumentException(&quot;Cancellation reason is required&quot;, nameof(reason));
+
+        if (Status == OrderStatus.Executed)
+            throw new InvalidOperationException(&quot;Cannot cancel executed order&quot;);
+
+        if (Status == OrderStatus.Cancelled)
+            throw new InvalidOperationException(&quot;Order is already cancelled&quot;);
+
+        Status = OrderStatus.Cancelled;
+    }
+}
+
+public enum OrderStatus { Pending, Executed, Cancelled }
+public enum OrderSide { Buy, Sell }</code></pre>
+<p><strong>Q: Design a multi-layer validation strategy combining defensive and fail-fast approaches.</strong></p>
+<p>A: Implement validation at multiple layers with appropriate strategy for each.</p>
+<pre class="language-csharp"><code class="language-csharp">// Layer 1: API Controller - Defensive
+[ApiController]
+[Route(&quot;api/[controller]&quot;)]
+public class OrdersController : ControllerBase
+{
+    private readonly IOrderService _orderService;
+    private readonly IValidator&lt;CreateOrderRequest&gt; _validator;
+
+    [HttpPost]
+    public async Task&lt;IActionResult&gt; CreateOrder([FromBody] CreateOrderRequest request)
+    {
+        // Defensive: validate DTO
+        if (request == null)
+            return BadRequest(&quot;Request body is required&quot;);
+
+        var validationResult = await _validator.ValidateAsync(request);
+        if (!validationResult.IsValid)
+            return BadRequest(validationResult.Errors);
+
+        try
+        {
+            var order = await _orderService.CreateOrderAsync(request);
+            return Ok(order);
+        }
+        catch (RiskLimitExceededException ex)
+        {
+            return BadRequest(new { error = ex.Message, code = &quot;RISK_LIMIT&quot; });
+        }
+        catch (InsufficientFundsException ex)
+        {
+            return BadRequest(new { error = ex.Message, code = &quot;INSUFFICIENT_FUNDS&quot; });
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, &quot;Unexpected error creating order&quot;);
+            return StatusCode(500, &quot;An unexpected error occurred&quot;);
+        }
+    }
+}
+
+// Layer 2: FluentValidation - Defensive
+public class CreateOrderRequestValidator : AbstractValidator&lt;CreateOrderRequest&gt;
+{
+    public CreateOrderRequestValidator()
+    {
+        RuleFor(x =&gt; x.Symbol)
+            .NotEmpty().WithMessage(&quot;Symbol is required&quot;)
+            .MaximumLength(20).WithMessage(&quot;Symbol too long&quot;);
+
+        RuleFor(x =&gt; x.Quantity)
+            .GreaterThan(0).WithMessage(&quot;Quantity must be positive&quot;)
+            .LessThanOrEqualTo(1_000_000).WithMessage(&quot;Quantity too large&quot;);
+
+        RuleFor(x =&gt; x.Price)
+            .GreaterThanOrEqualTo(0).WithMessage(&quot;Price cannot be negative&quot;)
+            .LessThanOrEqualTo(1_000_000).WithMessage(&quot;Price too large&quot;);
+
+        RuleFor(x =&gt; x.AccountId)
+            .NotEmpty().WithMessage(&quot;Account ID is required&quot;);
+    }
+}
+
+// Layer 3: Application Service - Mixed
+public class OrderService : IOrderService
+{
+    public async Task&lt;OrderDto&gt; CreateOrderAsync(CreateOrderRequest request)
+    {
+        // Defensive: check account exists
+        var account = await _accountRepository.GetByIdAsync(request.AccountId);
+        if (account == null)
+            throw new NotFoundException($&quot;Account {request.AccountId} not found&quot;);
+
+        // Fail-fast: create domain entity (enforces invariants)
+        var order = new Order(
+            request.Symbol,
+            request.Quantity,
+            request.Price,
+            request.Side
+        );
+
+        // Fail-fast: business rules
+        _riskValidator.ValidateOrder(order, account); // Throws on violation
+        _marginValidator.ValidateMargin(order, account); // Throws on violation
+
+        // Defensive: external system integration
+        var reservationResult = await TryReserveFundsAsync(account, order);
+        if (!reservationResult.Success)
+        {
+            throw new InsufficientFundsException(
+                $&quot;Failed to reserve funds: {reservationResult.Reason}&quot;);
+        }
+
+        await _orderRepository.AddAsync(order);
+        await _unitOfWork.CommitAsync();
+
+        return _mapper.Map&lt;OrderDto&gt;(order);
+    }
+
+    private async Task&lt;ReservationResult&gt; TryReserveFundsAsync(Account account, Order order)
+    {
+        try
+        {
+            return await _fundingService.ReserveFundsAsync(account.Id, order.TotalValue);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, &quot;Failed to reserve funds for order&quot;);
+            return ReservationResult.Failure(&quot;Service unavailable&quot;);
+        }
+    }
+}
+
+// Layer 4: Domain Entity - Fail-Fast (shown above)</code></pre>
+<p>---</p>
+<h2 id="advanced-scenarios">Advanced Scenarios</h2>
+<p><strong>Q: Implement a circuit breaker pattern that uses defensive programming for external services but fail-fast for internal state.</strong></p>
+<p>A: Create a circuit breaker that protects against external failures defensively while enforcing internal state transitions with fail-fast.</p>
+<pre class="language-csharp"><code class="language-csharp">public class CircuitBreaker
+{
+    private CircuitState _state = CircuitState.Closed;
+    private int _failureCount;
+    private DateTime _lastFailureTime;
+    private readonly int _failureThreshold;
+    private readonly TimeSpan _openDuration;
+    private readonly SemaphoreSlim _lock = new(1, 1);
+
+    public CircuitBreaker(int failureThreshold, TimeSpan openDuration)
+    {
+        // Fail-fast: validate constructor parameters
+        if (failureThreshold &lt;= 0)
+            throw new ArgumentException(&quot;Failure threshold must be positive&quot;, nameof(failureThreshold));
+
+        if (openDuration &lt;= TimeSpan.Zero)
+            throw new ArgumentException(&quot;Open duration must be positive&quot;, nameof(openDuration));
+
+        _failureThreshold = failureThreshold;
+        _openDuration = openDuration;
+    }
+
+    public async Task&lt;T&gt; ExecuteAsync&lt;T&gt;(Func&lt;Task&lt;T&gt;&gt; operation)
+    {
+        // Fail-fast: null check
+        if (operation == null)
+            throw new ArgumentNullException(nameof(operation));
+
+        await _lock.WaitAsync();
+        try
+        {
+            // Check if we should transition from Open to HalfOpen
+            if (_state == CircuitState.Open &amp;&amp;
+                DateTime.UtcNow - _lastFailureTime &gt;= _openDuration)
+            {
+                _state = CircuitState.HalfOpen;
+            }
+
+            // Fail-fast: enforce circuit state
+            if (_state == CircuitState.Open)
+            {
+                throw new CircuitBreakerOpenException(
+                    $&quot;Circuit breaker is open. Will retry after {_openDuration}&quot;);
+            }
+        }
+        finally
+        {
+            _lock.Release();
+        }
+
+        // Defensive: try operation and handle failures gracefully
+        try
+        {
+            var result = await operation();
+
+            // Success - reset if in HalfOpen
+            if (_state == CircuitState.HalfOpen)
+            {
+                await ResetAsync();
+            }
+
+            return result;
+        }
+        catch (Exception ex) when (!(ex is CircuitBreakerOpenException))
+        {
+            // Defensive: record failure and decide state transition
+            await RecordFailureAsync(ex);
+            throw; // Re-throw original exception
+        }
+    }
+
+    private async Task RecordFailureAsync(Exception ex)
+    {
+        await _lock.WaitAsync();
+        try
+        {
+            _failureCount++;
+            _lastFailureTime = DateTime.UtcNow;
+
+            if (_state == CircuitState.HalfOpen)
+            {
+                // Fail immediately on failure in HalfOpen state
+                _state = CircuitState.Open;
+            }
+            else if (_failureCount &gt;= _failureThreshold)
+            {
+                _state = CircuitState.Open;
+            }
+        }
+        finally
+        {
+            _lock.Release();
+        }
+    }
+
+    private async Task ResetAsync()
+    {
+        await _lock.WaitAsync();
+        try
+        {
+            _failureCount = 0;
+            _state = CircuitState.Closed;
+        }
+        finally
+        {
+            _lock.Release();
+        }
+    }
+}
+
+public enum CircuitState { Closed, Open, HalfOpen }</code></pre>
+<p><strong>Q: Design a price validation system that combines defensive parsing with fail-fast business rule enforcement.</strong></p>
+<p>A: Implement defensive parsing for external data and fail-fast validation for business rules.</p>
+<pre class="language-csharp"><code class="language-csharp">public class PriceValidationService
+{
+    public ValidatedPrice ValidateAndParsePrice(string symbol, string priceData)
+    {
+        // Fail-fast: validate inputs
+        if (string.IsNullOrWhiteSpace(symbol))
+            throw new ArgumentException(&quot;Symbol is required&quot;, nameof(symbol));
+
+        // Defensive: parse external data
+        if (string.IsNullOrWhiteSpace(priceData))
+        {
+            _logger.LogWarning(&quot;Empty price data for {Symbol}&quot;, symbol);
+            return ValidatedPrice.Invalid(&quot;Price data is empty&quot;);
+        }
+
+        if (!decimal.TryParse(priceData, NumberStyles.Any, CultureInfo.InvariantCulture, out var price))
+        {
+            _logger.LogWarning(&quot;Invalid price format for {Symbol}: {PriceData}&quot;, symbol, priceData);
+            return ValidatedPrice.Invalid($&quot;Invalid price format: {priceData}&quot;);
+        }
+
+        // Fail-fast: enforce business rules
+        if (price &lt; 0)
+            throw new InvalidPriceException($&quot;Price cannot be negative: {price}&quot;);
+
+        if (price == 0)
+            throw new InvalidPriceException(&quot;Price cannot be zero&quot;);
+
+        if (price &gt; 1_000_000)
+            throw new InvalidPriceException($&quot;Price exceeds maximum allowed: {price}&quot;);
+
+        // Defensive: check for suspicious prices (but don&#39;t fail)
+        var previousPrice = _priceHistory.GetLastPrice(symbol);
+        if (previousPrice.HasValue)
+        {
+            var change = Math.Abs((price - previousPrice.Value) / previousPrice.Value);
+            if (change &gt; 0.5m) // 50% change
+            {
+                _logger.LogWarning(
+                    &quot;Suspicious price change for {Symbol}: {PreviousPrice} -&gt; {NewPrice} ({ChangePercent:P})&quot;,
+                    symbol, previousPrice, price, change);
+
+                // Flag for review but allow it
+                return ValidatedPrice.Valid(price, isSuspicious: true);
+            }
+        }
+
+        return ValidatedPrice.Valid(price, isSuspicious: false);
+    }
+}
+
+public class ValidatedPrice
+{
+    public bool IsValid { get; }
+    public decimal? Value { get; }
+    public string ErrorMessage { get; }
+    public bool IsSuspicious { get; }
+
+    private ValidatedPrice(bool isValid, decimal? value, string errorMessage, bool isSuspicious)
+    {
+        IsValid = isValid;
+        Value = value;
+        ErrorMessage = errorMessage;
+        IsSuspicious = isSuspicious;
+    }
+
+    public static ValidatedPrice Valid(decimal value, bool isSuspicious) =&gt;
+        new(true, value, null, isSuspicious);
+
+    public static ValidatedPrice Invalid(string errorMessage) =&gt;
+        new(false, null, errorMessage, false);
+}</code></pre>
+<p><strong>Q: Implement defensive retry logic with fail-fast on non-retryable errors.</strong></p>
+<p>A: Create a retry mechanism that defensively handles transient failures but fails fast on permanent errors.</p>
+<pre class="language-csharp"><code class="language-csharp">public class ResilientHttpClient
+{
+    private readonly HttpClient _httpClient;
+    private readonly ILogger _logger;
+
+    public async Task&lt;T&gt; GetWithRetryAsync&lt;T&gt;(
+        string url,
+        int maxRetries = 3,
+        CancellationToken cancellationToken = default)
+    {
+        // Fail-fast: validate parameters
+        if (string.IsNullOrWhiteSpace(url))
+            throw new ArgumentException(&quot;URL is required&quot;, nameof(url));
+
+        if (maxRetries &lt; 0)
+            throw new ArgumentException(&quot;Max retries cannot be negative&quot;, nameof(maxRetries));
+
+        Exception lastException = null;
+
+        for (int attempt = 0; attempt &lt;= maxRetries; attempt++)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync(url, cancellationToken);
+
+                // Fail-fast: 4xx errors are not retryable (client errors)
+                if ((int)response.StatusCode &gt;= 400 &amp;&amp; (int)response.StatusCode &lt; 500)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    throw new HttpRequestException(
+                        $&quot;Client error {response.StatusCode}: {content}. This is not retryable.&quot;);
+                }
+
+                // Defensive: 5xx errors are retryable (server errors)
+                if (!response.IsSuccessStatusCode)
+                {
+                    _logger.LogWarning(
+                        &quot;Request failed with {StatusCode} on attempt {Attempt}/{MaxRetries}&quot;,
+                        response.StatusCode, attempt + 1, maxRetries + 1);
+
+                    if (attempt &lt; maxRetries)
+                    {
+                        await DelayWithJitterAsync(attempt);
+                        continue;
+                    }
+
+                    throw new HttpRequestException($&quot;Request failed after {maxRetries + 1} attempts&quot;);
+                }
+
+                return await response.Content.ReadFromJsonAsync&lt;T&gt;(cancellationToken);
+            }
+            catch (HttpRequestException) when ((int?)null &gt;= 400 &amp;&amp; (int?)null &lt; 500)
+            {
+                // Re-throw client errors immediately (fail-fast)
+                throw;
+            }
+            catch (OperationCanceledException)
+            {
+                // Re-throw cancellation immediately (fail-fast)
+                throw;
+            }
+            catch (Exception ex)
+            {
+                // Defensive: log and retry on transient errors
+                lastException = ex;
+                _logger.LogWarning(
+                    ex,
+                    &quot;Transient error on attempt {Attempt}/{MaxRetries}&quot;,
+                    attempt + 1, maxRetries + 1);
+
+                if (attempt &lt; maxRetries)
+                {
+                    await DelayWithJitterAsync(attempt);
+                }
+            }
+        }
+
+        throw new HttpRequestException(
+            $&quot;Request failed after {maxRetries + 1} attempts&quot;, lastException);
+    }
+
+    private async Task DelayWithJitterAsync(int attempt)
+    {
+        var baseDelay = TimeSpan.FromMilliseconds(100 * Math.Pow(2, attempt));
+        var jitter = TimeSpan.FromMilliseconds(Random.Shared.Next(0, 100));
+        await Task.Delay(baseDelay + jitter);
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="real-world-trading-scenarios">Real-World Trading Scenarios</h2>
+<p><strong>Q: Implement order validation with defensive checks for external data and fail-fast for business rules.</strong></p>
+<p>A: Create a comprehensive order validator for a trading system.</p>
+<pre class="language-csharp"><code class="language-csharp">public class OrderValidator
+{
+    private readonly IAccountRepository _accountRepository;
+    private readonly IMarketDataService _marketDataService;
+    private readonly IRiskLimitService _riskLimitService;
+    private readonly ILogger _logger;
+
+    public async Task&lt;ValidationResult&gt; ValidateOrderAsync(CreateOrderRequest request)
+    {
+        // Fail-fast: null check
+        if (request == null)
+            throw new ArgumentNullException(nameof(request));
+
+        var errors = new List&lt;string&gt;();
+
+        // Defensive: validate symbol format
+        if (string.IsNullOrWhiteSpace(request.Symbol))
+        {
+            errors.Add(&quot;Symbol is required&quot;);
+        }
+        else if (request.Symbol.Length &gt; 20)
+        {
+            errors.Add(&quot;Symbol too long (max 20 characters)&quot;);
+        }
+
+        // Defensive: validate quantity
+        if (request.Quantity &lt;= 0)
+        {
+            errors.Add(&quot;Quantity must be positive&quot;);
+        }
+        else if (request.Quantity &gt; 10_000_000)
+        {
+            errors.Add(&quot;Quantity exceeds maximum allowed&quot;);
+        }
+
+        // Defensive: validate price
+        if (request.Price &lt; 0)
+        {
+            errors.Add(&quot;Price cannot be negative&quot;);
+        }
+        else if (request.Price &gt; 1_000_000)
+        {
+            errors.Add(&quot;Price exceeds maximum allowed&quot;);
+        }
+
+        // Return early if basic validation failed
+        if (errors.Any())
+        {
+            return ValidationResult.Failure(errors);
+        }
+
+        // Defensive: check account exists
+        var account = await _accountRepository.GetByIdAsync(request.AccountId);
+        if (account == null)
+        {
+            errors.Add($&quot;Account {request.AccountId} not found&quot;);
+            return ValidationResult.Failure(errors);
+        }
+
+        // Fail-fast: account must be active
+        if (!account.IsActive)
+        {
+            throw new InvalidOperationException($&quot;Account {request.AccountId} is not active&quot;);
+        }
+
+        // Defensive: check if symbol is tradeable
+        var marketData = await _marketDataService.GetMarketDataAsync(request.Symbol);
+        if (marketData == null)
+        {
+            _logger.LogWarning(&quot;Market data not available for {Symbol}&quot;, request.Symbol);
+            errors.Add($&quot;Market data not available for {request.Symbol}&quot;);
+        }
+        else if (!marketData.IsTradeable)
+        {
+            errors.Add($&quot;{request.Symbol} is not currently tradeable&quot;);
+        }
+        else
+        {
+            // Defensive: check price deviation
+            var deviation = Math.Abs(request.Price - marketData.LastPrice) / marketData.LastPrice;
+            if (deviation &gt; 0.1m) // 10% deviation
+            {
+                _logger.LogWarning(
+                    &quot;Large price deviation for {Symbol}: requested {RequestPrice}, market {MarketPrice}&quot;,
+                    request.Symbol, request.Price, marketData.LastPrice);
+                errors.Add($&quot;Price deviates significantly from market price ({deviation:P})&quot;);
+            }
+        }
+
+        // Fail-fast: check risk limits (business rules)
+        try
+        {
+            var orderValue = request.Quantity * request.Price;
+            _riskLimitService.ValidateOrderValue(account, orderValue);
+            _riskLimitService.ValidatePositionLimit(account, request.Symbol, request.Quantity);
+            _riskLimitService.ValidateMarginRequirement(account, orderValue);
+        }
+        catch (RiskLimitException ex)
+        {
+            // Convert business rule violations to validation errors
+            errors.Add(ex.Message);
+        }
+
+        return errors.Any()
+            ? ValidationResult.Failure(errors)
+            : ValidationResult.Success();
+    }
+}
+
+public class ValidationResult
+{
+    public bool IsValid { get; }
+    public IReadOnlyList&lt;string&gt; Errors { get; }
+
+    private ValidationResult(bool isValid, IReadOnlyList&lt;string&gt; errors)
+    {
+        IsValid = isValid;
+        Errors = errors ?? new List&lt;string&gt;();
+    }
+
+    public static ValidationResult Success() =&gt;
+        new(true, Array.Empty&lt;string&gt;());
+
+    public static ValidationResult Failure(List&lt;string&gt; errors) =&gt;
+        new(false, errors);
+}</code></pre>
+<p>---</p>
+<p><strong>Total Exercises: 15+ comprehensive scenarios</strong></p>
+<p>Practice implementing the right balance between defensive programming and fail-fast for different layers of your application!</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['dark2', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
+      const fallback = 'light';
+      const initial = supported.includes(normalized) ? normalized : (window.__studyTheme || fallback);
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          sessionStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+    (() => {
+      const groups = document.querySelectorAll('.sidebar-group');
+      if (!groups.length) return;
+      const storageKey = 'study-open-groups';
+      const saved = sessionStorage.getItem(storageKey);
+      const openFromStorage = new Set(saved ? JSON.parse(saved) : []);
+
+      const activeLink = document.querySelector('.nav-link.active');
+      const activeGroup = activeLink?.closest('.sidebar-group');
+      if (activeGroup?.dataset.group) {
+        openFromStorage.add(activeGroup.dataset.group);
+      }
+
+      const syncStorage = () => {
+        const openIds = Array.from(document.querySelectorAll('.sidebar-group.is-open'))
+          .map((group) => group.dataset.group)
+          .filter(Boolean);
+        sessionStorage.setItem(storageKey, JSON.stringify(openIds));
+      };
+
+      const setExpanded = (group, expanded) => {
+        const header = group.querySelector('.sidebar-group__header');
+        const list = group.querySelector('.sidebar-group__items');
+        group.classList.toggle('is-open', expanded);
+        header?.setAttribute('aria-expanded', expanded);
+        if (list) {
+          list.hidden = !expanded;
+        }
+      };
+
+      groups.forEach((group) => {
+        const shouldOpen = openFromStorage.has(group.dataset.group);
+        setExpanded(group, shouldOpen);
+        const header = group.querySelector('.sidebar-group__header');
+        header?.addEventListener('click', () => {
+          const next = !group.classList.contains('is-open');
+          setExpanded(group, next);
+          syncStorage();
+        });
+      });
+    })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swPath = '../service-worker.js';
+        navigator.serviceWorker.register(swPath).catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+</body>
+</html>

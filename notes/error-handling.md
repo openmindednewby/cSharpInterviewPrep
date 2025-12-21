@@ -6,6 +6,7 @@ Use these notes to articulate how you design resilient error-handling flows that
 
 ## Principles and Goals
 - **Fail fast, fail safely:** Validate inputs early and return meaningful errors without cascading failures.
+- **Defensive at edges, fail-fast at core:** Use defensive programming at system boundaries (APIs, external data) and fail-fast in domain logic. See [Defensive Programming vs Fail-Fast](./defensive-programming-vs-fail-fast.md) for comprehensive guidance.
 - **Deterministic paths:** Prefer predictable control flow over broad exception handling; reserve exceptions for truly exceptional conditions.
 - **Low-overhead:** Avoid unnecessary allocations and reflection in hot paths; keep the happy-path zero-cost when possible.
 - **Observability built-in:** Emit structured errors with correlation IDs and key context (tenant, region, feature flag) for fast triage.
