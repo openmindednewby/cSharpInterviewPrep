@@ -251,6 +251,10 @@ void Calculate()
 <ul><li><code>in</code> passes the struct by reference, not by value</li><li>The method receives a read-only reference</li><li>No full struct copy is made</li></ul>
 <p>---</p>
 <h2 id="nullability-and-defensive-programming">Nullability and Defensive Programming</h2>
+<p><strong>Q: What is defensive programming?</strong></p>
+<p>A: Defensive programming is the practice of anticipating invalid or unexpected inputs and handling them safely instead of assuming everything is correct.</p>
+<p>In practice, this means:</p>
+<ul><li>Checking for null</li><li>Validating inputs</li><li>Failing early or providing safe defaults</li><li>Making illegal states hard or impossible</li></ul>
 <p><strong>Q: Show how nullable reference types prevent null bugs.</strong></p>
 <p>A: Enable nullability and use <code>?</code> for optional references.</p>
 <pre class="language-csharp"><code class="language-csharp">#nullable enable
@@ -261,6 +265,8 @@ public string FormatName(string? name)
 
     return name.Trim();
 }</code></pre>
+<ul><li>string? explicitly says: this value may be null</li><li>The compiler forces you to handle the null case</li><li>You can’t accidentally forget a null check without getting a warning</li></ul>
+<p>This moves defensive checks from runtime (NullReferenceException) to compile time (warnings/errors)</p>
 <p><strong>Q: Write a guard clause extension for argument validation.</strong></p>
 <p>A: Throw early for invalid inputs.</p>
 <pre class="language-csharp"><code class="language-csharp">public static class Guard

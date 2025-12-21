@@ -86,6 +86,17 @@ The copy exists to ensure that the original value cannot be changed unintentiona
 
 ## Nullability and Defensive Programming
 
+**Q: What is defensive programming?**
+
+A: Defensive programming is the practice of anticipating invalid or unexpected inputs and handling them safely instead of assuming everything is correct.
+
+In practice, this means:
+
+- Checking for null
+- Validating inputs
+- Failing early or providing safe defaults
+- Making illegal states hard or impossible
+
 **Q: Show how nullable reference types prevent null bugs.**
 
 A: Enable nullability and use `?` for optional references.
@@ -100,6 +111,12 @@ public string FormatName(string? name)
     return name.Trim();
 }
 ```
+
+- string? explicitly says: this value may be null
+- The compiler forces you to handle the null case
+- You can’t accidentally forget a null check without getting a warning
+
+This moves defensive checks from runtime (NullReferenceException) to compile time (warnings/errors)
 
 **Q: Write a guard clause extension for argument validation.**
 

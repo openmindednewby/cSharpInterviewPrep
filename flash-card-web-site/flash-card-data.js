@@ -1,6 +1,6 @@
 // Auto-generated flash card data from notes/ and practice/ folders
-// Generated on: 2025-12-21T16:53:55.066Z
-// Total cards: 2124 (824 Q&A, 1238 sections, 62 concepts)
+// Generated on: 2025-12-21T17:13:14.253Z
+// Total cards: 2125 (825 Q&A, 1238 sections, 62 concepts)
 
 window.FLASH_CARD_DATA = [
   {
@@ -44572,6 +44572,19 @@ window.FLASH_CARD_DATA = [
     "id": "card-1822"
   },
   {
+    "question": "What is defensive programming?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Defensive programming is the practice of anticipating invalid or unexpected inputs and handling them safely instead of assuming everything is correct. In practice, this means: - Checking for null - Validating inputs - Failing early or providing safe defaults - Making illegal states hard or impossible"
+      }
+    ],
+    "category": "practice",
+    "topic": "sub-notes",
+    "source": "practice/sub-notes/csharp-fundamentals.md",
+    "id": "card-1823"
+  },
+  {
     "question": "Show how nullable reference types prevent null bugs.",
     "answer": [
       {
@@ -44588,7 +44601,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-1823"
+    "id": "card-1824"
   },
   {
     "question": "Write a guard clause extension for argument validation.",
@@ -44607,7 +44620,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-1824"
+    "id": "card-1825"
   },
   {
     "question": "Implement a generic method with a constraint for a parameterless constructor.",
@@ -44626,7 +44639,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-1825"
+    "id": "card-1826"
   },
   {
     "question": "Write a repository interface with type constraints.",
@@ -44645,7 +44658,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-1826"
+    "id": "card-1827"
   },
   {
     "question": "Show a simple event pattern with EventHandler<T>.",
@@ -44664,7 +44677,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-1827"
+    "id": "card-1828"
   },
   {
     "question": "When would you prefer Func<T> over a custom delegate type?",
@@ -44683,7 +44696,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-1828"
+    "id": "card-1829"
   },
   {
     "question": "Use pattern matching to categorize input.",
@@ -44702,7 +44715,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-1829"
+    "id": "card-1830"
   },
   {
     "question": "Create a record and use with to clone it.",
@@ -44721,7 +44734,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-1830"
+    "id": "card-1831"
   },
   {
     "question": "Show how to throw and wrap exceptions with context.",
@@ -44740,7 +44753,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-1831"
+    "id": "card-1832"
   },
   {
     "question": "Summarize access modifiers and demonstrate a safe class design.",
@@ -44759,7 +44772,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-1832"
+    "id": "card-1833"
   },
   {
     "question": "Demonstrate inheritance with a base order type and a specialized derived type.",
@@ -44778,7 +44791,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-1833"
+    "id": "card-1834"
   },
   {
     "question": "Show polymorphism by swapping fee calculators via an interface.",
@@ -44797,7 +44810,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-1834"
+    "id": "card-1835"
   },
   {
     "question": "Use abstraction to define a minimal contract for a price feed.",
@@ -44816,7 +44829,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-1835"
+    "id": "card-1836"
   },
   {
     "question": "When should you prefer composition over inheritance?",
@@ -44829,7 +44842,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-1836"
+    "id": "card-1837"
   },
   {
     "question": "Show object and collection initialization with target-typed new.",
@@ -44848,7 +44861,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-1837"
+    "id": "card-1838"
   },
   {
     "question": "Types, Memory, and Immutability",
@@ -44936,11 +44949,28 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-fundamentals.md",
     "isSection": true,
-    "id": "card-1838"
+    "id": "card-1839"
   },
   {
     "question": "Nullability and Defensive Programming",
     "answer": [
+      {
+        "type": "text",
+        "content": "A: Defensive programming is the practice of anticipating invalid or unexpected inputs and handling them safely instead of assuming everything is correct."
+      },
+      {
+        "type": "text",
+        "content": "In practice, this means:"
+      },
+      {
+        "type": "list",
+        "items": [
+          "Checking for null",
+          "Validating inputs",
+          "Failing early or providing safe defaults",
+          "Making illegal states hard or impossible"
+        ]
+      },
       {
         "type": "text",
         "content": "A: Enable nullability and use ? for optional references."
@@ -44950,6 +44980,18 @@ window.FLASH_CARD_DATA = [
         "language": "csharp",
         "code": "#nullable enable\npublic string FormatName(string? name)\n{\n    if (string.IsNullOrWhiteSpace(name))\n        return \"Unknown\";\n\n    return name.Trim();\n}",
         "codeType": "neutral"
+      },
+      {
+        "type": "list",
+        "items": [
+          "string? explicitly says: this value may be null",
+          "The compiler forces you to handle the null case",
+          "You can’t accidentally forget a null check without getting a warning"
+        ]
+      },
+      {
+        "type": "text",
+        "content": "This moves defensive checks from runtime (NullReferenceException) to compile time (warnings/errors)"
       },
       {
         "type": "text",
@@ -44966,7 +45008,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-fundamentals.md",
     "isSection": true,
-    "id": "card-1839"
+    "id": "card-1840"
   },
   {
     "question": "Generics and Constraints",
@@ -44996,7 +45038,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-fundamentals.md",
     "isSection": true,
-    "id": "card-1840"
+    "id": "card-1841"
   },
   {
     "question": "Delegates, Events, and Lambdas",
@@ -45026,7 +45068,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-fundamentals.md",
     "isSection": true,
-    "id": "card-1841"
+    "id": "card-1842"
   },
   {
     "question": "Pattern Matching and Switch Expressions",
@@ -45046,7 +45088,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-fundamentals.md",
     "isSection": true,
-    "id": "card-1842"
+    "id": "card-1843"
   },
   {
     "question": "Records and Immutability",
@@ -45066,7 +45108,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-fundamentals.md",
     "isSection": true,
-    "id": "card-1843"
+    "id": "card-1844"
   },
   {
     "question": "Exceptions and Error Flow",
@@ -45086,7 +45128,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-fundamentals.md",
     "isSection": true,
-    "id": "card-1844"
+    "id": "card-1845"
   },
   {
     "question": "Access Modifiers and Encapsulation",
@@ -45106,7 +45148,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-fundamentals.md",
     "isSection": true,
-    "id": "card-1845"
+    "id": "card-1846"
   },
   {
     "question": "OOP Principles (Inheritance, Polymorphism, Abstraction)",
@@ -45150,7 +45192,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-fundamentals.md",
     "isSection": true,
-    "id": "card-1846"
+    "id": "card-1847"
   },
   {
     "question": "Collections and Initialization",
@@ -45170,7 +45212,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-fundamentals.md",
     "isSection": true,
-    "id": "card-1847"
+    "id": "card-1848"
   },
   {
     "question": "C# Language & Runtime",
@@ -45205,7 +45247,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-system-design-questions.md",
     "isSection": true,
-    "id": "card-1848"
+    "id": "card-1849"
   },
   {
     "question": "Async, Parallelism & Concurrency",
@@ -45236,7 +45278,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-system-design-questions.md",
     "isSection": true,
-    "id": "card-1849"
+    "id": "card-1850"
   },
   {
     "question": "Collections, LINQ & Data Access",
@@ -45263,7 +45305,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-system-design-questions.md",
     "isSection": true,
-    "id": "card-1850"
+    "id": "card-1851"
   },
   {
     "question": "APIs & ASP.NET Core",
@@ -45290,7 +45332,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-system-design-questions.md",
     "isSection": true,
-    "id": "card-1851"
+    "id": "card-1852"
   },
   {
     "question": "Testing, Quality & Observability",
@@ -45315,7 +45357,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-system-design-questions.md",
     "isSection": true,
-    "id": "card-1852"
+    "id": "card-1853"
   },
   {
     "question": "Security & Performance",
@@ -45342,7 +45384,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-system-design-questions.md",
     "isSection": true,
-    "id": "card-1853"
+    "id": "card-1854"
   },
   {
     "question": "System Design Fundamentals",
@@ -45369,7 +45411,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-system-design-questions.md",
     "isSection": true,
-    "id": "card-1854"
+    "id": "card-1855"
   },
   {
     "question": "Data, Storage & Caching",
@@ -45394,7 +45436,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-system-design-questions.md",
     "isSection": true,
-    "id": "card-1855"
+    "id": "card-1856"
   },
   {
     "question": "Messaging, Eventing & Streaming",
@@ -45421,7 +45463,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-system-design-questions.md",
     "isSection": true,
-    "id": "card-1856"
+    "id": "card-1857"
   },
   {
     "question": "Reliability, Resilience & Operations",
@@ -45448,7 +45490,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-system-design-questions.md",
     "isSection": true,
-    "id": "card-1857"
+    "id": "card-1858"
   },
   {
     "question": "API & Client Experience",
@@ -45471,7 +45513,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-system-design-questions.md",
     "isSection": true,
-    "id": "card-1858"
+    "id": "card-1859"
   },
   {
     "question": "Domain-Driven Design & Architecture",
@@ -45494,7 +45536,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-system-design-questions.md",
     "isSection": true,
-    "id": "card-1859"
+    "id": "card-1860"
   },
   {
     "question": "Trade & FinTech Scenarios (if relevant)",
@@ -45517,7 +45559,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-system-design-questions.md",
     "isSection": true,
-    "id": "card-1860"
+    "id": "card-1861"
   },
   {
     "question": "Behavioral & Collaboration",
@@ -45540,7 +45582,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/csharp-system-design-questions.md",
     "isSection": true,
-    "id": "card-1861"
+    "id": "card-1862"
   },
   {
     "question": "Write a SQL query to calculate the rolling 7-day trade volume per instrument.",
@@ -45559,7 +45601,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-1862"
+    "id": "card-1863"
   },
   {
     "question": "Explain how you would choose between normalized schemas and denormalized tables for reporting.",
@@ -45572,7 +45614,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-1863"
+    "id": "card-1864"
   },
   {
     "question": "Describe the differences between clustered and non-clustered indexes and when to use covering indexes.",
@@ -45591,7 +45633,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-1864"
+    "id": "card-1865"
   },
   {
     "question": "Walk through handling a long-running report query that impacts OLTP performance.",
@@ -45604,7 +45646,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-1865"
+    "id": "card-1866"
   },
   {
     "question": "Configure a many-to-many relationship with a junction table containing additional properties.",
@@ -45623,7 +45665,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-1866"
+    "id": "card-1867"
   },
   {
     "question": "Implement soft delete with global query filters.",
@@ -45642,7 +45684,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-1867"
+    "id": "card-1868"
   },
   {
     "question": "Implement optimistic concurrency control using row versioning.",
@@ -45661,7 +45703,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-1868"
+    "id": "card-1869"
   },
   {
     "question": "Configure table splitting to map multiple entities to a single table.",
@@ -45680,7 +45722,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-1869"
+    "id": "card-1870"
   },
   {
     "question": "Implement audit trail using change tracking.",
@@ -45699,7 +45741,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-1870"
+    "id": "card-1871"
   },
   {
     "question": "Implement repository pattern with specification pattern for complex queries.",
@@ -45718,7 +45760,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-1871"
+    "id": "card-1872"
   },
   {
     "question": "Implement Unit of Work pattern for transaction management.",
@@ -45737,7 +45779,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-1872"
+    "id": "card-1873"
   },
   {
     "question": "Implement custom value converter for complex types.",
@@ -45756,7 +45798,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-1873"
+    "id": "card-1874"
   },
   {
     "question": "Optimize a query with multiple joins and aggregations.",
@@ -45775,7 +45817,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-1874"
+    "id": "card-1875"
   },
   {
     "question": "Implement pagination efficiently for large datasets.",
@@ -45794,7 +45836,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-1875"
+    "id": "card-1876"
   },
   {
     "question": "Optimize EXISTS vs IN vs JOIN.",
@@ -45813,7 +45855,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-1876"
+    "id": "card-1877"
   },
   {
     "question": "Use window functions for ranking and percentiles.",
@@ -45832,7 +45874,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-1877"
+    "id": "card-1878"
   },
   {
     "question": "Design composite index for a multi-column WHERE clause.",
@@ -45851,7 +45893,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-1878"
+    "id": "card-1879"
   },
   {
     "question": "Identify and remove unused or duplicate indexes.",
@@ -45870,7 +45912,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-1879"
+    "id": "card-1880"
   },
   {
     "question": "Implement filtered index for specific query patterns.",
@@ -45889,7 +45931,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-1880"
+    "id": "card-1881"
   },
   {
     "question": "Implement distributed transaction across multiple databases.",
@@ -45908,7 +45950,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-1881"
+    "id": "card-1882"
   },
   {
     "question": "Handle deadlocks with retry logic.",
@@ -45927,7 +45969,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-1882"
+    "id": "card-1883"
   },
   {
     "question": "Implement pessimistic locking for critical sections.",
@@ -45946,7 +45988,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-1883"
+    "id": "card-1884"
   },
   {
     "question": "Create a data migration to transform existing records.",
@@ -45965,7 +46007,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-1884"
+    "id": "card-1885"
   },
   {
     "question": "Implement zero-downtime deployment with backward-compatible migrations.",
@@ -45984,7 +46026,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-1885"
+    "id": "card-1886"
   },
   {
     "question": "Use Dapper for high-performance bulk operations.",
@@ -46003,7 +46045,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-1886"
+    "id": "card-1887"
   },
   {
     "question": "Combine EF Core and Dapper for optimal performance.",
@@ -46022,7 +46064,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-1887"
+    "id": "card-1888"
   },
   {
     "question": "Implement optimistic concurrency control with a row version column.",
@@ -46041,7 +46083,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-1888"
+    "id": "card-1889"
   },
   {
     "question": "Implement soft delete with a global query filter.",
@@ -46060,7 +46102,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-1889"
+    "id": "card-1890"
   },
   {
     "question": "Create efficient pagination for large datasets.",
@@ -46079,7 +46121,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-1890"
+    "id": "card-1891"
   },
   {
     "question": "Compare isolation levels for read/write workloads.",
@@ -46092,7 +46134,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-1891"
+    "id": "card-1892"
   },
   {
     "question": "Diagnose a slow query regression.",
@@ -46105,7 +46147,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-1892"
+    "id": "card-1893"
   },
   {
     "question": "Foundational Questions",
@@ -46151,7 +46193,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
     "isSection": true,
-    "id": "card-1893"
+    "id": "card-1894"
   },
   {
     "question": "Entity Framework Core Fundamentals",
@@ -46211,7 +46253,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
     "isSection": true,
-    "id": "card-1894"
+    "id": "card-1895"
   },
   {
     "question": "Advanced Entity Framework Patterns",
@@ -46251,7 +46293,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
     "isSection": true,
-    "id": "card-1895"
+    "id": "card-1896"
   },
   {
     "question": "SQL Optimization",
@@ -46301,7 +46343,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
     "isSection": true,
-    "id": "card-1896"
+    "id": "card-1897"
   },
   {
     "question": "Indexing Strategies",
@@ -46341,7 +46383,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
     "isSection": true,
-    "id": "card-1897"
+    "id": "card-1898"
   },
   {
     "question": "Transactions & Concurrency",
@@ -46381,7 +46423,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
     "isSection": true,
-    "id": "card-1898"
+    "id": "card-1899"
   },
   {
     "question": "Migrations & Schema Management",
@@ -46411,7 +46453,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
     "isSection": true,
-    "id": "card-1899"
+    "id": "card-1900"
   },
   {
     "question": "Dapper Integration",
@@ -46441,7 +46483,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
     "isSection": true,
-    "id": "card-1900"
+    "id": "card-1901"
   },
   {
     "question": "Advanced Data Layer Scenarios",
@@ -46489,7 +46531,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/data-layer.md",
     "isSection": true,
-    "id": "card-1901"
+    "id": "card-1902"
   },
   {
     "question": "Given a list of trades with timestamps, return the latest trade per account using LINQ.",
@@ -46508,7 +46550,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-1902"
+    "id": "card-1903"
   },
   {
     "question": "Implement a method that flattens nested lists of instrument codes while preserving ordering.",
@@ -46527,7 +46569,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-1903"
+    "id": "card-1904"
   },
   {
     "question": "Explain the difference between SelectMany and nested loops. When is each preferable?",
@@ -46546,7 +46588,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-1904"
+    "id": "card-1905"
   },
   {
     "question": "How would you detect duplicate orders in a stream using GroupBy and produce a summary?",
@@ -46565,7 +46607,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-1905"
+    "id": "card-1906"
   },
   {
     "question": "Find all customers who have placed orders in the last 30 days and calculate their total order value.",
@@ -46584,7 +46626,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-1906"
+    "id": "card-1907"
   },
   {
     "question": "Given two lists (products and categories), perform a left join to get all products with their category names (null if no category).",
@@ -46603,7 +46645,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-1907"
+    "id": "card-1908"
   },
   {
     "question": "Implement a LINQ query to find the top 5 most expensive products in each category.",
@@ -46622,7 +46664,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-1908"
+    "id": "card-1909"
   },
   {
     "question": "Find all pairs of employees who work in the same department (avoid duplicates like (A,B) and (B,A)).",
@@ -46641,7 +46683,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-1909"
+    "id": "card-1910"
   },
   {
     "question": "Calculate running totals for daily sales.",
@@ -46660,7 +46702,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-1910"
+    "id": "card-1911"
   },
   {
     "question": "Implement a custom LINQ extension method DistinctBy that takes a key selector.",
@@ -46679,7 +46721,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-1911"
+    "id": "card-1912"
   },
   {
     "question": "Write a LINQ query to find all employees whose salary is above the average salary in their department.",
@@ -46698,7 +46740,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-1912"
+    "id": "card-1913"
   },
   {
     "question": "Implement pagination with LINQ (Skip/Take) and explain potential issues with IQueryable vs IEnumerable.",
@@ -46717,7 +46759,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-1913"
+    "id": "card-1914"
   },
   {
     "question": "Write a LINQ query to pivot data (convert rows to columns).",
@@ -46736,7 +46778,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-1914"
+    "id": "card-1915"
   },
   {
     "question": "Implement a LINQ query with multiple grouping levels (hierarchical grouping).",
@@ -46755,7 +46797,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-1915"
+    "id": "card-1916"
   },
   {
     "question": "Find all consecutive sequences of at least 3 days where sales exceeded $10,000.",
@@ -46774,7 +46816,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-1916"
+    "id": "card-1917"
   },
   {
     "question": "Explain deferred execution and when it can cause performance issues.",
@@ -46793,7 +46835,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-1917"
+    "id": "card-1918"
   },
   {
     "question": "Compare the performance implications of Count() vs Any() for checking if a collection has items.",
@@ -46812,7 +46854,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-1918"
+    "id": "card-1919"
   },
   {
     "question": "Identify and fix performance issues in this query.",
@@ -46831,7 +46873,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-1919"
+    "id": "card-1920"
   },
   {
     "question": "Write a LINQ query that uses AsParallel appropriately for CPU-bound operations.",
@@ -46850,7 +46892,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-1920"
+    "id": "card-1921"
   },
   {
     "question": "When should you use List<T> vs IEnumerable<T> as a return type?",
@@ -46869,7 +46911,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-1921"
+    "id": "card-1922"
   },
   {
     "question": "Implement a LookupTable using ToLookup and explain when to use it vs GroupBy.",
@@ -46888,7 +46930,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-1922"
+    "id": "card-1923"
   },
   {
     "question": "Use Zip to combine two sequences and explain its behavior when sequences have different lengths.",
@@ -46907,7 +46949,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-1923"
+    "id": "card-1924"
   },
   {
     "question": "Implement a method that chunks a collection into batches of N items.",
@@ -46926,7 +46968,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-1924"
+    "id": "card-1925"
   },
   {
     "question": "You need to merge data from multiple sources (database, API, cache) and remove duplicates. Implement this efficiently.",
@@ -46945,7 +46987,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-1925"
+    "id": "card-1926"
   },
   {
     "question": "Implement a search feature with multiple optional filters (name, category, price range, tags).",
@@ -46964,7 +47006,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-1926"
+    "id": "card-1927"
   },
   {
     "question": "Calculate month-over-month growth percentage for sales data.",
@@ -46983,7 +47025,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-1927"
+    "id": "card-1928"
   },
   {
     "question": "Implement an expression builder that allows dynamic LINQ query construction from user input.",
@@ -47002,7 +47044,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-1928"
+    "id": "card-1929"
   },
   {
     "question": "Implement a method that finds all possible combinations of products that sum to a target price (subset sum problem).",
@@ -47021,7 +47063,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-1929"
+    "id": "card-1930"
   },
   {
     "question": "Use GroupJoin to build a customer summary with order counts and last order date.",
@@ -47040,7 +47082,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-1930"
+    "id": "card-1931"
   },
   {
     "question": "Implement Distinct with a custom comparer for case-insensitive strings.",
@@ -47059,7 +47101,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-1931"
+    "id": "card-1932"
   },
   {
     "question": "Convert a list to a dictionary safely when keys can repeat.",
@@ -47078,7 +47120,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-1932"
+    "id": "card-1933"
   },
   {
     "question": "Use Select with index to assign ranks within a sorted sequence.",
@@ -47097,7 +47139,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-1933"
+    "id": "card-1934"
   },
   {
     "question": "Split a sequence into a prefix and the remaining items using TakeWhile and SkipWhile.",
@@ -47116,7 +47158,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-1934"
+    "id": "card-1935"
   },
   {
     "question": "Foundational Questions",
@@ -47182,7 +47224,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
     "isSection": true,
-    "id": "card-1935"
+    "id": "card-1936"
   },
   {
     "question": "Intermediate Exercises",
@@ -47242,7 +47284,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
     "isSection": true,
-    "id": "card-1936"
+    "id": "card-1937"
   },
   {
     "question": "Advanced Exercises",
@@ -47325,7 +47367,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
     "isSection": true,
-    "id": "card-1937"
+    "id": "card-1938"
   },
   {
     "question": "Performance & Optimization",
@@ -47381,7 +47423,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
     "isSection": true,
-    "id": "card-1938"
+    "id": "card-1939"
   },
   {
     "question": "Collection-Specific Exercises",
@@ -47431,7 +47473,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
     "isSection": true,
-    "id": "card-1939"
+    "id": "card-1940"
   },
   {
     "question": "Real-World Scenarios",
@@ -47471,7 +47513,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
     "isSection": true,
-    "id": "card-1940"
+    "id": "card-1941"
   },
   {
     "question": "Challenge Problems",
@@ -47501,7 +47543,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
     "isSection": true,
-    "id": "card-1941"
+    "id": "card-1942"
   },
   {
     "question": "Expert Extensions",
@@ -47561,7 +47603,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/linq-collections.md",
     "isSection": true,
-    "id": "card-1942"
+    "id": "card-1943"
   },
   {
     "question": "Compare RabbitMQ and ZeroMQ for distributing price updates. When would you choose one over the other?",
@@ -47574,7 +47616,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-1943"
+    "id": "card-1944"
   },
   {
     "question": "Explain how to ensure at-least-once delivery with RabbitMQ while preventing duplicate processing.",
@@ -47593,7 +47635,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-1944"
+    "id": "card-1945"
   },
   {
     "question": "How would you design a saga pattern to coordinate account funding across multiple services?",
@@ -47612,7 +47654,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-1945"
+    "id": "card-1946"
   },
   {
     "question": "Discuss the outbox pattern and how it prevents message loss in event-driven systems.",
@@ -47631,7 +47673,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-1946"
+    "id": "card-1947"
   },
   {
     "question": "Implement a publisher with confirmation to ensure messages are persisted.",
@@ -47650,7 +47692,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-1947"
+    "id": "card-1948"
   },
   {
     "question": "Implement a resilient consumer with retry logic and dead letter queue.",
@@ -47669,7 +47711,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-1948"
+    "id": "card-1949"
   },
   {
     "question": "Implement priority queue pattern for urgent messages.",
@@ -47688,7 +47730,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-1949"
+    "id": "card-1950"
   },
   {
     "question": "Implement Kafka producer with idempotent writes and transactions.",
@@ -47707,7 +47749,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-1950"
+    "id": "card-1951"
   },
   {
     "question": "Implement Kafka consumer with manual offset management and exactly-once processing.",
@@ -47726,7 +47768,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-1951"
+    "id": "card-1952"
   },
   {
     "question": "Implement Kafka consumer group rebalancing with state management.",
@@ -47745,7 +47787,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-1952"
+    "id": "card-1953"
   },
   {
     "question": "Implement orchestration-based saga for order processing.",
@@ -47764,7 +47806,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-1953"
+    "id": "card-1954"
   },
   {
     "question": "Implement choreography-based saga using events.",
@@ -47783,7 +47825,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-1954"
+    "id": "card-1955"
   },
   {
     "question": "Implement transactional outbox pattern with background processor.",
@@ -47802,7 +47844,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-1955"
+    "id": "card-1956"
   },
   {
     "question": "Implement idempotency using distributed cache.",
@@ -47821,7 +47863,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-1956"
+    "id": "card-1957"
   },
   {
     "question": "Implement event store with snapshots for performance.",
@@ -47840,7 +47882,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-1957"
+    "id": "card-1958"
   },
   {
     "question": "How do you handle poison messages without blocking a queue?",
@@ -47859,7 +47901,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-1958"
+    "id": "card-1959"
   },
   {
     "question": "Describe an idempotency strategy for message consumers.",
@@ -47878,7 +47920,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-1959"
+    "id": "card-1960"
   },
   {
     "question": "How would you preserve ordering for a specific key in Kafka?",
@@ -47891,7 +47933,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-1960"
+    "id": "card-1961"
   },
   {
     "question": "How do you evolve a message schema safely?",
@@ -47904,7 +47946,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-1961"
+    "id": "card-1962"
   },
   {
     "question": "Implement a retry policy with exponential backoff and max delay.",
@@ -47923,7 +47965,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-1962"
+    "id": "card-1963"
   },
   {
     "question": "Foundational Questions",
@@ -47979,7 +48021,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/messaging-integration.md",
     "isSection": true,
-    "id": "card-1963"
+    "id": "card-1964"
   },
   {
     "question": "RabbitMQ Advanced Patterns",
@@ -48019,7 +48061,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/messaging-integration.md",
     "isSection": true,
-    "id": "card-1964"
+    "id": "card-1965"
   },
   {
     "question": "Kafka Integration",
@@ -48059,7 +48101,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/messaging-integration.md",
     "isSection": true,
-    "id": "card-1965"
+    "id": "card-1966"
   },
   {
     "question": "Saga Pattern",
@@ -48089,7 +48131,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/messaging-integration.md",
     "isSection": true,
-    "id": "card-1966"
+    "id": "card-1967"
   },
   {
     "question": "Outbox Pattern",
@@ -48109,7 +48151,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/messaging-integration.md",
     "isSection": true,
-    "id": "card-1967"
+    "id": "card-1968"
   },
   {
     "question": "Idempotency",
@@ -48129,7 +48171,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/messaging-integration.md",
     "isSection": true,
-    "id": "card-1968"
+    "id": "card-1969"
   },
   {
     "question": "Event Streaming",
@@ -48149,7 +48191,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/messaging-integration.md",
     "isSection": true,
-    "id": "card-1969"
+    "id": "card-1970"
   },
   {
     "question": "Advanced Messaging Scenarios",
@@ -48197,7 +48239,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/messaging-integration.md",
     "isSection": true,
-    "id": "card-1970"
+    "id": "card-1971"
   },
   {
     "question": "When should you use ArrayPool<T>?",
@@ -48216,7 +48258,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/performance-memory.md",
-    "id": "card-1971"
+    "id": "card-1972"
   },
   {
     "question": "Show how Span<T> can avoid allocations when parsing.",
@@ -48235,7 +48277,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/performance-memory.md",
-    "id": "card-1972"
+    "id": "card-1973"
   },
   {
     "question": "When would you use ValueTask instead of Task?",
@@ -48248,7 +48290,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/performance-memory.md",
-    "id": "card-1973"
+    "id": "card-1974"
   },
   {
     "question": "Why is string concatenation in a loop expensive, and how do you fix it?",
@@ -48267,7 +48309,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/performance-memory.md",
-    "id": "card-1974"
+    "id": "card-1975"
   },
   {
     "question": "How do closures create hidden allocations?",
@@ -48286,7 +48328,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/performance-memory.md",
-    "id": "card-1975"
+    "id": "card-1976"
   },
   {
     "question": "Exercise 1: Stack vs Heap Allocation",
@@ -48352,7 +48394,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/performance-memory.md",
     "isSection": true,
-    "id": "card-1976"
+    "id": "card-1977"
   },
   {
     "question": "Exercise 2: Boxing and Unboxing Performance",
@@ -48406,7 +48448,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/performance-memory.md",
     "isSection": true,
-    "id": "card-1977"
+    "id": "card-1978"
   },
   {
     "question": "Exercise 3: Understanding GC Generations",
@@ -48447,7 +48489,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/performance-memory.md",
     "isSection": true,
-    "id": "card-1978"
+    "id": "card-1979"
   },
   {
     "question": "Exercise 4: GC Modes - Workstation vs Server",
@@ -48551,7 +48593,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/performance-memory.md",
     "isSection": true,
-    "id": "card-1979"
+    "id": "card-1980"
   },
   {
     "question": "Exercise 5: Large Object Heap (LOH)",
@@ -48579,7 +48621,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/performance-memory.md",
     "isSection": true,
-    "id": "card-1980"
+    "id": "card-1981"
   },
   {
     "question": "Practice Prompts (Q and A)",
@@ -48646,7 +48688,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/performance-memory.md",
     "isSection": true,
-    "id": "card-1981"
+    "id": "card-1982"
   },
   {
     "question": "Exercise 6: Span<T> Basics",
@@ -48692,7 +48734,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/performance-memory.md",
     "isSection": true,
-    "id": "card-1982"
+    "id": "card-1983"
   },
   {
     "question": "Exercise 7: Memory<T> vs Span<T>",
@@ -48763,7 +48805,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/performance-memory.md",
     "isSection": true,
-    "id": "card-1983"
+    "id": "card-1984"
   },
   {
     "question": "Exercise 8: Zero-Allocation String Parsing",
@@ -48803,7 +48845,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/performance-memory.md",
     "isSection": true,
-    "id": "card-1984"
+    "id": "card-1985"
   },
   {
     "question": "Exercise 9: When to Use ValueTask",
@@ -48871,7 +48913,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/performance-memory.md",
     "isSection": true,
-    "id": "card-1985"
+    "id": "card-1986"
   },
   {
     "question": "Exercise 10: ArrayPool<T> Usage",
@@ -48912,7 +48954,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/performance-memory.md",
     "isSection": true,
-    "id": "card-1986"
+    "id": "card-1987"
   },
   {
     "question": "Exercise 11: ObjectPool<T> Pattern",
@@ -48953,7 +48995,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/performance-memory.md",
     "isSection": true,
-    "id": "card-1987"
+    "id": "card-1988"
   },
   {
     "question": "Exercise 12: String Concatenation Performance",
@@ -48985,7 +49027,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/performance-memory.md",
     "isSection": true,
-    "id": "card-1988"
+    "id": "card-1989"
   },
   {
     "question": "Exercise 13: Struct vs Class Performance Analysis",
@@ -49052,7 +49094,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/performance-memory.md",
     "isSection": true,
-    "id": "card-1989"
+    "id": "card-1990"
   },
   {
     "question": "Exercise 14: ref, in, out Performance",
@@ -49093,7 +49135,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/performance-memory.md",
     "isSection": true,
-    "id": "card-1990"
+    "id": "card-1991"
   },
   {
     "question": "Exercise 15: ref locals and Performance",
@@ -49125,7 +49167,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/performance-memory.md",
     "isSection": true,
-    "id": "card-1991"
+    "id": "card-1992"
   },
   {
     "question": "Exercise 16: stackalloc for Stack Allocation",
@@ -49167,7 +49209,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/performance-memory.md",
     "isSection": true,
-    "id": "card-1992"
+    "id": "card-1993"
   },
   {
     "question": "Exercise 17: BenchmarkDotNet Basics",
@@ -49209,7 +49251,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/performance-memory.md",
     "isSection": true,
-    "id": "card-1993"
+    "id": "card-1994"
   },
   {
     "question": "Exercise 18: Micro-Benchmarking Pitfalls",
@@ -49241,7 +49283,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/performance-memory.md",
     "isSection": true,
-    "id": "card-1994"
+    "id": "card-1995"
   },
   {
     "question": "Exercise 19: Detecting Memory Leaks",
@@ -49284,7 +49326,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/performance-memory.md",
     "isSection": true,
-    "id": "card-1995"
+    "id": "card-1996"
   },
   {
     "question": "Exercise 20: Proper Dispose Pattern",
@@ -49328,7 +49370,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/performance-memory.md",
     "isSection": true,
-    "id": "card-1996"
+    "id": "card-1997"
   },
   {
     "question": "Exercise 21: String.Create for Zero-Allocation Strings",
@@ -49360,7 +49402,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/performance-memory.md",
     "isSection": true,
-    "id": "card-1997"
+    "id": "card-1998"
   },
   {
     "question": "Exercise 22: Collection Performance",
@@ -49392,7 +49434,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/performance-memory.md",
     "isSection": true,
-    "id": "card-1998"
+    "id": "card-1999"
   },
   {
     "question": "Exercise 23: Lazy<T> vs Manual Lazy Loading",
@@ -49445,7 +49487,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/performance-memory.md",
     "isSection": true,
-    "id": "card-1999"
+    "id": "card-2000"
   },
   {
     "question": "Exercise 24: Allocation-Free Async Patterns",
@@ -49477,7 +49519,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/performance-memory.md",
     "isSection": true,
-    "id": "card-2000"
+    "id": "card-2001"
   },
   {
     "question": "Exercise 25: GC.Collect and GC Tuning",
@@ -49521,7 +49563,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/performance-memory.md",
     "isSection": true,
-    "id": "card-2001"
+    "id": "card-2002"
   },
   {
     "question": "Summary",
@@ -49558,7 +49600,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/performance-memory.md",
     "isSection": true,
-    "id": "card-2002"
+    "id": "card-2003"
   },
   {
     "question": "⚙️ How it works",
@@ -49576,7 +49618,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/replace int without variable.md",
     "isSection": true,
-    "id": "card-2003"
+    "id": "card-2004"
   },
   {
     "question": "⚠️ Caveat",
@@ -49592,7 +49634,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/replace int without variable.md",
     "isSection": true,
-    "id": "card-2004"
+    "id": "card-2005"
   },
   {
     "question": "🧠 How it works",
@@ -49626,7 +49668,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/replace int without variable.md",
     "isSection": true,
-    "id": "card-2005"
+    "id": "card-2006"
   },
   {
     "question": "✅ Pros",
@@ -49643,7 +49685,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/replace int without variable.md",
     "isSection": true,
-    "id": "card-2006"
+    "id": "card-2007"
   },
   {
     "question": "🔍 3️⃣ Comparison",
@@ -49679,7 +49721,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/replace int without variable.md",
     "isSection": true,
-    "id": "card-2007"
+    "id": "card-2008"
   },
   {
     "question": "🚀 Interview Tip",
@@ -49697,22 +49739,6 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/replace int without variable.md",
     "isSection": true,
-    "id": "card-2008"
-  },
-  {
-    "question": "Good Practice Example",
-    "answer": [
-      {
-        "type": "code",
-        "language": "csharp",
-        "code": "a = 10, b = 5",
-        "codeType": "good"
-      }
-    ],
-    "category": "practice",
-    "topic": "sub-notes",
-    "source": "practice/sub-notes/replace int without variable.md",
-    "isConcept": true,
     "id": "card-2009"
   },
   {
@@ -49730,6 +49756,22 @@ window.FLASH_CARD_DATA = [
     "source": "practice/sub-notes/replace int without variable.md",
     "isConcept": true,
     "id": "card-2010"
+  },
+  {
+    "question": "Good Practice Example",
+    "answer": [
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "a = 10, b = 5",
+        "codeType": "good"
+      }
+    ],
+    "category": "practice",
+    "topic": "sub-notes",
+    "source": "practice/sub-notes/replace int without variable.md",
+    "isConcept": true,
+    "id": "card-2011"
   },
   {
     "question": "✅ Expected answer:",
@@ -49773,7 +49815,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/struct vs class questions and answers.md",
     "isSection": true,
-    "id": "card-2011"
+    "id": "card-2012"
   },
   {
     "question": "✅ Expected answer:",
@@ -49809,7 +49851,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/struct vs class questions and answers.md",
     "isSection": true,
-    "id": "card-2012"
+    "id": "card-2013"
   },
   {
     "question": "✅ Expected answer:",
@@ -49851,7 +49893,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/struct vs class questions and answers.md",
     "isSection": true,
-    "id": "card-2013"
+    "id": "card-2014"
   },
   {
     "question": "✅ Expected answer:",
@@ -49891,7 +49933,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/struct vs class questions and answers.md",
     "isSection": true,
-    "id": "card-2014"
+    "id": "card-2015"
   },
   {
     "question": "✅ Expected answer:",
@@ -49939,7 +49981,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/struct vs class questions and answers.md",
     "isSection": true,
-    "id": "card-2015"
+    "id": "card-2016"
   },
   {
     "question": "🎯 Bonus (for “wow” points)",
@@ -49961,7 +50003,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/struct vs class questions and answers.md",
     "isSection": true,
-    "id": "card-2016"
+    "id": "card-2017"
   },
   {
     "question": "✅ Quick Summary Answer (say this in 20 seconds)",
@@ -49987,7 +50029,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/struct vs class questions and answers.md",
     "isSection": true,
-    "id": "card-2017"
+    "id": "card-2018"
   },
   {
     "question": "🧩 2. Why can boxing destroy the performance benefits of structs?",
@@ -50003,7 +50045,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/struct vs class questions and answers.md",
     "isConcept": true,
-    "id": "card-2018"
+    "id": "card-2019"
   },
   {
     "question": "🧩 3. What happens when you mutate a struct that’s stored in a collection like a List<T>?",
@@ -50019,7 +50061,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/struct vs class questions and answers.md",
     "isConcept": true,
-    "id": "card-2019"
+    "id": "card-2020"
   },
   {
     "question": "Design a service that ingests MT5 tick data, normalizes it, caches latest prices, and exposes them via REST/WebSocket.",
@@ -50038,7 +50080,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-2020"
+    "id": "card-2021"
   },
   {
     "question": "Design an API that receives orders, validates, routes to MT4/MT5, and confirms execution. Include failure recovery.",
@@ -50057,7 +50099,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-2021"
+    "id": "card-2022"
   },
   {
     "question": "Architect a system to collect metrics from trading microservices and alert on anomalies.",
@@ -50076,7 +50118,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-2022"
+    "id": "card-2023"
   },
   {
     "question": "Discuss how you would integrate an external risk management engine into an existing microservices ecosystem.",
@@ -50095,7 +50137,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-2023"
+    "id": "card-2024"
   },
   {
     "question": "Design a microservices architecture for an e-commerce platform with orders, inventory, payments, and shipping.",
@@ -50120,7 +50162,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-2024"
+    "id": "card-2025"
   },
   {
     "question": "Design service-to-service communication strategy: when to use sync vs async?",
@@ -50139,7 +50181,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-2025"
+    "id": "card-2026"
   },
   {
     "question": "Implement service discovery pattern for dynamic service registration.",
@@ -50158,7 +50200,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-2026"
+    "id": "card-2027"
   },
   {
     "question": "Implement CQRS pattern for an order management system.",
@@ -50177,7 +50219,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-2027"
+    "id": "card-2028"
   },
   {
     "question": "Design event sourcing system for account transactions.",
@@ -50196,7 +50238,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-2028"
+    "id": "card-2029"
   },
   {
     "question": "Design a multi-layer caching strategy (L1: in-memory, L2: Redis, L3: database).",
@@ -50215,7 +50257,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-2029"
+    "id": "card-2030"
   },
   {
     "question": "Implement cache invalidation strategy for distributed systems.",
@@ -50234,7 +50276,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-2030"
+    "id": "card-2031"
   },
   {
     "question": "Design read replica strategy for handling high read traffic.",
@@ -50253,7 +50295,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-2031"
+    "id": "card-2032"
   },
   {
     "question": "Design database sharding strategy for multi-tenant application.",
@@ -50272,7 +50314,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-2032"
+    "id": "card-2033"
   },
   {
     "question": "Design circuit breaker pattern for external API calls.",
@@ -50291,7 +50333,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-2033"
+    "id": "card-2034"
   },
   {
     "question": "Implement health check aggregator for microservices.",
@@ -50310,7 +50352,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-2034"
+    "id": "card-2035"
   },
   {
     "question": "Design distributed tracing system using OpenTelemetry.",
@@ -50329,7 +50371,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-2035"
+    "id": "card-2036"
   },
   {
     "question": "Implement centralized logging with correlation IDs.",
@@ -50348,7 +50390,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-2036"
+    "id": "card-2037"
   },
   {
     "question": "Design a multi-region failover strategy for a trading platform.",
@@ -50361,7 +50403,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-2037"
+    "id": "card-2038"
   },
   {
     "question": "How would you shard a multi-tenant database for scale?",
@@ -50374,7 +50416,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-2038"
+    "id": "card-2039"
   },
   {
     "question": "Describe a cache invalidation strategy for price snapshots.",
@@ -50387,7 +50429,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-2039"
+    "id": "card-2040"
   },
   {
     "question": "When would you use event sourcing versus state storage?",
@@ -50400,7 +50442,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-2040"
+    "id": "card-2041"
   },
   {
     "question": "How do you handle backpressure in a streaming system?",
@@ -50413,7 +50455,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-2041"
+    "id": "card-2042"
   },
   {
     "question": "Foundational Questions",
@@ -50479,7 +50521,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/system-design.md",
     "isSection": true,
-    "id": "card-2042"
+    "id": "card-2043"
   },
   {
     "question": "Microservices Architecture",
@@ -50529,7 +50571,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/system-design.md",
     "isSection": true,
-    "id": "card-2043"
+    "id": "card-2044"
   },
   {
     "question": "CQRS & Event Sourcing",
@@ -50559,7 +50601,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/system-design.md",
     "isSection": true,
-    "id": "card-2044"
+    "id": "card-2045"
   },
   {
     "question": "Caching Strategies",
@@ -50589,7 +50631,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/system-design.md",
     "isSection": true,
-    "id": "card-2045"
+    "id": "card-2046"
   },
   {
     "question": "Database Scaling",
@@ -50619,7 +50661,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/system-design.md",
     "isSection": true,
-    "id": "card-2046"
+    "id": "card-2047"
   },
   {
     "question": "High Availability Patterns",
@@ -50649,7 +50691,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/system-design.md",
     "isSection": true,
-    "id": "card-2047"
+    "id": "card-2048"
   },
   {
     "question": "Observability",
@@ -50679,7 +50721,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/system-design.md",
     "isSection": true,
-    "id": "card-2048"
+    "id": "card-2049"
   },
   {
     "question": "Advanced System Design Prompts",
@@ -50701,7 +50743,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/system-design.md",
     "isSection": true,
-    "id": "card-2049"
+    "id": "card-2050"
   },
   {
     "question": "Describe the lifecycle of a forex trade from placement to settlement.",
@@ -50714,7 +50756,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-2050"
+    "id": "card-2051"
   },
   {
     "question": "How would you integrate with MT4/MT5 APIs for trade execution in C#? Mention authentication, session management, and error handling.",
@@ -50733,7 +50775,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-2051"
+    "id": "card-2052"
   },
   {
     "question": "What are common risk checks before executing a client order (e.g., margin, exposure limits)?",
@@ -50746,7 +50788,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-2052"
+    "id": "card-2053"
   },
   {
     "question": "Explain how you'd handle market data bursts without dropping updates.",
@@ -50759,7 +50801,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-2053"
+    "id": "card-2054"
   },
   {
     "question": "Implement order validation pipeline with multiple risk checks.",
@@ -50778,7 +50820,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-2054"
+    "id": "card-2055"
   },
   {
     "question": "Design state machine for order lifecycle tracking.",
@@ -50797,7 +50839,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-2055"
+    "id": "card-2056"
   },
   {
     "question": "Implement order reconciliation to detect missing confirmations.",
@@ -50816,7 +50858,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-2056"
+    "id": "card-2057"
   },
   {
     "question": "Implement MT5 Gateway with connection pooling and failover.",
@@ -50835,7 +50877,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-2057"
+    "id": "card-2058"
   },
   {
     "question": "Handle MT5 error codes and map to domain exceptions.",
@@ -50854,7 +50896,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-2058"
+    "id": "card-2059"
   },
   {
     "question": "Implement high-frequency tick data processor with conflation.",
@@ -50873,7 +50915,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-2059"
+    "id": "card-2060"
   },
   {
     "question": "Implement VWAP (Volume-Weighted Average Price) calculator.",
@@ -50892,7 +50934,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-2060"
+    "id": "card-2061"
   },
   {
     "question": "Implement real-time P&L calculator for open positions.",
@@ -50911,7 +50953,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-2061"
+    "id": "card-2062"
   },
   {
     "question": "Implement margin calculator with different leverage levels.",
@@ -50930,7 +50972,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-2062"
+    "id": "card-2063"
   },
   {
     "question": "Implement automatic stop-out mechanism.",
@@ -50949,7 +50991,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-2063"
+    "id": "card-2064"
   },
   {
     "question": "Explain slippage and how you would measure it.",
@@ -50962,7 +51004,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-2064"
+    "id": "card-2065"
   },
   {
     "question": "How do you handle market data bursts without dropping critical updates?",
@@ -50975,7 +51017,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-2065"
+    "id": "card-2066"
   },
   {
     "question": "Design an order book snapshot + delta model.",
@@ -50988,7 +51030,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-2066"
+    "id": "card-2067"
   },
   {
     "question": "Implement a real-time PnL calculation at the account level.",
@@ -51001,7 +51043,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-2067"
+    "id": "card-2068"
   },
   {
     "question": "Describe a reconciliation workflow for executed trades.",
@@ -51014,7 +51056,7 @@ window.FLASH_CARD_DATA = [
     "category": "practice",
     "topic": "sub-notes",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-2068"
+    "id": "card-2069"
   },
   {
     "question": "Foundational Questions",
@@ -51046,7 +51088,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/trading-domain.md",
     "isSection": true,
-    "id": "card-2069"
+    "id": "card-2070"
   },
   {
     "question": "Trade Lifecycle Management",
@@ -51086,7 +51128,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/trading-domain.md",
     "isSection": true,
-    "id": "card-2070"
+    "id": "card-2071"
   },
   {
     "question": "MT4/MT5 Integration",
@@ -51116,7 +51158,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/trading-domain.md",
     "isSection": true,
-    "id": "card-2071"
+    "id": "card-2072"
   },
   {
     "question": "Market Data Processing",
@@ -51146,7 +51188,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/trading-domain.md",
     "isSection": true,
-    "id": "card-2072"
+    "id": "card-2073"
   },
   {
     "question": "Risk Management",
@@ -51186,7 +51228,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/trading-domain.md",
     "isSection": true,
-    "id": "card-2073"
+    "id": "card-2074"
   },
   {
     "question": "Advanced Trading Scenarios",
@@ -51216,7 +51258,7 @@ window.FLASH_CARD_DATA = [
     "topic": "sub-notes",
     "source": "practice/sub-notes/trading-domain.md",
     "isSection": true,
-    "id": "card-2074"
+    "id": "card-2075"
   },
   {
     "question": "Exercise 1: AAA Structure",
@@ -51230,7 +51272,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2075"
+    "id": "card-2076"
   },
   {
     "question": "Exercise 2: Pure Function Unit Test",
@@ -51244,7 +51286,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2076"
+    "id": "card-2077"
   },
   {
     "question": "Exercise 3: Mocking a Repository",
@@ -51264,7 +51306,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2077"
+    "id": "card-2078"
   },
   {
     "question": "Exercise 4: Exception Assertions",
@@ -51284,7 +51326,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2078"
+    "id": "card-2079"
   },
   {
     "question": "Exercise 5: Parameterized Tests",
@@ -51298,7 +51340,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2079"
+    "id": "card-2080"
   },
   {
     "question": "Exercise 6: Test Naming",
@@ -51312,7 +51354,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2080"
+    "id": "card-2081"
   },
   {
     "question": "Exercise 7: Test Data Builders",
@@ -51326,7 +51368,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2081"
+    "id": "card-2082"
   },
   {
     "question": "Exercise 8: Test Isolation",
@@ -51340,7 +51382,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2082"
+    "id": "card-2083"
   },
   {
     "question": "Exercise 9: Stub vs Mock",
@@ -51354,7 +51396,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2083"
+    "id": "card-2084"
   },
   {
     "question": "Exercise 10: Assertions with Shouldly",
@@ -51374,7 +51416,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2084"
+    "id": "card-2085"
   },
   {
     "question": "Exercise 11: Edge Case Coverage",
@@ -51388,7 +51430,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2085"
+    "id": "card-2086"
   },
   {
     "question": "Exercise 12: Avoid Over-Mocking",
@@ -51402,7 +51444,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2086"
+    "id": "card-2087"
   },
   {
     "question": "Exercise 13: Testcontainers for Databases",
@@ -51416,7 +51458,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2087"
+    "id": "card-2088"
   },
   {
     "question": "Exercise 14: WebApplicationFactory",
@@ -51430,7 +51472,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2088"
+    "id": "card-2089"
   },
   {
     "question": "Exercise 15: Middleware Tests",
@@ -51444,7 +51486,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2089"
+    "id": "card-2090"
   },
   {
     "question": "Exercise 16: Contract Tests for HTTP Clients",
@@ -51458,7 +51500,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2090"
+    "id": "card-2091"
   },
   {
     "question": "Exercise 17: Consumer-Driven Contracts",
@@ -51472,7 +51514,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2091"
+    "id": "card-2092"
   },
   {
     "question": "Exercise 18: SQLite In-Memory EF Core",
@@ -51486,7 +51528,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2092"
+    "id": "card-2093"
   },
   {
     "question": "Exercise 19: Transaction Rollback",
@@ -51500,7 +51542,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2093"
+    "id": "card-2094"
   },
   {
     "question": "Exercise 20: Background Service Integration Test",
@@ -51514,7 +51556,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2094"
+    "id": "card-2095"
   },
   {
     "question": "Exercise 21: Message Handler Testing",
@@ -51528,7 +51570,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2095"
+    "id": "card-2096"
   },
   {
     "question": "Exercise 22: Retry Policy Verification",
@@ -51542,7 +51584,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2096"
+    "id": "card-2097"
   },
   {
     "question": "Exercise 23: Snapshot Testing",
@@ -51556,7 +51598,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2097"
+    "id": "card-2098"
   },
   {
     "question": "Exercise 24: Integration Test Cleanup",
@@ -51570,7 +51612,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2098"
+    "id": "card-2099"
   },
   {
     "question": "Exercise 25: TDD Cycle",
@@ -51584,7 +51626,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2099"
+    "id": "card-2100"
   },
   {
     "question": "Exercise 26: Property-Based Testing",
@@ -51598,7 +51640,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2100"
+    "id": "card-2101"
   },
   {
     "question": "Exercise 27: Mutation Testing",
@@ -51612,7 +51654,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2101"
+    "id": "card-2102"
   },
   {
     "question": "Exercise 28: Idempotency Tests",
@@ -51626,7 +51668,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2102"
+    "id": "card-2103"
   },
   {
     "question": "Exercise 29: Concurrency Tests",
@@ -51640,7 +51682,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2103"
+    "id": "card-2104"
   },
   {
     "question": "Exercise 30: Timeout and Cancellation",
@@ -51654,7 +51696,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2104"
+    "id": "card-2105"
   },
   {
     "question": "Exercise 31: Fake Clock",
@@ -51668,7 +51710,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2105"
+    "id": "card-2106"
   },
   {
     "question": "Exercise 32: Cache Behavior",
@@ -51682,7 +51724,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2106"
+    "id": "card-2107"
   },
   {
     "question": "Exercise 33: Logging Assertions",
@@ -51696,7 +51738,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2107"
+    "id": "card-2108"
   },
   {
     "question": "Exercise 34: Allocation Tests",
@@ -51710,7 +51752,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2108"
+    "id": "card-2109"
   },
   {
     "question": "Exercise 35: Resilience Under Failure",
@@ -51724,7 +51766,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2109"
+    "id": "card-2110"
   },
   {
     "question": "Exercise 36: Order Placement Integration",
@@ -51738,7 +51780,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2110"
+    "id": "card-2111"
   },
   {
     "question": "Exercise 37: Market Data Ingestion",
@@ -51752,7 +51794,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2111"
+    "id": "card-2112"
   },
   {
     "question": "Exercise 38: API Versioning Test",
@@ -51766,7 +51808,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2112"
+    "id": "card-2113"
   },
   {
     "question": "Exercise 39: Auth and Role Tests",
@@ -51780,7 +51822,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2113"
+    "id": "card-2114"
   },
   {
     "question": "Exercise 40: Smoke Test Checklist",
@@ -51794,7 +51836,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2114"
+    "id": "card-2115"
   },
   {
     "question": "Exercise 1: Load Shedding Strategy",
@@ -51808,7 +51850,7 @@ window.FLASH_CARD_DATA = [
     "topic": "Use-Cases",
     "source": "practice/Use-Cases/massive-traffic/index.md",
     "isSection": true,
-    "id": "card-2115"
+    "id": "card-2116"
   },
   {
     "question": "Exercise 2: Rate Limiting Design",
@@ -51822,7 +51864,7 @@ window.FLASH_CARD_DATA = [
     "topic": "Use-Cases",
     "source": "practice/Use-Cases/massive-traffic/index.md",
     "isSection": true,
-    "id": "card-2116"
+    "id": "card-2117"
   },
   {
     "question": "Exercise 3: Backpressure with Channels",
@@ -51836,7 +51878,7 @@ window.FLASH_CARD_DATA = [
     "topic": "Use-Cases",
     "source": "practice/Use-Cases/massive-traffic/index.md",
     "isSection": true,
-    "id": "card-2117"
+    "id": "card-2118"
   },
   {
     "question": "Exercise 4: Cache-Aside for Hot Reads",
@@ -51850,7 +51892,7 @@ window.FLASH_CARD_DATA = [
     "topic": "Use-Cases",
     "source": "practice/Use-Cases/massive-traffic/index.md",
     "isSection": true,
-    "id": "card-2118"
+    "id": "card-2119"
   },
   {
     "question": "Exercise 5: Read Replica Routing",
@@ -51864,7 +51906,7 @@ window.FLASH_CARD_DATA = [
     "topic": "Use-Cases",
     "source": "practice/Use-Cases/massive-traffic/index.md",
     "isSection": true,
-    "id": "card-2119"
+    "id": "card-2120"
   },
   {
     "question": "Exercise 6: Idempotent Commands",
@@ -51878,7 +51920,7 @@ window.FLASH_CARD_DATA = [
     "topic": "Use-Cases",
     "source": "practice/Use-Cases/massive-traffic/index.md",
     "isSection": true,
-    "id": "card-2120"
+    "id": "card-2121"
   },
   {
     "question": "Exercise 7: Circuit Breakers",
@@ -51892,7 +51934,7 @@ window.FLASH_CARD_DATA = [
     "topic": "Use-Cases",
     "source": "practice/Use-Cases/massive-traffic/index.md",
     "isSection": true,
-    "id": "card-2121"
+    "id": "card-2122"
   },
   {
     "question": "Exercise 8: Queue Consumer Scaling",
@@ -51906,7 +51948,7 @@ window.FLASH_CARD_DATA = [
     "topic": "Use-Cases",
     "source": "practice/Use-Cases/massive-traffic/index.md",
     "isSection": true,
-    "id": "card-2122"
+    "id": "card-2123"
   },
   {
     "question": "Exercise 9: Observability Signals",
@@ -51920,7 +51962,7 @@ window.FLASH_CARD_DATA = [
     "topic": "Use-Cases",
     "source": "practice/Use-Cases/massive-traffic/index.md",
     "isSection": true,
-    "id": "card-2123"
+    "id": "card-2124"
   },
   {
     "question": "Exercise 10: Graceful Degradation",
@@ -51934,6 +51976,6 @@ window.FLASH_CARD_DATA = [
     "topic": "Use-Cases",
     "source": "practice/Use-Cases/massive-traffic/index.md",
     "isSection": true,
-    "id": "card-2124"
+    "id": "card-2125"
   }
 ];
