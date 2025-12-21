@@ -506,6 +506,10 @@ pre[class*="language-"] {
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
+#answerInput.is-hidden {
+  display: none;
+}
+
 .answer-code {
   display: flex;
   flex-direction: column;

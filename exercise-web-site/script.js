@@ -241,6 +241,7 @@ function setCardContent(card) {
   hideAnswer();
   clearCheckResult();
   answerInputEl.value = '';
+  resetAnswerInputVisibility();
   resetQuestionVisibility();
   resetAnswerCodeSection();
   resetAnswerSection();
@@ -337,7 +338,6 @@ function setAnswerVisibility(isVisible) {
 
   cardAnswerEl.classList.toggle('is-hidden', !isVisible);
   revealAnswerBtn.textContent = isVisible ? 'Hide Answer' : 'Reveal Answer';
-  setAnswerToggleState(!isVisible);
   updateScrollableLayout();
 }
 
@@ -525,11 +525,13 @@ function toggleQuestionVisibility() {
 }
 
 function toggleAnswerVisibility() {
-  if (!cardAnswerEl) {
+  if (!answerInputEl || !toggleAnswerBtn) {
     return;
   }
 
-  handleRevealAnswer();
+  const isHidden = answerInputEl.classList.toggle('is-hidden');
+  setAnswerToggleState(isHidden);
+  updateScrollableLayout();
 }
 
 function toggleCodePreview() {
@@ -601,6 +603,15 @@ function resetQuestionVisibility() {
   cardQuestionEl.classList.remove('is-hidden');
   toggleQuestionBtn.textContent = 'Hide Question';
   toggleQuestionBtn.setAttribute('aria-pressed', 'false');
+}
+
+function resetAnswerInputVisibility() {
+  if (!answerInputEl) {
+    return;
+  }
+
+  answerInputEl.classList.remove('is-hidden');
+  setAnswerToggleState(false);
 }
 
 function resetAnswerSection() {
