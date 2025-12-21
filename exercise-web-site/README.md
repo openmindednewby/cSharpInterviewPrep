@@ -2,7 +2,7 @@
 
 A focused practice site for C# interview questions and answers. Use the sidebar to pick a topic, answer out loud, then check or reveal the reference answer.
 
-![Practice Q&A preview with topic navigation](quotes-preview.png)
+![Exercise website](preview.png)
 
 ## Features
 
