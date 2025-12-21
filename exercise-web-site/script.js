@@ -4,6 +4,10 @@ const cardMetaEl = document.getElementById('cardMeta');
 const cardTypeBadgeEl = document.getElementById('cardTypeBadge');
 const topicListEl = document.getElementById('topicList');
 const answerInputEl = document.getElementById('answerInput');
+const toggleCodeInputBtn = document.getElementById('toggleCodeInputBtn');
+const answerCodeBlockEl = document.getElementById('answerCodeBlock');
+const answerCodeInputEl = document.getElementById('answerCodeInput');
+const answerCodePreviewEl = document.getElementById('answerCodePreview');
 const checkResultEl = document.getElementById('checkResult');
 const checkAnswerBtn = document.getElementById('checkAnswerBtn');
 const revealAnswerBtn = document.getElementById('revealAnswerBtn');
@@ -53,6 +57,12 @@ function initializeTheme() {
 function wireActions() {
   checkAnswerBtn.addEventListener('click', handleCheckAnswer);
   revealAnswerBtn.addEventListener('click', handleRevealAnswer);
+  if (toggleCodeInputBtn && answerCodeBlockEl) {
+    toggleCodeInputBtn.addEventListener('click', toggleCodeInput);
+  }
+  if (answerCodeInputEl && answerCodePreviewEl) {
+    answerCodeInputEl.addEventListener('input', updateAnswerCodePreview);
+  }
   randomQuestionBtn.addEventListener('click', () => {
     const next = pickRandomCard(allCards, currentCard?.id);
     if (next) {
@@ -210,6 +220,7 @@ function setCardContent(card) {
   hideAnswer();
   clearCheckResult();
   answerInputEl.value = '';
+  resetAnswerCodeSection();
   highlightCurrentQuestion(card.id);
 }
 
@@ -428,4 +439,46 @@ function showCheckResult(message, tone) {
 function clearCheckResult() {
   checkResultEl.textContent = '';
   checkResultEl.dataset.tone = 'neutral';
+}
+
+function toggleCodeInput() {
+  if (!answerCodeBlockEl || !toggleCodeInputBtn) {
+    return;
+  }
+
+  const isHidden = answerCodeBlockEl.classList.toggle('is-hidden');
+  toggleCodeInputBtn.textContent = isHidden ? 'Add C# Code' : 'Hide C# Code';
+  toggleCodeInputBtn.setAttribute('aria-pressed', String(!isHidden));
+
+  if (!isHidden && answerCodeInputEl) {
+    answerCodeInputEl.focus();
+  }
+}
+
+function updateAnswerCodePreview() {
+  if (!answerCodePreviewEl || !answerCodeInputEl) {
+    return;
+  }
+
+  answerCodePreviewEl.textContent = answerCodeInputEl.value;
+
+  if (typeof Prism !== 'undefined') {
+    Prism.highlightElement(answerCodePreviewEl);
+  }
+}
+
+function resetAnswerCodeSection() {
+  if (answerCodeInputEl) {
+    answerCodeInputEl.value = '';
+  }
+  if (answerCodePreviewEl) {
+    answerCodePreviewEl.textContent = '';
+  }
+  if (answerCodeBlockEl) {
+    answerCodeBlockEl.classList.add('is-hidden');
+  }
+  if (toggleCodeInputBtn) {
+    toggleCodeInputBtn.textContent = 'Add C# Code';
+    toggleCodeInputBtn.setAttribute('aria-pressed', 'false');
+  }
 }

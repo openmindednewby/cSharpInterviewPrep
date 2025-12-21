@@ -12,6 +12,7 @@ https://senior-dot-net-study-exercises.dloizides.com
 - 🗂️ **Topic navigation** – sidebar dropdowns for each practice topic
 - ✅ **Check answer** – compare your response to the reference answer
 - 👀 **Reveal answer** – show the full reference answer and code snippets
+- 💻 **C# answer code** – add a C# snippet with live syntax highlighting
 - 📱 **Responsive layout** – works on desktop and mobile
 
 ## Data Generation
