@@ -1,0 +1,3837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for Memory Allocation Discipline" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>Memory Allocation Discipline | C# Interview Prep Cheat Sheet</title>
+  <link rel="manifest" href="..\..\assets/manifest.webmanifest" />
+  <script>
+    (() => {
+      const supported = ['dark2', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
+      const fallback = 'light';
+      const initial = supported.includes(normalized) ? normalized : fallback;
+      document.documentElement.dataset.theme = initial;
+      window.__studyTheme = initial;
+    })();
+  </script>
+  <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="dark2">Dark 2</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group" data-group="notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="..\../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="..\../notes/logging.html">Logging</a></li><li><a class="nav-link" href="..\../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/O1-Constant-Time.html">O1 Constant Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/OLogN-Logarithmic-Time.html">OLogN Logarithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON-Linear-Time.html">ON Linear Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON2-Quadratic-Time.html">ON2 Quadratic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ONLogN-Linearithmic-Time.html">ONLogN Linearithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/Space-Complexity.html">Space Complexity</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/ICollection.html">ICollection</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IEnumerable.html">IEnumerable</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IList.html">IList</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IQueryable.html">IQueryable</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IReadOnly.html">IReadOnly</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a class="nav-link" href="..\../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a class="nav-link" href="..\../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a class="nav-link" href="..\../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a class="nav-link" href="..\../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a class="nav-link" href="..\../notes/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a class="nav-link" href="..\../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a class="nav-link" href="..\../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a class="nav-link" href="..\../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a class="nav-link" href="..\../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a class="nav-link" href="..\../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a class="nav-link" href="..\../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a class="nav-link" href="..\../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a class="nav-link" href="..\../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a class="nav-link" href="..\../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a class="nav-link" href="..\../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/01-async-patterns.html">01 Async Patterns</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/02-backpressure-rate-limiting.html">02 Backpressure Rate Limiting</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/03-caching-strategies.html">03 Caching Strategies</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/04-database-scaling.html">04 Database Scaling</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/05-message-queues.html">05 Message Queues</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/06-resilience-patterns.html">06 Resilience Patterns</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/07-observability.html">07 Observability</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/08-complete-example.html">08 Complete Example</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/answers.html">Answers</a></li><li><a class="nav-link" href="..\../practice/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="..\../practice/error-handling-exercises.html">Error Handling Exercises</a></li><li><a class="nav-link" href="..\../practice/logging-exercises.html">Logging Exercises</a></li><li><a class="nav-link" href="..\../practice/index.html">Practice</a></li><li><a class="nav-link" href="..\../practice/PRACTICE-STRUCTURE.html">PRACTICE STRUCTURE</a></li><li><a class="nav-link" href="..\../practice/questions.html">Questions</a></li><li><a class="nav-link" href="..\../practice/README.html">README</a></li><li><a class="nav-link" href="..\../practice/testing-strategies-exercises.html">Testing Strategies Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Automapper/index.html">Automapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/O1-Constant-Time-Exercises.html">O1 Constant Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/OLogN-Logarithmic-Time-Exercises.html">OLogN Logarithmic Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ON-Linear-Time-Exercises.html">ON Linear Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ON2-Quadratic-Time-Exercises.html">ON2 Quadratic Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ONLogN-Linearithmic-Time-Exercises.html">ONLogN Linearithmic Time Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Design-Patterns/Decorator-Pattern-Exercises.html">Decorator Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/index.html">Design Patterns</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Factory-Pattern-Exercises.html">Factory Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Mediator-Pattern-Exercises.html">Mediator Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Observer-Pattern-Exercises.html">Observer Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Strategy-Pattern-Exercises.html">Strategy Pattern Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/FluentValidation/index.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group is-open" data-group="practice-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
+        <span>Practice / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items"><li><a class="nav-link active" href="..\../practice/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/SOLID/S-Single-Responsibility-Principle-Exercises.html">S Single Responsibility Principle Exercises</a></li><li><a class="nav-link" href="..\../practice/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/sub-notes/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="..\../practice/sub-notes/async-await-exercises.html">Async Await Exercises</a></li><li><a class="nav-link" href="..\../practice/sub-notes/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="..\../practice/sub-notes/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="..\../practice/sub-notes/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="..\../practice/sub-notes/csharp-fundamentals.html">Csharp Fundamentals</a></li><li><a class="nav-link" href="..\../practice/sub-notes/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="..\../practice/sub-notes/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="..\../practice/sub-notes/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="..\../practice/sub-notes/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="..\../practice/sub-notes/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="..\../practice/sub-notes/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="..\../practice/sub-notes/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="..\../practice/sub-notes/system-design.html">System Design</a></li><li><a class="nav-link" href="..\../practice/sub-notes/trading-domain.html">Trading Domain</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+    </div></div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">practice\Memory-Allocation-Discipline\index.md</div>
+        <h2>Memory Allocation Discipline</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#memory-allocation-discipline---practice-exercises">Memory Allocation Discipline - Practice Exercises</a></li><li class="level-2"><a href="#stack-vs-heap-memory-allocation">Stack vs Heap Memory Allocation</a></li><li class="level-3"><a href="#exercise-1-stack-vs-heap-allocation">Exercise 1: Stack vs Heap Allocation</a></li><li class="level-3"><a href="#exercise-2-boxing-and-unboxing-performance">Exercise 2: Boxing and Unboxing Performance</a></li><li class="level-2"><a href="#garbage-collection">Garbage Collection</a></li><li class="level-3"><a href="#exercise-3-understanding-gc-generations">Exercise 3: Understanding GC Generations</a></li><li class="level-3"><a href="#exercise-4-gc-modes---workstation-vs-server">Exercise 4: GC Modes - Workstation vs Server</a></li><li class="level-3"><a href="#exercise-5-large-object-heap-loh">Exercise 5: Large Object Heap (LOH)</a></li><li class="level-2"><a href="#practice-prompts-q-and-a">Practice Prompts (Q and A)</a></li><li class="level-2"><a href="#spant-and-memoryt">Span<T> and Memory<T></a></li><li class="level-3"><a href="#exercise-6-spant-basics">Exercise 6: Span<T> Basics</a></li><li class="level-3"><a href="#exercise-7-memoryt-vs-spant">Exercise 7: Memory<T> vs Span<T></a></li><li class="level-3"><a href="#exercise-8-zero-allocation-string-parsing">Exercise 8: Zero-Allocation String Parsing</a></li><li class="level-2"><a href="#valuetask-vs-task">ValueTask vs Task</a></li><li class="level-3"><a href="#exercise-9-when-to-use-valuetask">Exercise 9: When to Use ValueTask</a></li><li class="level-2"><a href="#object-pooling">Object Pooling</a></li><li class="level-3"><a href="#exercise-10-arraypoolt-usage">Exercise 10: ArrayPool<T> Usage</a></li><li class="level-3"><a href="#exercise-11-objectpoolt-pattern">Exercise 11: ObjectPool<T> Pattern</a></li><li class="level-2"><a href="#stringbuilder-vs-string-concatenation">StringBuilder vs String Concatenation</a></li><li class="level-3"><a href="#exercise-12-string-concatenation-performance">Exercise 12: String Concatenation Performance</a></li><li class="level-2"><a href="#struct-vs-class-performance">Struct vs Class Performance</a></li><li class="level-3"><a href="#exercise-13-struct-vs-class-performance-analysis">Exercise 13: Struct vs Class Performance Analysis</a></li><li class="level-2"><a href="#ref-in-out-parameters">ref, in, out Parameters</a></li><li class="level-3"><a href="#exercise-14-ref-in-out-performance">Exercise 14: ref, in, out Performance</a></li><li class="level-3"><a href="#exercise-15-ref-locals-and-performance">Exercise 15: ref locals and Performance</a></li><li class="level-2"><a href="#stackalloc">stackalloc</a></li><li class="level-3"><a href="#exercise-16-stackalloc-for-stack-allocation">Exercise 16: stackalloc for Stack Allocation</a></li><li class="level-2"><a href="#benchmarkdotnet">BenchmarkDotNet</a></li><li class="level-3"><a href="#exercise-17-benchmarkdotnet-basics">Exercise 17: BenchmarkDotNet Basics</a></li><li class="level-3"><a href="#exercise-18-micro-benchmarking-pitfalls">Exercise 18: Micro-Benchmarking Pitfalls</a></li><li class="level-2"><a href="#memory-profiling">Memory Profiling</a></li><li class="level-3"><a href="#exercise-19-detecting-memory-leaks">Exercise 19: Detecting Memory Leaks</a></li><li class="level-2"><a href="#idisposable-and-finalizers">IDisposable and Finalizers</a></li><li class="level-3"><a href="#exercise-20-proper-dispose-pattern">Exercise 20: Proper Dispose Pattern</a></li><li class="level-2"><a href="#advanced-performance-topics">Advanced Performance Topics</a></li><li class="level-3"><a href="#exercise-21-stringcreate-for-zero-allocation-strings">Exercise 21: String.Create for Zero-Allocation Strings</a></li><li class="level-3"><a href="#exercise-22-collection-performance">Exercise 22: Collection Performance</a></li><li class="level-3"><a href="#exercise-23-lazyt-vs-manual-lazy-loading">Exercise 23: Lazy<T> vs Manual Lazy Loading</a></li><li class="level-3"><a href="#exercise-24-allocation-free-async-patterns">Exercise 24: Allocation-Free Async Patterns</a></li><li class="level-3"><a href="#exercise-25-gccollect-and-gc-tuning">Exercise 25: GC.Collect and GC Tuning</a></li><li class="level-3"><a href="#exercise-26-pinned-objects-and-fragmentation">Exercise 26: Pinned Objects and Fragmentation</a></li><li class="level-3"><a href="#exercise-27-loh-compaction-mode">Exercise 27: LOH Compaction Mode</a></li><li class="level-3"><a href="#exercise-28-memorypoolt-for-reusable-buffers">Exercise 28: MemoryPool<T> for Reusable Buffers</a></li><li class="level-3"><a href="#exercise-29-collectionsmarshalasspan-for-list-hot-paths">Exercise 29: CollectionsMarshal.AsSpan for List Hot Paths</a></li><li class="level-3"><a href="#exercise-30-avoid-closure-allocations">Exercise 30: Avoid Closure Allocations</a></li><li class="level-3"><a href="#exercise-31-replace-linq-with-loops-in-hot-paths">Exercise 31: Replace LINQ with Loops in Hot Paths</a></li><li class="level-3"><a href="#exercise-32-arraypoolt-with-clear-and-return">Exercise 32: ArrayPool<T> with Clear and Return</a></li><li class="level-3"><a href="#exercise-33-trystartnogcregion-for-low-latency-windows">Exercise 33: TryStartNoGCRegion for Low-Latency Windows</a></li><li class="level-3"><a href="#exercise-34-readonlyspanchar-parsing-without-substring">Exercise 34: ReadOnlySpan<char> Parsing Without Substring</a></li><li class="level-3"><a href="#exercise-35-monitor-allocation-rate">Exercise 35: Monitor Allocation Rate</a></li><li class="level-2"><a href="#summary">Summary</a></li></ul></div>
+        <h1 id="memory-allocation-discipline---practice-exercises">Memory Allocation Discipline - Practice Exercises</h1>
+<p>Exercises covering allocation behavior, GC tuning, and zero-allocation patterns. Content migrated from <code>performance-memory.md</code> with additional practice items.</p>
+<h2 id="stack-vs-heap-memory-allocation">Stack vs Heap Memory Allocation</h2>
+<h3 id="exercise-1-stack-vs-heap-allocation">Exercise 1: Stack vs Heap Allocation</h3>
+<p><strong>Question:</strong> Analyze the following code and identify what gets allocated on the stack vs heap. Explain why.</p>
+<pre class="language-csharp"><code class="language-csharp">public class MemoryAllocationDemo
+{
+    public void DemonstrateAllocation()
+    {
+        int x = 10;                           // Where?
+        string name = &quot;John&quot;;                 // Where?
+        Person person = new Person();         // Where?
+        int[] numbers = new int[5];           // Where?
+        DateTime date = DateTime.Now;         // Where?
+    }
+}
+
+public class Person
+{
+    public string Name { get; set; }
+    public int Age { get; set; }
+}</code></pre>
+<p><details> <summary>Answer</summary></p>
+<p><strong>Stack allocations:</strong></p>
+<ul><li><code>int x = 10</code> - value type, allocated on stack</li><li><code>Person person</code> - reference itself on stack</li><li><code>int[] numbers</code> - reference itself on stack</li><li><code>DateTime date</code> - struct (value type), allocated on stack</li></ul>
+<p><strong>Heap allocations:</strong></p>
+<ul><li><code>string name = &quot;John&quot;</code> - reference on stack, actual string object on heap</li><li><code>new Person()</code> - object allocated on heap</li><li><code>new int[5]</code> - array allocated on heap</li></ul>
+<p><strong>Why:</strong></p>
+<p></details></p>
+<ul><li>Value types (int, DateTime, structs) are allocated on stack when they're local variables</li><li>Reference types (classes, arrays, strings) are allocated on heap</li><li>References to heap objects are stored on stack</li><li>This applies to local variables; class fields follow different rules</li></ul>
+<p>---</p>
+<h3 id="exercise-2-boxing-and-unboxing-performance">Exercise 2: Boxing and Unboxing Performance</h3>
+<p><strong>Question:</strong> Identify boxing operations in this code and rewrite to avoid them.</p>
+<pre class="language-csharp"><code class="language-csharp">public class BoxingDemo
+{
+    public void ProcessNumbers()
+    {
+        ArrayList list = new ArrayList();
+
+        for (int i = 0; i &lt; 1000; i++)
+        {
+            list.Add(i);  // Boxing occurs
+        }
+
+        int sum = 0;
+        foreach (object obj in list)
+        {
+            sum += (int)obj;  // Unboxing occurs
+        }
+    }
+}</code></pre>
+<p><details> <summary>Answer</summary></p>
+<p><strong>Problem:</strong> Each <code>Add</code> boxes the int, each cast unboxes it. For 1000 iterations, this creates 1000 heap allocations.</p>
+<p><strong>Solution:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public class OptimizedDemo
+{
+    public void ProcessNumbers()
+    {
+        List&lt;int&gt; list = new List&lt;int&gt;();
+
+        for (int i = 0; i &lt; 1000; i++)
+        {
+            list.Add(i);  // No boxing
+        }
+
+        int sum = 0;
+        foreach (int num in list)
+        {
+            sum += num;  // No unboxing
+        }
+    }
+}</code></pre>
+<p><strong>Performance impact:</strong></p>
+<p></details></p>
+<ul><li>Original: ~1000 heap allocations, GC pressure</li><li>Optimized: Single heap allocation for List<int>, no boxing/unboxing</li><li>Use generic collections to avoid boxing value types</li></ul>
+<p>---</p>
+<h2 id="garbage-collection">Garbage Collection</h2>
+<h3 id="exercise-3-understanding-gc-generations">Exercise 3: Understanding GC Generations</h3>
+<p><strong>Question:</strong> Write code to demonstrate which generation objects are in after various GC cycles.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">public class GCGenerationDemo
+{
+    public static void DemonstrateGenerations()
+    {
+        // Create short-lived object
+        object shortLived = new object();
+        Console.WriteLine($&quot;Short-lived Gen: {GC.GetGeneration(shortLived)}&quot;); // Gen 0
+
+        // Create long-lived object
+        object longLived = new object();
+
+        // Force GC collections
+        GC.Collect(0);  // Gen 0 collection
+        Console.WriteLine($&quot;After Gen 0 GC - Long-lived: {GC.GetGeneration(longLived)}&quot;); // Gen 1
+
+        GC.Collect(1);  // Gen 0 and 1 collection
+        Console.WriteLine($&quot;After Gen 1 GC - Long-lived: {GC.GetGeneration(longLived)}&quot;); // Gen 2
+
+        // Display GC info
+        Console.WriteLine($&quot;Gen 0 collections: {GC.CollectionCount(0)}&quot;);
+        Console.WriteLine($&quot;Gen 1 collections: {GC.CollectionCount(1)}&quot;);
+        Console.WriteLine($&quot;Gen 2 collections: {GC.CollectionCount(2)}&quot;);
+
+        // Prevent GC during measurement
+        GC.KeepAlive(longLived);
+    }
+}</code></pre>
+<p><strong>Key points:</strong></p>
+<p></details></p>
+<ul><li>Gen 0: Short-lived objects, collected frequently</li><li>Gen 1: Medium-lived objects, buffer between Gen 0 and 2</li><li>Gen 2: Long-lived objects, collected infrequently</li><li>Gen 2 collections are expensive (full GC)</li></ul>
+<p>---</p>
+<h3 id="exercise-4-gc-modes---workstation-vs-server">Exercise 4: GC Modes - Workstation vs Server</h3>
+<p><strong>Question:</strong> Explain the difference between Workstation and Server GC modes. When would you use each?</p>
+<p><details> <summary>Answer</summary></p>
+<p><strong>Workstation GC:</strong></p>
+<pre class="language-xml"><code class="language-xml">&lt;!-- App.config or csproj --&gt;
+&lt;configuration&gt;
+  &lt;runtime&gt;
+    &lt;gcServer enabled=&quot;false&quot;/&gt;
+    &lt;gcConcurrent enabled=&quot;true&quot;/&gt;
+  &lt;/runtime&gt;
+&lt;/configuration&gt;</code></pre>
+<pre class="language-csharp"><code class="language-csharp">// Or in code (read-only, for info)
+bool isServerGC = GCSettings.IsServerGC;</code></pre>
+<p><strong>Server GC:</strong></p>
+<pre class="language-xml"><code class="language-xml">&lt;configuration&gt;
+  &lt;runtime&gt;
+    &lt;gcServer enabled=&quot;true&quot;/&gt;
+  &lt;/runtime&gt;
+&lt;/configuration&gt;</code></pre>
+<p><strong>Differences:</strong></p>
+<table><thead><tr><th>Feature</th><th>Workstation GC</th><th>Server GC</th></tr></thead><tbody><tr><td>Heap count</td><td>1 heap</td><td>1 heap per logical CPU</td></tr><tr><td>Thread count</td><td>1 GC thread</td><td>1 thread per heap</td></tr><tr><td>Throughput</td><td>Lower</td><td>Higher</td></tr><tr><td>Latency</td><td>Lower pauses</td><td>Longer pauses</td></tr><tr><td>Memory usage</td><td>Lower</td><td>Higher</td></tr><tr><td>Best for</td><td>Client apps, UI</td><td>Web servers, services</td></tr></tbody></table>
+<p><strong>When to use:</strong></p>
+<p></details></p>
+<ul><li>Workstation: Desktop apps, lower latency requirements</li><li>Server: ASP.NET, high-throughput services</li><li>Can also use concurrent GC for background collection</li></ul>
+<p>---</p>
+<h3 id="exercise-5-large-object-heap-loh">Exercise 5: Large Object Heap (LOH)</h3>
+<p><strong>Question:</strong> Write code demonstrating LOH behavior and how to avoid LOH fragmentation.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">public class LOHDemo
+{
+    // Objects &gt;= 85,000 bytes go to LOH
+    private const int LOH_THRESHOLD = 85000;
+
+    public static void DemonstrateLOH()
+    {
+        // This goes to LOH
+        byte[] largeArray = new byte[100000];
+        Console.WriteLine($&quot;Large array generation: {GC.GetGeneration(largeArray)}&quot;); // Gen 2
+
+        // This stays in normal heap
+        byte[] smallArray = new byte[1000];
+        Console.WriteLine($&quot;Small array generation: {GC.GetGeneration(smallArray)}&quot;); // Gen 0
+    }
+
+    // Problem: LOH fragmentation
+    public static void CauseFragmentation()
+    {
+        List&lt;byte[]&gt; arrays = new List&lt;byte[]&gt;();
+
+        for (int i = 0; i &lt; 100; i++)
+        {
+            arrays.Add(new byte[90000]); // LOH allocation
+        }
+
+        // Release every other array - causes fragmentation
+        for (int i = 0; i &lt; arrays.Count; i += 2)
+        {
+            arrays[i] = null;
+        }
+
+        GC.Collect();
+        // LOH is now fragmented
+    }
+
+    // Solution 1: Use ArrayPool for large arrays
+    public static void UseArrayPool()
+    {
+        var pool = ArrayPool&lt;byte&gt;.Shared;
+
+        byte[] buffer = pool.Rent(100000);
+        try
+        {
+            // Use buffer
+        }
+        finally
+        {
+            pool.Return(buffer);
+        }
+    }
+
+    // Solution 2: Compact LOH (NET Core 2.0+)
+    public static void CompactLOH()
+    {
+        GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+        GC.Collect();
+    }
+
+    // Solution 3: Split large allocations
+    public static void SplitAllocations()
+    {
+        // Instead of one 1MB array
+        // byte[] huge = new byte[1000000];
+
+        // Use multiple smaller arrays
+        byte[][] chunks = new byte[12][];
+        for (int i = 0; i &lt; 12; i++)
+        {
+            chunks[i] = new byte[84000]; // Just under LOH threshold
+        }
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="practice-prompts-q-and-a">Practice Prompts (Q and A)</h2>
+<p><strong>Q: When should you use <code>ArrayPool&lt;T&gt;</code>?</strong></p>
+<p>A: Use it for large or frequent temporary buffers to reduce GC pressure. Always return buffers in a <code>finally</code> block.</p>
+<pre class="language-csharp"><code class="language-csharp">var pool = ArrayPool&lt;byte&gt;.Shared;
+byte[] buffer = pool.Rent(4096);
+try
+{
+    // Use buffer
+}
+finally
+{
+    pool.Return(buffer);
+}</code></pre>
+<p><strong>Q: Show how <code>Span&lt;T&gt;</code> can avoid allocations when parsing.</strong></p>
+<p>A: Slice strings with spans to reduce intermediate allocations.</p>
+<pre class="language-csharp"><code class="language-csharp">ReadOnlySpan&lt;char&gt; line = input.AsSpan();
+var first = line.Slice(0, 3);</code></pre>
+<p><strong>Q: When would you use <code>ValueTask</code> instead of <code>Task</code>?</strong></p>
+<p>A: Use <code>ValueTask</code> for hot paths that often complete synchronously to avoid allocations.</p>
+<p><strong>Q: Why is string concatenation in a loop expensive, and how do you fix it?</strong></p>
+<p>A: Strings are immutable, so concatenation allocates new strings. Use <code>StringBuilder</code>.</p>
+<pre class="language-csharp"><code class="language-csharp">var sb = new StringBuilder();
+foreach (var part in parts)
+{
+    sb.Append(part);
+}
+var result = sb.ToString();</code></pre>
+<p><strong>Q: How do closures create hidden allocations?</strong></p>
+<p>A: Lambdas capture outer variables into heap-allocated objects. Avoid captures in hot paths or use static lambdas.</p>
+<pre class="language-csharp"><code class="language-csharp">// Avoid capture
+var count = items.Count(static i =&gt; i.IsActive);</code></pre>
+<p><strong>Key points:</strong></p>
+<p></details></p>
+<ul><li>Objects >= 85KB go to LOH</li><li>LOH is part of Gen 2</li><li>LOH doesn't get compacted by default (can cause fragmentation)</li><li>Use ArrayPool or compact LOH manually</li></ul>
+<p>---</p>
+<h2 id="spant-and-memoryt">Span<T> and Memory<T></h2>
+<h3 id="exercise-6-spant-basics">Exercise 6: Span<T> Basics</h3>
+<p><strong>Question:</strong> Rewrite this string parsing method to use Span<T> and avoid allocations.</p>
+<pre class="language-csharp"><code class="language-csharp">public class StringParser
+{
+    public (string firstName, string lastName) ParseName(string fullName)
+    {
+        string[] parts = fullName.Split(&#39; &#39;);
+        return (parts[0], parts[1]);
+    }
+}</code></pre>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">public class OptimizedStringParser
+{
+    public (ReadOnlySpan&lt;char&gt; firstName, ReadOnlySpan&lt;char&gt; lastName) ParseName(string fullName)
+    {
+        ReadOnlySpan&lt;char&gt; span = fullName.AsSpan();
+        int spaceIndex = span.IndexOf(&#39; &#39;);
+
+        if (spaceIndex == -1)
+            return (span, ReadOnlySpan&lt;char&gt;.Empty);
+
+        return (span.Slice(0, spaceIndex), span.Slice(spaceIndex + 1));
+    }
+
+    // If you need strings, create them only when necessary
+    public (string firstName, string lastName) ParseNameToString(string fullName)
+    {
+        ReadOnlySpan&lt;char&gt; span = fullName.AsSpan();
+        int spaceIndex = span.IndexOf(&#39; &#39;);
+
+        if (spaceIndex == -1)
+            return (fullName, string.Empty);
+
+        return (
+            span.Slice(0, spaceIndex).ToString(),
+            span.Slice(spaceIndex + 1).ToString()
+        );
+    }
+}</code></pre>
+<p><strong>Performance benefits:</strong></p>
+<p></details></p>
+<ul><li>Original: Creates array, allocates string array</li><li>Optimized: Zero allocations until ToString() is called</li><li>Span<T> is a ref struct (stack-only)</li></ul>
+<p>---</p>
+<h3 id="exercise-7-memoryt-vs-spant">Exercise 7: Memory<T> vs Span<T></h3>
+<p><strong>Question:</strong> Explain when to use Memory<T> vs Span<T>. Provide examples.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">public class SpanVsMemoryDemo
+{
+    // Span&lt;T&gt; - Cannot be stored in fields, stack-only
+    public void UseSpan()
+    {
+        Span&lt;int&gt; numbers = stackalloc int[100];
+        ProcessSpan(numbers);
+    }
+
+    public void ProcessSpan(Span&lt;int&gt; data)
+    {
+        for (int i = 0; i &lt; data.Length; i++)
+        {
+            data[i] = i;
+        }
+    }
+
+    // Memory&lt;T&gt; - Can be stored in fields, used in async
+    private Memory&lt;byte&gt; _buffer;
+
+    public async Task UseMemoryAsync()
+    {
+        _buffer = new byte[1024];
+        await ProcessMemoryAsync(_buffer);
+    }
+
+    public async Task ProcessMemoryAsync(Memory&lt;byte&gt; data)
+    {
+        // Can use Memory&lt;T&gt; across await
+        await Task.Delay(100);
+
+        // Get Span when needed
+        Span&lt;byte&gt; span = data.Span;
+        span[0] = 42;
+    }
+
+    // Practical example: Buffer pooling
+    public class BufferManager
+    {
+        private readonly Memory&lt;byte&gt; _buffer;
+
+        public BufferManager(int size)
+        {
+            _buffer = new byte[size];
+        }
+
+        public async Task&lt;int&gt; ReadDataAsync(Stream stream)
+        {
+            // Can store Memory&lt;T&gt; in field
+            // Get Span&lt;T&gt; when doing actual work
+            return await stream.ReadAsync(_buffer);
+        }
+    }
+}</code></pre>
+<p><strong>Key differences:</strong></p>
+<table><thead><tr><th>Feature</th><th>Span<T></th><th>Memory<T></th></tr></thead><tbody><tr><td>Storage</td><td>ref struct, stack-only</td><td>Regular struct, can be stored</td></tr><tr><td>Async/await</td><td>Cannot cross await</td><td>Can cross await</td></tr><tr><td>Performance</td><td>Faster</td><td>Slightly slower</td></tr><tr><td>Use case</td><td>Synchronous code</td><td>Async code, fields</td></tr><tr><td>Allocation</td><td>Zero</td><td>Minimal</td></tr></tbody></table>
+<p></details></p>
+<p>---</p>
+<h3 id="exercise-8-zero-allocation-string-parsing">Exercise 8: Zero-Allocation String Parsing</h3>
+<p><strong>Question:</strong> Implement a CSV parser that produces zero allocations using Span<T>.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">public class ZeroAllocCSVParser
+{
+    public void ParseCSVLine(ReadOnlySpan&lt;char&gt; line, Span&lt;ReadOnlySpan&lt;char&gt;&gt; output)
+    {
+        int fieldIndex = 0;
+        int start = 0;
+
+        for (int i = 0; i &lt; line.Length; i++)
+        {
+            if (line[i] == &#39;,&#39;)
+            {
+                output[fieldIndex++] = line.Slice(start, i - start);
+                start = i + 1;
+            }
+        }
+
+        // Last field
+        if (start &lt; line.Length)
+        {
+            output[fieldIndex] = line.Slice(start);
+        }
+    }
+
+    public void Example()
+    {
+        string csv = &quot;John,Doe,30,Engineer&quot;;
+        Span&lt;ReadOnlySpan&lt;char&gt;&gt; fields = stackalloc ReadOnlySpan&lt;char&gt;[4];
+
+        ParseCSVLine(csv, fields);
+
+        // Process fields without allocation
+        foreach (var field in fields)
+        {
+            // Do something with field
+            Console.WriteLine(field.ToString()); // ToString only when needed
+        }
+    }
+
+    // Advanced: Parse to strongly-typed data
+    public ref struct Person
+    {
+        public ReadOnlySpan&lt;char&gt; FirstName;
+        public ReadOnlySpan&lt;char&gt; LastName;
+        public int Age;
+        public ReadOnlySpan&lt;char&gt; Occupation;
+    }
+
+    public Person ParsePerson(ReadOnlySpan&lt;char&gt; line)
+    {
+        Span&lt;ReadOnlySpan&lt;char&gt;&gt; fields = stackalloc ReadOnlySpan&lt;char&gt;[4];
+        ParseCSVLine(line, fields);
+
+        return new Person
+        {
+            FirstName = fields[0],
+            LastName = fields[1],
+            Age = int.Parse(fields[2]),
+            Occupation = fields[3]
+        };
+    }
+}</code></pre>
+<p><strong>Benefits:</strong></p>
+<p></details></p>
+<ul><li>Zero string allocations during parsing</li><li>Works directly with original string memory</li><li>Only allocate when converting to permanent strings</li></ul>
+<p>---</p>
+<h2 id="valuetask-vs-task">ValueTask vs Task</h2>
+<h3 id="exercise-9-when-to-use-valuetask">Exercise 9: When to Use ValueTask</h3>
+<p><strong>Question:</strong> Explain when to use ValueTask<T> vs Task<T>. Provide examples.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">public class ValueTaskDemo
+{
+    private Dictionary&lt;string, string&gt; _cache = new();
+
+    // BAD: Task&lt;T&gt; when result is often cached
+    public async Task&lt;string&gt; GetDataTask(string key)
+    {
+        if (_cache.TryGetValue(key, out var cached))
+        {
+            return cached; // Still allocates Task object!
+        }
+
+        var data = await FetchFromDatabaseAsync(key);
+        _cache[key] = data;
+        return data;
+    }
+
+    // GOOD: ValueTask&lt;T&gt; for synchronous path
+    public async ValueTask&lt;string&gt; GetDataValueTask(string key)
+    {
+        if (_cache.TryGetValue(key, out var cached))
+        {
+            return cached; // No allocation!
+        }
+
+        var data = await FetchFromDatabaseAsync(key);
+        _cache[key] = data;
+        return data;
+    }
+
+    // Example with IValueTaskSource for pooling
+    public class PooledValueTaskExample
+    {
+        private static readonly ObjectPool&lt;CachedResult&gt; _pool =
+            ObjectPool.Create&lt;CachedResult&gt;();
+
+        public ValueTask&lt;int&gt; GetCachedValueAsync(bool useCache)
+        {
+            if (useCache)
+            {
+                return new ValueTask&lt;int&gt;(42); // No allocation
+            }
+
+            var pooled = _pool.Get();
+            return new ValueTask&lt;int&gt;(pooled, 0);
+        }
+
+        private class CachedResult : IValueTaskSource&lt;int&gt;
+        {
+            public int GetResult(short token) =&gt; 42;
+            public ValueTaskSourceStatus GetStatus(short token) =&gt; ValueTaskSourceStatus.Succeeded;
+            public void OnCompleted(Action&lt;object&gt; continuation, object state, short token, ValueTaskSourceOnCompletedFlags flags) { }
+        }
+    }
+
+    private Task&lt;string&gt; FetchFromDatabaseAsync(string key)
+    {
+        return Task.FromResult($&quot;Data for {key}&quot;);
+    }
+}</code></pre>
+<p><strong>Use ValueTask<T> when:</strong></p>
+<ul><li>Result is often available synchronously (cache hits)</li><li>High-frequency operations</li><li>Want to avoid Task allocation</li></ul>
+<p><strong>Use Task<T> when:</strong></p>
+<ul><li>Always asynchronous</li><li>Need to await multiple times</li><li>Need to use Task-specific APIs (WhenAll, etc.)</li></ul>
+<p><strong>Important rules:</strong></p>
+<ul><li>Never await ValueTask twice</li><li>Never await ValueTask after it completes</li><li>Convert to Task if needed: <code>valueTask.AsTask()</code></li></ul>
+<p></details></p>
+<p>---</p>
+<h2 id="object-pooling">Object Pooling</h2>
+<h3 id="exercise-10-arraypoolt-usage">Exercise 10: ArrayPool<T> Usage</h3>
+<p><strong>Question:</strong> Implement a high-performance buffer manager using ArrayPool<T>.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">public class BufferManager
+{
+    private static readonly ArrayPool&lt;byte&gt; _pool = ArrayPool&lt;byte&gt;.Shared;
+
+    // BAD: Allocates and GC collects
+    public byte[] ProcessDataBad(int size)
+    {
+        byte[] buffer = new byte[size];
+        // Process buffer
+        return buffer; // Caller must manage
+    }
+
+    // GOOD: Uses pooling
+    public void ProcessDataGood(int size)
+    {
+        byte[] buffer = _pool.Rent(size);
+        try
+        {
+            // Process buffer
+            // Note: Rent might return larger array
+            int actualLength = Math.Min(size, buffer.Length);
+
+            for (int i = 0; i &lt; actualLength; i++)
+            {
+                buffer[i] = (byte)(i % 256);
+            }
+        }
+        finally
+        {
+            // CRITICAL: Always return to pool
+            _pool.Return(buffer, clearArray: true);
+        }
+    }
+
+    // Advanced: Custom pool configuration
+    public class CustomPoolExample
+    {
+        private static readonly ArrayPool&lt;byte&gt; _customPool =
+            ArrayPool&lt;byte&gt;.Create(maxArrayLength: 1024 * 1024, maxArraysPerBucket: 50);
+
+        public async Task ProcessStreamAsync(Stream stream)
+        {
+            byte[] buffer = _customPool.Rent(8192);
+            try
+            {
+                int bytesRead;
+                while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) &gt; 0)
+                {
+                    // Process buffer
+                    ProcessChunk(buffer.AsSpan(0, bytesRead));
+                }
+            }
+            finally
+            {
+                _customPool.Return(buffer);
+            }
+        }
+
+        private void ProcessChunk(ReadOnlySpan&lt;byte&gt; data)
+        {
+            // Process data
+        }
+    }
+
+    // Real-world example: HTTP response buffering
+    public class HttpBufferManager
+    {
+        private static readonly ArrayPool&lt;char&gt; _charPool = ArrayPool&lt;char&gt;.Shared;
+
+        public string BuildJsonResponse(int estimatedSize)
+        {
+            char[] buffer = _charPool.Rent(estimatedSize);
+            try
+            {
+                int position = 0;
+
+                // Build JSON without string concatenation
+                AppendString(buffer, ref position, &quot;{\&quot;status\&quot;:\&quot;success\&quot;,\&quot;data\&quot;:&quot;);
+                AppendString(buffer, ref position, &quot;\&quot;Hello World\&quot;}&quot;);
+
+                return new string(buffer, 0, position);
+            }
+            finally
+            {
+                _charPool.Return(buffer);
+            }
+        }
+
+        private void AppendString(char[] buffer, ref int position, string value)
+        {
+            value.AsSpan().CopyTo(buffer.AsSpan(position));
+            position += value.Length;
+        }
+    }
+}</code></pre>
+<p><strong>Key points:</strong></p>
+<p></details></p>
+<ul><li>Always return arrays to pool in finally block</li><li>Consider clearArray parameter for security</li><li>Rented array might be larger than requested</li><li>Use for temporary buffers, not long-lived data</li></ul>
+<p>---</p>
+<h3 id="exercise-11-objectpoolt-pattern">Exercise 11: ObjectPool<T> Pattern</h3>
+<p><strong>Question:</strong> Implement a custom object pool for expensive objects.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">using Microsoft.Extensions.ObjectPool;
+
+public class ObjectPoolDemo
+{
+    // Using built-in ObjectPool
+    public class ExpensiveObject
+    {
+        public byte[] Buffer { get; set; }
+        public StringBuilder Builder { get; set; }
+
+        public ExpensiveObject()
+        {
+            Buffer = new byte[10000];
+            Builder = new StringBuilder(1000);
+        }
+
+        public void Reset()
+        {
+            Array.Clear(Buffer, 0, Buffer.Length);
+            Builder.Clear();
+        }
+    }
+
+    public class ExpensiveObjectPolicy : IPooledObjectPolicy&lt;ExpensiveObject&gt;
+    {
+        public ExpensiveObject Create()
+        {
+            return new ExpensiveObject();
+        }
+
+        public bool Return(ExpensiveObject obj)
+        {
+            obj.Reset();
+            return true; // Accept back into pool
+        }
+    }
+
+    public class ServiceUsingPool
+    {
+        private readonly ObjectPool&lt;ExpensiveObject&gt; _pool;
+
+        public ServiceUsingPool()
+        {
+            var policy = new ExpensiveObjectPolicy();
+            _pool = new DefaultObjectPool&lt;ExpensiveObject&gt;(policy, maximumRetained: 100);
+        }
+
+        public void ProcessRequest()
+        {
+            ExpensiveObject obj = _pool.Get();
+            try
+            {
+                // Use object
+                obj.Builder.Append(&quot;Processing...&quot;);
+            }
+            finally
+            {
+                _pool.Return(obj);
+            }
+        }
+    }
+
+    // Custom implementation for learning
+    public class SimpleObjectPool&lt;T&gt; where T : class, new()
+    {
+        private readonly ConcurrentBag&lt;T&gt; _objects = new();
+        private readonly Func&lt;T&gt; _objectGenerator;
+        private readonly Action&lt;T&gt; _resetAction;
+        private readonly int _maxSize;
+
+        public SimpleObjectPool(Func&lt;T&gt; objectGenerator, Action&lt;T&gt; resetAction, int maxSize = 100)
+        {
+            _objectGenerator = objectGenerator ?? (() =&gt; new T());
+            _resetAction = resetAction;
+            _maxSize = maxSize;
+        }
+
+        public T Rent()
+        {
+            return _objects.TryTake(out T item) ? item : _objectGenerator();
+        }
+
+        public void Return(T item)
+        {
+            if (_objects.Count &lt; _maxSize)
+            {
+                _resetAction?.Invoke(item);
+                _objects.Add(item);
+            }
+        }
+    }
+
+    // Usage example
+    public class PoolUsageExample
+    {
+        private static readonly SimpleObjectPool&lt;StringBuilder&gt; _stringBuilderPool =
+            new SimpleObjectPool&lt;StringBuilder&gt;(
+                () =&gt; new StringBuilder(1000),
+                sb =&gt; sb.Clear(),
+                maxSize: 50
+            );
+
+        public string BuildLargeString()
+        {
+            StringBuilder sb = _stringBuilderPool.Rent();
+            try
+            {
+                for (int i = 0; i &lt; 1000; i++)
+                {
+                    sb.Append(i).Append(&#39;,&#39;);
+                }
+                return sb.ToString();
+            }
+            finally
+            {
+                _stringBuilderPool.Return(sb);
+            }
+        }
+    }
+}</code></pre>
+<p><strong>When to use object pooling:</strong></p>
+<p></details></p>
+<ul><li>Object creation is expensive</li><li>Objects are used frequently</li><li>Objects can be reset/reused</li><li>Managing object lifecycle is acceptable overhead</li></ul>
+<p>---</p>
+<h2 id="stringbuilder-vs-string-concatenation">StringBuilder vs String Concatenation</h2>
+<h3 id="exercise-12-string-concatenation-performance">Exercise 12: String Concatenation Performance</h3>
+<p><strong>Question:</strong> Benchmark different string concatenation approaches.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Running;
+
+[MemoryDiagnoser]
+public class StringConcatenationBenchmarks
+{
+    private const int Iterations = 1000;
+
+    [Benchmark]
+    public string UsingPlusOperator()
+    {
+        string result = &quot;&quot;;
+        for (int i = 0; i &lt; Iterations; i++)
+        {
+            result += i.ToString(); // Very bad!
+        }
+        return result;
+    }
+
+    [Benchmark]
+    public string UsingStringBuilder()
+    {
+        var sb = new StringBuilder();
+        for (int i = 0; i &lt; Iterations; i++)
+        {
+            sb.Append(i);
+        }
+        return sb.ToString();
+    }
+
+    [Benchmark]
+    public string UsingStringBuilderWithCapacity()
+    {
+        var sb = new StringBuilder(Iterations * 4); // Estimate capacity
+        for (int i = 0; i &lt; Iterations; i++)
+        {
+            sb.Append(i);
+        }
+        return sb.ToString();
+    }
+
+    [Benchmark]
+    public string UsingStringCreate()
+    {
+        return string.Create(Iterations * 4, Iterations, (span, count) =&gt;
+        {
+            int position = 0;
+            for (int i = 0; i &lt; count; i++)
+            {
+                i.TryFormat(span.Slice(position), out int written);
+                position += written;
+            }
+        });
+    }
+
+    [Benchmark]
+    public string UsingStringJoin()
+    {
+        return string.Join(&quot;&quot;, Enumerable.Range(0, Iterations));
+    }
+
+    [Benchmark]
+    public string UsingStringConcat()
+    {
+        return string.Concat(Enumerable.Range(0, Iterations).Select(i =&gt; i.ToString()));
+    }
+}
+
+// Results (approximate):
+// |                         Method |        Mean |     Error |    StdDev |  Gen 0 | Gen 1 | Gen 2 | Allocated |
+// |------------------------------- |------------:|----------:|----------:|-------:|------:|------:|----------:|
+// |              UsingPlusOperator | 25,000.0 us | 100.00 us |  90.00 us | 15000  | 5000  | 1000  |   50 MB   |
+// |           UsingStringBuilder   |    150.0 us |   5.00 us |   4.00 us |   20   |   5   |   -   |   80 KB   |
+// | UsingStringBuilderWithCapacity |    130.0 us |   3.00 us |   2.50 us |   15   |   -   |   -   |   60 KB   |
+// |            UsingStringCreate   |    120.0 us |   2.00 us |   1.80 us |   10   |   -   |   -   |   40 KB   |
+// |             UsingStringJoin    |    160.0 us |   4.00 us |   3.50 us |   18   |   -   |   -   |   70 KB   |
+// |            UsingStringConcat   |    155.0 us |   4.50 us |   4.00 us |   17   |   -   |   -   |   68 KB   |
+
+public class StringConcatenationGuidelines
+{
+    // Rule of thumb:
+    // - Few strings (2-4): Use string interpolation or +
+    // - Loop/many strings: Use StringBuilder
+    // - Known exact size: Use string.Create
+    // - Collection of strings: Use string.Join or string.Concat
+
+    public string ConcatenateFewStrings(string a, string b, string c)
+    {
+        return $&quot;{a}{b}{c}&quot;; // Compiler optimizes this
+    }
+
+    public string ConcatenateInLoop(IEnumerable&lt;string&gt; items)
+    {
+        var sb = new StringBuilder();
+        foreach (var item in items)
+        {
+            sb.Append(item);
+        }
+        return sb.ToString();
+    }
+
+    public string ConcatenateCollection(IEnumerable&lt;string&gt; items)
+    {
+        return string.Join(&quot;&quot;, items); // Efficient for collections
+    }
+}</code></pre>
+<p></details></p>
+<p>---</p>
+<h2 id="struct-vs-class-performance">Struct vs Class Performance</h2>
+<h3 id="exercise-13-struct-vs-class-performance-analysis">Exercise 13: Struct vs Class Performance Analysis</h3>
+<p><strong>Question:</strong> Compare the performance implications of using struct vs class.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">using BenchmarkDotNet.Attributes;
+
+// Class version
+public class PointClass
+{
+    public double X { get; set; }
+    public double Y { get; set; }
+
+    public PointClass(double x, double y)
+    {
+        X = x;
+        Y = y;
+    }
+}
+
+// Struct version
+public struct PointStruct
+{
+    public double X { get; set; }
+    public double Y { get; set; }
+
+    public PointStruct(double x, double y)
+    {
+        X = x;
+        Y = y;
+    }
+}
+
+// Readonly struct (best performance)
+public readonly struct PointReadonlyStruct
+{
+    public double X { get; }
+    public double Y { get; }
+
+    public PointReadonlyStruct(double x, double y)
+    {
+        X = x;
+        Y = y;
+    }
+}
+
+[MemoryDiagnoser]
+public class StructVsClassBenchmarks
+{
+    private const int Count = 10000;
+
+    [Benchmark]
+    public double SumWithClass()
+    {
+        var points = new PointClass[Count];
+        for (int i = 0; i &lt; Count; i++)
+        {
+            points[i] = new PointClass(i, i); // Heap allocation each time
+        }
+
+        double sum = 0;
+        foreach (var point in points)
+        {
+            sum += point.X + point.Y;
+        }
+        return sum;
+    }
+
+    [Benchmark]
+    public double SumWithStruct()
+    {
+        var points = new PointStruct[Count];
+        for (int i = 0; i &lt; Count; i++)
+        {
+            points[i] = new PointStruct(i, i); // No heap allocation
+        }
+
+        double sum = 0;
+        foreach (var point in points)
+        {
+            sum += point.X + point.Y;
+        }
+        return sum;
+    }
+
+    [Benchmark]
+    public double SumWithReadonlyStruct()
+    {
+        var points = new PointReadonlyStruct[Count];
+        for (int i = 0; i &lt; Count; i++)
+        {
+            points[i] = new PointReadonlyStruct(i, i);
+        }
+
+        double sum = 0;
+        foreach (var point in points)
+        {
+            sum += point.X + point.Y; // No defensive copy
+        }
+        return sum;
+    }
+}
+
+// Guidelines for struct usage
+public class StructGuidelines
+{
+    // GOOD struct candidates:
+    // - Small size (&lt; 16 bytes recommended)
+    // - Immutable
+    // - Value semantics
+    // - Short-lived
+
+    public readonly struct GoodStruct
+    {
+        public readonly int Id;
+        public readonly double Value;
+
+        public GoodStruct(int id, double value)
+        {
+            Id = id;
+            Value = value;
+        }
+    }
+
+    // BAD struct candidates:
+    // - Large size
+    // - Mutable
+    // - Reference semantics needed
+    // - Long-lived
+
+    // This should be a class!
+    public struct BadStruct
+    {
+        public int Field1;
+        public int Field2;
+        public int Field3;
+        public int Field4;
+        public int Field5;
+        public string Name; // Reference type in struct
+        // ... many more fields
+    }
+
+    // Defensive copies problem
+    public struct MutableStruct
+    {
+        public int Value { get; set; }
+
+        public void Increment()
+        {
+            Value++; // If called on readonly field, operates on copy!
+        }
+    }
+
+    public void DemonstratDefensiveCopy()
+    {
+        var items = new List&lt;MutableStruct&gt; { new MutableStruct() };
+
+        // This doesn&#39;t work as expected!
+        items[0].Increment(); // Operates on copy, original unchanged
+
+        // Correct way:
+        var item = items[0];
+        item.Increment();
+        items[0] = item;
+    }
+}</code></pre>
+<p><strong>Performance results:</strong></p>
+<ul><li>Class: Higher memory, GC pressure, indirection</li><li>Struct: Lower memory, no GC, but copying cost</li><li>Readonly struct: Best performance, no defensive copies</li></ul>
+<p><strong>Use struct when:</strong></p>
+<ul><li>Size <= 16 bytes</li><li>Immutable</li><li>Value semantics</li><li>Short-lived</li></ul>
+<p><strong>Use class when:</strong></p>
+<p></details></p>
+<ul><li>Larger than 16 bytes</li><li>Mutable</li><li>Reference semantics</li><li>Long-lived</li><li>Need inheritance</li></ul>
+<p>---</p>
+<h2 id="ref-in-out-parameters">ref, in, out Parameters</h2>
+<h3 id="exercise-14-ref-in-out-performance">Exercise 14: ref, in, out Performance</h3>
+<p><strong>Question:</strong> Demonstrate the performance benefits of ref, in, and out parameters.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">using BenchmarkDotNet.Attributes;
+
+public struct LargeStruct
+{
+    public long Field1, Field2, Field3, Field4;
+    public long Field5, Field6, Field7, Field8;
+    // 64 bytes total
+}
+
+[MemoryDiagnoser]
+public class RefParameterBenchmarks
+{
+    private LargeStruct _data = new LargeStruct { Field1 = 100 };
+
+    [Benchmark]
+    public long PassByValue()
+    {
+        return ProcessByValue(_data); // Copies 64 bytes
+    }
+
+    [Benchmark]
+    public long PassByRef()
+    {
+        return ProcessByRef(ref _data); // Passes reference (8 bytes)
+    }
+
+    [Benchmark]
+    public long PassByIn()
+    {
+        return ProcessByIn(in _data); // Readonly reference
+    }
+
+    private long ProcessByValue(LargeStruct data)
+    {
+        return data.Field1 + data.Field2;
+    }
+
+    private long ProcessByRef(ref LargeStruct data)
+    {
+        return data.Field1 + data.Field2;
+    }
+
+    private long ProcessByIn(in LargeStruct data)
+    {
+        return data.Field1 + data.Field2;
+    }
+}
+
+// Practical examples
+public class RefParameterExamples
+{
+    // out: Must be assigned before method returns
+    public bool TryParse(string input, out int result)
+    {
+        return int.TryParse(input, out result);
+    }
+
+    // ref: Can read and write
+    public void Swap&lt;T&gt;(ref T a, ref T b)
+    {
+        T temp = a;
+        a = b;
+        b = temp;
+    }
+
+    // in: Readonly reference, prevents copying
+    public double CalculateDistance(in PointStruct p1, in PointStruct p2)
+    {
+        double dx = p2.X - p1.X;
+        double dy = p2.Y - p1.Y;
+        return Math.Sqrt(dx * dx + dy * dy);
+    }
+
+    // Multiple out parameters
+    public void GetMinMax(int[] array, out int min, out int max)
+    {
+        min = array[0];
+        max = array[0];
+
+        foreach (int value in array)
+        {
+            if (value &lt; min) min = value;
+            if (value &gt; max) max = value;
+        }
+    }
+
+    // ref with structs
+    public void UpdatePoint(ref PointStruct point, double newX, double newY)
+    {
+        point = new PointStruct(newX, newY);
+    }
+
+    public void Example()
+    {
+        // out usage
+        if (TryParse(&quot;42&quot;, out int value))
+        {
+            Console.WriteLine(value);
+        }
+
+        // ref usage
+        int a = 10, b = 20;
+        Swap(ref a, ref b);
+
+        // in usage
+        var p1 = new PointStruct(0, 0);
+        var p2 = new PointStruct(3, 4);
+        double distance = CalculateDistance(in p1, in p2);
+    }
+}
+
+// Advanced: ref returns
+public class RefReturnExamples
+{
+    private int[] _array = new int[100];
+
+    // Return reference to array element
+    public ref int FindElement(int index)
+    {
+        return ref _array[index];
+    }
+
+    public void ModifyArrayElement()
+    {
+        ref int element = ref FindElement(10);
+        element = 999; // Modifies array directly
+    }
+
+    // Ref return from property
+    private int _value;
+
+    public ref int Value =&gt; ref _value;
+
+    public void ModifyProperty()
+    {
+        Value = 42; // Works like normal property
+
+        ref int valueRef = ref Value;
+        valueRef = 100; // Also modifies _value
+    }
+
+    // Find and modify pattern
+    public ref int FindFirst(Predicate&lt;int&gt; predicate)
+    {
+        for (int i = 0; i &lt; _array.Length; i++)
+        {
+            if (predicate(_array[i]))
+            {
+                return ref _array[i];
+            }
+        }
+
+        throw new InvalidOperationException(&quot;Not found&quot;);
+    }
+
+    public void ExampleFindFirst()
+    {
+        ref int firstEven = ref FindFirst(x =&gt; x % 2 == 0);
+        firstEven *= 2; // Modifies array element directly
+    }
+}</code></pre>
+<p><strong>Guidelines:</strong></p>
+<p></details></p>
+<ul><li>Use <code>in</code> for large readonly structs (> 16 bytes)</li><li>Use <code>ref</code> when you need to modify the parameter</li><li>Use <code>out</code> when returning multiple values</li><li>Use ref returns to avoid copying large structs</li></ul>
+<p>---</p>
+<h3 id="exercise-15-ref-locals-and-performance">Exercise 15: ref locals and Performance</h3>
+<p><strong>Question:</strong> Demonstrate the use of ref locals for performance optimization.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">public class RefLocalExamples
+{
+    public struct Vector3
+    {
+        public float X, Y, Z;
+
+        public Vector3(float x, float y, float z)
+        {
+            X = x; Y = y; Z = z;
+        }
+    }
+
+    // Without ref local - multiple copies
+    public void ProcessVectorsSlow(Vector3[] vectors)
+    {
+        for (int i = 0; i &lt; vectors.Length; i++)
+        {
+            vectors[i].X *= 2; // Copies struct, modifies, copies back
+            vectors[i].Y *= 2; // Copies struct, modifies, copies back
+            vectors[i].Z *= 2; // Copies struct, modifies, copies back
+        }
+    }
+
+    // With ref local - single reference
+    public void ProcessVectorsFast(Vector3[] vectors)
+    {
+        for (int i = 0; i &lt; vectors.Length; i++)
+        {
+            ref Vector3 vector = ref vectors[i]; // Reference to array element
+            vector.X *= 2; // Direct modification
+            vector.Y *= 2;
+            vector.Z *= 2;
+        }
+    }
+
+    // Span&lt;T&gt; with ref
+    public void ProcessWithSpan(Span&lt;Vector3&gt; vectors)
+    {
+        foreach (ref Vector3 vector in vectors)
+        {
+            vector.X *= 2;
+            vector.Y *= 2;
+            vector.Z *= 2;
+        }
+    }
+
+    // ref readonly local
+    public float CalculateSum(Vector3[] vectors)
+    {
+        float sum = 0;
+        foreach (ref readonly Vector3 vector in vectors.AsSpan())
+        {
+            sum += vector.X + vector.Y + vector.Z; // No copying
+            // vector.X = 0; // Compiler error - readonly
+        }
+        return sum;
+    }
+
+    // Finding maximum with ref
+    public ref Vector3 FindMax(Vector3[] vectors)
+    {
+        ref Vector3 max = ref vectors[0];
+
+        for (int i = 1; i &lt; vectors.Length; i++)
+        {
+            ref Vector3 current = ref vectors[i];
+            if (current.X + current.Y + current.Z &gt; max.X + max.Y + max.Z)
+            {
+                max = ref current; // Update reference
+            }
+        }
+
+        return ref max;
+    }
+
+    // Advanced: ref ternary
+    public ref int GetLarger(ref int a, ref int b)
+    {
+        return ref (a &gt; b ? ref a : ref b);
+    }
+
+    public void Example()
+    {
+        int x = 10, y = 20;
+        ref int larger = ref GetLarger(ref x, ref y);
+        larger = 100; // Modifies y
+
+        Console.WriteLine($&quot;x={x}, y={y}&quot;); // x=10, y=100
+    }
+}</code></pre>
+<p></details></p>
+<p>---</p>
+<h2 id="stackalloc">stackalloc</h2>
+<h3 id="exercise-16-stackalloc-for-stack-allocation">Exercise 16: stackalloc for Stack Allocation</h3>
+<p><strong>Question:</strong> Demonstrate safe and efficient use of stackalloc.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">public class StackAllocExamples
+{
+    // Basic stackalloc with Span&lt;T&gt;
+    public int SumSmallArray()
+    {
+        Span&lt;int&gt; numbers = stackalloc int[10]; // Stack allocated
+
+        for (int i = 0; i &lt; numbers.Length; i++)
+        {
+            numbers[i] = i;
+        }
+
+        int sum = 0;
+        foreach (int n in numbers)
+        {
+            sum += n;
+        }
+
+        return sum;
+    }
+
+    // Conditional stackalloc
+    public int ProcessArray(int size)
+    {
+        // Use stack for small arrays, heap for large
+        Span&lt;int&gt; buffer = size &lt;= 128
+            ? stackalloc int[size]
+            : new int[size];
+
+        for (int i = 0; i &lt; buffer.Length; i++)
+        {
+            buffer[i] = i * i;
+        }
+
+        return buffer[0];
+    }
+
+    // String formatting with stackalloc
+    public string FormatNumber(int number)
+    {
+        Span&lt;char&gt; buffer = stackalloc char[16];
+
+        if (number.TryFormat(buffer, out int written))
+        {
+            return new string(buffer.Slice(0, written));
+        }
+
+        return number.ToString();
+    }
+
+    // Binary data processing
+    public uint ReadUInt32(ReadOnlySpan&lt;byte&gt; data)
+    {
+        Span&lt;byte&gt; reversed = stackalloc byte[4];
+        data.Slice(0, 4).CopyTo(reversed);
+        reversed.Reverse();
+
+        return BitConverter.ToUInt32(reversed);
+    }
+
+    // Temporary calculations
+    public double CalculateAverage(ReadOnlySpan&lt;int&gt; values)
+    {
+        int count = values.Length;
+        Span&lt;double&gt; normalized = stackalloc double[count];
+
+        for (int i = 0; i &lt; count; i++)
+        {
+            normalized[i] = values[i] / 100.0;
+        }
+
+        double sum = 0;
+        foreach (double value in normalized)
+        {
+            sum += value;
+        }
+
+        return sum / count;
+    }
+
+    // DANGER: Stack overflow
+    public void StackOverflowDanger()
+    {
+        // DON&#39;T DO THIS!
+        // Span&lt;byte&gt; huge = stackalloc byte[1000000]; // Stack overflow!
+
+        // Stack is limited (typically 1MB)
+        // Use heap allocation or ArrayPool for large buffers
+    }
+
+    // Safe pattern with threshold
+    public void SafePattern(int size)
+    {
+        const int StackAllocThreshold = 512;
+
+        if (size &lt;= StackAllocThreshold)
+        {
+            Span&lt;byte&gt; buffer = stackalloc byte[size];
+            ProcessBuffer(buffer);
+        }
+        else
+        {
+            byte[] rented = ArrayPool&lt;byte&gt;.Shared.Rent(size);
+            try
+            {
+                ProcessBuffer(rented.AsSpan(0, size));
+            }
+            finally
+            {
+                ArrayPool&lt;byte&gt;.Shared.Return(rented);
+            }
+        }
+    }
+
+    private void ProcessBuffer(Span&lt;byte&gt; buffer)
+    {
+        // Process buffer
+    }
+
+    // Performance comparison
+    [MemoryDiagnoser]
+    public class StackAllocBenchmarks
+    {
+        [Benchmark]
+        public int HeapAllocation()
+        {
+            int[] buffer = new int[100];
+            for (int i = 0; i &lt; buffer.Length; i++)
+                buffer[i] = i;
+            return buffer[0];
+        }
+
+        [Benchmark]
+        public int StackAllocation()
+        {
+            Span&lt;int&gt; buffer = stackalloc int[100];
+            for (int i = 0; i &lt; buffer.Length; i++)
+                buffer[i] = i;
+            return buffer[0];
+        }
+    }
+}
+
+// Results:
+// HeapAllocation:   ~40ns, 424 B allocated
+// StackAllocation:  ~30ns,   0 B allocated</code></pre>
+<p><strong>Guidelines:</strong></p>
+<p></details></p>
+<ul><li>Use for small, temporary buffers (< 1KB)</li><li>Always use with Span<T> for safety</li><li>Consider threshold pattern for variable sizes</li><li>Never stackalloc in loops</li><li>Stack size is limited (typically 1MB)</li></ul>
+<p>---</p>
+<h2 id="benchmarkdotnet">BenchmarkDotNet</h2>
+<h3 id="exercise-17-benchmarkdotnet-basics">Exercise 17: BenchmarkDotNet Basics</h3>
+<p><strong>Question:</strong> Create a comprehensive benchmark comparing different LINQ vs for loop approaches.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Running;
+using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Jobs;
+
+[MemoryDiagnoser]
+[RankColumn]
+[Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.FastestToSlowest)]
+public class LinqVsLoopBenchmarks
+{
+    private int[] _data;
+
+    [Params(100, 1000, 10000)]
+    public int Size { get; set; }
+
+    [GlobalSetup]
+    public void Setup()
+    {
+        _data = Enumerable.Range(0, Size).ToArray();
+    }
+
+    [Benchmark(Baseline = true)]
+    public int ForLoop()
+    {
+        int sum = 0;
+        for (int i = 0; i &lt; _data.Length; i++)
+        {
+            if (_data[i] % 2 == 0)
+                sum += _data[i];
+        }
+        return sum;
+    }
+
+    [Benchmark]
+    public int ForeachLoop()
+    {
+        int sum = 0;
+        foreach (int value in _data)
+        {
+            if (value % 2 == 0)
+                sum += value;
+        }
+        return sum;
+    }
+
+    [Benchmark]
+    public int LinqQuery()
+    {
+        return _data.Where(x =&gt; x % 2 == 0).Sum();
+    }
+
+    [Benchmark]
+    public int LinqMethodChain()
+    {
+        return _data.Where(x =&gt; x % 2 == 0).Aggregate(0, (acc, x) =&gt; acc + x);
+    }
+
+    [Benchmark]
+    public int SpanLoop()
+    {
+        int sum = 0;
+        ReadOnlySpan&lt;int&gt; span = _data;
+        for (int i = 0; i &lt; span.Length; i++)
+        {
+            if (span[i] % 2 == 0)
+                sum += span[i];
+        }
+        return sum;
+    }
+}
+
+// Advanced benchmarking features
+[Config(typeof(CustomConfig))]
+public class AdvancedBenchmarks
+{
+    private class CustomConfig : ManualConfig
+    {
+        public CustomConfig()
+        {
+            AddJob(Job.Default
+                .WithWarmupCount(5)
+                .WithIterationCount(10)
+                .WithInvocationCount(1000));
+        }
+    }
+
+    [Benchmark]
+    [Arguments(100)]
+    [Arguments(1000)]
+    public int ParameterizedBenchmark(int size)
+    {
+        int sum = 0;
+        for (int i = 0; i &lt; size; i++)
+            sum += i;
+        return sum;
+    }
+
+    [IterationSetup]
+    public void IterationSetup()
+    {
+        // Called before each iteration
+    }
+
+    [IterationCleanup]
+    public void IterationCleanup()
+    {
+        // Called after each iteration
+    }
+}
+
+// Running benchmarks
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        var summary = BenchmarkRunner.Run&lt;LinqVsLoopBenchmarks&gt;();
+
+        // Or run specific benchmark
+        // BenchmarkRunner.Run&lt;AdvancedBenchmarks&gt;();
+
+        // Or run all benchmarks in assembly
+        // BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).Run(args);
+    }
+}</code></pre>
+<p><strong>Output interpretation:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">|          Method |  Size |        Mean |     Error |    StdDev | Ratio | Gen 0 | Allocated |
+|---------------- |------ |------------:|----------:|----------:|------:|------:|----------:|
+|         ForLoop |   100 |    45.23 ns |  0.234 ns |  0.219 ns |  1.00 |     - |         - |
+|     ForeachLoop |   100 |    46.12 ns |  0.298 ns |  0.279 ns |  1.02 |     - |         - |
+|        SpanLoop |   100 |    44.89 ns |  0.187 ns |  0.175 ns |  0.99 |     - |         - |
+|       LinqQuery |   100 |   389.45 ns |  2.145 ns |  2.007 ns |  8.61 | 0.024 |     104 B |
+| LinqMethodChain |   100 |   425.78 ns |  3.421 ns |  3.200 ns |  9.41 | 0.029 |     128 B |</code></pre>
+<p></details></p>
+<p>---</p>
+<h3 id="exercise-18-micro-benchmarking-pitfalls">Exercise 18: Micro-Benchmarking Pitfalls</h3>
+<p><strong>Question:</strong> Identify and fix common benchmarking mistakes.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">using BenchmarkDotNet.Attributes;
+
+[MemoryDiagnoser]
+public class BenchmarkingMistakes
+{
+    // MISTAKE 1: Dead code elimination
+    [Benchmark]
+    public void DeadCodeBad()
+    {
+        int x = 5 + 5; // Compiler optimizes this away!
+    }
+
+    [Benchmark]
+    public int DeadCodeGood()
+    {
+        int x = 5 + 5;
+        return x; // Return to prevent elimination
+    }
+
+    // MISTAKE 2: Not using GlobalSetup
+    [Benchmark]
+    public void NoSetupBad()
+    {
+        var data = new int[1000]; // Allocation included in benchmark!
+        Array.Sort(data);
+    }
+
+    private int[] _data;
+
+    [GlobalSetup]
+    public void Setup()
+    {
+        _data = new int[1000];
+        var random = new Random(42);
+        for (int i = 0; i &lt; _data.Length; i++)
+            _data[i] = random.Next();
+    }
+
+    [Benchmark]
+    public void WithSetupGood()
+    {
+        Array.Sort(_data); // Only sorts, not allocation
+    }
+
+    // MISTAKE 3: Modifying shared state
+    [Benchmark]
+    public void SharedStateBad()
+    {
+        Array.Sort(_data); // Modifies _data!
+        // Next iteration uses sorted array!
+    }
+
+    [Benchmark]
+    public void SharedStateGood()
+    {
+        int[] copy = (int[])_data.Clone();
+        Array.Sort(copy);
+    }
+
+    // BETTER: Use IterationSetup
+    [IterationSetup]
+    public void ResetData()
+    {
+        var random = new Random(42);
+        for (int i = 0; i &lt; _data.Length; i++)
+            _data[i] = random.Next();
+    }
+
+    [Benchmark]
+    public void WithIterationSetup()
+    {
+        Array.Sort(_data); // Fresh data each iteration
+    }
+
+    // MISTAKE 4: Not considering JIT
+    [Benchmark]
+    public void NoWarmupBad()
+    {
+        // First runs include JIT time
+        SomeComplexMethod();
+    }
+
+    // Solution: BenchmarkDotNet handles this automatically
+    // But you can configure it
+    [Benchmark]
+    [WarmupCount(10)] // 10 warmup iterations
+    [IterationCount(20)] // 20 actual iterations
+    public void WithProperWarmup()
+    {
+        SomeComplexMethod();
+    }
+
+    private void SomeComplexMethod() { }
+
+    // MISTAKE 5: Comparing different machines
+    // Always run benchmarks on same machine
+    // Use [Baseline] to compare against reference implementation
+
+    [Benchmark(Baseline = true)]
+    public int ReferenceImplementation()
+    {
+        return _data.Sum();
+    }
+
+    [Benchmark]
+    public int OptimizedImplementation()
+    {
+        int sum = 0;
+        for (int i = 0; i &lt; _data.Length; i++)
+            sum += _data[i];
+        return sum;
+    }
+
+    // MISTAKE 6: Not using MemoryDiagnoser
+    // Always add [MemoryDiagnoser] to see allocations!
+}
+
+// Best practices summary
+[MemoryDiagnoser]
+[RankColumn]
+public class BestPracticesBenchmark
+{
+    private byte[] _data;
+
+    [Params(100, 1000, 10000)]
+    public int Size { get; set; }
+
+    [GlobalSetup]
+    public void GlobalSetup()
+    {
+        _data = new byte[Size];
+        new Random(42).NextBytes(_data);
+    }
+
+    [IterationSetup]
+    public void IterationSetup()
+    {
+        // Reset state if needed
+    }
+
+    [Benchmark(Baseline = true)]
+    public int Baseline()
+    {
+        return ProcessData(_data);
+    }
+
+    [Benchmark]
+    public int Optimized()
+    {
+        return ProcessDataOptimized(_data);
+    }
+
+    private int ProcessData(byte[] data)
+    {
+        int sum = 0;
+        foreach (byte b in data)
+            sum += b;
+        return sum;
+    }
+
+    private int ProcessDataOptimized(byte[] data)
+    {
+        int sum = 0;
+        ReadOnlySpan&lt;byte&gt; span = data;
+        for (int i = 0; i &lt; span.Length; i++)
+            sum += span[i];
+        return sum;
+    }
+}</code></pre>
+<p></details></p>
+<p>---</p>
+<h2 id="memory-profiling">Memory Profiling</h2>
+<h3 id="exercise-19-detecting-memory-leaks">Exercise 19: Detecting Memory Leaks</h3>
+<p><strong>Question:</strong> Identify and fix memory leaks in the following code.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">// LEAK 1: Event handler not unsubscribed
+public class EventLeakExample
+{
+    public class Publisher
+    {
+        public event EventHandler DataChanged;
+
+        public void NotifyChange()
+        {
+            DataChanged?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    public class SubscriberBad
+    {
+        private Publisher _publisher;
+
+        public SubscriberBad(Publisher publisher)
+        {
+            _publisher = publisher;
+            _publisher.DataChanged += OnDataChanged; // LEAK: Never unsubscribed
+        }
+
+        private void OnDataChanged(object sender, EventArgs e)
+        {
+            // Handle event
+        }
+    }
+
+    public class SubscriberGood : IDisposable
+    {
+        private Publisher _publisher;
+
+        public SubscriberGood(Publisher publisher)
+        {
+            _publisher = publisher;
+            _publisher.DataChanged += OnDataChanged;
+        }
+
+        public void Dispose()
+        {
+            if (_publisher != null)
+            {
+                _publisher.DataChanged -= OnDataChanged;
+                _publisher = null;
+            }
+        }
+
+        private void OnDataChanged(object sender, EventArgs e)
+        {
+            // Handle event
+        }
+    }
+}
+
+// LEAK 2: Static references
+public class StaticReferenceLeakExample
+{
+    // LEAK: Static list keeps everything alive
+    public static class CacheBad
+    {
+        private static List&lt;object&gt; _items = new List&lt;object&gt;();
+
+        public static void Add(object item)
+        {
+            _items.Add(item); // Never removed!
+        }
+    }
+
+    // GOOD: WeakReference or cleanup mechanism
+    public static class CacheGood
+    {
+        private static List&lt;WeakReference&gt; _items = new List&lt;WeakReference&gt;();
+
+        public static void Add(object item)
+        {
+            _items.Add(new WeakReference(item));
+            Cleanup(); // Periodically remove dead references
+        }
+
+        private static void Cleanup()
+        {
+            _items.RemoveAll(wr =&gt; !wr.IsAlive);
+        }
+
+        public static IEnumerable&lt;object&gt; GetAliveItems()
+        {
+            foreach (var wr in _items)
+            {
+                if (wr.Target is object target)
+                    yield return target;
+            }
+        }
+    }
+}
+
+// LEAK 3: Unmanaged resources
+public class UnmanagedResourceLeakExample
+{
+    // BAD: No disposal
+    public class ResourceLeakBad
+    {
+        private IntPtr _unmanagedResource;
+
+        public ResourceLeakBad()
+        {
+            _unmanagedResource = AllocateUnmanaged();
+        }
+
+        // LEAK: Never freed!
+    }
+
+    // GOOD: Proper disposal pattern
+    public class ResourceLeakGood : IDisposable
+    {
+        private IntPtr _unmanagedResource;
+        private bool _disposed = false;
+
+        public ResourceLeakGood()
+        {
+            _unmanagedResource = AllocateUnmanaged();
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    // Dispose managed resources
+                }
+
+                // Free unmanaged resources
+                if (_unmanagedResource != IntPtr.Zero)
+                {
+                    FreeUnmanaged(_unmanagedResource);
+                    _unmanagedResource = IntPtr.Zero;
+                }
+
+                _disposed = true;
+            }
+        }
+
+        ~ResourceLeakGood()
+        {
+            Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+    }
+
+    private static IntPtr AllocateUnmanaged() =&gt; IntPtr.Zero;
+    private static void FreeUnmanaged(IntPtr ptr) { }
+}
+
+// LEAK 4: Timer not disposed
+public class TimerLeakExample
+{
+    // BAD: Timer keeps object alive
+    public class ServiceBad
+    {
+        private System.Threading.Timer _timer;
+
+        public ServiceBad()
+        {
+            _timer = new System.Threading.Timer(
+                callback: _ =&gt; DoWork(),
+                state: null,
+                dueTime: 1000,
+                period: 1000
+            );
+            // LEAK: Timer never disposed
+        }
+
+        private void DoWork() { }
+    }
+
+    // GOOD: Dispose timer
+    public class ServiceGood : IDisposable
+    {
+        private System.Threading.Timer _timer;
+
+        public ServiceGood()
+        {
+            _timer = new System.Threading.Timer(
+                callback: _ =&gt; DoWork(),
+                state: null,
+                dueTime: 1000,
+                period: 1000
+            );
+        }
+
+        public void Dispose()
+        {
+            _timer?.Dispose();
+            _timer = null;
+        }
+
+        private void DoWork() { }
+    }
+}
+
+// LEAK 5: Large closures
+public class ClosureLeakExample
+{
+    public class ClosureLeak
+    {
+        public Action CreateLeakyAction()
+        {
+            byte[] largeArray = new byte[10_000_000]; // 10 MB
+            int smallValue = 42;
+
+            // BAD: Closure captures entire largeArray
+            return () =&gt; Console.WriteLine(smallValue);
+            // largeArray kept alive even though not used!
+        }
+
+        public Action CreateNonLeakyAction()
+        {
+            byte[] largeArray = new byte[10_000_000];
+            int smallValue = 42;
+
+            // Process largeArray
+            ProcessArray(largeArray);
+
+            // GOOD: Only capture what&#39;s needed
+            int capturedValue = smallValue;
+            return () =&gt; Console.WriteLine(capturedValue);
+            // largeArray can be collected
+        }
+
+        private void ProcessArray(byte[] array) { }
+    }
+}
+
+// Tools for detecting leaks:
+public class LeakDetectionTools
+{
+    public static void MonitorMemory()
+    {
+        long before = GC.GetTotalMemory(forceFullCollection: true);
+
+        // Run suspicious code
+        DoSomething();
+
+        long after = GC.GetTotalMemory(forceFullCollection: true);
+
+        Console.WriteLine($&quot;Memory delta: {(after - before) / 1024.0:F2} KB&quot;);
+    }
+
+    public static void ProfileWithWeakReference()
+    {
+        WeakReference wr = CreateAndReleaseObject();
+
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+        GC.Collect();
+
+        if (wr.IsAlive)
+        {
+            Console.WriteLine(&quot;LEAK: Object still alive!&quot;);
+        }
+        else
+        {
+            Console.WriteLine(&quot;OK: Object collected&quot;);
+        }
+    }
+
+    private static WeakReference CreateAndReleaseObject()
+    {
+        object obj = new object();
+        return new WeakReference(obj);
+    }
+
+    private static void DoSomething() { }
+}</code></pre>
+<p><strong>Detection tools:</strong></p>
+<p></details></p>
+<ul><li>Visual Studio Diagnostic Tools</li><li>dotMemory</li><li>PerfView</li><li>ANTS Memory Profiler</li><li>Use WeakReference for testing</li><li>Monitor GC.GetTotalMemory()</li></ul>
+<p>---</p>
+<h2 id="idisposable-and-finalizers">IDisposable and Finalizers</h2>
+<h3 id="exercise-20-proper-dispose-pattern">Exercise 20: Proper Dispose Pattern</h3>
+<p><strong>Question:</strong> Implement the complete IDisposable pattern with finalizer.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">using System;
+using System.Runtime.InteropServices;
+
+// Full disposal pattern
+public class ProperDisposalPattern : IDisposable
+{
+    // Managed resources
+    private FileStream _managedResource;
+
+    // Unmanaged resources
+    private IntPtr _unmanagedResource;
+
+    // Track disposal
+    private bool _disposed = false;
+
+    public ProperDisposalPattern()
+    {
+        _managedResource = new FileStream(&quot;temp.txt&quot;, FileMode.Create);
+        _unmanagedResource = Marshal.AllocHGlobal(1024);
+    }
+
+    // Protected virtual method for inheritance
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!_disposed)
+        {
+            if (disposing)
+            {
+                // Dispose managed resources
+                _managedResource?.Dispose();
+                _managedResource = null;
+            }
+
+            // Free unmanaged resources
+            if (_unmanagedResource != IntPtr.Zero)
+            {
+                Marshal.FreeHGlobal(_unmanagedResource);
+                _unmanagedResource = IntPtr.Zero;
+            }
+
+            _disposed = true;
+        }
+    }
+
+    // Finalizer (destructor)
+    ~ProperDisposalPattern()
+    {
+        Dispose(disposing: false);
+    }
+
+    // Public Dispose method
+    public void Dispose()
+    {
+        Dispose(disposing: true);
+        GC.SuppressFinalize(this); // Prevent finalizer from running
+    }
+
+    // Helper to check if disposed
+    private void ThrowIfDisposed()
+    {
+        if (_disposed)
+        {
+            throw new ObjectDisposedException(GetType().Name);
+        }
+    }
+
+    public void DoSomething()
+    {
+        ThrowIfDisposed();
+        // Use resources
+    }
+}
+
+// Derived class pattern
+public class DerivedDisposableClass : ProperDisposalPattern
+{
+    private Stream _derivedResource;
+    private bool _disposed = false;
+
+    protected override void Dispose(bool disposing)
+    {
+        if (!_disposed)
+        {
+            if (disposing)
+            {
+                // Dispose derived managed resources
+                _derivedResource?.Dispose();
+            }
+
+            // Free derived unmanaged resources if any
+
+            _disposed = true;
+        }
+
+        // Call base class Dispose
+        base.Dispose(disposing);
+    }
+}
+
+// SafeHandle pattern (preferred for unmanaged resources)
+public class SafeHandleExample : IDisposable
+{
+    private MySafeHandle _handle;
+    private bool _disposed = false;
+
+    public SafeHandleExample()
+    {
+        _handle = new MySafeHandle(AllocateResource());
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!_disposed)
+        {
+            if (disposing)
+            {
+                _handle?.Dispose();
+            }
+
+            _disposed = true;
+        }
+    }
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    private class MySafeHandle : SafeHandle
+    {
+        public MySafeHandle(IntPtr handle) : base(IntPtr.Zero, ownsHandle: true)
+        {
+            SetHandle(handle);
+        }
+
+        public override bool IsInvalid =&gt; handle == IntPtr.Zero;
+
+        protected override bool ReleaseHandle()
+        {
+            // Free the resource
+            FreeResource(handle);
+            return true;
+        }
+    }
+
+    private static IntPtr AllocateResource() =&gt; Marshal.AllocHGlobal(1024);
+    private static void FreeResource(IntPtr ptr) =&gt; Marshal.FreeHGlobal(ptr);
+}
+
+// Async disposal (IAsyncDisposable)
+public class AsyncDisposableExample : IAsyncDisposable, IDisposable
+{
+    private Stream _stream;
+    private bool _disposed = false;
+
+    public async ValueTask DisposeAsync()
+    {
+        if (!_disposed)
+        {
+            if (_stream != null)
+            {
+                await _stream.FlushAsync();
+                await _stream.DisposeAsync();
+            }
+
+            _disposed = true;
+        }
+
+        GC.SuppressFinalize(this);
+    }
+
+    public void Dispose()
+    {
+        if (!_disposed)
+        {
+            _stream?.Dispose();
+            _disposed = true;
+        }
+
+        GC.SuppressFinalize(this);
+    }
+}
+
+// Usage patterns
+public class DisposalUsageExamples
+{
+    public void UsingStatement()
+    {
+        using (var resource = new ProperDisposalPattern())
+        {
+            resource.DoSomething();
+        } // Dispose called automatically
+    }
+
+    public void UsingDeclaration()
+    {
+        using var resource = new ProperDisposalPattern();
+        resource.DoSomething();
+        // Dispose called at end of scope
+    }
+
+    public async Task UsingAsyncDisposable()
+    {
+        await using var resource = new AsyncDisposableExample();
+        // Use resource
+        // DisposeAsync called at end of scope
+    }
+
+    public void TryFinallyPattern()
+    {
+        var resource = new ProperDisposalPattern();
+        try
+        {
+            resource.DoSomething();
+        }
+        finally
+        {
+            resource?.Dispose();
+        }
+    }
+
+    public void MultipleResources()
+    {
+        using var resource1 = new ProperDisposalPattern();
+        using var resource2 = new ProperDisposalPattern();
+
+        // Both disposed in reverse order at end of scope
+    }
+}
+
+// Common mistakes
+public class DisposalMistakes
+{
+    // MISTAKE 1: Not calling base.Dispose
+    public class BadDerived : ProperDisposalPattern
+    {
+        protected override void Dispose(bool disposing)
+        {
+            // Clean up
+            // MISTAKE: Forgot base.Dispose(disposing);
+        }
+    }
+
+    // MISTAKE 2: Suppressing finalizer without freeing resources
+    public class BadSuppressFinalizer : IDisposable
+    {
+        private IntPtr _resource;
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+            // MISTAKE: Didn&#39;t free _resource!
+        }
+    }
+
+    // MISTAKE 3: Disposing multiple times not handled
+    public class NoDisposedFlag : IDisposable
+    {
+        private Stream _stream;
+
+        public void Dispose()
+        {
+            _stream.Dispose(); // Throws if already disposed!
+            // Should check _disposed flag
+        }
+    }
+}</code></pre>
+<p><strong>Key points:</strong></p>
+<p></details></p>
+<ul><li>Always implement dispose pattern correctly</li><li>Use SafeHandle for unmanaged resources</li><li>Support both Dispose and DisposeAsync when needed</li><li>Call GC.SuppressFinalize if you have a finalizer</li><li>Make Dispose safe to call multiple times</li><li>Dispose managed resources only in Dispose(true)</li><li>Free unmanaged resources in both Dispose(true) and Dispose(false)</li></ul>
+<p>---</p>
+<h2 id="advanced-performance-topics">Advanced Performance Topics</h2>
+<h3 id="exercise-21-stringcreate-for-zero-allocation-strings">Exercise 21: String.Create for Zero-Allocation Strings</h3>
+<p><strong>Question:</strong> Use String.Create to build strings without allocations.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">public class StringCreateExamples
+{
+    // Traditional approach - multiple allocations
+    public string FormatTraditional(int id, string name, decimal price)
+    {
+        return $&quot;ID: {id}, Name: {name}, Price: ${price:F2}&quot;;
+        // Creates intermediate strings
+    }
+
+    // String.Create - zero intermediate allocations
+    public string FormatOptimized(int id, string name, decimal price)
+    {
+        int estimatedLength = 50;
+
+        return string.Create(estimatedLength, (id, name, price), (span, state) =&gt;
+        {
+            int pos = 0;
+
+            &quot;ID: &quot;.AsSpan().CopyTo(span);
+            pos += 4;
+
+            state.id.TryFormat(span.Slice(pos), out int written);
+            pos += written;
+
+            &quot;, Name: &quot;.AsSpan().CopyTo(span.Slice(pos));
+            pos += 8;
+
+            state.name.AsSpan().CopyTo(span.Slice(pos));
+            pos += state.name.Length;
+
+            &quot;, Price: $&quot;.AsSpan().CopyTo(span.Slice(pos));
+            pos += 10;
+
+            state.price.TryFormat(span.Slice(pos), out written, &quot;F2&quot;);
+            pos += written;
+
+            // Resize span to actual length
+            span = span.Slice(0, pos);
+        });
+    }
+
+    // Simplified with helper
+    public string FormatWithHelper(int number)
+    {
+        return string.Create(10, number, static (span, value) =&gt;
+        {
+            value.TryFormat(span, out int written);
+            span[written] = &#39;!&#39;;
+        });
+    }
+
+    // Building CSV line
+    public string BuildCsvLine(int[] values)
+    {
+        if (values.Length == 0) return string.Empty;
+
+        // Estimate: each int ~10 chars + comma
+        int estimatedLength = values.Length * 11;
+
+        return string.Create(estimatedLength, values, (span, vals) =&gt;
+        {
+            int pos = 0;
+
+            for (int i = 0; i &lt; vals.Length; i++)
+            {
+                if (i &gt; 0)
+                {
+                    span[pos++] = &#39;,&#39;;
+                }
+
+                vals[i].TryFormat(span.Slice(pos), out int written);
+                pos += written;
+            }
+
+            // Return actual used portion
+            span = span.Slice(0, pos);
+        });
+    }
+
+    // URL encoding
+    public string BuildUrl(string baseUrl, Dictionary&lt;string, string&gt; parameters)
+    {
+        int estimatedLength = baseUrl.Length + parameters.Sum(p =&gt; p.Key.Length + p.Value.Length + 2);
+
+        return string.Create(estimatedLength, (baseUrl, parameters), (span, state) =&gt;
+        {
+            int pos = 0;
+
+            state.baseUrl.AsSpan().CopyTo(span);
+            pos += state.baseUrl.Length;
+
+            span[pos++] = &#39;?&#39;;
+
+            bool first = true;
+            foreach (var param in state.parameters)
+            {
+                if (!first)
+                    span[pos++] = &#39;&amp;&#39;;
+                first = false;
+
+                param.Key.AsSpan().CopyTo(span.Slice(pos));
+                pos += param.Key.Length;
+
+                span[pos++] = &#39;=&#39;;
+
+                param.Value.AsSpan().CopyTo(span.Slice(pos));
+                pos += param.Value.Length;
+            }
+        });
+    }
+}
+
+[MemoryDiagnoser]
+public class StringCreateBenchmarks
+{
+    [Benchmark]
+    public string TraditionalConcat()
+    {
+        return &quot;Value: &quot; + 42 + &quot;, Status: &quot; + true;
+    }
+
+    [Benchmark]
+    public string InterpolatedString()
+    {
+        return $&quot;Value: {42}, Status: {true}&quot;;
+    }
+
+    [Benchmark]
+    public string StringCreate()
+    {
+        return string.Create(30, (value: 42, status: true), (span, state) =&gt;
+        {
+            int pos = 0;
+            &quot;Value: &quot;.AsSpan().CopyTo(span);
+            pos += 7;
+            state.value.TryFormat(span.Slice(pos), out int w1);
+            pos += w1;
+            &quot;, Status: &quot;.AsSpan().CopyTo(span.Slice(pos));
+            pos += 10;
+            state.status.ToString().AsSpan().CopyTo(span.Slice(pos));
+        });
+    }
+}</code></pre>
+<p></details></p>
+<p>---</p>
+<h3 id="exercise-22-collection-performance">Exercise 22: Collection Performance</h3>
+<p><strong>Question:</strong> Compare performance of different collection types and operations.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">using BenchmarkDotNet.Attributes;
+using System.Collections.Concurrent;
+
+[MemoryDiagnoser]
+public class CollectionBenchmarks
+{
+    private const int ItemCount = 10000;
+
+    [Benchmark]
+    public List&lt;int&gt; ListAdd()
+    {
+        var list = new List&lt;int&gt;();
+        for (int i = 0; i &lt; ItemCount; i++)
+            list.Add(i);
+        return list;
+    }
+
+    [Benchmark]
+    public List&lt;int&gt; ListAddWithCapacity()
+    {
+        var list = new List&lt;int&gt;(ItemCount); // Pre-allocate
+        for (int i = 0; i &lt; ItemCount; i++)
+            list.Add(i);
+        return list;
+    }
+
+    [Benchmark]
+    public HashSet&lt;int&gt; HashSetAdd()
+    {
+        var set = new HashSet&lt;int&gt;();
+        for (int i = 0; i &lt; ItemCount; i++)
+            set.Add(i);
+        return set;
+    }
+
+    [Benchmark]
+    public Dictionary&lt;int, int&gt; DictionaryAdd()
+    {
+        var dict = new Dictionary&lt;int, int&gt;();
+        for (int i = 0; i &lt; ItemCount; i++)
+            dict[i] = i;
+        return dict;
+    }
+
+    [Benchmark]
+    public Dictionary&lt;int, int&gt; DictionaryAddWithCapacity()
+    {
+        var dict = new Dictionary&lt;int, int&gt;(ItemCount);
+        for (int i = 0; i &lt; ItemCount; i++)
+            dict[i] = i;
+        return dict;
+    }
+}
+
+// Collection selection guide
+public class CollectionSelectionGuide
+{
+    // Use List&lt;T&gt; when:
+    // - Need ordered collection
+    // - Frequent access by index
+    // - Occasional additions/removals
+    public void UseList()
+    {
+        var list = new List&lt;int&gt;(capacity: 1000); // Pre-allocate if size known
+        list.Add(1);
+        int value = list[0]; // O(1) access
+    }
+
+    // Use HashSet&lt;T&gt; when:
+    // - Need unique items
+    // - Frequent Contains checks
+    // - Order doesn&#39;t matter
+    public void UseHashSet()
+    {
+        var set = new HashSet&lt;int&gt;();
+        set.Add(1);
+        bool contains = set.Contains(1); // O(1) lookup
+    }
+
+    // Use Dictionary&lt;TKey, TValue&gt; when:
+    // - Key-value pairs
+    // - Fast lookup by key
+    public void UseDictionary()
+    {
+        var dict = new Dictionary&lt;string, int&gt;();
+        dict[&quot;key&quot;] = 42;
+        int value = dict[&quot;key&quot;]; // O(1) lookup
+    }
+
+    // Use LinkedList&lt;T&gt; when:
+    // - Frequent insertions/deletions in middle
+    // - Don&#39;t need index access
+    public void UseLinkedList()
+    {
+        var list = new LinkedList&lt;int&gt;();
+        var node = list.AddLast(1);
+        list.AddAfter(node, 2); // O(1) insertion
+    }
+
+    // Use Queue&lt;T&gt; for FIFO
+    public void UseQueue()
+    {
+        var queue = new Queue&lt;int&gt;();
+        queue.Enqueue(1);
+        int first = queue.Dequeue();
+    }
+
+    // Use Stack&lt;T&gt; for LIFO
+    public void UseStack()
+    {
+        var stack = new Stack&lt;int&gt;();
+        stack.Push(1);
+        int last = stack.Pop();
+    }
+
+    // Use ConcurrentDictionary for thread-safe access
+    public void UseConcurrentDictionary()
+    {
+        var dict = new ConcurrentDictionary&lt;string, int&gt;();
+        dict.TryAdd(&quot;key&quot;, 42);
+        dict.AddOrUpdate(&quot;key&quot;, 1, (key, old) =&gt; old + 1);
+    }
+
+    // Use SortedSet for sorted unique items
+    public void UseSortedSet()
+    {
+        var set = new SortedSet&lt;int&gt;();
+        set.Add(3);
+        set.Add(1);
+        set.Add(2);
+        // Enumeration is sorted: 1, 2, 3
+    }
+
+    // Use SortedDictionary for sorted key-value pairs
+    public void UseSortedDictionary()
+    {
+        var dict = new SortedDictionary&lt;string, int&gt;();
+        dict[&quot;c&quot;] = 3;
+        dict[&quot;a&quot;] = 1;
+        dict[&quot;b&quot;] = 2;
+        // Enumeration is sorted by key
+    }
+}
+
+// Enumeration performance
+[MemoryDiagnoser]
+public class EnumerationBenchmarks
+{
+    private List&lt;int&gt; _list;
+    private int[] _array;
+
+    [GlobalSetup]
+    public void Setup()
+    {
+        _list = Enumerable.Range(0, 10000).ToList();
+        _array = _list.ToArray();
+    }
+
+    [Benchmark]
+    public int ForEachList()
+    {
+        int sum = 0;
+        foreach (int item in _list)
+            sum += item;
+        return sum;
+    }
+
+    [Benchmark]
+    public int ForLoopList()
+    {
+        int sum = 0;
+        for (int i = 0; i &lt; _list.Count; i++)
+            sum += _list[i];
+        return sum;
+    }
+
+    [Benchmark]
+    public int ForEachArray()
+    {
+        int sum = 0;
+        foreach (int item in _array)
+            sum += item;
+        return sum;
+    }
+
+    [Benchmark]
+    public int ForLoopArray()
+    {
+        int sum = 0;
+        for (int i = 0; i &lt; _array.Length; i++)
+            sum += _array[i];
+        return sum;
+    }
+
+    [Benchmark]
+    public int SpanArray()
+    {
+        int sum = 0;
+        ReadOnlySpan&lt;int&gt; span = _array;
+        for (int i = 0; i &lt; span.Length; i++)
+            sum += span[i];
+        return sum;
+    }
+}</code></pre>
+<p></details></p>
+<p>---</p>
+<h3 id="exercise-23-lazyt-vs-manual-lazy-loading">Exercise 23: Lazy<T> vs Manual Lazy Loading</h3>
+<p><strong>Question:</strong> Compare Lazy<T> with manual lazy initialization patterns.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">using BenchmarkDotNet.Attributes;
+
+public class LazyInitializationExamples
+{
+    // Eager initialization
+    public class EagerInit
+    {
+        private readonly ExpensiveObject _object = new ExpensiveObject();
+
+        public ExpensiveObject GetObject() =&gt; _object;
+    }
+
+    // Manual lazy initialization (not thread-safe)
+    public class ManualLazy
+    {
+        private ExpensiveObject _object;
+
+        public ExpensiveObject GetObject()
+        {
+            if (_object == null)
+            {
+                _object = new ExpensiveObject();
+            }
+            return _object;
+        }
+    }
+
+    // Manual lazy with locking (thread-safe)
+    public class ManualLazyThreadSafe
+    {
+        private readonly object _lock = new object();
+        private ExpensiveObject _object;
+
+        public ExpensiveObject GetObject()
+        {
+            if (_object == null)
+            {
+                lock (_lock)
+                {
+                    if (_object == null)
+                    {
+                        _object = new ExpensiveObject();
+                    }
+                }
+            }
+            return _object;
+        }
+    }
+
+    // Lazy&lt;T&gt; (thread-safe by default)
+    public class LazyInit
+    {
+        private readonly Lazy&lt;ExpensiveObject&gt; _object =
+            new Lazy&lt;ExpensiveObject&gt;(() =&gt; new ExpensiveObject());
+
+        public ExpensiveObject GetObject() =&gt; _object.Value;
+    }
+
+    // Lazy&lt;T&gt; with different thread-safety modes
+    public class LazyThreadSafetyModes
+    {
+        // Default: LazyThreadSafetyMode.ExecutionAndPublication
+        // - Thread-safe
+        // - Only one thread executes factory
+        // - All threads see same instance
+        private readonly Lazy&lt;ExpensiveObject&gt; _default =
+            new Lazy&lt;ExpensiveObject&gt;(() =&gt; new ExpensiveObject());
+
+        // PublicationOnly
+        // - Multiple threads may execute factory
+        // - First completed instance wins
+        private readonly Lazy&lt;ExpensiveObject&gt; _publicationOnly =
+            new Lazy&lt;ExpensiveObject&gt;(
+                () =&gt; new ExpensiveObject(),
+                LazyThreadSafetyMode.PublicationOnly);
+
+        // None
+        // - Not thread-safe
+        // - Fastest for single-threaded scenarios
+        private readonly Lazy&lt;ExpensiveObject&gt; _none =
+            new Lazy&lt;ExpensiveObject&gt;(
+                () =&gt; new ExpensiveObject(),
+                LazyThreadSafetyMode.None);
+    }
+
+    // Lazy&lt;T&gt; with isValueCreated check
+    public class LazyWithCheck
+    {
+        private readonly Lazy&lt;ExpensiveObject&gt; _object =
+            new Lazy&lt;ExpensiveObject&gt;(() =&gt; new ExpensiveObject());
+
+        public bool IsInitialized =&gt; _object.IsValueCreated;
+
+        public void ResetIfInitialized()
+        {
+            if (_object.IsValueCreated)
+            {
+                // Can&#39;t reset Lazy&lt;T&gt;, must create new instance
+                // This is a limitation of Lazy&lt;T&gt;
+            }
+        }
+    }
+
+    // Custom resettable lazy
+    public class ResettableLazy&lt;T&gt; where T : class
+    {
+        private readonly Func&lt;T&gt; _factory;
+        private readonly object _lock = new object();
+        private T _value;
+
+        public ResettableLazy(Func&lt;T&gt; factory)
+        {
+            _factory = factory ?? throw new ArgumentNullException(nameof(factory));
+        }
+
+        public T Value
+        {
+            get
+            {
+                if (_value == null)
+                {
+                    lock (_lock)
+                    {
+                        if (_value == null)
+                        {
+                            _value = _factory();
+                        }
+                    }
+                }
+                return _value;
+            }
+        }
+
+        public bool IsValueCreated =&gt; _value != null;
+
+        public void Reset()
+        {
+            lock (_lock)
+            {
+                _value = null;
+            }
+        }
+    }
+
+    private class ExpensiveObject
+    {
+        public ExpensiveObject()
+        {
+            // Simulate expensive initialization
+            Thread.Sleep(10);
+        }
+    }
+}
+
+[MemoryDiagnoser]
+public class LazyBenchmarks
+{
+    private readonly EagerInit _eager = new();
+    private readonly ManualLazy _manual = new();
+    private readonly LazyInit _lazy = new();
+
+    [Benchmark]
+    public object EagerInitialization()
+    {
+        return _eager.GetObject();
+    }
+
+    [Benchmark]
+    public object ManualLazyInitialization()
+    {
+        return _manual.GetObject();
+    }
+
+    [Benchmark]
+    public object LazyInitialization()
+    {
+        return _lazy.GetObject();
+    }
+}
+
+// Real-world examples
+public class LazyRealWorldExamples
+{
+    // Lazy configuration loading
+    public class ConfigurationManager
+    {
+        private readonly Lazy&lt;Configuration&gt; _config =
+            new Lazy&lt;Configuration&gt;(() =&gt; LoadConfiguration());
+
+        public Configuration Config =&gt; _config.Value;
+
+        private static Configuration LoadConfiguration()
+        {
+            // Load from file, database, etc.
+            return new Configuration();
+        }
+    }
+
+    // Lazy database connection
+    public class DatabaseService
+    {
+        private readonly Lazy&lt;DbConnection&gt; _connection;
+
+        public DatabaseService(string connectionString)
+        {
+            _connection = new Lazy&lt;DbConnection&gt;(() =&gt;
+            {
+                var conn = new SqlConnection(connectionString);
+                conn.Open();
+                return conn;
+            });
+        }
+
+        public DbConnection Connection =&gt; _connection.Value;
+    }
+
+    // Lazy with dependency injection
+    public class ServiceWithLazyDependency
+    {
+        private readonly Lazy&lt;IExpensiveService&gt; _service;
+
+        public ServiceWithLazyDependency(Lazy&lt;IExpensiveService&gt; service)
+        {
+            _service = service;
+        }
+
+        public void DoWork()
+        {
+            if (SomeCondition())
+            {
+                _service.Value.DoExpensiveWork();
+            }
+        }
+
+        private bool SomeCondition() =&gt; true;
+    }
+
+    private class Configuration { }
+    private interface IExpensiveService { void DoExpensiveWork(); }
+    private class SqlConnection : DbConnection
+    {
+        public SqlConnection(string connectionString) { }
+        public override void Open() { }
+        protected override DbTransaction BeginDbTransaction(IsolationLevel isolationLevel) =&gt; null;
+        public override void Close() { }
+        public override void ChangeDatabase(string databaseName) { }
+        protected override DbCommand CreateDbCommand() =&gt; null;
+        public override string ConnectionString { get; set; }
+        public override string Database =&gt; &quot;&quot;;
+        public override string DataSource =&gt; &quot;&quot;;
+        public override string ServerVersion =&gt; &quot;&quot;;
+        public override ConnectionState State =&gt; ConnectionState.Closed;
+    }
+}</code></pre>
+<p><strong>When to use Lazy<T>:</strong></p>
+<ul><li>Expensive object initialization</li><li>May not be needed in all code paths</li><li>Thread-safety needed</li><li>Don't need to reset value</li></ul>
+<p><strong>When to use manual lazy:</strong></p>
+<p></details></p>
+<ul><li>Need custom reset logic</li><li>Very performance-critical (avoid Lazy<T> overhead)</li><li>Single-threaded scenario</li></ul>
+<p>---</p>
+<h3 id="exercise-24-allocation-free-async-patterns">Exercise 24: Allocation-Free Async Patterns</h3>
+<p><strong>Question:</strong> Implement allocation-free async patterns using ValueTask and pooling.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">using System.Threading.Tasks.Sources;
+
+public class AllocationFreeAsyncExamples
+{
+    // Traditional async - allocates Task
+    public async Task&lt;int&gt; TraditionalAsync()
+    {
+        await Task.Delay(100);
+        return 42;
+    }
+
+    // ValueTask - no allocation if synchronous
+    public async ValueTask&lt;int&gt; ValueTaskAsync(bool useCache)
+    {
+        if (useCache)
+        {
+            return 42; // No allocation!
+        }
+
+        await Task.Delay(100);
+        return 42; // Still allocates Task for async path
+    }
+
+    // Pooled ValueTask with IValueTaskSource
+    public class PooledValueTaskExample
+    {
+        private static readonly ObjectPool&lt;PooledTask&gt; _pool =
+            ObjectPool.Create&lt;PooledTask&gt;();
+
+        public ValueTask&lt;int&gt; GetValueAsync(bool immediate)
+        {
+            if (immediate)
+            {
+                return new ValueTask&lt;int&gt;(42); // No allocation
+            }
+
+            var pooled = _pool.Get();
+            pooled.Start();
+            return new ValueTask&lt;int&gt;(pooled, pooled.Version);
+        }
+
+        private class PooledTask : IValueTaskSource&lt;int&gt;
+        {
+            private ManualResetValueTaskSourceCore&lt;int&gt; _core;
+
+            public short Version =&gt; _core.Version;
+
+            public void Start()
+            {
+                _core.Reset();
+                Task.Run(async () =&gt;
+                {
+                    await Task.Delay(100);
+                    _core.SetResult(42);
+                });
+            }
+
+            public int GetResult(short token)
+            {
+                try
+                {
+                    return _core.GetResult(token);
+                }
+                finally
+                {
+                    _pool.Return(this);
+                }
+            }
+
+            public ValueTaskSourceStatus GetStatus(short token) =&gt;
+                _core.GetStatus(token);
+
+            public void OnCompleted(Action&lt;object&gt; continuation, object state,
+                short token, ValueTaskSourceOnCompletedFlags flags) =&gt;
+                _core.OnCompleted(continuation, state, token, flags);
+        }
+    }
+
+    // Cached ValueTask
+    public class CachedValueTaskExample
+    {
+        private static readonly ValueTask&lt;int&gt; _cached = new ValueTask&lt;int&gt;(42);
+        private readonly Dictionary&lt;string, string&gt; _cache = new();
+
+        public ValueTask&lt;string&gt; GetDataAsync(string key)
+        {
+            if (_cache.TryGetValue(key, out var value))
+            {
+                return new ValueTask&lt;string&gt;(value); // No allocation
+            }
+
+            return LoadDataAsync(key); // Allocates
+        }
+
+        private async ValueTask&lt;string&gt; LoadDataAsync(string key)
+        {
+            await Task.Delay(100);
+            var value = $&quot;Data for {key}&quot;;
+            _cache[key] = value;
+            return value;
+        }
+    }
+
+    // Synchronous ValueTask
+    public class SyncValueTaskExample
+    {
+        public ValueTask&lt;int&gt; GetFromCacheOrDefault(string key)
+        {
+            // Always completes synchronously - no allocation
+            return new ValueTask&lt;int&gt;(42);
+        }
+    }
+}
+
+// Benchmarks
+[MemoryDiagnoser]
+public class AsyncAllocationBenchmarks
+{
+    [Benchmark]
+    public async Task&lt;int&gt; TaskAlwaysAllocates()
+    {
+        return await Task.FromResult(42); // Allocates Task
+    }
+
+    [Benchmark]
+    public async ValueTask&lt;int&gt; ValueTaskNoAllocation()
+    {
+        return await new ValueTask&lt;int&gt;(42); // No allocation
+    }
+
+    [Benchmark]
+    public async Task&lt;int&gt; TaskWithActualAsync()
+    {
+        await Task.Delay(1);
+        return 42;
+    }
+
+    [Benchmark]
+    public async ValueTask&lt;int&gt; ValueTaskWithActualAsync()
+    {
+        await Task.Delay(1);
+        return 42; // Same allocation as Task for async path
+    }
+}
+
+// Best practices
+public class ValueTaskBestPractices
+{
+    // GOOD: Synchronous path common
+    public ValueTask&lt;int&gt; GoodUseCase(string key, Dictionary&lt;string, int&gt; cache)
+    {
+        if (cache.TryGetValue(key, out int value))
+        {
+            return new ValueTask&lt;int&gt;(value); // Fast path
+        }
+
+        return LoadFromDatabaseAsync(key);
+    }
+
+    // BAD: Always asynchronous
+    public ValueTask&lt;int&gt; BadUseCase()
+    {
+        // Always await = no benefit over Task
+        return LoadFromDatabaseAsync(&quot;key&quot;);
+    }
+
+    // GOOD: Await once
+    public async Task UseValueTaskCorrectly()
+    {
+        var result = await GoodUseCase(&quot;key&quot;, new Dictionary&lt;string, int&gt;());
+        Console.WriteLine(result);
+    }
+
+    // BAD: Await multiple times
+    public async Task UseValueTaskIncorrectly()
+    {
+        var task = GoodUseCase(&quot;key&quot;, new Dictionary&lt;string, int&gt;());
+        var result1 = await task; // First await
+        // var result2 = await task; // ERROR: Can&#39;t await twice!
+    }
+
+    // GOOD: Convert to Task if needed
+    public async Task ConvertToTask()
+    {
+        var valueTask = GoodUseCase(&quot;key&quot;, new Dictionary&lt;string, int&gt;());
+        Task&lt;int&gt; task = valueTask.AsTask(); // Now can await multiple times
+
+        var result1 = await task;
+        var result2 = await task; // OK
+    }
+
+    private async ValueTask&lt;int&gt; LoadFromDatabaseAsync(string key)
+    {
+        await Task.Delay(100);
+        return 42;
+    }
+}</code></pre>
+<p></details></p>
+<p>---</p>
+<h3 id="exercise-25-gccollect-and-gc-tuning">Exercise 25: GC.Collect and GC Tuning</h3>
+<p><strong>Question:</strong> Demonstrate when and how to use GC.Collect and configure GC behavior.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">public class GCControlExamples
+{
+    // When GC.Collect is acceptable
+    public class AcceptableGCCollect
+    {
+        // After large data processing
+        public void ProcessLargeDataBatch()
+        {
+            byte[] largeData = new byte[100_000_000];
+            ProcessData(largeData);
+            largeData = null;
+
+            // Large data no longer needed, free memory before next operation
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
+        }
+
+        // Before memory-intensive operation
+        public void BeforeMemoryIntensiveWork()
+        {
+            // Clean up before allocating large amount
+            GC.Collect();
+
+            // Now perform memory-intensive work
+            AllocateLargeStructures();
+        }
+
+        // In unit tests
+        [Test]
+        public void TestMemoryLeak()
+        {
+            WeakReference wr = CreateAndRelease();
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
+
+            Assert.IsFalse(wr.IsAlive, &quot;Memory leak detected&quot;);
+        }
+
+        private WeakReference CreateAndRelease()
+        {
+            object obj = new object();
+            return new WeakReference(obj);
+        }
+
+        private void ProcessData(byte[] data) { }
+        private void AllocateLargeStructures() { }
+    }
+
+    // GC modes configuration
+    public class GCConfiguration
+    {
+        public void ConfigureGC()
+        {
+            // Check current mode
+            bool isServerGC = GCSettings.IsServerGC;
+            Console.WriteLine($&quot;Server GC: {isServerGC}&quot;);
+
+            // Set latency mode
+            GCLatencyMode oldMode = GCSettings.LatencyMode;
+
+            try
+            {
+                // Low latency for interactive operations
+                GCSettings.LatencyMode = GCLatencyMode.LowLatency;
+
+                // Perform time-sensitive work
+                PerformInteractiveWork();
+            }
+            finally
+            {
+                // Restore previous mode
+                GCSettings.LatencyMode = oldMode;
+            }
+        }
+
+        public void UseSustainedLowLatency()
+        {
+            // For sustained low-latency scenarios
+            GCLatencyMode oldMode = GCSettings.LatencyMode;
+
+            try
+            {
+                GCSettings.LatencyMode = GCLatencyMode.SustainedLowLatency;
+
+                // Long-running low-latency work
+                RunRealtimeProcessing();
+            }
+            finally
+            {
+                GCSettings.LatencyMode = oldMode;
+            }
+        }
+
+        public void ConfigureLOH()
+        {
+            // Compact LOH
+            GCSettings.LargeObjectHeapCompactionMode =
+                GCLargeObjectHeapCompactionMode.CompactOnce;
+
+            GC.Collect();
+
+            // LOH will be compacted during this collection
+        }
+
+        private void PerformInteractiveWork() { }
+        private void RunRealtimeProcessing() { }
+    }
+
+    // GC notifications
+    public class GCNotificationExample
+    {
+        public void RegisterForGCNotifications()
+        {
+            // Register for full GC notifications
+            GC.RegisterForFullGCNotification(10, 10);
+
+            Task.Run(() =&gt; MonitorGC());
+        }
+
+        private void MonitorGC()
+        {
+            while (true)
+            {
+                // Wait for approaching full GC
+                GCNotificationStatus status = GC.WaitForFullGCApproach();
+
+                if (status == GCNotificationStatus.Succeeded)
+                {
+                    Console.WriteLine(&quot;Full GC approaching...&quot;);
+                    // Redirect traffic, prepare for GC pause
+                }
+
+                // Wait for full GC to complete
+                status = GC.WaitForFullGCComplete();
+
+                if (status == GCNotificationStatus.Succeeded)
+                {
+                    Console.WriteLine(&quot;Full GC completed&quot;);
+                    // Resume normal operations
+                }
+            }
+        }
+    }
+
+    // GC memory info
+    public class GCMemoryInfo
+    {
+        public void DisplayMemoryInfo()
+        {
+            GCMemoryInfo info = GC.GetGCMemoryInfo();
+
+            Console.WriteLine($&quot;Total available memory: {info.TotalAvailableMemoryBytes / 1024 / 1024} MB&quot;);
+            Console.WriteLine($&quot;Heap size: {info.HeapSizeBytes / 1024 / 1024} MB&quot;);
+            Console.WriteLine($&quot;Memory load: {info.MemoryLoadBytes / 1024 / 1024} MB&quot;);
+            Console.WriteLine($&quot;High memory load threshold: {info.HighMemoryLoadThresholdBytes / 1024 / 1024} MB&quot;);
+            Console.WriteLine($&quot;Fragmented bytes: {info.FragmentedBytes / 1024 / 1024} MB&quot;);
+            Console.WriteLine($&quot;Generation 0 size: {info.GenerationInfo[0].SizeBytes / 1024} KB&quot;);
+            Console.WriteLine($&quot;Generation 1 size: {info.GenerationInfo[1].SizeBytes / 1024} KB&quot;);
+            Console.WriteLine($&quot;Generation 2 size: {info.GenerationInfo[2].SizeBytes / 1024 / 1024} MB&quot;);
+        }
+
+        public void MonitorMemoryPressure()
+        {
+            long before = GC.GetTotalMemory(forceFullCollection: false);
+
+            // Perform work
+            DoWork();
+
+            long after = GC.GetTotalMemory(forceFullCollection: false);
+
+            Console.WriteLine($&quot;Memory allocated: {(after - before) / 1024} KB&quot;);
+        }
+
+        public void AddMemoryPressure()
+        {
+            // Allocate unmanaged memory
+            IntPtr ptr = Marshal.AllocHGlobal(10_000_000);
+
+            try
+            {
+                // Inform GC about external memory
+                GC.AddMemoryPressure(10_000_000);
+
+                // Use memory
+            }
+            finally
+            {
+                // Remove pressure and free
+                GC.RemoveMemoryPressure(10_000_000);
+                Marshal.FreeHGlobal(ptr);
+            }
+        }
+
+        private void DoWork() { }
+    }
+
+    // GC.TryStartNoGCRegion
+    public class NoGCRegionExample
+    {
+        public void CriticalOperation()
+        {
+            long size = 1024 * 1024; // 1 MB
+
+            if (GC.TryStartNoGCRegion(size))
+            {
+                try
+                {
+                    // Critical code that must not be interrupted by GC
+                    PerformCriticalWork();
+                }
+                finally
+                {
+                    GC.EndNoGCRegion();
+                }
+            }
+            else
+            {
+                // Fallback if no-GC region couldn&#39;t be established
+                PerformCriticalWork();
+            }
+        }
+
+        private void PerformCriticalWork()
+        {
+            // Time-critical code
+        }
+    }
+}
+
+// Configuration via runtimeconfig.json
+/*
+{
+  &quot;runtimeOptions&quot;: {
+    &quot;configProperties&quot;: {
+      &quot;System.GC.Server&quot;: true,
+      &quot;System.GC.Concurrent&quot;: true,
+      &quot;System.GC.RetainVM&quot;: true,
+      &quot;System.GC.HeapCount&quot;: 4,
+      &quot;System.GC.HeapAffinitizeMask&quot;: 15
+    }
+  }
+}
+*/
+
+// Best practices summary
+public class GCBestPractices
+{
+    // DON&#39;T: Call GC.Collect in normal code
+    public void DontDoThis()
+    {
+        var data = new byte[1000];
+        // Process data
+        GC.Collect(); // BAD! Let GC manage itself
+    }
+
+    // DO: Let GC manage itself
+    public void DoThis()
+    {
+        var data = new byte[1000];
+        // Process data
+        // GC will collect when appropriate
+    }
+
+    // DO: Reduce allocations
+    public void ReduceAllocations()
+    {
+        // Use object pooling
+        var buffer = ArrayPool&lt;byte&gt;.Shared.Rent(1000);
+        try
+        {
+            // Use buffer
+        }
+        finally
+        {
+            ArrayPool&lt;byte&gt;.Shared.Return(buffer);
+        }
+    }
+
+    // DO: Use struct for small types
+    public readonly struct Point
+    {
+        public readonly double X, Y;
+        public Point(double x, double y) =&gt; (X, Y) = (x, y);
+    }
+
+    // DO: Reuse objects
+    private readonly StringBuilder _reusable = new StringBuilder();
+
+    public string BuildString()
+    {
+        _reusable.Clear();
+        _reusable.Append(&quot;Hello&quot;);
+        return _reusable.ToString();
+    }
+}</code></pre>
+<p><strong>Key takeaways:</strong></p>
+<p></details></p>
+<ul><li>Avoid GC.Collect() in production code</li><li>Let GC manage itself</li><li>Use appropriate GC mode (Workstation vs Server)</li><li>Consider GC latency modes for specific scenarios</li><li>Monitor GC behavior with GC.GetGCMemoryInfo()</li><li>Use no-GC regions for critical operations</li><li>Configure GC via runtime config</li></ul>
+<p>---</p>
+<h3 id="exercise-26-pinned-objects-and-fragmentation">Exercise 26: Pinned Objects and Fragmentation</h3>
+<p><strong>Question:</strong> Show how to pin a buffer for interop and explain the GC trade-offs.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">byte[] buffer = new byte[1024];
+var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+try
+{
+    IntPtr ptr = handle.AddrOfPinnedObject();
+    NativeApi.Write(ptr, buffer.Length);
+}
+finally
+{
+    handle.Free();
+}</code></pre>
+<p>Pinned objects prevent the GC from moving memory, which can fragment the heap and slow collections. Keep pinned lifetimes short and prefer stackalloc or native buffers for hot paths. </details></p>
+<p>---</p>
+<h3 id="exercise-27-loh-compaction-mode">Exercise 27: LOH Compaction Mode</h3>
+<p><strong>Question:</strong> Enable LOH compaction and trigger a full collection after a large allocation spike.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">GCSettings.LargeObjectHeapCompactionMode =
+    GCLargeObjectHeapCompactionMode.CompactOnce;
+
+// Trigger a full GC to compact LOH once
+GC.Collect(2, GCCollectionMode.Forced, blocking: true, compacting: true);</code></pre>
+<p>Use sparingly during low-traffic windows; compaction can introduce pauses. </details></p>
+<p>---</p>
+<h3 id="exercise-28-memorypoolt-for-reusable-buffers">Exercise 28: MemoryPool<T> for Reusable Buffers</h3>
+<p><strong>Question:</strong> Allocate a buffer from MemoryPool and return it safely.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">using IMemoryOwner&lt;byte&gt; owner = MemoryPool&lt;byte&gt;.Shared.Rent(4096);
+Memory&lt;byte&gt; buffer = owner.Memory;
+
+// Use buffer for parsing or IO
+Process(buffer.Span);</code></pre>
+<p>MemoryPool provides reusable buffers without per-request allocations and works well with pipelines. </details></p>
+<p>---</p>
+<h3 id="exercise-29-collectionsmarshalasspan-for-list-hot-paths">Exercise 29: CollectionsMarshal.AsSpan for List Hot Paths</h3>
+<p><strong>Question:</strong> Update a List<T> in place without enumerator allocations.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">var prices = new List&lt;decimal&gt; { 1.2m, 1.3m, 1.4m };
+Span&lt;decimal&gt; span = CollectionsMarshal.AsSpan(prices);
+
+for (int i = 0; i &lt; span.Length; i++)
+{
+    span[i] *= 1.01m;
+}</code></pre>
+<p>Use only when you control the list and understand the safety constraints. </details></p>
+<p>---</p>
+<h3 id="exercise-30-avoid-closure-allocations">Exercise 30: Avoid Closure Allocations</h3>
+<p><strong>Question:</strong> Refactor a lambda to avoid closure allocations.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">// Allocates a closure for threshold
+int threshold = 100;
+var hot = trades.Where(t =&gt; t.Size &gt; threshold);
+
+// No closure allocation
+var hotStatic = trades.Where(static t =&gt; t.Size &gt; 100);</code></pre>
+<p>Static lambdas prevent capturing locals and reduce allocations in hot paths. </details></p>
+<p>---</p>
+<h3 id="exercise-31-replace-linq-with-loops-in-hot-paths">Exercise 31: Replace LINQ with Loops in Hot Paths</h3>
+<p><strong>Question:</strong> Convert a LINQ aggregation to a loop and explain why it helps.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">// LINQ - allocates enumerator/delegates
+var total = prices.Where(p =&gt; p &gt; 0).Sum();
+
+// Loop - allocation free
+decimal totalLoop = 0;
+foreach (var p in prices)
+{
+    if (p &gt; 0)
+        totalLoop += p;
+}</code></pre>
+<p>LINQ is fine for most code, but loops avoid delegate/enumerator allocations in critical paths. </details></p>
+<p>---</p>
+<h3 id="exercise-32-arraypoolt-with-clear-and-return">Exercise 32: ArrayPool<T> with Clear and Return</h3>
+<p><strong>Question:</strong> Rent a buffer, use it, and return it safely with clearing.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">var pool = ArrayPool&lt;byte&gt;.Shared;
+byte[] buffer = pool.Rent(8192);
+try
+{
+    Fill(buffer);
+    Write(buffer);
+}
+finally
+{
+    pool.Return(buffer, clearArray: true);
+}</code></pre>
+<p>Clearing prevents data leaks when buffers may contain sensitive data. </details></p>
+<p>---</p>
+<h3 id="exercise-33-trystartnogcregion-for-low-latency-windows">Exercise 33: TryStartNoGCRegion for Low-Latency Windows</h3>
+<p><strong>Question:</strong> Demonstrate a short no-GC region during a critical burst.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">if (GC.TryStartNoGCRegion(256 * 1024 * 1024))
+{
+    try
+    {
+        ProcessCriticalBurst();
+    }
+    finally
+    {
+        GC.EndNoGCRegion();
+    }
+}</code></pre>
+<p>Use only when you can bound allocations; otherwise it throws and can harm latency. </details></p>
+<p>---</p>
+<h3 id="exercise-34-readonlyspanchar-parsing-without-substring">Exercise 34: ReadOnlySpan<char> Parsing Without Substring</h3>
+<p><strong>Question:</strong> Parse a symbol and price from a CSV line without allocations.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">ReadOnlySpan&lt;char&gt; line = &quot;EURUSD,1.07421&quot;.AsSpan();
+int comma = line.IndexOf(&#39;,&#39;);
+ReadOnlySpan&lt;char&gt; symbol = line[..comma];
+ReadOnlySpan&lt;char&gt; priceSpan = line[(comma + 1)..];
+
+decimal price = decimal.Parse(priceSpan, CultureInfo.InvariantCulture);</code></pre>
+<p>Using spans avoids allocating new strings for slices. </details></p>
+<p>---</p>
+<h3 id="exercise-35-monitor-allocation-rate">Exercise 35: Monitor Allocation Rate</h3>
+<p><strong>Question:</strong> Use dotnet-counters to observe allocation rate while a test runs.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-bash"><code class="language-bash">dotnet-counters monitor --process-id &lt;pid&gt; System.Runtime</code></pre>
+<p>Watch <code>alloc-rate</code> and <code>gc-heap-size</code> to confirm allocation reductions. </details></p>
+<p>---</p>
+<h2 id="summary">Summary</h2>
+<p>This exercise set covers:</p>
+<ul><li>Memory allocation patterns (Stack vs Heap)</li><li>GC generations and strategies</li><li>Span<T> and Memory<T> for zero-allocation code</li><li>ValueTask vs Task for async efficiency</li><li>Object pooling (ArrayPool, ObjectPool)</li><li>String performance optimizations</li><li>Struct vs Class performance</li><li>ref, in, out parameters</li><li>stackalloc for stack allocation</li><li>BenchmarkDotNet for accurate measurements</li><li>Memory leak detection</li><li>LOH management</li><li>IDisposable pattern</li><li>GC configuration and tuning</li></ul>
+<p>Each exercise includes practical examples, benchmarks, and best practices for writing high-performance C# code.</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['dark2', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
+      const fallback = 'light';
+      const initial = supported.includes(normalized) ? normalized : (window.__studyTheme || fallback);
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          sessionStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+    (() => {
+      const groups = document.querySelectorAll('.sidebar-group');
+      if (!groups.length) return;
+      const storageKey = 'study-open-groups';
+      const saved = sessionStorage.getItem(storageKey);
+      const openFromStorage = new Set(saved ? JSON.parse(saved) : []);
+
+      const activeLink = document.querySelector('.nav-link.active');
+      const activeGroup = activeLink?.closest('.sidebar-group');
+      if (activeGroup?.dataset.group) {
+        openFromStorage.add(activeGroup.dataset.group);
+      }
+
+      const syncStorage = () => {
+        const openIds = Array.from(document.querySelectorAll('.sidebar-group.is-open'))
+          .map((group) => group.dataset.group)
+          .filter(Boolean);
+        sessionStorage.setItem(storageKey, JSON.stringify(openIds));
+      };
+
+      const setExpanded = (group, expanded) => {
+        const header = group.querySelector('.sidebar-group__header');
+        const list = group.querySelector('.sidebar-group__items');
+        group.classList.toggle('is-open', expanded);
+        header?.setAttribute('aria-expanded', expanded);
+        if (list) {
+          list.hidden = !expanded;
+        }
+      };
+
+      groups.forEach((group) => {
+        const shouldOpen = openFromStorage.has(group.dataset.group);
+        setExpanded(group, shouldOpen);
+        const header = group.querySelector('.sidebar-group__header');
+        header?.addEventListener('click', () => {
+          const next = !group.classList.contains('is-open');
+          setExpanded(group, next);
+          syncStorage();
+        });
+      });
+    })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swPath = '..\../service-worker.js';
+        navigator.serviceWorker.register(swPath).catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+</body>
+</html>

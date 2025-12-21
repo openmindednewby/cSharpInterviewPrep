@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Senior .NET study guide for Csharp Fundamentals" />
+  <meta name="description" content="Senior .NET study guide for Error Handling Exercises" />
   <meta name="theme-color" content="#0f172a" />
-  <title>Csharp Fundamentals | C# Interview Prep Cheat Sheet</title>
+  <title>Error Handling Exercises | C# Interview Prep Cheat Sheet</title>
   <link rel="manifest" href="..\assets/manifest.webmanifest" />
   <script>
     (() => {
@@ -125,13 +125,7 @@
         <span>Practice</span>
         <span class="chevron" aria-hidden="true"></span>
       </button>
-      <ul class="sidebar-group__items"><li><a class="nav-link" href="../practice/answers.html">Answers</a></li><li><a class="nav-link" href="../practice/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="../practice/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="../practice/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="../practice/code-assessment.html">Code Assessment</a></li><li><a class="nav-link active" href="../practice/csharp-fundamentals.html">Csharp Fundamentals</a></li><li><a class="nav-link" href="../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="../practice/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="../practice/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="../practice/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="../practice/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="../practice/index.html">Practice</a></li><li><a class="nav-link" href="../practice/PRACTICE-STRUCTURE.html">PRACTICE STRUCTURE</a></li><li><a class="nav-link" href="../practice/questions.html">Questions</a></li><li><a class="nav-link" href="../practice/README.html">README</a></li><li><a class="nav-link" href="../practice/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="../practice/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="../practice/system-design.html">System Design</a></li><li><a class="nav-link" href="../practice/trading-domain.html">Trading Domain</a></li></ul>
-    </div><div class="sidebar-group" data-group="practice-advanced-topics">
-      <button class="sidebar-group__header" type="button" aria-expanded="false">
-        <span>Practice / Advanced Topics</span>
-        <span class="chevron" aria-hidden="true"></span>
-      </button>
-      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/advanced-topics/async-await-exercises.html">Async Await Exercises</a></li></ul>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="../practice/answers.html">Answers</a></li><li><a class="nav-link" href="../practice/core-concepts.html">Core Concepts</a></li><li><a class="nav-link active" href="../practice/error-handling-exercises.html">Error Handling Exercises</a></li><li><a class="nav-link" href="../practice/logging-exercises.html">Logging Exercises</a></li><li><a class="nav-link" href="../practice/index.html">Practice</a></li><li><a class="nav-link" href="../practice/PRACTICE-STRUCTURE.html">PRACTICE STRUCTURE</a></li><li><a class="nav-link" href="../practice/questions.html">Questions</a></li><li><a class="nav-link" href="../practice/README.html">README</a></li><li><a class="nav-link" href="../practice/testing-strategies-exercises.html">Testing Strategies Exercises</a></li></ul>
     </div><div class="sidebar-group" data-group="practice-automapper">
       <button class="sidebar-group__header" type="button" aria-expanded="false">
         <span>Practice / Automapper</span>
@@ -162,182 +156,252 @@
         <span class="chevron" aria-hidden="true"></span>
       </button>
       <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/Design-Patterns/Decorator-Pattern-Exercises.html">Decorator Pattern Exercises</a></li><li><a class="nav-link" href="../practice/Design-Patterns/index.html">Design Patterns</a></li><li><a class="nav-link" href="../practice/Design-Patterns/Factory-Pattern-Exercises.html">Factory Pattern Exercises</a></li><li><a class="nav-link" href="../practice/Design-Patterns/Mediator-Pattern-Exercises.html">Mediator Pattern Exercises</a></li><li><a class="nav-link" href="../practice/Design-Patterns/Observer-Pattern-Exercises.html">Observer Pattern Exercises</a></li><li><a class="nav-link" href="../practice/Design-Patterns/Strategy-Pattern-Exercises.html">Strategy Pattern Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/DRY/index.html">DRY</a></li></ul>
     </div><div class="sidebar-group" data-group="practice-fluentvalidation">
       <button class="sidebar-group__header" type="button" aria-expanded="false">
         <span>Practice / FluentValidation</span>
         <span class="chevron" aria-hidden="true"></span>
       </button>
       <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/FluentValidation/index.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li></ul>
     </div><div class="sidebar-group" data-group="practice-solid">
       <button class="sidebar-group__header" type="button" aria-expanded="false">
         <span>Practice / SOLID</span>
         <span class="chevron" aria-hidden="true"></span>
       </button>
       <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/SOLID/S-Single-Responsibility-Principle-Exercises.html">S Single Responsibility Principle Exercises</a></li><li><a class="nav-link" href="../practice/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/sub-notes/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="../practice/sub-notes/async-await-exercises.html">Async Await Exercises</a></li><li><a class="nav-link" href="../practice/sub-notes/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="../practice/sub-notes/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="../practice/sub-notes/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="../practice/sub-notes/csharp-fundamentals.html">Csharp Fundamentals</a></li><li><a class="nav-link" href="../practice/sub-notes/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="../practice/sub-notes/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="../practice/sub-notes/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="../practice/sub-notes/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="../practice/sub-notes/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="../practice/sub-notes/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="../practice/sub-notes/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="../practice/sub-notes/system-design.html">System Design</a></li><li><a class="nav-link" href="../practice/sub-notes/trading-domain.html">Trading Domain</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
     </div></div></div>
       </div>
     </nav>
     <main class="content">
       <article class="card">
-        <div class="breadcrumbs">practice\csharp-fundamentals.md</div>
-        <h2>Csharp Fundamentals</h2>
+        <div class="breadcrumbs">practice\error-handling-exercises.md</div>
+        <h2>Error Handling Exercises</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#c-fundamentals-practice-exercises">C# Fundamentals Practice Exercises</a></li><li class="level-2"><a href="#types-memory-and-immutability">Types, Memory, and Immutability</a></li><li class="level-2"><a href="#nullability-and-defensive-programming">Nullability and Defensive Programming</a></li><li class="level-2"><a href="#generics-and-constraints">Generics and Constraints</a></li><li class="level-2"><a href="#delegates-events-and-lambdas">Delegates, Events, and Lambdas</a></li><li class="level-2"><a href="#pattern-matching-and-switch-expressions">Pattern Matching and Switch Expressions</a></li><li class="level-2"><a href="#records-and-immutability">Records and Immutability</a></li><li class="level-2"><a href="#exceptions-and-error-flow">Exceptions and Error Flow</a></li><li class="level-2"><a href="#access-modifiers-and-encapsulation">Access Modifiers and Encapsulation</a></li><li class="level-2"><a href="#collections-and-initialization">Collections and Initialization</a></li></ul></div>
-        <h1 id="c-fundamentals-practice-exercises">C# Fundamentals Practice Exercises</h1>
-<p>Build strong core language fundamentals through targeted exercises.</p>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#error-handling---practice-exercises">Error Handling - Practice Exercises</a></li><li class="level-2"><a href="#foundations">Foundations</a></li><li class="level-3"><a href="#exercise-1-exceptions-vs-result-types">Exercise 1: Exceptions vs Result Types</a></li><li class="level-3"><a href="#exercise-2-custom-exception-type">Exercise 2: Custom Exception Type</a></li><li class="level-3"><a href="#exercise-3-trycatchfinally">Exercise 3: Try/Catch/Finally</a></li><li class="level-3"><a href="#exercise-4-guard-clauses">Exercise 4: Guard Clauses</a></li><li class="level-3"><a href="#exercise-5-rethrow-correctly">Exercise 5: Rethrow Correctly</a></li><li class="level-3"><a href="#exercise-6-exception-filters">Exercise 6: Exception Filters</a></li><li class="level-3"><a href="#exercise-7-using-statements">Exercise 7: Using Statements</a></li><li class="level-3"><a href="#exercise-8-global-exception-middleware">Exercise 8: Global Exception Middleware</a></li><li class="level-3"><a href="#exercise-9-map-exceptions-to-http-status">Exercise 9: Map Exceptions to HTTP Status</a></li><li class="level-3"><a href="#exercise-10-avoid-catch-all">Exercise 10: Avoid Catch-All</a></li><li class="level-2"><a href="#intermediate">Intermediate</a></li><li class="level-3"><a href="#exercise-11-retry-policy">Exercise 11: Retry Policy</a></li><li class="level-3"><a href="#exercise-12-circuit-breaker">Exercise 12: Circuit Breaker</a></li><li class="level-3"><a href="#exercise-13-timeout-policy">Exercise 13: Timeout Policy</a></li><li class="level-3"><a href="#exercise-14-bulkhead-isolation">Exercise 14: Bulkhead Isolation</a></li><li class="level-3"><a href="#exercise-15-fallback-strategy">Exercise 15: Fallback Strategy</a></li><li class="level-3"><a href="#exercise-16-idempotency-keys">Exercise 16: Idempotency Keys</a></li><li class="level-3"><a href="#exercise-17-log-with-context">Exercise 17: Log with Context</a></li><li class="level-3"><a href="#exercise-18-problemdetails-response">Exercise 18: ProblemDetails Response</a></li><li class="level-3"><a href="#exercise-19-resultt-pattern">Exercise 19: Result<T> Pattern</a></li><li class="level-3"><a href="#exercise-20-aggregate-validation-errors">Exercise 20: Aggregate Validation Errors</a></li><li class="level-3"><a href="#exercise-21-taskwhenall-exception-handling">Exercise 21: Task.WhenAll Exception Handling</a></li><li class="level-3"><a href="#exercise-22-cancellation-vs-timeout">Exercise 22: Cancellation vs Timeout</a></li><li class="level-2"><a href="#advanced">Advanced</a></li><li class="level-3"><a href="#exercise-23-background-service-failures">Exercise 23: Background Service Failures</a></li><li class="level-3"><a href="#exercise-24-ef-core-transient-failures">Exercise 24: EF Core Transient Failures</a></li><li class="level-3"><a href="#exercise-25-mediatr-error-pipeline">Exercise 25: MediatR Error Pipeline</a></li><li class="level-3"><a href="#exercise-26-exception-hierarchy">Exercise 26: Exception Hierarchy</a></li><li class="level-3"><a href="#exercise-27-error-codes">Exercise 27: Error Codes</a></li><li class="level-3"><a href="#exercise-28-preserve-stack-trace">Exercise 28: Preserve Stack Trace</a></li><li class="level-3"><a href="#exercise-29-partial-failure-handling">Exercise 29: Partial Failure Handling</a></li><li class="level-3"><a href="#exercise-30-outbox-error-handling">Exercise 30: Outbox Error Handling</a></li><li class="level-2"><a href="#scenarios">Scenarios</a></li><li class="level-3"><a href="#exercise-31-price-feed-failure">Exercise 31: Price Feed Failure</a></li><li class="level-3"><a href="#exercise-32-market-data-ingestion">Exercise 32: Market Data Ingestion</a></li><li class="level-3"><a href="#exercise-33-graceful-degradation">Exercise 33: Graceful Degradation</a></li><li class="level-3"><a href="#exercise-34-timeouts-at-multiple-layers">Exercise 34: Timeouts at Multiple Layers</a></li><li class="level-3"><a href="#exercise-35-post-incident-checklist">Exercise 35: Post-Incident Checklist</a></li></ul></div>
+        <h1 id="error-handling---practice-exercises">Error Handling - Practice Exercises</h1>
+<p>Exercises focused on robust error handling for high-throughput .NET services.</p>
 <p>---</p>
-<h2 id="types-memory-and-immutability">Types, Memory, and Immutability</h2>
-<p><strong>Q: Explain the difference between value types and reference types with a simple example.</strong></p>
-<p>A: Value types copy the data; reference types copy the reference. Mutations affect only the copied value, but references point to the same object.</p>
-<pre class="language-csharp"><code class="language-csharp">var a = new Point { X = 1, Y = 2 };
-var b = a; // copy
-b.X = 99;
-// a.X is still 1
-
-var c = new Person { Name = &quot;Ana&quot; };
-var d = c; // reference copy
-d.Name = &quot;Zoe&quot;;
-// c.Name is now &quot;Zoe&quot;</code></pre>
-<p><strong>Q: When should you choose a struct over a class?</strong></p>
-<p>A: Use structs for small, immutable, short-lived data without inheritance. Use classes for identity, polymorphism, or large mutable state.</p>
-<pre class="language-csharp"><code class="language-csharp">public readonly struct Money
-{
-    public Money(decimal amount, string currency)
-    {
-        Amount = amount;
-        Currency = currency;
-    }
-
-    public decimal Amount { get; }
-    public string Currency { get; }
-}</code></pre>
-<p><strong>Q: Demonstrate how to reduce copying with <code>in</code> parameters.</strong></p>
-<p>A: Use <code>in</code> for large structs to avoid defensive copies.</p>
-<pre class="language-csharp"><code class="language-csharp">public static decimal CalculateTax(in Money price, decimal rate)
-{
-    return price.Amount * rate;
-}</code></pre>
+<h2 id="foundations">Foundations</h2>
+<h3 id="exercise-1-exceptions-vs-result-types">Exercise 1: Exceptions vs Result Types</h3>
+<p><strong>Q:</strong> When do you use exceptions instead of a <code>Result&lt;T&gt;</code> type?</p>
+<p>A: Use exceptions for unexpected, exceptional conditions (null reference, infrastructure failures). Use <code>Result&lt;T&gt;</code> for expected domain outcomes (validation, not found) to keep the hot path allocation-light.</p>
 <p>---</p>
-<h2 id="nullability-and-defensive-programming">Nullability and Defensive Programming</h2>
-<p><strong>Q: Show how nullable reference types prevent null bugs.</strong></p>
-<p>A: Enable nullability and use <code>?</code> for optional references.</p>
-<pre class="language-csharp"><code class="language-csharp">#nullable enable
-public string FormatName(string? name)
+<h3 id="exercise-2-custom-exception-type">Exercise 2: Custom Exception Type</h3>
+<p><strong>Q:</strong> Create a custom <code>BadRequestException</code> that carries validation errors.</p>
+<p>A:</p>
+<pre class="language-csharp"><code class="language-csharp">public class BadRequestException : Exception
 {
-    if (string.IsNullOrWhiteSpace(name))
-        return &quot;Unknown&quot;;
+    public IReadOnlyList&lt;string&gt; Errors { get; }
 
-    return name.Trim();
-}</code></pre>
-<p><strong>Q: Write a guard clause extension for argument validation.</strong></p>
-<p>A: Throw early for invalid inputs.</p>
-<pre class="language-csharp"><code class="language-csharp">public static class Guard
-{
-    public static string NotNullOrEmpty(string? value, string paramName)
+    public BadRequestException(string message, IReadOnlyList&lt;string&gt; errors)
+        : base(message)
     {
-        if (string.IsNullOrWhiteSpace(value))
-            throw new ArgumentException(&quot;Value is required&quot;, paramName);
-        return value;
+        Errors = errors;
     }
 }</code></pre>
 <p>---</p>
-<h2 id="generics-and-constraints">Generics and Constraints</h2>
-<p><strong>Q: Implement a generic method with a constraint for a parameterless constructor.</strong></p>
-<p>A: Use <code>where T : new()</code> when the type must be created.</p>
-<pre class="language-csharp"><code class="language-csharp">public static T Create&lt;T&gt;() where T : new()
+<h3 id="exercise-3-trycatchfinally">Exercise 3: Try/Catch/Finally</h3>
+<p><strong>Q:</strong> Ensure a file handle is always released even when parsing fails.</p>
+<p>A:</p>
+<pre class="language-csharp"><code class="language-csharp">try
 {
-    return new T();
-}</code></pre>
-<p><strong>Q: Write a repository interface with type constraints.</strong></p>
-<p>A: Constrain to a base entity so the repository can rely on shared properties.</p>
-<pre class="language-csharp"><code class="language-csharp">public interface IRepository&lt;T&gt; where T : Entity
-{
-    Task&lt;T?&gt; GetByIdAsync(int id, CancellationToken ct = default);
-    Task AddAsync(T entity, CancellationToken ct = default);
+    using var reader = File.OpenText(path);
+    return Parse(reader.ReadToEnd());
 }
-
-public abstract class Entity
+catch (FormatException ex)
 {
-    public int Id { get; set; }
+    throw new BadRequestException(&quot;Invalid file format&quot;, new[] { ex.Message });
 }</code></pre>
 <p>---</p>
-<h2 id="delegates-events-and-lambdas">Delegates, Events, and Lambdas</h2>
-<p><strong>Q: Show a simple event pattern with <code>EventHandler&lt;T&gt;</code>.</strong></p>
-<p>A: Use events to publish changes without tight coupling.</p>
-<pre class="language-csharp"><code class="language-csharp">public class PriceTicker
-{
-    public event EventHandler&lt;decimal&gt;? PriceUpdated;
-
-    public void Update(decimal price)
-    {
-        PriceUpdated?.Invoke(this, price);
-    }
-}</code></pre>
-<p><strong>Q: When would you prefer <code>Func&lt;T&gt;</code> over a custom delegate type?</strong></p>
-<p>A: Use <code>Func</code> for small, simple signatures; custom delegates for clarity and documentation.</p>
-<pre class="language-csharp"><code class="language-csharp">Func&lt;int, int&gt; square = x =&gt; x * x;</code></pre>
+<h3 id="exercise-4-guard-clauses">Exercise 4: Guard Clauses</h3>
+<p><strong>Q:</strong> Add guard clauses to fail fast on invalid input.</p>
+<p>A:</p>
+<pre class="language-csharp"><code class="language-csharp">if (string.IsNullOrWhiteSpace(symbol))
+    throw new ArgumentException(&quot;Symbol is required&quot;, nameof(symbol));</code></pre>
 <p>---</p>
-<h2 id="pattern-matching-and-switch-expressions">Pattern Matching and Switch Expressions</h2>
-<p><strong>Q: Use pattern matching to categorize input.</strong></p>
-<p>A: Switch expressions make branching concise.</p>
-<pre class="language-csharp"><code class="language-csharp">public static string Classify(object input) =&gt; input switch
+<h3 id="exercise-5-rethrow-correctly">Exercise 5: Rethrow Correctly</h3>
+<p><strong>Q:</strong> Preserve stack trace when rethrowing.</p>
+<p>A:</p>
+<pre class="language-csharp"><code class="language-csharp">catch (Exception)
 {
-    null =&gt; &quot;null&quot;,
-    int i when i &lt; 0 =&gt; &quot;negative int&quot;,
-    int =&gt; &quot;positive int&quot;,
-    string s when s.Length == 0 =&gt; &quot;empty string&quot;,
-    string =&gt; &quot;string&quot;,
-    _ =&gt; &quot;other&quot;
-};</code></pre>
-<p>---</p>
-<h2 id="records-and-immutability">Records and Immutability</h2>
-<p><strong>Q: Create a record and use <code>with</code> to clone it.</strong></p>
-<p>A: Records simplify immutable data structures.</p>
-<pre class="language-csharp"><code class="language-csharp">public record Trade(string Symbol, decimal Price, int Quantity);
-
-var original = new Trade(&quot;EURUSD&quot;, 1.0912m, 1000);
-var updated = original with { Price = 1.0920m };</code></pre>
-<p>---</p>
-<h2 id="exceptions-and-error-flow">Exceptions and Error Flow</h2>
-<p><strong>Q: Show how to throw and wrap exceptions with context.</strong></p>
-<p>A: Use specific exceptions and include context for debugging.</p>
-<pre class="language-csharp"><code class="language-csharp">public static Order FindOrder(int id, IDictionary&lt;int, Order&gt; map)
-{
-    if (!map.TryGetValue(id, out var order))
-        throw new KeyNotFoundException($&quot;Order {id} was not found.&quot;);
-
-    return order;
+    throw; // preserves original stack
 }</code></pre>
 <p>---</p>
-<h2 id="access-modifiers-and-encapsulation">Access Modifiers and Encapsulation</h2>
-<p><strong>Q: Summarize access modifiers and demonstrate a safe class design.</strong></p>
-<p>A: Use private fields, expose behavior through public methods, and keep invariants inside.</p>
-<pre class="language-csharp"><code class="language-csharp">public class Position
+<h3 id="exercise-6-exception-filters">Exercise 6: Exception Filters</h3>
+<p><strong>Q:</strong> Use an exception filter to handle only timeout exceptions.</p>
+<p>A:</p>
+<pre class="language-csharp"><code class="language-csharp">catch (HttpRequestException ex) when (ex.InnerException is TimeoutException)
 {
-    private decimal _quantity;
-
-    public decimal Quantity =&gt; _quantity;
-
-    public void Add(decimal quantity)
-    {
-        if (quantity &lt;= 0)
-            throw new ArgumentOutOfRangeException(nameof(quantity));
-
-        _quantity += quantity;
-    }
+    // handle timeout
 }</code></pre>
 <p>---</p>
-<h2 id="collections-and-initialization">Collections and Initialization</h2>
-<p><strong>Q: Show object and collection initialization with target-typed <code>new</code>.</strong></p>
-<p>A: Use concise syntax for readability.</p>
-<pre class="language-csharp"><code class="language-csharp">var orders = new List&lt;Order&gt;
-{
-    new(&quot;A&quot;, 10),
-    new(&quot;B&quot;, 20)
-};</code></pre>
+<h3 id="exercise-7-using-statements">Exercise 7: Using Statements</h3>
+<p><strong>Q:</strong> Ensure <code>IDisposable</code> resources are always released.</p>
+<p>A:</p>
+<pre class="language-csharp"><code class="language-csharp">using var stream = File.OpenRead(path);</code></pre>
 <p>---</p>
-<p><strong>Total Exercises: 12+</strong></p>
-<p>Practice each exercise by writing the code and explaining your choices out loud.</p>
+<h3 id="exercise-8-global-exception-middleware">Exercise 8: Global Exception Middleware</h3>
+<p><strong>Q:</strong> Implement middleware that catches exceptions and returns a JSON response.</p>
+<p>A: Register a custom middleware early in the pipeline and map to <code>ProblemDetails</code>.</p>
+<p>---</p>
+<h3 id="exercise-9-map-exceptions-to-http-status">Exercise 9: Map Exceptions to HTTP Status</h3>
+<p><strong>Q:</strong> Map <code>NotFoundException</code> to 404 and <code>BadRequestException</code> to 400.</p>
+<p>A: Translate exceptions at the API boundary with a single centralized handler.</p>
+<p>---</p>
+<h3 id="exercise-10-avoid-catch-all">Exercise 10: Avoid Catch-All</h3>
+<p><strong>Q:</strong> Why should you avoid <code>catch (Exception ex)</code> in business logic?</p>
+<p>A: Catching everything hides failures, makes retries harder, and can mask bugs; catch only what you can handle.</p>
+<p>---</p>
+<h2 id="intermediate">Intermediate</h2>
+<h3 id="exercise-11-retry-policy">Exercise 11: Retry Policy</h3>
+<p><strong>Q:</strong> Add a Polly retry policy for transient HTTP errors.</p>
+<p>A:</p>
+<pre class="language-csharp"><code class="language-csharp">var policy = Policy
+    .Handle&lt;HttpRequestException&gt;()
+    .OrResult&lt;HttpResponseMessage&gt;(r =&gt; (int)r.StatusCode &gt;= 500)
+    .WaitAndRetryAsync(3, i =&gt; TimeSpan.FromMilliseconds(200 * i));</code></pre>
+<p>---</p>
+<h3 id="exercise-12-circuit-breaker">Exercise 12: Circuit Breaker</h3>
+<p><strong>Q:</strong> Configure a circuit breaker for a flaky dependency.</p>
+<p>A:</p>
+<pre class="language-csharp"><code class="language-csharp">var breaker = Policy
+    .Handle&lt;Exception&gt;()
+    .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30));</code></pre>
+<p>---</p>
+<h3 id="exercise-13-timeout-policy">Exercise 13: Timeout Policy</h3>
+<p><strong>Q:</strong> Add a timeout policy for slow calls.</p>
+<p>A:</p>
+<pre class="language-csharp"><code class="language-csharp">var timeout = Policy.TimeoutAsync(TimeSpan.FromSeconds(2));</code></pre>
+<p>---</p>
+<h3 id="exercise-14-bulkhead-isolation">Exercise 14: Bulkhead Isolation</h3>
+<p><strong>Q:</strong> Limit concurrent calls to a dependency.</p>
+<p>A:</p>
+<pre class="language-csharp"><code class="language-csharp">var bulkhead = Policy.BulkheadAsync(20, int.MaxValue);</code></pre>
+<p>---</p>
+<h3 id="exercise-15-fallback-strategy">Exercise 15: Fallback Strategy</h3>
+<p><strong>Q:</strong> Return cached data when an API call fails.</p>
+<p>A:</p>
+<pre class="language-csharp"><code class="language-csharp">var fallback = Policy&lt;PriceQuote&gt;
+    .Handle&lt;Exception&gt;()
+    .FallbackAsync(_ =&gt; cache.GetLastQuoteAsync(symbol));</code></pre>
+<p>---</p>
+<h3 id="exercise-16-idempotency-keys">Exercise 16: Idempotency Keys</h3>
+<p><strong>Q:</strong> How do idempotency keys reduce error handling complexity?</p>
+<p>A: They make retries safe by ensuring duplicate requests do not duplicate side effects.</p>
+<p>---</p>
+<h3 id="exercise-17-log-with-context">Exercise 17: Log with Context</h3>
+<p><strong>Q:</strong> Include key identifiers when logging exceptions.</p>
+<p>A:</p>
+<pre class="language-csharp"><code class="language-csharp">_logger.LogError(ex, &quot;Failed to place order {OrderId} for {Symbol}&quot;, orderId, symbol);</code></pre>
+<p>---</p>
+<h3 id="exercise-18-problemdetails-response">Exercise 18: ProblemDetails Response</h3>
+<p><strong>Q:</strong> Return RFC7807 error details for API failures.</p>
+<p>A: Use <code>ProblemDetails</code> with type, title, status, and correlation ID.</p>
+<p>---</p>
+<h3 id="exercise-19-resultt-pattern">Exercise 19: Result<T> Pattern</h3>
+<p><strong>Q:</strong> Implement a simple <code>Result&lt;T&gt;</code> type for validation failures.</p>
+<p>A:</p>
+<pre class="language-csharp"><code class="language-csharp">public record Result&lt;T&gt;(bool IsSuccess, T? Value, string? Error);</code></pre>
+<p>---</p>
+<h3 id="exercise-20-aggregate-validation-errors">Exercise 20: Aggregate Validation Errors</h3>
+<p><strong>Q:</strong> Collect all validation errors instead of failing fast.</p>
+<p>A: Use FluentValidation and return all error messages in a single response.</p>
+<p>---</p>
+<h3 id="exercise-21-taskwhenall-exception-handling">Exercise 21: Task.WhenAll Exception Handling</h3>
+<p><strong>Q:</strong> Handle exceptions when running multiple tasks.</p>
+<p>A:</p>
+<pre class="language-csharp"><code class="language-csharp">try
+{
+    await Task.WhenAll(tasks);
+}
+catch
+{
+    var errors = tasks.Where(t =&gt; t.IsFaulted).Select(t =&gt; t.Exception);
+    throw;
+}</code></pre>
+<p>---</p>
+<h3 id="exercise-22-cancellation-vs-timeout">Exercise 22: Cancellation vs Timeout</h3>
+<p><strong>Q:</strong> Differentiate a user cancellation from a timeout.</p>
+<p>A: Use distinct exception types and log them separately to avoid misclassifying failures.</p>
+<p>---</p>
+<h2 id="advanced">Advanced</h2>
+<h3 id="exercise-23-background-service-failures">Exercise 23: Background Service Failures</h3>
+<p><strong>Q:</strong> Prevent a hosted service from crashing on a single failure.</p>
+<p>A: Wrap the loop in try/catch, log, and continue with backoff.</p>
+<p>---</p>
+<h3 id="exercise-24-ef-core-transient-failures">Exercise 24: EF Core Transient Failures</h3>
+<p><strong>Q:</strong> Enable SQL retry policies for EF Core.</p>
+<p>A:</p>
+<pre class="language-csharp"><code class="language-csharp">options.UseSqlServer(conn, o =&gt; o.EnableRetryOnFailure());</code></pre>
+<p>---</p>
+<h3 id="exercise-25-mediatr-error-pipeline">Exercise 25: MediatR Error Pipeline</h3>
+<p><strong>Q:</strong> Convert exceptions to <code>Result&lt;T&gt;</code> in a pipeline behavior.</p>
+<p>A: Wrap <code>next()</code> in try/catch and map known exceptions to error results.</p>
+<p>---</p>
+<h3 id="exercise-26-exception-hierarchy">Exercise 26: Exception Hierarchy</h3>
+<p><strong>Q:</strong> Define an exception hierarchy for domain and application layers.</p>
+<p>A: <code>DomainException</code> (Domain), <code>ValidationException</code> (Application), <code>InfrastructureException</code> (Infrastructure).</p>
+<p>---</p>
+<h3 id="exercise-27-error-codes">Exercise 27: Error Codes</h3>
+<p><strong>Q:</strong> Return stable error codes for client handling.</p>
+<p>A: Map exceptions to codes like <code>ORDER_NOT_FOUND</code> and include them in responses.</p>
+<p>---</p>
+<h3 id="exercise-28-preserve-stack-trace">Exercise 28: Preserve Stack Trace</h3>
+<p><strong>Q:</strong> Re-throw an exception while preserving stack trace across boundaries.</p>
+<p>A:</p>
+<pre class="language-csharp"><code class="language-csharp">ExceptionDispatchInfo.Capture(ex).Throw();</code></pre>
+<p>---</p>
+<h3 id="exercise-29-partial-failure-handling">Exercise 29: Partial Failure Handling</h3>
+<p><strong>Q:</strong> Process a batch where some items fail.</p>
+<p>A: Return per-item results and avoid failing the entire batch unless required.</p>
+<p>---</p>
+<h3 id="exercise-30-outbox-error-handling">Exercise 30: Outbox Error Handling</h3>
+<p><strong>Q:</strong> How should you handle publish failures in an outbox processor?</p>
+<p>A: Retry with exponential backoff and leave the outbox record until success.</p>
+<p>---</p>
+<h2 id="scenarios">Scenarios</h2>
+<h3 id="exercise-31-price-feed-failure">Exercise 31: Price Feed Failure</h3>
+<p><strong>Q:</strong> A price feed is down during order placement. What do you do?</p>
+<p>A: Circuit break the feed, return a clear error, and optionally fall back to last known price with an expiry.</p>
+<p>---</p>
+<h3 id="exercise-32-market-data-ingestion">Exercise 32: Market Data Ingestion</h3>
+<p><strong>Q:</strong> How do you handle poison messages in a market data queue?</p>
+<p>A: Send to a dead-letter queue and alert; do not block the pipeline.</p>
+<p>---</p>
+<h3 id="exercise-33-graceful-degradation">Exercise 33: Graceful Degradation</h3>
+<p><strong>Q:</strong> How do you degrade a quote API during partial outages?</p>
+<p>A: Serve cached quotes with a stale flag and shorten TTLs until dependencies recover.</p>
+<p>---</p>
+<h3 id="exercise-34-timeouts-at-multiple-layers">Exercise 34: Timeouts at Multiple Layers</h3>
+<p><strong>Q:</strong> Coordinate timeouts across API, downstream HTTP, and database.</p>
+<p>A: Use shorter timeouts downstream than upstream and pass a single cancellation token.</p>
+<p>---</p>
+<h3 id="exercise-35-post-incident-checklist">Exercise 35: Post-Incident Checklist</h3>
+<p><strong>Q:</strong> List key items for an error-handling postmortem.</p>
+<p>A: Root cause, blast radius, detection gap, recovery time, remediation tasks, and tests to prevent recurrence.</p>
       </article>
     </main>
   </div>

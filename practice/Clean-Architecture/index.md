@@ -11,6 +11,10 @@
 8. [Use Case/Interactor Implementation](#use-caseinteractor-implementation)
 9. [Clean Architecture in ASP.NET Core](#clean-architecture-in-aspnet-core)
 10. [Testing Strategies](#testing-strategies)
+11. [Cross-Cutting Concerns](#cross-cutting-concerns)
+12. [Integration Boundaries](#integration-boundaries)
+13. [Operational Concerns](#operational-concerns)
+14. [Refactoring & Migration](#refactoring--migration)
 
 ---
 
@@ -3163,4 +3167,381 @@ public class OrderTests
 
 ---
 
-(The file continues with 20+ more comprehensive exercises covering all topics...)
+## Cross-Cutting Concerns
+
+### Exercise 17: Add a Validation Pipeline Behavior
+**Question:** Implement a MediatR pipeline behavior that runs FluentValidation before handlers.
+
+<details>
+<summary>Answer</summary>
+
+```csharp
+public class ValidationBehavior<TRequest, TResponse>
+    : IPipelineBehavior<TRequest, TResponse>
+{
+    private readonly IEnumerable<IValidator<TRequest>> _validators;
+
+    public ValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
+    {
+        _validators = validators;
+    }
+
+    public async Task<TResponse> Handle(
+        TRequest request,
+        RequestHandlerDelegate<TResponse> next,
+        CancellationToken ct)
+    {
+        if (_validators.Any())
+        {
+            var context = new ValidationContext<TRequest>(request);
+            var results = await Task.WhenAll(
+                _validators.Select(v => v.ValidateAsync(context, ct)));
+
+            var failures = results.SelectMany(r => r.Errors)
+                .Where(f => f != null)
+                .ToList();
+
+            if (failures.Count > 0)
+                throw new BadRequestException("Validation failed", failures);
+        }
+
+        return await next();
+    }
+}
+```
+
+Register the behavior in the Application layer so validation is enforced consistently.
+</details>
+
+---
+
+### Exercise 18: Add Logging Around Use Cases
+**Question:** Add structured logging around a use case without polluting domain code.
+
+<details>
+<summary>Answer</summary>
+
+Use a pipeline behavior or decorator:
+
+```csharp
+public class LoggingBehavior<TRequest, TResponse>
+    : IPipelineBehavior<TRequest, TResponse>
+{
+    private readonly ILogger<LoggingBehavior<TRequest, TResponse>> _logger;
+
+    public LoggingBehavior(ILogger<LoggingBehavior<TRequest, TResponse>> logger)
+    {
+        _logger = logger;
+    }
+
+    public async Task<TResponse> Handle(
+        TRequest request,
+        RequestHandlerDelegate<TResponse> next,
+        CancellationToken ct)
+    {
+        _logger.LogInformation("Handling {Request}", typeof(TRequest).Name);
+        var response = await next();
+        _logger.LogInformation("Handled {Request}", typeof(TRequest).Name);
+        return response;
+    }
+}
+```
+
+This keeps cross-cutting concerns out of domain entities and handlers.
+</details>
+
+---
+
+### Exercise 19: Cache-Aside Decorator
+**Question:** Add a cache decorator for a query handler without changing the handler logic.
+
+<details>
+<summary>Answer</summary>
+
+```csharp
+public class CachedGetOrderHandler
+    : IRequestHandler<GetOrderQuery, OrderDto>
+{
+    private readonly IRequestHandler<GetOrderQuery, OrderDto> _inner;
+    private readonly ICache _cache;
+
+    public CachedGetOrderHandler(
+        IRequestHandler<GetOrderQuery, OrderDto> inner,
+        ICache cache)
+    {
+        _inner = inner;
+        _cache = cache;
+    }
+
+    public async Task<OrderDto> Handle(GetOrderQuery request, CancellationToken ct)
+    {
+        var key = $"order:{request.Id}";
+        if (_cache.TryGet(key, out OrderDto cached))
+            return cached;
+
+        var result = await _inner.Handle(request, ct);
+        _cache.Set(key, result, TimeSpan.FromMinutes(5));
+        return result;
+    }
+}
+```
+
+Register the decorator in the composition root.
+</details>
+
+---
+
+## Integration Boundaries
+
+### Exercise 20: Anti-Corruption Layer
+**Question:** Wrap an external pricing API so its model does not leak into your domain.
+
+<details>
+<summary>Answer</summary>
+
+Create an adapter in Infrastructure and map to domain models:
+
+```csharp
+public interface IPriceFeed
+{
+    Task<PriceQuote> GetQuoteAsync(Symbol symbol, CancellationToken ct);
+}
+
+public class ExternalPriceFeedAdapter : IPriceFeed
+{
+    private readonly ExternalClient _client;
+
+    public async Task<PriceQuote> GetQuoteAsync(Symbol symbol, CancellationToken ct)
+    {
+        var response = await _client.GetQuoteAsync(symbol.Value, ct);
+        return new PriceQuote(symbol, response.Bid, response.Ask, response.Timestamp);
+    }
+}
+```
+
+The domain sees only `PriceQuote`, not the external DTOs.
+</details>
+
+---
+
+### Exercise 21: Domain Events vs Integration Events
+**Question:** Distinguish domain events from integration events and place them in the correct layer.
+
+<details>
+<summary>Answer</summary>
+
+Domain events live in the Domain layer and capture business facts. Integration events live in Application/Infrastructure and are published externally.
+
+```csharp
+// Domain
+public record OrderConfirmedEvent(Guid OrderId) : IDomainEvent;
+
+// Application/Infrastructure
+public record OrderConfirmedIntegrationEvent(Guid OrderId, DateTime OccurredAt);
+```
+
+Map domain events to integration events in Application/Infrastructure.
+</details>
+
+---
+
+### Exercise 22: Outbox Pattern Placement
+**Question:** Where does the outbox belong, and how does it flow?
+
+<details>
+<summary>Answer</summary>
+
+The outbox is Infrastructure (storage) with orchestration in Application. The Application persists domain changes and an outbox record in the same transaction, then Infrastructure publishes.
+</details>
+
+---
+
+### Exercise 23: External API Retry Policy
+**Question:** Add Polly retries to an external adapter without leaking to use cases.
+
+<details>
+<summary>Answer</summary>
+
+Wrap the HTTP client in Infrastructure:
+
+```csharp
+services.AddHttpClient<IPriceFeed, ExternalPriceFeedAdapter>()
+    .AddTransientHttpErrorPolicy(p => p.WaitAndRetryAsync(3, i => TimeSpan.FromMilliseconds(200 * i)));
+```
+
+Use cases still depend only on `IPriceFeed`.
+</details>
+
+---
+
+## Operational Concerns
+
+### Exercise 24: Centralized Error Handling
+**Question:** Implement middleware that converts exceptions to ProblemDetails.
+
+<details>
+<summary>Answer</summary>
+
+```csharp
+app.UseMiddleware<ExceptionMiddleware>();
+```
+
+Keep exception types in Application/Domain and translate at the API boundary.
+</details>
+
+---
+
+### Exercise 25: Configuration via Options
+**Question:** Inject configuration into Infrastructure using the options pattern.
+
+<details>
+<summary>Answer</summary>
+
+```csharp
+builder.Services.Configure<EmailSettings>(
+    builder.Configuration.GetSection("Email"));
+
+builder.Services.AddTransient<IEmailService, SmtpEmailService>();
+```
+
+Options live in Infrastructure; Application depends only on interfaces.
+</details>
+
+---
+
+### Exercise 26: Multi-Tenancy Context
+**Question:** Introduce tenant context without leaking HTTP concerns into Application.
+
+<details>
+<summary>Answer</summary>
+
+Define `ITenantContext` in Application and implement in API/Infrastructure:
+
+```csharp
+public interface ITenantContext
+{
+    string TenantId { get; }
+}
+```
+
+Use middleware to set it per request.
+</details>
+
+---
+
+### Exercise 27: Background Jobs in Clean Architecture
+**Question:** Place a scheduled job that reconciles trades each night.
+
+<details>
+<summary>Answer</summary>
+
+Implement `IHostedService` in Infrastructure or API and call Application use cases:
+
+```csharp
+public class ReconciliationJob : BackgroundService
+{
+    private readonly IMediator _mediator;
+
+    protected override Task ExecuteAsync(CancellationToken ct) =>
+        _mediator.Send(new ReconcileTradesCommand(), ct);
+}
+```
+
+The job is orchestration; business logic stays in Application/Domain.
+</details>
+
+---
+
+### Exercise 28: Use a Clock Abstraction
+**Question:** Avoid `DateTime.UtcNow` in domain logic.
+
+<details>
+<summary>Answer</summary>
+
+Define `IClock` in Application and inject:
+
+```csharp
+public interface IClock { DateTime UtcNow { get; } }
+```
+
+This improves testability and deterministic behavior.
+</details>
+
+---
+
+## Refactoring & Migration
+
+### Exercise 29: Feature-Slice vs Layered Folders
+**Question:** Compare organizing Application by feature vs by technical layer.
+
+<details>
+<summary>Answer</summary>
+
+Feature slices keep commands, handlers, DTOs, and validators together per use case, reducing cross-folder navigation. Layered folders can scale but often scatter related files.
+</details>
+
+---
+
+### Exercise 30: Introduce Clean Architecture Gradually
+**Question:** Sketch steps to migrate a legacy MVC app to Clean Architecture.
+
+<details>
+<summary>Answer</summary>
+
+Start by extracting Domain models, then add Application use cases, then move data access to Infrastructure and keep controllers thin. Migrate per feature to reduce risk.
+</details>
+
+---
+
+### Exercise 31: Avoid the Anemic Domain
+**Question:** Refactor an anemic entity into a richer domain model.
+
+<details>
+<summary>Answer</summary>
+
+Move invariants into entity methods, make setters private, and expose behaviors like `Confirm()` or `ReserveStock()` instead of raw property changes.
+</details>
+
+---
+
+### Exercise 32: DTO Mapping Boundaries
+**Question:** Decide where mapping belongs and justify it.
+
+<details>
+<summary>Answer</summary>
+
+Map at the Application boundary (handlers) so Domain remains pure and Presentation stays thin. Avoid passing DTOs into Domain.
+</details>
+
+---
+
+### Exercise 33: Versioning Use Cases
+**Question:** Support breaking changes in commands without duplicating infrastructure.
+
+<details>
+<summary>Answer</summary>
+
+Create a new command/handler version and map from v1/v2 API models. Keep shared domain logic in services or domain entities.
+</details>
+
+---
+
+### Exercise 34: Modular Monolith Boundaries
+**Question:** Define a module boundary for trading and risk in the same codebase.
+
+<details>
+<summary>Answer</summary>
+
+Use separate Application/Domain namespaces per module, restrict references via project files, and communicate via events or interfaces to avoid direct coupling.
+</details>
+
+---
+
+### Exercise 35: Define a Unit of Work
+**Question:** Explain where Unit of Work belongs and how it is used.
+
+<details>
+<summary>Answer</summary>
+
+The interface lives in Application, implementation in Infrastructure. Handlers coordinate repository changes and call `SaveChangesAsync` once per use case.
+</details>

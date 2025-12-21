@@ -12,6 +12,8 @@
 9. [Mapping Validation](#mapping-validation)
 10. [Performance Considerations](#performance-considerations)
 11. [When to Use vs Manual Mapping](#when-to-use-vs-manual-mapping)
+12. [Advanced Mapping Scenarios](#advanced-mapping-scenarios)
+13. [Testing & Troubleshooting](#testing--troubleshooting)
 
 ---
 
@@ -2566,5 +2568,264 @@ USE HYBRID WHEN:
 
 ---
 
-(The file continues with 13+ more comprehensive exercises covering advanced scenarios, edge cases, and best practices...)
+## Advanced Mapping Scenarios
+
+### Exercise 18: Inheritance Mapping
+**Question:** Map a base type and derived types using AutoMapper inheritance features.
+
+<details>
+<summary>Answer</summary>
+
+```csharp
+public class Order { public Guid Id { get; set; } }
+public class MarketOrder : Order { public decimal LimitPrice { get; set; } }
+public class StopOrder : Order { public decimal StopPrice { get; set; } }
+
+public class OrderDto { public Guid Id { get; set; } }
+public class MarketOrderDto : OrderDto { public decimal LimitPrice { get; set; } }
+public class StopOrderDto : OrderDto { public decimal StopPrice { get; set; } }
+
+public class OrderProfile : Profile
+{
+    public OrderProfile()
+    {
+        CreateMap<Order, OrderDto>()
+            .Include<MarketOrder, MarketOrderDto>()
+            .Include<StopOrder, StopOrderDto>();
+
+        CreateMap<MarketOrder, MarketOrderDto>();
+        CreateMap<StopOrder, StopOrderDto>();
+    }
+}
+```
+
+</details>
+
+---
+
+### Exercise 19: Mapping to Records
+**Question:** Map into a record type with constructor parameters.
+
+<details>
+<summary>Answer</summary>
+
+```csharp
+public record TradeDto(Guid Id, string Symbol, decimal Price);
+
+public class Trade
+{
+    public Guid Id { get; set; }
+    public string Symbol { get; set; }
+    public decimal Price { get; set; }
+}
+
+CreateMap<Trade, TradeDto>();
+```
+
+AutoMapper will bind by constructor parameter names.
+</details>
+
+---
+
+### Exercise 20: ForPath for Nested Properties
+**Question:** Map a flattened DTO into a nested domain model.
+
+<details>
+<summary>Answer</summary>
+
+```csharp
+public class OrderDto
+{
+    public string City { get; set; }
+    public string Country { get; set; }
+}
+
+public class Order
+{
+    public Address Shipping { get; set; } = new();
+}
+
+public class Address
+{
+    public string City { get; set; }
+    public string Country { get; set; }
+}
+
+CreateMap<OrderDto, Order>()
+    .ForPath(d => d.Shipping.City, o => o.MapFrom(s => s.City))
+    .ForPath(d => d.Shipping.Country, o => o.MapFrom(s => s.Country));
+```
+
+</details>
+
+---
+
+### Exercise 21: Map into Existing Instance
+**Question:** Update an existing entity without creating a new instance.
+
+<details>
+<summary>Answer</summary>
+
+```csharp
+var existing = await _repo.GetByIdAsync(id);
+_mapper.Map(updateDto, existing); // updates existing instance
+```
+
+Configure maps to ignore immutable fields like `Id`.
+</details>
+
+---
+
+### Exercise 22: Ignore Nulls on Update
+**Question:** Ignore null source values so partial updates do not overwrite fields.
+
+<details>
+<summary>Answer</summary>
+
+```csharp
+CreateMap<UpdateUserDto, User>()
+    .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
+```
+
+</details>
+
+---
+
+### Exercise 23: BeforeMap/AfterMap Hooks
+**Question:** Add audit timestamps during mapping.
+
+<details>
+<summary>Answer</summary>
+
+```csharp
+CreateMap<CreateOrderDto, Order>()
+    .BeforeMap((src, dest) => dest.CreatedBy = "system")
+    .AfterMap((src, dest) => dest.UpdatedAt = DateTime.UtcNow);
+```
+
+</details>
+
+---
+
+### Exercise 24: Global Value Converter
+**Question:** Configure a global converter for money formatting.
+
+<details>
+<summary>Answer</summary>
+
+```csharp
+var config = new MapperConfiguration(cfg =>
+{
+    cfg.CreateMap<Money, string>().ConvertUsing(m => $"{m.Amount:N2} {m.Currency}");
+    cfg.AddProfile<OrderProfile>();
+});
+```
+
+</details>
+
+---
+
+### Exercise 25: Enum Mapping
+**Question:** Map enums to strings and back safely.
+
+<details>
+<summary>Answer</summary>
+
+```csharp
+CreateMap<OrderStatus, string>().ConvertUsing(s => s.ToString());
+CreateMap<string, OrderStatus>().ConvertUsing(s => Enum.Parse<OrderStatus>(s));
+```
+
+Guard against invalid strings in input DTOs.
+</details>
+
+---
+
+## Testing & Troubleshooting
+
+### Exercise 26: ProjectTo with Parameters
+**Question:** Pass runtime parameters into ProjectTo for queries.
+
+<details>
+<summary>Answer</summary>
+
+```csharp
+var parameters = new Dictionary<string, object>
+{
+    ["cutoff"] = cutoffDate
+};
+
+var dtos = await _context.Orders
+    .ProjectTo<OrderDto>(_mapper.ConfigurationProvider, parameters)
+    .ToListAsync();
+```
+
+</details>
+
+---
+
+### Exercise 27: PreserveReferences for Cycles
+**Question:** Prevent infinite loops when mapping cyclical graphs.
+
+<details>
+<summary>Answer</summary>
+
+```csharp
+CreateMap<Node, NodeDto>().PreserveReferences();
+```
+
+Use `MaxDepth` as needed for deep graphs.
+</details>
+
+---
+
+### Exercise 28: UseEqualityComparison for Collections
+**Question:** Update child collections without recreating every item.
+
+<details>
+<summary>Answer</summary>
+
+```csharp
+CreateMap<OrderDto, Order>()
+    .ForMember(d => d.Items, opt =>
+    {
+        opt.MapFrom(s => s.Items);
+        opt.UseDestinationValue();
+        opt.EqualityComparison((src, dest) => src.Id == dest.Id);
+    });
+```
+
+</details>
+
+---
+
+### Exercise 29: Diagnose Missing Maps
+**Question:** Force configuration validation at startup.
+
+<details>
+<summary>Answer</summary>
+
+```csharp
+var mapper = app.Services.GetRequiredService<IMapper>();
+mapper.ConfigurationProvider.AssertConfigurationIsValid();
+```
+
+This fails fast when mappings are missing or ambiguous.
+</details>
+
+---
+
+### Exercise 30: Unit Test a Mapping Profile
+**Question:** Write a unit test that validates a profile.
+
+<details>
+<summary>Answer</summary>
+
+```csharp
+var config = new MapperConfiguration(cfg => cfg.AddProfile<OrderProfile>());
+config.AssertConfigurationIsValid();
+```
+
+Add test cases that map representative objects to catch regressions.
+</details>
 

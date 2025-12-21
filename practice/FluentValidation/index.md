@@ -12,6 +12,8 @@
 9. [Conditional Validation](#conditional-validation)
 10. [Integration with ASP.NET Core](#integration-with-aspnet-core)
 11. [Error Message Customization](#error-message-customization)
+12. [Advanced Rule Composition](#advanced-rule-composition)
+13. [Validator Testing & Diagnostics](#validator-testing--diagnostics)
 
 ---
 
@@ -1954,5 +1956,338 @@ public class CreateCustomerRequest
 
 ---
 
-(The file continues with 20+ more comprehensive exercises covering error messages, testing, performance, and advanced scenarios...)
+## Advanced Rule Composition
+
+### Exercise 11: CascadeMode Stop
+**Question:** Stop validation on the first failure for a property.
+
+<details>
+<summary>Answer</summary>
+
+```csharp
+RuleFor(x => x.Email)
+    .Cascade(CascadeMode.Stop)
+    .NotEmpty()
+    .EmailAddress();
+```
+
+</details>
+
+---
+
+### Exercise 12: Custom Must Rule
+**Question:** Validate that an order total matches line items.
+
+<details>
+<summary>Answer</summary>
+
+```csharp
+RuleFor(x => x)
+    .Must(order => order.Lines.Sum(l => l.Total) == order.Total)
+    .WithMessage("Order total does not match line items");
+```
+
+</details>
+
+---
+
+### Exercise 13: Cross-Property Validation
+**Question:** Require that `StartDate` is before `EndDate`.
+
+<details>
+<summary>Answer</summary>
+
+```csharp
+RuleFor(x => x.StartDate)
+    .LessThan(x => x.EndDate)
+    .WithMessage("StartDate must be before EndDate");
+```
+
+</details>
+
+---
+
+### Exercise 14: RuleForEach with Child Validator
+**Question:** Validate each order item with a nested validator.
+
+<details>
+<summary>Answer</summary>
+
+```csharp
+RuleForEach(x => x.Items).SetValidator(new OrderItemValidator());
+```
+
+</details>
+
+---
+
+### Exercise 15: Custom Property Validator
+**Question:** Create a reusable validator for ISO currency codes.
+
+<details>
+<summary>Answer</summary>
+
+```csharp
+RuleFor(x => x.Currency)
+    .Must(code => IsoCurrencies.All.Contains(code))
+    .WithMessage("Invalid currency code");
+```
+
+</details>
+
+---
+
+### Exercise 16: Async Uniqueness Check
+**Question:** Validate that a username is unique in the database.
+
+<details>
+<summary>Answer</summary>
+
+```csharp
+RuleFor(x => x.Username)
+    .MustAsync(async (name, ct) => !await _repo.ExistsAsync(name, ct))
+    .WithMessage("Username already exists");
+```
+
+</details>
+
+---
+
+### Exercise 17: DependentRules
+**Question:** Validate card details only when payment method is card.
+
+<details>
+<summary>Answer</summary>
+
+```csharp
+RuleFor(x => x.PaymentMethod)
+    .Equal("Card")
+    .DependentRules(() =>
+    {
+        RuleFor(x => x.CardNumber).CreditCard();
+        RuleFor(x => x.Cvv).Length(3, 4);
+    });
+```
+
+</details>
+
+---
+
+### Exercise 18: When/Unless Conditions
+**Question:** Validate `LimitPrice` only for limit orders.
+
+<details>
+<summary>Answer</summary>
+
+```csharp
+When(x => x.Type == OrderType.Limit, () =>
+{
+    RuleFor(x => x.LimitPrice).GreaterThan(0);
+});
+```
+
+</details>
+
+---
+
+### Exercise 19: RuleSets for Create vs Update
+**Question:** Use different rules for create and update.
+
+<details>
+<summary>Answer</summary>
+
+```csharp
+RuleSet("Create", () =>
+{
+    RuleFor(x => x.Name).NotEmpty();
+});
+
+RuleSet("Update", () =>
+{
+    RuleFor(x => x.Id).NotEmpty();
+});
+```
+
+</details>
+
+---
+
+### Exercise 20: Include Other Validators
+**Question:** Reuse shared rules across validators.
+
+<details>
+<summary>Answer</summary>
+
+```csharp
+Include(new AddressValidator());
+```
+
+</details>
+
+---
+
+### Exercise 21: ValidationContext Root Data
+**Question:** Pass contextual data into the validator.
+
+<details>
+<summary>Answer</summary>
+
+```csharp
+RuleFor(x => x.Symbol)
+    .Must((root, symbol, context) =>
+    {
+        var allowed = (HashSet<string>)context.RootContextData["allowed"];
+        return allowed.Contains(symbol);
+    });
+```
+
+</details>
+
+---
+
+### Exercise 22: Severity and Error Codes
+**Question:** Tag validation errors with codes and severity.
+
+<details>
+<summary>Answer</summary>
+
+```csharp
+RuleFor(x => x.Price)
+    .GreaterThan(0)
+    .WithErrorCode("PRICE_001")
+    .WithSeverity(Severity.Error);
+```
+
+</details>
+
+---
+
+### Exercise 23: Localized Messages
+**Question:** Localize messages using resources.
+
+<details>
+<summary>Answer</summary>
+
+```csharp
+RuleFor(x => x.Email)
+    .NotEmpty()
+    .WithMessage(Resources.Messages.EmailRequired);
+```
+
+</details>
+
+---
+
+### Exercise 24: Polymorphic Validation
+**Question:** Validate different DTO subtypes with SetInheritanceValidator.
+
+<details>
+<summary>Answer</summary>
+
+```csharp
+RuleFor(x => x.Order)
+    .SetInheritanceValidator(v =>
+    {
+        v.Add<LimitOrderDto>(new LimitOrderValidator());
+        v.Add<MarketOrderDto>(new MarketOrderValidator());
+    });
+```
+
+</details>
+
+---
+
+### Exercise 25: Validate Partial Updates
+**Question:** Validate only provided properties in a PATCH request.
+
+<details>
+<summary>Answer</summary>
+
+```csharp
+public void ValidatePatch(UpdateUserDto dto)
+{
+    _validator.Validate(dto, options => options.IncludeProperties("Email", "Phone"));
+}
+```
+
+</details>
+
+---
+
+### Exercise 26: Unique Items in a Collection
+**Question:** Ensure a collection has unique symbols.
+
+<details>
+<summary>Answer</summary>
+
+```csharp
+RuleFor(x => x.Symbols)
+    .Must(list => list.Distinct().Count() == list.Count)
+    .WithMessage("Symbols must be unique");
+```
+
+</details>
+
+---
+
+### Exercise 27: Transform for Normalization
+**Question:** Normalize input before validation.
+
+<details>
+<summary>Answer</summary>
+
+```csharp
+RuleFor(x => x.Email)
+    .Transform(email => email?.Trim().ToLowerInvariant())
+    .EmailAddress();
+```
+
+</details>
+
+---
+
+### Exercise 28: Custom Validation Block
+**Question:** Use Custom for multi-property checks.
+
+<details>
+<summary>Answer</summary>
+
+```csharp
+RuleFor(x => x).Custom((model, context) =>
+{
+    if (model.Min > model.Max)
+        context.AddFailure("Min", "Min must be <= Max");
+});
+```
+
+</details>
+
+---
+
+### Exercise 29: MediatR Pipeline Integration
+**Question:** Validate commands with a pipeline behavior.
+
+<details>
+<summary>Answer</summary>
+
+Register `ValidationBehavior` and throw a domain-specific exception on failure.
+</details>
+
+---
+
+## Validator Testing & Diagnostics
+
+### Exercise 30: Test Helper Usage
+**Question:** Write a test that asserts a validation error.
+
+<details>
+<summary>Answer</summary>
+
+```csharp
+var validator = new RegisterUserRequestValidator();
+var result = validator.TestValidate(new RegisterUserRequest { Email = "bad" });
+result.ShouldHaveValidationErrorFor(x => x.Email);
+```
+
+</details>
 
