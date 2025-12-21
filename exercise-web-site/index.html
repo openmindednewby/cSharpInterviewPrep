@@ -78,23 +78,32 @@
       <div class="card-answer is-hidden" id="cardAnswer"></div>
 
       <div class="answer-footer" id="answerFooter">
-        <section class="answer-check">
+        <section class="answer-check" id="answerCheck">
           <div class="answer-header">
             <label for="answerInput">Your answer</label>
-            <button class="btn ghost small" id="toggleCodeInputBtn" type="button" aria-pressed="false">
-              Add C# Code
-            </button>
-          </div>
-          <textarea id="answerInput" rows="5" placeholder="Type your response here before checking..."></textarea>
-          <div class="answer-code is-hidden" id="answerCodeBlock">
-            <label for="answerCodeInput">C# code (optional)</label>
-            <textarea id="answerCodeInput" rows="6" placeholder="Paste your C# code here..."></textarea>
-            <div class="code-preview">
-              <p class="preview-label">C# preview</p>
-              <pre class="inline-preview"><code class="language-csharp" id="answerCodePreview"></code></pre>
+            <div class="answer-controls">
+              <button class="btn ghost small icon-only" id="toggleAnswerSectionBtn" type="button" aria-expanded="true" aria-label="Collapse answer section">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M7 14l5-5 5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+              </button>
+              <button class="btn ghost small" id="toggleCodeInputBtn" type="button" aria-pressed="false">
+                Add C# Code
+              </button>
             </div>
           </div>
-          <div class="check-result" id="checkResult" data-tone="neutral"></div>
+          <div class="answer-body">
+            <textarea id="answerInput" rows="5" placeholder="Type your response here before checking..."></textarea>
+            <div class="answer-code is-hidden" id="answerCodeBlock">
+              <label for="answerCodeInput">C# code (optional)</label>
+              <textarea id="answerCodeInput" rows="6" placeholder="Paste your C# code here..."></textarea>
+              <div class="code-preview">
+                <p class="preview-label">C# preview</p>
+                <pre class="inline-preview"><code class="language-csharp" id="answerCodePreview"></code></pre>
+              </div>
+            </div>
+            <div class="check-result" id="checkResult" data-tone="neutral"></div>
+          </div>
         </section>
 
         <div class="card-actions">

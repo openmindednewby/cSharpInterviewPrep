@@ -5,7 +5,9 @@ const cardTypeBadgeEl = document.getElementById('cardTypeBadge');
 const topicListEl = document.getElementById('topicList');
 const cardPanelEl = document.querySelector('.card-panel');
 const answerFooterEl = document.getElementById('answerFooter');
+const answerCheckEl = document.getElementById('answerCheck');
 const answerInputEl = document.getElementById('answerInput');
+const toggleAnswerSectionBtn = document.getElementById('toggleAnswerSectionBtn');
 const toggleCodeInputBtn = document.getElementById('toggleCodeInputBtn');
 const answerCodeBlockEl = document.getElementById('answerCodeBlock');
 const answerCodeInputEl = document.getElementById('answerCodeInput');
@@ -64,6 +66,9 @@ function wireActions() {
   }
   if (answerCodeInputEl && answerCodePreviewEl) {
     answerCodeInputEl.addEventListener('input', updateAnswerCodePreview);
+  }
+  if (toggleAnswerSectionBtn && answerCheckEl) {
+    toggleAnswerSectionBtn.addEventListener('click', toggleAnswerSection);
   }
   window.addEventListener('resize', updateScrollableLayout);
   randomQuestionBtn.addEventListener('click', () => {
@@ -224,6 +229,7 @@ function setCardContent(card) {
   clearCheckResult();
   answerInputEl.value = '';
   resetAnswerCodeSection();
+  resetAnswerSection();
   updateScrollableLayout();
   highlightCurrentQuestion(card.id);
 }
@@ -506,4 +512,29 @@ function resetAnswerCodeSection() {
     toggleCodeInputBtn.textContent = 'Add C# Code';
     toggleCodeInputBtn.setAttribute('aria-pressed', 'false');
   }
+}
+
+function toggleAnswerSection() {
+  if (!answerCheckEl || !toggleAnswerSectionBtn) {
+    return;
+  }
+
+  const isCollapsed = answerCheckEl.classList.toggle('is-collapsed');
+  toggleAnswerSectionBtn.setAttribute('aria-expanded', String(!isCollapsed));
+  toggleAnswerSectionBtn.setAttribute(
+    'aria-label',
+    isCollapsed ? 'Expand answer section' : 'Collapse answer section'
+  );
+
+  updateScrollableLayout();
+}
+
+function resetAnswerSection() {
+  if (!answerCheckEl || !toggleAnswerSectionBtn) {
+    return;
+  }
+
+  answerCheckEl.classList.remove('is-collapsed');
+  toggleAnswerSectionBtn.setAttribute('aria-expanded', 'true');
+  toggleAnswerSectionBtn.setAttribute('aria-label', 'Collapse answer section');
 }
