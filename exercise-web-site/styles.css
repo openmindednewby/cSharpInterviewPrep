@@ -87,7 +87,7 @@ body {
   margin: 0 auto;
   display: grid;
   grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
-  gap: clamp(1.5rem, 4vw, 3rem);
+  gap: clamp(1.5rem, 0vw, 3rem);
   align-items: stretch;
   height: calc(100vh - (var(--page-padding) * 2));
 }
@@ -198,7 +198,7 @@ body {
   background: var(--bg-card);
   border: 1px solid var(--border-soft);
   border-radius: 1.25rem;
-  padding: clamp(1.5rem, 3vw, 2.5rem);
+  padding: clamp(1.5rem, 0vw, 2.5rem);
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -472,7 +472,7 @@ pre[class*="language-"] {
 .card-panel.scroll-lock .answer-footer {
   position: sticky;
   bottom: 0;
-  background: var(--bg-card);
+  background: var(--surface-strong-full);
   padding-top: 0.5rem;
   border-top: 1px solid var(--border-soft);
   box-shadow: 0 -12px 24px rgba(2, 6, 23, 0.25);
