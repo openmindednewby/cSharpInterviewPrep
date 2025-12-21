@@ -7,7 +7,7 @@ A comprehensive study guide and resource collection for senior C#/.NET developer
 ### Study Site
 Interactive documentation site with detailed notes and examples.
 
-![Study Site Preview](study-site/dot-net-study-preview.png)
+![Study Site Preview](study-web-site/dot-net-study-preview.png)
 
 **[View Live Study Site](https://senior-dot-net-study-portal.dloizides.com/)**
 
