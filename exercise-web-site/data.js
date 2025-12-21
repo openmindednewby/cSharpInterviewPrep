@@ -1,5 +1,5 @@
 // Auto-generated practice Q&A data from practice/ folder
-// Generated on: 2025-12-21T16:49:57.971Z
+// Generated on: 2025-12-21T16:53:55.839Z
 // Total cards: 312 Q&A
 
 window.PRACTICE_DATA = [
@@ -3474,6 +3474,18 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "public readonly struct Money\n{\n    public Money(decimal amount, string currency)\n    {\n        Amount = amount;\n        Currency = currency;\n    }\n\n    public decimal Amount { get; }\n    public string Currency { get; }\n}\n\nvoid Calculate()\n{\n    Money price = new Money(100, \"USD\");\n    // price is on the stack\n} // stack frame is popped → memory reclaimed immediately",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "⚠️ Structs are not always stack-allocated:"
+      },
+      {
+        "type": "list",
+        "items": [
+          "If they are fields of a heap object, they live inside that object",
+          "If they are boxed (cast to object or interface), they go to the heap",
+          "Large structs copied often can hurt performance"
+        ]
       }
     ],
     "category": "practice",

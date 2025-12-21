@@ -330,6 +330,8 @@ void Calculate()
     Money price = new Money(100, &quot;USD&quot;);
     // price is on the stack
 } // stack frame is popped → memory reclaimed immediately</code></pre>
+<p><strong>⚠️ Structs are not always stack-allocated:</strong></p>
+<ul><li>If they are fields of a heap object, they live inside that object</li><li>If they are boxed (cast to object or interface), they go to the heap</li><li>Large structs copied often can hurt performance</li></ul>
 <p><strong>Q: What pitfalls occur when structs are too large?</strong></p>
 <p>A: Copies become expensive, especially when passing by value. This can negate performance gains and increase stack usage. Use <code>in</code>/<code>ref</code> parameters or switch to classes if the struct grows.</p>
 <p><strong>Q: How does boxing affect struct performance?</strong></p>

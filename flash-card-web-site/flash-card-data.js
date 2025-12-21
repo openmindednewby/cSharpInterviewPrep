@@ -1,5 +1,5 @@
 // Auto-generated flash card data from notes/ and practice/ folders
-// Generated on: 2025-12-21T16:49:57.214Z
+// Generated on: 2025-12-21T16:53:55.066Z
 // Total cards: 2124 (824 Q&A, 1238 sections, 62 concepts)
 
 window.FLASH_CARD_DATA = [
@@ -15203,6 +15203,18 @@ window.FLASH_CARD_DATA = [
         "language": "csharp",
         "code": "public readonly struct Money\n{\n    public Money(decimal amount, string currency)\n    {\n        Amount = amount;\n        Currency = currency;\n    }\n\n    public decimal Amount { get; }\n    public string Currency { get; }\n}\n\nvoid Calculate()\n{\n    Money price = new Money(100, \"USD\");\n    // price is on the stack\n} // stack frame is popped → memory reclaimed immediately",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "⚠️ Structs are not always stack-allocated:"
+      },
+      {
+        "type": "list",
+        "items": [
+          "If they are fields of a heap object, they live inside that object",
+          "If they are boxed (cast to object or interface), they go to the heap",
+          "Large structs copied often can hurt performance"
+        ]
       },
       {
         "type": "text",
@@ -44872,6 +44884,18 @@ window.FLASH_CARD_DATA = [
         "language": "csharp",
         "code": "public readonly struct Money\n{\n    public Money(decimal amount, string currency)\n    {\n        Amount = amount;\n        Currency = currency;\n    }\n\n    public decimal Amount { get; }\n    public string Currency { get; }\n}\n\nvoid Calculate()\n{\n    Money price = new Money(100, \"USD\");\n    // price is on the stack\n} // stack frame is popped → memory reclaimed immediately",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "⚠️ Structs are not always stack-allocated:"
+      },
+      {
+        "type": "list",
+        "items": [
+          "If they are fields of a heap object, they live inside that object",
+          "If they are boxed (cast to object or interface), they go to the heap",
+          "Large structs copied often can hurt performance"
+        ]
       },
       {
         "type": "text",

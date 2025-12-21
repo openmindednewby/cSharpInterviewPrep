@@ -52,6 +52,12 @@ void Calculate()
 } // stack frame is popped → memory reclaimed immediately
 ```
 
+**⚠️ Structs are not always stack-allocated:**
+
+- If they are fields of a heap object, they live inside that object
+- If they are boxed (cast to object or interface), they go to the heap
+- Large structs copied often can hurt performance
+
 **Q: Demonstrate how to reduce copying with `in` parameters.**
 
 A: Use `in` for large structs to avoid defensive copies. A defensive copy is an automatic copy the runtime or compiler makes to protect data from being modified.

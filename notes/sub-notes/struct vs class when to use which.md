@@ -232,6 +232,12 @@ void Calculate()
 } // stack frame is popped → memory reclaimed immediately
 ```
 
+**⚠️ Structs are not always stack-allocated:**
+
+- If they are fields of a heap object, they live inside that object
+- If they are boxed (cast to object or interface), they go to the heap
+- Large structs copied often can hurt performance
+
 **Q: What pitfalls occur when structs are too large?**
 
 A: Copies become expensive, especially when passing by value. This can negate performance gains and increase stack usage. Use `in`/`ref` parameters or switch to classes if the struct grows.
