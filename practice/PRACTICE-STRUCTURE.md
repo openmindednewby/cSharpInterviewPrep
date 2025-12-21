@@ -11,6 +11,9 @@ This document outlines the practice folder structure that mirrors `notes/` and t
 - **error-handling-exercises.md** ✓ - 35+ exercises
 - **logging-exercises.md** ✓ - 30+ exercises
 - **testing-strategies-exercises.md** ✓ - 40+ exercises
+- **solution-architecture-exercises.md** ✓ - solution-level patterns
+- **system-architecture-exercises.md** ✓ - system topology trade-offs
+- **sse-vs-websockets-exercises.md** ✓ - streaming transport drills
 
 ### Collections-And-Enumerables/
 - **index.md** ✓ - 40+ LINQ & Collections exercises

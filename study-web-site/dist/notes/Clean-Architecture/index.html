@@ -53,7 +53,7 @@
         <span>Notes</span>
         <span class="chevron" aria-hidden="true"></span>
       </button>
-      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="..\../notes/defensive-programming-vs-fail-fast.html">Defensive Programming Vs Fail Fast</a></li><li><a class="nav-link" href="..\../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="..\../notes/logging.html">Logging</a></li><li><a class="nav-link" href="..\../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="..\../notes/defensive-programming-vs-fail-fast.html">Defensive Programming Vs Fail Fast</a></li><li><a class="nav-link" href="..\../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="..\../notes/logging.html">Logging</a></li><li><a class="nav-link" href="..\../notes/solution-architecture.html">Solution Architecture</a></li><li><a class="nav-link" href="..\../notes/sse-vs-websockets.html">Sse Vs Websockets</a></li><li><a class="nav-link" href="..\../notes/system-architecture.html">System Architecture</a></li><li><a class="nav-link" href="..\../notes/testing-strategies.html">Testing Strategies</a></li></ul>
     </div><div class="sidebar-group" data-group="notes-automapper">
       <button class="sidebar-group__header" type="button" aria-expanded="false">
         <span>Notes / Automapper</span>
@@ -125,7 +125,7 @@
         <span>Practice</span>
         <span class="chevron" aria-hidden="true"></span>
       </button>
-      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/answers.html">Answers</a></li><li><a class="nav-link" href="..\../practice/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="..\../practice/defensive-programming-vs-fail-fast-exercises.html">Defensive Programming Vs Fail Fast Exercises</a></li><li><a class="nav-link" href="..\../practice/error-handling-exercises.html">Error Handling Exercises</a></li><li><a class="nav-link" href="..\../practice/logging-exercises.html">Logging Exercises</a></li><li><a class="nav-link" href="..\../practice/index.html">Practice</a></li><li><a class="nav-link" href="..\../practice/PRACTICE-STRUCTURE.html">PRACTICE STRUCTURE</a></li><li><a class="nav-link" href="..\../practice/questions.html">Questions</a></li><li><a class="nav-link" href="..\../practice/README.html">README</a></li><li><a class="nav-link" href="..\../practice/testing-strategies-exercises.html">Testing Strategies Exercises</a></li></ul>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/answers.html">Answers</a></li><li><a class="nav-link" href="..\../practice/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="..\../practice/defensive-programming-vs-fail-fast-exercises.html">Defensive Programming Vs Fail Fast Exercises</a></li><li><a class="nav-link" href="..\../practice/error-handling-exercises.html">Error Handling Exercises</a></li><li><a class="nav-link" href="..\../practice/logging-exercises.html">Logging Exercises</a></li><li><a class="nav-link" href="..\../practice/index.html">Practice</a></li><li><a class="nav-link" href="..\../practice/PRACTICE-STRUCTURE.html">PRACTICE STRUCTURE</a></li><li><a class="nav-link" href="..\../practice/questions.html">Questions</a></li><li><a class="nav-link" href="..\../practice/README.html">README</a></li><li><a class="nav-link" href="..\../practice/solution-architecture-exercises.html">Solution Architecture Exercises</a></li><li><a class="nav-link" href="..\../practice/sse-vs-websockets-exercises.html">Sse Vs Websockets Exercises</a></li><li><a class="nav-link" href="..\../practice/system-architecture-exercises.html">System Architecture Exercises</a></li><li><a class="nav-link" href="..\../practice/testing-strategies-exercises.html">Testing Strategies Exercises</a></li></ul>
     </div><div class="sidebar-group" data-group="practice-automapper">
       <button class="sidebar-group__header" type="button" aria-expanded="false">
         <span>Practice / Automapper</span>
@@ -200,96 +200,117 @@
         <div class="breadcrumbs">notes\Clean-Architecture\index.md</div>
         <h2>Clean Architecture</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#3-clean-architecture-layered-design-for-trading-systems">🧱 3️⃣ Clean Architecture — Layered Design for Trading Systems</a></li><li class="level-3"><a href="#layers-overview">🏗️ Layers Overview</a></li><li class="level-3"><a href="#example-in-a-trading-context">Example in a Trading Context</a></li><li class="level-4"><a href="#domain-layer">🧩 Domain Layer</a></li><li class="level-4"><a href="#application-layer">🧩 Application Layer</a></li><li class="level-4"><a href="#infrastructure-layer">🧩 Infrastructure Layer</a></li><li class="level-4"><a href="#presentation-layer">🧩 Presentation Layer</a></li><li class="level-3"><a href="#how-it-all-connects">⚙️ How it all connects</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
-        <h1 id="3-clean-architecture-layered-design-for-trading-systems">🧱 3️⃣ Clean Architecture — Layered Design for Trading Systems</h1>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#clean-architecture---layered-design-for-trading-systems">Clean Architecture - Layered Design for Trading Systems</a></li><li class="level-2"><a href="#quick-overview">Quick Overview</a></li><li class="level-2"><a href="#detailed-explanation">Detailed Explanation</a></li><li class="level-3"><a href="#layer-responsibilities">Layer Responsibilities</a></li><li class="level-3"><a href="#dependency-flow">Dependency Flow</a></li><li class="level-3"><a href="#example-in-a-trading-context">Example in a Trading Context</a></li><li class="level-2"><a href="#why-it-matters-for-interviews">Why It Matters for Interviews</a></li><li class="level-2"><a href="#common-pitfalls">Common Pitfalls</a></li><li class="level-2"><a href="#quick-reference">Quick Reference</a></li><li class="level-2"><a href="#sample-interview-qa">Sample Interview Q&A</a></li></ul></div>
+        <h1 id="clean-architecture---layered-design-for-trading-systems">Clean Architecture - Layered Design for Trading Systems</h1>
+<blockquote><p>Keep business rules independent of frameworks, UI, and data stores by forcing dependencies inward.</p></blockquote>
 <p>!<a href="image.png">alt text</a></p>
-<p>Clean Architecture (from Uncle Bob) organizes your system into <strong>layers</strong> that isolate business logic from infrastructure.</p>
 <p>---</p>
-<h3 id="layers-overview">🏗️ Layers Overview</h3>
-<pre class="language-csharp"><code class="language-csharp">┌───────────────────────────────┐
-│       Presentation Layer      │ → Controllers, APIs, UI
-├───────────────────────────────┤
-│     Application Layer         │ → Use cases, CQRS handlers, services
-├───────────────────────────────┤
-│       Domain Layer            │ → Entities, Aggregates, Value Objects
-├───────────────────────────────┤
-│   Infrastructure Layer        │ → DBs, APIs, MT4/MT5, message brokers
-└───────────────────────────────┘</code></pre>
+<h2 id="quick-overview">Quick Overview</h2>
+<ul><li><strong>Domain:</strong> Entities, value objects, aggregates, invariants. No external dependencies.</li><li><strong>Application:</strong> Use cases, CQRS handlers, validators, interfaces.</li><li><strong>Infrastructure:</strong> Databases, MT4/MT5 bridges, message brokers, external APIs.</li><li><strong>Presentation:</strong> Controllers, endpoints, UI components.</li><li><strong>Rule:</strong> Dependencies always point inward.</li></ul>
 <p>---</p>
+<h2 id="detailed-explanation">Detailed Explanation</h2>
+<h3 id="layer-responsibilities">Layer Responsibilities</h3>
+<pre class="language-csharp"><code class="language-csharp">+-------------------------------+
+|        Presentation           |  Controllers, endpoints
++-------------------------------+
+|          Application          |  Use cases, CQRS
++-------------------------------+
+|             Domain            |  Entities, invariants
++-------------------------------+
+|        Infrastructure         |  DBs, brokers, APIs
++-------------------------------+</code></pre>
+<h3 id="dependency-flow">Dependency Flow</h3>
+<pre class="language-csharp"><code class="language-csharp">Presentation -&gt; Application -&gt; Domain
+Infrastructure -&gt; Application (via interfaces)</code></pre>
 <h3 id="example-in-a-trading-context">Example in a Trading Context</h3>
-<h4 id="domain-layer">🧩 Domain Layer</h4>
-<pre class="language-csharp"><code class="language-csharp">public class Order
+<p><strong>Domain layer (core rules):</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public sealed class Order
 {
     public Guid Id { get; } = Guid.NewGuid();
-    public string Symbol { get; set; }
-    public double Amount { get; set; }
-}</code></pre>
-<h4 id="application-layer">🧩 Application Layer</h4>
-<pre class="language-csharp"><code class="language-csharp">public class PlaceOrderHandler
-{
-    private readonly ITradeExecutor _executor;
-    private readonly IOrderValidator _validator;
+    public string Symbol { get; private set; }
+    public decimal Quantity { get; private set; }
 
-    public PlaceOrderHandler(ITradeExecutor executor, IOrderValidator validator)
-    {
-        _executor = executor;
-        _validator = validator;
-    }
+    private Order() { }
 
-    public void Handle(Order order)
+    public static Order Create(string symbol, decimal quantity)
     {
-        if (!_validator.Validate(order))
-            throw new InvalidOperationException(&quot;Invalid order&quot;);
-        _executor.Execute(order);
+        if (string.IsNullOrWhiteSpace(symbol))
+            throw new ArgumentException(&quot;Symbol is required&quot;, nameof(symbol));
+        if (quantity &lt;= 0)
+            throw new ArgumentException(&quot;Quantity must be positive&quot;, nameof(quantity));
+
+        return new Order { Symbol = symbol.ToUpperInvariant(), Quantity = quantity };
     }
 }</code></pre>
-<h4 id="infrastructure-layer">🧩 Infrastructure Layer</h4>
-<pre class="language-csharp"><code class="language-csharp">public class Mt5Executor : ITradeExecutor
+<p><strong>Application layer (use case):</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public sealed record PlaceOrderCommand(string Symbol, decimal Quantity) : IRequest&lt;Guid&gt;;
+
+public sealed class PlaceOrderHandler : IRequestHandler&lt;PlaceOrderCommand, Guid&gt;
 {
-    public void Execute(Order order) =&gt; Console.WriteLine($&quot;[MT5] Executing {order.Symbol}&quot;);
+    private readonly IOrderRepository _orders;
+
+    public PlaceOrderHandler(IOrderRepository orders)
+    {
+        _orders = orders;
+    }
+
+    public async Task&lt;Guid&gt; Handle(PlaceOrderCommand request, CancellationToken ct)
+    {
+        var order = Order.Create(request.Symbol, request.Quantity);
+        await _orders.AddAsync(order, ct);
+        return order.Id;
+    }
 }</code></pre>
-<h4 id="presentation-layer">🧩 Presentation Layer</h4>
+<p><strong>Infrastructure layer (implementation):</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public sealed class SqlOrderRepository : IOrderRepository
+{
+    private readonly TradingDbContext _db;
+
+    public SqlOrderRepository(TradingDbContext db)
+    {
+        _db = db;
+    }
+
+    public async Task AddAsync(Order order, CancellationToken ct)
+    {
+        _db.Orders.Add(order);
+        await _db.SaveChangesAsync(ct);
+    }
+}</code></pre>
+<p><strong>Presentation layer (API):</strong></p>
 <pre class="language-csharp"><code class="language-csharp">[ApiController]
-[Route(&quot;api/[controller]&quot;)]
-public class OrdersController : ControllerBase
+[Route(&quot;api/orders&quot;)]
+public sealed class OrdersController : ControllerBase
 {
-    private readonly PlaceOrderHandler _handler;
-    public OrdersController(PlaceOrderHandler handler) =&gt; _handler = handler;
+    private readonly IMediator _mediator;
+
+    public OrdersController(IMediator mediator)
+    {
+        _mediator = mediator;
+    }
 
     [HttpPost]
-    public IActionResult Post(Order order)
+    public async Task&lt;IActionResult&gt; Post([FromBody] PlaceOrderCommand command, CancellationToken ct)
     {
-        _handler.Handle(order);
-        return Ok(&quot;Order executed&quot;);
+        var orderId = await _mediator.Send(command, ct);
+        return Ok(new { orderId });
     }
 }</code></pre>
 <p>---</p>
-<h3 id="how-it-all-connects">⚙️ How it all connects</h3>
-<ul><li><strong>Domain layer</strong> = pure business rules</li><li><strong>Application layer</strong> = orchestration and use cases</li><li><strong>Infrastructure</strong> = implementation details (DBs, APIs, message buses)</li><li><strong>Presentation</strong> = web, console, or UI</li></ul>
-<blockquote><p>“Dependencies always point inward — nothing in domain depends on outer layers.”</p></blockquote>
-<p>This separation makes your system <strong>testable, extensible, and resilient to change</strong>.</p>
+<h2 id="why-it-matters-for-interviews">Why It Matters for Interviews</h2>
+<ul><li>You can explain <strong>how dependencies flow</strong> and why it protects business rules.</li><li>You can show <strong>testability</strong> by mocking infrastructure in application tests.</li><li>You can link architecture to <strong>maintainability</strong> in trading systems.</li></ul>
 <p>---</p>
-<h2 id="questions-answers">Questions & Answers</h2>
-<p><strong>Q: What problem does Clean Architecture solve in a trading backend?</strong></p>
-<p>A: It isolates business invariants (domain) from volatile infrastructure (MT4 bridges, databases, queues). That way, compliance or pricing rules can evolve independently of transport/protocol changes, improving testability and longevity.</p>
-<p><strong>Q: How do dependencies flow between layers?</strong></p>
-<p>A: They always point inward: Presentation → Application → Domain, an Infrastructure → Application/Domain via abstractions. Outer layers depend on interfaces defined closer to the domain so high-level policy doesn't reference implementation details.</p>
-<p><strong>Q: Where do MediatR handlers and validators belong?</strong></p>
-<p>A: They live in the Application layer because they orchestrate use cases. Handlers depend on domain abstractions and infrastructure contracts, but they shouldn't contain transport or framework-specific code beyond orchestration.</p>
-<p><strong>Q: How do you keep Infrastructure replaceable?</strong></p>
-<p>A: Define interfaces (repositories, message gateways) inside the Application/Domain layers and implement them in Infrastructure. Register implementations via DI so you can swap SQL for Cosmos, or RabbitMQ for Kafka, without touching business logic.</p>
-<p><strong>Q: When would you introduce a shared kernel or cross-cutting project?</strong></p>
-<p>A: Only for concepts shared across bounded contexts (e.g., identity, currency). Keep it tiny and stable. Everything else should stay in each feature's domain to avoid reintroducing tight coupling.</p>
-<p><strong>Q: How do you test Application-layer use cases?</strong></p>
-<p>A: Mock Infrastructure dependencies behind interfaces and test handlers/services directly. Since the Application layer has no UI/DB concerns, unit tests stay deterministic and focus on orchestration, validation, and domain invariants.</p>
-<p><strong>Q: What belongs in the Domain layer vs Application?</strong></p>
-<p>A: Domain contains entities, value objects, domain services, aggregates, and events—the core business rules. Application coordinates those rules in use cases, orchestrating repositories, external services, and transactions.</p>
-<p><strong>Q: How do you handle cross-cutting concerns like logging or caching?</strong></p>
-<p>A: Apply decorators or pipeline behaviors (e.g., MediatR behaviors, middleware) in outer layers. They wrap use cases without polluting domain logic, keeping Clean Architecture boundaries intact.</p>
-<p><strong>Q: How does Clean Architecture interact with CQRS?</strong></p>
-<p>A: Commands and queries fit naturally into the Application layer as separate handlers. Read models can use dedicated infrastructure (e.g., optimized query stores) while writes go through domain entities and aggregates.</p>
-<p><strong>Q: When would you relax strict layering?</strong></p>
-<p>A: Only when profiling shows a clear performance bottleneck and you've validated that bypassing a layer (e.g., read-only projections accessing Infrastructure directly) won't compromise maintainability. Even then, document the decision and keep dependencies pointing inward.</p>
+<h2 id="common-pitfalls">Common Pitfalls</h2>
+<ul><li>Putting database or HTTP code in the Domain layer.</li><li>Over-abstracting everything before the domain is understood.</li><li>Letting DTOs and EF Core entities leak into the Domain.</li><li>Ignoring use case boundaries and building anemic services.</li></ul>
+<p>---</p>
+<h2 id="quick-reference">Quick Reference</h2>
+<ul><li><strong>Domain:</strong> No dependencies, enforce invariants.</li><li><strong>Application:</strong> Use cases, interfaces, orchestration.</li><li><strong>Infrastructure:</strong> Implement interfaces, handle IO.</li><li><strong>Presentation:</strong> HTTP/UI, composition root.</li></ul>
+<p>---</p>
+<h2 id="sample-interview-qa">Sample Interview Q&A</h2>
+<ul><li><strong>Q:</strong> Where do CQRS handlers live?</li><li><strong>A:</strong> In the Application layer because they orchestrate use cases.</li></ul>
+<ul><li><strong>Q:</strong> How do you keep Infrastructure replaceable?</li><li><strong>A:</strong> Define interfaces in Application/Domain, implement in Infrastructure, and wire with DI.</li></ul>
+<ul><li><strong>Q:</strong> How does Clean Architecture relate to DDD and vertical slices?</li><li><strong>A:</strong> DDD shapes the Domain model, while vertical slices organize Application use cases. Clean Architecture defines dependency flow around them.</li></ul>
+<ul><li><strong>Q:</strong> When would you relax strict layering?</li><li><strong>A:</strong> Only when performance profiling proves a bottleneck and the decision is documented.</li></ul>
       </article>
     </main>
   </div>

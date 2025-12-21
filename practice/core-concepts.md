@@ -21,11 +21,14 @@ Use this hub to navigate foundational and cross-cutting practice areas. It mirro
 - [API Lifecycle Exercises](sub-notes/api-lifecycle.md)
 - [System Design Exercises](sub-notes/system-design.md)
 - [C# System Design Questions](sub-notes/csharp-system-design-questions.md)
+- [Solution Architecture Exercises](solution-architecture-exercises.md)
+- [System Architecture Exercises](system-architecture-exercises.md)
 
 ## Data and Messaging
 
 - [Data Layer Exercises](sub-notes/data-layer.md)
 - [Messaging and Integration](sub-notes/messaging-integration.md)
+- [SSE vs WebSockets Exercises](sse-vs-websockets-exercises.md)
 
 ## Domain and Scenarios
 

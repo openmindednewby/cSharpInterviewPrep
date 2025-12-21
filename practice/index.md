@@ -18,6 +18,8 @@ A structured map of practice materials that mirrors the notes folder layout.
 ## Architecture and Design
 
 - [Clean Architecture](Clean-Architecture/index.md)
+- [Solution Architecture Exercises](solution-architecture-exercises.md)
+- [System Architecture Exercises](system-architecture-exercises.md)
 - [Design Patterns](Design-Patterns/index.md)
 - [DRY Exercises](DRY/index.md)
 
@@ -50,6 +52,7 @@ A structured map of practice materials that mirrors the notes folder layout.
 - [System Design](sub-notes/system-design.md)
 - [Data Layer](sub-notes/data-layer.md)
 - [Messaging and Integration](sub-notes/messaging-integration.md)
+- [SSE vs WebSockets](sse-vs-websockets-exercises.md)
 - [Trading Domain](sub-notes/trading-domain.md)
 
 ---

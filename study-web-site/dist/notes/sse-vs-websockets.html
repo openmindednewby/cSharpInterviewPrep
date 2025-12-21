@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for Sse Vs Websockets" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>Sse Vs Websockets | C# Interview Prep Cheat Sheet</title>
+  <link rel="manifest" href="..\assets/manifest.webmanifest" />
+  <script>
+    (() => {
+      const supported = ['dark2', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
+      const fallback = 'light';
+      const initial = supported.includes(normalized) ? normalized : fallback;
+      document.documentElement.dataset.theme = initial;
+      window.__studyTheme = initial;
+    })();
+  </script>
+  <link rel="stylesheet" href="..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="dark2">Dark 2</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group is-open" data-group="notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
+        <span>Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="../notes/defensive-programming-vs-fail-fast.html">Defensive Programming Vs Fail Fast</a></li><li><a class="nav-link" href="../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="../notes/logging.html">Logging</a></li><li><a class="nav-link" href="../notes/solution-architecture.html">Solution Architecture</a></li><li><a class="nav-link active" href="../notes/sse-vs-websockets.html">Sse Vs Websockets</a></li><li><a class="nav-link" href="../notes/system-architecture.html">System Architecture</a></li><li><a class="nav-link" href="../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/O1-Constant-Time.html">O1 Constant Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/OLogN-Logarithmic-Time.html">OLogN Logarithmic Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/ON-Linear-Time.html">ON Linear Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/ON2-Quadratic-Time.html">ON2 Quadratic Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/ONLogN-Linearithmic-Time.html">ONLogN Linearithmic Time</a></li><li><a class="nav-link" href="../notes/Big-O-Complexity/Space-Complexity.html">Space Complexity</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/ICollection.html">ICollection</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IEnumerable.html">IEnumerable</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IList.html">IList</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IQueryable.html">IQueryable</a></li><li><a class="nav-link" href="../notes/Collections-And-Enumerables/IReadOnly.html">IReadOnly</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a class="nav-link" href="../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a class="nav-link" href="../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a class="nav-link" href="../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a class="nav-link" href="../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a class="nav-link" href="../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a class="nav-link" href="../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a class="nav-link" href="../notes/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a class="nav-link" href="../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a class="nav-link" href="../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a class="nav-link" href="../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a class="nav-link" href="../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a class="nav-link" href="../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a class="nav-link" href="../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a class="nav-link" href="../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a class="nav-link" href="../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a class="nav-link" href="../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a class="nav-link" href="../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a class="nav-link" href="../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a class="nav-link" href="../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a class="nav-link" href="../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a class="nav-link" href="../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a class="nav-link" href="../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a class="nav-link" href="../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/01-async-patterns.html">01 Async Patterns</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/02-backpressure-rate-limiting.html">02 Backpressure Rate Limiting</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/03-caching-strategies.html">03 Caching Strategies</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/04-database-scaling.html">04 Database Scaling</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/05-message-queues.html">05 Message Queues</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/06-resilience-patterns.html">06 Resilience Patterns</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/07-observability.html">07 Observability</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/08-complete-example.html">08 Complete Example</a></li><li><a class="nav-link" href="../notes/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/answers.html">Answers</a></li><li><a class="nav-link" href="../practice/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="../practice/defensive-programming-vs-fail-fast-exercises.html">Defensive Programming Vs Fail Fast Exercises</a></li><li><a class="nav-link" href="../practice/error-handling-exercises.html">Error Handling Exercises</a></li><li><a class="nav-link" href="../practice/logging-exercises.html">Logging Exercises</a></li><li><a class="nav-link" href="../practice/index.html">Practice</a></li><li><a class="nav-link" href="../practice/PRACTICE-STRUCTURE.html">PRACTICE STRUCTURE</a></li><li><a class="nav-link" href="../practice/questions.html">Questions</a></li><li><a class="nav-link" href="../practice/README.html">README</a></li><li><a class="nav-link" href="../practice/solution-architecture-exercises.html">Solution Architecture Exercises</a></li><li><a class="nav-link" href="../practice/sse-vs-websockets-exercises.html">Sse Vs Websockets Exercises</a></li><li><a class="nav-link" href="../practice/system-architecture-exercises.html">System Architecture Exercises</a></li><li><a class="nav-link" href="../practice/testing-strategies-exercises.html">Testing Strategies Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/Automapper/index.html">Automapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="../practice/Big-O-Complexity/O1-Constant-Time-Exercises.html">O1 Constant Time Exercises</a></li><li><a class="nav-link" href="../practice/Big-O-Complexity/OLogN-Logarithmic-Time-Exercises.html">OLogN Logarithmic Time Exercises</a></li><li><a class="nav-link" href="../practice/Big-O-Complexity/ON-Linear-Time-Exercises.html">ON Linear Time Exercises</a></li><li><a class="nav-link" href="../practice/Big-O-Complexity/ON2-Quadratic-Time-Exercises.html">ON2 Quadratic Time Exercises</a></li><li><a class="nav-link" href="../practice/Big-O-Complexity/ONLogN-Linearithmic-Time-Exercises.html">ONLogN Linearithmic Time Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/Design-Patterns/Decorator-Pattern-Exercises.html">Decorator Pattern Exercises</a></li><li><a class="nav-link" href="../practice/Design-Patterns/index.html">Design Patterns</a></li><li><a class="nav-link" href="../practice/Design-Patterns/Factory-Pattern-Exercises.html">Factory Pattern Exercises</a></li><li><a class="nav-link" href="../practice/Design-Patterns/Mediator-Pattern-Exercises.html">Mediator Pattern Exercises</a></li><li><a class="nav-link" href="../practice/Design-Patterns/Observer-Pattern-Exercises.html">Observer Pattern Exercises</a></li><li><a class="nav-link" href="../practice/Design-Patterns/Strategy-Pattern-Exercises.html">Strategy Pattern Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/FluentValidation/index.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/SOLID/S-Single-Responsibility-Principle-Exercises.html">S Single Responsibility Principle Exercises</a></li><li><a class="nav-link" href="../practice/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/sub-notes/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="../practice/sub-notes/async-await-exercises.html">Async Await Exercises</a></li><li><a class="nav-link" href="../practice/sub-notes/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="../practice/sub-notes/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="../practice/sub-notes/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="../practice/sub-notes/csharp-fundamentals.html">Csharp Fundamentals</a></li><li><a class="nav-link" href="../practice/sub-notes/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="../practice/sub-notes/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="../practice/sub-notes/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="../practice/sub-notes/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="../practice/sub-notes/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="../practice/sub-notes/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="../practice/sub-notes/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="../practice/sub-notes/system-design.html">System Design</a></li><li><a class="nav-link" href="../practice/sub-notes/trading-domain.html">Trading Domain</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="../practice/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+    </div></div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">notes\sse-vs-websockets.md</div>
+        <h2>Sse Vs Websockets</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#server-sent-events-vs-websockets---streaming-trade-offs">Server-Sent Events vs WebSockets - Streaming Trade-offs</a></li><li class="level-2"><a href="#quick-overview">Quick Overview</a></li><li class="level-2"><a href="#detailed-explanation">Detailed Explanation</a></li><li class="level-3"><a href="#server-sent-events-sse">Server-Sent Events (SSE)</a></li><li class="level-3"><a href="#websockets">WebSockets</a></li><li class="level-2"><a href="#comparison-snapshot">Comparison Snapshot</a></li><li class="level-2"><a href="#why-it-matters-for-interviews">Why It Matters for Interviews</a></li><li class="level-2"><a href="#common-pitfalls">Common Pitfalls</a></li><li class="level-2"><a href="#quick-reference">Quick Reference</a></li><li class="level-2"><a href="#sample-interview-qa">Sample Interview Q&A</a></li></ul></div>
+        <h1 id="server-sent-events-vs-websockets---streaming-trade-offs">Server-Sent Events vs WebSockets - Streaming Trade-offs</h1>
+<blockquote><p>SSE is one-way (server to client) over HTTP; WebSockets are two-way for low-latency interaction.</p></blockquote>
+<p>---</p>
+<h2 id="quick-overview">Quick Overview</h2>
+<ul><li><strong>SSE:</strong> Unidirectional (server to client), text-only, runs over HTTP.</li><li><strong>WebSockets:</strong> Bi-directional, full-duplex, supports binary and text.</li><li><strong>SSE is simpler:</strong> Works through proxies and load balancers with minimal setup.</li><li><strong>WebSockets are powerful:</strong> Best for interactive, low-latency apps.</li><li><strong>Trading example:</strong> Use SSE for price tick streams; use WebSockets for trading terminals with bidirectional commands.</li></ul>
+<p>---</p>
+<h2 id="detailed-explanation">Detailed Explanation</h2>
+<h3 id="server-sent-events-sse">Server-Sent Events (SSE)</h3>
+<p><strong>What it is:</strong> A long-lived HTTP response that streams events to the client.</p>
+<p><strong>Strengths:</strong></p>
+<ul><li>Simple HTTP-based streaming</li><li>Automatic reconnect support in browsers</li><li>Works well with HTTP/2 and standard infrastructure</li></ul>
+<p><strong>Constraints:</strong></p>
+<ul><li>Server to client only</li><li>Text-only payloads (JSON is common)</li></ul>
+<p><strong>C# example (ASP.NET Core):</strong></p>
+<pre class="language-csharp"><code class="language-csharp">app.MapGet(&quot;/prices/stream&quot;, async context =&gt;
+{
+    context.Response.Headers.Append(&quot;Content-Type&quot;, &quot;text/event-stream&quot;);
+    context.Response.Headers.Append(&quot;Cache-Control&quot;, &quot;no-cache&quot;);
+
+    var ct = context.RequestAborted;
+    while (!ct.IsCancellationRequested)
+    {
+        var tick = new { Symbol = &quot;EURUSD&quot;, Bid = 1.0912m, Ask = 1.0914m };
+        await context.Response.WriteAsync($&quot;data: {JsonSerializer.Serialize(tick)}\n\n&quot;, ct);
+        await context.Response.Body.FlushAsync(ct);
+        await Task.Delay(TimeSpan.FromSeconds(1), ct);
+    }
+});</code></pre>
+<p>---</p>
+<h3 id="websockets">WebSockets</h3>
+<p><strong>What it is:</strong> A persistent TCP connection that allows full-duplex messaging.</p>
+<p><strong>Strengths:</strong></p>
+<ul><li>Bi-directional communication</li><li>Low latency for interactive workflows</li><li>Supports binary payloads</li></ul>
+<p><strong>Constraints:</strong></p>
+<ul><li>More complex to scale and debug</li><li>Requires explicit reconnection logic</li></ul>
+<p><strong>C# example (ASP.NET Core):</strong></p>
+<pre class="language-csharp"><code class="language-csharp">app.UseWebSockets();
+
+app.Map(&quot;/ws&quot;, async context =&gt;
+{
+    if (!context.WebSockets.IsWebSocketRequest)
+    {
+        context.Response.StatusCode = StatusCodes.Status400BadRequest;
+        return;
+    }
+
+    using var socket = await context.WebSockets.AcceptWebSocketAsync();
+    var buffer = new byte[4096];
+
+    while (true)
+    {
+        var result = await socket.ReceiveAsync(buffer, CancellationToken.None);
+        if (result.MessageType == WebSocketMessageType.Close)
+            break;
+
+        await socket.SendAsync(buffer.AsMemory(0, result.Count), result.MessageType, result.EndOfMessage, CancellationToken.None);
+    }
+
+    await socket.CloseAsync(WebSocketCloseStatus.NormalClosure, &quot;Done&quot;, CancellationToken.None);
+});</code></pre>
+<p>---</p>
+<h2 id="comparison-snapshot">Comparison Snapshot</h2>
+<table><thead><tr><th>Topic</th><th>SSE</th><th>WebSockets</th></tr></thead><tbody><tr><td>Direction</td><td>Server to client</td><td>Bi-directional</td></tr><tr><td>Transport</td><td>HTTP</td><td>TCP (upgrade from HTTP)</td></tr><tr><td>Payload</td><td>Text (UTF-8)</td><td>Text or binary</td></tr><tr><td>Reconnect</td><td>Built-in (browser)</td><td>Manual</td></tr><tr><td>Best for</td><td>Streams, notifications</td><td>Interactive apps, trading terminals</td></tr></tbody></table>
+<p>---</p>
+<h2 id="why-it-matters-for-interviews">Why It Matters for Interviews</h2>
+<ul><li>You can justify <strong>when a simpler transport is enough</strong> (SSE) vs when you need full-duplex.</li><li>You can discuss <strong>scaling constraints</strong> (sticky sessions, backpressure, fan-out).</li><li>You can tie decisions to <strong>latency and operational complexity</strong>.</li></ul>
+<p>---</p>
+<h2 id="common-pitfalls">Common Pitfalls</h2>
+<ul><li>Using WebSockets for unidirectional updates where SSE is simpler.</li><li>Forgetting heartbeats/pings and idle timeouts.</li><li>Not handling reconnection or replay (event IDs) for SSE.</li><li>Sending large payloads without backpressure control.</li></ul>
+<p>---</p>
+<h2 id="quick-reference">Quick Reference</h2>
+<ul><li><strong>SSE:</strong> Unidirectional, HTTP, easy to deploy, great for streaming data.</li><li><strong>WebSockets:</strong> Bi-directional, low latency, best for interactive workflows.</li></ul>
+<p>---</p>
+<h2 id="sample-interview-qa">Sample Interview Q&A</h2>
+<ul><li><strong>Q:</strong> When would you choose SSE over WebSockets?</li><li><strong>A:</strong> For server-to-client streams like price ticks or notifications where clients do not need to send frequent messages back.</li></ul>
+<ul><li><strong>Q:</strong> How do you handle reconnects with SSE?</li><li><strong>A:</strong> Use event IDs and allow clients to send <code>Last-Event-ID</code> so the server can replay missed data.</li></ul>
+<ul><li><strong>Q:</strong> What is the biggest operational challenge with WebSockets?</li><li><strong>A:</strong> Scaling long-lived connections (load balancers, sticky sessions) and handling reconnects on network churn.</li></ul>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['dark2', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
+      const fallback = 'light';
+      const initial = supported.includes(normalized) ? normalized : (window.__studyTheme || fallback);
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          sessionStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+    (() => {
+      const groups = document.querySelectorAll('.sidebar-group');
+      if (!groups.length) return;
+      const storageKey = 'study-open-groups';
+      const saved = sessionStorage.getItem(storageKey);
+      const openFromStorage = new Set(saved ? JSON.parse(saved) : []);
+
+      const activeLink = document.querySelector('.nav-link.active');
+      const activeGroup = activeLink?.closest('.sidebar-group');
+      if (activeGroup?.dataset.group) {
+        openFromStorage.add(activeGroup.dataset.group);
+      }
+
+      const syncStorage = () => {
+        const openIds = Array.from(document.querySelectorAll('.sidebar-group.is-open'))
+          .map((group) => group.dataset.group)
+          .filter(Boolean);
+        sessionStorage.setItem(storageKey, JSON.stringify(openIds));
+      };
+
+      const setExpanded = (group, expanded) => {
+        const header = group.querySelector('.sidebar-group__header');
+        const list = group.querySelector('.sidebar-group__items');
+        group.classList.toggle('is-open', expanded);
+        header?.setAttribute('aria-expanded', expanded);
+        if (list) {
+          list.hidden = !expanded;
+        }
+      };
+
+      groups.forEach((group) => {
+        const shouldOpen = openFromStorage.has(group.dataset.group);
+        setExpanded(group, shouldOpen);
+        const header = group.querySelector('.sidebar-group__header');
+        header?.addEventListener('click', () => {
+          const next = !group.classList.contains('is-open');
+          setExpanded(group, next);
+          syncStorage();
+        });
+      });
+    })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swPath = '../service-worker.js';
+        navigator.serviceWorker.register(swPath).catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+</body>
+</html>

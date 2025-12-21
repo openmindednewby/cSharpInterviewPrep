@@ -177,7 +177,9 @@ var topSymbols = recentOrders
 
 ## Architecture & Patterns
 
-- [Arhcitecture-&-patterins-examples.md](./sub-notes/Arhcitecture-&-patterins-examples.md)
+- [Clean Architecture](./Clean-Architecture/index.md)
+- [Solution Architecture](./solution-architecture.md)
+- [System Architecture](./system-architecture.md)
 - **SOLID:**
   - *Single Responsibility:* Keep classes focused; e.g., split order validation from execution.
   - *Open/Closed:* Extend via interfaces/inheritance; plug new execution channels without touching existing code.
@@ -206,6 +208,7 @@ var topSymbols = recentOrders
 ## Messaging & Distributed Coordination
 - **RabbitMQ:** Broker-based AMQP with routing (fanout/topic/direct), acknowledgements, and durable queues. See [RabbitMQ Deep Dive](./sub-notes/RabbitMQ.md) for operational notes, pros/cons, and .NET usage.
 - **ZeroMQ:** Lightweight socket library without broker; great for high-throughput, but requires you to manage topology/reliability.
+- **Streaming choices:** [SSE vs WebSockets](./sse-vs-websockets.md) for trade-offs between unidirectional streams and full-duplex communication.
 - **Delivery Guarantees:**
   - *At-most-once:* Fast, risk of data loss.
   - *At-least-once:* Requires idempotency.

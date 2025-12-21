@@ -9,12 +9,15 @@ Practice exercises organized to mirror the notes folder structure.
 - [Practice Index](index.md)
 - [Core Concepts Hub](core-concepts.md)
 - [Clean Architecture](Clean-Architecture/index.md)
+- [Solution Architecture Exercises](solution-architecture-exercises.md)
+- [System Architecture Exercises](system-architecture-exercises.md)
 - [AutoMapper](Automapper/index.md)
 - [FluentValidation](FluentValidation/index.md)
 - [Memory Allocation Discipline](Memory-Allocation-Discipline/index.md)
 - [Error Handling](error-handling-exercises.md)
 - [Logging](logging-exercises.md)
 - [Testing Strategies](testing-strategies-exercises.md)
+- [SSE vs WebSockets](sse-vs-websockets-exercises.md)
 
 ---
 
@@ -36,6 +39,9 @@ practice/
 ├── core-concepts.md
 ├── error-handling-exercises.md
 ├── logging-exercises.md
+├── solution-architecture-exercises.md
+├── system-architecture-exercises.md
+├── sse-vs-websockets-exercises.md
 ├── testing-strategies-exercises.md
 ├── questions.md
 └── answers.md
@@ -51,11 +57,14 @@ practice/
 - SOLID/index.md
 - SOLID/S-Single-Responsibility-Principle-Exercises.md
 - Clean-Architecture/index.md (35+ exercises)
+- solution-architecture-exercises.md
+- system-architecture-exercises.md
 - Automapper/index.md (30+ exercises)
 - FluentValidation/index.md (30+ exercises)
 - Memory-Allocation-Discipline/index.md (35+ exercises)
 - error-handling-exercises.md (35+ exercises)
 - logging-exercises.md (30+ exercises)
+- sse-vs-websockets-exercises.md
 - testing-strategies-exercises.md (40+ exercises)
 - sub-notes/* (migrated deep dives)
 
