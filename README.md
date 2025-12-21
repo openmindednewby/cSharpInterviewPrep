@@ -24,7 +24,7 @@ Practice exercises for senior C#/.NET topics.
 ![Exercises Preview](exercise-web-site/preview.png)
 
 **[View Live Exercises](https://senior-dot-net-study-exercises.dloizides.com/)**
-/)**
+
 
 
 ---
