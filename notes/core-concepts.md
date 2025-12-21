@@ -102,6 +102,35 @@ Managed Heap
 └──────────────────┴──┘
 ```
 
+### OOP Fundamentals (Encapsulation, Inheritance, Polymorphism, Abstraction)
+- **Encapsulation:** Hide state, expose behavior with invariants.
+- **Inheritance:** Use for true "is-a" relationships; avoid deep hierarchies.
+- **Polymorphism:** Code to interfaces/abstract types to swap behaviors.
+- **Abstraction:** Define minimal contracts for a concept (e.g., pricing strategy).
+- **Example (inheritance + polymorphism):**
+
+```csharp
+public abstract class Order
+{
+    public Guid Id { get; init; }
+    public abstract decimal CalculateFees();
+}
+
+public sealed class MarketOrder : Order
+{
+    public decimal Slippage { get; init; }
+    public override decimal CalculateFees() => Slippage * 0.1m;
+}
+
+public sealed class LimitOrder : Order
+{
+    public decimal MakerFee { get; init; }
+    public override decimal CalculateFees() => MakerFee;
+}
+```
+
+- **Rule of thumb:** Prefer composition over inheritance when behavior varies at runtime.
+
 ### Collections & LINQ
 - **Deferred execution:** Query operators (e.g., `Where`, `Select`) defer work until enumerated. Beware of multiple iterations.
 - **`IEnumerable<T>` vs `IQueryable<T>`:** `IQueryable<T>` builds an expression tree for remote providers (EF Core). Avoid running client-side filters inadvertently.

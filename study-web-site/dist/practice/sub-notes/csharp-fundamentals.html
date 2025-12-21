@@ -200,7 +200,7 @@
         <div class="breadcrumbs">practice\sub-notes\csharp-fundamentals.md</div>
         <h2>Csharp Fundamentals</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#c-fundamentals-practice-exercises">C# Fundamentals Practice Exercises</a></li><li class="level-2"><a href="#types-memory-and-immutability">Types, Memory, and Immutability</a></li><li class="level-2"><a href="#nullability-and-defensive-programming">Nullability and Defensive Programming</a></li><li class="level-2"><a href="#generics-and-constraints">Generics and Constraints</a></li><li class="level-2"><a href="#delegates-events-and-lambdas">Delegates, Events, and Lambdas</a></li><li class="level-2"><a href="#pattern-matching-and-switch-expressions">Pattern Matching and Switch Expressions</a></li><li class="level-2"><a href="#records-and-immutability">Records and Immutability</a></li><li class="level-2"><a href="#exceptions-and-error-flow">Exceptions and Error Flow</a></li><li class="level-2"><a href="#access-modifiers-and-encapsulation">Access Modifiers and Encapsulation</a></li><li class="level-2"><a href="#collections-and-initialization">Collections and Initialization</a></li></ul></div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#c-fundamentals-practice-exercises">C# Fundamentals Practice Exercises</a></li><li class="level-2"><a href="#types-memory-and-immutability">Types, Memory, and Immutability</a></li><li class="level-2"><a href="#nullability-and-defensive-programming">Nullability and Defensive Programming</a></li><li class="level-2"><a href="#generics-and-constraints">Generics and Constraints</a></li><li class="level-2"><a href="#delegates-events-and-lambdas">Delegates, Events, and Lambdas</a></li><li class="level-2"><a href="#pattern-matching-and-switch-expressions">Pattern Matching and Switch Expressions</a></li><li class="level-2"><a href="#records-and-immutability">Records and Immutability</a></li><li class="level-2"><a href="#exceptions-and-error-flow">Exceptions and Error Flow</a></li><li class="level-2"><a href="#access-modifiers-and-encapsulation">Access Modifiers and Encapsulation</a></li><li class="level-2"><a href="#oop-principles-inheritance-polymorphism-abstraction">OOP Principles (Inheritance, Polymorphism, Abstraction)</a></li><li class="level-2"><a href="#collections-and-initialization">Collections and Initialization</a></li></ul></div>
         <h1 id="c-fundamentals-practice-exercises">C# Fundamentals Practice Exercises</h1>
 <p>Build strong core language fundamentals through targeted exercises.</p>
 <p>---</p>
@@ -345,6 +345,57 @@ var updated = original with { Price = 1.0920m };</code></pre>
     }
 }</code></pre>
 <p>---</p>
+<h2 id="oop-principles-inheritance-polymorphism-abstraction">OOP Principles (Inheritance, Polymorphism, Abstraction)</h2>
+<p><strong>Q: Demonstrate inheritance with a base order type and a specialized derived type.</strong></p>
+<p>A: Use inheritance for true "is-a" relationships and keep the base class focused.</p>
+<pre class="language-csharp"><code class="language-csharp">public abstract class Order
+{
+    public Guid Id { get; init; }
+    public abstract decimal CalculateFees();
+}
+
+public sealed class MarketOrder : Order
+{
+    public decimal Slippage { get; init; }
+    public override decimal CalculateFees() =&gt; Slippage * 0.1m;
+}</code></pre>
+<p><strong>Q: Show polymorphism by swapping fee calculators via an interface.</strong></p>
+<p>A: Code to an interface so the call site does not change when behavior changes.</p>
+<pre class="language-csharp"><code class="language-csharp">public interface IFeeCalculator
+{
+    decimal Calculate(decimal notional);
+}
+
+public sealed class MakerFeeCalculator : IFeeCalculator
+{
+    public decimal Calculate(decimal notional) =&gt; notional * 0.0002m;
+}
+
+public sealed class TakerFeeCalculator : IFeeCalculator
+{
+    public decimal Calculate(decimal notional) =&gt; notional * 0.0005m;
+}
+
+public decimal ComputeFees(IFeeCalculator calculator, decimal notional)
+{
+    return calculator.Calculate(notional);
+}</code></pre>
+<p><strong>Q: Use abstraction to define a minimal contract for a price feed.</strong></p>
+<p>A: Expose only the required behavior and hide implementation details.</p>
+<pre class="language-csharp"><code class="language-csharp">public abstract class PriceFeed
+{
+    public abstract decimal GetBid(string symbol);
+}
+
+public sealed class CachedPriceFeed : PriceFeed
+{
+    private readonly IDictionary&lt;string, decimal&gt; _cache;
+    public CachedPriceFeed(IDictionary&lt;string, decimal&gt; cache) =&gt; _cache = cache;
+    public override decimal GetBid(string symbol) =&gt; _cache[symbol];
+}</code></pre>
+<p><strong>Q: When should you prefer composition over inheritance?</strong></p>
+<p>A: Prefer composition when behavior changes at runtime or when you only need to reuse a small piece of behavior.</p>
+<p>---</p>
 <h2 id="collections-and-initialization">Collections and Initialization</h2>
 <p><strong>Q: Show object and collection initialization with target-typed <code>new</code>.</strong></p>
 <p>A: Use concise syntax for readability.</p>
@@ -354,7 +405,7 @@ var updated = original with { Price = 1.0920m };</code></pre>
     new(&quot;B&quot;, 20)
 };</code></pre>
 <p>---</p>
-<p><strong>Total Exercises: 12+</strong></p>
+<p><strong>Total Exercises: 16+</strong></p>
 <p>Practice each exercise by writing the code and explaining your choices out loud.</p>
       </article>
     </main>

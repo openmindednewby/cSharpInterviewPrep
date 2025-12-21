@@ -226,6 +226,76 @@ public class Position
 
 ---
 
+## OOP Principles (Inheritance, Polymorphism, Abstraction)
+
+**Q: Demonstrate inheritance with a base order type and a specialized derived type.**
+
+A: Use inheritance for true "is-a" relationships and keep the base class focused.
+
+```csharp
+public abstract class Order
+{
+    public Guid Id { get; init; }
+    public abstract decimal CalculateFees();
+}
+
+public sealed class MarketOrder : Order
+{
+    public decimal Slippage { get; init; }
+    public override decimal CalculateFees() => Slippage * 0.1m;
+}
+```
+
+**Q: Show polymorphism by swapping fee calculators via an interface.**
+
+A: Code to an interface so the call site does not change when behavior changes.
+
+```csharp
+public interface IFeeCalculator
+{
+    decimal Calculate(decimal notional);
+}
+
+public sealed class MakerFeeCalculator : IFeeCalculator
+{
+    public decimal Calculate(decimal notional) => notional * 0.0002m;
+}
+
+public sealed class TakerFeeCalculator : IFeeCalculator
+{
+    public decimal Calculate(decimal notional) => notional * 0.0005m;
+}
+
+public decimal ComputeFees(IFeeCalculator calculator, decimal notional)
+{
+    return calculator.Calculate(notional);
+}
+```
+
+**Q: Use abstraction to define a minimal contract for a price feed.**
+
+A: Expose only the required behavior and hide implementation details.
+
+```csharp
+public abstract class PriceFeed
+{
+    public abstract decimal GetBid(string symbol);
+}
+
+public sealed class CachedPriceFeed : PriceFeed
+{
+    private readonly IDictionary<string, decimal> _cache;
+    public CachedPriceFeed(IDictionary<string, decimal> cache) => _cache = cache;
+    public override decimal GetBid(string symbol) => _cache[symbol];
+}
+```
+
+**Q: When should you prefer composition over inheritance?**
+
+A: Prefer composition when behavior changes at runtime or when you only need to reuse a small piece of behavior.
+
+---
+
 ## Collections and Initialization
 
 **Q: Show object and collection initialization with target-typed `new`.**
@@ -242,6 +312,6 @@ var orders = new List<Order>
 
 ---
 
-**Total Exercises: 12+**
+**Total Exercises: 16+**
 
 Practice each exercise by writing the code and explaining your choices out loud.

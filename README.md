@@ -176,6 +176,7 @@ cSharpInterviewPrep/
 - **Memory Management**: GC, CLR, memory allocation, IDisposable patterns
 - **Async/Await**: Deep dive into asynchronous programming
 - **Types**: Value vs reference types, structs vs classes
+- **OOP Principles**: Encapsulation, inheritance, polymorphism, abstraction (with examples)
 
 #### Advanced Topics
 - **Big-O Complexity**: Algorithm analysis and optimization
