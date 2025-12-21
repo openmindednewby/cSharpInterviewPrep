@@ -1,5 +1,5 @@
 // Auto-generated practice Q&A data from practice/ folder
-// Generated on: 2025-12-21T12:45:58.115Z
+// Generated on: 2025-12-21T15:29:00.332Z
 // Total cards: 312 Q&A
 
 window.PRACTICE_DATA = [
@@ -15,6 +15,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "var latestTrades = trades\n    .GroupBy(t => t.AccountId)\n    .Select(g => g.OrderByDescending(t => t.Timestamp).First());",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when you need the most recent entry per key without mutating state, such as building dashboards or reconciling snapshots. Avoid when the dataset is huge and you'd benefit from streaming/SQL aggregation; consider database query with ROW_NUMBER or a materialized view to avoid loading everything into memory."
       }
     ],
     "category": "practice",
@@ -35,6 +39,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "var flat = nestedCodes.SelectMany(list => list);",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when you have nested enumerables and simply need to concatenate them. Avoid when you must retain hierarchy boundaries—use nested loops instead."
       }
     ],
     "category": "practice",
@@ -55,6 +63,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "// SelectMany\nvar pairs = accounts.SelectMany(a => a.Orders, (a, o) => new { a.Id, o.Id });\n\n// Nested loops\nforeach (var a in accounts)\n    foreach (var o in a.Orders)\n        yield return (a.Id, o.Id);",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use SelectMany when you want a fluent declarative pipeline or need joins. Use loops when performance-critical, complex control flow, or break/continue needed."
       }
     ],
     "category": "practice",
@@ -75,6 +87,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "var duplicates = orders\n    .GroupBy(o => new { o.AccountId, o.ClientOrderId })\n    .Where(g => g.Count() > 1)\n    .Select(g => new {\n        g.Key.AccountId,\n        g.Key.ClientOrderId,\n        Count = g.Count(),\n        LatestTimestamp = g.Max(o => o.Timestamp)\n    });",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when you need summaries and easy grouping. Avoid when data volume exceeds in-memory capabilities—use database aggregates or streaming dedup."
       }
     ],
     "category": "practice",
@@ -235,6 +251,19 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "public IEnumerable<Product> GetProductsPage(int pageNumber, int pageSize)\n{\n    return dbContext.Products\n        .OrderBy(p => p.Id)  // IMPORTANT: Must order for consistent pagination\n        .Skip((pageNumber - 1) * pageSize)\n        .Take(pageSize)\n        .ToList();  // Execute query here\n}",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Potential Issues:"
+      },
+      {
+        "type": "list",
+        "items": [
+          "IQueryable: Translates to SQL, efficient but can cause N+1 queries if not careful",
+          "IEnumerable: Loads all data into memory before Skip/Take, very inefficient",
+          "Always order before Skip/Take to ensure consistent results",
+          "Consider total count query for UI pagination info"
+        ]
       }
     ],
     "category": "practice",
@@ -346,6 +375,12 @@ window.PRACTICE_DATA = [
   {
     "question": "Identify and fix performance issues in this query.",
     "answer": [
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "// Bad: Multiple database round trips\nvar orders = dbContext.Orders.ToList();\nforeach (var order in orders)\n{\n    order.Customer = dbContext.Customers.Find(order.CustomerId);\n    order.Items = dbContext.OrderItems.Where(i => i.OrderId == order.Id).ToList();\n}",
+        "codeType": "neutral"
+      },
       {
         "type": "text",
         "content": "Use eager loading with Include."
@@ -655,6 +690,14 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "var prefix = prices.TakeWhile(p => p.IsValid).ToList();\nvar rest = prices.SkipWhile(p => p.IsValid).ToList();",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Total Exercises: 40+"
+      },
+      {
+        "type": "text",
+        "content": "Practice these exercises by actually writing the code. Don't just read—implement and test!"
       }
     ],
     "category": "practice",
@@ -749,6 +792,19 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "// Avoid capture\nvar count = items.Count(static i => i.IsActive);",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Key points:"
+      },
+      {
+        "type": "list",
+        "items": [
+          "Objects >= 85KB go to LOH",
+          "LOH is part of Gen 2",
+          "LOH doesn't get compacted by default (can cause fragmentation)",
+          "Use ArrayPool or compact LOH manually </details>"
+        ]
       }
     ],
     "category": "practice",
@@ -769,6 +825,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "var latestTrades = trades\n    .GroupBy(t => t.AccountId)\n    .Select(g => g.OrderByDescending(t => t.Timestamp).First());",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when you need the most recent entry per key without mutating state, such as building dashboards or reconciling snapshots. Avoid when the dataset is huge and you'd benefit from streaming/SQL aggregation; consider database query with ROW_NUMBER or a materialized view to avoid loading everything into memory."
       }
     ],
     "category": "practice",
@@ -789,6 +849,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "var flat = nestedCodes.SelectMany(list => list);",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when you have nested enumerables and simply need to concatenate them. Avoid when you must retain hierarchy boundaries—use nested loops instead."
       }
     ],
     "category": "practice",
@@ -809,6 +873,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "// SelectMany\nvar pairs = accounts.SelectMany(a => a.Orders, (a, o) => new { a.Id, o.Id });\n\n// Nested loops\nforeach (var a in accounts)\n    foreach (var o in a.Orders)\n        yield return (a.Id, o.Id);",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use SelectMany when you want a fluent declarative pipeline or need joins. Use loops when performance-critical, complex control flow, or break/continue needed."
       }
     ],
     "category": "practice",
@@ -829,6 +897,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "var duplicates = orders\n    .GroupBy(o => new { o.AccountId, o.ClientOrderId })\n    .Where(g => g.Count() > 1)\n    .Select(g => new {\n        g.Key.AccountId,\n        g.Key.ClientOrderId,\n        Count = g.Count(),\n        LatestTimestamp = g.Max(o => o.Timestamp)\n    });",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when you need summaries and easy grouping. Avoid when data volume exceeds in-memory capabilities—use database aggregates or streaming dedup."
       }
     ],
     "category": "practice",
@@ -849,6 +921,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3));\nvar tasks = endpoints.Select(url => httpClient.GetStringAsync(url, cts.Token));\nstring[] responses = await Task.WhenAll(tasks);",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when limited number of independent calls; want fail-fast. Avoid when endpoints depend on each other or you must gracefully degrade per-call."
       }
     ],
     "category": "practice",
@@ -869,6 +945,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "var policy = Policy.WrapAsync(\n    Policy.Handle<HttpRequestException>()\n          .OrResult<HttpResponseMessage>(r => (int)r.StatusCode >= 500)\n          .WaitAndRetryAsync(3, attempt => TimeSpan.FromMilliseconds(200 * attempt)),\n    Policy.Handle<HttpRequestException>()\n          .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30))\n);\n\nvar response = await policy.ExecuteAsync(() => httpClient.SendAsync(request));",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when downstream instability; need resilience. Avoid when operations must not be retried (e.g., non-idempotent commands without safeguards)."
       }
     ],
     "category": "practice",
@@ -889,6 +969,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "var channel = Channel.CreateBounded<Message>(new BoundedChannelOptions(100)\n{\n    FullMode = BoundedChannelFullMode.Wait\n});\n\n// Producer\n_ = Task.Run(async () =>\n{\n    await foreach (var msg in source.ReadAllAsync())\n        await channel.Writer.WriteAsync(msg);\n});\n\n// Consumer\nawait foreach (var msg in channel.Reader.ReadAllAsync())\n{\n    await ProcessAsync(msg);\n}",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when consumer slower than producer; need to avoid overload. Avoid when throughput must be maximized with zero buffering—consider scaling consumers instead."
       }
     ],
     "category": "practice",
@@ -909,6 +993,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "private readonly SemaphoreSlim _mutex = new(1, 1);\n\npublic async Task UseSharedAsync()\n{\n    await _mutex.WaitAsync();\n    try { await SharedAsyncOperation(); }\n    finally { _mutex.Release(); }\n}",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use SemaphoreSlim when async code needs mutual exclusion or limited parallelism. Avoid when code is synchronous—lock has less overhead."
       }
     ],
     "category": "practice",
@@ -929,6 +1017,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "app.UseMiddleware<CorrelationMiddleware>();\napp.UseMiddleware<ExceptionHandlingMiddleware>();\napp.UseRouting();\napp.UseAuthentication();\napp.UseAuthorization();\napp.MapControllers();",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when building consistent request handling. Avoid when for minimal APIs you might use delegate pipeline but still similar."
       }
     ],
     "category": "practice",
@@ -949,6 +1041,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "services.AddApiVersioning(options =>\n{\n    options.DefaultApiVersion = new ApiVersion(1, 0);\n    options.AssumeDefaultVersionWhenUnspecified = true;\n    options.ReportApiVersions = true;\n});\nservices.AddVersionedApiExplorer();",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when breaking changes; maintain backward compatibility by keeping old controllers. Avoid when internal services with clients you control; choose contract-first to avoid version explosion."
       }
     ],
     "category": "practice",
@@ -969,6 +1065,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "services.AddRateLimiter(options =>\n{\n    options.AddFixedWindowLimiter(\"per-account\", opt =>\n    {\n        opt.Window = TimeSpan.FromMinutes(1);\n        opt.PermitLimit = 60;\n        opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;\n        opt.QueueLimit = 20;\n    });\n});\n\napp.UseRateLimiter();",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when protecting downstream resources. Avoid when latency-critical internal traffic; consider other forms of protection."
       }
     ],
     "category": "practice",
@@ -989,6 +1089,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "context.TraceIdentifier = context.TraceIdentifier ?? Guid.NewGuid().ToString();\n_logger.LogInformation(\"{CorrelationId} handling {Path}\", context.TraceIdentifier, context.Request.Path);\nhttpClient.DefaultRequestHeaders.Add(\"X-Correlation-ID\", context.TraceIdentifier);",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when need distributed tracing. Avoid when truly isolated services—rare."
       }
     ],
     "category": "practice",
@@ -1009,6 +1113,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "while (await mt5Stream.MoveNextAsync())\n{\n    var normalized = Normalize(mt5Stream.Current);\n    await cache.SetAsync(normalized.Symbol, normalized.Price);\n    await hubContext.Clients.Group(normalized.Symbol)\n        .SendAsync(\"price\", normalized);\n}",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when need low-latency price dissemination. Avoid when low-frequency batch updates suffice."
       }
     ],
     "category": "practice",
@@ -1029,6 +1137,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "public async Task<IActionResult> Submit(OrderRequest dto)\n{\n    var order = await _validator.ValidateAsync(dto);\n    await _repository.SavePending(order);\n    var result = await _mtGateway.SendAsync(order);\n    await _repository.UpdateStatus(order.Id, result.Status);\n    await _bus.Publish(new OrderStatusChanged(order.Id, result.Status));\n    return Ok(result);\n}",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when real-time trading with external platforms. Avoid when simple internal workflows—overkill."
       }
     ],
     "category": "practice",
@@ -1049,6 +1161,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "var meter = new Meter(\"Trading.Services\");\nvar orderLatency = meter.CreateHistogram<double>(\"order_latency_ms\");\norderLatency.Record(latencyMs, KeyValuePair.Create<string, object?>(\"service\", serviceName));",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when need proactive observability. Avoid when prototype with low SLA."
       }
     ],
     "category": "practice",
@@ -1069,6 +1185,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "var riskResponse = await _riskClient.EvaluateAsync(order, ct);\nif (!riskResponse.Approved)\n    return OrderDecision.Rejected(riskResponse.Reason);",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when external compliance requirement. Avoid when latency-critical path can't tolerate external dependency—consider in-process rules."
       }
     ],
     "category": "practice",
@@ -1103,6 +1223,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "channel.BasicConsume(queue, autoAck: false, consumer);\nconsumer.Received += (sender, ea) =>\n{\n    Handle(ea.Body);\n    channel.BasicAck(ea.DeliveryTag, multiple: false);\n};",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when you can tolerate duplicates; critical to ensure no loss. Avoid when exactly-once semantics required—use transactional outbox + dedup."
       }
     ],
     "category": "practice",
@@ -1123,6 +1247,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "public async Task Handle(FundAccount command)\n{\n    var transferId = await _payments.DebitAsync(command.PaymentId);\n    try\n    {\n        await _ledger.CreditAsync(command.AccountId, command.Amount);\n        await _notifications.SendAsync(command.AccountId, \"Funding complete\");\n    }\n    catch\n    {\n        await _payments.RefundAsync(transferId);\n        throw;\n    }\n}",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when multi-step, distributed transactions. Avoid when single system handles all steps—simple ACID transaction suffices."
       }
     ],
     "category": "practice",
@@ -1143,6 +1271,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "await using var tx = await db.Database.BeginTransactionAsync();\norder.Status = OrderStatus.Accepted;\ndb.Outbox.Add(new OutboxMessage(order.Id, new OrderAccepted(order.Id)));\nawait db.SaveChangesAsync();\nawait tx.CommitAsync();",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when need atomic DB + message publish. Avoid when no shared database or eventual consistency acceptable without duplication."
       }
     ],
     "category": "practice",
@@ -1163,6 +1295,10 @@ window.PRACTICE_DATA = [
         "language": "sql",
         "code": "WITH daily AS (\n    SELECT instrument_id,\n           trade_timestamp::date AS trade_date,\n           SUM(volume) AS daily_volume\n    FROM trades\n    GROUP BY instrument_id, trade_timestamp::date\n)\nSELECT instrument_id,\n       trade_date,\n       daily_volume,\n       SUM(daily_volume) OVER (\n           PARTITION BY instrument_id\n           ORDER BY trade_date\n           ROWS BETWEEN 6 PRECEDING AND CURRENT ROW\n       ) AS rolling_7d_volume\nFROM daily\nORDER BY instrument_id, trade_date;",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when need rolling metrics in SQL. Avoid when database lacks window functions—use app-side aggregation."
       }
     ],
     "category": "practice",
@@ -1197,6 +1333,10 @@ window.PRACTICE_DATA = [
         "language": "sql",
         "code": "CREATE NONCLUSTERED INDEX IX_Orders_Account_Status\n    ON Orders(AccountId, Status)\n    INCLUDE (CreatedAt, Amount);",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use covering index when query needs subset of columns; avoid extra lookups. Avoid when frequent writes—maintaining many indexes hurts performance."
       }
     ],
     "category": "practice",
@@ -1341,6 +1481,12 @@ window.PRACTICE_DATA = [
     "question": "Identify the SRP violations in this User class and refactor it.",
     "answer": [
       {
+        "type": "code",
+        "language": "csharp",
+        "code": "public class User\n{\n    public int Id { get; set; }\n    public string Name { get; set; }\n    public string Email { get; set; }\n\n    public void SaveToDatabase()\n    {\n        // Database logic\n        var connection = new SqlConnection(\"...\");\n        // Save user\n    }\n\n    public void SendWelcomeEmail()\n    {\n        // Email logic\n        var smtp = new SmtpClient();\n        // Send email\n    }\n\n    public string GenerateUserReport()\n    {\n        // Report generation logic\n        return $\"User Report: {Name}\";\n    }\n\n    public bool ValidateEmail()\n    {\n        // Validation logic\n        return Email.Contains(\"@\");\n    }\n}",
+        "codeType": "neutral"
+      },
+      {
         "type": "text",
         "content": "The User class has multiple responsibilities: data storage, email sending, report generation, and validation. Refactor into separate classes:"
       },
@@ -1349,6 +1495,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "// Single responsibility: User data\npublic class User\n{\n    public int Id { get; set; }\n    public string Name { get; set; }\n    public string Email { get; set; }\n}\n\n// Single responsibility: Data persistence\npublic class UserRepository\n{\n    private readonly string _connectionString;\n\n    public UserRepository(string connectionString)\n    {\n        _connectionString = connectionString;\n    }\n\n    public void Save(User user)\n    {\n        using var connection = new SqlConnection(_connectionString);\n        // Save user\n    }\n}\n\n// Single responsibility: Email notifications\npublic class EmailService\n{\n    private readonly SmtpClient _smtpClient;\n\n    public EmailService(SmtpClient smtpClient)\n    {\n        _smtpClient = smtpClient;\n    }\n\n    public void SendWelcomeEmail(User user)\n    {\n        // Send email\n    }\n}\n\n// Single responsibility: Report generation\npublic class UserReportGenerator\n{\n    public string Generate(User user)\n    {\n        return $\"User Report: {user.Name}\";\n    }\n}\n\n// Single responsibility: Validation\npublic class EmailValidator\n{\n    public bool Validate(string email)\n    {\n        return !string.IsNullOrEmpty(email) && email.Contains(\"@\");\n    }\n}",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when: Building maintainable applications where changes to one concern shouldn't affect others. Avoid when: Over-engineering simple DTOs or models that are pure data containers."
       }
     ],
     "category": "practice",
@@ -1360,6 +1510,12 @@ window.PRACTICE_DATA = [
   {
     "question": "Refactor this OrderProcessor class to follow SRP.",
     "answer": [
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public class OrderProcessor\n{\n    public void ProcessOrder(Order order)\n    {\n        // Validate order\n        if (order.Items.Count == 0)\n            throw new Exception(\"Order must have items\");\n\n        // Calculate total\n        decimal total = 0;\n        foreach (var item in order.Items)\n        {\n            total += item.Price * item.Quantity;\n        }\n        order.Total = total;\n\n        // Apply discount\n        if (order.Customer.IsPremium)\n        {\n            order.Total *= 0.9m;\n        }\n\n        // Save to database\n        var db = new SqlConnection(\"...\");\n        // Save order\n\n        // Send confirmation email\n        var smtp = new SmtpClient();\n        // Send email\n\n        // Log\n        Console.WriteLine($\"Order {order.Id} processed\");\n    }\n}",
+        "codeType": "neutral"
+      },
       {
         "type": "text",
         "content": "Separate into distinct responsibilities:"
@@ -1381,6 +1537,12 @@ window.PRACTICE_DATA = [
     "question": "Identify SRP violations in this ReportGenerator class.",
     "answer": [
       {
+        "type": "code",
+        "language": "csharp",
+        "code": "public class ReportGenerator\n{\n    public string GenerateReport(List<Sale> sales)\n    {\n        // Fetch data\n        var connection = new SqlConnection(\"...\");\n        var salesData = FetchSalesData(connection);\n\n        // Calculate metrics\n        var totalSales = salesData.Sum(s => s.Amount);\n        var averageSale = salesData.Average(s => s.Amount);\n\n        // Format report\n        var report = new StringBuilder();\n        report.AppendLine($\"Total Sales: {totalSales}\");\n        report.AppendLine($\"Average Sale: {averageSale}\");\n\n        // Save to file\n        File.WriteAllText(\"report.txt\", report.ToString());\n\n        // Send via email\n        var smtp = new SmtpClient();\n        // Send email\n\n        return report.ToString();\n    }\n\n    private List<Sale> FetchSalesData(SqlConnection connection)\n    {\n        // Fetch from database\n        return new List<Sale>();\n    }\n}",
+        "codeType": "neutral"
+      },
+      {
         "type": "text",
         "content": "Separate into distinct responsibilities:"
       },
@@ -1400,6 +1562,12 @@ window.PRACTICE_DATA = [
   {
     "question": "Refactor this Employee class that handles both employee data and payroll calculations.",
     "answer": [
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public class Employee\n{\n    public int Id { get; set; }\n    public string Name { get; set; }\n    public decimal HourlyRate { get; set; }\n    public int HoursWorked { get; set; }\n\n    public decimal CalculatePayment()\n    {\n        var regularHours = Math.Min(HoursWorked, 40);\n        var overtimeHours = Math.Max(HoursWorked - 40, 0);\n\n        var regularPay = regularHours * HourlyRate;\n        var overtimePay = overtimeHours * HourlyRate * 1.5m;\n\n        return regularPay + overtimePay;\n    }\n\n    public decimal CalculateTax()\n    {\n        var payment = CalculatePayment();\n        if (payment < 1000) return payment * 0.1m;\n        if (payment < 5000) return payment * 0.2m;\n        return payment * 0.3m;\n    }\n\n    public void SaveToDatabase()\n    {\n        var connection = new SqlConnection(\"...\");\n        // Save employee\n    }\n\n    public string GeneratePayslip()\n    {\n        return $\"Employee: {Name}, Payment: {CalculatePayment():C}, Tax: {CalculateTax():C}\";\n    }\n}",
+        "codeType": "neutral"
+      },
       {
         "type": "text",
         "content": "Separate into focused classes:"
@@ -1469,6 +1637,14 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "// Domain entities\npublic class Cart\n{\n    public string CustomerId { get; set; }\n    public List<CartItem> Items { get; set; } = new();\n}\n\npublic class CartItem\n{\n    public string ProductId { get; set; }\n    public int Quantity { get; set; }\n    public decimal Price { get; set; }\n}\n\npublic class Order\n{\n    public string Id { get; set; }\n    public string CustomerId { get; set; }\n    public List<OrderItem> Items { get; set; } = new();\n    public decimal Total { get; set; }\n    public string Status { get; set; }\n    public DateTime CreatedAt { get; set; }\n}\n\n// Responsibility: Inventory management\npublic interface IInventoryService\n{\n    Task<bool> CheckAvailabilityAsync(string productId, int quantity);\n    Task ReserveAsync(string productId, int quantity);\n    Task ReleaseAsync(string productId, int quantity);\n}\n\npublic class InventoryService : IInventoryService\n{\n    private readonly IInventoryRepository _repository;\n\n    public InventoryService(IInventoryRepository repository)\n    {\n        _repository = repository;\n    }\n\n    public async Task<bool> CheckAvailabilityAsync(string productId, int quantity)\n    {\n        var stock = await _repository.GetStockAsync(productId);\n        return stock >= quantity;\n    }\n\n    public async Task ReserveAsync(string productId, int quantity)\n    {\n        await _repository.DecrementStockAsync(productId, quantity);\n    }\n\n    public async Task ReleaseAsync(string productId, int quantity)\n    {\n        await _repository.IncrementStockAsync(productId, quantity);\n    }\n}\n\n// Responsibility: Payment processing\npublic interface IPaymentService\n{\n    Task<PaymentResult> ProcessPaymentAsync(string customerId, decimal amount, string paymentMethod);\n}\n\npublic class PaymentResult\n{\n    public bool Success { get; set; }\n    public string TransactionId { get; set; }\n    public string ErrorMessage { get; set; }\n}\n\npublic class PaymentService : IPaymentService\n{\n    private readonly IPaymentGateway _gateway;\n\n    public PaymentService(IPaymentGateway gateway)\n    {\n        _gateway = gateway;\n    }\n\n    public async Task<PaymentResult> ProcessPaymentAsync(string customerId, decimal amount, string paymentMethod)\n    {\n        return await _gateway.ChargeAsync(customerId, amount, paymentMethod);\n    }\n}\n\n// Responsibility: Order creation\npublic interface IOrderFactory\n{\n    Order CreateOrder(Cart cart);\n}\n\npublic class OrderFactory : IOrderFactory\n{\n    public Order CreateOrder(Cart cart)\n    {\n        return new Order\n        {\n            Id = Guid.NewGuid().ToString(),\n            CustomerId = cart.CustomerId,\n            Items = cart.Items.Select(ci => new OrderItem\n            {\n                ProductId = ci.ProductId,\n                Quantity = ci.Quantity,\n                Price = ci.Price\n            }).ToList(),\n            Total = cart.Items.Sum(ci => ci.Price * ci.Quantity),\n            Status = \"Pending\",\n            CreatedAt = DateTime.UtcNow\n        };\n    }\n}\n\n// Responsibility: Order persistence\npublic interface IOrderRepository\n{\n    Task SaveAsync(Order order);\n    Task UpdateStatusAsync(string orderId, string status);\n}\n\n// Responsibility: Customer notifications\npublic interface INotificationService\n{\n    Task SendOrderConfirmationAsync(Order order);\n    Task SendPaymentFailureAsync(string customerId, string reason);\n}\n\npublic class NotificationService : INotificationService\n{\n    private readonly IEmailService _emailService;\n    private readonly ISmsService _smsService;\n\n    public NotificationService(IEmailService emailService, ISmsService smsService)\n    {\n        _emailService = emailService;\n        _smsService = smsService;\n    }\n\n    public async Task SendOrderConfirmationAsync(Order order)\n    {\n        await _emailService.SendAsync(order.CustomerId, \"Order Confirmation\", $\"Order {order.Id} confirmed\");\n    }\n\n    public async Task SendPaymentFailureAsync(string customerId, string reason)\n    {\n        await _emailService.SendAsync(customerId, \"Payment Failed\", reason);\n    }\n}\n\n// Orchestrator: Checkout process\npublic class CheckoutService\n{\n    private readonly IInventoryService _inventoryService;\n    private readonly IPaymentService _paymentService;\n    private readonly IOrderFactory _orderFactory;\n    private readonly IOrderRepository _orderRepository;\n    private readonly INotificationService _notificationService;\n    private readonly ILogger<CheckoutService> _logger;\n\n    public CheckoutService(\n        IInventoryService inventoryService,\n        IPaymentService paymentService,\n        IOrderFactory orderFactory,\n        IOrderRepository orderRepository,\n        INotificationService notificationService,\n        ILogger<CheckoutService> logger)\n    {\n        _inventoryService = inventoryService;\n        _paymentService = paymentService;\n        _orderFactory = orderFactory;\n        _orderRepository = orderRepository;\n        _notificationService = notificationService;\n        _logger = logger;\n    }\n\n    public async Task<CheckoutResult> CheckoutAsync(Cart cart, string paymentMethod)\n    {\n        try\n        {\n            // Step 1: Check inventory\n            foreach (var item in cart.Items)\n            {\n                var available = await _inventoryService.CheckAvailabilityAsync(item.ProductId, item.Quantity);\n                if (!available)\n                {\n                    return CheckoutResult.Failed($\"Product {item.ProductId} is out of stock\");\n                }\n            }\n\n            // Step 2: Reserve inventory\n            foreach (var item in cart.Items)\n            {\n                await _inventoryService.ReserveAsync(item.ProductId, item.Quantity);\n            }\n\n            // Step 3: Create order\n            var order = _orderFactory.CreateOrder(cart);\n            await _orderRepository.SaveAsync(order);\n\n            // Step 4: Process payment\n            var paymentResult = await _paymentService.ProcessPaymentAsync(\n                cart.CustomerId,\n                order.Total,\n                paymentMethod);\n\n            if (!paymentResult.Success)\n            {\n                // Rollback inventory\n                foreach (var item in cart.Items)\n                {\n                    await _inventoryService.ReleaseAsync(item.ProductId, item.Quantity);\n                }\n\n                await _orderRepository.UpdateStatusAsync(order.Id, \"PaymentFailed\");\n                await _notificationService.SendPaymentFailureAsync(cart.CustomerId, paymentResult.ErrorMessage);\n\n                return CheckoutResult.Failed(paymentResult.ErrorMessage);\n            }\n\n            // Step 5: Confirm order\n            await _orderRepository.UpdateStatusAsync(order.Id, \"Confirmed\");\n            await _notificationService.SendOrderConfirmationAsync(order);\n\n            _logger.LogInformation($\"Checkout completed for order {order.Id}\");\n\n            return CheckoutResult.Success(order.Id);\n        }\n        catch (Exception ex)\n        {\n            _logger.LogError(ex, \"Checkout failed\");\n            throw;\n        }\n    }\n}\n\npublic class CheckoutResult\n{\n    public bool Success { get; set; }\n    public string OrderId { get; set; }\n    public string ErrorMessage { get; set; }\n\n    public static CheckoutResult Success(string orderId) =>\n        new() { Success = true, OrderId = orderId };\n\n    public static CheckoutResult Failed(string message) =>\n        new() { Success = false, ErrorMessage = message };\n}",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Total Exercises: 25+"
+      },
+      {
+        "type": "text",
+        "content": "Each refactoring demonstrates how SRP makes code more maintainable, testable, and easier to change. Remember: a class should have only one reason to change!"
       }
     ],
     "category": "practice",
@@ -1489,6 +1665,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "app.UseMiddleware<CorrelationMiddleware>();\napp.UseMiddleware<ExceptionHandlingMiddleware>();\napp.UseRouting();\napp.UseAuthentication();\napp.UseAuthorization();\napp.MapControllers();",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when building consistent request handling. Avoid when for minimal APIs you might use delegate pipeline but still similar."
       }
     ],
     "category": "practice",
@@ -1509,6 +1689,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "services.AddApiVersioning(options =>\n{\n    options.DefaultApiVersion = new ApiVersion(1, 0);\n    options.AssumeDefaultVersionWhenUnspecified = true;\n    options.ReportApiVersions = true;\n});\nservices.AddVersionedApiExplorer();",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when breaking changes; maintain backward compatibility by keeping old controllers. Avoid when internal services with clients you control; choose contract-first to avoid version explosion."
       }
     ],
     "category": "practice",
@@ -1529,6 +1713,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "services.AddRateLimiter(options =>\n{\n    options.AddFixedWindowLimiter(\"per-account\", opt =>\n    {\n        opt.Window = TimeSpan.FromMinutes(1);\n        opt.PermitLimit = 60;\n        opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;\n        opt.QueueLimit = 20;\n    });\n});\n\napp.UseRateLimiter();",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when protecting downstream resources. Avoid when latency-critical internal traffic; consider other forms of protection."
       }
     ],
     "category": "practice",
@@ -1549,6 +1737,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "context.TraceIdentifier = context.TraceIdentifier ?? Guid.NewGuid().ToString();\n_logger.LogInformation(\"{CorrelationId} handling {Path}\", context.TraceIdentifier, context.Request.Path);\nhttpClient.DefaultRequestHeaders.Add(\"X-Correlation-ID\", context.TraceIdentifier);",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when need distributed tracing. Avoid when truly isolated services—rare."
       }
     ],
     "category": "practice",
@@ -1562,13 +1754,34 @@ window.PRACTICE_DATA = [
     "answer": [
       {
         "type": "text",
-        "content": "Quick summary (Microsoft.Extensions.DependencyInjection semantics): - Transient: a new instance is created every time the service is requested. - Scoped: a single instance is created per scope (in ASP.NET Core a scope is typically a single HTTP request). - Singleton: a single instance is created for the application's lifetime (or until the container is disposed)."
+        "content": "Quick summary (Microsoft.Extensions.DependencyInjection semantics):"
+      },
+      {
+        "type": "list",
+        "items": [
+          "Transient: a new instance is created every time the service is requested.",
+          "Scoped: a single instance is created per scope (in ASP.NET Core a scope is typically a single HTTP request).",
+          "Singleton: a single instance is created for the application's lifetime (or until the container is disposed)."
+        ]
       },
       {
         "type": "code",
         "language": "csharp",
         "code": "services.AddTransient<IRepo, Repo>();   // new Repo each injection\nservices.AddScoped<IRepo, Repo>();      // one Repo per request/scope\nservices.AddSingleton<IRepo, Repo>();   // single Repo for the app lifetime",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Important tips:"
+      },
+      {
+        "type": "list",
+        "items": [
+          "Use Scoped for per-request services that hold state tied to the request (e.g., DbContext).",
+          "Use Singleton for stateless, thread-safe services (caches, configuration providers). Be careful with mutable singletons.",
+          "Avoid injecting a Scoped service into a Singleton - the scoped service may be captured incorrectly leading to unintended shared state or runtime errors.",
+          "Transient is good for lightweight, stateless services; it can be used when you explicitly want fresh instances."
+        ]
       }
     ],
     "category": "practice",
@@ -1669,6 +1882,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "var builder = WebApplication.CreateBuilder(args);\nbuilder.Services.AddSingleton<IPriceFeed, PriceFeed>();\nvar app = builder.Build();\n\napp.MapGet(\"/health\", (IPriceFeed feed) => feed.IsConnected\n    ? Results.Ok(new { status = \"ok\" })\n    : Results.StatusCode(StatusCodes.Status503ServiceUnavailable));\n\nawait app.RunAsync();",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Notes: Mapping the health check keeps the app's composition root small. Consider adding UseHealthChecks or custom readiness/liveness probes for Kubernetes deployments."
       }
     ],
     "category": "practice",
@@ -2009,6 +2226,14 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "builder.Services.AddRateLimiter(options =>\n{\n    options.AddPolicy(\"per-tenant\", context =>\n        RateLimitPartition.GetFixedWindowLimiter(\n            partitionKey: context.User.FindFirst(\"tenant\")?.Value ?? \"anon\",\n            factory: _ => new FixedWindowRateLimiterOptions\n            {\n                PermitLimit = 60,\n                Window = TimeSpan.FromMinutes(1)\n            }));\n});\n\napp.UseRateLimiter();",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Total Exercises: 45+"
+      },
+      {
+        "type": "text",
+        "content": "Master these patterns to build robust, scalable APIs with proper lifecycle management!"
       }
     ],
     "category": "practice",
@@ -2029,6 +2254,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3));\nvar tasks = endpoints.Select(url => httpClient.GetStringAsync(url, cts.Token));\nstring[] responses = await Task.WhenAll(tasks);",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when: Limited number of independent calls; want fail-fast. Avoid when: Endpoints depend on each other or you must gracefully degrade per-call."
       }
     ],
     "category": "practice",
@@ -2049,6 +2278,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "var policy = Policy.WrapAsync(\n    Policy.Handle<HttpRequestException>()\n          .OrResult<HttpResponseMessage>(r => (int)r.StatusCode >= 500)\n          .WaitAndRetryAsync(3, attempt => TimeSpan.FromMilliseconds(200 * attempt)),\n    Policy.Handle<HttpRequestException>()\n          .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30))\n);\n\nvar response = await policy.ExecuteAsync(() => httpClient.SendAsync(request));",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when: Downstream instability; need resilience. Avoid when: Operations must not be retried (e.g., non-idempotent commands without safeguards)."
       }
     ],
     "category": "practice",
@@ -2069,6 +2302,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "var channel = Channel.CreateBounded<Message>(new BoundedChannelOptions(100)\n{\n    FullMode = BoundedChannelFullMode.Wait\n});\n\n// Producer\n_ = Task.Run(async () =>\n{\n    await foreach (var msg in source.ReadAllAsync())\n        await channel.Writer.WriteAsync(msg);\n});\n\n// Consumer\nawait foreach (var msg in channel.Reader.ReadAllAsync())\n{\n    await ProcessAsync(msg);\n}",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when: Consumer slower than producer; need to avoid overload. Avoid when: Throughput must be maximized with zero buffering—consider scaling consumers instead."
       }
     ],
     "category": "practice",
@@ -2089,6 +2326,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "private readonly SemaphoreSlim _mutex = new(1, 1);\n\npublic async Task UseSharedAsync()\n{\n    await _mutex.WaitAsync();\n    try { await SharedAsyncOperation(); }\n    finally { _mutex.Release(); }\n}",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use SemaphoreSlim when: Async code needs mutual exclusion or limited parallelism. Avoid when: Code is synchronous—lock has less overhead."
       }
     ],
     "category": "practice",
@@ -2389,6 +2630,14 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "public class ResilientDataService\n{\n    private readonly HttpClient _httpClient;\n    private readonly IMemoryCache _cache;\n\n    public async Task<Data> GetDataAsync(string key)\n    {\n        // Try cache first\n        if (_cache.TryGetValue(key, out Data cachedData))\n        {\n            return cachedData;\n        }\n\n        try\n        {\n            // Try API\n            var data = await _httpClient.GetFromJsonAsync<Data>($\"/api/data/{key}\");\n\n            // Update cache\n            _cache.Set(key, data, TimeSpan.FromMinutes(5));\n\n            return data;\n        }\n        catch (HttpRequestException ex)\n        {\n            // Fallback to stale cache if available\n            if (_cache.TryGetValue($\"stale_{key}\", out Data staleData))\n            {\n                return staleData;\n            }\n\n            throw;\n        }\n    }\n}",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Total Exercises: 40+"
+      },
+      {
+        "type": "text",
+        "content": "Focus on understanding cancellation, error handling, and coordination patterns!"
       }
     ],
     "category": "practice",
@@ -2409,6 +2658,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3));\nvar tasks = endpoints.Select(url => httpClient.GetStringAsync(url, cts.Token));\nstring[] responses = await Task.WhenAll(tasks);",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when limited number of independent calls; want fail-fast. Avoid when endpoints depend on each other or you must gracefully degrade per-call."
       }
     ],
     "category": "practice",
@@ -2429,6 +2682,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "var policy = Policy.WrapAsync(\n    Policy.Handle<HttpRequestException>()\n          .OrResult<HttpResponseMessage>(r => (int)r.StatusCode >= 500)\n          .WaitAndRetryAsync(3, attempt => TimeSpan.FromMilliseconds(200 * attempt)),\n    Policy.Handle<HttpRequestException>()\n          .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30))\n);\n\nvar response = await policy.ExecuteAsync(() => httpClient.SendAsync(request));",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when downstream instability; need resilience. Avoid when operations must not be retried (e.g., non-idempotent commands without safeguards)."
       }
     ],
     "category": "practice",
@@ -2449,6 +2706,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "var channel = Channel.CreateBounded<Message>(new BoundedChannelOptions(100)\n{\n    FullMode = BoundedChannelFullMode.Wait\n});\n\n// Producer\n_ = Task.Run(async () =>\n{\n    await foreach (var msg in source.ReadAllAsync())\n        await channel.Writer.WriteAsync(msg);\n});\n\n// Consumer\nawait foreach (var msg in channel.Reader.ReadAllAsync())\n{\n    await ProcessAsync(msg);\n}",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when consumer slower than producer; need to avoid overload. Avoid when throughput must be maximized with zero buffering—consider scaling consumers instead."
       }
     ],
     "category": "practice",
@@ -2469,6 +2730,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "private readonly SemaphoreSlim _mutex = new(1, 1);\n\npublic async Task UseSharedAsync()\n{\n    await _mutex.WaitAsync();\n    try { await SharedAsyncOperation(); }\n    finally { _mutex.Release(); }\n}",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use SemaphoreSlim when async code needs mutual exclusion or limited parallelism. Avoid when code is synchronous—lock has less overhead."
       }
     ],
     "category": "practice",
@@ -2909,6 +3174,14 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "public sealed class SimpleCircuitBreaker\n{\n    private int _failures;\n    private DateTime _openedAt;\n    private readonly int _threshold;\n    private readonly TimeSpan _openDuration;\n\n    public SimpleCircuitBreaker(int threshold, TimeSpan openDuration)\n    {\n        _threshold = threshold;\n        _openDuration = openDuration;\n    }\n\n    public bool CanExecute()\n    {\n        if (_failures < _threshold)\n            return true;\n\n        return DateTime.UtcNow - _openedAt > _openDuration;\n    }\n\n    public void RecordFailure()\n    {\n        _failures += 1;\n        if (_failures == _threshold)\n            _openedAt = DateTime.UtcNow;\n    }\n\n    public void RecordSuccess()\n    {\n        _failures = 0;\n    }\n}",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Total Exercises: 40+"
+      },
+      {
+        "type": "text",
+        "content": "Focus on understanding cancellation, error handling, and coordination patterns!"
       }
     ],
     "category": "practice",
@@ -3182,7 +3455,7 @@ window.PRACTICE_DATA = [
     "answer": [
       {
         "type": "text",
-        "content": "Use structs for small, immutable, short-lived data without inheritance. Use classes for identity, polymorphism, or large mutable state."
+        "content": "Use structs for small, immutable, short-lived data without inheritance. Use classes for identity, polymorphism, or large mutable state. Structs reduce GC pressure by living inline and being collected with stack frames."
       },
       {
         "type": "code",
@@ -3202,13 +3475,37 @@ window.PRACTICE_DATA = [
     "answer": [
       {
         "type": "text",
-        "content": "Use in for large structs to avoid defensive copies."
+        "content": "Use in for large structs to avoid defensive copies. A defensive copy is an automatic copy the runtime or compiler makes to protect data from being modified."
       },
       {
         "type": "code",
         "language": "csharp",
         "code": "public static decimal CalculateTax(in Money price, decimal rate)\n{\n    return price.Amount * rate;\n}",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "In C#, structs are value types, so they are normally copied when:"
+      },
+      {
+        "type": "list",
+        "items": [
+          "Passed to a method",
+          "Returned from a method",
+          "Accessed through certain properties or interfaces"
+        ]
+      },
+      {
+        "type": "text",
+        "content": "The copy exists to ensure that the original value cannot be changed unintentionally."
+      },
+      {
+        "type": "list",
+        "items": [
+          "in passes the struct by reference, not by value",
+          "The method receives a read-only reference",
+          "No full struct copy is made"
+        ]
       }
     ],
     "category": "practice",
@@ -3503,6 +3800,14 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "var orders = new List<Order>\n{\n    new(\"A\", 10),\n    new(\"B\", 20)\n};",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Total Exercises: 16+"
+      },
+      {
+        "type": "text",
+        "content": "Practice each exercise by writing the code and explaining your choices out loud."
       }
     ],
     "category": "practice",
@@ -3523,6 +3828,10 @@ window.PRACTICE_DATA = [
         "language": "sql",
         "code": "WITH daily AS (\n    SELECT instrument_id,\n           trade_timestamp::date AS trade_date,\n           SUM(volume) AS daily_volume\n    FROM trades\n    GROUP BY instrument_id, trade_timestamp::date\n)\nSELECT instrument_id,\n       trade_date,\n       daily_volume,\n       SUM(daily_volume) OVER (\n           PARTITION BY instrument_id\n           ORDER BY trade_date\n           ROWS BETWEEN 6 PRECEDING AND CURRENT ROW\n       ) AS rolling_7d_volume\nFROM daily\nORDER BY instrument_id, trade_date;",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when need rolling metrics in SQL. Avoid when database lacks window functions—use app-side aggregation."
       }
     ],
     "category": "practice",
@@ -3557,6 +3866,10 @@ window.PRACTICE_DATA = [
         "language": "sql",
         "code": "CREATE NONCLUSTERED INDEX IX_Orders_Account_Status\n    ON Orders(AccountId, Status)\n    INCLUDE (CreatedAt, Amount);",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use covering index when query needs subset of columns; avoid extra lookups. Avoid when frequent writes—maintaining many indexes hurts performance."
       }
     ],
     "category": "practice",
@@ -4098,7 +4411,15 @@ window.PRACTICE_DATA = [
     "answer": [
       {
         "type": "text",
-        "content": "Capture the execution plan, check index usage, update stats, and validate parameter sniffing. Total Exercises: 35+ Master data access patterns for building high-performance, scalable applications!"
+        "content": "Capture the execution plan, check index usage, update stats, and validate parameter sniffing."
+      },
+      {
+        "type": "text",
+        "content": "Total Exercises: 35+"
+      },
+      {
+        "type": "text",
+        "content": "Master data access patterns for building high-performance, scalable applications!"
       }
     ],
     "category": "practice",
@@ -4119,6 +4440,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "var latestTrades = trades\n    .GroupBy(t => t.AccountId)\n    .Select(g => g.OrderByDescending(t => t.Timestamp).First());",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when you need the most recent entry per key without mutating state, such as building dashboards or reconciling snapshots. Avoid when the dataset is huge and you'd benefit from streaming/SQL aggregation; consider database query with ROW_NUMBER or a materialized view to avoid loading everything into memory."
       }
     ],
     "category": "practice",
@@ -4139,6 +4464,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "var flat = nestedCodes.SelectMany(list => list);",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when you have nested enumerables and simply need to concatenate them. Avoid when you must retain hierarchy boundaries—use nested loops instead."
       }
     ],
     "category": "practice",
@@ -4159,6 +4488,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "// SelectMany\nvar pairs = accounts.SelectMany(a => a.Orders, (a, o) => new { a.Id, o.Id });\n\n// Nested loops\nforeach (var a in accounts)\n    foreach (var o in a.Orders)\n        yield return (a.Id, o.Id);",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use SelectMany when you want a fluent declarative pipeline or need joins. Use loops when performance-critical, complex control flow, or break/continue needed."
       }
     ],
     "category": "practice",
@@ -4179,6 +4512,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "var duplicates = orders\n    .GroupBy(o => new { o.AccountId, o.ClientOrderId })\n    .Where(g => g.Count() > 1)\n    .Select(g => new {\n        g.Key.AccountId,\n        g.Key.ClientOrderId,\n        Count = g.Count(),\n        LatestTimestamp = g.Max(o => o.Timestamp)\n    });",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when you need summaries and easy grouping. Avoid when data volume exceeds in-memory capabilities—use database aggregates or streaming dedup."
       }
     ],
     "category": "practice",
@@ -4339,6 +4676,19 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "public IEnumerable<Product> GetProductsPage(int pageNumber, int pageSize)\n{\n    return dbContext.Products\n        .OrderBy(p => p.Id)  // IMPORTANT: Must order for consistent pagination\n        .Skip((pageNumber - 1) * pageSize)\n        .Take(pageSize)\n        .ToList();  // Execute query here\n}",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Potential Issues:"
+      },
+      {
+        "type": "list",
+        "items": [
+          "IQueryable: Translates to SQL, efficient but can cause N+1 queries if not careful",
+          "IEnumerable: Loads all data into memory before Skip/Take, very inefficient",
+          "Always order before Skip/Take to ensure consistent results",
+          "Consider total count query for UI pagination info"
+        ]
       }
     ],
     "category": "practice",
@@ -4450,6 +4800,12 @@ window.PRACTICE_DATA = [
   {
     "question": "Identify and fix performance issues in this query.",
     "answer": [
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "// ❌ Bad: Multiple database round trips\nvar orders = dbContext.Orders.ToList();\nforeach (var order in orders)\n{\n    order.Customer = dbContext.Customers.Find(order.CustomerId);\n    order.Items = dbContext.OrderItems.Where(i => i.OrderId == order.Id).ToList();\n}",
+        "codeType": "neutral"
+      },
       {
         "type": "text",
         "content": "Use eager loading with Include."
@@ -4759,6 +5115,14 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "var prefix = prices.TakeWhile(p => p.IsValid).ToList();\nvar rest = prices.SkipWhile(p => p.IsValid).ToList();",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Total Exercises: 40+"
+      },
+      {
+        "type": "text",
+        "content": "Practice these exercises by actually writing the code. Don't just read—implement and test!"
       }
     ],
     "category": "practice",
@@ -4793,6 +5157,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "channel.BasicConsume(queue, autoAck: false, consumer);\nconsumer.Received += (sender, ea) =>\n{\n    Handle(ea.Body);\n    channel.BasicAck(ea.DeliveryTag, multiple: false);\n};",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when you can tolerate duplicates; critical to ensure no loss. Avoid when exactly-once semantics required—use transactional outbox + dedup."
       }
     ],
     "category": "practice",
@@ -4813,6 +5181,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "public async Task Handle(FundAccount command)\n{\n    var transferId = await _payments.DebitAsync(command.PaymentId);\n    try\n    {\n        await _ledger.CreditAsync(command.AccountId, command.Amount);\n        await _notifications.SendAsync(command.AccountId, \"Funding complete\");\n    }\n    catch\n    {\n        await _payments.RefundAsync(transferId);\n        throw;\n    }\n}",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when multi-step, distributed transactions. Avoid when single system handles all steps—simple ACID transaction suffices."
       }
     ],
     "category": "practice",
@@ -4833,6 +5205,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "await using var tx = await db.Database.BeginTransactionAsync();\norder.Status = OrderStatus.Accepted;\ndb.Outbox.Add(new OutboxMessage(order.Id, new OrderAccepted(order.Id)));\nawait db.SaveChangesAsync();\nawait tx.CommitAsync();",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when need atomic DB + message publish. Avoid when no shared database or eventual consistency acceptable without duplication."
       }
     ],
     "category": "practice",
@@ -5141,6 +5517,14 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "var delayMs = Math.Min(30_000, 200 * (int)Math.Pow(2, attempt));\nawait Task.Delay(delayMs, ct);",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Total Exercises: 35+"
+      },
+      {
+        "type": "text",
+        "content": "Master messaging patterns for building resilient, event-driven distributed systems!"
       }
     ],
     "category": "practice",
@@ -5235,6 +5619,19 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "// Avoid capture\nvar count = items.Count(static i => i.IsActive);",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Key points:"
+      },
+      {
+        "type": "list",
+        "items": [
+          "Objects >= 85KB go to LOH",
+          "LOH is part of Gen 2",
+          "LOH doesn't get compacted by default (can cause fragmentation)",
+          "Use ArrayPool or compact LOH manually </details>"
+        ]
       }
     ],
     "category": "practice",
@@ -5255,6 +5652,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "while (await mt5Stream.MoveNextAsync())\n{\n    var normalized = Normalize(mt5Stream.Current);\n    await cache.SetAsync(normalized.Symbol, normalized.Price);\n    await hubContext.Clients.Group(normalized.Symbol)\n        .SendAsync(\"price\", normalized);\n}",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when need low-latency price dissemination. Avoid when low-frequency batch updates suffice."
       }
     ],
     "category": "practice",
@@ -5275,6 +5676,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "public async Task<IActionResult> Submit(OrderRequest dto)\n{\n    var order = await _validator.ValidateAsync(dto);\n    await _repository.SavePending(order);\n    var result = await _mtGateway.SendAsync(order);\n    await _repository.UpdateStatus(order.Id, result.Status);\n    await _bus.Publish(new OrderStatusChanged(order.Id, result.Status));\n    return Ok(result);\n}",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when real-time trading with external platforms. Avoid when simple internal workflows—overkill."
       }
     ],
     "category": "practice",
@@ -5295,6 +5700,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "var meter = new Meter(\"Trading.Services\");\nvar orderLatency = meter.CreateHistogram<double>(\"order_latency_ms\");\norderLatency.Record(latencyMs, KeyValuePair.Create<string, object?>(\"service\", serviceName));",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when need proactive observability. Avoid when prototype with low SLA."
       }
     ],
     "category": "practice",
@@ -5315,6 +5724,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "var riskResponse = await _riskClient.EvaluateAsync(order, ct);\nif (!riskResponse.Approved)\n    return OrderDecision.Rejected(riskResponse.Reason);",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Use when external compliance requirement. Avoid when latency-critical path can't tolerate external dependency—consider in-process rules."
       }
     ],
     "category": "practice",
@@ -5335,6 +5748,10 @@ window.PRACTICE_DATA = [
         "language": "csharp",
         "code": "Architecture Components:\n1. API Gateway (YARP, Ocelot, or Kong)\n   - Authentication/Authorization\n   - Rate limiting\n   - Request routing\n   - Response aggregation\n\n2. Order Service\n   - Order placement\n   - Order status tracking\n   - Saga orchestration\n   - Database: Orders, OrderItems\n\n3. Inventory Service\n   - Stock management\n   - Reservation system\n   - Database: Products, Stock\n\n4. Payment Service\n   - Payment processing\n   - Refunds\n   - Database: Transactions\n\n5. Shipping Service\n   - Shipping label generation\n   - Tracking\n   - Database: Shipments\n\n6. Notification Service\n   - Email/SMS notifications\n   - Event-driven (consumes from message bus)\n\n7. Infrastructure\n   - Message Bus: RabbitMQ/Kafka\n   - Cache: Redis\n   - Service Discovery: Consul/Kubernetes\n   - Config: Consul/Azure App Config\n   - Observability: Prometheus + Grafana + Jaeger",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "Example Saga Implementation:"
       },
       {
         "type": "code",
@@ -5594,7 +6011,11 @@ window.PRACTICE_DATA = [
     "answer": [
       {
         "type": "text",
-        "content": "Use active-active for read-heavy services, active-passive for write-heavy, with DNS failover, replicated data stores, and idempotent writes. Reads (market data, reporting) can be served locally for low latency, while writes go to a single primary region to avoid conflicts. Failover is handled via health checks and traffic rerouting, with idempotency preventing duplicate orders during retries."
+        "content": "Use active-active for read-heavy services, active-passive for write-heavy, with DNS failover, replicated data stores, and idempotent writes."
+      },
+      {
+        "type": "text",
+        "content": "Reads (market data, reporting) can be served locally for low latency, while writes go to a single primary region to avoid conflicts. Failover is handled via health checks and traffic rerouting, with idempotency preventing duplicate orders during retries."
       }
     ],
     "category": "practice",
@@ -5608,7 +6029,11 @@ window.PRACTICE_DATA = [
     "answer": [
       {
         "type": "text",
-        "content": "Choose a shard key (tenant id), use consistent hashing, route via a shard map, and ensure cross-shard queries are minimized or handled via read models. A shard map allows moving or isolating large tenants without code changes. Global queries are usually served from aggregated read models instead of live cross-shard joins."
+        "content": "Choose a shard key (tenant id), use consistent hashing, route via a shard map, and ensure cross-shard queries are minimized or handled via read models."
+      },
+      {
+        "type": "text",
+        "content": "A shard map allows moving or isolating large tenants without code changes. Global queries are usually served from aggregated read models instead of live cross-shard joins."
       }
     ],
     "category": "practice",
@@ -5622,7 +6047,11 @@ window.PRACTICE_DATA = [
     "answer": [
       {
         "type": "text",
-        "content": "Use short TTLs, write-through cache for authoritative updates, and a pub/sub channel to invalidate per-symbol keys on updates. Short TTLs (Time-To-Live) limit staleness, while pub/sub (Publish–Subscribe) ensures fast propagation of price changes. Versioning or timestamps help prevent out-of-order updates from overwriting newer prices."
+        "content": "Use short TTLs, write-through cache for authoritative updates, and a pub/sub channel to invalidate per-symbol keys on updates."
+      },
+      {
+        "type": "text",
+        "content": "Short TTLs (Time-To-Live) limit staleness, while pub/sub (Publish–Subscribe) ensures fast propagation of price changes. Versioning or timestamps help prevent out-of-order updates from overwriting newer prices."
       }
     ],
     "category": "practice",
@@ -5636,7 +6065,11 @@ window.PRACTICE_DATA = [
     "answer": [
       {
         "type": "text",
-        "content": "Event sourcing is useful for auditability and replay; state storage is simpler for CRUD-heavy systems. Consider storage costs, query complexity, and regulatory requirements. Event sourcing fits domains like orders and trades where history and traceability matter. State storage is preferred when simplicity, performance, and direct querying are more important."
+        "content": "Event sourcing is useful for auditability and replay; state storage is simpler for CRUD-heavy systems. Consider storage costs, query complexity, and regulatory requirements."
+      },
+      {
+        "type": "text",
+        "content": "Event sourcing fits domains like orders and trades where history and traceability matter. State storage is preferred when simplicity, performance, and direct querying are more important."
       }
     ],
     "category": "practice",
@@ -5650,7 +6083,19 @@ window.PRACTICE_DATA = [
     "answer": [
       {
         "type": "text",
-        "content": "Apply bounded queues, adaptive batching, and consumer-side flow control. Drop or coalesce low-priority updates when queues exceed thresholds. Market data streams often coalesce updates per symbol to keep only the latest value. Critical messages are prioritized so correctness is preserved under load. Total Exercises: 30+ Master these patterns to design scalable, resilient distributed systems!"
+        "content": "Apply bounded queues, adaptive batching, and consumer-side flow control. Drop or coalesce low-priority updates when queues exceed thresholds."
+      },
+      {
+        "type": "text",
+        "content": "Market data streams often coalesce updates per symbol to keep only the latest value. Critical messages are prioritized so correctness is preserved under load."
+      },
+      {
+        "type": "text",
+        "content": "Total Exercises: 30+"
+      },
+      {
+        "type": "text",
+        "content": "Master these patterns to design scalable, resilient distributed systems!"
       }
     ],
     "category": "practice",
@@ -5982,7 +6427,15 @@ window.PRACTICE_DATA = [
     "answer": [
       {
         "type": "text",
-        "content": "Compare internal fills to broker confirmations, identify mismatches, and run compensating adjustments with audit logs. Total Exercises: 30+ Master trading domain concepts for building robust, compliant trading platforms!"
+        "content": "Compare internal fills to broker confirmations, identify mismatches, and run compensating adjustments with audit logs."
+      },
+      {
+        "type": "text",
+        "content": "Total Exercises: 30+"
+      },
+      {
+        "type": "text",
+        "content": "Master trading domain concepts for building robust, compliant trading platforms!"
       }
     ],
     "category": "practice",

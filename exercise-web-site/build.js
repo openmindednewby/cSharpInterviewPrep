@@ -63,10 +63,50 @@ function extractQA(markdown, sourcePath) {
   let codeLanguage = '';
   let codeLines = [];
   let codeType = null; // 'good' or 'bad'
+  let paragraphLines = [];
+  let inList = false;
+  let listItems = [];
+  let inTable = false;
+  let tableHeaders = [];
+  let tableRows = [];
 
   const { sourceFile, topicId, topicLabel } = getTopicInfo(sourcePath);
   const category = 'practice';
   const topic = topicLabel;
+
+  const flushParagraph = () => {
+    if (paragraphLines.length > 0) {
+      currentAnswer.push({
+        type: 'text',
+        content: cleanMarkdown(paragraphLines.join(' '))
+      });
+      paragraphLines = [];
+    }
+  };
+
+  const flushList = () => {
+    if (listItems.length > 0) {
+      currentAnswer.push({
+        type: 'list',
+        items: listItems.map((item) => cleanMarkdown(item))
+      });
+      listItems = [];
+    }
+    inList = false;
+  };
+
+  const flushTable = () => {
+    if (inTable && tableHeaders.length > 0 && tableRows.length > 0) {
+      currentAnswer.push({
+        type: 'table',
+        headers: tableHeaders,
+        rows: tableRows
+      });
+    }
+    inTable = false;
+    tableHeaders = [];
+    tableRows = [];
+  };
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
@@ -75,6 +115,9 @@ function extractQA(markdown, sourcePath) {
     const codeFenceMatch = line.match(/^```(\w+)?/);
     if (codeFenceMatch) {
       if (!inCodeBlock) {
+        flushParagraph();
+        flushList();
+        flushTable();
         inCodeBlock = true;
         codeLanguage = codeFenceMatch[1] || '';
         codeLines = [];
@@ -92,7 +135,7 @@ function extractQA(markdown, sourcePath) {
         }
       } else {
         // End of code block
-        if (currentAnswer.length > 0 && codeLines.length > 0) {
+        if (currentQuestion && codeLines.length > 0) {
           currentAnswer.push({
             type: 'code',
             language: codeLanguage || 'csharp',
@@ -117,6 +160,9 @@ function extractQA(markdown, sourcePath) {
     if (questionMatch) {
       // Save previous Q&A if exists
       if (currentQuestion && currentAnswer.length > 0) {
+        flushParagraph();
+        flushList();
+        flushTable();
         cards.push({
           question: currentQuestion,
           answer: currentAnswer,
@@ -129,32 +175,82 @@ function extractQA(markdown, sourcePath) {
 
       currentQuestion = cleanMarkdown(questionMatch[1]);
       currentAnswer = [];
+      paragraphLines = [];
+      inList = false;
+      listItems = [];
+      inTable = false;
+      tableHeaders = [];
+      tableRows = [];
       continue;
     }
 
     // Match answer pattern: A: answer text
     const answerMatch = line.match(/^A:\s*(.+)/);
     if (answerMatch && currentQuestion) {
-      currentAnswer.push({
-        type: 'text',
-        content: cleanMarkdown(answerMatch[1])
-      });
+      flushParagraph();
+      flushList();
+      flushTable();
+      paragraphLines.push(answerMatch[1]);
       continue;
     }
 
     // Continue answer if we have a question and the line is not empty
-    if (currentQuestion && line.trim() && !line.match(/^#+\s/) && !line.match(/^---+$/)) {
-      // Skip certain lines
-      if (line.startsWith('##') || line.startsWith('###') || line.startsWith('💡')) {
+    if (currentQuestion) {
+      if (!line.trim()) {
+        flushParagraph();
+        flushList();
+        flushTable();
         continue;
       }
 
-      // If the line looks like continuation of answer
-      if (currentAnswer.length > 0) {
-        const lastItem = currentAnswer[currentAnswer.length - 1];
-        if (lastItem.type === 'text') {
-          lastItem.content += ' ' + cleanMarkdown(line);
+      const h3Match = line.match(/^###\s+(.+)/);
+      const h4Match = line.match(/^####\s+(.+)/);
+      if (h3Match || h4Match) {
+        flushParagraph();
+        flushList();
+        flushTable();
+        paragraphLines.push((h3Match || h4Match)[1]);
+        continue;
+      }
+
+      const tableRowMatch = line.match(/^\s*\|(.+)\|\s*$/);
+      if (tableRowMatch) {
+        const cells = tableRowMatch[1].split('|').map(cell => cleanMarkdown(cell.trim()));
+
+        if (!inTable) {
+          flushParagraph();
+          flushList();
+          inTable = true;
+          tableHeaders = cells;
+          tableRows = [];
+        } else if (line.match(/^\s*\|[\s:-]+\|/)) {
+          continue;
+        } else {
+          tableRows.push(cells);
         }
+        continue;
+      } else if (inTable) {
+        flushTable();
+      }
+
+      const listMatch = line.match(/^\s*(?:[-*]|\d+\.)\s+(.+)/);
+      if (listMatch) {
+        if (!inList) {
+          flushParagraph();
+          inList = true;
+          listItems = [];
+        }
+        listItems.push(listMatch[1]);
+        continue;
+      } else if (inList && line.trim()) {
+        listItems[listItems.length - 1] += ' ' + line.trim();
+        continue;
+      } else if (inList) {
+        flushList();
+      }
+
+      if (!line.match(/^---+$/) && !line.match(/^##\s+/) && !line.startsWith('💡')) {
+        paragraphLines.push(line);
       }
     }
 
@@ -163,6 +259,9 @@ function extractQA(markdown, sourcePath) {
     if (headerMatch) {
       // Save any pending Q&A
       if (currentQuestion && currentAnswer.length > 0) {
+        flushParagraph();
+        flushList();
+        flushTable();
         cards.push({
           question: currentQuestion,
           answer: currentAnswer,
@@ -179,6 +278,9 @@ function extractQA(markdown, sourcePath) {
 
   // Save final Q&A if exists
   if (currentQuestion && currentAnswer.length > 0) {
+    flushParagraph();
+    flushList();
+    flushTable();
     cards.push({
       question: currentQuestion,
       answer: currentAnswer,

@@ -1,5 +1,5 @@
 // Auto-generated flash card data from notes/ and practice/ folders
-// Generated on: 2025-12-21T12:45:57.543Z
+// Generated on: 2025-12-21T15:29:00.007Z
 // Total cards: 2124 (824 Q&A, 1238 sections, 62 concepts)
 
 window.FLASH_CARD_DATA = [
@@ -44502,7 +44502,7 @@ window.FLASH_CARD_DATA = [
     "answer": [
       {
         "type": "text",
-        "content": "Use structs for small, immutable, short-lived data without inheritance. Use classes for identity, polymorphism, or large mutable state."
+        "content": "Use structs for small, immutable, short-lived data without inheritance. Use classes for identity, polymorphism, or large mutable state. Structs reduce GC pressure by living inline and being collected with stack frames."
       },
       {
         "type": "code",
@@ -44521,7 +44521,7 @@ window.FLASH_CARD_DATA = [
     "answer": [
       {
         "type": "text",
-        "content": "Use in for large structs to avoid defensive copies."
+        "content": "Use in for large structs to avoid defensive copies. A defensive copy is an automatic copy the runtime or compiler makes to protect data from being modified."
       },
       {
         "type": "code",
@@ -44829,7 +44829,7 @@ window.FLASH_CARD_DATA = [
       },
       {
         "type": "text",
-        "content": "A: Use structs for small, immutable, short-lived data without inheritance. Use classes for identity, polymorphism, or large mutable state."
+        "content": "A: Use structs for small, immutable, short-lived data without inheritance. Use classes for identity, polymorphism, or large mutable state. Structs reduce GC pressure by living inline and being collected with stack frames."
       },
       {
         "type": "code",
@@ -44839,13 +44839,37 @@ window.FLASH_CARD_DATA = [
       },
       {
         "type": "text",
-        "content": "A: Use in for large structs to avoid defensive copies."
+        "content": "A: Use in for large structs to avoid defensive copies. A defensive copy is an automatic copy the runtime or compiler makes to protect data from being modified."
       },
       {
         "type": "code",
         "language": "csharp",
         "code": "public static decimal CalculateTax(in Money price, decimal rate)\n{\n    return price.Amount * rate;\n}",
         "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "In C#, structs are value types, so they are normally copied when:"
+      },
+      {
+        "type": "list",
+        "items": [
+          "Passed to a method",
+          "Returned from a method",
+          "Accessed through certain properties or interfaces"
+        ]
+      },
+      {
+        "type": "text",
+        "content": "The copy exists to ensure that the original value cannot be changed unintentionally."
+      },
+      {
+        "type": "list",
+        "items": [
+          "in passes the struct by reference, not by value",
+          "The method receives a read-only reference",
+          "No full struct copy is made"
+        ]
       }
     ],
     "category": "practice",

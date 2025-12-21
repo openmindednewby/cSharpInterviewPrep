@@ -217,7 +217,7 @@ var d = c; // reference copy
 d.Name = &quot;Zoe&quot;;
 // c.Name is now &quot;Zoe&quot;</code></pre>
 <p><strong>Q: When should you choose a struct over a class?</strong></p>
-<p>A: Use structs for small, immutable, short-lived data without inheritance. Use classes for identity, polymorphism, or large mutable state.</p>
+<p>A: Use structs for small, immutable, short-lived data without inheritance. Use classes for identity, polymorphism, or large mutable state. Structs reduce GC pressure by living inline and being collected with stack frames.</p>
 <pre class="language-csharp"><code class="language-csharp">public readonly struct Money
 {
     public Money(decimal amount, string currency)
@@ -230,11 +230,15 @@ d.Name = &quot;Zoe&quot;;
     public string Currency { get; }
 }</code></pre>
 <p><strong>Q: Demonstrate how to reduce copying with <code>in</code> parameters.</strong></p>
-<p>A: Use <code>in</code> for large structs to avoid defensive copies.</p>
+<p>A: Use <code>in</code> for large structs to avoid defensive copies. A defensive copy is an automatic copy the runtime or compiler makes to protect data from being modified.</p>
 <pre class="language-csharp"><code class="language-csharp">public static decimal CalculateTax(in Money price, decimal rate)
 {
     return price.Amount * rate;
 }</code></pre>
+<p>In C#, structs are value types, so they are normally copied when:</p>
+<ul><li>Passed to a method</li><li>Returned from a method</li><li>Accessed through certain properties or interfaces</li></ul>
+<p>The copy exists to ensure that the original value cannot be changed unintentionally.</p>
+<ul><li><code>in</code> passes the struct by reference, not by value</li><li>The method receives a read-only reference</li><li>No full struct copy is made</li></ul>
 <p>---</p>
 <h2 id="nullability-and-defensive-programming">Nullability and Defensive Programming</h2>
 <p><strong>Q: Show how nullable reference types prevent null bugs.</strong></p>

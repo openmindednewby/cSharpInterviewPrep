@@ -24,7 +24,7 @@ d.Name = "Zoe";
 
 **Q: When should you choose a struct over a class?**
 
-A: Use structs for small, immutable, short-lived data without inheritance. Use classes for identity, polymorphism, or large mutable state.
+A: Use structs for small, immutable, short-lived data without inheritance. Use classes for identity, polymorphism, or large mutable state. Structs reduce GC pressure by living inline and being collected with stack frames.
 
 ```csharp
 public readonly struct Money
@@ -42,7 +42,8 @@ public readonly struct Money
 
 **Q: Demonstrate how to reduce copying with `in` parameters.**
 
-A: Use `in` for large structs to avoid defensive copies.
+A: Use `in` for large structs to avoid defensive copies. A defensive copy is an automatic copy the runtime or compiler makes to protect data from being modified.
+
 
 ```csharp
 public static decimal CalculateTax(in Money price, decimal rate)
@@ -50,6 +51,18 @@ public static decimal CalculateTax(in Money price, decimal rate)
     return price.Amount * rate;
 }
 ```
+
+In C#, structs are value types, so they are normally copied when:
+
+- Passed to a method
+- Returned from a method
+- Accessed through certain properties or interfaces
+
+The copy exists to ensure that the original value cannot be changed unintentionally.
+
+- `in` passes the struct by reference, not by value
+- The method receives a read-only reference
+- No full struct copy is made
 
 ---
 
