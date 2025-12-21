@@ -1,8 +1,10 @@
-# C# Interview Prep Practice Q&A
+# Senior .NET Study Exercises
 
-A focused practice site for C# interview questions and answers. Use the sidebar to pick a topic, answer out loud, then check or reveal the reference answer.
+A focused practice site for senior-level C# and .NET study exercises. Use the sidebar to pick a topic, answer out loud, then check or reveal the reference answer.
 
 ![Exercise website](preview.png)
+
+https://senior-dot-net-study-exercises.dloizides.com
 
 ## Features
 
@@ -39,7 +41,8 @@ exercise-web-site/
 ├── script.js          # Manual practice flow + topic navigation
 ├── styles.css         # Layout, sidebar, and code block styling
 ├── service-worker.js  # Offline support
-└── manifest.json      # PWA manifest
+├── manifest.json      # PWA manifest (JSON)
+└── manifest.webmanifest # PWA manifest (webmanifest)
 ```
 
 ## Getting Started
@@ -105,11 +108,11 @@ npx serve .
 
 ## Integration with the Study Portal
 
-This practice Q&A site complements the other generated outputs:
+This practice site complements the other generated outputs:
 
 - **Study Site** – full documentation with navigation and search
 - **Flash Cards** – auto-rotating review format
-- **Practice Q&A** – manual, topic-driven interview practice
+- **Practice Q&A** – manual, topic-driven exercise review
 
 ## Quick Build Script
 

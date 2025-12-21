@@ -18,6 +18,15 @@ Auto-rotating Q&A cards with code examples for quick review.
 
 **[View Live Flash Cards](https://c-sharp-flash-cards.dloizides.com/)**
 
+### Exercises
+Practice exercises for senior C#/.NET topics.
+
+![Exercises Preview](exercise-web-site/preview.png)
+
+**[View Live Exercises](https://senior-dot-net-study-exercises.dloizides.com/)**
+/)**
+
+
 ---
 
 ## Table of Contents

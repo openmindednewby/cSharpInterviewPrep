@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Practice Q&A data generator for C# interview prep.
+ * Practice Q&A data generator for senior .NET study exercises.
  * - Reads Markdown from the root-level `practice` folder
  * - Extracts Q&A sections and code examples
  * - Generates data.js with practice questions and answers

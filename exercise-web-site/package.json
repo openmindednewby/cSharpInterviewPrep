@@ -1,7 +1,7 @@
 {
-  "name": "csharp-interview-practice-qa",
+  "name": "senior-dotnet-study-exercises",
   "version": "1.0.0",
-  "description": "Practice-focused Q&A for C# interview preparation",
+  "description": "Senior-level .NET study exercises and practice Q&A",
   "main": "index.html",
   "scripts": {
     "build": "node build.js",
@@ -15,6 +15,6 @@
     "dotnet",
     "study-guide"
   ],
-  "author": "C# Interview Prep",
+  "author": "Senior .NET Study Exercises",
   "license": "MIT"
 }

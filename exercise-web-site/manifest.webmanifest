@@ -1,7 +1,7 @@
 {
-  "name": "C# Interview Prep Practice Q&A",
-  "short_name": "C# Practice",
-  "description": "Practice-focused C#/.NET interview questions and answers with manual review controls.",
+  "name": "Senior .NET Study Exercises",
+  "short_name": "Senior .NET",
+  "description": "Senior-level .NET study exercises and practice Q&A with manual review controls.",
   "lang": "en",
   "id": "/",
   "start_url": "/",
@@ -22,7 +22,7 @@
       "src": "/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     }
   ]
 }

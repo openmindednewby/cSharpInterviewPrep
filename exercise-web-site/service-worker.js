@@ -1,9 +1,11 @@
-const CACHE_NAME = 'practice-qa-v1';
+const CACHE_NAME = 'senior-dotnet-study-exercises-v1';
 const urlsToCache = [
   '/index.html',
   '/styles.css',
   '/script.js',
   '/data.js',
+  '/manifest.json',
+  '/manifest.webmanifest',
   '/icon-192x192.png',
   '/icon-512x512.png',
   'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap',
