@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://c-sharp-practice-qa.dloizides.com/sitemap.xml
+Sitemap: https://senior-dot-net-study-exercises.dloizides.com/sitemap.xml
