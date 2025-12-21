@@ -1249,7 +1249,7 @@ Global queries are usually served from aggregated read models instead of live cr
 
 A: Use short TTLs, write-through cache for authoritative updates, and a pub/sub channel to invalidate per-symbol keys on updates.
 
-Short TTLs limit staleness, while pub/sub ensures fast propagation of price changes.
+Short TTLs (Time-To-Live) limit staleness, while pub/sub (Publish–Subscribe) ensures fast propagation of price changes.
 Versioning or timestamps help prevent out-of-order updates from overwriting newer prices.
 
 ---
