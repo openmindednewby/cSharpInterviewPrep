@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for OLogN Logarithmic Time Exercises" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>OLogN Logarithmic Time Exercises | C# Interview Prep Cheat Sheet</title>
+  <link rel="manifest" href="..\..\assets/manifest.webmanifest" />
+  <script>
+    (() => {
+      const supported = ['dark2', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
+      const fallback = 'light';
+      const initial = supported.includes(normalized) ? normalized : fallback;
+      document.documentElement.dataset.theme = initial;
+      window.__studyTheme = initial;
+    })();
+  </script>
+  <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="dark2">Dark 2</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group" data-group="notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="..\../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="..\../notes/logging.html">Logging</a></li><li><a class="nav-link" href="..\../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/O1-Constant-Time.html">O1 Constant Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/OLogN-Logarithmic-Time.html">OLogN Logarithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON-Linear-Time.html">ON Linear Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON2-Quadratic-Time.html">ON2 Quadratic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ONLogN-Linearithmic-Time.html">ONLogN Linearithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/Space-Complexity.html">Space Complexity</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/ICollection.html">ICollection</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IEnumerable.html">IEnumerable</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IList.html">IList</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IQueryable.html">IQueryable</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IReadOnly.html">IReadOnly</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a class="nav-link" href="..\../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a class="nav-link" href="..\../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a class="nav-link" href="..\../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a class="nav-link" href="..\../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a class="nav-link" href="..\../notes/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a class="nav-link" href="..\../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a class="nav-link" href="..\../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a class="nav-link" href="..\../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a class="nav-link" href="..\../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a class="nav-link" href="..\../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a class="nav-link" href="..\../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a class="nav-link" href="..\../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a class="nav-link" href="..\../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a class="nav-link" href="..\../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a class="nav-link" href="..\../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/01-async-patterns.html">01 Async Patterns</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/02-backpressure-rate-limiting.html">02 Backpressure Rate Limiting</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/03-caching-strategies.html">03 Caching Strategies</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/04-database-scaling.html">04 Database Scaling</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/05-message-queues.html">05 Message Queues</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/06-resilience-patterns.html">06 Resilience Patterns</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/07-observability.html">07 Observability</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/08-complete-example.html">08 Complete Example</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/answers.html">Answers</a></li><li><a class="nav-link" href="..\../practice/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="..\../practice/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="..\../practice/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="..\../practice/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="..\../practice/csharp-fundamentals.html">Csharp Fundamentals</a></li><li><a class="nav-link" href="..\../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="..\../practice/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="..\../practice/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="..\../practice/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="..\../practice/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="..\../practice/index.html">Practice</a></li><li><a class="nav-link" href="..\../practice/PRACTICE-STRUCTURE.html">PRACTICE STRUCTURE</a></li><li><a class="nav-link" href="..\../practice/questions.html">Questions</a></li><li><a class="nav-link" href="..\../practice/README.html">README</a></li><li><a class="nav-link" href="..\../practice/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="..\../practice/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="..\../practice/system-design.html">System Design</a></li><li><a class="nav-link" href="..\../practice/trading-domain.html">Trading Domain</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-advanced-topics">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Advanced Topics</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/advanced-topics/async-await-exercises.html">Async Await Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Automapper/index.html">Automapper</a></li></ul>
+    </div><div class="sidebar-group is-open" data-group="practice-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
+        <span>Practice / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="..\../practice/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/O1-Constant-Time-Exercises.html">O1 Constant Time Exercises</a></li><li><a class="nav-link active" href="..\../practice/Big-O-Complexity/OLogN-Logarithmic-Time-Exercises.html">OLogN Logarithmic Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ON-Linear-Time-Exercises.html">ON Linear Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ON2-Quadratic-Time-Exercises.html">ON2 Quadratic Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ONLogN-Linearithmic-Time-Exercises.html">ONLogN Linearithmic Time Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Design-Patterns/Decorator-Pattern-Exercises.html">Decorator Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/index.html">Design Patterns</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Factory-Pattern-Exercises.html">Factory Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Mediator-Pattern-Exercises.html">Mediator Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Observer-Pattern-Exercises.html">Observer Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Strategy-Pattern-Exercises.html">Strategy Pattern Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/FluentValidation/index.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/SOLID/S-Single-Responsibility-Principle-Exercises.html">S Single Responsibility Principle Exercises</a></li><li><a class="nav-link" href="..\../practice/SOLID/index.html">SOLID</a></li></ul>
+    </div></div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">practice\Big-O-Complexity\OLogN-Logarithmic-Time-Exercises.md</div>
+        <h2>OLogN Logarithmic Time Exercises</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#olog-n---logarithmic-time-complexity-exercises">O(log n) - Logarithmic Time Complexity Exercises</a></li><li class="level-2"><a href="#overview">Overview</a></li><li class="level-2"><a href="#exercise-1-binary-search-classic">Exercise 1: Binary Search (Classic)</a></li><li class="level-2"><a href="#exercise-2-binary-search-recursive">Exercise 2: Binary Search (Recursive)</a></li><li class="level-2"><a href="#exercise-3-find-first-occurrence-in-sorted-array">Exercise 3: Find First Occurrence in Sorted Array</a></li><li class="level-2"><a href="#exercise-4-sortedset-operations">Exercise 4: SortedSet Operations</a></li><li class="level-2"><a href="#exercise-5-sorteddictionary-operations">Exercise 5: SortedDictionary Operations</a></li><li class="level-2"><a href="#exercise-6-find-peak-element">Exercise 6: Find Peak Element</a></li><li class="level-2"><a href="#exercise-7-search-in-rotated-sorted-array">Exercise 7: Search in Rotated Sorted Array</a></li><li class="level-2"><a href="#exercise-8-find-minimum-in-rotated-sorted-array">Exercise 8: Find Minimum in Rotated Sorted Array</a></li><li class="level-2"><a href="#exercise-9-square-root-integer">Exercise 9: Square Root (Integer)</a></li><li class="level-2"><a href="#exercise-10-find-insert-position">Exercise 10: Find Insert Position</a></li><li class="level-2"><a href="#exercise-11-power-calculation-optimized">Exercise 11: Power Calculation (Optimized)</a></li><li class="level-2"><a href="#exercise-12-find-kth-smallest-element-in-bst">Exercise 12: Find Kth Smallest Element in BST</a></li><li class="level-2"><a href="#exercise-13-median-of-two-sorted-arrays">Exercise 13: Median of Two Sorted Arrays</a></li><li class="level-2"><a href="#exercise-14-finding-majority-element-divide-and-conquer">Exercise 14: Finding Majority Element (Divide and Conquer)</a></li><li class="level-2"><a href="#exercise-15-binary-indexed-tree-fenwick-tree---range-query">Exercise 15: Binary Indexed Tree (Fenwick Tree) - Range Query</a></li><li class="level-2"><a href="#exercise-16-gcd-greatest-common-divisor---euclidean-algorithm">Exercise 16: GCD (Greatest Common Divisor) - Euclidean Algorithm</a></li><li class="level-2"><a href="#exercise-17-counting-bits">Exercise 17: Counting Bits</a></li><li class="level-2"><a href="#exercise-18-binary-search-on-answer">Exercise 18: Binary Search on Answer</a></li><li class="level-2"><a href="#exercise-19-split-array-largest-sum">Exercise 19: Split Array Largest Sum</a></li><li class="level-2"><a href="#exercise-20-find-duplicate-number">Exercise 20: Find Duplicate Number</a></li><li class="level-2"><a href="#exercise-21-kth-element-in-two-sorted-arrays">Exercise 21: Kth Element in Two Sorted Arrays</a></li><li class="level-2"><a href="#exercise-22-balanced-binary-tree-height">Exercise 22: Balanced Binary Tree Height</a></li><li class="level-2"><a href="#common-interview-questions">Common Interview Questions</a></li><li class="level-3"><a href="#q1-why-is-binary-search-olog-n-and-not-on2">Q1: "Why is binary search O(log n) and not O(n/2)?"</a></li><li class="level-3"><a href="#q2-whats-the-difference-between-olog-n-and-on-in-practice">Q2: "What's the difference between O(log n) and O(n) in practice?"</a></li><li class="level-3"><a href="#q3-can-i-use-binary-search-if-the-array-is-unsorted">Q3: "Can I use binary search if the array is unsorted?"</a></li><li class="level-3"><a href="#q4-is-recursive-binary-search-better-than-iterative">Q4: "Is recursive binary search better than iterative?"</a></li><li class="level-3"><a href="#q5-what-data-structures-have-olog-n-operations">Q5: "What data structures have O(log n) operations?"</a></li><li class="level-2"><a href="#summary">Summary</a></li></ul></div>
+        <h1 id="olog-n---logarithmic-time-complexity-exercises">O(log n) - Logarithmic Time Complexity Exercises</h1>
+<h2 id="overview">Overview</h2>
+<p>O(log n) means the algorithm's runtime grows logarithmically as input size increases. These algorithms typically divide the problem in half (or by some factor) at each step.</p>
+<p><strong>Key Characteristics:</strong></p>
+<ul><li>Very efficient, second only to O(1)</li><li>Common pattern: halving the search space each iteration</li><li>Typical of divide-and-conquer algorithms</li><li>Log base doesn't matter (we drop constants in Big-O)</li></ul>
+<p><strong>Growth Comparison:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">n = 100       → log n ≈ 7 operations
+n = 1,000     → log n ≈ 10 operations
+n = 1,000,000 → log n ≈ 20 operations
+n = 1 billion → log n ≈ 30 operations</code></pre>
+<h2 id="exercise-1-binary-search-classic">Exercise 1: Binary Search (Classic)</h2>
+<p><strong>Problem</strong>: Find target value in a sorted array.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(log n) - Halves search space each iteration
+// Space: O(1) - Only uses a few variables
+public int BinarySearch(int[] arr, int target)
+{
+    int left = 0;
+    int right = arr.Length - 1;
+
+    while (left &lt;= right)
+    {
+        int mid = left + (right - left) / 2;  // Avoid overflow
+
+        if (arr[mid] == target)
+            return mid;
+
+        if (arr[mid] &lt; target)
+            left = mid + 1;  // Search right half
+        else
+            right = mid - 1;  // Search left half
+    }
+
+    return -1;  // Not found
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li><strong>Each iteration</strong>: Eliminates half the remaining elements</li><li><strong>Iterations needed</strong>: log₂(n) where n = array length</li><li><strong>Best Case</strong>: O(1) - target is at middle</li><li><strong>Average/Worst Case</strong>: O(log n) - must keep dividing</li></ul>
+<p><strong>Why O(log n)?</strong></p>
+<pre class="language-csharp"><code class="language-csharp">n = 16: 16 → 8 → 4 → 2 → 1 (4 steps, log₂(16) = 4)
+n = 32: 32 → 16 → 8 → 4 → 2 → 1 (5 steps, log₂(32) = 5)
+n = 64: 64 → 32 → 16 → 8 → 4 → 2 → 1 (6 steps, log₂(64) = 6)</code></pre>
+<p><strong>Interview Insights:</strong></p>
+<ul><li>Only works on sorted arrays</li><li><code>mid = left + (right - left) / 2</code> prevents integer overflow</li><li>C#: <code>Array.BinarySearch()</code> is built-in</li></ul>
+<p>---</p>
+<h2 id="exercise-2-binary-search-recursive">Exercise 2: Binary Search (Recursive)</h2>
+<p><strong>Problem</strong>: Implement binary search recursively.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(log n) - Halves search space each call
+// Space: O(log n) - Recursion stack depth
+public int BinarySearchRecursive(int[] arr, int target, int left, int right)
+{
+    if (left &gt; right)
+        return -1;
+
+    int mid = left + (right - left) / 2;
+
+    if (arr[mid] == target)
+        return mid;
+
+    if (arr[mid] &lt; target)
+        return BinarySearchRecursive(arr, target, mid + 1, right);
+    else
+        return BinarySearchRecursive(arr, target, left, mid - 1);
+}
+
+// Wrapper method
+public int BinarySearchRecursive(int[] arr, int target)
+{
+    return BinarySearchRecursive(arr, target, 0, arr.Length - 1);
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li><strong>Time</strong>: O(log n) - same as iterative</li><li><strong>Space</strong>: O(log n) - recursion stack (each call adds to stack)</li><li><strong>Trade-off</strong>: Iterative version has O(1) space</li></ul>
+<p><strong>Recursion Depth:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">n = 1000 → max ~10 recursive calls on stack
+n = 1,000,000 → max ~20 recursive calls on stack</code></pre>
+<p>---</p>
+<h2 id="exercise-3-find-first-occurrence-in-sorted-array">Exercise 3: Find First Occurrence in Sorted Array</h2>
+<p><strong>Problem</strong>: Find the first occurrence of target in a sorted array with duplicates.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(log n) - Modified binary search
+// Space: O(1) - Only uses variables
+public int FindFirstOccurrence(int[] arr, int target)
+{
+    int left = 0;
+    int right = arr.Length - 1;
+    int result = -1;
+
+    while (left &lt;= right)
+    {
+        int mid = left + (right - left) / 2;
+
+        if (arr[mid] == target)
+        {
+            result = mid;        // Found it, but keep searching left
+            right = mid - 1;     // Continue searching in left half
+        }
+        else if (arr[mid] &lt; target)
+        {
+            left = mid + 1;
+        }
+        else
+        {
+            right = mid - 1;
+        }
+    }
+
+    return result;
+}
+
+// Find last occurrence (similar approach)
+public int FindLastOccurrence(int[] arr, int target)
+{
+    int left = 0;
+    int right = arr.Length - 1;
+    int result = -1;
+
+    while (left &lt;= right)
+    {
+        int mid = left + (right - left) / 2;
+
+        if (arr[mid] == target)
+        {
+            result = mid;
+            left = mid + 1;      // Continue searching in right half
+        }
+        else if (arr[mid] &lt; target)
+        {
+            left = mid + 1;
+        }
+        else
+        {
+            right = mid - 1;
+        }
+    }
+
+    return result;
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>Still halves search space each iteration</li><li>Even with duplicates, O(log n) complexity</li><li><strong>Use Case</strong>: Finding range of values in sorted array</li></ul>
+<p>---</p>
+<h2 id="exercise-4-sortedset-operations">Exercise 4: SortedSet Operations</h2>
+<p><strong>Problem</strong>: Use C# SortedSet which has O(log n) operations.</p>
+<pre class="language-csharp"><code class="language-csharp">// All major operations are O(log n) - Red-Black Tree implementation
+public class SortedSetOperations
+{
+    private SortedSet&lt;int&gt; set = new SortedSet&lt;int&gt;();
+
+    // O(log n) - Insert into balanced tree
+    public bool Add(int value)
+    {
+        return set.Add(value);
+    }
+
+    // O(log n) - Search in balanced tree
+    public bool Contains(int value)
+    {
+        return set.Contains(value);
+    }
+
+    // O(log n) - Remove from balanced tree
+    public bool Remove(int value)
+    {
+        return set.Remove(value);
+    }
+
+    // O(log n) - Find minimum (leftmost node)
+    public int GetMin()
+    {
+        return set.Min;
+    }
+
+    // O(log n) - Find maximum (rightmost node)
+    public int GetMax()
+    {
+        return set.Max;
+    }
+
+    // O(log n) - Get values in range
+    public IEnumerable&lt;int&gt; GetRange(int min, int max)
+    {
+        return set.GetViewBetween(min, max);  // O(log n) to find bounds
+    }
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>SortedSet uses Red-Black Tree (self-balancing BST)</li><li>Tree height: O(log n)</li><li>All operations traverse from root to leaf: O(log n)</li></ul>
+<p><strong>Comparison:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">HashSet&lt;T&gt;:        Add/Remove/Contains: O(1) average, no ordering
+SortedSet&lt;T&gt;:      Add/Remove/Contains: O(log n), maintains order
+List&lt;T&gt;:           Add: O(1), Contains: O(n), no automatic sorting</code></pre>
+<p>---</p>
+<h2 id="exercise-5-sorteddictionary-operations">Exercise 5: SortedDictionary Operations</h2>
+<p><strong>Problem</strong>: Use SortedDictionary for O(log n) operations.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(log n) for most operations
+public class SortedDictionaryOperations
+{
+    private SortedDictionary&lt;int, string&gt; dict = new SortedDictionary&lt;int, string&gt;();
+
+    // O(log n) - Insert into tree
+    public void Add(int key, string value)
+    {
+        dict[key] = value;
+    }
+
+    // O(log n) - Search tree
+    public bool ContainsKey(int key)
+    {
+        return dict.ContainsKey(key);
+    }
+
+    // O(log n) - Remove from tree
+    public bool Remove(int key)
+    {
+        return dict.Remove(key);
+    }
+
+    // O(log n) - Get smallest key
+    public int GetMinKey()
+    {
+        return dict.Keys.First();
+    }
+
+    // O(log n) - Get largest key
+    public int GetMaxKey()
+    {
+        return dict.Keys.Last();
+    }
+}</code></pre>
+<p><strong>Comparison:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">Dictionary&lt;K,V&gt;:        O(1) average, O(n) worst, unordered
+SortedDictionary&lt;K,V&gt;:  O(log n) guaranteed, ordered by key</code></pre>
+<p>---</p>
+<h2 id="exercise-6-find-peak-element">Exercise 6: Find Peak Element</h2>
+<p><strong>Problem</strong>: Find a peak element in an array where peak is greater than its neighbors.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(log n) - Binary search approach
+// Space: O(1) - Only uses variables
+public int FindPeakElement(int[] arr)
+{
+    int left = 0;
+    int right = arr.Length - 1;
+
+    while (left &lt; right)
+    {
+        int mid = left + (right - left) / 2;
+
+        // If mid is less than next element, peak is on right
+        if (arr[mid] &lt; arr[mid + 1])
+        {
+            left = mid + 1;
+        }
+        else  // Peak is on left (including mid)
+        {
+            right = mid;
+        }
+    }
+
+    return left;  // left == right, peak found
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>Doesn't require sorted array</li><li>Binary search on condition (slope direction)</li><li>Guarantees finding a peak in O(log n)</li></ul>
+<p><strong>Why it works:</strong></p>
+<ul><li>If arr[mid] < arr[mid+1], there must be a peak to the right</li><li>If arr[mid] > arr[mid+1], there must be a peak to the left (or mid is peak)</li><li>Eventually converges to a peak</li></ul>
+<p>---</p>
+<h2 id="exercise-7-search-in-rotated-sorted-array">Exercise 7: Search in Rotated Sorted Array</h2>
+<p><strong>Problem</strong>: Search in a sorted array that has been rotated.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(log n) - Modified binary search
+// Space: O(1) - Only uses variables
+public int SearchRotatedArray(int[] arr, int target)
+{
+    int left = 0;
+    int right = arr.Length - 1;
+
+    while (left &lt;= right)
+    {
+        int mid = left + (right - left) / 2;
+
+        if (arr[mid] == target)
+            return mid;
+
+        // Determine which half is sorted
+        if (arr[left] &lt;= arr[mid])  // Left half is sorted
+        {
+            if (target &gt;= arr[left] &amp;&amp; target &lt; arr[mid])
+                right = mid - 1;  // Target in left half
+            else
+                left = mid + 1;   // Target in right half
+        }
+        else  // Right half is sorted
+        {
+            if (target &gt; arr[mid] &amp;&amp; target &lt;= arr[right])
+                left = mid + 1;   // Target in right half
+            else
+                right = mid - 1;  // Target in left half
+        }
+    }
+
+    return -1;
+}</code></pre>
+<p><strong>Example:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">Array: [4, 5, 6, 7, 0, 1, 2]  (rotated at index 4)
+Target: 0
+
+Step 1: left=0, right=6, mid=3 (value=7)
+        Left half [4,5,6,7] is sorted
+        Target 0 not in [4,7], search right
+
+Step 2: left=4, right=6, mid=5 (value=1)
+        Right half [1,2] is sorted
+        Target 0 not in [1,2], search left
+
+Step 3: left=4, right=4, mid=4 (value=0)
+        Found! Return 4</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>Still O(log n) despite rotation</li><li>Key insight: one half is always sorted</li><li>Use sorted half to determine direction</li></ul>
+<p>---</p>
+<h2 id="exercise-8-find-minimum-in-rotated-sorted-array">Exercise 8: Find Minimum in Rotated Sorted Array</h2>
+<p><strong>Problem</strong>: Find the minimum element in a rotated sorted array.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(log n) - Binary search for rotation point
+// Space: O(1) - Only uses variables
+public int FindMinInRotatedArray(int[] arr)
+{
+    int left = 0;
+    int right = arr.Length - 1;
+
+    // If array is not rotated
+    if (arr[left] &lt; arr[right])
+        return arr[left];
+
+    while (left &lt; right)
+    {
+        int mid = left + (right - left) / 2;
+
+        // If mid element is greater than right element,
+        // minimum is in right half
+        if (arr[mid] &gt; arr[right])
+        {
+            left = mid + 1;
+        }
+        else  // Minimum is in left half (including mid)
+        {
+            right = mid;
+        }
+    }
+
+    return arr[left];
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>Minimum is at the rotation point</li><li>Binary search to find where rotation occurs</li><li>O(log n) complexity</li></ul>
+<p>---</p>
+<h2 id="exercise-9-square-root-integer">Exercise 9: Square Root (Integer)</h2>
+<p><strong>Problem</strong>: Find integer square root using binary search.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(log n) - Binary search on answer
+// Space: O(1) - Only uses variables
+public int Sqrt(int x)
+{
+    if (x &lt; 2) return x;
+
+    int left = 1;
+    int right = x / 2;  // sqrt(x) can&#39;t be more than x/2 for x &gt;= 2
+
+    while (left &lt;= right)
+    {
+        int mid = left + (right - left) / 2;
+        long square = (long)mid * mid;  // Use long to avoid overflow
+
+        if (square == x)
+            return mid;
+        else if (square &lt; x)
+            left = mid + 1;
+        else
+            right = mid - 1;
+    }
+
+    return right;  // Return floor of sqrt
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>Binary search on the range [1, x/2]</li><li>Each iteration halves the search space</li><li>O(log n) where n is the input value</li></ul>
+<p><strong>Example:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">Sqrt(25):
+Range [1, 12]
+12² = 144 &gt; 25, try lower
+6² = 36 &gt; 25, try lower
+3² = 9 &lt; 25, try higher
+4² = 16 &lt; 25, try higher
+5² = 25 ✓ Found!</code></pre>
+<p>---</p>
+<h2 id="exercise-10-find-insert-position">Exercise 10: Find Insert Position</h2>
+<p><strong>Problem</strong>: Find position where target should be inserted in sorted array.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(log n) - Binary search
+// Space: O(1) - Only uses variables
+public int SearchInsertPosition(int[] arr, int target)
+{
+    int left = 0;
+    int right = arr.Length - 1;
+
+    while (left &lt;= right)
+    {
+        int mid = left + (right - left) / 2;
+
+        if (arr[mid] == target)
+            return mid;
+        else if (arr[mid] &lt; target)
+            left = mid + 1;
+        else
+            right = mid - 1;
+    }
+
+    return left;  // Insert position
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>Modified binary search</li><li>Returns index where element should be inserted</li><li>Maintains sorted order</li></ul>
+<p><strong>Example:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">Array: [1, 3, 5, 6]
+Target: 4
+Result: 2 (insert between 3 and 5)
+
+Target: 7
+Result: 4 (insert at end)</code></pre>
+<p>---</p>
+<h2 id="exercise-11-power-calculation-optimized">Exercise 11: Power Calculation (Optimized)</h2>
+<p><strong>Problem</strong>: Calculate x^n efficiently.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(log n) - Divide exponent by 2 each step
+// Space: O(log n) - Recursion stack
+public double Power(double x, int n)
+{
+    if (n == 0) return 1;
+
+    // Handle negative exponents
+    long N = n;
+    if (N &lt; 0)
+    {
+        x = 1 / x;
+        N = -N;
+    }
+
+    return PowerHelper(x, N);
+}
+
+private double PowerHelper(double x, long n)
+{
+    if (n == 0) return 1;
+
+    double half = PowerHelper(x, n / 2);
+
+    if (n % 2 == 0)
+        return half * half;
+    else
+        return half * half * x;
+}
+
+// Iterative version: O(log n) time, O(1) space
+public double PowerIterative(double x, int n)
+{
+    if (n == 0) return 1;
+
+    long N = n;
+    if (N &lt; 0)
+    {
+        x = 1 / x;
+        N = -N;
+    }
+
+    double result = 1;
+    double currentProduct = x;
+
+    while (N &gt; 0)
+    {
+        if (N % 2 == 1)
+            result *= currentProduct;
+
+        currentProduct *= currentProduct;
+        N /= 2;
+    }
+
+    return result;
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li><strong>Naive approach</strong>: x <em> x </em> x ... n times = O(n)</li><li><strong>Optimized approach</strong>: Uses exponentiation by squaring = O(log n)</li></ul>
+<p><strong>How it works:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">x^8 = x^4 * x^4
+x^4 = x^2 * x^2
+x^2 = x * x
+
+Steps: 3 (log₂(8) = 3)
+Instead of 8 multiplications!
+
+x^10 = x^5 * x^5
+x^5 = x^2 * x^2 * x
+x^2 = x * x
+
+Steps: 4 (⌈log₂(10)⌉ = 4)</code></pre>
+<p>---</p>
+<h2 id="exercise-12-find-kth-smallest-element-in-bst">Exercise 12: Find Kth Smallest Element in BST</h2>
+<p><strong>Problem</strong>: Find kth smallest element in a Binary Search Tree.</p>
+<pre class="language-csharp"><code class="language-csharp">public class TreeNode
+{
+    public int val;
+    public TreeNode left;
+    public TreeNode right;
+}
+
+// Time: O(log n) average for balanced BST
+// Space: O(log n) for recursion stack
+public int KthSmallest(TreeNode root, int k)
+{
+    int count = CountNodes(root.left);
+
+    if (k &lt;= count)
+        return KthSmallest(root.left, k);
+    else if (k &gt; count + 1)
+        return KthSmallest(root.right, k - count - 1);
+    else
+        return root.val;
+}
+
+private int CountNodes(TreeNode node)
+{
+    if (node == null) return 0;
+    return 1 + CountNodes(node.left) + CountNodes(node.right);
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li><strong>For balanced BST</strong>: O(log n) - goes down one path</li><li><strong>For skewed BST</strong>: O(n) - may need to traverse all</li><li><strong>Best case</strong>: Element is at root or near root</li><li><strong>Space</strong>: O(h) where h is height (log n for balanced)</li></ul>
+<p>---</p>
+<h2 id="exercise-13-median-of-two-sorted-arrays">Exercise 13: Median of Two Sorted Arrays</h2>
+<p><strong>Problem</strong>: Find median of two sorted arrays in O(log(min(m,n))).</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(log(min(m,n))) - Binary search on smaller array
+// Space: O(1) - Only uses variables
+public double FindMedianSortedArrays(int[] nums1, int[] nums2)
+{
+    // Ensure nums1 is the smaller array
+    if (nums1.Length &gt; nums2.Length)
+        return FindMedianSortedArrays(nums2, nums1);
+
+    int m = nums1.Length;
+    int n = nums2.Length;
+    int left = 0;
+    int right = m;
+
+    while (left &lt;= right)
+    {
+        int partition1 = (left + right) / 2;
+        int partition2 = (m + n + 1) / 2 - partition1;
+
+        int maxLeft1 = (partition1 == 0) ? int.MinValue : nums1[partition1 - 1];
+        int minRight1 = (partition1 == m) ? int.MaxValue : nums1[partition1];
+
+        int maxLeft2 = (partition2 == 0) ? int.MinValue : nums2[partition2 - 1];
+        int minRight2 = (partition2 == n) ? int.MaxValue : nums2[partition2];
+
+        if (maxLeft1 &lt;= minRight2 &amp;&amp; maxLeft2 &lt;= minRight1)
+        {
+            if ((m + n) % 2 == 0)
+                return (Math.Max(maxLeft1, maxLeft2) + Math.Min(minRight1, minRight2)) / 2.0;
+            else
+                return Math.Max(maxLeft1, maxLeft2);
+        }
+        else if (maxLeft1 &gt; minRight2)
+            right = partition1 - 1;
+        else
+            left = partition1 + 1;
+    }
+
+    throw new ArgumentException(&quot;Input arrays are not sorted&quot;);
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>Binary search on smaller array</li><li>O(log(min(m,n))) complexity</li><li>Very tricky but important interview problem</li></ul>
+<p>---</p>
+<h2 id="exercise-14-finding-majority-element-divide-and-conquer">Exercise 14: Finding Majority Element (Divide and Conquer)</h2>
+<p><strong>Problem</strong>: Find element that appears more than n/2 times.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(n log n) - Divide and conquer
+// Space: O(log n) - Recursion stack
+public int MajorityElement(int[] nums)
+{
+    return MajorityElementRec(nums, 0, nums.Length - 1);
+}
+
+private int MajorityElementRec(int[] nums, int left, int right)
+{
+    // Base case
+    if (left == right)
+        return nums[left];
+
+    // Divide
+    int mid = left + (right - left) / 2;
+    int leftMajority = MajorityElementRec(nums, left, mid);
+    int rightMajority = MajorityElementRec(nums, mid + 1, right);
+
+    // If same, it&#39;s the majority
+    if (leftMajority == rightMajority)
+        return leftMajority;
+
+    // Count each in the range
+    int leftCount = CountInRange(nums, leftMajority, left, right);
+    int rightCount = CountInRange(nums, rightMajority, left, right);
+
+    return leftCount &gt; rightCount ? leftMajority : rightMajority;
+}
+
+private int CountInRange(int[] nums, int target, int left, int right)
+{
+    int count = 0;
+    for (int i = left; i &lt;= right; i++)
+    {
+        if (nums[i] == target)
+            count++;
+    }
+    return count;
+}</code></pre>
+<p><strong>Note</strong>: This is actually O(n log n) due to counting, but demonstrates divide-and-conquer pattern. Better solution is Boyer-Moore voting (O(n)).</p>
+<p>---</p>
+<h2 id="exercise-15-binary-indexed-tree-fenwick-tree---range-query">Exercise 15: Binary Indexed Tree (Fenwick Tree) - Range Query</h2>
+<p><strong>Problem</strong>: Efficiently compute prefix sums with updates.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(log n) for update and query
+// Space: O(n) for tree array
+public class BinaryIndexedTree
+{
+    private int[] tree;
+    private int n;
+
+    public BinaryIndexedTree(int size)
+    {
+        n = size;
+        tree = new int[n + 1];
+    }
+
+    // O(log n) - Update value at index
+    public void Update(int index, int delta)
+    {
+        index++;  // BIT is 1-indexed
+        while (index &lt;= n)
+        {
+            tree[index] += delta;
+            index += index &amp; (-index);  // Add last set bit
+        }
+    }
+
+    // O(log n) - Get prefix sum from 0 to index
+    public int Query(int index)
+    {
+        index++;  // BIT is 1-indexed
+        int sum = 0;
+        while (index &gt; 0)
+        {
+            sum += tree[index];
+            index -= index &amp; (-index);  // Remove last set bit
+        }
+        return sum;
+    }
+
+    // O(log n) - Get sum in range [left, right]
+    public int RangeQuery(int left, int right)
+    {
+        return Query(right) - (left &gt; 0 ? Query(left - 1) : 0);
+    }
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>Each update/query traverses tree height: O(log n)</li><li>Much faster than recalculating sums: O(n)</li><li>Space: O(n) for tree</li></ul>
+<p><strong>Use Cases:</strong></p>
+<ul><li>Range sum queries with updates</li><li>Counting inversions</li><li>Frequency counting</li></ul>
+<p>---</p>
+<h2 id="exercise-16-gcd-greatest-common-divisor---euclidean-algorithm">Exercise 16: GCD (Greatest Common Divisor) - Euclidean Algorithm</h2>
+<p><strong>Problem</strong>: Find GCD of two numbers.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(log(min(a,b))) - Number of divisions
+// Space: O(1) - Iterative version
+public int GCD(int a, int b)
+{
+    while (b != 0)
+    {
+        int temp = b;
+        b = a % b;
+        a = temp;
+    }
+    return a;
+}
+
+// Recursive version: O(log(min(a,b))) time, O(log(min(a,b))) space
+public int GCDRecursive(int a, int b)
+{
+    if (b == 0) return a;
+    return GCDRecursive(b, a % b);
+}</code></pre>
+<p><strong>Why O(log n)?</strong></p>
+<ul><li>Each step reduces the larger number by at least half</li><li>After two iterations: b ≤ a/2</li><li>Number of steps: O(log(min(a,b)))</li></ul>
+<p><strong>Example:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">GCD(48, 18):
+48 % 18 = 12
+18 % 12 = 6
+12 % 6 = 0
+Result: 6
+
+Steps: 3 (log₂(18) ≈ 4.17)</code></pre>
+<p>---</p>
+<h2 id="exercise-17-counting-bits">Exercise 17: Counting Bits</h2>
+<p><strong>Problem</strong>: Count number of 1s in binary representation.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(log n) - Number of bits
+// Space: O(1) - Only uses variables
+public int CountOnes(int n)
+{
+    int count = 0;
+    while (n != 0)
+    {
+        count++;
+        n = n &amp; (n - 1);  // Remove rightmost 1
+    }
+    return count;
+}
+
+// Alternative: O(log n)
+public int CountOnesSimple(int n)
+{
+    int count = 0;
+    while (n != 0)
+    {
+        count += n &amp; 1;
+        n &gt;&gt;= 1;
+    }
+    return count;
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>Number of iterations = number of 1 bits</li><li>At most log₂(n) bits in n</li><li>O(log n) worst case</li></ul>
+<p><strong>Example:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">n = 13 (binary: 1101)
+Has 3 ones
+Iterations: 3</code></pre>
+<p>---</p>
+<h2 id="exercise-18-binary-search-on-answer">Exercise 18: Binary Search on Answer</h2>
+<p><strong>Problem</strong>: Find minimum capacity to ship packages within D days.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(n log(sum)) where sum is total weight
+// Space: O(1)
+public int ShipWithinDays(int[] weights, int days)
+{
+    int left = weights.Max();      // Min capacity (largest package)
+    int right = weights.Sum();     // Max capacity (all at once)
+
+    while (left &lt; right)
+    {
+        int mid = left + (right - left) / 2;
+        if (CanShip(weights, days, mid))
+            right = mid;  // Try smaller capacity
+        else
+            left = mid + 1;  // Need larger capacity
+    }
+
+    return left;
+}
+
+private bool CanShip(int[] weights, int days, int capacity)
+{
+    int daysNeeded = 1;
+    int currentLoad = 0;
+
+    foreach (int weight in weights)
+    {
+        if (currentLoad + weight &gt; capacity)
+        {
+            daysNeeded++;
+            currentLoad = weight;
+        }
+        else
+        {
+            currentLoad += weight;
+        }
+    }
+
+    return daysNeeded &lt;= days;
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>Binary search on the answer (capacity)</li><li>Each validation: O(n)</li><li>Total: O(n log(sum))</li></ul>
+<p><strong>Pattern</strong>: When you need to find minimum/maximum value satisfying a condition, try binary search on the answer!</p>
+<p>---</p>
+<h2 id="exercise-19-split-array-largest-sum">Exercise 19: Split Array Largest Sum</h2>
+<p><strong>Problem</strong>: Split array into m subarrays to minimize the largest sum.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(n log(sum)) - Binary search on answer
+// Space: O(1)
+public int SplitArray(int[] nums, int m)
+{
+    int left = nums.Max();   // Min possible (largest element)
+    int right = nums.Sum();  // Max possible (no splits)
+
+    while (left &lt; right)
+    {
+        int mid = left + (right - left) / 2;
+        if (CanSplit(nums, m, mid))
+            right = mid;
+        else
+            left = mid + 1;
+    }
+
+    return left;
+}
+
+private bool CanSplit(int[] nums, int m, int maxSum)
+{
+    int subarrays = 1;
+    int currentSum = 0;
+
+    foreach (int num in nums)
+    {
+        if (currentSum + num &gt; maxSum)
+        {
+            subarrays++;
+            currentSum = num;
+            if (subarrays &gt; m)
+                return false;
+        }
+        else
+        {
+            currentSum += num;
+        }
+    }
+
+    return true;
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>Binary search on maximum sum</li><li>Each check: O(n)</li><li>Total: O(n log(sum))</li></ul>
+<p>---</p>
+<h2 id="exercise-20-find-duplicate-number">Exercise 20: Find Duplicate Number</h2>
+<p><strong>Problem</strong>: Find duplicate in array [1..n] with n+1 elements using binary search.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(n log n) - Binary search on value range
+// Space: O(1) - Only uses variables
+public int FindDuplicate(int[] nums)
+{
+    int left = 1;
+    int right = nums.Length - 1;
+
+    while (left &lt; right)
+    {
+        int mid = left + (right - left) / 2;
+
+        // Count how many numbers are &lt;= mid
+        int count = 0;
+        foreach (int num in nums)
+        {
+            if (num &lt;= mid)
+                count++;
+        }
+
+        // If count &gt; mid, duplicate is in [left, mid]
+        if (count &gt; mid)
+            right = mid;
+        else
+            left = mid + 1;
+    }
+
+    return left;
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>Binary search on value range [1, n]</li><li>Each iteration counts: O(n)</li><li>Total: O(n log n)</li></ul>
+<p><strong>Pigeonhole Principle</strong>: If count of numbers ≤ mid is greater than mid, duplicate must be in [1, mid].</p>
+<p>---</p>
+<h2 id="exercise-21-kth-element-in-two-sorted-arrays">Exercise 21: Kth Element in Two Sorted Arrays</h2>
+<p><strong>Problem</strong>: Find kth smallest element from two sorted arrays.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(log(min(m,n))) - Binary search
+// Space: O(1) - Only uses variables
+public int FindKthElement(int[] nums1, int[] nums2, int k)
+{
+    int m = nums1.Length;
+    int n = nums2.Length;
+
+    // Ensure nums1 is smaller
+    if (m &gt; n)
+        return FindKthElement(nums2, nums1, k);
+
+    int left = Math.Max(0, k - n);
+    int right = Math.Min(k, m);
+
+    while (left &lt;= right)
+    {
+        int partition1 = (left + right) / 2;
+        int partition2 = k - partition1;
+
+        int maxLeft1 = (partition1 == 0) ? int.MinValue : nums1[partition1 - 1];
+        int minRight1 = (partition1 == m) ? int.MaxValue : nums1[partition1];
+
+        int maxLeft2 = (partition2 == 0) ? int.MinValue : nums2[partition2 - 1];
+        int minRight2 = (partition2 == n) ? int.MaxValue : nums2[partition2];
+
+        if (maxLeft1 &lt;= minRight2 &amp;&amp; maxLeft2 &lt;= minRight1)
+        {
+            return Math.Max(maxLeft1, maxLeft2);
+        }
+        else if (maxLeft1 &gt; minRight2)
+        {
+            right = partition1 - 1;
+        }
+        else
+        {
+            left = partition1 + 1;
+        }
+    }
+
+    throw new ArgumentException();
+}</code></pre>
+<p>---</p>
+<h2 id="exercise-22-balanced-binary-tree-height">Exercise 22: Balanced Binary Tree Height</h2>
+<p><strong>Problem</strong>: Calculate height of balanced binary tree.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(n) but demonstrates O(log n) space for balanced tree
+// Space: O(log n) - Recursion depth for balanced tree
+public int Height(TreeNode root)
+{
+    if (root == null)
+        return 0;
+
+    int leftHeight = Height(root.left);
+    int rightHeight = Height(root.right);
+
+    return 1 + Math.Max(leftHeight, rightHeight);
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li><strong>Time</strong>: O(n) - must visit all nodes</li><li><strong>Space</strong>: O(h) where h is height</li><li>Balanced tree: O(log n) space</li><li>Skewed tree: O(n) space</li></ul>
+<p>---</p>
+<h2 id="common-interview-questions">Common Interview Questions</h2>
+<h3 id="q1-why-is-binary-search-olog-n-and-not-on2">Q1: "Why is binary search O(log n) and not O(n/2)?"</h3>
+<p><strong>Answer</strong>: O(n/2) is O(n) after dropping constants. Binary search halves the remaining elements <em>each time</em>, creating a geometric series: n, n/2, n/4, n/8... The number of times you can halve n before reaching 1 is log₂(n).</p>
+<h3 id="q2-whats-the-difference-between-olog-n-and-on-in-practice">Q2: "What's the difference between O(log n) and O(n) in practice?"</h3>
+<p><strong>Answer</strong>: Massive! For n=1,000,000: O(log n) ≈ 20 operations vs O(n) = 1,000,000 operations. For n=1 billion: O(log n) ≈ 30 operations vs O(n) = 1 billion operations.</p>
+<h3 id="q3-can-i-use-binary-search-if-the-array-is-unsorted">Q3: "Can I use binary search if the array is unsorted?"</h3>
+<p><strong>Answer</strong>: No! Binary search requires the array to be sorted. If unsorted, you'd need to sort first (O(n log n)), which defeats the purpose for a single search. For multiple searches, sorting once + binary searches can be worth it.</p>
+<h3 id="q4-is-recursive-binary-search-better-than-iterative">Q4: "Is recursive binary search better than iterative?"</h3>
+<p><strong>Answer</strong>: Iterative is generally better: same time complexity O(log n), but space is O(1) instead of O(log n) for the recursion stack. Recursive is more elegant but uses extra memory.</p>
+<h3 id="q5-what-data-structures-have-olog-n-operations">Q5: "What data structures have O(log n) operations?"</h3>
+<p><strong>Answer</strong>:</p>
+<ul><li>Balanced BSTs (Red-Black Trees, AVL Trees)</li><li>Heaps (insert, delete)</li><li>SortedSet, SortedDictionary in C#</li><li>Binary Indexed Trees (Fenwick Trees)</li><li>Segment Trees</li></ul>
+<p>---</p>
+<h2 id="summary">Summary</h2>
+<p>O(log n) is excellent complexity, second only to O(1). Key points:</p>
+<ul><li><strong>Main Pattern</strong>: Halving the problem size each step</li><li><strong>Common Uses</strong>: Binary search, balanced trees, divide-and-conquer</li><li><strong>Space Consideration</strong>: Recursive solutions add O(log n) space</li><li><strong>Interview Tip</strong>: Always ask "Is the data sorted?" - enables binary search!</li></ul>
+<p><strong>Next</strong>: Move on to <a href="./ON-Linear-Time-Exercises.md">ON-Linear-Time-Exercises.md</a> to learn about O(n) complexity!</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['dark2', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
+      const fallback = 'light';
+      const initial = supported.includes(normalized) ? normalized : (window.__studyTheme || fallback);
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          sessionStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+    (() => {
+      const groups = document.querySelectorAll('.sidebar-group');
+      if (!groups.length) return;
+      const storageKey = 'study-open-groups';
+      const saved = sessionStorage.getItem(storageKey);
+      const openFromStorage = new Set(saved ? JSON.parse(saved) : []);
+
+      const activeLink = document.querySelector('.nav-link.active');
+      const activeGroup = activeLink?.closest('.sidebar-group');
+      if (activeGroup?.dataset.group) {
+        openFromStorage.add(activeGroup.dataset.group);
+      }
+
+      const syncStorage = () => {
+        const openIds = Array.from(document.querySelectorAll('.sidebar-group.is-open'))
+          .map((group) => group.dataset.group)
+          .filter(Boolean);
+        sessionStorage.setItem(storageKey, JSON.stringify(openIds));
+      };
+
+      const setExpanded = (group, expanded) => {
+        const header = group.querySelector('.sidebar-group__header');
+        const list = group.querySelector('.sidebar-group__items');
+        group.classList.toggle('is-open', expanded);
+        header?.setAttribute('aria-expanded', expanded);
+        if (list) {
+          list.hidden = !expanded;
+        }
+      };
+
+      groups.forEach((group) => {
+        const shouldOpen = openFromStorage.has(group.dataset.group);
+        setExpanded(group, shouldOpen);
+        const header = group.querySelector('.sidebar-group__header');
+        header?.addEventListener('click', () => {
+          const next = !group.classList.contains('is-open');
+          setExpanded(group, next);
+          syncStorage();
+        });
+      });
+    })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swPath = '..\../service-worker.js';
+        navigator.serviceWorker.register(swPath).catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+</body>
+</html>

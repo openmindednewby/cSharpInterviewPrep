@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for ON2 Quadratic Time Exercises" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>ON2 Quadratic Time Exercises | C# Interview Prep Cheat Sheet</title>
+  <link rel="manifest" href="..\..\assets/manifest.webmanifest" />
+  <script>
+    (() => {
+      const supported = ['dark2', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
+      const fallback = 'light';
+      const initial = supported.includes(normalized) ? normalized : fallback;
+      document.documentElement.dataset.theme = initial;
+      window.__studyTheme = initial;
+    })();
+  </script>
+  <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="dark2">Dark 2</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group" data-group="notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="..\../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="..\../notes/logging.html">Logging</a></li><li><a class="nav-link" href="..\../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/O1-Constant-Time.html">O1 Constant Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/OLogN-Logarithmic-Time.html">OLogN Logarithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON-Linear-Time.html">ON Linear Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON2-Quadratic-Time.html">ON2 Quadratic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ONLogN-Linearithmic-Time.html">ONLogN Linearithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/Space-Complexity.html">Space Complexity</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/ICollection.html">ICollection</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IEnumerable.html">IEnumerable</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IList.html">IList</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IQueryable.html">IQueryable</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IReadOnly.html">IReadOnly</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a class="nav-link" href="..\../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a class="nav-link" href="..\../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a class="nav-link" href="..\../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a class="nav-link" href="..\../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a class="nav-link" href="..\../notes/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a class="nav-link" href="..\../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a class="nav-link" href="..\../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a class="nav-link" href="..\../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a class="nav-link" href="..\../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a class="nav-link" href="..\../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a class="nav-link" href="..\../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a class="nav-link" href="..\../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a class="nav-link" href="..\../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a class="nav-link" href="..\../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a class="nav-link" href="..\../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/01-async-patterns.html">01 Async Patterns</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/02-backpressure-rate-limiting.html">02 Backpressure Rate Limiting</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/03-caching-strategies.html">03 Caching Strategies</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/04-database-scaling.html">04 Database Scaling</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/05-message-queues.html">05 Message Queues</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/06-resilience-patterns.html">06 Resilience Patterns</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/07-observability.html">07 Observability</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/08-complete-example.html">08 Complete Example</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/answers.html">Answers</a></li><li><a class="nav-link" href="..\../practice/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="..\../practice/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="..\../practice/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="..\../practice/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="..\../practice/csharp-fundamentals.html">Csharp Fundamentals</a></li><li><a class="nav-link" href="..\../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="..\../practice/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="..\../practice/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="..\../practice/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="..\../practice/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="..\../practice/index.html">Practice</a></li><li><a class="nav-link" href="..\../practice/PRACTICE-STRUCTURE.html">PRACTICE STRUCTURE</a></li><li><a class="nav-link" href="..\../practice/questions.html">Questions</a></li><li><a class="nav-link" href="..\../practice/README.html">README</a></li><li><a class="nav-link" href="..\../practice/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="..\../practice/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="..\../practice/system-design.html">System Design</a></li><li><a class="nav-link" href="..\../practice/trading-domain.html">Trading Domain</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-advanced-topics">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Advanced Topics</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/advanced-topics/async-await-exercises.html">Async Await Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Automapper/index.html">Automapper</a></li></ul>
+    </div><div class="sidebar-group is-open" data-group="practice-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
+        <span>Practice / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="..\../practice/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/O1-Constant-Time-Exercises.html">O1 Constant Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/OLogN-Logarithmic-Time-Exercises.html">OLogN Logarithmic Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ON-Linear-Time-Exercises.html">ON Linear Time Exercises</a></li><li><a class="nav-link active" href="..\../practice/Big-O-Complexity/ON2-Quadratic-Time-Exercises.html">ON2 Quadratic Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ONLogN-Linearithmic-Time-Exercises.html">ONLogN Linearithmic Time Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Design-Patterns/Decorator-Pattern-Exercises.html">Decorator Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/index.html">Design Patterns</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Factory-Pattern-Exercises.html">Factory Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Mediator-Pattern-Exercises.html">Mediator Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Observer-Pattern-Exercises.html">Observer Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Strategy-Pattern-Exercises.html">Strategy Pattern Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/FluentValidation/index.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/SOLID/S-Single-Responsibility-Principle-Exercises.html">S Single Responsibility Principle Exercises</a></li><li><a class="nav-link" href="..\../practice/SOLID/index.html">SOLID</a></li></ul>
+    </div></div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">practice\Big-O-Complexity\ON2-Quadratic-Time-Exercises.md</div>
+        <h2>ON2 Quadratic Time Exercises</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#on---quadratic-time-complexity-exercises">O(n²) - Quadratic Time Complexity Exercises</a></li><li class="level-2"><a href="#overview">Overview</a></li><li class="level-2"><a href="#exercise-1-bubble-sort">Exercise 1: Bubble Sort</a></li><li class="level-2"><a href="#exercise-2-selection-sort">Exercise 2: Selection Sort</a></li><li class="level-2"><a href="#exercise-3-insertion-sort">Exercise 3: Insertion Sort</a></li><li class="level-2"><a href="#exercise-4-check-for-duplicate-pairs-brute-force">Exercise 4: Check for Duplicate Pairs (Brute Force)</a></li><li class="level-2"><a href="#exercise-5-find-all-pairs-with-given-sum">Exercise 5: Find All Pairs with Given Sum</a></li><li class="level-2"><a href="#exercise-6-count-inversions">Exercise 6: Count Inversions</a></li><li class="level-2"><a href="#exercise-7-matrix-diagonal-sum">Exercise 7: Matrix Diagonal Sum</a></li><li class="level-2"><a href="#exercise-8-rotate-matrix-90-degrees">Exercise 8: Rotate Matrix 90 Degrees</a></li><li class="level-2"><a href="#exercise-9-set-matrix-zeros">Exercise 9: Set Matrix Zeros</a></li><li class="level-2"><a href="#exercise-10-spiral-matrix">Exercise 10: Spiral Matrix</a></li><li class="level-2"><a href="#exercise-11-valid-sudoku">Exercise 11: Valid Sudoku</a></li><li class="level-2"><a href="#exercise-12-game-of-life">Exercise 12: Game of Life</a></li><li class="level-2"><a href="#exercise-13-maximum-product-subarray-brute-force">Exercise 13: Maximum Product Subarray (Brute Force)</a></li><li class="level-2"><a href="#exercise-14-unique-paths-in-grid">Exercise 14: Unique Paths in Grid</a></li><li class="level-2"><a href="#exercise-15-longest-palindromic-substring">Exercise 15: Longest Palindromic Substring</a></li><li class="level-2"><a href="#exercise-16-three-sum">Exercise 16: Three Sum</a></li><li class="level-2"><a href="#exercise-17-container-with-most-water">Exercise 17: Container With Most Water</a></li><li class="level-2"><a href="#exercise-18-generate-pascals-triangle">Exercise 18: Generate Pascal's Triangle</a></li><li class="level-2"><a href="#exercise-19-minimum-path-sum-in-grid">Exercise 19: Minimum Path Sum in Grid</a></li><li class="level-2"><a href="#exercise-20-word-search-in-grid">Exercise 20: Word Search in Grid</a></li><li class="level-2"><a href="#common-interview-questions">Common Interview Questions</a></li><li class="level-3"><a href="#q1-when-is-on-acceptable">Q1: "When is O(n²) acceptable?"</a></li><li class="level-3"><a href="#q2-how-can-i-recognize-on-in-my-code">Q2: "How can I recognize O(n²) in my code?"</a></li><li class="level-3"><a href="#q3-can-all-on-algorithms-be-optimized">Q3: "Can all O(n²) algorithms be optimized?"</a></li><li class="level-3"><a href="#q4-is-bubble-sort-ever-useful">Q4: "Is bubble sort ever useful?"</a></li><li class="level-3"><a href="#q5-whats-better-than-nested-loops-for-finding-pairs">Q5: "What's better than nested loops for finding pairs?"</a></li><li class="level-2"><a href="#summary">Summary</a></li></ul></div>
+        <h1 id="on---quadratic-time-complexity-exercises">O(n²) - Quadratic Time Complexity Exercises</h1>
+<h2 id="overview">Overview</h2>
+<p>O(n²) means the algorithm's runtime grows quadratically with input size. If input doubles, runtime quadruples. This is generally inefficient but sometimes unavoidable.</p>
+<p><strong>Key Characteristics:</strong></p>
+<ul><li>Common with nested loops</li><li>Acceptable for small inputs (n < 1000)</li><li>Often a sign of brute force approach</li><li>Sometimes the only solution (or simplest)</li></ul>
+<p><strong>Growth Comparison:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">n = 10        → n² = 100 operations
+n = 100       → n² = 10,000 operations
+n = 1,000     → n² = 1,000,000 operations
+n = 10,000    → n² = 100,000,000 operations (slow!)</code></pre>
+<p><strong>Common Patterns:</strong></p>
+<ul><li>Nested loops over same data</li><li>Comparing all pairs</li><li>Simple sorting algorithms</li><li>Brute force solutions</li></ul>
+<h2 id="exercise-1-bubble-sort">Exercise 1: Bubble Sort</h2>
+<p><strong>Problem</strong>: Sort array by repeatedly swapping adjacent elements.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(n²) - Nested loops
+// Space: O(1) - In-place sorting
+public void BubbleSort(int[] arr)
+{
+    int n = arr.Length;
+
+    for (int i = 0; i &lt; n - 1; i++)  // Outer loop: n iterations
+    {
+        bool swapped = false;
+
+        for (int j = 0; j &lt; n - i - 1; j++)  // Inner loop: ~n iterations
+        {
+            if (arr[j] &gt; arr[j + 1])
+            {
+                // Swap
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+                swapped = true;
+            }
+        }
+
+        // Optimization: stop if no swaps (already sorted)
+        if (!swapped)
+            break;
+    }
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li><strong>Worst Case</strong>: O(n²) - array in reverse order</li><li>First pass: n-1 comparisons</li><li>Second pass: n-2 comparisons</li><li>Total: (n-1) + (n-2) + ... + 1 = n(n-1)/2 = O(n²)</li><li><strong>Best Case</strong>: O(n) - already sorted with optimization</li><li><strong>Average Case</strong>: O(n²)</li><li><strong>Space</strong>: O(1)</li><li><strong>Stable</strong>: Yes</li></ul>
+<p><strong>Why O(n²)?</strong></p>
+<pre class="language-csharp"><code class="language-csharp">Array [5, 3, 8, 4, 2], n = 5
+Pass 1: 4 comparisons
+Pass 2: 3 comparisons
+Pass 3: 2 comparisons
+Pass 4: 1 comparison
+Total: 4+3+2+1 = 10 = n(n-1)/2 = O(n²)</code></pre>
+<p>---</p>
+<h2 id="exercise-2-selection-sort">Exercise 2: Selection Sort</h2>
+<p><strong>Problem</strong>: Sort by repeatedly finding minimum and placing it at beginning.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(n²) - Always, even if sorted
+// Space: O(1) - In-place
+public void SelectionSort(int[] arr)
+{
+    int n = arr.Length;
+
+    for (int i = 0; i &lt; n - 1; i++)  // Outer loop: n iterations
+    {
+        int minIndex = i;
+
+        // Find minimum in remaining array
+        for (int j = i + 1; j &lt; n; j++)  // Inner loop: n-i iterations
+        {
+            if (arr[j] &lt; arr[minIndex])
+            {
+                minIndex = j;
+            }
+        }
+
+        // Swap minimum with current position
+        if (minIndex != i)
+        {
+            int temp = arr[i];
+            arr[i] = arr[minIndex];
+            arr[minIndex] = temp;
+        }
+    }
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li><strong>All Cases</strong>: O(n²) - always does same comparisons</li><li>Comparisons: (n-1) + (n-2) + ... + 1 = O(n²)</li><li>Swaps: O(n) - at most n swaps</li><li><strong>Space</strong>: O(1)</li><li><strong>Stable</strong>: No (but can be made stable)</li></ul>
+<p><strong>Use Case</strong>: When writes are expensive (minimizes swaps)</p>
+<p>---</p>
+<h2 id="exercise-3-insertion-sort">Exercise 3: Insertion Sort</h2>
+<p><strong>Problem</strong>: Sort by building sorted portion one element at a time.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(n²) worst case, O(n) best case
+// Space: O(1) - In-place
+public void InsertionSort(int[] arr)
+{
+    int n = arr.Length;
+
+    for (int i = 1; i &lt; n; i++)  // Outer loop: n iterations
+    {
+        int key = arr[i];
+        int j = i - 1;
+
+        // Shift elements greater than key
+        while (j &gt;= 0 &amp;&amp; arr[j] &gt; key)  // Inner loop: up to i iterations
+        {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+
+        arr[j + 1] = key;
+    }
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li><strong>Worst Case</strong>: O(n²) - reverse sorted array</li><li><strong>Best Case</strong>: O(n) - already sorted</li><li><strong>Average Case</strong>: O(n²)</li><li><strong>Space</strong>: O(1)</li><li><strong>Stable</strong>: Yes</li></ul>
+<p><strong>When to Use</strong>:</p>
+<ul><li>Small arrays (n < 10-20)</li><li>Nearly sorted data</li><li>Online algorithm (can sort as data arrives)</li></ul>
+<p>---</p>
+<h2 id="exercise-4-check-for-duplicate-pairs-brute-force">Exercise 4: Check for Duplicate Pairs (Brute Force)</h2>
+<p><strong>Problem</strong>: Find if array contains any duplicate values.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(n²) - Brute force with nested loops
+// Space: O(1) - No extra space
+public bool ContainsDuplicate(int[] nums)
+{
+    for (int i = 0; i &lt; nums.Length; i++)
+    {
+        for (int j = i + 1; j &lt; nums.Length; j++)
+        {
+            if (nums[i] == nums[j])
+                return true;
+        }
+    }
+    return false;
+}
+
+// Better approach: O(n) with HashSet
+public bool ContainsDuplicateOptimized(int[] nums)
+{
+    var seen = new HashSet&lt;int&gt;();
+
+    foreach (int num in nums)
+    {
+        if (seen.Contains(num))
+            return true;
+        seen.Add(num);
+    }
+
+    return false;
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>Brute force: O(n²) time, O(1) space</li><li>Optimized: O(n) time, O(n) space</li><li><strong>Classic time-space tradeoff!</strong></li></ul>
+<p>---</p>
+<h2 id="exercise-5-find-all-pairs-with-given-sum">Exercise 5: Find All Pairs with Given Sum</h2>
+<p><strong>Problem</strong>: Find all pairs of numbers that sum to target.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(n²) - Check all pairs
+// Space: O(1) - Not counting output
+public List&lt;(int, int)&gt; FindPairsWithSum(int[] arr, int target)
+{
+    var pairs = new List&lt;(int, int)&gt;();
+
+    for (int i = 0; i &lt; arr.Length; i++)
+    {
+        for (int j = i + 1; j &lt; arr.Length; j++)
+        {
+            if (arr[i] + arr[j] == target)
+            {
+                pairs.Add((arr[i], arr[j]));
+            }
+        }
+    }
+
+    return pairs;
+}
+
+// Optimized with HashSet: O(n)
+public List&lt;(int, int)&gt; FindPairsWithSumOptimized(int[] arr, int target)
+{
+    var pairs = new List&lt;(int, int)&gt;();
+    var seen = new HashSet&lt;int&gt;();
+
+    foreach (int num in arr)
+    {
+        int complement = target - num;
+        if (seen.Contains(complement))
+        {
+            pairs.Add((complement, num));
+        }
+        seen.Add(num);
+    }
+
+    return pairs;
+}
+
+// For sorted array: Two pointers O(n)
+public List&lt;(int, int)&gt; FindPairsWithSumSorted(int[] arr, int target)
+{
+    var pairs = new List&lt;(int, int)&gt;();
+    int left = 0, right = arr.Length - 1;
+
+    while (left &lt; right)
+    {
+        int sum = arr[left] + arr[right];
+
+        if (sum == target)
+        {
+            pairs.Add((arr[left], arr[right]));
+            left++;
+            right--;
+        }
+        else if (sum &lt; target)
+        {
+            left++;
+        }
+        else
+        {
+            right--;
+        }
+    }
+
+    return pairs;
+}</code></pre>
+<p><strong>Comparison:</strong></p>
+<ul><li>Brute force: O(n²) time, O(1) space</li><li>Hash set: O(n) time, O(n) space</li><li>Two pointers (sorted): O(n) time, O(1) space</li></ul>
+<p>---</p>
+<h2 id="exercise-6-count-inversions">Exercise 6: Count Inversions</h2>
+<p><strong>Problem</strong>: Count pairs where i < j but arr[i] > arr[j].</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(n²) - Brute force
+// Space: O(1)
+public int CountInversions(int[] arr)
+{
+    int count = 0;
+
+    for (int i = 0; i &lt; arr.Length; i++)
+    {
+        for (int j = i + 1; j &lt; arr.Length; j++)
+        {
+            if (arr[i] &gt; arr[j])
+            {
+                count++;
+            }
+        }
+    }
+
+    return count;
+}
+
+// Optimized using merge sort: O(n log n)
+public int CountInversionsMergeSort(int[] arr)
+{
+    return MergeSortAndCount(arr, 0, arr.Length - 1);
+}
+
+private int MergeSortAndCount(int[] arr, int left, int right)
+{
+    int count = 0;
+
+    if (left &lt; right)
+    {
+        int mid = left + (right - left) / 2;
+
+        count += MergeSortAndCount(arr, left, mid);
+        count += MergeSortAndCount(arr, mid + 1, right);
+        count += MergeAndCount(arr, left, mid, right);
+    }
+
+    return count;
+}
+
+private int MergeAndCount(int[] arr, int left, int mid, int right)
+{
+    int[] leftArr = new int[mid - left + 1];
+    int[] rightArr = new int[right - mid];
+
+    Array.Copy(arr, left, leftArr, 0, leftArr.Length);
+    Array.Copy(arr, mid + 1, rightArr, 0, rightArr.Length);
+
+    int i = 0, j = 0, k = left;
+    int inversions = 0;
+
+    while (i &lt; leftArr.Length &amp;&amp; j &lt; rightArr.Length)
+    {
+        if (leftArr[i] &lt;= rightArr[j])
+        {
+            arr[k++] = leftArr[i++];
+        }
+        else
+        {
+            arr[k++] = rightArr[j++];
+            inversions += (leftArr.Length - i);  // All remaining left elements
+        }
+    }
+
+    while (i &lt; leftArr.Length)
+        arr[k++] = leftArr[i++];
+
+    while (j &lt; rightArr.Length)
+        arr[k++] = rightArr[j++];
+
+    return inversions;
+}</code></pre>
+<p><strong>Example:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">[2, 4, 1, 3, 5]
+Inversions: (2,1), (4,1), (4,3)
+Count: 3</code></pre>
+<p>---</p>
+<h2 id="exercise-7-matrix-diagonal-sum">Exercise 7: Matrix Diagonal Sum</h2>
+<p><strong>Problem</strong>: Sum all diagonal elements in a matrix.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(n²) - Must visit all elements for general case
+// Space: O(1)
+public int DiagonalSum(int[][] matrix)
+{
+    int n = matrix.Length;
+    int sum = 0;
+
+    for (int i = 0; i &lt; n; i++)
+    {
+        for (int j = 0; j &lt; n; j++)
+        {
+            if (i == j || i + j == n - 1)  // Main or anti diagonal
+            {
+                sum += matrix[i][j];
+            }
+        }
+    }
+
+    return sum;
+}
+
+// Optimized: O(n) - Only visit diagonal elements
+public int DiagonalSumOptimized(int[][] matrix)
+{
+    int n = matrix.Length;
+    int sum = 0;
+
+    for (int i = 0; i &lt; n; i++)
+    {
+        sum += matrix[i][i];  // Main diagonal
+
+        if (i != n - 1 - i)  // Avoid counting center twice for odd n
+        {
+            sum += matrix[i][n - 1 - i];  // Anti diagonal
+        }
+    }
+
+    return sum;
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>First approach: O(n²) visits all elements</li><li>Optimized: O(n) visits only diagonal elements</li><li><strong>Lesson</strong>: Don't always need nested loops for 2D arrays!</li></ul>
+<p>---</p>
+<h2 id="exercise-8-rotate-matrix-90-degrees">Exercise 8: Rotate Matrix 90 Degrees</h2>
+<p><strong>Problem</strong>: Rotate n×n matrix 90 degrees clockwise in-place.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(n²) - Must visit all elements
+// Space: O(1) - In-place rotation
+public void Rotate(int[][] matrix)
+{
+    int n = matrix.Length;
+
+    // Transpose: O(n²)
+    for (int i = 0; i &lt; n; i++)
+    {
+        for (int j = i + 1; j &lt; n; j++)
+        {
+            int temp = matrix[i][j];
+            matrix[i][j] = matrix[j][i];
+            matrix[j][i] = temp;
+        }
+    }
+
+    // Reverse each row: O(n²)
+    for (int i = 0; i &lt; n; i++)
+    {
+        Array.Reverse(matrix[i]);
+    }
+}</code></pre>
+<p><strong>Example:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">[1, 2, 3]      [7, 4, 1]
+[4, 5, 6]  →   [8, 5, 2]
+[7, 8, 9]      [9, 6, 3]</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>Must touch every element: O(n²) is optimal</li><li>This is a case where O(n²) is unavoidable!</li></ul>
+<p>---</p>
+<h2 id="exercise-9-set-matrix-zeros">Exercise 9: Set Matrix Zeros</h2>
+<p><strong>Problem</strong>: If element is 0, set entire row and column to 0.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(m × n) - Visit all cells
+// Space: O(m + n) - Track rows and columns
+public void SetZeroes(int[][] matrix)
+{
+    int m = matrix.Length;
+    int n = matrix[0].Length;
+
+    var zeroRows = new HashSet&lt;int&gt;();
+    var zeroCols = new HashSet&lt;int&gt;();
+
+    // Find zeros: O(m × n)
+    for (int i = 0; i &lt; m; i++)
+    {
+        for (int j = 0; j &lt; n; j++)
+        {
+            if (matrix[i][j] == 0)
+            {
+                zeroRows.Add(i);
+                zeroCols.Add(j);
+            }
+        }
+    }
+
+    // Set rows to zero: O(m × n)
+    for (int i = 0; i &lt; m; i++)
+    {
+        for (int j = 0; j &lt; n; j++)
+        {
+            if (zeroRows.Contains(i) || zeroCols.Contains(j))
+            {
+                matrix[i][j] = 0;
+            }
+        }
+    }
+}
+
+// O(1) space solution using first row/column as markers
+public void SetZeroesConstantSpace(int[][] matrix)
+{
+    int m = matrix.Length;
+    int n = matrix[0].Length;
+    bool firstRowZero = false;
+    bool firstColZero = false;
+
+    // Check if first row has zero
+    for (int j = 0; j &lt; n; j++)
+    {
+        if (matrix[0][j] == 0)
+        {
+            firstRowZero = true;
+            break;
+        }
+    }
+
+    // Check if first column has zero
+    for (int i = 0; i &lt; m; i++)
+    {
+        if (matrix[i][0] == 0)
+        {
+            firstColZero = true;
+            break;
+        }
+    }
+
+    // Use first row and column as markers
+    for (int i = 1; i &lt; m; i++)
+    {
+        for (int j = 1; j &lt; n; j++)
+        {
+            if (matrix[i][j] == 0)
+            {
+                matrix[i][0] = 0;
+                matrix[0][j] = 0;
+            }
+        }
+    }
+
+    // Set zeros based on markers
+    for (int i = 1; i &lt; m; i++)
+    {
+        for (int j = 1; j &lt; n; j++)
+        {
+            if (matrix[i][0] == 0 || matrix[0][j] == 0)
+            {
+                matrix[i][j] = 0;
+            }
+        }
+    }
+
+    // Handle first row
+    if (firstRowZero)
+    {
+        for (int j = 0; j &lt; n; j++)
+        {
+            matrix[0][j] = 0;
+        }
+    }
+
+    // Handle first column
+    if (firstColZero)
+    {
+        for (int i = 0; i &lt; m; i++)
+        {
+            matrix[i][0] = 0;
+        }
+    }
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>Both versions: O(m × n) time</li><li>First: O(m + n) space</li><li>Second: O(1) space (clever!)</li></ul>
+<p>---</p>
+<h2 id="exercise-10-spiral-matrix">Exercise 10: Spiral Matrix</h2>
+<p><strong>Problem</strong>: Return all elements of matrix in spiral order.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(m × n) - Visit each element once
+// Space: O(1) - Not counting output
+public List&lt;int&gt; SpiralOrder(int[][] matrix)
+{
+    var result = new List&lt;int&gt;();
+
+    if (matrix.Length == 0)
+        return result;
+
+    int top = 0;
+    int bottom = matrix.Length - 1;
+    int left = 0;
+    int right = matrix[0].Length - 1;
+
+    while (top &lt;= bottom &amp;&amp; left &lt;= right)
+    {
+        // Traverse right
+        for (int j = left; j &lt;= right; j++)
+        {
+            result.Add(matrix[top][j]);
+        }
+        top++;
+
+        // Traverse down
+        for (int i = top; i &lt;= bottom; i++)
+        {
+            result.Add(matrix[i][right]);
+        }
+        right--;
+
+        // Traverse left (if still have rows)
+        if (top &lt;= bottom)
+        {
+            for (int j = right; j &gt;= left; j--)
+            {
+                result.Add(matrix[bottom][j]);
+            }
+            bottom--;
+        }
+
+        // Traverse up (if still have columns)
+        if (left &lt;= right)
+        {
+            for (int i = bottom; i &gt;= top; i--)
+            {
+                result.Add(matrix[i][left]);
+            }
+            left++;
+        }
+    }
+
+    return result;
+}</code></pre>
+<p><strong>Example:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">[1, 2, 3]
+[4, 5, 6]
+[7, 8, 9]
+
+Output: [1, 2, 3, 6, 9, 8, 7, 4, 5]</code></pre>
+<p>---</p>
+<h2 id="exercise-11-valid-sudoku">Exercise 11: Valid Sudoku</h2>
+<p><strong>Problem</strong>: Check if Sudoku board is valid (no duplicates in rows/cols/boxes).</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(1) - Board is always 9×9 = 81 cells
+// But generalizing: O(n²) for n×n board
+// Space: O(1) - Fixed size sets
+public bool IsValidSudoku(char[][] board)
+{
+    var rows = new HashSet&lt;char&gt;[9];
+    var cols = new HashSet&lt;char&gt;[9];
+    var boxes = new HashSet&lt;char&gt;[9];
+
+    for (int i = 0; i &lt; 9; i++)
+    {
+        rows[i] = new HashSet&lt;char&gt;();
+        cols[i] = new HashSet&lt;char&gt;();
+        boxes[i] = new HashSet&lt;char&gt;();
+    }
+
+    for (int i = 0; i &lt; 9; i++)
+    {
+        for (int j = 0; j &lt; 9; j++)
+        {
+            char c = board[i][j];
+
+            if (c == &#39;.&#39;)
+                continue;
+
+            int boxIndex = (i / 3) * 3 + (j / 3);
+
+            if (rows[i].Contains(c) ||
+                cols[j].Contains(c) ||
+                boxes[boxIndex].Contains(c))
+            {
+                return false;
+            }
+
+            rows[i].Add(c);
+            cols[j].Add(c);
+            boxes[boxIndex].Add(c);
+        }
+    }
+
+    return true;
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>9×9 board: O(1) - constant size</li><li>General n×n board: O(n²)</li><li>Must check all cells</li></ul>
+<p>---</p>
+<h2 id="exercise-12-game-of-life">Exercise 12: Game of Life</h2>
+<p><strong>Problem</strong>: Compute next state of Game of Life board.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(m × n) - Visit each cell and its neighbors
+// Space: O(m × n) - New board for next state
+public void GameOfLife(int[][] board)
+{
+    int m = board.Length;
+    int n = board[0].Length;
+
+    int[][] next = new int[m][];
+    for (int i = 0; i &lt; m; i++)
+    {
+        next[i] = new int[n];
+    }
+
+    int[] dx = { -1, -1, -1, 0, 0, 1, 1, 1 };
+    int[] dy = { -1, 0, 1, -1, 1, -1, 0, 1 };
+
+    for (int i = 0; i &lt; m; i++)
+    {
+        for (int j = 0; j &lt; n; j++)
+        {
+            int liveNeighbors = 0;
+
+            // Count live neighbors
+            for (int k = 0; k &lt; 8; k++)
+            {
+                int ni = i + dx[k];
+                int nj = j + dy[k];
+
+                if (ni &gt;= 0 &amp;&amp; ni &lt; m &amp;&amp; nj &gt;= 0 &amp;&amp; nj &lt; n)
+                {
+                    liveNeighbors += board[ni][nj];
+                }
+            }
+
+            // Apply rules
+            if (board[i][j] == 1)
+            {
+                // Live cell
+                if (liveNeighbors == 2 || liveNeighbors == 3)
+                    next[i][j] = 1;
+            }
+            else
+            {
+                // Dead cell
+                if (liveNeighbors == 3)
+                    next[i][j] = 1;
+            }
+        }
+    }
+
+    // Copy next state to board
+    for (int i = 0; i &lt; m; i++)
+    {
+        for (int j = 0; j &lt; n; j++)
+        {
+            board[i][j] = next[i][j];
+        }
+    }
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>Each cell checks 8 neighbors: O(1) per cell</li><li>m×n cells: O(m × n) total</li><li>Space: O(m × n) for next state</li></ul>
+<p>---</p>
+<h2 id="exercise-13-maximum-product-subarray-brute-force">Exercise 13: Maximum Product Subarray (Brute Force)</h2>
+<p><strong>Problem</strong>: Find contiguous subarray with largest product.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(n²) - Check all subarrays
+// Space: O(1)
+public int MaxProduct(int[] nums)
+{
+    int maxProduct = nums[0];
+
+    for (int i = 0; i &lt; nums.Length; i++)
+    {
+        int product = 1;
+
+        for (int j = i; j &lt; nums.Length; j++)
+        {
+            product *= nums[j];
+            maxProduct = Math.Max(maxProduct, product);
+        }
+    }
+
+    return maxProduct;
+}
+
+// Optimized: O(n) using dynamic programming
+public int MaxProductOptimized(int[] nums)
+{
+    int maxSoFar = nums[0];
+    int maxEndingHere = nums[0];
+    int minEndingHere = nums[0];
+
+    for (int i = 1; i &lt; nums.Length; i++)
+    {
+        int temp = maxEndingHere;
+
+        maxEndingHere = Math.Max(nums[i],
+                        Math.Max(maxEndingHere * nums[i],
+                                minEndingHere * nums[i]));
+
+        minEndingHere = Math.Min(nums[i],
+                        Math.Min(temp * nums[i],
+                                minEndingHere * nums[i]));
+
+        maxSoFar = Math.Max(maxSoFar, maxEndingHere);
+    }
+
+    return maxSoFar;
+}</code></pre>
+<p>---</p>
+<h2 id="exercise-14-unique-paths-in-grid">Exercise 14: Unique Paths in Grid</h2>
+<p><strong>Problem</strong>: Count paths from top-left to bottom-right (only move right/down).</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(m × n) - Fill entire grid
+// Space: O(m × n) - DP table
+public int UniquePaths(int m, int n)
+{
+    int[,] dp = new int[m, n];
+
+    // Initialize first row and column
+    for (int i = 0; i &lt; m; i++)
+        dp[i, 0] = 1;
+
+    for (int j = 0; j &lt; n; j++)
+        dp[0, j] = 1;
+
+    // Fill rest of table
+    for (int i = 1; i &lt; m; i++)
+    {
+        for (int j = 1; j &lt; n; j++)
+        {
+            dp[i, j] = dp[i - 1, j] + dp[i, j - 1];
+        }
+    }
+
+    return dp[m - 1, n - 1];
+}
+
+// Space optimized: O(n)
+public int UniquePathsOptimized(int m, int n)
+{
+    int[] dp = new int[n];
+    Array.Fill(dp, 1);
+
+    for (int i = 1; i &lt; m; i++)
+    {
+        for (int j = 1; j &lt; n; j++)
+        {
+            dp[j] = dp[j] + dp[j - 1];
+        }
+    }
+
+    return dp[n - 1];
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>Must compute all cells: O(m × n) unavoidable</li><li>Can optimize space to O(n)</li></ul>
+<p>---</p>
+<h2 id="exercise-15-longest-palindromic-substring">Exercise 15: Longest Palindromic Substring</h2>
+<p><strong>Problem</strong>: Find longest palindromic substring.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(n²) - Expand around center
+// Space: O(1)
+public string LongestPalindrome(string s)
+{
+    if (string.IsNullOrEmpty(s))
+        return &quot;&quot;;
+
+    int start = 0;
+    int maxLen = 1;
+
+    for (int i = 0; i &lt; s.Length; i++)
+    {
+        // Odd length palindromes (single center)
+        int len1 = ExpandAroundCenter(s, i, i);
+
+        // Even length palindromes (two centers)
+        int len2 = ExpandAroundCenter(s, i, i + 1);
+
+        int len = Math.Max(len1, len2);
+
+        if (len &gt; maxLen)
+        {
+            maxLen = len;
+            start = i - (len - 1) / 2;
+        }
+    }
+
+    return s.Substring(start, maxLen);
+}
+
+private int ExpandAroundCenter(string s, int left, int right)
+{
+    while (left &gt;= 0 &amp;&amp; right &lt; s.Length &amp;&amp; s[left] == s[right])
+    {
+        left--;
+        right++;
+    }
+
+    return right - left - 1;
+}
+
+// Brute force: O(n³)
+public string LongestPalindromeBruteForce(string s)
+{
+    int maxLen = 0;
+    string longest = &quot;&quot;;
+
+    for (int i = 0; i &lt; s.Length; i++)  // O(n)
+    {
+        for (int j = i; j &lt; s.Length; j++)  // O(n)
+        {
+            string sub = s.Substring(i, j - i + 1);
+            if (IsPalindrome(sub) &amp;&amp; sub.Length &gt; maxLen)  // O(n)
+            {
+                maxLen = sub.Length;
+                longest = sub;
+            }
+        }
+    }
+
+    return longest;
+}
+
+private bool IsPalindrome(string s)
+{
+    int left = 0, right = s.Length - 1;
+    while (left &lt; right)
+    {
+        if (s[left] != s[right])
+            return false;
+        left++;
+        right--;
+    }
+    return true;
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>Expand around center: O(n²) - n centers, O(n) expansion each</li><li>Brute force: O(n³) - all substrings, check each</li><li>DP solution: O(n²) time, O(n²) space</li></ul>
+<p>---</p>
+<h2 id="exercise-16-three-sum">Exercise 16: Three Sum</h2>
+<p><strong>Problem</strong>: Find all unique triplets that sum to zero.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(n²) - Sort + nested iteration
+// Space: O(1) - Not counting output
+public List&lt;List&lt;int&gt;&gt; ThreeSum(int[] nums)
+{
+    var result = new List&lt;List&lt;int&gt;&gt;();
+    Array.Sort(nums);  // O(n log n)
+
+    for (int i = 0; i &lt; nums.Length - 2; i++)
+    {
+        // Skip duplicates for first element
+        if (i &gt; 0 &amp;&amp; nums[i] == nums[i - 1])
+            continue;
+
+        int left = i + 1;
+        int right = nums.Length - 1;
+        int target = -nums[i];
+
+        // Two pointers: O(n)
+        while (left &lt; right)
+        {
+            int sum = nums[left] + nums[right];
+
+            if (sum == target)
+            {
+                result.Add(new List&lt;int&gt; { nums[i], nums[left], nums[right] });
+
+                // Skip duplicates
+                while (left &lt; right &amp;&amp; nums[left] == nums[left + 1])
+                    left++;
+                while (left &lt; right &amp;&amp; nums[right] == nums[right - 1])
+                    right--;
+
+                left++;
+                right--;
+            }
+            else if (sum &lt; target)
+            {
+                left++;
+            }
+            else
+            {
+                right--;
+            }
+        }
+    }
+
+    return result;
+}
+
+// Brute force: O(n³)
+public List&lt;List&lt;int&gt;&gt; ThreeSumBruteForce(int[] nums)
+{
+    var result = new List&lt;List&lt;int&gt;&gt;();
+    var seen = new HashSet&lt;string&gt;();
+
+    for (int i = 0; i &lt; nums.Length; i++)
+    {
+        for (int j = i + 1; j &lt; nums.Length; j++)
+        {
+            for (int k = j + 1; k &lt; nums.Length; k++)
+            {
+                if (nums[i] + nums[j] + nums[k] == 0)
+                {
+                    var triplet = new[] { nums[i], nums[j], nums[k] };
+                    Array.Sort(triplet);
+                    string key = string.Join(&quot;,&quot;, triplet);
+
+                    if (!seen.Contains(key))
+                    {
+                        seen.Add(key);
+                        result.Add(new List&lt;int&gt;(triplet));
+                    }
+                }
+            }
+        }
+    }
+
+    return result;
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>Optimized: O(n log n) sort + O(n²) two pointers = O(n²)</li><li>Brute force: O(n³)</li></ul>
+<p>---</p>
+<h2 id="exercise-17-container-with-most-water">Exercise 17: Container With Most Water</h2>
+<p><strong>Problem</strong>: Find two lines that contain most water with x-axis.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(n) - Two pointers (surprisingly not O(n²)!)
+// Space: O(1)
+public int MaxArea(int[] height)
+{
+    int left = 0;
+    int right = height.Length - 1;
+    int maxArea = 0;
+
+    while (left &lt; right)
+    {
+        int width = right - left;
+        int h = Math.Min(height[left], height[right]);
+        int area = width * h;
+
+        maxArea = Math.Max(maxArea, area);
+
+        // Move pointer with smaller height
+        if (height[left] &lt; height[right])
+            left++;
+        else
+            right--;
+    }
+
+    return maxArea;
+}
+
+// Brute force: O(n²)
+public int MaxAreaBruteForce(int[] height)
+{
+    int maxArea = 0;
+
+    for (int i = 0; i &lt; height.Length; i++)
+    {
+        for (int j = i + 1; j &lt; height.Length; j++)
+        {
+            int width = j - i;
+            int h = Math.Min(height[i], height[j]);
+            int area = width * h;
+
+            maxArea = Math.Max(maxArea, area);
+        }
+    }
+
+    return maxArea;
+}</code></pre>
+<p><strong>Note</strong>: This looks like it should be here but is actually O(n)! Shows how two-pointer technique can optimize.</p>
+<p>---</p>
+<h2 id="exercise-18-generate-pascals-triangle">Exercise 18: Generate Pascal's Triangle</h2>
+<p><strong>Problem</strong>: Generate first n rows of Pascal's triangle.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(n²) - n rows, row i has i elements
+// Space: O(n²) - Store all elements
+public List&lt;List&lt;int&gt;&gt; Generate(int numRows)
+{
+    var triangle = new List&lt;List&lt;int&gt;&gt;();
+
+    for (int i = 0; i &lt; numRows; i++)
+    {
+        var row = new List&lt;int&gt;(new int[i + 1]);
+        row[0] = 1;
+        row[i] = 1;
+
+        for (int j = 1; j &lt; i; j++)
+        {
+            row[j] = triangle[i - 1][j - 1] + triangle[i - 1][j];
+        }
+
+        triangle.Add(row);
+    }
+
+    return triangle;
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>Row 0: 1 element</li><li>Row 1: 2 elements</li><li>Row n-1: n elements</li><li>Total: 1 + 2 + ... + n = n(n+1)/2 = O(n²)</li></ul>
+<p>---</p>
+<h2 id="exercise-19-minimum-path-sum-in-grid">Exercise 19: Minimum Path Sum in Grid</h2>
+<p><strong>Problem</strong>: Find path from top-left to bottom-right with minimum sum.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(m × n) - DP table
+// Space: O(m × n) - DP table
+public int MinPathSum(int[][] grid)
+{
+    int m = grid.Length;
+    int n = grid[0].Length;
+
+    int[,] dp = new int[m, n];
+    dp[0, 0] = grid[0][0];
+
+    // Initialize first row
+    for (int j = 1; j &lt; n; j++)
+    {
+        dp[0, j] = dp[0, j - 1] + grid[0][j];
+    }
+
+    // Initialize first column
+    for (int i = 1; i &lt; m; i++)
+    {
+        dp[i, 0] = dp[i - 1, 0] + grid[i][0];
+    }
+
+    // Fill rest of table
+    for (int i = 1; i &lt; m; i++)
+    {
+        for (int j = 1; j &lt; n; j++)
+        {
+            dp[i, j] = grid[i][j] + Math.Min(dp[i - 1, j], dp[i, j - 1]);
+        }
+    }
+
+    return dp[m - 1, n - 1];
+}
+
+// Space optimized: O(n)
+public int MinPathSumOptimized(int[][] grid)
+{
+    int m = grid.Length;
+    int n = grid[0].Length;
+    int[] dp = new int[n];
+
+    dp[0] = grid[0][0];
+
+    for (int j = 1; j &lt; n; j++)
+    {
+        dp[j] = dp[j - 1] + grid[0][j];
+    }
+
+    for (int i = 1; i &lt; m; i++)
+    {
+        dp[0] += grid[i][0];
+
+        for (int j = 1; j &lt; n; j++)
+        {
+            dp[j] = grid[i][j] + Math.Min(dp[j], dp[j - 1]);
+        }
+    }
+
+    return dp[n - 1];
+}</code></pre>
+<p>---</p>
+<h2 id="exercise-20-word-search-in-grid">Exercise 20: Word Search in Grid</h2>
+<p><strong>Problem</strong>: Find if word exists in grid (adjacent cells).</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(m × n × 4^L) where L = word length
+// Worst case checks all cells, each has 4 directions
+// Space: O(L) - Recursion depth
+public bool Exist(char[][] board, string word)
+{
+    int m = board.Length;
+    int n = board[0].Length;
+
+    for (int i = 0; i &lt; m; i++)
+    {
+        for (int j = 0; j &lt; n; j++)
+        {
+            if (DFS(board, word, i, j, 0))
+                return true;
+        }
+    }
+
+    return false;
+}
+
+private bool DFS(char[][] board, string word, int i, int j, int index)
+{
+    if (index == word.Length)
+        return true;
+
+    if (i &lt; 0 || i &gt;= board.Length ||
+        j &lt; 0 || j &gt;= board[0].Length ||
+        board[i][j] != word[index])
+        return false;
+
+    char temp = board[i][j];
+    board[i][j] = &#39;#&#39;;  // Mark as visited
+
+    bool found = DFS(board, word, i + 1, j, index + 1) ||
+                 DFS(board, word, i - 1, j, index + 1) ||
+                 DFS(board, word, i, j + 1, index + 1) ||
+                 DFS(board, word, i, j - 1, index + 1);
+
+    board[i][j] = temp;  // Restore
+
+    return found;
+}</code></pre>
+<p>---</p>
+<h2 id="common-interview-questions">Common Interview Questions</h2>
+<h3 id="q1-when-is-on-acceptable">Q1: "When is O(n²) acceptable?"</h3>
+<p><strong>Answer</strong>:</p>
+<ul><li>Small inputs (n < 1000-5000)</li><li>No better algorithm exists (some problems are inherently quadratic)</li><li>Simplicity matters more than performance</li><li>Interview scenarios where you discuss optimization as follow-up</li></ul>
+<h3 id="q2-how-can-i-recognize-on-in-my-code">Q2: "How can I recognize O(n²) in my code?"</h3>
+<p><strong>Answer</strong>: Look for:</p>
+<ul><li>Nested loops over the same or similar data</li><li>Checking all pairs of elements</li><li>For each element, scanning through all others</li><li>Not always obvious - some O(n²) algorithms don't look nested</li></ul>
+<h3 id="q3-can-all-on-algorithms-be-optimized">Q3: "Can all O(n²) algorithms be optimized?"</h3>
+<p><strong>Answer</strong>: Not always. Some problems:</p>
+<ul><li>Matrix operations (rotation, transpose) genuinely need to touch all n² elements</li><li>Some DP problems require O(n²) table</li><li>However, many naive O(n²) solutions can be improved to O(n log n) or O(n) with better approach</li></ul>
+<h3 id="q4-is-bubble-sort-ever-useful">Q4: "Is bubble sort ever useful?"</h3>
+<p><strong>Answer</strong>: Rarely in practice, but:</p>
+<ul><li>Educational value (easy to understand)</li><li>Nearly sorted data (can be O(n) with optimization)</li><li>Very small arrays</li><li>Situations requiring stable, in-place sort with no recursion</li></ul>
+<h3 id="q5-whats-better-than-nested-loops-for-finding-pairs">Q5: "What's better than nested loops for finding pairs?"</h3>
+<p><strong>Answer</strong>:</p>
+<ul><li>Hash maps: O(n) time, O(n) space</li><li>Two pointers (sorted data): O(n) time, O(1) space</li><li>Sorting first: O(n log n) time, O(1) space</li></ul>
+<p>---</p>
+<h2 id="summary">Summary</h2>
+<p>O(n²) is common but often improvable. Key points:</p>
+<ul><li><strong>Main Pattern</strong>: Nested loops, checking all pairs</li><li><strong>Sometimes Necessary</strong>: Matrix operations, some DP problems</li><li><strong>Often Avoidable</strong>: Hash maps, two pointers, sorting can help</li><li><strong>Acceptable</strong>: Small inputs, no better algorithm, simplicity priority</li></ul>
+<p><strong>Next</strong>: Move on to <a href="./Space-Complexity-Exercises.md">Space-Complexity-Exercises.md</a> to master space complexity analysis!</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['dark2', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
+      const fallback = 'light';
+      const initial = supported.includes(normalized) ? normalized : (window.__studyTheme || fallback);
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          sessionStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+    (() => {
+      const groups = document.querySelectorAll('.sidebar-group');
+      if (!groups.length) return;
+      const storageKey = 'study-open-groups';
+      const saved = sessionStorage.getItem(storageKey);
+      const openFromStorage = new Set(saved ? JSON.parse(saved) : []);
+
+      const activeLink = document.querySelector('.nav-link.active');
+      const activeGroup = activeLink?.closest('.sidebar-group');
+      if (activeGroup?.dataset.group) {
+        openFromStorage.add(activeGroup.dataset.group);
+      }
+
+      const syncStorage = () => {
+        const openIds = Array.from(document.querySelectorAll('.sidebar-group.is-open'))
+          .map((group) => group.dataset.group)
+          .filter(Boolean);
+        sessionStorage.setItem(storageKey, JSON.stringify(openIds));
+      };
+
+      const setExpanded = (group, expanded) => {
+        const header = group.querySelector('.sidebar-group__header');
+        const list = group.querySelector('.sidebar-group__items');
+        group.classList.toggle('is-open', expanded);
+        header?.setAttribute('aria-expanded', expanded);
+        if (list) {
+          list.hidden = !expanded;
+        }
+      };
+
+      groups.forEach((group) => {
+        const shouldOpen = openFromStorage.has(group.dataset.group);
+        setExpanded(group, shouldOpen);
+        const header = group.querySelector('.sidebar-group__header');
+        header?.addEventListener('click', () => {
+          const next = !group.classList.contains('is-open');
+          setExpanded(group, next);
+          syncStorage();
+        });
+      });
+    })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swPath = '..\../service-worker.js';
+        navigator.serviceWorker.register(swPath).catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+</body>
+</html>

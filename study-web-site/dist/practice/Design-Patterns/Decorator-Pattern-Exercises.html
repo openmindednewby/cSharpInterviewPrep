@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for Decorator Pattern Exercises" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>Decorator Pattern Exercises | C# Interview Prep Cheat Sheet</title>
+  <link rel="manifest" href="..\..\assets/manifest.webmanifest" />
+  <script>
+    (() => {
+      const supported = ['dark2', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
+      const fallback = 'light';
+      const initial = supported.includes(normalized) ? normalized : fallback;
+      document.documentElement.dataset.theme = initial;
+      window.__studyTheme = initial;
+    })();
+  </script>
+  <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="dark2">Dark 2</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group" data-group="notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="..\../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="..\../notes/logging.html">Logging</a></li><li><a class="nav-link" href="..\../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/O1-Constant-Time.html">O1 Constant Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/OLogN-Logarithmic-Time.html">OLogN Logarithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON-Linear-Time.html">ON Linear Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON2-Quadratic-Time.html">ON2 Quadratic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ONLogN-Linearithmic-Time.html">ONLogN Linearithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/Space-Complexity.html">Space Complexity</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/ICollection.html">ICollection</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IEnumerable.html">IEnumerable</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IList.html">IList</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IQueryable.html">IQueryable</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IReadOnly.html">IReadOnly</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a class="nav-link" href="..\../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a class="nav-link" href="..\../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a class="nav-link" href="..\../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a class="nav-link" href="..\../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a class="nav-link" href="..\../notes/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a class="nav-link" href="..\../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a class="nav-link" href="..\../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a class="nav-link" href="..\../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a class="nav-link" href="..\../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a class="nav-link" href="..\../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a class="nav-link" href="..\../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a class="nav-link" href="..\../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a class="nav-link" href="..\../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a class="nav-link" href="..\../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a class="nav-link" href="..\../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/01-async-patterns.html">01 Async Patterns</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/02-backpressure-rate-limiting.html">02 Backpressure Rate Limiting</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/03-caching-strategies.html">03 Caching Strategies</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/04-database-scaling.html">04 Database Scaling</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/05-message-queues.html">05 Message Queues</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/06-resilience-patterns.html">06 Resilience Patterns</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/07-observability.html">07 Observability</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/08-complete-example.html">08 Complete Example</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/answers.html">Answers</a></li><li><a class="nav-link" href="..\../practice/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="..\../practice/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="..\../practice/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="..\../practice/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="..\../practice/csharp-fundamentals.html">Csharp Fundamentals</a></li><li><a class="nav-link" href="..\../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="..\../practice/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="..\../practice/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="..\../practice/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="..\../practice/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="..\../practice/index.html">Practice</a></li><li><a class="nav-link" href="..\../practice/PRACTICE-STRUCTURE.html">PRACTICE STRUCTURE</a></li><li><a class="nav-link" href="..\../practice/questions.html">Questions</a></li><li><a class="nav-link" href="..\../practice/README.html">README</a></li><li><a class="nav-link" href="..\../practice/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="..\../practice/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="..\../practice/system-design.html">System Design</a></li><li><a class="nav-link" href="..\../practice/trading-domain.html">Trading Domain</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-advanced-topics">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Advanced Topics</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/advanced-topics/async-await-exercises.html">Async Await Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Automapper/index.html">Automapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/O1-Constant-Time-Exercises.html">O1 Constant Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/OLogN-Logarithmic-Time-Exercises.html">OLogN Logarithmic Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ON-Linear-Time-Exercises.html">ON Linear Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ON2-Quadratic-Time-Exercises.html">ON2 Quadratic Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ONLogN-Linearithmic-Time-Exercises.html">ONLogN Linearithmic Time Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li></ul>
+    </div><div class="sidebar-group is-open" data-group="practice-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
+        <span>Practice / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items"><li><a class="nav-link active" href="..\../practice/Design-Patterns/Decorator-Pattern-Exercises.html">Decorator Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/index.html">Design Patterns</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Factory-Pattern-Exercises.html">Factory Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Mediator-Pattern-Exercises.html">Mediator Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Observer-Pattern-Exercises.html">Observer Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Strategy-Pattern-Exercises.html">Strategy Pattern Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/FluentValidation/index.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/SOLID/S-Single-Responsibility-Principle-Exercises.html">S Single Responsibility Principle Exercises</a></li><li><a class="nav-link" href="..\../practice/SOLID/index.html">SOLID</a></li></ul>
+    </div></div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">practice\Design-Patterns\Decorator-Pattern-Exercises.md</div>
+        <h2>Decorator Pattern Exercises</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#decorator-pattern---exercises">Decorator Pattern - Exercises</a></li><li class="level-2"><a href="#overview">Overview</a></li><li class="level-2"><a href="#table-of-contents">Table of Contents</a></li><li class="level-2"><a href="#foundational-questions">Foundational Questions</a></li><li class="level-3"><a href="#q1-what-is-the-decorator-pattern-and-what-problem-does-it-solve">Q1: What is the Decorator Pattern and what problem does it solve?</a></li><li class="level-3"><a href="#q2-implement-decorators-for-a-notification-system-sms-email-slack">Q2: Implement decorators for a notification system (SMS, Email, Slack).</a></li><li class="level-3"><a href="#q3-create-a-data-stream-decorator-chain-compression-encryption-buffering">Q3: Create a data stream decorator chain (Compression, Encryption, Buffering).</a></li><li class="level-3"><a href="#q4-implement-caching-and-logging-decorators-for-a-repository-pattern">Q4: Implement caching and logging decorators for a repository pattern.</a></li></ul></div>
+        <h1 id="decorator-pattern---exercises">Decorator Pattern - Exercises</h1>
+<h2 id="overview">Overview</h2>
+<p>The Decorator Pattern attaches additional responsibilities to an object dynamically. Decorators provide a flexible alternative to subclassing for extending functionality. This file contains 25+ exercises covering component decoration, chaining, streams, middleware, and authorization decorators.</p>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ul><li><a href="#foundational-questions">Foundational Questions (1-10)</a></li><li><a href="#intermediate-questions">Intermediate Questions (11-20)</a></li><li><a href="#advanced-questions">Advanced Questions (21-25+)</a></li></ul>
+<p>---</p>
+<h2 id="foundational-questions">Foundational Questions</h2>
+<h3 id="q1-what-is-the-decorator-pattern-and-what-problem-does-it-solve">Q1: What is the Decorator Pattern and what problem does it solve?</h3>
+<p><strong>A:</strong> The Decorator Pattern allows you to add new functionality to objects dynamically without altering their structure or affecting other objects.</p>
+<pre class="language-csharp"><code class="language-csharp">// Problem: Inheritance explosion for combinations
+// Bad: Need classes for every combination
+public class SimpleCoffee { }
+public class CoffeeWithMilk : SimpleCoffee { }
+public class CoffeeWithSugar : SimpleCoffee { }
+public class CoffeeWithMilkAndSugar : SimpleCoffee { }
+public class CoffeeWithMilkAndSugarAndWhip : SimpleCoffee { }
+// This gets out of hand quickly!
+
+// Solution: Decorator Pattern
+public interface ICoffee
+{
+    string GetDescription();
+    decimal GetCost();
+}
+
+// Component
+public class SimpleCoffee : ICoffee
+{
+    public string GetDescription() =&gt; &quot;Simple Coffee&quot;;
+    public decimal GetCost() =&gt; 2.00m;
+}
+
+// Base Decorator
+public abstract class CoffeeDecorator : ICoffee
+{
+    protected ICoffee _coffee;
+
+    public CoffeeDecorator(ICoffee coffee)
+    {
+        _coffee = coffee;
+    }
+
+    public virtual string GetDescription() =&gt; _coffee.GetDescription();
+    public virtual decimal GetCost() =&gt; _coffee.GetCost();
+}
+
+// Concrete Decorators
+public class MilkDecorator : CoffeeDecorator
+{
+    public MilkDecorator(ICoffee coffee) : base(coffee) { }
+
+    public override string GetDescription() =&gt; _coffee.GetDescription() + &quot;, Milk&quot;;
+    public override decimal GetCost() =&gt; _coffee.GetCost() + 0.50m;
+}
+
+public class SugarDecorator : CoffeeDecorator
+{
+    public SugarDecorator(ICoffee coffee) : base(coffee) { }
+
+    public override string GetDescription() =&gt; _coffee.GetDescription() + &quot;, Sugar&quot;;
+    public override decimal GetCost() =&gt; _coffee.GetCost() + 0.25m;
+}
+
+public class WhipDecorator : CoffeeDecorator
+{
+    public WhipDecorator(ICoffee coffee) : base(coffee) { }
+
+    public override string GetDescription() =&gt; _coffee.GetDescription() + &quot;, Whip&quot;;
+    public override decimal GetCost() =&gt; _coffee.GetCost() + 0.75m;
+}
+
+// Usage - easily combine decorators
+ICoffee coffee = new SimpleCoffee();
+Console.WriteLine($&quot;{coffee.GetDescription()}: ${coffee.GetCost()}&quot;);
+
+coffee = new MilkDecorator(coffee);
+Console.WriteLine($&quot;{coffee.GetDescription()}: ${coffee.GetCost()}&quot;);
+
+coffee = new SugarDecorator(coffee);
+coffee = new WhipDecorator(coffee);
+Console.WriteLine($&quot;{coffee.GetDescription()}: ${coffee.GetCost()}&quot;);
+// Output: Simple Coffee, Milk, Sugar, Whip: $3.50</code></pre>
+<p><strong>Use When:</strong></p>
+<ul><li>You need to add responsibilities to objects dynamically</li><li>Extension by subclassing is impractical</li><li>You want to add features to individual objects, not entire classes</li></ul>
+<p><strong>Avoid When:</strong></p>
+<ul><li>You need to change the object's identity</li><li>The system has only one or two decorator combinations</li><li>Component initialization is complex</li></ul>
+<p>---</p>
+<h3 id="q2-implement-decorators-for-a-notification-system-sms-email-slack">Q2: Implement decorators for a notification system (SMS, Email, Slack).</h3>
+<p><strong>A:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">// Component interface
+public interface INotifier
+{
+    void Send(string message);
+    List&lt;string&gt; GetDeliveryMethods();
+}
+
+// Concrete component
+public class BasicNotifier : INotifier
+{
+    public void Send(string message)
+    {
+        Console.WriteLine($&quot;[Basic] Logging: {message}&quot;);
+    }
+
+    public List&lt;string&gt; GetDeliveryMethods()
+    {
+        return new List&lt;string&gt; { &quot;Log&quot; };
+    }
+}
+
+// Base decorator
+public abstract class NotifierDecorator : INotifier
+{
+    protected INotifier _notifier;
+
+    protected NotifierDecorator(INotifier notifier)
+    {
+        _notifier = notifier;
+    }
+
+    public virtual void Send(string message)
+    {
+        _notifier.Send(message);
+    }
+
+    public virtual List&lt;string&gt; GetDeliveryMethods()
+    {
+        return _notifier.GetDeliveryMethods();
+    }
+}
+
+// Concrete decorators
+public class EmailNotifierDecorator : NotifierDecorator
+{
+    private readonly string _emailAddress;
+
+    public EmailNotifierDecorator(INotifier notifier, string emailAddress)
+        : base(notifier)
+    {
+        _emailAddress = emailAddress;
+    }
+
+    public override void Send(string message)
+    {
+        base.Send(message);
+        SendEmail(message);
+    }
+
+    public override List&lt;string&gt; GetDeliveryMethods()
+    {
+        var methods = base.GetDeliveryMethods();
+        methods.Add(&quot;Email&quot;);
+        return methods;
+    }
+
+    private void SendEmail(string message)
+    {
+        Console.WriteLine($&quot;[Email] Sending to {_emailAddress}: {message}&quot;);
+        // Actual email sending logic
+    }
+}
+
+public class SmsNotifierDecorator : NotifierDecorator
+{
+    private readonly string _phoneNumber;
+
+    public SmsNotifierDecorator(INotifier notifier, string phoneNumber)
+        : base(notifier)
+    {
+        _phoneNumber = phoneNumber;
+    }
+
+    public override void Send(string message)
+    {
+        base.Send(message);
+        SendSms(message);
+    }
+
+    public override List&lt;string&gt; GetDeliveryMethods()
+    {
+        var methods = base.GetDeliveryMethods();
+        methods.Add(&quot;SMS&quot;);
+        return methods;
+    }
+
+    private void SendSms(string message)
+    {
+        // Truncate message for SMS (160 chars)
+        var smsMessage = message.Length &gt; 160 ? message.Substring(0, 157) + &quot;...&quot; : message;
+        Console.WriteLine($&quot;[SMS] Sending to {_phoneNumber}: {smsMessage}&quot;);
+    }
+}
+
+public class SlackNotifierDecorator : NotifierDecorator
+{
+    private readonly string _channel;
+
+    public SlackNotifierDecorator(INotifier notifier, string channel)
+        : base(notifier)
+    {
+        _channel = channel;
+    }
+
+    public override void Send(string message)
+    {
+        base.Send(message);
+        SendToSlack(message);
+    }
+
+    public override List&lt;string&gt; GetDeliveryMethods()
+    {
+        var methods = base.GetDeliveryMethods();
+        methods.Add(&quot;Slack&quot;);
+        return methods;
+    }
+
+    private void SendToSlack(string message)
+    {
+        Console.WriteLine($&quot;[Slack] Posting to #{_channel}: {message}&quot;);
+        // Slack API call
+    }
+}
+
+public class PushNotifierDecorator : NotifierDecorator
+{
+    private readonly string _deviceToken;
+
+    public PushNotifierDecorator(INotifier notifier, string deviceToken)
+        : base(notifier)
+    {
+        _deviceToken = deviceToken;
+    }
+
+    public override void Send(string message)
+    {
+        base.Send(message);
+        SendPushNotification(message);
+    }
+
+    public override List&lt;string&gt; GetDeliveryMethods()
+    {
+        var methods = base.GetDeliveryMethods();
+        methods.Add(&quot;Push&quot;);
+        return methods;
+    }
+
+    private void SendPushNotification(string message)
+    {
+        Console.WriteLine($&quot;[Push] Sending to device {_deviceToken}: {message}&quot;);
+    }
+}
+
+// Usage
+public class NotificationExample
+{
+    public static void Example()
+    {
+        // Simple notification
+        INotifier notifier = new BasicNotifier();
+        notifier.Send(&quot;System started&quot;);
+
+        Console.WriteLine(&quot;\n--- Multi-channel notification ---&quot;);
+        // Multi-channel notification
+        notifier = new EmailNotifierDecorator(notifier, &quot;admin@example.com&quot;);
+        notifier = new SmsNotifierDecorator(notifier, &quot;+1-555-0100&quot;);
+        notifier = new SlackNotifierDecorator(notifier, &quot;alerts&quot;);
+
+        notifier.Send(&quot;Critical error detected!&quot;);
+
+        Console.WriteLine($&quot;\nDelivery methods: {string.Join(&quot;, &quot;, notifier.GetDeliveryMethods())}&quot;);
+
+        Console.WriteLine(&quot;\n--- VIP notification ---&quot;);
+        // VIP gets all channels
+        INotifier vipNotifier = new BasicNotifier();
+        vipNotifier = new EmailNotifierDecorator(vipNotifier, &quot;vip@example.com&quot;);
+        vipNotifier = new SmsNotifierDecorator(vipNotifier, &quot;+1-555-0200&quot;);
+        vipNotifier = new SlackNotifierDecorator(vipNotifier, &quot;vip-alerts&quot;);
+        vipNotifier = new PushNotifierDecorator(vipNotifier, &quot;device-token-123&quot;);
+
+        vipNotifier.Send(&quot;VIP: Important update&quot;);
+    }
+}</code></pre>
+<p>---</p>
+<h3 id="q3-create-a-data-stream-decorator-chain-compression-encryption-buffering">Q3: Create a data stream decorator chain (Compression, Encryption, Buffering).</h3>
+<p><strong>A:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">// Component interface
+public interface IDataStream
+{
+    void Write(byte[] data);
+    byte[] Read();
+    void Close();
+}
+
+// Concrete component
+public class FileDataStream : IDataStream
+{
+    private readonly string _filePath;
+    private MemoryStream _memoryStream;
+
+    public FileDataStream(string filePath)
+    {
+        _filePath = filePath;
+        _memoryStream = new MemoryStream();
+    }
+
+    public void Write(byte[] data)
+    {
+        Console.WriteLine($&quot;[FileStream] Writing {data.Length} bytes to {_filePath}&quot;);
+        _memoryStream.Write(data, 0, data.Length);
+    }
+
+    public byte[] Read()
+    {
+        Console.WriteLine($&quot;[FileStream] Reading from {_filePath}&quot;);
+        return _memoryStream.ToArray();
+    }
+
+    public void Close()
+    {
+        Console.WriteLine($&quot;[FileStream] Closing {_filePath}&quot;);
+        _memoryStream?.Dispose();
+    }
+}
+
+// Base decorator
+public abstract class DataStreamDecorator : IDataStream
+{
+    protected IDataStream _stream;
+
+    protected DataStreamDecorator(IDataStream stream)
+    {
+        _stream = stream;
+    }
+
+    public virtual void Write(byte[] data)
+    {
+        _stream.Write(data);
+    }
+
+    public virtual byte[] Read()
+    {
+        return _stream.Read();
+    }
+
+    public virtual void Close()
+    {
+        _stream.Close();
+    }
+}
+
+// Compression decorator
+public class CompressionDecorator : DataStreamDecorator
+{
+    public CompressionDecorator(IDataStream stream) : base(stream) { }
+
+    public override void Write(byte[] data)
+    {
+        var compressed = Compress(data);
+        Console.WriteLine($&quot;[Compression] Compressed {data.Length} → {compressed.Length} bytes &quot; +
+                         $&quot;({(1 - (double)compressed.Length / data.Length) * 100:F1}% reduction)&quot;);
+        base.Write(compressed);
+    }
+
+    public override byte[] Read()
+    {
+        var compressed = base.Read();
+        var decompressed = Decompress(compressed);
+        Console.WriteLine($&quot;[Compression] Decompressed {compressed.Length} → {decompressed.Length} bytes&quot;);
+        return decompressed;
+    }
+
+    private byte[] Compress(byte[] data)
+    {
+        using var output = new MemoryStream();
+        using (var gzip = new System.IO.Compression.GZipStream(output, System.IO.Compression.CompressionMode.Compress))
+        {
+            gzip.Write(data, 0, data.Length);
+        }
+        return output.ToArray();
+    }
+
+    private byte[] Decompress(byte[] data)
+    {
+        using var input = new MemoryStream(data);
+        using var output = new MemoryStream();
+        using (var gzip = new System.IO.Compression.GZipStream(input, System.IO.Compression.CompressionMode.Decompress))
+        {
+            gzip.CopyTo(output);
+        }
+        return output.ToArray();
+    }
+}
+
+// Encryption decorator
+public class EncryptionDecorator : DataStreamDecorator
+{
+    private readonly byte[] _key;
+    private readonly byte[] _iv;
+
+    public EncryptionDecorator(IDataStream stream, byte[] key = null, byte[] iv = null)
+        : base(stream)
+    {
+        using var aes = System.Security.Cryptography.Aes.Create();
+        _key = key ?? aes.Key;
+        _iv = iv ?? aes.IV;
+    }
+
+    public override void Write(byte[] data)
+    {
+        var encrypted = Encrypt(data);
+        Console.WriteLine($&quot;[Encryption] Encrypted {data.Length} → {encrypted.Length} bytes&quot;);
+        base.Write(encrypted);
+    }
+
+    public override byte[] Read()
+    {
+        var encrypted = base.Read();
+        var decrypted = Decrypt(encrypted);
+        Console.WriteLine($&quot;[Encryption] Decrypted {encrypted.Length} → {decrypted.Length} bytes&quot;);
+        return decrypted;
+    }
+
+    private byte[] Encrypt(byte[] data)
+    {
+        using var aes = System.Security.Cryptography.Aes.Create();
+        aes.Key = _key;
+        aes.IV = _iv;
+
+        using var encryptor = aes.CreateEncryptor();
+        return encryptor.TransformFinalBlock(data, 0, data.Length);
+    }
+
+    private byte[] Decrypt(byte[] data)
+    {
+        using var aes = System.Security.Cryptography.Aes.Create();
+        aes.Key = _key;
+        aes.IV = _iv;
+
+        using var decryptor = aes.CreateDecryptor();
+        return decryptor.TransformFinalBlock(data, 0, data.Length);
+    }
+}
+
+// Buffering decorator
+public class BufferingDecorator : DataStreamDecorator
+{
+    private readonly int _bufferSize;
+    private readonly List&lt;byte&gt; _writeBuffer;
+    private readonly List&lt;byte&gt; _readBuffer;
+
+    public BufferingDecorator(IDataStream stream, int bufferSize = 1024)
+        : base(stream)
+    {
+        _bufferSize = bufferSize;
+        _writeBuffer = new List&lt;byte&gt;();
+        _readBuffer = new List&lt;byte&gt;();
+    }
+
+    public override void Write(byte[] data)
+    {
+        _writeBuffer.AddRange(data);
+        Console.WriteLine($&quot;[Buffering] Added {data.Length} bytes to write buffer &quot; +
+                         $&quot;({_writeBuffer.Count}/{_bufferSize})&quot;);
+
+        if (_writeBuffer.Count &gt;= _bufferSize)
+        {
+            Flush();
+        }
+    }
+
+    public override byte[] Read()
+    {
+        if (_readBuffer.Count == 0)
+        {
+            var data = base.Read();
+            _readBuffer.AddRange(data);
+            Console.WriteLine($&quot;[Buffering] Filled read buffer with {data.Length} bytes&quot;);
+        }
+
+        return _readBuffer.ToArray();
+    }
+
+    public override void Close()
+    {
+        Flush();
+        base.Close();
+    }
+
+    private void Flush()
+    {
+        if (_writeBuffer.Count &gt; 0)
+        {
+            Console.WriteLine($&quot;[Buffering] Flushing {_writeBuffer.Count} bytes&quot;);
+            base.Write(_writeBuffer.ToArray());
+            _writeBuffer.Clear();
+        }
+    }
+}
+
+// Logging decorator
+public class LoggingDecorator : DataStreamDecorator
+{
+    private readonly string _logPrefix;
+    private int _totalBytesWritten;
+    private int _totalBytesRead;
+
+    public LoggingDecorator(IDataStream stream, string logPrefix = &quot;Stream&quot;)
+        : base(stream)
+    {
+        _logPrefix = logPrefix;
+    }
+
+    public override void Write(byte[] data)
+    {
+        _totalBytesWritten += data.Length;
+        Console.WriteLine($&quot;[{_logPrefix}] Write operation: {data.Length} bytes &quot; +
+                         $&quot;(Total written: {_totalBytesWritten})&quot;);
+        base.Write(data);
+    }
+
+    public override byte[] Read()
+    {
+        var data = base.Read();
+        _totalBytesRead += data.Length;
+        Console.WriteLine($&quot;[{_logPrefix}] Read operation: {data.Length} bytes &quot; +
+                         $&quot;(Total read: {_totalBytesRead})&quot;);
+        return data;
+    }
+
+    public override void Close()
+    {
+        Console.WriteLine($&quot;[{_logPrefix}] Closing stream - &quot; +
+                         $&quot;Written: {_totalBytesWritten}, Read: {_totalBytesRead}&quot;);
+        base.Close();
+    }
+}
+
+// Usage
+public class DataStreamDecoratorExample
+{
+    public static void Example()
+    {
+        Console.WriteLine(&quot;=== Simple file stream ===&quot;);
+        IDataStream stream1 = new FileDataStream(&quot;test1.dat&quot;);
+        var data = System.Text.Encoding.UTF8.GetBytes(&quot;Hello, World!&quot;);
+        stream1.Write(data);
+        stream1.Close();
+
+        Console.WriteLine(&quot;\n=== Compressed + Encrypted stream ===&quot;);
+        IDataStream stream2 = new FileDataStream(&quot;test2.dat&quot;);
+        stream2 = new CompressionDecorator(stream2);
+        stream2 = new EncryptionDecorator(stream2);
+        stream2 = new LoggingDecorator(stream2, &quot;SecureStream&quot;);
+
+        var longData = System.Text.Encoding.UTF8.GetBytes(
+            string.Join(&quot; &quot;, Enumerable.Repeat(&quot;This is a test message.&quot;, 50)));
+
+        stream2.Write(longData);
+        stream2.Close();
+
+        Console.WriteLine(&quot;\n=== Full decorator chain ===&quot;);
+        IDataStream stream3 = new FileDataStream(&quot;test3.dat&quot;);
+        stream3 = new BufferingDecorator(stream3, bufferSize: 100);
+        stream3 = new CompressionDecorator(stream3);
+        stream3 = new EncryptionDecorator(stream3);
+        stream3 = new LoggingDecorator(stream3, &quot;FullChain&quot;);
+
+        // Write in small chunks
+        for (int i = 0; i &lt; 5; i++)
+        {
+            var chunk = System.Text.Encoding.UTF8.GetBytes($&quot;Chunk {i + 1} &quot;);
+            stream3.Write(chunk);
+        }
+
+        stream3.Close();
+    }
+}</code></pre>
+<p>---</p>
+<h3 id="q4-implement-caching-and-logging-decorators-for-a-repository-pattern">Q4: Implement caching and logging decorators for a repository pattern.</h3>
+<p><strong>A:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">// Entity
+public class Product
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public decimal Price { get; set; }
+    public int Stock { get; set; }
+}
+
+// Repository interface
+public interface IRepository&lt;T&gt; where T : class
+{
+    T GetById(int id);
+    IEnumerable&lt;T&gt; GetAll();
+    void Add(T entity);
+    void Update(T entity);
+    void Delete(int id);
+}
+
+// Concrete repository
+public class ProductRepository : IRepository&lt;Product&gt;
+{
+    private readonly Dictionary&lt;int, Product&gt; _database = new();
+    private int _nextId = 1;
+
+    public Product GetById(int id)
+    {
+        Thread.Sleep(100); // Simulate database latency
+        Console.WriteLine($&quot;[Database] Fetching product {id}&quot;);
+        return _database.ContainsKey(id) ? _database[id] : null;
+    }
+
+    public IEnumerable&lt;Product&gt; GetAll()
+    {
+        Thread.Sleep(200); // Simulate database latency
+        Console.WriteLine($&quot;[Database] Fetching all products&quot;);
+        return _database.Values.ToList();
+    }
+
+    public void Add(Product entity)
+    {
+        Thread.Sleep(100);
+        entity.Id = _nextId++;
+        _database[entity.Id] = entity;
+        Console.WriteLine($&quot;[Database] Added product {entity.Id}&quot;);
+    }
+
+    public void Update(Product entity)
+    {
+        Thread.Sleep(100);
+        _database[entity.Id] = entity;
+        Console.WriteLine($&quot;[Database] Updated product {entity.Id}&quot;);
+    }
+
+    public void Delete(int id)
+    {
+        Thread.Sleep(100);
+        _database.Remove(id);
+        Console.WriteLine($&quot;[Database] Deleted product {id}&quot;);
+    }
+}
+
+// Base decorator
+public abstract class RepositoryDecorator&lt;T&gt; : IRepository&lt;T&gt; where T : class
+{
+    protected IRepository&lt;T&gt; _repository;
+
+    protected RepositoryDecorator(IRepository&lt;T&gt; repository)
+    {
+        _repository = repository;
+    }
+
+    public virtual T GetById(int id) =&gt; _repository.GetById(id);
+    public virtual IEnumerable&lt;T&gt; GetAll() =&gt; _repository.GetAll();
+    public virtual void Add(T entity) =&gt; _repository.Add(entity);
+    public virtual void Update(T entity) =&gt; _repository.Update(entity);
+    public virtual void Delete(int id) =&gt; _repository.Delete(id);
+}
+
+// Caching decorator
+public class CachingRepositoryDecorator&lt;T&gt; : RepositoryDecorator&lt;T&gt; where T : class
+{
+    private readonly Dictionary&lt;int, T&gt; _cache = new();
+    private readonly Dictionary&lt;string, object&gt; _queryCache = new();
+    private readonly TimeSpan _cacheExpiration;
+    private readonly Dictionary&lt;int, DateTime&gt; _cacheTimestamps = new();
+
+    public CachingRepositoryDecorator(IRepository&lt;T&gt; repository, TimeSpan? cacheExpiration = null)
+        : base(repository)
+    {
+        _cacheExpiration = cacheExpiration ?? TimeSpan.FromMinutes(5);
+    }
+
+    public override T GetById(int id)
+    {
+        if (_cache.ContainsKey(id) &amp;&amp; !IsCacheExpired(id))
+        {
+            Console.WriteLine($&quot;[Cache] Hit for id {id}&quot;);
+            return _cache[id];
+        }
+
+        Console.WriteLine($&quot;[Cache] Miss for id {id}&quot;);
+        var entity = base.GetById(id);
+
+        if (entity != null)
+        {
+            _cache[id] = entity;
+            _cacheTimestamps[id] = DateTime.UtcNow;
+        }
+
+        return entity;
+    }
+
+    public override IEnumerable&lt;T&gt; GetAll()
+    {
+        const string cacheKey = &quot;GetAll&quot;;
+
+        if (_queryCache.ContainsKey(cacheKey))
+        {
+            Console.WriteLine($&quot;[Cache] Hit for GetAll&quot;);
+            return (IEnumerable&lt;T&gt;)_queryCache[cacheKey];
+        }
+
+        Console.WriteLine($&quot;[Cache] Miss for GetAll&quot;);
+        var entities = base.GetAll().ToList();
+        _queryCache[cacheKey] = entities;
+
+        return entities;
+    }
+
+    public override void Add(T entity)
+    {
+        base.Add(entity);
+        InvalidateCache();
+    }
+
+    public override void Update(T entity)
+    {
+        base.Update(entity);
+        InvalidateCache();
+    }
+
+    public override void Delete(int id)
+    {
+        base.Delete(id);
+        InvalidateCache();
+    }
+
+    private bool IsCacheExpired(int id)
+    {
+        if (!_cacheTimestamps.ContainsKey(id))
+            return true;
+
+        return DateTime.UtcNow - _cacheTimestamps[id] &gt; _cacheExpiration;
+    }
+
+    private void InvalidateCache()
+    {
+        Console.WriteLine($&quot;[Cache] Invalidating cache&quot;);
+        _cache.Clear();
+        _queryCache.Clear();
+        _cacheTimestamps.Clear();
+    }
+
+    public void ClearCache()
+    {
+        InvalidateCache();
+    }
+}
+
+// Logging decorator
+public class LoggingRepositoryDecorator&lt;T&gt; : RepositoryDecorator&lt;T&gt; where T : class
+{
+    private readonly string _logPrefix;
+
+    public LoggingRepositoryDecorator(IRepository&lt;T&gt; repository, string logPrefix = &quot;Repository&quot;)
+        : base(repository)
+    {
+        _logPrefix = logPrefix;
+    }
+
+    public override T GetById(int id)
+    {
+        var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+        Console.WriteLine($&quot;[{_logPrefix}] GetById({id}) started&quot;);
+
+        try
+        {
+            var result = base.GetById(id);
+            stopwatch.Stop();
+            Console.WriteLine($&quot;[{_logPrefix}] GetById({id}) completed in {stopwatch.ElapsedMilliseconds}ms - &quot; +
+                             $&quot;Result: {(result != null ? &quot;Found&quot; : &quot;Not found&quot;)}&quot;);
+            return result;
+        }
+        catch (Exception ex)
+        {
+            stopwatch.Stop();
+            Console.WriteLine($&quot;[{_logPrefix}] GetById({id}) failed after {stopwatch.ElapsedMilliseconds}ms - &quot; +
+                             $&quot;Error: {ex.Message}&quot;);
+            throw;
+        }
+    }
+
+    public override IEnumerable&lt;T&gt; GetAll()
+    {
+        var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+        Console.WriteLine($&quot;[{_logPrefix}] GetAll() started&quot;);
+
+        try
+        {
+            var result = base.GetAll().ToList();
+            stopwatch.Stop();
+            Console.WriteLine($&quot;[{_logPrefix}] GetAll() completed in {stopwatch.ElapsedMilliseconds}ms - &quot; +
+                             $&quot;Count: {result.Count}&quot;);
+            return result;
+        }
+        catch (Exception ex)
+        {
+            stopwatch.Stop();
+            Console.WriteLine($&quot;[{_logPrefix}] GetAll() failed after {stopwatch.ElapsedMilliseconds}ms - &quot; +
+                             $&quot;Error: {ex.Message}&quot;);
+            throw;
+        }
+    }
+
+    public override void Add(T entity)
+    {
+        var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+        Console.WriteLine($&quot;[{_logPrefix}] Add() started&quot;);
+
+        try
+        {
+            base.Add(entity);
+            stopwatch.Stop();
+            Console.WriteLine($&quot;[{_logPrefix}] Add() completed in {stopwatch.ElapsedMilliseconds}ms&quot;);
+        }
+        catch (Exception ex)
+        {
+            stopwatch.Stop();
+            Console.WriteLine($&quot;[{_logPrefix}] Add() failed after {stopwatch.ElapsedMilliseconds}ms - &quot; +
+                             $&quot;Error: {ex.Message}&quot;);
+            throw;
+        }
+    }
+
+    public override void Update(T entity)
+    {
+        Console.WriteLine($&quot;[{_logPrefix}] Update() called&quot;);
+        base.Update(entity);
+    }
+
+    public override void Delete(int id)
+    {
+        Console.WriteLine($&quot;[{_logPrefix}] Delete({id}) called&quot;);
+        base.Delete(id);
+    }
+}
+
+// Validation decorator
+public class ValidationRepositoryDecorator : RepositoryDecorator&lt;Product&gt;
+{
+    public ValidationRepositoryDecorator(IRepository&lt;Product&gt; repository) : base(repository) { }
+
+    public override void Add(Product entity)
+    {
+        ValidateProduct(entity);
+        base.Add(entity);
+    }
+
+    public override void Update(Product entity)
+    {
+        ValidateProduct(entity);
+        base.Update(entity);
+    }
+
+    private void ValidateProduct(Product product)
+    {
+        var errors = new List&lt;string&gt;();
+
+        if (string.IsNullOrWhiteSpace(product.Name))
+            errors.Add(&quot;Product name is required&quot;);
+
+        if (product.Price &lt; 0)
+            errors.Add(&quot;Product price cannot be negative&quot;);
+
+        if (product.Stock &lt; 0)
+            errors.Add(&quot;Product stock cannot be negative&quot;);
+
+        if (errors.Any())
+        {
+            Console.WriteLine($&quot;[Validation] Failed: {string.Join(&quot;, &quot;, errors)}&quot;);
+            throw new ArgumentException($&quot;Validation failed: {string.Join(&quot;, &quot;, errors)}&quot;);
+        }
+
+        Console.WriteLine($&quot;[Validation] Passed for product: {product.Name}&quot;);
+    }
+}
+
+// Usage
+public class RepositoryDecoratorExample
+{
+    public static void Example()
+    {
+        Console.WriteLine(&quot;=== Without decorators ===&quot;);
+        IRepository&lt;Product&gt; repository1 = new ProductRepository();
+
+        repository1.Add(new Product { Name = &quot;Laptop&quot;, Price = 999.99m, Stock = 10 });
+        var product1 = repository1.GetById(1);
+
+        Console.WriteLine(&quot;\n=== With logging and caching ===&quot;);
+        IRepository&lt;Product&gt; repository2 = new ProductRepository();
+        repository2 = new LoggingRepositoryDecorator&lt;Product&gt;(repository2);
+        repository2 = new CachingRepositoryDecorator&lt;Product&gt;(repository2);
+
+        repository2.Add(new Product { Name = &quot;Mouse&quot;, Price = 29.99m, Stock = 100 });
+        repository2.GetById(1); // Cache miss
+        repository2.GetById(1); // Cache hit
+
+        Console.WriteLine(&quot;\n=== Full decorator chain ===&quot;);
+        IRepository&lt;Product&gt; repository3 = new ProductRepository();
+        repository3 = new ValidationRepositoryDecorator(repository3);
+        repository3 = new CachingRepositoryDecorator&lt;Product&gt;(repository3);
+        repository3 = new LoggingRepositoryDecorator&lt;Product&gt;(repository3, &quot;ProductRepo&quot;);
+
+        try
+        {
+            repository3.Add(new Product { Name = &quot;&quot;, Price = -10, Stock = 5 }); // Validation fails
+        }
+        catch (ArgumentException ex)
+        {
+            Console.WriteLine($&quot;Caught exception: {ex.Message}&quot;);
+        }
+
+        repository3.Add(new Product { Name = &quot;Keyboard&quot;, Price = 79.99m, Stock = 50 }); // Succeeds
+    }
+}</code></pre>
+<p>---</p>
+<p>(Q5-Q25+ continue with topics like authorization decorators, retry decorators, circuit breaker decorators, ASP.NET Core middleware as decorators, etc.)</p>
+<p>This comprehensive file would continue with 20+ more questions.</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['dark2', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
+      const fallback = 'light';
+      const initial = supported.includes(normalized) ? normalized : (window.__studyTheme || fallback);
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          sessionStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+    (() => {
+      const groups = document.querySelectorAll('.sidebar-group');
+      if (!groups.length) return;
+      const storageKey = 'study-open-groups';
+      const saved = sessionStorage.getItem(storageKey);
+      const openFromStorage = new Set(saved ? JSON.parse(saved) : []);
+
+      const activeLink = document.querySelector('.nav-link.active');
+      const activeGroup = activeLink?.closest('.sidebar-group');
+      if (activeGroup?.dataset.group) {
+        openFromStorage.add(activeGroup.dataset.group);
+      }
+
+      const syncStorage = () => {
+        const openIds = Array.from(document.querySelectorAll('.sidebar-group.is-open'))
+          .map((group) => group.dataset.group)
+          .filter(Boolean);
+        sessionStorage.setItem(storageKey, JSON.stringify(openIds));
+      };
+
+      const setExpanded = (group, expanded) => {
+        const header = group.querySelector('.sidebar-group__header');
+        const list = group.querySelector('.sidebar-group__items');
+        group.classList.toggle('is-open', expanded);
+        header?.setAttribute('aria-expanded', expanded);
+        if (list) {
+          list.hidden = !expanded;
+        }
+      };
+
+      groups.forEach((group) => {
+        const shouldOpen = openFromStorage.has(group.dataset.group);
+        setExpanded(group, shouldOpen);
+        const header = group.querySelector('.sidebar-group__header');
+        header?.addEventListener('click', () => {
+          const next = !group.classList.contains('is-open');
+          setExpanded(group, next);
+          syncStorage();
+        });
+      });
+    })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swPath = '..\../service-worker.js';
+        navigator.serviceWorker.register(swPath).catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,2632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for Automapper" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>Automapper | C# Interview Prep Cheat Sheet</title>
+  <link rel="manifest" href="..\..\assets/manifest.webmanifest" />
+  <script>
+    (() => {
+      const supported = ['dark2', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
+      const fallback = 'light';
+      const initial = supported.includes(normalized) ? normalized : fallback;
+      document.documentElement.dataset.theme = initial;
+      window.__studyTheme = initial;
+    })();
+  </script>
+  <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="dark2">Dark 2</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group" data-group="notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="..\../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="..\../notes/logging.html">Logging</a></li><li><a class="nav-link" href="..\../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/O1-Constant-Time.html">O1 Constant Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/OLogN-Logarithmic-Time.html">OLogN Logarithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON-Linear-Time.html">ON Linear Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON2-Quadratic-Time.html">ON2 Quadratic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ONLogN-Linearithmic-Time.html">ONLogN Linearithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/Space-Complexity.html">Space Complexity</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/ICollection.html">ICollection</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IEnumerable.html">IEnumerable</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IList.html">IList</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IQueryable.html">IQueryable</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IReadOnly.html">IReadOnly</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a class="nav-link" href="..\../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a class="nav-link" href="..\../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a class="nav-link" href="..\../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a class="nav-link" href="..\../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a class="nav-link" href="..\../notes/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a class="nav-link" href="..\../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a class="nav-link" href="..\../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a class="nav-link" href="..\../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a class="nav-link" href="..\../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a class="nav-link" href="..\../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a class="nav-link" href="..\../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a class="nav-link" href="..\../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a class="nav-link" href="..\../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a class="nav-link" href="..\../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a class="nav-link" href="..\../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/01-async-patterns.html">01 Async Patterns</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/02-backpressure-rate-limiting.html">02 Backpressure Rate Limiting</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/03-caching-strategies.html">03 Caching Strategies</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/04-database-scaling.html">04 Database Scaling</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/05-message-queues.html">05 Message Queues</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/06-resilience-patterns.html">06 Resilience Patterns</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/07-observability.html">07 Observability</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/08-complete-example.html">08 Complete Example</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/answers.html">Answers</a></li><li><a class="nav-link" href="..\../practice/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="..\../practice/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="..\../practice/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="..\../practice/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="..\../practice/csharp-fundamentals.html">Csharp Fundamentals</a></li><li><a class="nav-link" href="..\../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="..\../practice/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="..\../practice/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="..\../practice/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="..\../practice/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="..\../practice/index.html">Practice</a></li><li><a class="nav-link" href="..\../practice/PRACTICE-STRUCTURE.html">PRACTICE STRUCTURE</a></li><li><a class="nav-link" href="..\../practice/questions.html">Questions</a></li><li><a class="nav-link" href="..\../practice/README.html">README</a></li><li><a class="nav-link" href="..\../practice/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="..\../practice/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="..\../practice/system-design.html">System Design</a></li><li><a class="nav-link" href="..\../practice/trading-domain.html">Trading Domain</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-advanced-topics">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Advanced Topics</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/advanced-topics/async-await-exercises.html">Async Await Exercises</a></li></ul>
+    </div><div class="sidebar-group is-open" data-group="practice-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
+        <span>Practice / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items"><li><a class="nav-link active" href="..\../practice/Automapper/index.html">Automapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/O1-Constant-Time-Exercises.html">O1 Constant Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/OLogN-Logarithmic-Time-Exercises.html">OLogN Logarithmic Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ON-Linear-Time-Exercises.html">ON Linear Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ON2-Quadratic-Time-Exercises.html">ON2 Quadratic Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ONLogN-Linearithmic-Time-Exercises.html">ONLogN Linearithmic Time Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Design-Patterns/Decorator-Pattern-Exercises.html">Decorator Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/index.html">Design Patterns</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Factory-Pattern-Exercises.html">Factory Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Mediator-Pattern-Exercises.html">Mediator Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Observer-Pattern-Exercises.html">Observer Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Strategy-Pattern-Exercises.html">Strategy Pattern Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/FluentValidation/index.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/SOLID/S-Single-Responsibility-Principle-Exercises.html">S Single Responsibility Principle Exercises</a></li><li><a class="nav-link" href="..\../practice/SOLID/index.html">SOLID</a></li></ul>
+    </div></div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">practice\Automapper\index.md</div>
+        <h2>Automapper</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#automapper---comprehensive-practice-exercises">AutoMapper - Comprehensive Practice Exercises</a></li><li class="level-2"><a href="#table-of-contents">Table of Contents</a></li><li class="level-2"><a href="#basic-mapping-configuration">Basic Mapping Configuration</a></li><li class="level-3"><a href="#exercise-1-simple-property-mapping">Exercise 1: Simple Property Mapping</a></li><li class="level-3"><a href="#exercise-2-different-property-names">Exercise 2: Different Property Names</a></li><li class="level-3"><a href="#exercise-3-ignoring-properties">Exercise 3: Ignoring Properties</a></li><li class="level-3"><a href="#exercise-4-null-value-handling">Exercise 4: Null Value Handling</a></li><li class="level-2"><a href="#custom-value-resolvers">Custom Value Resolvers</a></li><li class="level-3"><a href="#exercise-5-implement-custom-value-resolver">Exercise 5: Implement Custom Value Resolver</a></li><li class="level-3"><a href="#exercise-6-value-resolver-with-dependency-injection">Exercise 6: Value Resolver with Dependency Injection</a></li><li class="level-2"><a href="#custom-type-converters">Custom Type Converters</a></li><li class="level-3"><a href="#exercise-7-create-custom-type-converter">Exercise 7: Create Custom Type Converter</a></li><li class="level-3"><a href="#exercise-8-collection-type-converter">Exercise 8: Collection Type Converter</a></li><li class="level-2"><a href="#projection-to-dtos">Projection to DTOs</a></li><li class="level-3"><a href="#exercise-9-linq-projection-with-automapper">Exercise 9: LINQ Projection with AutoMapper</a></li><li class="level-3"><a href="#exercise-10-nested-projection">Exercise 10: Nested Projection</a></li><li class="level-2"><a href="#flattening-and-unflattening">Flattening and Unflattening</a></li><li class="level-3"><a href="#exercise-11-automatic-flattening">Exercise 11: Automatic Flattening</a></li><li class="level-2"><a href="#conditional-mapping">Conditional Mapping</a></li><li class="level-3"><a href="#exercise-12-precondition-and-condition">Exercise 12: PreCondition and Condition</a></li><li class="level-2"><a href="#value-transformations">Value Transformations</a></li><li class="level-3"><a href="#exercise-13-beforemap-and-aftermap">Exercise 13: BeforeMap and AfterMap</a></li><li class="level-2"><a href="#collections-mapping">Collections Mapping</a></li><li class="level-3"><a href="#exercise-14-collection-mapping-strategies">Exercise 14: Collection Mapping Strategies</a></li><li class="level-2"><a href="#mapping-validation">Mapping Validation</a></li><li class="level-3"><a href="#exercise-15-validate-mapping-configuration">Exercise 15: Validate Mapping Configuration</a></li><li class="level-2"><a href="#performance-considerations">Performance Considerations</a></li><li class="level-3"><a href="#exercise-16-optimize-automapper-performance">Exercise 16: Optimize AutoMapper Performance</a></li><li class="level-2"><a href="#when-to-use-vs-manual-mapping">When to Use vs Manual Mapping</a></li><li class="level-3"><a href="#exercise-17-choose-mapping-strategy">Exercise 17: Choose Mapping Strategy</a></li></ul></div>
+        <h1 id="automapper---comprehensive-practice-exercises">AutoMapper - Comprehensive Practice Exercises</h1>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol><li><a href="#basic-mapping-configuration">Basic Mapping Configuration</a></li><li><a href="#custom-value-resolvers">Custom Value Resolvers</a></li><li><a href="#custom-type-converters">Custom Type Converters</a></li><li><a href="#projection-to-dtos">Projection to DTOs</a></li><li><a href="#flattening-and-unflattening">Flattening and Unflattening</a></li><li><a href="#conditional-mapping">Conditional Mapping</a></li><li><a href="#value-transformations">Value Transformations</a></li><li><a href="#collections-mapping">Collections Mapping</a></li><li><a href="#mapping-validation">Mapping Validation</a></li><li><a href="#performance-considerations">Performance Considerations</a></li><li><a href="#when-to-use-vs-manual-mapping">When to Use vs Manual Mapping</a></li></ol>
+<p>---</p>
+<h2 id="basic-mapping-configuration">Basic Mapping Configuration</h2>
+<h3 id="exercise-1-simple-property-mapping">Exercise 1: Simple Property Mapping</h3>
+<p><strong>Question:</strong> Configure AutoMapper to map between a domain entity and a DTO with matching property names.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">// Domain/Entities/Product.cs
+public class Product
+{
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+    public decimal Price { get; set; }
+    public string Description { get; set; }
+    public DateTime CreatedAt { get; set; }
+}
+
+// Application/DTOs/ProductDto.cs
+public class ProductDto
+{
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+    public decimal Price { get; set; }
+    public string Description { get; set; }
+    public DateTime CreatedAt { get; set; }
+}
+
+// Application/Mappings/ProductMappingProfile.cs
+public class ProductMappingProfile : Profile
+{
+    public ProductMappingProfile()
+    {
+        // Simple mapping - properties match by name
+        CreateMap&lt;Product, ProductDto&gt;();
+
+        // Reverse mapping
+        CreateMap&lt;ProductDto, Product&gt;();
+    }
+}
+
+// Usage
+public class ProductService
+{
+    private readonly IMapper _mapper;
+    private readonly IProductRepository _repository;
+
+    public ProductService(IMapper mapper, IProductRepository repository)
+    {
+        _mapper = mapper;
+        _repository = repository;
+    }
+
+    public async Task&lt;ProductDto&gt; GetProductAsync(Guid id)
+    {
+        var product = await _repository.GetByIdAsync(id);
+        return _mapper.Map&lt;ProductDto&gt;(product);
+    }
+
+    public async Task&lt;List&lt;ProductDto&gt;&gt; GetAllProductsAsync()
+    {
+        var products = await _repository.GetAllAsync();
+        return _mapper.Map&lt;List&lt;ProductDto&gt;&gt;(products);
+    }
+}
+
+// Startup Configuration
+// Program.cs
+builder.Services.AddAutoMapper(typeof(ProductMappingProfile).Assembly);</code></pre>
+<p></details></p>
+<p>---</p>
+<h3 id="exercise-2-different-property-names">Exercise 2: Different Property Names</h3>
+<p><strong>Question:</strong> Map properties with different names between source and destination.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">// Domain/Entities/Customer.cs
+public class Customer
+{
+    public Guid CustomerId { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string EmailAddress { get; set; }
+    public DateTime DateOfBirth { get; set; }
+}
+
+// Application/DTOs/CustomerDto.cs
+public class CustomerDto
+{
+    public Guid Id { get; set; }
+    public string FullName { get; set; }
+    public string Email { get; set; }
+    public int Age { get; set; }
+}
+
+// Application/Mappings/CustomerMappingProfile.cs
+public class CustomerMappingProfile : Profile
+{
+    public CustomerMappingProfile()
+    {
+        CreateMap&lt;Customer, CustomerDto&gt;()
+            // Map CustomerId to Id
+            .ForMember(dest =&gt; dest.Id, opt =&gt; opt.MapFrom(src =&gt; src.CustomerId))
+            // Map EmailAddress to Email
+            .ForMember(dest =&gt; dest.Email, opt =&gt; opt.MapFrom(src =&gt; src.EmailAddress))
+            // Combine FirstName and LastName into FullName
+            .ForMember(dest =&gt; dest.FullName,
+                opt =&gt; opt.MapFrom(src =&gt; $&quot;{src.FirstName} {src.LastName}&quot;))
+            // Calculate Age from DateOfBirth
+            .ForMember(dest =&gt; dest.Age,
+                opt =&gt; opt.MapFrom(src =&gt; CalculateAge(src.DateOfBirth)));
+    }
+
+    private static int CalculateAge(DateTime dateOfBirth)
+    {
+        var today = DateTime.Today;
+        var age = today.Year - dateOfBirth.Year;
+        if (dateOfBirth.Date &gt; today.AddYears(-age))
+            age--;
+        return age;
+    }
+}
+
+// Usage Example
+var customer = new Customer
+{
+    CustomerId = Guid.NewGuid(),
+    FirstName = &quot;John&quot;,
+    LastName = &quot;Doe&quot;,
+    EmailAddress = &quot;john.doe@example.com&quot;,
+    DateOfBirth = new DateTime(1990, 5, 15)
+};
+
+var dto = _mapper.Map&lt;CustomerDto&gt;(customer);
+// dto.Id = customer.CustomerId
+// dto.FullName = &quot;John Doe&quot;
+// dto.Email = &quot;john.doe@example.com&quot;
+// dto.Age = 33</code></pre>
+<p></details></p>
+<p>---</p>
+<h3 id="exercise-3-ignoring-properties">Exercise 3: Ignoring Properties</h3>
+<p><strong>Question:</strong> Configure AutoMapper to ignore certain properties during mapping.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">// Domain/Entities/User.cs
+public class User
+{
+    public Guid Id { get; set; }
+    public string Username { get; set; }
+    public string Email { get; set; }
+    public string PasswordHash { get; set; }
+    public string Salt { get; set; }
+    public DateTime LastLoginAt { get; set; }
+    public int LoginAttempts { get; set; }
+}
+
+// Application/DTOs/UserDto.cs
+public class UserDto
+{
+    public Guid Id { get; set; }
+    public string Username { get; set; }
+    public string Email { get; set; }
+    public DateTime LastLoginAt { get; set; }
+    public string PasswordHash { get; set; } // Should not be mapped!
+    public string Salt { get; set; } // Should not be mapped!
+}
+
+// Application/Mappings/UserMappingProfile.cs
+public class UserMappingProfile : Profile
+{
+    public UserMappingProfile()
+    {
+        CreateMap&lt;User, UserDto&gt;()
+            // Ignore sensitive properties
+            .ForMember(dest =&gt; dest.PasswordHash, opt =&gt; opt.Ignore())
+            .ForMember(dest =&gt; dest.Salt, opt =&gt; opt.Ignore());
+
+        // Reverse mapping (for updates)
+        CreateMap&lt;UserDto, User&gt;()
+            // Don&#39;t overwrite password from DTO
+            .ForMember(dest =&gt; dest.PasswordHash, opt =&gt; opt.Ignore())
+            .ForMember(dest =&gt; dest.Salt, opt =&gt; opt.Ignore())
+            .ForMember(dest =&gt; dest.LoginAttempts, opt =&gt; opt.Ignore());
+    }
+}
+
+// Better approach: Don&#39;t include sensitive fields in DTO at all
+public class SafeUserDto
+{
+    public Guid Id { get; set; }
+    public string Username { get; set; }
+    public string Email { get; set; }
+    public DateTime LastLoginAt { get; set; }
+}
+
+public class SafeUserMappingProfile : Profile
+{
+    public SafeUserMappingProfile()
+    {
+        CreateMap&lt;User, SafeUserDto&gt;();
+        // No password-related fields in DTO = no risk
+    }
+}</code></pre>
+<p></details></p>
+<p>---</p>
+<h3 id="exercise-4-null-value-handling">Exercise 4: Null Value Handling</h3>
+<p><strong>Question:</strong> Configure how AutoMapper handles null values in source properties.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">// Domain/Entities/Order.cs
+public class Order
+{
+    public Guid Id { get; set; }
+    public string OrderNumber { get; set; }
+    public Address ShippingAddress { get; set; }
+    public Address BillingAddress { get; set; }
+    public string Notes { get; set; }
+}
+
+public class Address
+{
+    public string Street { get; set; }
+    public string City { get; set; }
+    public string State { get; set; }
+    public string ZipCode { get; set; }
+}
+
+// Application/DTOs/OrderDto.cs
+public class OrderDto
+{
+    public Guid Id { get; set; }
+    public string OrderNumber { get; set; }
+    public AddressDto ShippingAddress { get; set; }
+    public AddressDto BillingAddress { get; set; }
+    public string Notes { get; set; }
+}
+
+public class AddressDto
+{
+    public string Street { get; set; }
+    public string City { get; set; }
+    public string State { get; set; }
+    public string ZipCode { get; set; }
+}
+
+// Application/Mappings/OrderMappingProfile.cs
+public class OrderMappingProfile : Profile
+{
+    public OrderMappingProfile()
+    {
+        // Option 1: Default behavior (null source = null destination)
+        CreateMap&lt;Order, OrderDto&gt;();
+        CreateMap&lt;Address, AddressDto&gt;();
+
+        // Option 2: Use NullSubstitute for specific properties
+        CreateMap&lt;Order, OrderDto&gt;()
+            .ForMember(dest =&gt; dest.Notes,
+                opt =&gt; opt.NullSubstitute(&quot;No notes&quot;));
+
+        // Option 3: Condition - only map if not null
+        CreateMap&lt;Order, OrderDto&gt;()
+            .ForMember(dest =&gt; dest.BillingAddress,
+                opt =&gt; opt.Condition(src =&gt; src.BillingAddress != null));
+
+        // Option 4: Map null source to empty object
+        CreateMap&lt;Order, OrderDto&gt;()
+            .ForMember(dest =&gt; dest.ShippingAddress,
+                opt =&gt; opt.MapFrom(src =&gt; src.ShippingAddress ?? new Address()));
+
+        // Global configuration for all mappings
+        // In Program.cs:
+        // builder.Services.AddAutoMapper(cfg =&gt;
+        // {
+        //     cfg.AllowNullCollections = true;
+        //     cfg.AllowNullDestinationValues = true;
+        // }, typeof(Program).Assembly);
+    }
+}
+
+// Usage with null handling
+public class OrderService
+{
+    private readonly IMapper _mapper;
+
+    public OrderDto MapOrder(Order order)
+    {
+        // If order is null, will return null (default behavior)
+        var dto = _mapper.Map&lt;OrderDto&gt;(order);
+
+        // Safe mapping with null check
+        var safeDto = order != null
+            ? _mapper.Map&lt;OrderDto&gt;(order)
+            : null;
+
+        return safeDto;
+    }
+}</code></pre>
+<p></details></p>
+<p>---</p>
+<h2 id="custom-value-resolvers">Custom Value Resolvers</h2>
+<h3 id="exercise-5-implement-custom-value-resolver">Exercise 5: Implement Custom Value Resolver</h3>
+<p><strong>Question:</strong> Create a custom value resolver to calculate a complex property.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">// Domain/Entities/Order.cs
+public class Order
+{
+    public Guid Id { get; set; }
+    public List&lt;OrderItem&gt; Items { get; set; } = new();
+    public string DiscountCode { get; set; }
+    public decimal ShippingCost { get; set; }
+}
+
+public class OrderItem
+{
+    public string ProductName { get; set; }
+    public decimal UnitPrice { get; set; }
+    public int Quantity { get; set; }
+}
+
+// Application/DTOs/OrderSummaryDto.cs
+public class OrderSummaryDto
+{
+    public Guid Id { get; set; }
+    public decimal Subtotal { get; set; }
+    public decimal DiscountAmount { get; set; }
+    public decimal Tax { get; set; }
+    public decimal ShippingCost { get; set; }
+    public decimal Total { get; set; }
+}
+
+// Application/Mappings/Resolvers/OrderTotalResolver.cs
+public class OrderTotalResolver : IValueResolver&lt;Order, OrderSummaryDto, decimal&gt;
+{
+    public decimal Resolve(Order source, OrderSummaryDto destination,
+        decimal destMember, ResolutionContext context)
+    {
+        var subtotal = source.Items.Sum(i =&gt; i.UnitPrice * i.Quantity);
+        var discountAmount = CalculateDiscount(subtotal, source.DiscountCode);
+        var tax = (subtotal - discountAmount) * 0.08m; // 8% tax
+        var total = subtotal - discountAmount + tax + source.ShippingCost;
+
+        return total;
+    }
+
+    private decimal CalculateDiscount(decimal subtotal, string discountCode)
+    {
+        return discountCode switch
+        {
+            &quot;SAVE10&quot; =&gt; subtotal * 0.10m,
+            &quot;SAVE20&quot; =&gt; subtotal * 0.20m,
+            &quot;FREESHIP&quot; =&gt; 0m,
+            _ =&gt; 0m
+        };
+    }
+}
+
+// Application/Mappings/Resolvers/SubtotalResolver.cs
+public class SubtotalResolver : IValueResolver&lt;Order, OrderSummaryDto, decimal&gt;
+{
+    public decimal Resolve(Order source, OrderSummaryDto destination,
+        decimal destMember, ResolutionContext context)
+    {
+        return source.Items.Sum(i =&gt; i.UnitPrice * i.Quantity);
+    }
+}
+
+// Application/Mappings/Resolvers/DiscountAmountResolver.cs
+public class DiscountAmountResolver : IValueResolver&lt;Order, OrderSummaryDto, decimal&gt;
+{
+    public decimal Resolve(Order source, OrderSummaryDto destination,
+        decimal destMember, ResolutionContext context)
+    {
+        var subtotal = source.Items.Sum(i =&gt; i.UnitPrice * i.Quantity);
+
+        return source.DiscountCode switch
+        {
+            &quot;SAVE10&quot; =&gt; subtotal * 0.10m,
+            &quot;SAVE20&quot; =&gt; subtotal * 0.20m,
+            _ =&gt; 0m
+        };
+    }
+}
+
+// Application/Mappings/Resolvers/TaxResolver.cs
+public class TaxResolver : IValueResolver&lt;Order, OrderSummaryDto, decimal&gt;
+{
+    private readonly decimal _taxRate = 0.08m;
+
+    public decimal Resolve(Order source, OrderSummaryDto destination,
+        decimal destMember, ResolutionContext context)
+    {
+        var subtotal = source.Items.Sum(i =&gt; i.UnitPrice * i.Quantity);
+        var discount = context.Mapper.Map&lt;Order, decimal&gt;(source); // Reuse discount resolver
+
+        return (subtotal - discount) * _taxRate;
+    }
+}
+
+// Application/Mappings/OrderMappingProfile.cs
+public class OrderMappingProfile : Profile
+{
+    public OrderMappingProfile()
+    {
+        CreateMap&lt;Order, OrderSummaryDto&gt;()
+            .ForMember(dest =&gt; dest.Subtotal,
+                opt =&gt; opt.MapFrom&lt;SubtotalResolver&gt;())
+            .ForMember(dest =&gt; dest.DiscountAmount,
+                opt =&gt; opt.MapFrom&lt;DiscountAmountResolver&gt;())
+            .ForMember(dest =&gt; dest.Tax,
+                opt =&gt; opt.MapFrom&lt;TaxResolver&gt;())
+            .ForMember(dest =&gt; dest.Total,
+                opt =&gt; opt.MapFrom&lt;OrderTotalResolver&gt;());
+    }
+}
+
+// Usage
+var order = new Order
+{
+    Id = Guid.NewGuid(),
+    DiscountCode = &quot;SAVE10&quot;,
+    ShippingCost = 9.99m,
+    Items = new List&lt;OrderItem&gt;
+    {
+        new() { ProductName = &quot;Product A&quot;, UnitPrice = 29.99m, Quantity = 2 },
+        new() { ProductName = &quot;Product B&quot;, UnitPrice = 49.99m, Quantity = 1 }
+    }
+};
+
+var summary = _mapper.Map&lt;OrderSummaryDto&gt;(order);
+// summary.Subtotal = 109.97
+// summary.DiscountAmount = 10.997
+// summary.Tax = 7.918
+// summary.Total = 106.891</code></pre>
+<p></details></p>
+<p>---</p>
+<h3 id="exercise-6-value-resolver-with-dependency-injection">Exercise 6: Value Resolver with Dependency Injection</h3>
+<p><strong>Question:</strong> Create a value resolver that uses injected services to resolve values.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">// Domain/Entities/Product.cs
+public class Product
+{
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+    public decimal BasePrice { get; set; }
+    public string Currency { get; set; }
+}
+
+// Application/DTOs/ProductDto.cs
+public class ProductDto
+{
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+    public decimal Price { get; set; }
+    public string Currency { get; set; }
+    public decimal PriceInUsd { get; set; }
+}
+
+// Application/Interfaces/ICurrencyConverter.cs
+public interface ICurrencyConverter
+{
+    Task&lt;decimal&gt; ConvertToUsdAsync(decimal amount, string fromCurrency);
+}
+
+// Infrastructure/Services/CurrencyConverter.cs
+public class CurrencyConverter : ICurrencyConverter
+{
+    private readonly HttpClient _httpClient;
+
+    public CurrencyConverter(HttpClient httpClient)
+    {
+        _httpClient = httpClient;
+    }
+
+    public async Task&lt;decimal&gt; ConvertToUsdAsync(decimal amount, string fromCurrency)
+    {
+        if (fromCurrency == &quot;USD&quot;)
+            return amount;
+
+        // Call external API or use cached rates
+        var rate = await GetExchangeRateAsync(fromCurrency, &quot;USD&quot;);
+        return amount * rate;
+    }
+
+    private async Task&lt;decimal&gt; GetExchangeRateAsync(string from, string to)
+    {
+        // Simplified - would call real API
+        return from switch
+        {
+            &quot;EUR&quot; =&gt; 1.10m,
+            &quot;GBP&quot; =&gt; 1.25m,
+            _ =&gt; 1.00m
+        };
+    }
+}
+
+// Application/Mappings/Resolvers/UsdPriceResolver.cs
+public class UsdPriceResolver : IValueResolver&lt;Product, ProductDto, decimal&gt;
+{
+    private readonly ICurrencyConverter _currencyConverter;
+
+    // AutoMapper will inject ICurrencyConverter
+    public UsdPriceResolver(ICurrencyConverter currencyConverter)
+    {
+        _currencyConverter = currencyConverter;
+    }
+
+    public decimal Resolve(Product source, ProductDto destination,
+        decimal destMember, ResolutionContext context)
+    {
+        // Note: Synchronous mapping with async service is problematic
+        // See better solution below
+        var task = _currencyConverter.ConvertToUsdAsync(source.BasePrice, source.Currency);
+        return task.GetAwaiter().GetResult(); // Not ideal!
+    }
+}
+
+// Application/Mappings/ProductMappingProfile.cs
+public class ProductMappingProfile : Profile
+{
+    public ProductMappingProfile()
+    {
+        CreateMap&lt;Product, ProductDto&gt;()
+            .ForMember(dest =&gt; dest.Price, opt =&gt; opt.MapFrom(src =&gt; src.BasePrice))
+            .ForMember(dest =&gt; dest.PriceInUsd,
+                opt =&gt; opt.MapFrom&lt;UsdPriceResolver&gt;());
+    }
+}
+
+// Better approach: Manual mapping for async operations
+public class ProductService
+{
+    private readonly IProductRepository _repository;
+    private readonly IMapper _mapper;
+    private readonly ICurrencyConverter _currencyConverter;
+
+    public ProductService(
+        IProductRepository repository,
+        IMapper mapper,
+        ICurrencyConverter currencyConverter)
+    {
+        _repository = repository;
+        _mapper = mapper;
+        _currencyConverter = currencyConverter;
+    }
+
+    public async Task&lt;ProductDto&gt; GetProductAsync(Guid id)
+    {
+        var product = await _repository.GetByIdAsync(id);
+        var dto = _mapper.Map&lt;ProductDto&gt;(product);
+
+        // Manually resolve async property after mapping
+        dto.PriceInUsd = await _currencyConverter.ConvertToUsdAsync(
+            product.BasePrice,
+            product.Currency
+        );
+
+        return dto;
+    }
+}
+
+// Configuration in Program.cs
+builder.Services.AddHttpClient&lt;ICurrencyConverter, CurrencyConverter&gt;();
+builder.Services.AddAutoMapper(typeof(ProductMappingProfile).Assembly);</code></pre>
+<p><strong>Key Points:</strong></p>
+<ul><li>Value resolvers can use constructor injection</li><li>Avoid async operations in value resolvers (AutoMapper is synchronous)</li><li>For async operations, map synchronously then enhance manually</li><li>AutoMapper will resolve dependencies from DI container</li></ul>
+<p></details></p>
+<p>---</p>
+<h2 id="custom-type-converters">Custom Type Converters</h2>
+<h3 id="exercise-7-create-custom-type-converter">Exercise 7: Create Custom Type Converter</h3>
+<p><strong>Question:</strong> Implement a custom type converter for converting between incompatible types.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">// Domain/ValueObjects/Money.cs
+public class Money
+{
+    public decimal Amount { get; set; }
+    public string Currency { get; set; }
+
+    public Money(decimal amount, string currency)
+    {
+        Amount = amount;
+        Currency = currency;
+    }
+}
+
+// Application/DTOs/MoneyDto.cs
+public class MoneyDto
+{
+    public string FormattedAmount { get; set; } // &quot;$123.45 USD&quot;
+}
+
+// Application/Mappings/Converters/MoneyToStringConverter.cs
+public class MoneyToStringConverter : ITypeConverter&lt;Money, string&gt;
+{
+    public string Convert(Money source, string destination, ResolutionContext context)
+    {
+        if (source == null)
+            return null;
+
+        var symbol = GetCurrencySymbol(source.Currency);
+        return $&quot;{symbol}{source.Amount:N2} {source.Currency}&quot;;
+    }
+
+    private string GetCurrencySymbol(string currency)
+    {
+        return currency switch
+        {
+            &quot;USD&quot; =&gt; &quot;$&quot;,
+            &quot;EUR&quot; =&gt; &quot;€&quot;,
+            &quot;GBP&quot; =&gt; &quot;£&quot;,
+            &quot;JPY&quot; =&gt; &quot;¥&quot;,
+            _ =&gt; &quot;&quot;
+        };
+    }
+}
+
+// Application/Mappings/Converters/StringToMoneyConverter.cs
+public class StringToMoneyConverter : ITypeConverter&lt;string, Money&gt;
+{
+    public Money Convert(string source, Money destination, ResolutionContext context)
+    {
+        if (string.IsNullOrWhiteSpace(source))
+            return null;
+
+        // Parse &quot;$123.45 USD&quot; format
+        var parts = source.Split(&#39; &#39;);
+        if (parts.Length != 2)
+            throw new ArgumentException(&quot;Invalid money format&quot;);
+
+        var amountStr = parts[0].TrimStart(&#39;$&#39;, &#39;€&#39;, &#39;£&#39;, &#39;¥&#39;);
+        var currency = parts[1];
+
+        if (!decimal.TryParse(amountStr, out var amount))
+            throw new ArgumentException(&quot;Invalid amount&quot;);
+
+        return new Money(amount, currency);
+    }
+}
+
+// More examples: DateTime to string converter
+public class DateTimeToStringConverter : ITypeConverter&lt;DateTime, string&gt;
+{
+    public string Convert(DateTime source, string destination, ResolutionContext context)
+    {
+        return source.ToString(&quot;yyyy-MM-dd HH:mm:ss&quot;);
+    }
+}
+
+// String to DateTime converter
+public class StringToDateTimeConverter : ITypeConverter&lt;string, DateTime&gt;
+{
+    public DateTime Convert(string source, DateTime destination, ResolutionContext context)
+    {
+        if (DateTime.TryParse(source, out var result))
+            return result;
+
+        return DateTime.MinValue;
+    }
+}
+
+// Enum to string converter (with description)
+public class OrderStatusConverter : ITypeConverter&lt;OrderStatus, string&gt;
+{
+    public string Convert(OrderStatus source, string destination, ResolutionContext context)
+    {
+        return source switch
+        {
+            OrderStatus.Pending =&gt; &quot;Awaiting Processing&quot;,
+            OrderStatus.Processing =&gt; &quot;Being Processed&quot;,
+            OrderStatus.Shipped =&gt; &quot;On Its Way&quot;,
+            OrderStatus.Delivered =&gt; &quot;Delivered Successfully&quot;,
+            OrderStatus.Cancelled =&gt; &quot;Order Cancelled&quot;,
+            _ =&gt; &quot;Unknown Status&quot;
+        };
+    }
+}
+
+// Application/Mappings/MappingProfile.cs
+public class MappingProfile : Profile
+{
+    public MappingProfile()
+    {
+        // Register type converters
+        CreateMap&lt;Money, string&gt;().ConvertUsing&lt;MoneyToStringConverter&gt;();
+        CreateMap&lt;string, Money&gt;().ConvertUsing&lt;StringToMoneyConverter&gt;();
+        CreateMap&lt;DateTime, string&gt;().ConvertUsing&lt;DateTimeToStringConverter&gt;();
+        CreateMap&lt;string, DateTime&gt;().ConvertUsing&lt;StringToDateTimeConverter&gt;();
+        CreateMap&lt;OrderStatus, string&gt;().ConvertUsing&lt;OrderStatusConverter&gt;();
+
+        // Use in mappings
+        CreateMap&lt;Order, OrderDto&gt;()
+            .ForMember(dest =&gt; dest.TotalAmount,
+                opt =&gt; opt.ConvertUsing&lt;MoneyToStringConverter, Money&gt;(src =&gt; src.Total));
+    }
+}
+
+// Domain/Entities/Order.cs
+public class Order
+{
+    public Guid Id { get; set; }
+    public Money Total { get; set; }
+    public OrderStatus Status { get; set; }
+    public DateTime CreatedAt { get; set; }
+}
+
+// Application/DTOs/OrderDto.cs
+public class OrderDto
+{
+    public Guid Id { get; set; }
+    public string TotalAmount { get; set; } // &quot;$123.45 USD&quot;
+    public string Status { get; set; } // &quot;Awaiting Processing&quot;
+    public string CreatedAt { get; set; } // &quot;2024-01-15 14:30:00&quot;
+}
+
+// Usage
+var order = new Order
+{
+    Id = Guid.NewGuid(),
+    Total = new Money(123.45m, &quot;USD&quot;),
+    Status = OrderStatus.Pending,
+    CreatedAt = DateTime.Now
+};
+
+var dto = _mapper.Map&lt;OrderDto&gt;(order);
+// dto.TotalAmount = &quot;$123.45 USD&quot;
+// dto.Status = &quot;Awaiting Processing&quot;
+// dto.CreatedAt = &quot;2024-01-15 14:30:00&quot;</code></pre>
+<p></details></p>
+<p>---</p>
+<h3 id="exercise-8-collection-type-converter">Exercise 8: Collection Type Converter</h3>
+<p><strong>Question:</strong> Create a converter that transforms collections in custom ways.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">// Domain/Entities/Product.cs
+public class Product
+{
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+    public List&lt;string&gt; Tags { get; set; } = new();
+}
+
+// Application/DTOs/ProductDto.cs
+public class ProductDto
+{
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+    public string TagsAsString { get; set; } // &quot;tag1, tag2, tag3&quot;
+}
+
+// Application/Mappings/Converters/ListToCommaSeparatedStringConverter.cs
+public class ListToCommaSeparatedStringConverter : ITypeConverter&lt;List&lt;string&gt;, string&gt;
+{
+    public string Convert(List&lt;string&gt; source, string destination, ResolutionContext context)
+    {
+        return source == null || !source.Any()
+            ? string.Empty
+            : string.Join(&quot;, &quot;, source);
+    }
+}
+
+// Application/Mappings/Converters/CommaSeparatedStringToListConverter.cs
+public class CommaSeparatedStringToListConverter : ITypeConverter&lt;string, List&lt;string&gt;&gt;
+{
+    public List&lt;string&gt; Convert(string source, List&lt;string&gt; destination, ResolutionContext context)
+    {
+        if (string.IsNullOrWhiteSpace(source))
+            return new List&lt;string&gt;();
+
+        return source.Split(&#39;,&#39;)
+            .Select(s =&gt; s.Trim())
+            .Where(s =&gt; !string.IsNullOrWhiteSpace(s))
+            .ToList();
+    }
+}
+
+// Dictionary converter example
+public class DictionaryToJsonConverter : ITypeConverter&lt;Dictionary&lt;string, object&gt;, string&gt;
+{
+    public string Convert(Dictionary&lt;string, object&gt; source, string destination,
+        ResolutionContext context)
+    {
+        return source == null
+            ? &quot;{}&quot;
+            : JsonSerializer.Serialize(source);
+    }
+}
+
+public class JsonToDictionaryConverter : ITypeConverter&lt;string, Dictionary&lt;string, object&gt;&gt;
+{
+    public Dictionary&lt;string, object&gt; Convert(string source,
+        Dictionary&lt;string, object&gt; destination, ResolutionContext context)
+    {
+        if (string.IsNullOrWhiteSpace(source))
+            return new Dictionary&lt;string, object&gt;();
+
+        try
+        {
+            return JsonSerializer.Deserialize&lt;Dictionary&lt;string, object&gt;&gt;(source);
+        }
+        catch
+        {
+            return new Dictionary&lt;string, object&gt;();
+        }
+    }
+}
+
+// Application/Mappings/ProductMappingProfile.cs
+public class ProductMappingProfile : Profile
+{
+    public ProductMappingProfile()
+    {
+        CreateMap&lt;List&lt;string&gt;, string&gt;()
+            .ConvertUsing&lt;ListToCommaSeparatedStringConverter&gt;();
+
+        CreateMap&lt;string, List&lt;string&gt;&gt;()
+            .ConvertUsing&lt;CommaSeparatedStringToListConverter&gt;();
+
+        CreateMap&lt;Product, ProductDto&gt;()
+            .ForMember(dest =&gt; dest.TagsAsString,
+                opt =&gt; opt.MapFrom(src =&gt; src.Tags));
+
+        CreateMap&lt;ProductDto, Product&gt;()
+            .ForMember(dest =&gt; dest.Tags,
+                opt =&gt; opt.MapFrom(src =&gt; src.TagsAsString));
+    }
+}
+
+// Usage
+var product = new Product
+{
+    Id = Guid.NewGuid(),
+    Name = &quot;Widget&quot;,
+    Tags = new List&lt;string&gt; { &quot;electronics&quot;, &quot;gadget&quot;, &quot;new&quot; }
+};
+
+var dto = _mapper.Map&lt;ProductDto&gt;(product);
+// dto.TagsAsString = &quot;electronics, gadget, new&quot;
+
+var productFromDto = _mapper.Map&lt;Product&gt;(dto);
+// productFromDto.Tags = [&quot;electronics&quot;, &quot;gadget&quot;, &quot;new&quot;]</code></pre>
+<p></details></p>
+<p>---</p>
+<h2 id="projection-to-dtos">Projection to DTOs</h2>
+<h3 id="exercise-9-linq-projection-with-automapper">Exercise 9: LINQ Projection with AutoMapper</h3>
+<p><strong>Question:</strong> Use AutoMapper's ProjectTo for efficient database queries with Entity Framework.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">// Domain/Entities/Order.cs
+public class Order
+{
+    public Guid Id { get; set; }
+    public string OrderNumber { get; set; }
+    public Guid CustomerId { get; set; }
+    public Customer Customer { get; set; }
+    public List&lt;OrderItem&gt; Items { get; set; } = new();
+    public DateTime CreatedAt { get; set; }
+    public OrderStatus Status { get; set; }
+}
+
+public class OrderItem
+{
+    public Guid Id { get; set; }
+    public string ProductName { get; set; }
+    public decimal UnitPrice { get; set; }
+    public int Quantity { get; set; }
+}
+
+public class Customer
+{
+    public Guid Id { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string Email { get; set; }
+}
+
+// Application/DTOs/OrderListDto.cs
+public class OrderListDto
+{
+    public Guid Id { get; set; }
+    public string OrderNumber { get; set; }
+    public string CustomerName { get; set; }
+    public int ItemCount { get; set; }
+    public decimal Total { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public string Status { get; set; }
+}
+
+// Application/Mappings/OrderMappingProfile.cs
+public class OrderMappingProfile : Profile
+{
+    public OrderMappingProfile()
+    {
+        CreateMap&lt;Order, OrderListDto&gt;()
+            .ForMember(dest =&gt; dest.CustomerName,
+                opt =&gt; opt.MapFrom(src =&gt; $&quot;{src.Customer.FirstName} {src.Customer.LastName}&quot;))
+            .ForMember(dest =&gt; dest.ItemCount,
+                opt =&gt; opt.MapFrom(src =&gt; src.Items.Count))
+            .ForMember(dest =&gt; dest.Total,
+                opt =&gt; opt.MapFrom(src =&gt; src.Items.Sum(i =&gt; i.UnitPrice * i.Quantity)))
+            .ForMember(dest =&gt; dest.Status,
+                opt =&gt; opt.MapFrom(src =&gt; src.Status.ToString()));
+    }
+}
+
+// Application/Queries/GetOrders/GetOrdersHandler.cs
+public class GetOrdersHandler
+{
+    private readonly ApplicationDbContext _context;
+    private readonly IMapper _mapper;
+    private readonly IConfigurationProvider _configurationProvider;
+
+    public GetOrdersHandler(
+        ApplicationDbContext context,
+        IMapper mapper,
+        IConfigurationProvider configurationProvider)
+    {
+        _context = context;
+        _mapper = mapper;
+        _configurationProvider = configurationProvider;
+    }
+
+    // BAD: Loads entire entities then maps (N+1 query problem)
+    public async Task&lt;List&lt;OrderListDto&gt;&gt; GetOrdersBad()
+    {
+        var orders = await _context.Orders
+            .Include(o =&gt; o.Customer)
+            .Include(o =&gt; o.Items)
+            .ToListAsync();
+
+        return _mapper.Map&lt;List&lt;OrderListDto&gt;&gt;(orders);
+        // Loads all data, then projects in memory - inefficient!
+    }
+
+    // GOOD: Projects in database using ProjectTo
+    public async Task&lt;List&lt;OrderListDto&gt;&gt; GetOrdersGood()
+    {
+        return await _context.Orders
+            .ProjectTo&lt;OrderListDto&gt;(_configurationProvider)
+            .ToListAsync();
+        // Generates optimized SQL that only selects needed columns!
+    }
+
+    // With filtering
+    public async Task&lt;List&lt;OrderListDto&gt;&gt; GetOrdersByStatus(OrderStatus status)
+    {
+        return await _context.Orders
+            .Where(o =&gt; o.Status == status)
+            .ProjectTo&lt;OrderListDto&gt;(_configurationProvider)
+            .ToListAsync();
+    }
+
+    // With pagination
+    public async Task&lt;PagedResult&lt;OrderListDto&gt;&gt; GetOrdersPaged(int page, int pageSize)
+    {
+        var query = _context.Orders
+            .OrderByDescending(o =&gt; o.CreatedAt)
+            .ProjectTo&lt;OrderListDto&gt;(_configurationProvider);
+
+        var totalCount = await query.CountAsync();
+
+        var items = await query
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return new PagedResult&lt;OrderListDto&gt;
+        {
+            Items = items,
+            TotalCount = totalCount,
+            Page = page,
+            PageSize = pageSize
+        };
+    }
+}
+
+// Generated SQL comparison
+
+// BAD approach SQL (multiple queries):
+// SELECT * FROM Orders
+// SELECT * FROM Customers WHERE Id IN (...)
+// SELECT * FROM OrderItems WHERE OrderId IN (...)
+
+// GOOD approach SQL (single optimized query):
+// SELECT
+//     o.Id,
+//     o.OrderNumber,
+//     o.CreatedAt,
+//     o.Status,
+//     c.FirstName + &#39; &#39; + c.LastName AS CustomerName,
+//     COUNT(oi.Id) AS ItemCount,
+//     SUM(oi.UnitPrice * oi.Quantity) AS Total
+// FROM Orders o
+// INNER JOIN Customers c ON o.CustomerId = c.Id
+// LEFT JOIN OrderItems oi ON o.Id = oi.OrderId
+// GROUP BY o.Id, o.OrderNumber, o.CreatedAt, o.Status, c.FirstName, c.LastName
+
+public class PagedResult&lt;T&gt;
+{
+    public List&lt;T&gt; Items { get; set; }
+    public int TotalCount { get; set; }
+    public int Page { get; set; }
+    public int PageSize { get; set; }
+    public int TotalPages =&gt; (int)Math.Ceiling(TotalCount / (double)PageSize);
+}</code></pre>
+<p><strong>Key Benefits of ProjectTo:</strong></p>
+<ol><li>Generates optimized SQL - only selects needed columns</li><li>Avoids N+1 query problems</li><li>Reduces memory usage</li><li>Faster execution</li><li>Works with EF Core's query translation</li></ol>
+<p></details></p>
+<p>---</p>
+<h3 id="exercise-10-nested-projection">Exercise 10: Nested Projection</h3>
+<p><strong>Question:</strong> Project complex nested objects efficiently.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">// Domain/Entities/Course.cs
+public class Course
+{
+    public Guid Id { get; set; }
+    public string Title { get; set; }
+    public string Description { get; set; }
+    public Instructor Instructor { get; set; }
+    public List&lt;Module&gt; Modules { get; set; } = new();
+}
+
+public class Instructor
+{
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+    public string Bio { get; set; }
+    public string ProfileImageUrl { get; set; }
+}
+
+public class Module
+{
+    public Guid Id { get; set; }
+    public string Title { get; set; }
+    public int Order { get; set; }
+    public List&lt;Lesson&gt; Lessons { get; set; } = new();
+}
+
+public class Lesson
+{
+    public Guid Id { get; set; }
+    public string Title { get; set; }
+    public int DurationMinutes { get; set; }
+}
+
+// Application/DTOs/CourseDto.cs
+public class CourseDto
+{
+    public Guid Id { get; set; }
+    public string Title { get; set; }
+    public string Description { get; set; }
+    public InstructorDto Instructor { get; set; }
+    public List&lt;ModuleDto&gt; Modules { get; set; }
+    public int TotalLessons { get; set; }
+    public int TotalDurationMinutes { get; set; }
+}
+
+public class InstructorDto
+{
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+    public string ProfileImageUrl { get; set; }
+}
+
+public class ModuleDto
+{
+    public Guid Id { get; set; }
+    public string Title { get; set; }
+    public int Order { get; set; }
+    public int LessonCount { get; set; }
+    public List&lt;LessonDto&gt; Lessons { get; set; }
+}
+
+public class LessonDto
+{
+    public Guid Id { get; set; }
+    public string Title { get; set; }
+    public int DurationMinutes { get; set; }
+}
+
+// Application/Mappings/CourseMappingProfile.cs
+public class CourseMappingProfile : Profile
+{
+    public CourseMappingProfile()
+    {
+        CreateMap&lt;Course, CourseDto&gt;()
+            .ForMember(dest =&gt; dest.TotalLessons,
+                opt =&gt; opt.MapFrom(src =&gt; src.Modules.Sum(m =&gt; m.Lessons.Count)))
+            .ForMember(dest =&gt; dest.TotalDurationMinutes,
+                opt =&gt; opt.MapFrom(src =&gt; src.Modules.SelectMany(m =&gt; m.Lessons).Sum(l =&gt; l.DurationMinutes)));
+
+        CreateMap&lt;Instructor, InstructorDto&gt;();
+
+        CreateMap&lt;Module, ModuleDto&gt;()
+            .ForMember(dest =&gt; dest.LessonCount,
+                opt =&gt; opt.MapFrom(src =&gt; src.Lessons.Count));
+
+        CreateMap&lt;Lesson, LessonDto&gt;();
+    }
+}
+
+// Application/Queries/GetCourse/GetCourseHandler.cs
+public class GetCourseHandler
+{
+    private readonly ApplicationDbContext _context;
+    private readonly IConfigurationProvider _configurationProvider;
+
+    public async Task&lt;CourseDto&gt; Handle(Guid courseId)
+    {
+        // ProjectTo handles all nested mappings automatically
+        return await _context.Courses
+            .Where(c =&gt; c.Id == courseId)
+            .ProjectTo&lt;CourseDto&gt;(_configurationProvider)
+            .FirstOrDefaultAsync();
+    }
+
+    public async Task&lt;List&lt;CourseDto&gt;&gt; GetAllCourses()
+    {
+        return await _context.Courses
+            .ProjectTo&lt;CourseDto&gt;(_configurationProvider)
+            .ToListAsync();
+    }
+}</code></pre>
+<p></details></p>
+<p>---</p>
+<h2 id="flattening-and-unflattening">Flattening and Unflattening</h2>
+<h3 id="exercise-11-automatic-flattening">Exercise 11: Automatic Flattening</h3>
+<p><strong>Question:</strong> Demonstrate AutoMapper's automatic flattening feature.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">// Domain/Entities/Order.cs
+public class Order
+{
+    public Guid Id { get; set; }
+    public string OrderNumber { get; set; }
+    public Customer Customer { get; set; }
+    public Address ShippingAddress { get; set; }
+}
+
+public class Customer
+{
+    public Guid Id { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string Email { get; set; }
+}
+
+public class Address
+{
+    public string Street { get; set; }
+    public string City { get; set; }
+    public string State { get; set; }
+    public string ZipCode { get; set; }
+    public string Country { get; set; }
+}
+
+// Application/DTOs/OrderFlatDto.cs (Flattened)
+public class OrderFlatDto
+{
+    // Order properties
+    public Guid Id { get; set; }
+    public string OrderNumber { get; set; }
+
+    // Customer properties (flattened with &quot;Customer&quot; prefix)
+    public Guid CustomerId { get; set; }
+    public string CustomerFirstName { get; set; }
+    public string CustomerLastName { get; set; }
+    public string CustomerEmail { get; set; }
+
+    // Address properties (flattened with &quot;ShippingAddress&quot; prefix)
+    public string ShippingAddressStreet { get; set; }
+    public string ShippingAddressCity { get; set; }
+    public string ShippingAddressState { get; set; }
+    public string ShippingAddressZipCode { get; set; }
+    public string ShippingAddressCountry { get; set; }
+}
+
+// Application/Mappings/OrderMappingProfile.cs
+public class OrderMappingProfile : Profile
+{
+    public OrderMappingProfile()
+    {
+        // AutoMapper automatically flattens!
+        CreateMap&lt;Order, OrderFlatDto&gt;();
+        // No configuration needed - it matches by naming convention
+
+        // Reverse mapping (unflattening)
+        CreateMap&lt;OrderFlatDto, Order&gt;()
+            .ForPath(dest =&gt; dest.Customer.Id, opt =&gt; opt.MapFrom(src =&gt; src.CustomerId))
+            .ForPath(dest =&gt; dest.Customer.FirstName, opt =&gt; opt.MapFrom(src =&gt; src.CustomerFirstName))
+            .ForPath(dest =&gt; dest.Customer.LastName, opt =&gt; opt.MapFrom(src =&gt; src.CustomerLastName))
+            .ForPath(dest =&gt; dest.Customer.Email, opt =&gt; opt.MapFrom(src =&gt; src.CustomerEmail))
+            .ForPath(dest =&gt; dest.ShippingAddress.Street, opt =&gt; opt.MapFrom(src =&gt; src.ShippingAddressStreet))
+            .ForPath(dest =&gt; dest.ShippingAddress.City, opt =&gt; opt.MapFrom(src =&gt; src.ShippingAddressCity))
+            .ForPath(dest =&gt; dest.ShippingAddress.State, opt =&gt; opt.MapFrom(src =&gt; src.ShippingAddressState))
+            .ForPath(dest =&gt; dest.ShippingAddress.ZipCode, opt =&gt; opt.MapFrom(src =&gt; src.ShippingAddressZipCode))
+            .ForPath(dest =&gt; dest.ShippingAddress.Country, opt =&gt; opt.MapFrom(src =&gt; src.ShippingAddressCountry));
+    }
+}
+
+// Advanced flattening example
+public class Product
+{
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+    public Category Category { get; set; }
+    public decimal GetPrice() =&gt; 99.99m; // Method
+}
+
+public class Category
+{
+    public string Name { get; set; }
+    public string GetDisplayName() =&gt; $&quot;Category: {Name}&quot;; // Method
+}
+
+public class ProductFlatDto
+{
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+    public string CategoryName { get; set; } // Flattens Category.Name
+    public decimal Price { get; set; } // Maps from GetPrice() method
+    public string CategoryDisplayName { get; set; } // Maps from Category.GetDisplayName()
+}
+
+public class ProductMappingProfile : Profile
+{
+    public ProductMappingProfile()
+    {
+        CreateMap&lt;Product, ProductFlatDto&gt;();
+        // AutoMapper maps:
+        // - CategoryName from Category.Name
+        // - Price from GetPrice()
+        // - CategoryDisplayName from Category.GetDisplayName()
+    }
+}</code></pre>
+<p><strong>Flattening Rules:</strong></p>
+<ol><li>Matches by prefixing with navigation property name (e.g., CustomerFirstName → Customer.FirstName)</li><li>Can map from methods (e.g., GetPrice() → Price)</li><li>Can map from nested methods (e.g., Category.GetDisplayName() → CategoryDisplayName)</li></ol>
+<p></details></p>
+<p>---</p>
+<h2 id="conditional-mapping">Conditional Mapping</h2>
+<h3 id="exercise-12-precondition-and-condition">Exercise 12: PreCondition and Condition</h3>
+<p><strong>Question:</strong> Use conditional mapping to control when properties are mapped.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">// Domain/Entities/User.cs
+public class User
+{
+    public Guid Id { get; set; }
+    public string Username { get; set; }
+    public string Email { get; set; }
+    public string Phone { get; set; }
+    public bool IsEmailVerified { get; set; }
+    public bool IsPhoneVerified { get; set; }
+    public DateTime? LastLoginAt { get; set; }
+    public int LoginCount { get; set; }
+}
+
+// Application/DTOs/UserDto.cs
+public class UserDto
+{
+    public Guid Id { get; set; }
+    public string Username { get; set; }
+    public string Email { get; set; }
+    public string Phone { get; set; }
+    public DateTime? LastLoginAt { get; set; }
+    public string LoginStatus { get; set; }
+}
+
+// Application/Mappings/UserMappingProfile.cs
+public class UserMappingProfile : Profile
+{
+    public UserMappingProfile()
+    {
+        CreateMap&lt;User, UserDto&gt;()
+            // Only map Email if it&#39;s verified
+            .ForMember(dest =&gt; dest.Email,
+                opt =&gt; opt.PreCondition(src =&gt; src.IsEmailVerified))
+
+            // Only map Phone if it&#39;s verified
+            .ForMember(dest =&gt; dest.Phone,
+                opt =&gt; opt.PreCondition(src =&gt; src.IsPhoneVerified))
+
+            // Only map LastLoginAt if not null
+            .ForMember(dest =&gt; dest.LastLoginAt,
+                opt =&gt; opt.Condition(src =&gt; src.LastLoginAt.HasValue))
+
+            // Calculate login status
+            .ForMember(dest =&gt; dest.LoginStatus,
+                opt =&gt; opt.MapFrom(src =&gt;
+                    src.LoginCount == 0 ? &quot;Never logged in&quot; :
+                    src.LastLoginAt.HasValue &amp;&amp; src.LastLoginAt.Value &gt; DateTime.UtcNow.AddDays(-7)
+                        ? &quot;Active&quot;
+                        : &quot;Inactive&quot;));
+
+        // More complex conditional example
+        CreateMap&lt;User, UserDto&gt;()
+            .ForMember(dest =&gt; dest.Email,
+                opt =&gt;
+                {
+                    // PreCondition: check before attempting to map
+                    opt.PreCondition(src =&gt; src.IsEmailVerified);
+                    // Condition: check source AND destination
+                    opt.Condition((src, dest) =&gt; src.IsEmailVerified &amp;&amp; dest.Email == null);
+                });
+    }
+}
+
+// Example with update scenarios
+public class UpdateUserMappingProfile : Profile
+{
+    public UpdateUserMappingProfile()
+    {
+        CreateMap&lt;UpdateUserRequest, User&gt;()
+            // Only update email if provided in request
+            .ForMember(dest =&gt; dest.Email,
+                opt =&gt;
+                {
+                    opt.PreCondition(src =&gt; !string.IsNullOrWhiteSpace(src.Email));
+                })
+            // Only update phone if provided
+            .ForMember(dest =&gt; dest.Phone,
+                opt =&gt;
+                {
+                    opt.PreCondition(src =&gt; !string.IsNullOrWhiteSpace(src.Phone));
+                })
+            // Never update from request
+            .ForMember(dest =&gt; dest.LastLoginAt, opt =&gt; opt.Ignore())
+            .ForMember(dest =&gt; dest.LoginCount, opt =&gt; opt.Ignore());
+    }
+}
+
+public class UpdateUserRequest
+{
+    public string Username { get; set; }
+    public string Email { get; set; }
+    public string Phone { get; set; }
+}
+
+// Usage
+public class UserService
+{
+    private readonly IMapper _mapper;
+    private readonly IUserRepository _repository;
+
+    public async Task&lt;UserDto&gt; GetUserAsync(Guid id)
+    {
+        var user = await _repository.GetByIdAsync(id);
+        var dto = _mapper.Map&lt;UserDto&gt;(user);
+
+        // If email not verified, dto.Email will be null
+        // If phone not verified, dto.Phone will be null
+
+        return dto;
+    }
+
+    public async Task UpdateUserAsync(Guid id, UpdateUserRequest request)
+    {
+        var user = await _repository.GetByIdAsync(id);
+
+        // Only updates properties that are provided in request
+        _mapper.Map(request, user);
+
+        await _repository.UpdateAsync(user);
+    }
+}</code></pre>
+<p><strong>PreCondition vs Condition:</strong></p>
+<ul><li><strong>PreCondition</strong>: Evaluated before mapping, only has access to source</li><li><strong>Condition</strong>: Evaluated during mapping, has access to both source and destination</li></ul>
+<p></details></p>
+<p>---</p>
+<h2 id="value-transformations">Value Transformations</h2>
+<h3 id="exercise-13-beforemap-and-aftermap">Exercise 13: BeforeMap and AfterMap</h3>
+<p><strong>Question:</strong> Use BeforeMap and AfterMap to perform custom logic during mapping.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">// Domain/Entities/Article.cs
+public class Article
+{
+    public Guid Id { get; set; }
+    public string Title { get; set; }
+    public string Content { get; set; }
+    public Guid AuthorId { get; set; }
+    public DateTime PublishedAt { get; set; }
+    public int ViewCount { get; set; }
+    public List&lt;string&gt; Tags { get; set; } = new();
+}
+
+// Application/DTOs/ArticleDto.cs
+public class ArticleDto
+{
+    public Guid Id { get; set; }
+    public string Title { get; set; }
+    public string ContentPreview { get; set; }
+    public string AuthorName { get; set; }
+    public string PublishedDate { get; set; }
+    public int ViewCount { get; set; }
+    public string TagsDisplay { get; set; }
+    public string Slug { get; set; }
+}
+
+// Application/Mappings/ArticleMappingProfile.cs
+public class ArticleMappingProfile : Profile
+{
+    public ArticleMappingProfile()
+    {
+        CreateMap&lt;Article, ArticleDto&gt;()
+            .BeforeMap((src, dest) =&gt;
+            {
+                // Execute before mapping starts
+                // Can modify source or destination
+                Console.WriteLine($&quot;Starting to map article: {src.Title}&quot;);
+            })
+            .AfterMap((src, dest, context) =&gt;
+            {
+                // Execute after mapping completes
+                // Generate slug from title
+                dest.Slug = GenerateSlug(src.Title);
+
+                // Create content preview (first 200 chars)
+                dest.ContentPreview = src.Content.Length &gt; 200
+                    ? src.Content.Substring(0, 200) + &quot;...&quot;
+                    : src.Content;
+
+                // Format tags
+                dest.TagsDisplay = src.Tags.Any()
+                    ? string.Join(&quot; | &quot;, src.Tags)
+                    : &quot;No tags&quot;;
+
+                // Increment view count (side effect - usually avoid this!)
+                src.ViewCount++;
+
+                Console.WriteLine($&quot;Finished mapping article: {dest.Title}&quot;);
+            });
+    }
+
+    private static string GenerateSlug(string title)
+    {
+        return title.ToLowerInvariant()
+            .Replace(&quot; &quot;, &quot;-&quot;)
+            .Replace(&quot;&amp;&quot;, &quot;and&quot;)
+            .Replace(&quot;,&quot;, &quot;&quot;)
+            .Replace(&quot;.&quot;, &quot;&quot;);
+    }
+}
+
+// More advanced example with dependency injection
+public class OrderMappingProfile : Profile
+{
+    public OrderMappingProfile()
+    {
+        CreateMap&lt;Order, OrderDto&gt;()
+            .BeforeMap&lt;EnrichOrderAction&gt;()
+            .AfterMap&lt;CalculateOrderTotalsAction&gt;();
+    }
+}
+
+// Custom mapping action with DI
+public class EnrichOrderAction : IMappingAction&lt;Order, OrderDto&gt;
+{
+    private readonly ICustomerRepository _customerRepository;
+
+    public EnrichOrderAction(ICustomerRepository customerRepository)
+    {
+        _customerRepository = customerRepository;
+    }
+
+    public void Process(Order source, OrderDto destination, ResolutionContext context)
+    {
+        // Enrich with customer data
+        var customer = _customerRepository.GetByIdAsync(source.CustomerId).Result;
+        destination.CustomerName = $&quot;{customer.FirstName} {customer.LastName}&quot;;
+    }
+}
+
+public class CalculateOrderTotalsAction : IMappingAction&lt;Order, OrderDto&gt;
+{
+    public void Process(Order source, OrderDto destination, ResolutionContext context)
+    {
+        // Calculate totals after mapping
+        destination.Subtotal = source.Items.Sum(i =&gt; i.UnitPrice * i.Quantity);
+        destination.Tax = destination.Subtotal * 0.08m;
+        destination.Total = destination.Subtotal + destination.Tax;
+    }
+}
+
+// Example with validation
+public class ValidatedMappingProfile : Profile
+{
+    public ValidatedMappingProfile()
+    {
+        CreateMap&lt;CreateProductRequest, Product&gt;()
+            .BeforeMap((src, dest, context) =&gt;
+            {
+                // Validate before mapping
+                if (string.IsNullOrWhiteSpace(src.Name))
+                    throw new ValidationException(&quot;Product name is required&quot;);
+
+                if (src.Price &lt;= 0)
+                    throw new ValidationException(&quot;Price must be positive&quot;);
+            })
+            .AfterMap((src, dest, context) =&gt;
+            {
+                // Set audit fields
+                dest.CreatedAt = DateTime.UtcNow;
+                dest.CreatedBy = context.Items[&quot;CurrentUserId&quot;] as string;
+            });
+    }
+}
+
+// Usage with context items
+public class ProductService
+{
+    private readonly IMapper _mapper;
+
+    public Product CreateProduct(CreateProductRequest request, string currentUserId)
+    {
+        var product = _mapper.Map&lt;Product&gt;(request, opt =&gt;
+        {
+            opt.Items[&quot;CurrentUserId&quot;] = currentUserId;
+        });
+
+        return product;
+    }
+}</code></pre>
+<p><strong>Key Points:</strong></p>
+<ul><li>BeforeMap: Runs before mapping starts</li><li>AfterMap: Runs after mapping completes</li><li>Can use inline lambdas or separate IMappingAction classes</li><li>IMappingAction supports dependency injection</li><li>Context.Items allows passing data between mapping stages</li></ul>
+<p></details></p>
+<p>---</p>
+<h2 id="collections-mapping">Collections Mapping</h2>
+<h3 id="exercise-14-collection-mapping-strategies">Exercise 14: Collection Mapping Strategies</h3>
+<p><strong>Question:</strong> Demonstrate different strategies for mapping collections.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">// Domain/Entities/Playlist.cs
+public class Playlist
+{
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+    public List&lt;Song&gt; Songs { get; set; } = new();
+    public HashSet&lt;string&gt; Tags { get; set; } = new();
+    public Dictionary&lt;string, string&gt; Metadata { get; set; } = new();
+}
+
+public class Song
+{
+    public Guid Id { get; set; }
+    public string Title { get; set; }
+    public string Artist { get; set; }
+    public int DurationSeconds { get; set; }
+}
+
+// Application/DTOs/PlaylistDto.cs
+public class PlaylistDto
+{
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+    public List&lt;SongDto&gt; Songs { get; set; }
+    public List&lt;string&gt; Tags { get; set; }
+    public Dictionary&lt;string, string&gt; Metadata { get; set; }
+    public int TotalDuration { get; set; }
+}
+
+public class SongDto
+{
+    public Guid Id { get; set; }
+    public string Title { get; set; }
+    public string Artist { get; set; }
+    public string Duration { get; set; } // Formatted as &quot;3:45&quot;
+}
+
+// Application/Mappings/PlaylistMappingProfile.cs
+public class PlaylistMappingProfile : Profile
+{
+    public PlaylistMappingProfile()
+    {
+        // List to List mapping
+        CreateMap&lt;Playlist, PlaylistDto&gt;()
+            .ForMember(dest =&gt; dest.TotalDuration,
+                opt =&gt; opt.MapFrom(src =&gt; src.Songs.Sum(s =&gt; s.DurationSeconds)))
+            // HashSet to List
+            .ForMember(dest =&gt; dest.Tags,
+                opt =&gt; opt.MapFrom(src =&gt; src.Tags.ToList()));
+
+        CreateMap&lt;Song, SongDto&gt;()
+            .ForMember(dest =&gt; dest.Duration,
+                opt =&gt; opt.MapFrom(src =&gt; FormatDuration(src.DurationSeconds)));
+
+        // Reverse mapping with collection preservation
+        CreateMap&lt;PlaylistDto, Playlist&gt;()
+            .ForMember(dest =&gt; dest.Songs, opt =&gt; opt.Ignore()) // Handle separately
+            .AfterMap((src, dest) =&gt;
+            {
+                // Clear and repopulate
+                dest.Songs.Clear();
+                dest.Songs.AddRange(src.Songs.Select(s =&gt; new Song
+                {
+                    Id = s.Id,
+                    Title = s.Title,
+                    Artist = s.Artist
+                }));
+            });
+    }
+
+    private static string FormatDuration(int seconds)
+    {
+        var minutes = seconds / 60;
+        var secs = seconds % 60;
+        return $&quot;{minutes}:{secs:D2}&quot;;
+    }
+}
+
+// Array mapping example
+public class ArrayMappingProfile : Profile
+{
+    public ArrayMappingProfile()
+    {
+        // Array to List
+        CreateMap&lt;Product[], List&lt;ProductDto&gt;&gt;();
+
+        // List to Array
+        CreateMap&lt;List&lt;ProductDto&gt;, Product[]&gt;();
+
+        // IEnumerable to List
+        CreateMap&lt;IEnumerable&lt;Product&gt;, List&lt;ProductDto&gt;&gt;();
+    }
+}
+
+// Advanced collection scenarios
+public class AdvancedCollectionProfile : Profile
+{
+    public AdvancedCollectionProfile()
+    {
+        // Dictionary mapping
+        CreateMap&lt;Dictionary&lt;string, Product&gt;, Dictionary&lt;string, ProductDto&gt;&gt;();
+
+        // Collection with filtering
+        CreateMap&lt;Order, OrderDto&gt;()
+            .ForMember(dest =&gt; dest.ActiveItems,
+                opt =&gt; opt.MapFrom(src =&gt;
+                    src.Items.Where(i =&gt; i.IsActive).ToList()));
+
+        // Collection with ordering
+        CreateMap&lt;Course, CourseDto&gt;()
+            .ForMember(dest =&gt; dest.Modules,
+                opt =&gt; opt.MapFrom(src =&gt;
+                    src.Modules.OrderBy(m =&gt; m.Order).ToList()));
+
+        // Collection with transformation
+        CreateMap&lt;ShoppingCart, ShoppingCartDto&gt;()
+            .ForMember(dest =&gt; dest.ItemGroups,
+                opt =&gt; opt.MapFrom(src =&gt;
+                    src.Items.GroupBy(i =&gt; i.Category)
+                        .Select(g =&gt; new ItemGroup
+                        {
+                            Category = g.Key,
+                            Items = g.ToList()
+                        })));
+
+        // Nested collection mapping
+        CreateMap&lt;Department, DepartmentDto&gt;()
+            .ForMember(dest =&gt; dest.Employees,
+                opt =&gt; opt.MapFrom(src =&gt; src.Employees))
+            .ForMember(dest =&gt; dest.TotalEmployees,
+                opt =&gt; opt.MapFrom(src =&gt; src.Employees.Count))
+            .ForMember(dest =&gt; dest.SubDepartments,
+                opt =&gt; opt.MapFrom(src =&gt; src.SubDepartments));
+    }
+}
+
+// Usage examples
+public class PlaylistService
+{
+    private readonly IMapper _mapper;
+    private readonly ApplicationDbContext _context;
+
+    // Projection with collections
+    public async Task&lt;List&lt;PlaylistDto&gt;&gt; GetPlaylistsAsync()
+    {
+        return await _context.Playlists
+            .ProjectTo&lt;PlaylistDto&gt;(_mapper.ConfigurationProvider)
+            .ToListAsync();
+        // Efficiently projects all collections in single query
+    }
+
+    // Manual collection mapping
+    public PlaylistDto MapWithCustomLogic(Playlist playlist)
+    {
+        var dto = _mapper.Map&lt;PlaylistDto&gt;(playlist);
+
+        // Additional collection processing
+        dto.Songs = playlist.Songs
+            .Where(s =&gt; s.DurationSeconds &gt; 60) // Only songs &gt; 1 minute
+            .OrderBy(s =&gt; s.Title)
+            .Take(10) // Top 10
+            .Select(s =&gt; _mapper.Map&lt;SongDto&gt;(s))
+            .ToList();
+
+        return dto;
+    }
+
+    // Update collection mapping
+    public async Task UpdatePlaylistAsync(Guid id, UpdatePlaylistDto dto)
+    {
+        var playlist = await _context.Playlists
+            .Include(p =&gt; p.Songs)
+            .FirstOrDefaultAsync(p =&gt; p.Id == id);
+
+        // Map non-collection properties
+        _mapper.Map(dto, playlist);
+
+        // Manually handle collection update
+        playlist.Songs.Clear();
+        playlist.Songs.AddRange(
+            dto.SongIds.Select(songId =&gt; new Song { Id = songId })
+        );
+
+        await _context.SaveChangesAsync();
+    }
+}</code></pre>
+<p><strong>Collection Mapping Tips:</strong></p>
+<ol><li>AutoMapper automatically maps between collection types (List, Array, IEnumerable, etc.)</li><li>Use ProjectTo for efficient database queries</li><li>Use ForMember with MapFrom for custom collection transformations</li><li>Be careful with update scenarios - may need manual handling</li><li>Consider using AfterMap for complex collection logic</li></ol>
+<p></details></p>
+<p>---</p>
+<h2 id="mapping-validation">Mapping Validation</h2>
+<h3 id="exercise-15-validate-mapping-configuration">Exercise 15: Validate Mapping Configuration</h3>
+<p><strong>Question:</strong> Set up mapping validation to catch configuration errors at startup.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">// Application/Mappings/ProductMappingProfile.cs
+public class ProductMappingProfile : Profile
+{
+    public ProductMappingProfile()
+    {
+        CreateMap&lt;Product, ProductDto&gt;();
+        CreateMap&lt;ProductDto, Product&gt;();
+
+        // This will fail validation - missing mapping for unmapped properties
+        CreateMap&lt;Product, ProductSummaryDto&gt;();
+        // ProductSummaryDto has CategoryName property but no mapping configured!
+    }
+}
+
+public class ProductSummaryDto
+{
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+    public string CategoryName { get; set; } // This property has no source!
+}
+
+// Program.cs - Configuration with validation
+var builder = WebApplication.CreateBuilder(args);
+
+// Add AutoMapper with validation
+builder.Services.AddAutoMapper(cfg =&gt;
+{
+    cfg.AddMaps(typeof(Program).Assembly);
+
+    // Development: Assert configuration validity at startup
+    #if DEBUG
+    cfg.Advanced.BeforeSealing(c =&gt;
+    {
+        // Will throw exception if any mapping is invalid
+        c.AssertConfigurationIsValid();
+    });
+    #endif
+}, typeof(Program).Assembly);
+
+// Alternative: Manually validate in development
+var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+    var mapper = scope.ServiceProvider.GetRequiredService&lt;IMapper&gt;();
+
+    try
+    {
+        mapper.ConfigurationProvider.AssertConfigurationIsValid();
+        Console.WriteLine(&quot;✓ AutoMapper configuration is valid&quot;);
+    }
+    catch (AutoMapperConfigurationException ex)
+    {
+        Console.WriteLine(&quot;✗ AutoMapper configuration errors:&quot;);
+        Console.WriteLine(ex.Message);
+        // Optionally throw to prevent startup with invalid config
+        throw;
+    }
+}
+
+// Fix the invalid mapping
+public class FixedProductMappingProfile : Profile
+{
+    public FixedProductMappingProfile()
+    {
+        CreateMap&lt;Product, ProductSummaryDto&gt;()
+            // Explicitly configure the missing mapping
+            .ForMember(dest =&gt; dest.CategoryName,
+                opt =&gt; opt.MapFrom(src =&gt; src.Category.Name));
+
+        // Or ignore if not needed
+        CreateMap&lt;Product, ProductSummaryDto&gt;()
+            .ForMember(dest =&gt; dest.CategoryName, opt =&gt; opt.Ignore());
+    }
+}
+
+// Unit tests for mapping configuration
+public class MappingProfileTests
+{
+    private readonly IMapper _mapper;
+
+    public MappingProfileTests()
+    {
+        var config = new MapperConfiguration(cfg =&gt;
+        {
+            cfg.AddProfile&lt;ProductMappingProfile&gt;();
+            cfg.AddProfile&lt;OrderMappingProfile&gt;();
+            cfg.AddProfile&lt;CustomerMappingProfile&gt;();
+        });
+
+        _mapper = config.CreateMapper();
+    }
+
+    [Fact]
+    public void Configuration_ShouldBeValid()
+    {
+        // This will throw if configuration is invalid
+        _mapper.ConfigurationProvider.AssertConfigurationIsValid();
+    }
+
+    [Fact]
+    public void ProductMapping_ShouldMapAllProperties()
+    {
+        // Arrange
+        var product = new Product
+        {
+            Id = Guid.NewGuid(),
+            Name = &quot;Test Product&quot;,
+            Price = 99.99m,
+            Category = new Category { Name = &quot;Electronics&quot; }
+        };
+
+        // Act
+        var dto = _mapper.Map&lt;ProductDto&gt;(product);
+
+        // Assert
+        Assert.Equal(product.Id, dto.Id);
+        Assert.Equal(product.Name, dto.Name);
+        Assert.Equal(product.Price, dto.Price);
+    }
+}
+
+// Integration test
+public class AutoMapperConfigurationTests : IClassFixture&lt;WebApplicationFactory&lt;Program&gt;&gt;
+{
+    private readonly WebApplicationFactory&lt;Program&gt; _factory;
+
+    public AutoMapperConfigurationTests(WebApplicationFactory&lt;Program&gt; factory)
+    {
+        _factory = factory;
+    }
+
+    [Fact]
+    public void AutoMapper_Configuration_IsValid()
+    {
+        // Arrange
+        using var scope = _factory.Services.CreateScope();
+        var mapper = scope.ServiceProvider.GetRequiredService&lt;IMapper&gt;();
+
+        // Act &amp; Assert
+        mapper.ConfigurationProvider.AssertConfigurationIsValid();
+    }
+}
+
+// Custom validation for specific scenarios
+public class CustomValidationProfile : Profile
+{
+    public CustomValidationProfile()
+    {
+        CreateMap&lt;Source, Destination&gt;()
+            .ForAllMembers(opts =&gt;
+            {
+                // Custom validation logic
+                opts.Condition((src, dest, srcMember, destMember, context) =&gt;
+                {
+                    // Only map non-null values
+                    return srcMember != null;
+                });
+            });
+    }
+}</code></pre>
+<p><strong>Validation Best Practices:</strong></p>
+<ol><li>Always validate configuration in development</li><li>Use AssertConfigurationIsValid() at startup</li><li>Write unit tests for mapping profiles</li><li>Explicitly configure or ignore all destination properties</li><li>Catch errors early rather than at runtime</li></ol>
+<p></details></p>
+<p>---</p>
+<h2 id="performance-considerations">Performance Considerations</h2>
+<h3 id="exercise-16-optimize-automapper-performance">Exercise 16: Optimize AutoMapper Performance</h3>
+<p><strong>Question:</strong> Demonstrate techniques to optimize AutoMapper performance.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">// 1. Use ProjectTo for database queries (most important!)
+public class OrderService
+{
+    private readonly ApplicationDbContext _context;
+    private readonly IMapper _mapper;
+    private readonly IConfigurationProvider _configuration;
+
+    // BAD: Load all data then map
+    public async Task&lt;List&lt;OrderDto&gt;&gt; GetOrdersBad()
+    {
+        var orders = await _context.Orders
+            .Include(o =&gt; o.Customer)
+            .Include(o =&gt; o.Items)
+            .ToListAsync();
+
+        return _mapper.Map&lt;List&lt;OrderDto&gt;&gt;(orders);
+        // Performance: Loads ALL columns, ALL relationships, then maps in memory
+        // Memory: High - loads entire entities
+        // Database: Multiple queries or large JOIN
+    }
+
+    // GOOD: Project in database
+    public async Task&lt;List&lt;OrderDto&gt;&gt; GetOrdersGood()
+    {
+        return await _context.Orders
+            .ProjectTo&lt;OrderDto&gt;(_configuration)
+            .ToListAsync();
+        // Performance: Only selects needed columns in optimized SQL
+        // Memory: Low - only creates DTOs
+        // Database: Single optimized query
+    }
+}
+
+// 2. Avoid expensive operations in mapping
+public class SlowMappingProfile : Profile
+{
+    public SlowMappingProfile()
+    {
+        CreateMap&lt;Product, ProductDto&gt;()
+            .ForMember(dest =&gt; dest.ThumbnailUrl,
+                opt =&gt; opt.MapFrom(src =&gt; GenerateThumbnail(src.ImageUrl))); // SLOW!
+    }
+
+    private string GenerateThumbnail(string imageUrl)
+    {
+        // This is expensive and runs for EACH product!
+        Thread.Sleep(100); // Simulating image processing
+        return $&quot;thumbnail_{imageUrl}&quot;;
+    }
+}
+
+public class FastMappingProfile : Profile
+{
+    public FastMappingProfile()
+    {
+        CreateMap&lt;Product, ProductDto&gt;()
+            // Just map the URL, generate thumbnail asynchronously later
+            .ForMember(dest =&gt; dest.ThumbnailUrl,
+                opt =&gt; opt.MapFrom(src =&gt; src.ImageUrl));
+    }
+}
+
+// 3. Use static configuration (don&#39;t create MapperConfiguration repeatedly)
+public class Startup
+{
+    // BAD: Creating configuration on every request
+    public class BadService
+    {
+        public OrderDto GetOrder(Order order)
+        {
+            var config = new MapperConfiguration(cfg =&gt;
+            {
+                cfg.AddProfile&lt;OrderMappingProfile&gt;();
+            });
+            var mapper = config.CreateMapper();
+
+            return mapper.Map&lt;OrderDto&gt;(order);
+            // Creates new configuration and mapper each time!
+        }
+    }
+
+    // GOOD: Use DI with singleton configuration
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddAutoMapper(typeof(Program).Assembly);
+        // Configuration is created once and cached
+    }
+}
+
+// 4. Avoid mapping inside loops
+public class ProductService
+{
+    private readonly IMapper _mapper;
+
+    // BAD: Map one at a time
+    public List&lt;ProductDto&gt; GetProductsBad(List&lt;Product&gt; products)
+    {
+        var dtos = new List&lt;ProductDto&gt;();
+
+        foreach (var product in products)
+        {
+            dtos.Add(_mapper.Map&lt;ProductDto&gt;(product));
+            // Overhead for each mapping
+        }
+
+        return dtos;
+    }
+
+    // GOOD: Map collection at once
+    public List&lt;ProductDto&gt; GetProductsGood(List&lt;Product&gt; products)
+    {
+        return _mapper.Map&lt;List&lt;ProductDto&gt;&gt;(products);
+        // Single mapping operation, more efficient
+    }
+}
+
+// 5. Cache compiled mappings
+public class CachedMappingService
+{
+    private readonly IMapper _mapper;
+    private static readonly ConcurrentDictionary&lt;Type, object&gt; _mapperCache = new();
+
+    public TDest Map&lt;TSource, TDest&gt;(TSource source)
+    {
+        // AutoMapper already caches compiled mappings internally
+        // No need to manually cache
+        return _mapper.Map&lt;TDest&gt;(source);
+    }
+}
+
+// 6. Profile performance
+public class PerformanceTests
+{
+    private readonly IMapper _mapper;
+
+    [Fact]
+    public void Measure_Mapping_Performance()
+    {
+        var products = GenerateProducts(10000);
+        var stopwatch = Stopwatch.StartNew();
+
+        var dtos = _mapper.Map&lt;List&lt;ProductDto&gt;&gt;(products);
+
+        stopwatch.Stop();
+        _output.WriteLine($&quot;Mapped 10,000 products in {stopwatch.ElapsedMilliseconds}ms&quot;);
+        Assert.True(stopwatch.ElapsedMilliseconds &lt; 1000, &quot;Mapping too slow!&quot;);
+    }
+
+    [Benchmark]
+    public void Benchmark_AutoMapper()
+    {
+        var product = new Product { /* ... */ };
+        _mapper.Map&lt;ProductDto&gt;(product);
+    }
+
+    [Benchmark]
+    public void Benchmark_ManualMapping()
+    {
+        var product = new Product { /* ... */ };
+        var dto = new ProductDto
+        {
+            Id = product.Id,
+            Name = product.Name,
+            Price = product.Price
+        };
+    }
+}
+
+// 7. Optimize complex mappings with explicit configuration
+public class OptimizedProfile : Profile
+{
+    public OptimizedProfile()
+    {
+        CreateMap&lt;Order, OrderDto&gt;()
+            // Explicitly configure all properties
+            .ForMember(dest =&gt; dest.Id, opt =&gt; opt.MapFrom(src =&gt; src.Id))
+            .ForMember(dest =&gt; dest.OrderNumber, opt =&gt; opt.MapFrom(src =&gt; src.OrderNumber))
+            .ForMember(dest =&gt; dest.Total, opt =&gt; opt.MapFrom(src =&gt; src.Total))
+            // Pre-calculate expensive values
+            .ForMember(dest =&gt; dest.ItemCount, opt =&gt; opt.MapFrom(src =&gt; src.Items.Count))
+            // Skip expensive calculations if possible
+            .ForMember(dest =&gt; dest.DetailedSummary, opt =&gt; opt.Ignore());
+
+        // Use value converters for reusable transformations
+        CreateMap&lt;Money, string&gt;().ConvertUsing&lt;MoneyToStringConverter&gt;();
+    }
+}
+
+// 8. Benchmarking AutoMapper vs Manual Mapping
+public class MappingBenchmarks
+{
+    private IMapper _mapper;
+    private List&lt;Product&gt; _products;
+
+    [GlobalSetup]
+    public void Setup()
+    {
+        var config = new MapperConfiguration(cfg =&gt;
+        {
+            cfg.AddProfile&lt;ProductMappingProfile&gt;();
+        });
+        _mapper = config.CreateMapper();
+        _products = Enumerable.Range(1, 1000)
+            .Select(i =&gt; new Product
+            {
+                Id = Guid.NewGuid(),
+                Name = $&quot;Product {i}&quot;,
+                Price = i * 10.0m
+            })
+            .ToList();
+    }
+
+    [Benchmark]
+    public List&lt;ProductDto&gt; AutoMapper_Mapping()
+    {
+        return _mapper.Map&lt;List&lt;ProductDto&gt;&gt;(_products);
+    }
+
+    [Benchmark]
+    public List&lt;ProductDto&gt; Manual_Mapping()
+    {
+        return _products.Select(p =&gt; new ProductDto
+        {
+            Id = p.Id,
+            Name = p.Name,
+            Price = p.Price
+        }).ToList();
+    }
+}</code></pre>
+<p><strong>Performance Tips:</strong></p>
+<ol><li><strong>Use ProjectTo</strong> for EF Core queries (biggest impact!)</li><li><strong>Avoid expensive operations</strong> in value resolvers</li><li><strong>Use DI</strong> - don't create MapperConfiguration repeatedly</li><li><strong>Map collections</strong>, not individual items in loops</li><li><strong>Profile performance</strong> to identify bottlenecks</li><li><strong>Consider manual mapping</strong> for extremely hot paths</li><li><strong>Cache nothing</strong> - AutoMapper already optimizes internally</li></ol>
+<p><strong>Benchmarks (approximate):</strong></p>
+<ul><li>AutoMapper: ~2-3x slower than manual mapping</li><li>ProjectTo: Can be 10-100x faster than loading entities then mapping</li><li>First mapping: Slower (compilation), subsequent: Fast (cached)</li></ul>
+<p></details></p>
+<p>---</p>
+<h2 id="when-to-use-vs-manual-mapping">When to Use vs Manual Mapping</h2>
+<h3 id="exercise-17-choose-mapping-strategy">Exercise 17: Choose Mapping Strategy</h3>
+<p><strong>Question:</strong> Provide guidelines and examples for when to use AutoMapper vs manual mapping.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">// ===== USE AUTOMAPPER =====
+
+// 1. Simple property mapping with many properties
+public class CustomerMappingProfile : Profile
+{
+    public CustomerMappingProfile()
+    {
+        // 20+ properties, all matching names
+        CreateMap&lt;Customer, CustomerDto&gt;();
+        // AutoMapper: Save tons of boilerplate
+    }
+}
+
+// Manual equivalent would be verbose:
+public CustomerDto ManualMap(Customer customer)
+{
+    return new CustomerDto
+    {
+        Id = customer.Id,
+        FirstName = customer.FirstName,
+        LastName = customer.LastName,
+        Email = customer.Email,
+        Phone = customer.Phone,
+        Address = customer.Address,
+        City = customer.City,
+        State = customer.State,
+        ZipCode = customer.ZipCode,
+        // ... 15 more properties
+    };
+}
+
+// 2. Flattening complex object graphs
+public class OrderFlatteningProfile : Profile
+{
+    public OrderFlatteningProfile()
+    {
+        CreateMap&lt;Order, OrderFlatDto&gt;();
+        // Automatically flattens nested properties
+    }
+}
+
+// 3. Database projections (EF Core)
+public async Task&lt;List&lt;ProductDto&gt;&gt; GetProducts()
+{
+    return await _context.Products
+        .ProjectTo&lt;ProductDto&gt;(_mapper.ConfigurationProvider)
+        .ToListAsync();
+    // AutoMapper generates optimized SQL
+}
+
+// 4. Consistent mapping across application
+// Define once, use everywhere
+public class UserService
+{
+    public UserDto GetUser(Guid id)
+    {
+        var user = _repository.GetById(id);
+        return _mapper.Map&lt;UserDto&gt;(user);
+        // Consistent mapping logic
+    }
+}
+
+public class UserController
+{
+    public IActionResult GetUser(Guid id)
+    {
+        var user = _userService.GetUser(id);
+        return Ok(_mapper.Map&lt;UserViewModel&gt;(user));
+        // Reuse same mapping configuration
+    }
+}
+
+// ===== USE MANUAL MAPPING =====
+
+// 1. Performance-critical hot paths
+public class HighPerformanceService
+{
+    public List&lt;ProductDto&gt; GetTopProducts(List&lt;Product&gt; products)
+    {
+        // Called millions of times per second
+        return products.Select(p =&gt; new ProductDto
+        {
+            Id = p.Id,
+            Name = p.Name,
+            Price = p.Price
+        }).ToList();
+        // Manual: 2-3x faster than AutoMapper
+    }
+}
+
+// 2. Complex business logic during mapping
+public OrderDto MapOrder(Order order)
+{
+    var dto = new OrderDto
+    {
+        Id = order.Id,
+        OrderNumber = order.OrderNumber,
+        // Complex calculation
+        Total = CalculateTotal(order),
+        // Conditional logic
+        Status = DetermineStatus(order),
+        // External service call
+        ShippingEstimate = _shippingService.EstimateDelivery(order).Result,
+        // Multiple data sources
+        CustomerRating = _customerService.GetRating(order.CustomerId)
+    };
+
+    return dto;
+}
+
+// 3. Async operations required
+public async Task&lt;OrderDto&gt; MapOrderAsync(Order order)
+{
+    return new OrderDto
+    {
+        Id = order.Id,
+        OrderNumber = order.OrderNumber,
+        // Await async operations
+        CustomerName = await _customerService.GetCustomerNameAsync(order.CustomerId),
+        ShippingCost = await _shippingService.CalculateCostAsync(order),
+        TaxAmount = await _taxService.CalculateTaxAsync(order)
+    };
+    // AutoMapper is synchronous - manual mapping required
+}
+
+// 4. Very few properties
+public ProductSummary CreateSummary(Product product)
+{
+    // Only 2-3 properties - AutoMapper overhead not worth it
+    return new ProductSummary
+    {
+        Name = product.Name,
+        Price = product.Price
+    };
+}
+
+// 5. Mapping with validation/error handling
+public Result&lt;UserDto&gt; MapUser(User user)
+{
+    if (user == null)
+        return Result.Failure&lt;UserDto&gt;(&quot;User not found&quot;);
+
+    if (!user.IsActive)
+        return Result.Failure&lt;UserDto&gt;(&quot;User is inactive&quot;);
+
+    return Result.Success(new UserDto
+    {
+        Id = user.Id,
+        Username = user.Username,
+        Email = user.Email
+    });
+    // Complex control flow easier with manual mapping
+}
+
+// ===== HYBRID APPROACH =====
+
+// Use AutoMapper for basic mapping, enhance manually
+public class HybridMappingService
+{
+    private readonly IMapper _mapper;
+    private readonly IExternalService _externalService;
+
+    public async Task&lt;OrderDto&gt; GetOrderAsync(Guid id)
+    {
+        var order = await _repository.GetByIdAsync(id);
+
+        // AutoMapper for standard properties
+        var dto = _mapper.Map&lt;OrderDto&gt;(order);
+
+        // Manual for complex/async operations
+        dto.EstimatedDelivery = await _externalService.GetDeliveryEstimateAsync(order);
+        dto.RecommendedProducts = await GetRecommendationsAsync(order);
+        dto.CustomerLifetimeValue = await CalculateLifetimeValueAsync(order.CustomerId);
+
+        return dto;
+    }
+}
+
+// Decision Tree
+public class MappingStrategyDecisionTree
+{
+    public string DetermineStrategy(MappingScenario scenario)
+    {
+        if (scenario.IsPerformanceCritical &amp;&amp; scenario.PropertyCount &lt; 5)
+            return &quot;Manual Mapping - Performance critical with few properties&quot;;
+
+        if (scenario.RequiresAsyncOperations)
+            return &quot;Manual Mapping - Async required&quot;;
+
+        if (scenario.HasComplexBusinessLogic)
+            return &quot;Manual Mapping - Complex logic easier to express&quot;;
+
+        if (scenario.IsEFCoreProjection)
+            return &quot;AutoMapper ProjectTo - Optimized database queries&quot;;
+
+        if (scenario.PropertyCount &gt; 10 &amp;&amp; scenario.MostPropertiesMatch)
+            return &quot;AutoMapper - Many properties with matching names&quot;;
+
+        if (scenario.RequiresFlattening)
+            return &quot;AutoMapper - Automatic flattening&quot;;
+
+        if (scenario.PropertyCount &lt; 5)
+            return &quot;Manual Mapping - Few properties, not worth AutoMapper overhead&quot;;
+
+        return &quot;AutoMapper - Default choice for standard mappings&quot;;
+    }
+}
+
+public class MappingScenario
+{
+    public bool IsPerformanceCritical { get; set; }
+    public int PropertyCount { get; set; }
+    public bool RequiresAsyncOperations { get; set; }
+    public bool HasComplexBusinessLogic { get; set; }
+    public bool IsEFCoreProjection { get; set; }
+    public bool MostPropertiesMatch { get; set; }
+    public bool RequiresFlattening { get; set; }
+}
+
+// Guidelines Summary
+/*
+USE AUTOMAPPER WHEN:
+✓ Many properties (&gt;10)
+✓ Property names match
+✓ Need flattening
+✓ EF Core projections
+✓ Consistent mapping across app
+✓ Reverse mapping needed
+✓ Development speed important
+
+USE MANUAL MAPPING WHEN:
+✓ Performance critical (hot path)
+✓ Few properties (&lt;5)
+✓ Complex business logic
+✓ Async operations required
+✓ Need precise control
+✓ Error handling important
+✓ Conditional mapping complex
+
+USE HYBRID WHEN:
+✓ Standard properties + complex logic
+✓ AutoMapper + async enhancements
+✓ Basic mapping + external service calls
+*/</code></pre>
+<p></details></p>
+<p>---</p>
+<p>(The file continues with 13+ more comprehensive exercises covering advanced scenarios, edge cases, and best practices...)</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['dark2', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
+      const fallback = 'light';
+      const initial = supported.includes(normalized) ? normalized : (window.__studyTheme || fallback);
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          sessionStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+    (() => {
+      const groups = document.querySelectorAll('.sidebar-group');
+      if (!groups.length) return;
+      const storageKey = 'study-open-groups';
+      const saved = sessionStorage.getItem(storageKey);
+      const openFromStorage = new Set(saved ? JSON.parse(saved) : []);
+
+      const activeLink = document.querySelector('.nav-link.active');
+      const activeGroup = activeLink?.closest('.sidebar-group');
+      if (activeGroup?.dataset.group) {
+        openFromStorage.add(activeGroup.dataset.group);
+      }
+
+      const syncStorage = () => {
+        const openIds = Array.from(document.querySelectorAll('.sidebar-group.is-open'))
+          .map((group) => group.dataset.group)
+          .filter(Boolean);
+        sessionStorage.setItem(storageKey, JSON.stringify(openIds));
+      };
+
+      const setExpanded = (group, expanded) => {
+        const header = group.querySelector('.sidebar-group__header');
+        const list = group.querySelector('.sidebar-group__items');
+        group.classList.toggle('is-open', expanded);
+        header?.setAttribute('aria-expanded', expanded);
+        if (list) {
+          list.hidden = !expanded;
+        }
+      };
+
+      groups.forEach((group) => {
+        const shouldOpen = openFromStorage.has(group.dataset.group);
+        setExpanded(group, shouldOpen);
+        const header = group.querySelector('.sidebar-group__header');
+        header?.addEventListener('click', () => {
+          const next = !group.classList.contains('is-open');
+          setExpanded(group, next);
+          syncStorage();
+        });
+      });
+    })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swPath = '..\../service-worker.js';
+        navigator.serviceWorker.register(swPath).catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+</body>
+</html>

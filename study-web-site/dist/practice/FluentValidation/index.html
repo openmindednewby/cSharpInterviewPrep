@@ -1,0 +1,2091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for FluentValidation" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>FluentValidation | C# Interview Prep Cheat Sheet</title>
+  <link rel="manifest" href="..\..\assets/manifest.webmanifest" />
+  <script>
+    (() => {
+      const supported = ['dark2', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
+      const fallback = 'light';
+      const initial = supported.includes(normalized) ? normalized : fallback;
+      document.documentElement.dataset.theme = initial;
+      window.__studyTheme = initial;
+    })();
+  </script>
+  <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="dark2">Dark 2</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group" data-group="notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="..\../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="..\../notes/logging.html">Logging</a></li><li><a class="nav-link" href="..\../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/O1-Constant-Time.html">O1 Constant Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/OLogN-Logarithmic-Time.html">OLogN Logarithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON-Linear-Time.html">ON Linear Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON2-Quadratic-Time.html">ON2 Quadratic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ONLogN-Linearithmic-Time.html">ONLogN Linearithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/Space-Complexity.html">Space Complexity</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/ICollection.html">ICollection</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IEnumerable.html">IEnumerable</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IList.html">IList</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IQueryable.html">IQueryable</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IReadOnly.html">IReadOnly</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a class="nav-link" href="..\../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a class="nav-link" href="..\../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a class="nav-link" href="..\../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a class="nav-link" href="..\../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a class="nav-link" href="..\../notes/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a class="nav-link" href="..\../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a class="nav-link" href="..\../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a class="nav-link" href="..\../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a class="nav-link" href="..\../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a class="nav-link" href="..\../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a class="nav-link" href="..\../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a class="nav-link" href="..\../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a class="nav-link" href="..\../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a class="nav-link" href="..\../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a class="nav-link" href="..\../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/01-async-patterns.html">01 Async Patterns</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/02-backpressure-rate-limiting.html">02 Backpressure Rate Limiting</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/03-caching-strategies.html">03 Caching Strategies</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/04-database-scaling.html">04 Database Scaling</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/05-message-queues.html">05 Message Queues</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/06-resilience-patterns.html">06 Resilience Patterns</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/07-observability.html">07 Observability</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/08-complete-example.html">08 Complete Example</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/answers.html">Answers</a></li><li><a class="nav-link" href="..\../practice/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="..\../practice/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="..\../practice/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="..\../practice/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="..\../practice/csharp-fundamentals.html">Csharp Fundamentals</a></li><li><a class="nav-link" href="..\../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="..\../practice/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="..\../practice/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="..\../practice/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="..\../practice/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="..\../practice/index.html">Practice</a></li><li><a class="nav-link" href="..\../practice/PRACTICE-STRUCTURE.html">PRACTICE STRUCTURE</a></li><li><a class="nav-link" href="..\../practice/questions.html">Questions</a></li><li><a class="nav-link" href="..\../practice/README.html">README</a></li><li><a class="nav-link" href="..\../practice/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="..\../practice/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="..\../practice/system-design.html">System Design</a></li><li><a class="nav-link" href="..\../practice/trading-domain.html">Trading Domain</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-advanced-topics">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Advanced Topics</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/advanced-topics/async-await-exercises.html">Async Await Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Automapper/index.html">Automapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/O1-Constant-Time-Exercises.html">O1 Constant Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/OLogN-Logarithmic-Time-Exercises.html">OLogN Logarithmic Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ON-Linear-Time-Exercises.html">ON Linear Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ON2-Quadratic-Time-Exercises.html">ON2 Quadratic Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ONLogN-Linearithmic-Time-Exercises.html">ONLogN Linearithmic Time Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Design-Patterns/Decorator-Pattern-Exercises.html">Decorator Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/index.html">Design Patterns</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Factory-Pattern-Exercises.html">Factory Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Mediator-Pattern-Exercises.html">Mediator Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Observer-Pattern-Exercises.html">Observer Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Strategy-Pattern-Exercises.html">Strategy Pattern Exercises</a></li></ul>
+    </div><div class="sidebar-group is-open" data-group="practice-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
+        <span>Practice / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items"><li><a class="nav-link active" href="..\../practice/FluentValidation/index.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/SOLID/S-Single-Responsibility-Principle-Exercises.html">S Single Responsibility Principle Exercises</a></li><li><a class="nav-link" href="..\../practice/SOLID/index.html">SOLID</a></li></ul>
+    </div></div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">practice\FluentValidation\index.md</div>
+        <h2>FluentValidation</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#fluentvalidation---comprehensive-practice-exercises">FluentValidation - Comprehensive Practice Exercises</a></li><li class="level-2"><a href="#table-of-contents">Table of Contents</a></li><li class="level-2"><a href="#basic-validators">Basic Validators</a></li><li class="level-3"><a href="#exercise-1-create-your-first-validator">Exercise 1: Create Your First Validator</a></li><li class="level-3"><a href="#exercise-2-validate-manually">Exercise 2: Validate Manually</a></li><li class="level-2"><a href="#built-in-validation-rules">Built-in Validation Rules</a></li><li class="level-3"><a href="#exercise-3-explore-built-in-rules">Exercise 3: Explore Built-in Rules</a></li><li class="level-2"><a href="#custom-validation-rules">Custom Validation Rules</a></li><li class="level-3"><a href="#exercise-4-create-custom-validators">Exercise 4: Create Custom Validators</a></li><li class="level-2"><a href="#async-validation">Async Validation</a></li><li class="level-3"><a href="#exercise-5-implement-async-validators">Exercise 5: Implement Async Validators</a></li><li class="level-2"><a href="#dependent-rules-whenunless">Dependent Rules (When/Unless)</a></li><li class="level-3"><a href="#exercise-6-conditional-validation-with-whenunless">Exercise 6: Conditional Validation with When/Unless</a></li><li class="level-2"><a href="#nested-validators">Nested Validators</a></li><li class="level-3"><a href="#exercise-7-validate-complex-nested-objects">Exercise 7: Validate Complex Nested Objects</a></li><li class="level-2"><a href="#collection-validation">Collection Validation</a></li><li class="level-3"><a href="#exercise-8-validate-collections">Exercise 8: Validate Collections</a></li><li class="level-2"><a href="#ruleset-usage">RuleSet Usage</a></li><li class="level-3"><a href="#exercise-9-use-rulesets-for-different-scenarios">Exercise 9: Use RuleSets for Different Scenarios</a></li><li class="level-2"><a href="#integration-with-aspnet-core">Integration with ASP.NET Core</a></li><li class="level-3"><a href="#exercise-10-integrate-fluentvalidation-with-aspnet-core">Exercise 10: Integrate FluentValidation with ASP.NET Core</a></li></ul></div>
+        <h1 id="fluentvalidation---comprehensive-practice-exercises">FluentValidation - Comprehensive Practice Exercises</h1>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol><li><a href="#basic-validators">Basic Validators</a></li><li><a href="#built-in-validation-rules">Built-in Validation Rules</a></li><li><a href="#custom-validation-rules">Custom Validation Rules</a></li><li><a href="#async-validation">Async Validation</a></li><li><a href="#dependent-rules-whenunless">Dependent Rules (When/Unless)</a></li><li><a href="#nested-validators">Nested Validators</a></li><li><a href="#collection-validation">Collection Validation</a></li><li><a href="#ruleset-usage">RuleSet Usage</a></li><li><a href="#conditional-validation">Conditional Validation</a></li><li><a href="#integration-with-aspnet-core">Integration with ASP.NET Core</a></li><li><a href="#error-message-customization">Error Message Customization</a></li></ol>
+<p>---</p>
+<h2 id="basic-validators">Basic Validators</h2>
+<h3 id="exercise-1-create-your-first-validator">Exercise 1: Create Your First Validator</h3>
+<p><strong>Question:</strong> Create a validator for a user registration request with basic validation rules.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">// Application/DTOs/RegisterUserRequest.cs
+public class RegisterUserRequest
+{
+    public string Username { get; set; }
+    public string Email { get; set; }
+    public string Password { get; set; }
+    public string ConfirmPassword { get; set; }
+    public int Age { get; set; }
+}
+
+// Application/Validators/RegisterUserRequestValidator.cs
+public class RegisterUserRequestValidator : AbstractValidator&lt;RegisterUserRequest&gt;
+{
+    public RegisterUserRequestValidator()
+    {
+        RuleFor(x =&gt; x.Username)
+            .NotEmpty().WithMessage(&quot;Username is required&quot;)
+            .Length(3, 50).WithMessage(&quot;Username must be between 3 and 50 characters&quot;);
+
+        RuleFor(x =&gt; x.Email)
+            .NotEmpty().WithMessage(&quot;Email is required&quot;)
+            .EmailAddress().WithMessage(&quot;Invalid email format&quot;);
+
+        RuleFor(x =&gt; x.Password)
+            .NotEmpty().WithMessage(&quot;Password is required&quot;)
+            .MinimumLength(8).WithMessage(&quot;Password must be at least 8 characters&quot;);
+
+        RuleFor(x =&gt; x.ConfirmPassword)
+            .Equal(x =&gt; x.Password).WithMessage(&quot;Passwords must match&quot;);
+
+        RuleFor(x =&gt; x.Age)
+            .GreaterThanOrEqualTo(18).WithMessage(&quot;You must be at least 18 years old&quot;);
+    }
+}
+
+// Usage
+public class UserService
+{
+    private readonly IValidator&lt;RegisterUserRequest&gt; _validator;
+
+    public UserService(IValidator&lt;RegisterUserRequest&gt; validator)
+    {
+        _validator = validator;
+    }
+
+    public async Task&lt;Result&gt; RegisterUserAsync(RegisterUserRequest request)
+    {
+        // Validate
+        var validationResult = await _validator.ValidateAsync(request);
+
+        if (!validationResult.IsValid)
+        {
+            var errors = validationResult.Errors
+                .Select(e =&gt; e.ErrorMessage)
+                .ToList();
+
+            return Result.Failure(string.Join(&quot;, &quot;, errors));
+        }
+
+        // Process registration
+        // ...
+
+        return Result.Success();
+    }
+}
+
+// Program.cs - Register validators
+builder.Services.AddValidatorsFromAssemblyContaining&lt;RegisterUserRequestValidator&gt;();</code></pre>
+<p></details></p>
+<p>---</p>
+<h3 id="exercise-2-validate-manually">Exercise 2: Validate Manually</h3>
+<p><strong>Question:</strong> Demonstrate different ways to manually trigger validation.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">public class ValidationExamples
+{
+    private readonly IValidator&lt;CreateProductRequest&gt; _validator;
+
+    public ValidationExamples(IValidator&lt;CreateProductRequest&gt; validator)
+    {
+        _validator = validator;
+    }
+
+    // 1. Basic validation
+    public void BasicValidation(CreateProductRequest request)
+    {
+        var result = _validator.Validate(request);
+
+        if (!result.IsValid)
+        {
+            foreach (var error in result.Errors)
+            {
+                Console.WriteLine($&quot;Property: {error.PropertyName}&quot;);
+                Console.WriteLine($&quot;Error: {error.ErrorMessage}&quot;);
+                Console.WriteLine($&quot;Attempted Value: {error.AttemptedValue}&quot;);
+            }
+        }
+    }
+
+    // 2. Async validation
+    public async Task AsyncValidation(CreateProductRequest request)
+    {
+        var result = await _validator.ValidateAsync(request);
+
+        if (!result.IsValid)
+        {
+            // Handle errors
+        }
+    }
+
+    // 3. Throw on failure
+    public void ValidateAndThrow(CreateProductRequest request)
+    {
+        try
+        {
+            _validator.ValidateAndThrow(request);
+            // Validation passed
+        }
+        catch (ValidationException ex)
+        {
+            // Validation failed
+            var errors = ex.Errors;
+        }
+    }
+
+    // 4. Validate specific properties
+    public void ValidateSpecificProperty(CreateProductRequest request)
+    {
+        var result = _validator.Validate(request, options =&gt;
+        {
+            options.IncludeProperties(x =&gt; x.Name);
+            options.IncludeProperties(x =&gt; x.Price);
+        });
+    }
+
+    // 5. Validate using RuleSet
+    public void ValidateWithRuleSet(CreateProductRequest request)
+    {
+        var result = _validator.Validate(request, options =&gt;
+        {
+            options.IncludeRuleSets(&quot;Create&quot;);
+        });
+    }
+
+    // 6. Get specific validation result details
+    public void GetValidationDetails(CreateProductRequest request)
+    {
+        var result = _validator.Validate(request);
+
+        // Check if valid
+        bool isValid = result.IsValid;
+
+        // Get all errors
+        var allErrors = result.Errors;
+
+        // Get errors for specific property
+        var nameErrors = result.Errors
+            .Where(e =&gt; e.PropertyName == nameof(CreateProductRequest.Name))
+            .ToList();
+
+        // Get first error message
+        var firstError = result.Errors.FirstOrDefault()?.ErrorMessage;
+
+        // Get all error messages
+        var errorMessages = result.Errors.Select(e =&gt; e.ErrorMessage).ToList();
+
+        // Get errors as dictionary
+        var errorDictionary = result.ToDictionary();
+    }
+}
+
+public class CreateProductRequest
+{
+    public string Name { get; set; }
+    public decimal Price { get; set; }
+    public string Description { get; set; }
+}</code></pre>
+<p></details></p>
+<p>---</p>
+<h2 id="built-in-validation-rules">Built-in Validation Rules</h2>
+<h3 id="exercise-3-explore-built-in-rules">Exercise 3: Explore Built-in Rules</h3>
+<p><strong>Question:</strong> Demonstrate all major built-in validation rules.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">public class BuiltInRulesValidator : AbstractValidator&lt;SampleModel&gt;
+{
+    public BuiltInRulesValidator()
+    {
+        // String validations
+        RuleFor(x =&gt; x.RequiredField)
+            .NotEmpty(); // Not null, empty, or whitespace
+
+        RuleFor(x =&gt; x.NotNullField)
+            .NotNull(); // Not null (allows empty string)
+
+        RuleFor(x =&gt; x.LengthField)
+            .Length(5, 100); // Between 5 and 100 characters
+
+        RuleFor(x =&gt; x.MinLengthField)
+            .MinimumLength(5); // At least 5 characters
+
+        RuleFor(x =&gt; x.MaxLengthField)
+            .MaximumLength(100); // At most 100 characters
+
+        RuleFor(x =&gt; x.RegexField)
+            .Matches(@&quot;^[a-zA-Z0-9]+$&quot;); // Alphanumeric only
+
+        RuleFor(x =&gt; x.EmailField)
+            .EmailAddress(); // Valid email format
+
+        // Numeric validations
+        RuleFor(x =&gt; x.GreaterThanField)
+            .GreaterThan(0); // &gt; 0
+
+        RuleFor(x =&gt; x.GreaterThanOrEqualField)
+            .GreaterThanOrEqualTo(0); // &gt;= 0
+
+        RuleFor(x =&gt; x.LessThanField)
+            .LessThan(100); // &lt; 100
+
+        RuleFor(x =&gt; x.LessThanOrEqualField)
+            .LessThanOrEqualTo(100); // &lt;= 100
+
+        RuleFor(x =&gt; x.RangeField)
+            .InclusiveBetween(1, 100); // Between 1 and 100 (inclusive)
+
+        RuleFor(x =&gt; x.ExclusiveRangeField)
+            .ExclusiveBetween(0, 100); // Between 0 and 100 (exclusive)
+
+        RuleFor(x =&gt; x.PrecisionField)
+            .PrecisionScale(10, 2, false); // Max 10 digits, 2 decimal places
+
+        // Comparison validations
+        RuleFor(x =&gt; x.EqualField)
+            .Equal(&quot;Expected Value&quot;);
+
+        RuleFor(x =&gt; x.NotEqualField)
+            .NotEqual(&quot;Forbidden Value&quot;);
+
+        RuleFor(x =&gt; x.ConfirmPassword)
+            .Equal(x =&gt; x.Password).WithMessage(&quot;Passwords must match&quot;);
+
+        // Collection validations
+        RuleFor(x =&gt; x.CollectionField)
+            .NotEmpty(); // Collection must have at least one item
+
+        RuleFor(x =&gt; x.MustField)
+            .Must(BeValidValue).WithMessage(&quot;Custom validation failed&quot;);
+
+        // Enum validations
+        RuleFor(x =&gt; x.EnumField)
+            .IsInEnum(); // Must be valid enum value
+
+        // URL validations
+        RuleFor(x =&gt; x.UrlField)
+            .Must(BeValidUrl).WithMessage(&quot;Invalid URL&quot;);
+
+        // Credit card validation
+        RuleFor(x =&gt; x.CreditCardField)
+            .CreditCard(); // Valid credit card number (Luhn algorithm)
+
+        // Null validation
+        RuleFor(x =&gt; x.NullableField)
+            .Null().When(x =&gt; x.SomeCondition);
+
+        // Empty validation
+        RuleFor(x =&gt; x.EmptyField)
+            .Empty().When(x =&gt; x.SomeCondition);
+
+        // Scale precision
+        RuleFor(x =&gt; x.ScalePrecisionField)
+            .ScalePrecision(2, 5); // Max 5 digits with 2 decimal places
+    }
+
+    private bool BeValidValue(string value)
+    {
+        // Custom validation logic
+        return !string.IsNullOrEmpty(value) &amp;&amp; value.Length &gt; 3;
+    }
+
+    private bool BeValidUrl(string url)
+    {
+        return Uri.TryCreate(url, UriKind.Absolute, out var uri)
+            &amp;&amp; (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);
+    }
+}
+
+public class SampleModel
+{
+    public string RequiredField { get; set; }
+    public string NotNullField { get; set; }
+    public string LengthField { get; set; }
+    public string MinLengthField { get; set; }
+    public string MaxLengthField { get; set; }
+    public string RegexField { get; set; }
+    public string EmailField { get; set; }
+    public int GreaterThanField { get; set; }
+    public int GreaterThanOrEqualField { get; set; }
+    public int LessThanField { get; set; }
+    public int LessThanOrEqualField { get; set; }
+    public int RangeField { get; set; }
+    public int ExclusiveRangeField { get; set; }
+    public decimal PrecisionField { get; set; }
+    public string EqualField { get; set; }
+    public string NotEqualField { get; set; }
+    public string Password { get; set; }
+    public string ConfirmPassword { get; set; }
+    public List&lt;string&gt; CollectionField { get; set; }
+    public string MustField { get; set; }
+    public Status EnumField { get; set; }
+    public string UrlField { get; set; }
+    public string CreditCardField { get; set; }
+    public string NullableField { get; set; }
+    public string EmptyField { get; set; }
+    public decimal ScalePrecisionField { get; set; }
+    public bool SomeCondition { get; set; }
+}
+
+public enum Status
+{
+    Pending,
+    Active,
+    Inactive
+}</code></pre>
+<p></details></p>
+<p>---</p>
+<h2 id="custom-validation-rules">Custom Validation Rules</h2>
+<h3 id="exercise-4-create-custom-validators">Exercise 4: Create Custom Validators</h3>
+<p><strong>Question:</strong> Implement custom validation rules for complex scenarios.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">// Custom validator using Must
+public class CreateOrderRequestValidator : AbstractValidator&lt;CreateOrderRequest&gt;
+{
+    public CreateOrderRequestValidator()
+    {
+        RuleFor(x =&gt; x.DeliveryDate)
+            .Must(BeAFutureDate).WithMessage(&quot;Delivery date must be in the future&quot;)
+            .Must(BeABusinessDay).WithMessage(&quot;Delivery must be on a business day&quot;);
+
+        RuleFor(x =&gt; x.CreditCardNumber)
+            .Must(BeValidCreditCard).WithMessage(&quot;Invalid credit card number&quot;);
+
+        RuleFor(x =&gt; x.PhoneNumber)
+            .Must(BeValidPhoneNumber).WithMessage(&quot;Invalid phone number format&quot;);
+    }
+
+    private bool BeAFutureDate(DateTime date)
+    {
+        return date.Date &gt; DateTime.Today;
+    }
+
+    private bool BeABusinessDay(DateTime date)
+    {
+        return date.DayOfWeek != DayOfWeek.Saturday
+            &amp;&amp; date.DayOfWeek != DayOfWeek.Sunday;
+    }
+
+    private bool BeValidCreditCard(string cardNumber)
+    {
+        // Luhn algorithm implementation
+        if (string.IsNullOrWhiteSpace(cardNumber))
+            return false;
+
+        cardNumber = cardNumber.Replace(&quot; &quot;, &quot;&quot;);
+
+        if (!cardNumber.All(char.IsDigit))
+            return false;
+
+        int sum = 0;
+        bool alternate = false;
+
+        for (int i = cardNumber.Length - 1; i &gt;= 0; i--)
+        {
+            int digit = cardNumber[i] - &#39;0&#39;;
+
+            if (alternate)
+            {
+                digit *= 2;
+                if (digit &gt; 9)
+                    digit -= 9;
+            }
+
+            sum += digit;
+            alternate = !alternate;
+        }
+
+        return sum % 10 == 0;
+    }
+
+    private bool BeValidPhoneNumber(string phoneNumber)
+    {
+        if (string.IsNullOrWhiteSpace(phoneNumber))
+            return false;
+
+        // Remove formatting
+        var cleaned = new string(phoneNumber.Where(char.IsDigit).ToArray());
+
+        // US phone number: 10 digits
+        return cleaned.Length == 10;
+    }
+}
+
+// Custom validator with context
+public class PasswordValidator : AbstractValidator&lt;ChangePasswordRequest&gt;
+{
+    public PasswordValidator()
+    {
+        RuleFor(x =&gt; x.NewPassword)
+            .Must((request, newPassword) =&gt; BeStrongPassword(newPassword))
+            .WithMessage(&quot;Password must contain uppercase, lowercase, digit, and special character&quot;);
+
+        RuleFor(x =&gt; x.NewPassword)
+            .Must((request, newPassword) =&gt; BeDifferentFromOldPassword(request.OldPassword, newPassword))
+            .WithMessage(&quot;New password must be different from old password&quot;);
+    }
+
+    private bool BeStrongPassword(string password)
+    {
+        if (string.IsNullOrWhiteSpace(password) || password.Length &lt; 8)
+            return false;
+
+        bool hasUpper = password.Any(char.IsUpper);
+        bool hasLower = password.Any(char.IsLower);
+        bool hasDigit = password.Any(char.IsDigit);
+        bool hasSpecial = password.Any(c =&gt; !char.IsLetterOrDigit(c));
+
+        return hasUpper &amp;&amp; hasLower &amp;&amp; hasDigit &amp;&amp; hasSpecial;
+    }
+
+    private bool BeDifferentFromOldPassword(string oldPassword, string newPassword)
+    {
+        return oldPassword != newPassword;
+    }
+}
+
+public class ChangePasswordRequest
+{
+    public string OldPassword { get; set; }
+    public string NewPassword { get; set; }
+}
+
+// Reusable custom validators
+public static class CustomValidators
+{
+    public static IRuleBuilderOptions&lt;T, string&gt; MustBeValidUrl&lt;T&gt;(
+        this IRuleBuilder&lt;T, string&gt; ruleBuilder)
+    {
+        return ruleBuilder.Must(url =&gt;
+        {
+            if (string.IsNullOrWhiteSpace(url))
+                return false;
+
+            return Uri.TryCreate(url, UriKind.Absolute, out var uri)
+                &amp;&amp; (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);
+        }).WithMessage(&quot;&#39;{PropertyName}&#39; must be a valid URL&quot;);
+    }
+
+    public static IRuleBuilderOptions&lt;T, string&gt; MustBeAlphanumeric&lt;T&gt;(
+        this IRuleBuilder&lt;T, string&gt; ruleBuilder)
+    {
+        return ruleBuilder.Matches(@&quot;^[a-zA-Z0-9]+$&quot;)
+            .WithMessage(&quot;&#39;{PropertyName}&#39; must contain only letters and numbers&quot;);
+    }
+
+    public static IRuleBuilderOptions&lt;T, DateTime&gt; MustBeInThePast&lt;T&gt;(
+        this IRuleBuilder&lt;T, DateTime&gt; ruleBuilder)
+    {
+        return ruleBuilder.Must(date =&gt; date &lt; DateTime.Now)
+            .WithMessage(&quot;&#39;{PropertyName}&#39; must be in the past&quot;);
+    }
+
+    public static IRuleBuilderOptions&lt;T, DateTime&gt; MustBeInTheFuture&lt;T&gt;(
+        this IRuleBuilder&lt;T, DateTime&gt; ruleBuilder)
+    {
+        return ruleBuilder.Must(date =&gt; date &gt; DateTime.Now)
+            .WithMessage(&quot;&#39;{PropertyName}&#39; must be in the future&quot;);
+    }
+}
+
+// Usage of custom validators
+public class EventValidator : AbstractValidator&lt;CreateEventRequest&gt;
+{
+    public EventValidator()
+    {
+        RuleFor(x =&gt; x.EventDate)
+            .MustBeInTheFuture();
+
+        RuleFor(x =&gt; x.WebsiteUrl)
+            .MustBeValidUrl();
+
+        RuleFor(x =&gt; x.EventCode)
+            .MustBeAlphanumeric();
+    }
+}
+
+public class CreateEventRequest
+{
+    public DateTime EventDate { get; set; }
+    public string WebsiteUrl { get; set; }
+    public string EventCode { get; set; }
+}
+
+public class CreateOrderRequest
+{
+    public DateTime DeliveryDate { get; set; }
+    public string CreditCardNumber { get; set; }
+    public string PhoneNumber { get; set; }
+}</code></pre>
+<p></details></p>
+<p>---</p>
+<h2 id="async-validation">Async Validation</h2>
+<h3 id="exercise-5-implement-async-validators">Exercise 5: Implement Async Validators</h3>
+<p><strong>Question:</strong> Create validators that perform asynchronous checks (e.g., database lookups).</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">// Application/Validators/CreateUserRequestValidator.cs
+public class CreateUserRequestValidator : AbstractValidator&lt;CreateUserRequest&gt;
+{
+    private readonly IUserRepository _userRepository;
+    private readonly IEmailService _emailService;
+
+    public CreateUserRequestValidator(
+        IUserRepository userRepository,
+        IEmailService emailService)
+    {
+        _userRepository = userRepository;
+        _emailService = emailService;
+
+        RuleFor(x =&gt; x.Username)
+            .NotEmpty()
+            .MustAsync(BeUniqueUsername)
+            .WithMessage(&quot;Username &#39;{PropertyValue}&#39; is already taken&quot;);
+
+        RuleFor(x =&gt; x.Email)
+            .NotEmpty()
+            .EmailAddress()
+            .MustAsync(BeUniqueEmail)
+            .WithMessage(&quot;Email &#39;{PropertyValue}&#39; is already registered&quot;)
+            .MustAsync(BeValidEmailDomain)
+            .WithMessage(&quot;Email domain is not allowed&quot;);
+
+        RuleFor(x =&gt; x.ReferralCode)
+            .MustAsync(BeValidReferralCode)
+            .When(x =&gt; !string.IsNullOrEmpty(x.ReferralCode))
+            .WithMessage(&quot;Invalid referral code&quot;);
+    }
+
+    private async Task&lt;bool&gt; BeUniqueUsername(string username, CancellationToken cancellationToken)
+    {
+        var existingUser = await _userRepository.GetByUsernameAsync(username);
+        return existingUser == null;
+    }
+
+    private async Task&lt;bool&gt; BeUniqueEmail(string email, CancellationToken cancellationToken)
+    {
+        var existingUser = await _userRepository.GetByEmailAsync(email);
+        return existingUser == null;
+    }
+
+    private async Task&lt;bool&gt; BeValidEmailDomain(string email, CancellationToken cancellationToken)
+    {
+        var domain = email.Split(&#39;@&#39;)[1];
+        var blockedDomains = await _emailService.GetBlockedDomainsAsync();
+        return !blockedDomains.Contains(domain);
+    }
+
+    private async Task&lt;bool&gt; BeValidReferralCode(string referralCode, CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrWhiteSpace(referralCode))
+            return true;
+
+        var referral = await _userRepository.GetByReferralCodeAsync(referralCode);
+        return referral != null &amp;&amp; referral.IsActive;
+    }
+}
+
+// More complex async validation with context
+public class TransferFundsRequestValidator : AbstractValidator&lt;TransferFundsRequest&gt;
+{
+    private readonly IBankAccountRepository _accountRepository;
+    private readonly IFraudDetectionService _fraudService;
+
+    public TransferFundsRequestValidator(
+        IBankAccountRepository accountRepository,
+        IFraudDetectionService fraudService)
+    {
+        _accountRepository = accountRepository;
+        _fraudService = fraudService;
+
+        RuleFor(x =&gt; x.FromAccountId)
+            .MustAsync(AccountExists)
+            .WithMessage(&quot;Source account not found&quot;);
+
+        RuleFor(x =&gt; x.ToAccountId)
+            .MustAsync(AccountExists)
+            .WithMessage(&quot;Destination account not found&quot;);
+
+        RuleFor(x =&gt; x.Amount)
+            .GreaterThan(0)
+            .MustAsync(HaveSufficientFunds)
+            .WithMessage(&quot;Insufficient funds&quot;)
+            .MustAsync(NotExceedDailyLimit)
+            .WithMessage(&quot;Amount exceeds daily transfer limit&quot;);
+
+        RuleFor(x =&gt; x)
+            .MustAsync(NotBeFraudulent)
+            .WithMessage(&quot;Transaction flagged as potentially fraudulent&quot;);
+    }
+
+    private async Task&lt;bool&gt; AccountExists(Guid accountId, CancellationToken ct)
+    {
+        var account = await _accountRepository.GetByIdAsync(accountId);
+        return account != null;
+    }
+
+    private async Task&lt;bool&gt; HaveSufficientFunds(
+        TransferFundsRequest request,
+        decimal amount,
+        CancellationToken ct)
+    {
+        var account = await _accountRepository.GetByIdAsync(request.FromAccountId);
+        return account != null &amp;&amp; account.Balance &gt;= amount;
+    }
+
+    private async Task&lt;bool&gt; NotExceedDailyLimit(
+        TransferFundsRequest request,
+        decimal amount,
+        CancellationToken ct)
+    {
+        var todayTransfers = await _accountRepository.GetTodayTransfersAsync(request.FromAccountId);
+        var totalToday = todayTransfers.Sum(t =&gt; t.Amount);
+        return (totalToday + amount) &lt;= 10000m; // $10,000 daily limit
+    }
+
+    private async Task&lt;bool&gt; NotBeFraudulent(
+        TransferFundsRequest request,
+        CancellationToken ct)
+    {
+        var fraudCheck = await _fraudService.CheckTransactionAsync(
+            request.FromAccountId,
+            request.ToAccountId,
+            request.Amount
+        );
+
+        return !fraudCheck.IsFraudulent;
+    }
+}
+
+public class CreateUserRequest
+{
+    public string Username { get; set; }
+    public string Email { get; set; }
+    public string ReferralCode { get; set; }
+}
+
+public class TransferFundsRequest
+{
+    public Guid FromAccountId { get; set; }
+    public Guid ToAccountId { get; set; }
+    public decimal Amount { get; set; }
+}
+
+// Usage
+public class UserService
+{
+    private readonly IValidator&lt;CreateUserRequest&gt; _validator;
+
+    public async Task&lt;Result&gt; CreateUserAsync(CreateUserRequest request)
+    {
+        // Async validation
+        var validationResult = await _validator.ValidateAsync(request);
+
+        if (!validationResult.IsValid)
+        {
+            return Result.Failure(validationResult.Errors);
+        }
+
+        // Process user creation
+        return Result.Success();
+    }
+}</code></pre>
+<p><strong>Key Points:</strong></p>
+<ul><li>Use <code>MustAsync</code> for async validation rules</li><li>Always accept <code>CancellationToken</code> parameter</li><li>Async validators support dependency injection</li><li>Can access entire object or individual properties</li><li>Be mindful of performance with multiple async calls</li></ul>
+<p></details></p>
+<p>---</p>
+<h2 id="dependent-rules-whenunless">Dependent Rules (When/Unless)</h2>
+<h3 id="exercise-6-conditional-validation-with-whenunless">Exercise 6: Conditional Validation with When/Unless</h3>
+<p><strong>Question:</strong> Implement conditional validation that depends on other property values.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">public class OrderRequestValidator : AbstractValidator&lt;OrderRequest&gt;
+{
+    public OrderRequestValidator()
+    {
+        // Basic required fields
+        RuleFor(x =&gt; x.CustomerName)
+            .NotEmpty();
+
+        // Shipping address required when delivery type is &quot;Delivery&quot;
+        RuleFor(x =&gt; x.ShippingAddress)
+            .NotEmpty()
+            .When(x =&gt; x.DeliveryType == DeliveryType.Delivery)
+            .WithMessage(&quot;Shipping address is required for delivery orders&quot;);
+
+        // Shipping address NOT required when pickup
+        RuleFor(x =&gt; x.ShippingAddress)
+            .Empty()
+            .Unless(x =&gt; x.DeliveryType == DeliveryType.Delivery)
+            .WithMessage(&quot;Shipping address should not be provided for pickup orders&quot;);
+
+        // Gift message only when IsGift is true
+        RuleFor(x =&gt; x.GiftMessage)
+            .NotEmpty()
+            .When(x =&gt; x.IsGift)
+            .WithMessage(&quot;Gift message is required when order is marked as gift&quot;);
+
+        RuleFor(x =&gt; x.GiftMessage)
+            .MaximumLength(200)
+            .When(x =&gt; x.IsGift);
+
+        // Business rules based on payment method
+        RuleFor(x =&gt; x.CreditCardNumber)
+            .NotEmpty()
+            .CreditCard()
+            .When(x =&gt; x.PaymentMethod == PaymentMethod.CreditCard)
+            .WithMessage(&quot;Valid credit card number required&quot;);
+
+        RuleFor(x =&gt; x.CreditCardExpiry)
+            .NotEmpty()
+            .When(x =&gt; x.PaymentMethod == PaymentMethod.CreditCard);
+
+        RuleFor(x =&gt; x.CreditCardCVV)
+            .NotEmpty()
+            .Length(3, 4)
+            .When(x =&gt; x.PaymentMethod == PaymentMethod.CreditCard);
+
+        // PayPal email required for PayPal payments
+        RuleFor(x =&gt; x.PayPalEmail)
+            .NotEmpty()
+            .EmailAddress()
+            .When(x =&gt; x.PaymentMethod == PaymentMethod.PayPal);
+
+        // Discount code validation
+        RuleFor(x =&gt; x.DiscountCode)
+            .NotEmpty()
+            .When(x =&gt; x.ApplyDiscount)
+            .WithMessage(&quot;Discount code required when applying discount&quot;);
+
+        // Age verification for restricted products
+        RuleFor(x =&gt; x.DateOfBirth)
+            .NotEmpty()
+            .When(x =&gt; x.ContainsRestrictedItems)
+            .WithMessage(&quot;Date of birth required for age verification&quot;);
+
+        RuleFor(x =&gt; x.DateOfBirth)
+            .Must(BeAtLeast18YearsOld)
+            .When(x =&gt; x.ContainsRestrictedItems)
+            .WithMessage(&quot;Must be at least 18 years old&quot;);
+
+        // Complex When condition
+        RuleFor(x =&gt; x.CompanyName)
+            .NotEmpty()
+            .When(x =&gt; x.CustomerType == CustomerType.Business &amp;&amp; x.OrderTotal &gt; 1000)
+            .WithMessage(&quot;Company name required for business orders over $1000&quot;);
+
+        // Unless condition (opposite of When)
+        RuleFor(x =&gt; x.Email)
+            .NotEmpty()
+            .Unless(x =&gt; x.IsAnonymous)
+            .WithMessage(&quot;Email required for registered users&quot;);
+
+        // Chaining When conditions
+        RuleFor(x =&gt; x.TaxId)
+            .NotEmpty()
+            .When(x =&gt; x.CustomerType == CustomerType.Business)
+            .When(x =&gt; x.Country == &quot;US&quot;)
+            .WithMessage(&quot;Tax ID required for US business customers&quot;);
+    }
+
+    private bool BeAtLeast18YearsOld(DateTime dateOfBirth)
+    {
+        var age = DateTime.Today.Year - dateOfBirth.Year;
+        if (dateOfBirth.Date &gt; DateTime.Today.AddYears(-age))
+            age--;
+
+        return age &gt;= 18;
+    }
+}
+
+// More complex conditional validation
+public class EmployeeValidator : AbstractValidator&lt;Employee&gt;
+{
+    public EmployeeValidator()
+    {
+        // Manager-specific validations
+        When(x =&gt; x.IsManager, () =&gt;
+        {
+            RuleFor(x =&gt; x.Department)
+                .NotEmpty()
+                .WithMessage(&quot;Department is required for managers&quot;);
+
+            RuleFor(x =&gt; x.ManagementLevel)
+                .IsInEnum()
+                .WithMessage(&quot;Valid management level required&quot;);
+
+            RuleFor(x =&gt; x.DirectReports)
+                .NotEmpty()
+                .WithMessage(&quot;Managers must have at least one direct report&quot;);
+        });
+
+        // Non-manager validations
+        Unless(x =&gt; x.IsManager, () =&gt;
+        {
+            RuleFor(x =&gt; x.ManagerId)
+                .NotEmpty()
+                .WithMessage(&quot;Manager assignment required for non-managers&quot;);
+        });
+
+        // Part-time employee rules
+        When(x =&gt; x.EmploymentType == EmploymentType.PartTime, () =&gt;
+        {
+            RuleFor(x =&gt; x.HoursPerWeek)
+                .LessThan(40)
+                .WithMessage(&quot;Part-time employees must work less than 40 hours&quot;);
+        });
+
+        // Full-time employee rules
+        When(x =&gt; x.EmploymentType == EmploymentType.FullTime, () =&gt;
+        {
+            RuleFor(x =&gt; x.BenefitsPackage)
+                .NotEmpty()
+                .WithMessage(&quot;Benefits package required for full-time employees&quot;);
+        });
+    }
+}
+
+public class OrderRequest
+{
+    public string CustomerName { get; set; }
+    public DeliveryType DeliveryType { get; set; }
+    public string ShippingAddress { get; set; }
+    public bool IsGift { get; set; }
+    public string GiftMessage { get; set; }
+    public PaymentMethod PaymentMethod { get; set; }
+    public string CreditCardNumber { get; set; }
+    public string CreditCardExpiry { get; set; }
+    public string CreditCardCVV { get; set; }
+    public string PayPalEmail { get; set; }
+    public bool ApplyDiscount { get; set; }
+    public string DiscountCode { get; set; }
+    public bool ContainsRestrictedItems { get; set; }
+    public DateTime? DateOfBirth { get; set; }
+    public CustomerType CustomerType { get; set; }
+    public decimal OrderTotal { get; set; }
+    public string CompanyName { get; set; }
+    public bool IsAnonymous { get; set; }
+    public string Email { get; set; }
+    public string Country { get; set; }
+    public string TaxId { get; set; }
+}
+
+public enum DeliveryType { Delivery, Pickup }
+public enum PaymentMethod { CreditCard, PayPal, Cash }
+public enum CustomerType { Individual, Business }
+
+public class Employee
+{
+    public bool IsManager { get; set; }
+    public string Department { get; set; }
+    public int ManagementLevel { get; set; }
+    public List&lt;Guid&gt; DirectReports { get; set; }
+    public Guid? ManagerId { get; set; }
+    public EmploymentType EmploymentType { get; set; }
+    public int HoursPerWeek { get; set; }
+    public string BenefitsPackage { get; set; }
+}
+
+public enum EmploymentType { FullTime, PartTime, Contract }</code></pre>
+<p><strong>Key Concepts:</strong></p>
+<ul><li><code>When(predicate, action)</code>: Apply rules only when condition is true</li><li><code>Unless(predicate, action)</code>: Apply rules only when condition is false</li><li>Can chain multiple <code>When</code> conditions</li><li>Can group multiple rules inside <code>When</code> block</li><li>Useful for complex business rules</li></ul>
+<p></details></p>
+<p>---</p>
+<h2 id="nested-validators">Nested Validators</h2>
+<h3 id="exercise-7-validate-complex-nested-objects">Exercise 7: Validate Complex Nested Objects</h3>
+<p><strong>Question:</strong> Create validators for objects that contain nested complex objects.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">// Domain models
+public class CreateOrderRequest
+{
+    public Guid CustomerId { get; set; }
+    public Address ShippingAddress { get; set; }
+    public Address BillingAddress { get; set; }
+    public List&lt;OrderItem&gt; Items { get; set; }
+    public PaymentInfo Payment { get; set; }
+}
+
+public class Address
+{
+    public string Street { get; set; }
+    public string City { get; set; }
+    public string State { get; set; }
+    public string ZipCode { get; set; }
+    public string Country { get; set; }
+}
+
+public class OrderItem
+{
+    public Guid ProductId { get; set; }
+    public int Quantity { get; set; }
+    public decimal UnitPrice { get; set; }
+}
+
+public class PaymentInfo
+{
+    public PaymentMethod Method { get; set; }
+    public CreditCardInfo CreditCard { get; set; }
+}
+
+public class CreditCardInfo
+{
+    public string CardNumber { get; set; }
+    public string CardholderName { get; set; }
+    public string ExpiryDate { get; set; }
+    public string CVV { get; set; }
+}
+
+// Validators for nested objects
+public class AddressValidator : AbstractValidator&lt;Address&gt;
+{
+    public AddressValidator()
+    {
+        RuleFor(x =&gt; x.Street)
+            .NotEmpty()
+            .MaximumLength(200);
+
+        RuleFor(x =&gt; x.City)
+            .NotEmpty()
+            .MaximumLength(100);
+
+        RuleFor(x =&gt; x.State)
+            .NotEmpty()
+            .Length(2)
+            .WithMessage(&quot;State must be 2-letter code&quot;);
+
+        RuleFor(x =&gt; x.ZipCode)
+            .NotEmpty()
+            .Matches(@&quot;^\d{5}(-\d{4})?$&quot;)
+            .WithMessage(&quot;Invalid ZIP code format&quot;);
+
+        RuleFor(x =&gt; x.Country)
+            .NotEmpty()
+            .Must(BeValidCountryCode)
+            .WithMessage(&quot;Invalid country code&quot;);
+    }
+
+    private bool BeValidCountryCode(string country)
+    {
+        var validCodes = new[] { &quot;US&quot;, &quot;CA&quot;, &quot;UK&quot;, &quot;AU&quot; };
+        return validCodes.Contains(country);
+    }
+}
+
+public class OrderItemValidator : AbstractValidator&lt;OrderItem&gt;
+{
+    public OrderItemValidator()
+    {
+        RuleFor(x =&gt; x.ProductId)
+            .NotEmpty();
+
+        RuleFor(x =&gt; x.Quantity)
+            .GreaterThan(0)
+            .LessThanOrEqualTo(100)
+            .WithMessage(&quot;Quantity must be between 1 and 100&quot;);
+
+        RuleFor(x =&gt; x.UnitPrice)
+            .GreaterThan(0)
+            .WithMessage(&quot;Unit price must be positive&quot;);
+    }
+}
+
+public class CreditCardInfoValidator : AbstractValidator&lt;CreditCardInfo&gt;
+{
+    public CreditCardInfoValidator()
+    {
+        RuleFor(x =&gt; x.CardNumber)
+            .NotEmpty()
+            .CreditCard()
+            .WithMessage(&quot;Invalid credit card number&quot;);
+
+        RuleFor(x =&gt; x.CardholderName)
+            .NotEmpty()
+            .MaximumLength(100);
+
+        RuleFor(x =&gt; x.ExpiryDate)
+            .NotEmpty()
+            .Matches(@&quot;^(0[1-9]|1[0-2])\/\d{2}$&quot;)
+            .WithMessage(&quot;Expiry date must be in MM/YY format&quot;)
+            .Must(BeInTheFuture)
+            .WithMessage(&quot;Card has expired&quot;);
+
+        RuleFor(x =&gt; x.CVV)
+            .NotEmpty()
+            .Matches(@&quot;^\d{3,4}$&quot;)
+            .WithMessage(&quot;CVV must be 3 or 4 digits&quot;);
+    }
+
+    private bool BeInTheFuture(string expiryDate)
+    {
+        if (string.IsNullOrEmpty(expiryDate) || !expiryDate.Contains(&quot;/&quot;))
+            return false;
+
+        var parts = expiryDate.Split(&#39;/&#39;);
+        if (parts.Length != 2)
+            return false;
+
+        if (!int.TryParse(parts[0], out var month) || !int.TryParse(parts[1], out var year))
+            return false;
+
+        year += 2000; // Convert YY to YYYY
+        var expiry = new DateTime(year, month, 1).AddMonths(1).AddDays(-1);
+
+        return expiry &gt;= DateTime.Today;
+    }
+}
+
+public class PaymentInfoValidator : AbstractValidator&lt;PaymentInfo&gt;
+{
+    public PaymentInfoValidator()
+    {
+        RuleFor(x =&gt; x.Method)
+            .IsInEnum();
+
+        // Nested validator for credit card
+        RuleFor(x =&gt; x.CreditCard)
+            .SetValidator(new CreditCardInfoValidator())
+            .When(x =&gt; x.Method == PaymentMethod.CreditCard);
+    }
+}
+
+// Main validator with nested validators
+public class CreateOrderRequestValidator : AbstractValidator&lt;CreateOrderRequest&gt;
+{
+    public CreateOrderRequestValidator()
+    {
+        RuleFor(x =&gt; x.CustomerId)
+            .NotEmpty();
+
+        // Use SetValidator for nested objects
+        RuleFor(x =&gt; x.ShippingAddress)
+            .NotNull()
+            .SetValidator(new AddressValidator());
+
+        RuleFor(x =&gt; x.BillingAddress)
+            .NotNull()
+            .SetValidator(new AddressValidator());
+
+        // Validate collection of nested objects
+        RuleFor(x =&gt; x.Items)
+            .NotEmpty()
+            .WithMessage(&quot;Order must contain at least one item&quot;);
+
+        RuleForEach(x =&gt; x.Items)
+            .SetValidator(new OrderItemValidator());
+
+        // Nested payment validator
+        RuleFor(x =&gt; x.Payment)
+            .NotNull()
+            .SetValidator(new PaymentInfoValidator());
+    }
+}
+
+// Alternative: Inline nested validation
+public class InlineNestedValidator : AbstractValidator&lt;CreateOrderRequest&gt;
+{
+    public InlineNestedValidator()
+    {
+        RuleFor(x =&gt; x.ShippingAddress)
+            .NotNull()
+            .ChildRules(address =&gt;
+            {
+                address.RuleFor(a =&gt; a.Street).NotEmpty();
+                address.RuleFor(a =&gt; a.City).NotEmpty();
+                address.RuleFor(a =&gt; a.State).Length(2);
+                address.RuleFor(a =&gt; a.ZipCode).Matches(@&quot;^\d{5}$&quot;);
+            });
+    }
+}
+
+// Usage
+public class OrderService
+{
+    private readonly IValidator&lt;CreateOrderRequest&gt; _validator;
+
+    public async Task&lt;Result&gt; CreateOrderAsync(CreateOrderRequest request)
+    {
+        var validationResult = await _validator.ValidateAsync(request);
+
+        if (!validationResult.IsValid)
+        {
+            // Errors include nested property paths
+            foreach (var error in validationResult.Errors)
+            {
+                Console.WriteLine($&quot;{error.PropertyName}: {error.ErrorMessage}&quot;);
+                // Examples:
+                // ShippingAddress.Street: &#39;Street&#39; must not be empty
+                // Items[0].Quantity: Quantity must be between 1 and 100
+                // Payment.CreditCard.CardNumber: Invalid credit card number
+            }
+
+            return Result.Failure(validationResult.Errors);
+        }
+
+        return Result.Success();
+    }
+}</code></pre>
+<p><strong>Key Points:</strong></p>
+<ul><li>Use <code>SetValidator()</code> for nested object validation</li><li>Use <code>RuleForEach()</code> with <code>SetValidator()</code> for collections</li><li>Use <code>ChildRules()</code> for inline nested validation</li><li>Property paths include nested hierarchy (e.g., <code>Address.Street</code>)</li><li>Can reuse validators across different parent validators</li></ul>
+<p></details></p>
+<p>---</p>
+<h2 id="collection-validation">Collection Validation</h2>
+<h3 id="exercise-8-validate-collections">Exercise 8: Validate Collections</h3>
+<p><strong>Question:</strong> Demonstrate various techniques for validating collections.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">public class PlaylistValidator : AbstractValidator&lt;Playlist&gt;
+{
+    public PlaylistValidator()
+    {
+        // Collection must not be empty
+        RuleFor(x =&gt; x.Songs)
+            .NotEmpty()
+            .WithMessage(&quot;Playlist must contain at least one song&quot;);
+
+        // Collection size constraints
+        RuleFor(x =&gt; x.Songs)
+            .Must(songs =&gt; songs.Count &lt;= 100)
+            .WithMessage(&quot;Playlist cannot contain more than 100 songs&quot;);
+
+        // Validate each item in collection
+        RuleForEach(x =&gt; x.Songs)
+            .SetValidator(new SongValidator());
+
+        // Validate each item with index
+        RuleForEach(x =&gt; x.Songs)
+            .ChildRules(song =&gt;
+            {
+                song.RuleFor(s =&gt; s.Title).NotEmpty();
+                song.RuleFor(s =&gt; s.Duration).GreaterThan(0);
+            });
+
+        // Complex collection validation
+        RuleFor(x =&gt; x.Songs)
+            .Must(HaveUniqueIds)
+            .WithMessage(&quot;Playlist cannot contain duplicate songs&quot;);
+
+        RuleFor(x =&gt; x.Songs)
+            .Must(NotExceedTotalDuration)
+            .WithMessage(&quot;Total playlist duration cannot exceed 10 hours&quot;);
+
+        // Validate collection based on another property
+        RuleFor(x =&gt; x.Songs)
+            .Must((playlist, songs) =&gt; songs.Count &gt;= playlist.MinSongs)
+            .WithMessage(&quot;Playlist must contain at least {MinSongs} songs&quot;);
+    }
+
+    private bool HaveUniqueIds(List&lt;Song&gt; songs)
+    {
+        var uniqueIds = songs.Select(s =&gt; s.Id).Distinct().Count();
+        return uniqueIds == songs.Count;
+    }
+
+    private bool NotExceedTotalDuration(List&lt;Song&gt; songs)
+    {
+        var totalDuration = songs.Sum(s =&gt; s.Duration);
+        return totalDuration &lt;= TimeSpan.FromHours(10).TotalSeconds;
+    }
+}
+
+public class SongValidator : AbstractValidator&lt;Song&gt;
+{
+    public SongValidator()
+    {
+        RuleFor(x =&gt; x.Title)
+            .NotEmpty()
+            .MaximumLength(200);
+
+        RuleFor(x =&gt; x.Artist)
+            .NotEmpty()
+            .MaximumLength(100);
+
+        RuleFor(x =&gt; x.Duration)
+            .GreaterThan(0)
+            .LessThan(3600); // Max 1 hour
+    }
+}
+
+// More complex collection scenarios
+public class ShoppingCartValidator : AbstractValidator&lt;ShoppingCart&gt;
+{
+    private readonly IProductRepository _productRepository;
+
+    public ShoppingCartValidator(IProductRepository productRepository)
+    {
+        _productRepository = productRepository;
+
+        // Basic collection validation
+        RuleFor(x =&gt; x.Items)
+            .NotEmpty()
+            .WithMessage(&quot;Shopping cart cannot be empty&quot;);
+
+        // Validate each item
+        RuleForEach(x =&gt; x.Items)
+            .SetValidator(new CartItemValidator());
+
+        // Async collection validation
+        RuleFor(x =&gt; x.Items)
+            .MustAsync(AllProductsExist)
+            .WithMessage(&quot;One or more products no longer exist&quot;);
+
+        RuleFor(x =&gt; x.Items)
+            .MustAsync(AllProductsInStock)
+            .WithMessage(&quot;One or more products are out of stock&quot;);
+
+        // Cross-item validation
+        RuleFor(x =&gt; x.Items)
+            .Must(NotContainIncompatibleProducts)
+            .WithMessage(&quot;Cart contains incompatible products&quot;);
+
+        // Total validation
+        RuleFor(x =&gt; x.Items)
+            .Must(items =&gt; items.Sum(i =&gt; i.Quantity * i.UnitPrice) &lt;= 10000)
+            .WithMessage(&quot;Cart total cannot exceed $10,000&quot;);
+    }
+
+    private async Task&lt;bool&gt; AllProductsExist(List&lt;CartItem&gt; items, CancellationToken ct)
+    {
+        var productIds = items.Select(i =&gt; i.ProductId).ToList();
+        var products = await _productRepository.GetByIdsAsync(productIds);
+        return products.Count == productIds.Count;
+    }
+
+    private async Task&lt;bool&gt; AllProductsInStock(List&lt;CartItem&gt; items, CancellationToken ct)
+    {
+        foreach (var item in items)
+        {
+            var product = await _productRepository.GetByIdAsync(item.ProductId);
+            if (product == null || product.StockQuantity &lt; item.Quantity)
+                return false;
+        }
+        return true;
+    }
+
+    private bool NotContainIncompatibleProducts(List&lt;CartItem&gt; items)
+    {
+        // Business rule: Can&#39;t mix digital and physical products
+        var hasDigital = items.Any(i =&gt; i.IsDigital);
+        var hasPhysical = items.Any(i =&gt; !i.IsDigital);
+        return !(hasDigital &amp;&amp; hasPhysical);
+    }
+}
+
+public class CartItemValidator : AbstractValidator&lt;CartItem&gt;
+{
+    public CartItemValidator()
+    {
+        RuleFor(x =&gt; x.ProductId)
+            .NotEmpty();
+
+        RuleFor(x =&gt; x.Quantity)
+            .GreaterThan(0)
+            .LessThanOrEqualTo(100);
+
+        RuleFor(x =&gt; x.UnitPrice)
+            .GreaterThan(0);
+    }
+}
+
+// Collection with conditional validation
+public class BatchOrderValidator : AbstractValidator&lt;BatchOrder&gt;
+{
+    public BatchOrderValidator()
+    {
+        RuleFor(x =&gt; x.Orders)
+            .NotEmpty()
+            .WithMessage(&quot;Batch must contain at least one order&quot;);
+
+        RuleFor(x =&gt; x.Orders)
+            .Must(orders =&gt; orders.Count &lt;= 1000)
+            .WithMessage(&quot;Batch cannot contain more than 1000 orders&quot;);
+
+        // Different validation for different order types
+        RuleForEach(x =&gt; x.Orders)
+            .SetValidator(order =&gt; new OrderValidator())
+            .When(order =&gt; order.OrderType == OrderType.Standard);
+
+        RuleForEach(x =&gt; x.Orders)
+            .SetValidator(order =&gt; new ExpressOrderValidator())
+            .When(order =&gt; order.OrderType == OrderType.Express);
+    }
+}
+
+public class Playlist
+{
+    public string Name { get; set; }
+    public List&lt;Song&gt; Songs { get; set; }
+    public int MinSongs { get; set; }
+}
+
+public class Song
+{
+    public Guid Id { get; set; }
+    public string Title { get; set; }
+    public string Artist { get; set; }
+    public int Duration { get; set; }
+}
+
+public class ShoppingCart
+{
+    public Guid Id { get; set; }
+    public List&lt;CartItem&gt; Items { get; set; }
+}
+
+public class CartItem
+{
+    public Guid ProductId { get; set; }
+    public int Quantity { get; set; }
+    public decimal UnitPrice { get; set; }
+    public bool IsDigital { get; set; }
+}
+
+public class BatchOrder
+{
+    public List&lt;Order&gt; Orders { get; set; }
+}
+
+public class Order
+{
+    public OrderType OrderType { get; set; }
+}
+
+public enum OrderType { Standard, Express }</code></pre>
+<p></details></p>
+<p>---</p>
+<h2 id="ruleset-usage">RuleSet Usage</h2>
+<h3 id="exercise-9-use-rulesets-for-different-scenarios">Exercise 9: Use RuleSets for Different Scenarios</h3>
+<p><strong>Question:</strong> Implement RuleSets to apply different validation rules for create vs update scenarios.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">public class ProductValidator : AbstractValidator&lt;Product&gt;
+{
+    public ProductValidator()
+    {
+        // Default rules (always applied)
+        RuleFor(x =&gt; x.Name)
+            .NotEmpty()
+            .MaximumLength(200);
+
+        RuleFor(x =&gt; x.Price)
+            .GreaterThan(0);
+
+        // Create-specific rules
+        RuleSet(&quot;Create&quot;, () =&gt;
+        {
+            RuleFor(x =&gt; x.Id)
+                .Empty()
+                .WithMessage(&quot;ID must not be provided for new products&quot;);
+
+            RuleFor(x =&gt; x.SKU)
+                .NotEmpty()
+                .WithMessage(&quot;SKU is required when creating a product&quot;);
+
+            RuleFor(x =&gt; x.Category)
+                .NotEmpty()
+                .WithMessage(&quot;Category is required for new products&quot;);
+        });
+
+        // Update-specific rules
+        RuleSet(&quot;Update&quot;, () =&gt;
+        {
+            RuleFor(x =&gt; x.Id)
+                .NotEmpty()
+                .WithMessage(&quot;ID is required for updates&quot;);
+
+            RuleFor(x =&gt; x.SKU)
+                .Empty()
+                .WithMessage(&quot;SKU cannot be changed&quot;);
+        });
+
+        // Delete-specific rules
+        RuleSet(&quot;Delete&quot;, () =&gt;
+        {
+            RuleFor(x =&gt; x.Id)
+                .NotEmpty();
+
+            RuleFor(x =&gt; x.HasActiveOrders)
+                .Equal(false)
+                .WithMessage(&quot;Cannot delete product with active orders&quot;);
+        });
+
+        // Publish-specific rules
+        RuleSet(&quot;Publish&quot;, () =&gt;
+        {
+            RuleFor(x =&gt; x.Description)
+                .NotEmpty()
+                .MinimumLength(100)
+                .WithMessage(&quot;Description must be at least 100 characters for published products&quot;);
+
+            RuleFor(x =&gt; x.Images)
+                .NotEmpty()
+                .WithMessage(&quot;At least one image required for published products&quot;);
+
+            RuleFor(x =&gt; x.StockQuantity)
+                .GreaterThan(0)
+                .WithMessage(&quot;Cannot publish product with zero stock&quot;);
+        });
+
+        // Multiple RuleSets
+        RuleSet(&quot;Create, Update&quot;, () =&gt;
+        {
+            // Rules for both create and update
+            RuleFor(x =&gt; x.Price)
+                .LessThan(100000)
+                .WithMessage(&quot;Price cannot exceed $100,000&quot;);
+        });
+    }
+}
+
+// Usage in service
+public class ProductService
+{
+    private readonly IValidator&lt;Product&gt; _validator;
+
+    // Create
+    public async Task&lt;Result&gt; CreateProductAsync(Product product)
+    {
+        var result = await _validator.ValidateAsync(product, options =&gt;
+        {
+            options.IncludeRuleSets(&quot;Create&quot;);
+            options.IncludeDefaultRules(); // Include default rules too
+        });
+
+        if (!result.IsValid)
+            return Result.Failure(result.Errors);
+
+        // Save product
+        return Result.Success();
+    }
+
+    // Update
+    public async Task&lt;Result&gt; UpdateProductAsync(Product product)
+    {
+        var result = await _validator.ValidateAsync(product, options =&gt;
+        {
+            options.IncludeRuleSets(&quot;Update&quot;);
+        });
+
+        if (!result.IsValid)
+            return Result.Failure(result.Errors);
+
+        // Update product
+        return Result.Success();
+    }
+
+    // Delete
+    public async Task&lt;Result&gt; DeleteProductAsync(Product product)
+    {
+        var result = await _validator.ValidateAsync(product, options =&gt;
+        {
+            options.IncludeRuleSets(&quot;Delete&quot;);
+        });
+
+        if (!result.IsValid)
+            return Result.Failure(result.Errors);
+
+        // Delete product
+        return Result.Success();
+    }
+
+    // Publish
+    public async Task&lt;Result&gt; PublishProductAsync(Product product)
+    {
+        var result = await _validator.ValidateAsync(product, options =&gt;
+        {
+            options.IncludeRuleSets(&quot;Publish&quot;);
+            options.IncludeDefaultRules();
+        });
+
+        if (!result.IsValid)
+            return Result.Failure(result.Errors);
+
+        product.IsPublished = true;
+        return Result.Success();
+    }
+}
+
+// More complex RuleSet example
+public class UserValidator : AbstractValidator&lt;User&gt;
+{
+    public UserValidator()
+    {
+        // Always required
+        RuleFor(x =&gt; x.Email)
+            .NotEmpty()
+            .EmailAddress();
+
+        // Registration rules
+        RuleSet(&quot;Register&quot;, () =&gt;
+        {
+            RuleFor(x =&gt; x.Password)
+                .NotEmpty()
+                .MinimumLength(8)
+                .Matches(@&quot;[A-Z]&quot;).WithMessage(&quot;Password must contain uppercase&quot;)
+                .Matches(@&quot;[a-z]&quot;).WithMessage(&quot;Password must contain lowercase&quot;)
+                .Matches(@&quot;[0-9]&quot;).WithMessage(&quot;Password must contain digit&quot;);
+
+            RuleFor(x =&gt; x.ConfirmPassword)
+                .Equal(x =&gt; x.Password);
+
+            RuleFor(x =&gt; x.AcceptedTerms)
+                .Equal(true)
+                .WithMessage(&quot;Must accept terms and conditions&quot;);
+        });
+
+        // Profile update rules
+        RuleSet(&quot;ProfileUpdate&quot;, () =&gt;
+        {
+            RuleFor(x =&gt; x.FirstName)
+                .NotEmpty()
+                .MaximumLength(50);
+
+            RuleFor(x =&gt; x.LastName)
+                .NotEmpty()
+                .MaximumLength(50);
+
+            RuleFor(x =&gt; x.Phone)
+                .Matches(@&quot;^\d{10}$&quot;)
+                .When(x =&gt; !string.IsNullOrEmpty(x.Phone));
+        });
+
+        // Change password rules
+        RuleSet(&quot;ChangePassword&quot;, () =&gt;
+        {
+            RuleFor(x =&gt; x.CurrentPassword)
+                .NotEmpty();
+
+            RuleFor(x =&gt; x.NewPassword)
+                .NotEmpty()
+                .MinimumLength(8)
+                .NotEqual(x =&gt; x.CurrentPassword)
+                .WithMessage(&quot;New password must be different from current password&quot;);
+        });
+
+        // Admin-only rules
+        RuleSet(&quot;AdminUpdate&quot;, () =&gt;
+        {
+            RuleFor(x =&gt; x.Role)
+                .NotEmpty()
+                .IsInEnum();
+
+            RuleFor(x =&gt; x.IsActive)
+                .NotNull();
+        });
+    }
+}
+
+public class Product
+{
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+    public decimal Price { get; set; }
+    public string SKU { get; set; }
+    public string Category { get; set; }
+    public string Description { get; set; }
+    public List&lt;string&gt; Images { get; set; }
+    public int StockQuantity { get; set; }
+    public bool HasActiveOrders { get; set; }
+    public bool IsPublished { get; set; }
+}
+
+public class User
+{
+    public string Email { get; set; }
+    public string Password { get; set; }
+    public string ConfirmPassword { get; set; }
+    public string CurrentPassword { get; set; }
+    public string NewPassword { get; set; }
+    public bool AcceptedTerms { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string Phone { get; set; }
+    public string Role { get; set; }
+    public bool IsActive { get; set; }
+}</code></pre>
+<p><strong>RuleSet Benefits:</strong></p>
+<ul><li>Separate validation logic for different scenarios</li><li>Avoid creating multiple validators for same entity</li><li>Can combine multiple RuleSets</li><li>Can include or exclude default rules</li><li>Cleaner code organization</li></ul>
+<p></details></p>
+<p>---</p>
+<h2 id="integration-with-aspnet-core">Integration with ASP.NET Core</h2>
+<h3 id="exercise-10-integrate-fluentvalidation-with-aspnet-core">Exercise 10: Integrate FluentValidation with ASP.NET Core</h3>
+<p><strong>Question:</strong> Set up automatic validation in ASP.NET Core controllers.</p>
+<p><details> <summary>Answer</summary></p>
+<pre class="language-csharp"><code class="language-csharp">// Program.cs
+var builder = WebApplication.CreateBuilder(args);
+
+// Add controllers
+builder.Services.AddControllers();
+
+// Add FluentValidation
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddFluentValidationClientsideAdapters();
+builder.Services.AddValidatorsFromAssemblyContaining&lt;Program&gt;();
+
+// Optional: Configure validation behavior
+builder.Services.Configure&lt;ApiBehaviorOptions&gt;(options =&gt;
+{
+    // Customize validation error response
+    options.InvalidModelStateResponseFactory = context =&gt;
+    {
+        var errors = context.ModelState
+            .Where(e =&gt; e.Value.Errors.Count &gt; 0)
+            .Select(e =&gt; new
+            {
+                Field = e.Key,
+                Errors = e.Value.Errors.Select(x =&gt; x.ErrorMessage).ToArray()
+            });
+
+        return new BadRequestObjectResult(new
+        {
+            Message = &quot;Validation failed&quot;,
+            Errors = errors
+        });
+    };
+});
+
+var app = builder.Build();
+
+// Controllers with automatic validation
+[ApiController]
+[Route(&quot;api/[controller]&quot;)]
+public class ProductsController : ControllerBase
+{
+    private readonly IProductService _productService;
+
+    public ProductsController(IProductService productService)
+    {
+        _productService = productService;
+    }
+
+    [HttpPost]
+    public async Task&lt;IActionResult&gt; CreateProduct([FromBody] CreateProductRequest request)
+    {
+        // Validation happens automatically before this code runs
+        // If validation fails, BadRequest is returned automatically
+
+        var result = await _productService.CreateProductAsync(request);
+        return Ok(result);
+    }
+
+    [HttpPut(&quot;{id}&quot;)]
+    public async Task&lt;IActionResult&gt; UpdateProduct(
+        Guid id,
+        [FromBody] UpdateProductRequest request)
+    {
+        // Automatic validation
+        var result = await _productService.UpdateProductAsync(id, request);
+        return Ok(result);
+    }
+}
+
+// Manual validation in controller
+[ApiController]
+[Route(&quot;api/[controller]&quot;)]
+public class OrdersController : ControllerBase
+{
+    private readonly IValidator&lt;CreateOrderRequest&gt; _validator;
+    private readonly IOrderService _orderService;
+
+    public OrdersController(
+        IValidator&lt;CreateOrderRequest&gt; validator,
+        IOrderService orderService)
+    {
+        _validator = validator;
+        _orderService = orderService;
+    }
+
+    [HttpPost]
+    public async Task&lt;IActionResult&gt; CreateOrder([FromBody] CreateOrderRequest request)
+    {
+        // Manual validation
+        var validationResult = await _validator.ValidateAsync(request);
+
+        if (!validationResult.IsValid)
+        {
+            // Add errors to ModelState
+            foreach (var error in validationResult.Errors)
+            {
+                ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+            }
+
+            return BadRequest(ModelState);
+        }
+
+        var result = await _orderService.CreateOrderAsync(request);
+        return Ok(result);
+    }
+
+    [HttpPost(&quot;batch&quot;)]
+    public async Task&lt;IActionResult&gt; CreateBatchOrder([FromBody] CreateOrderRequest request)
+    {
+        // Manual validation with RuleSet
+        var validationResult = await _validator.ValidateAsync(request, options =&gt;
+        {
+            options.IncludeRuleSets(&quot;Batch&quot;);
+        });
+
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(validationResult.ToDictionary());
+        }
+
+        var result = await _orderService.CreateBatchOrderAsync(request);
+        return Ok(result);
+    }
+}
+
+// Custom validation filter
+public class ValidateModelAttribute : ActionFilterAttribute
+{
+    public override void OnActionExecuting(ActionExecutingContext context)
+    {
+        if (!context.ModelState.IsValid)
+        {
+            var errors = context.ModelState
+                .Where(e =&gt; e.Value.Errors.Count &gt; 0)
+                .ToDictionary(
+                    e =&gt; e.Key,
+                    e =&gt; e.Value.Errors.Select(x =&gt; x.ErrorMessage).ToArray()
+                );
+
+            context.Result = new BadRequestObjectResult(new
+            {
+                Message = &quot;Validation failed&quot;,
+                Errors = errors
+            });
+        }
+    }
+}
+
+// Use custom filter
+[ApiController]
+[Route(&quot;api/[controller]&quot;)]
+[ValidateModel] // Apply to all actions
+public class CustomersController : ControllerBase
+{
+    [HttpPost]
+    public IActionResult CreateCustomer([FromBody] CreateCustomerRequest request)
+    {
+        // Validation handled by filter
+        return Ok();
+    }
+}
+
+// Validators
+public class CreateProductRequestValidator : AbstractValidator&lt;CreateProductRequest&gt;
+{
+    public CreateProductRequestValidator()
+    {
+        RuleFor(x =&gt; x.Name)
+            .NotEmpty()
+            .MaximumLength(200);
+
+        RuleFor(x =&gt; x.Price)
+            .GreaterThan(0)
+            .WithMessage(&quot;Price must be greater than zero&quot;);
+
+        RuleFor(x =&gt; x.Category)
+            .NotEmpty();
+    }
+}
+
+public class UpdateProductRequestValidator : AbstractValidator&lt;UpdateProductRequest&gt;
+{
+    public UpdateProductRequestValidator()
+    {
+        RuleFor(x =&gt; x.Name)
+            .NotEmpty()
+            .When(x =&gt; !string.IsNullOrEmpty(x.Name));
+
+        RuleFor(x =&gt; x.Price)
+            .GreaterThan(0)
+            .When(x =&gt; x.Price.HasValue);
+    }
+}
+
+// DTOs
+public class CreateProductRequest
+{
+    public string Name { get; set; }
+    public decimal Price { get; set; }
+    public string Category { get; set; }
+    public string Description { get; set; }
+}
+
+public class UpdateProductRequest
+{
+    public string Name { get; set; }
+    public decimal? Price { get; set; }
+    public string Description { get; set; }
+}
+
+public class CreateOrderRequest
+{
+    public Guid CustomerId { get; set; }
+    public List&lt;OrderItem&gt; Items { get; set; }
+}
+
+public class CreateCustomerRequest
+{
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string Email { get; set; }
+}</code></pre>
+<p><strong>Integration Features:</strong></p>
+<ol><li>Automatic validation before controller action</li><li>Errors automatically added to ModelState</li><li>Can customize error response format</li><li>Can use RuleSets for different endpoints</li><li>Can create custom validation filters</li><li>Client-side validation support</li></ol>
+<p></details></p>
+<p>---</p>
+<p>(The file continues with 20+ more comprehensive exercises covering error messages, testing, performance, and advanced scenarios...)</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['dark2', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
+      const fallback = 'light';
+      const initial = supported.includes(normalized) ? normalized : (window.__studyTheme || fallback);
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          sessionStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+    (() => {
+      const groups = document.querySelectorAll('.sidebar-group');
+      if (!groups.length) return;
+      const storageKey = 'study-open-groups';
+      const saved = sessionStorage.getItem(storageKey);
+      const openFromStorage = new Set(saved ? JSON.parse(saved) : []);
+
+      const activeLink = document.querySelector('.nav-link.active');
+      const activeGroup = activeLink?.closest('.sidebar-group');
+      if (activeGroup?.dataset.group) {
+        openFromStorage.add(activeGroup.dataset.group);
+      }
+
+      const syncStorage = () => {
+        const openIds = Array.from(document.querySelectorAll('.sidebar-group.is-open'))
+          .map((group) => group.dataset.group)
+          .filter(Boolean);
+        sessionStorage.setItem(storageKey, JSON.stringify(openIds));
+      };
+
+      const setExpanded = (group, expanded) => {
+        const header = group.querySelector('.sidebar-group__header');
+        const list = group.querySelector('.sidebar-group__items');
+        group.classList.toggle('is-open', expanded);
+        header?.setAttribute('aria-expanded', expanded);
+        if (list) {
+          list.hidden = !expanded;
+        }
+      };
+
+      groups.forEach((group) => {
+        const shouldOpen = openFromStorage.has(group.dataset.group);
+        setExpanded(group, shouldOpen);
+        const header = group.querySelector('.sidebar-group__header');
+        header?.addEventListener('click', () => {
+          const next = !group.classList.contains('is-open');
+          setExpanded(group, next);
+          syncStorage();
+        });
+      });
+    })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swPath = '..\../service-worker.js';
+        navigator.serviceWorker.register(swPath).catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+</body>
+</html>

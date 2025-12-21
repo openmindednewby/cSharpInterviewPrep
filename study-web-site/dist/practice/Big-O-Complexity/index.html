@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for Big O Complexity" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>Big O Complexity | C# Interview Prep Cheat Sheet</title>
+  <link rel="manifest" href="..\..\assets/manifest.webmanifest" />
+  <script>
+    (() => {
+      const supported = ['dark2', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
+      const fallback = 'light';
+      const initial = supported.includes(normalized) ? normalized : fallback;
+      document.documentElement.dataset.theme = initial;
+      window.__studyTheme = initial;
+    })();
+  </script>
+  <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="dark2">Dark 2</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group" data-group="notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="..\../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="..\../notes/logging.html">Logging</a></li><li><a class="nav-link" href="..\../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/O1-Constant-Time.html">O1 Constant Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/OLogN-Logarithmic-Time.html">OLogN Logarithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON-Linear-Time.html">ON Linear Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON2-Quadratic-Time.html">ON2 Quadratic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ONLogN-Linearithmic-Time.html">ONLogN Linearithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/Space-Complexity.html">Space Complexity</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/ICollection.html">ICollection</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IEnumerable.html">IEnumerable</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IList.html">IList</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IQueryable.html">IQueryable</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IReadOnly.html">IReadOnly</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a class="nav-link" href="..\../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a class="nav-link" href="..\../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a class="nav-link" href="..\../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a class="nav-link" href="..\../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a class="nav-link" href="..\../notes/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a class="nav-link" href="..\../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a class="nav-link" href="..\../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a class="nav-link" href="..\../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a class="nav-link" href="..\../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a class="nav-link" href="..\../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a class="nav-link" href="..\../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a class="nav-link" href="..\../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a class="nav-link" href="..\../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a class="nav-link" href="..\../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a class="nav-link" href="..\../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/01-async-patterns.html">01 Async Patterns</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/02-backpressure-rate-limiting.html">02 Backpressure Rate Limiting</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/03-caching-strategies.html">03 Caching Strategies</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/04-database-scaling.html">04 Database Scaling</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/05-message-queues.html">05 Message Queues</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/06-resilience-patterns.html">06 Resilience Patterns</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/07-observability.html">07 Observability</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/08-complete-example.html">08 Complete Example</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/answers.html">Answers</a></li><li><a class="nav-link" href="..\../practice/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="..\../practice/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="..\../practice/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="..\../practice/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="..\../practice/csharp-fundamentals.html">Csharp Fundamentals</a></li><li><a class="nav-link" href="..\../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="..\../practice/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="..\../practice/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="..\../practice/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="..\../practice/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="..\../practice/index.html">Practice</a></li><li><a class="nav-link" href="..\../practice/PRACTICE-STRUCTURE.html">PRACTICE STRUCTURE</a></li><li><a class="nav-link" href="..\../practice/questions.html">Questions</a></li><li><a class="nav-link" href="..\../practice/README.html">README</a></li><li><a class="nav-link" href="..\../practice/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="..\../practice/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="..\../practice/system-design.html">System Design</a></li><li><a class="nav-link" href="..\../practice/trading-domain.html">Trading Domain</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-advanced-topics">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Advanced Topics</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/advanced-topics/async-await-exercises.html">Async Await Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Automapper/index.html">Automapper</a></li></ul>
+    </div><div class="sidebar-group is-open" data-group="practice-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
+        <span>Practice / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items"><li><a class="nav-link active" href="..\../practice/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/O1-Constant-Time-Exercises.html">O1 Constant Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/OLogN-Logarithmic-Time-Exercises.html">OLogN Logarithmic Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ON-Linear-Time-Exercises.html">ON Linear Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ON2-Quadratic-Time-Exercises.html">ON2 Quadratic Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ONLogN-Linearithmic-Time-Exercises.html">ONLogN Linearithmic Time Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Design-Patterns/Decorator-Pattern-Exercises.html">Decorator Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/index.html">Design Patterns</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Factory-Pattern-Exercises.html">Factory Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Mediator-Pattern-Exercises.html">Mediator Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Observer-Pattern-Exercises.html">Observer Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Strategy-Pattern-Exercises.html">Strategy Pattern Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/FluentValidation/index.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/SOLID/S-Single-Responsibility-Principle-Exercises.html">S Single Responsibility Principle Exercises</a></li><li><a class="nav-link" href="..\../practice/SOLID/index.html">SOLID</a></li></ul>
+    </div></div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">practice\Big-O-Complexity\index.md</div>
+        <h2>Big O Complexity</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#big-o-complexity---complete-guide">Big-O Complexity - Complete Guide</a></li><li class="level-2"><a href="#overview">Overview</a></li><li class="level-2"><a href="#why-big-o-matters-in-interviews">Why Big-O Matters in Interviews</a></li><li class="level-2"><a href="#common-complexity-classes">Common Complexity Classes</a></li><li class="level-3"><a href="#quick-reference-chart">Quick Reference Chart</a></li><li class="level-3"><a href="#visual-comparison-n-100">Visual Comparison (n = 100)</a></li><li class="level-2"><a href="#complexity-analysis-rules">Complexity Analysis Rules</a></li><li class="level-3"><a href="#1-drop-constants">1. Drop Constants</a></li><li class="level-3"><a href="#2-drop-non-dominant-terms">2. Drop Non-Dominant Terms</a></li><li class="level-3"><a href="#3-consider-all-variables">3. Consider All Variables</a></li><li class="level-3"><a href="#4-different-steps-add-or-multiply">4. Different Steps Add or Multiply</a></li><li class="level-2"><a href="#best-average-and-worst-case">Best, Average, and Worst Case</a></li><li class="level-3"><a href="#example-quick-sort">Example: Quick Sort</a></li><li class="level-3"><a href="#example-hash-table-lookup">Example: Hash Table Lookup</a></li><li class="level-2"><a href="#common-c-data-structure-complexities">Common C# Data Structure Complexities</a></li><li class="level-3"><a href="#arrays-lists">Arrays / Lists</a></li><li class="level-3"><a href="#dictionarytkey-tvalue-hashsett">Dictionary<TKey, TValue> / HashSet<T></a></li><li class="level-3"><a href="#sorteddictionarytkey-tvalue-sortedsett">SortedDictionary<TKey, TValue> / SortedSet<T></a></li><li class="level-3"><a href="#stackt-queuet">Stack<T> / Queue<T></a></li><li class="level-3"><a href="#linkedlistt">LinkedList<T></a></li><li class="level-2"><a href="#space-complexity">Space Complexity</a></li><li class="level-3"><a href="#categories">Categories</a></li><li class="level-3"><a href="#example-analysis">Example Analysis</a></li><li class="level-2"><a href="#amortized-analysis">Amortized Analysis</a></li><li class="level-3"><a href="#example-dynamic-array-growth">Example: Dynamic Array Growth</a></li><li class="level-2"><a href="#common-pitfalls-and-gotchas">Common Pitfalls and Gotchas</a></li><li class="level-3"><a href="#1-hidden-complexity-in-linq">1. Hidden Complexity in LINQ</a></li><li class="level-3"><a href="#2-string-concatenation-in-loops">2. String Concatenation in Loops</a></li><li class="level-3"><a href="#3-nested-collections-lookups">3. Nested Collections Lookups</a></li><li class="level-3"><a href="#4-recursive-complexity">4. Recursive Complexity</a></li><li class="level-2"><a href="#interview-tips">Interview Tips</a></li><li class="level-3"><a href="#1-always-state-your-assumptions">1. Always State Your Assumptions</a></li><li class="level-3"><a href="#2-discuss-trade-offs">2. Discuss Trade-offs</a></li><li class="level-3"><a href="#3-consider-all-cases">3. Consider All Cases</a></li><li class="level-3"><a href="#4-optimize-step-by-step">4. Optimize Step by Step</a></li><li class="level-2"><a href="#practice-exercises-by-complexity">Practice Exercises by Complexity</a></li><li class="level-3"><a href="#o1---constant-time">O(1) - Constant Time</a></li><li class="level-3"><a href="#olog-n---logarithmic-time">O(log n) - Logarithmic Time</a></li><li class="level-3"><a href="#on---linear-time">O(n) - Linear Time</a></li><li class="level-3"><a href="#on-log-n---linearithmic-time">O(n log n) - Linearithmic Time</a></li><li class="level-3"><a href="#on---quadratic-time">O(n²) - Quadratic Time</a></li><li class="level-3"><a href="#space-complexity">Space Complexity</a></li><li class="level-2"><a href="#additional-resources">Additional Resources</a></li><li class="level-3"><a href="#books">Books</a></li><li class="level-3"><a href="#online-tools">Online Tools</a></li><li class="level-3"><a href="#common-interview-problem-patterns">Common Interview Problem Patterns</a></li><li class="level-2"><a href="#key-takeaways">Key Takeaways</a></li><li class="level-2"><a href="#next-steps">Next Steps</a></li></ul></div>
+        <h1 id="big-o-complexity---complete-guide">Big-O Complexity - Complete Guide</h1>
+<h2 id="overview">Overview</h2>
+<p>Big-O notation describes the upper bound of algorithm complexity, expressing how runtime or space requirements grow as input size increases. It helps us analyze and compare algorithm efficiency.</p>
+<h2 id="why-big-o-matters-in-interviews">Why Big-O Matters in Interviews</h2>
+<ul><li><strong>Performance Analysis</strong>: Demonstrates ability to write efficient code</li><li><strong>Scalability</strong>: Shows understanding of how code performs with large datasets</li><li><strong>Trade-offs</strong>: Ability to balance time vs. space complexity</li><li><strong>Problem Solving</strong>: Choose the right data structure and algorithm</li></ul>
+<h2 id="common-complexity-classes">Common Complexity Classes</h2>
+<h3 id="quick-reference-chart">Quick Reference Chart</h3>
+<table><thead><tr><th>Notation</th><th>Name</th><th>Example Operations</th><th>Growth Rate</th></tr></thead><tbody><tr><td>O(1)</td><td>Constant</td><td>Array access, Dictionary lookup, Stack push/pop</td><td>Best</td></tr><tr><td>O(log n)</td><td>Logarithmic</td><td>Binary search, Balanced tree operations</td><td>Excellent</td></tr><tr><td>O(n)</td><td>Linear</td><td>Array iteration, Linear search</td><td>Good</td></tr><tr><td>O(n log n)</td><td>Linearithmic</td><td>Merge sort, Quick sort (average), Heap sort</td><td>Fair</td></tr><tr><td>O(n²)</td><td>Quadratic</td><td>Nested loops, Bubble sort, Selection sort</td><td>Poor</td></tr><tr><td>O(n³)</td><td>Cubic</td><td>Triple nested loops, Matrix multiplication</td><td>Very Poor</td></tr><tr><td>O(2ⁿ)</td><td>Exponential</td><td>Recursive Fibonacci, Power set generation</td><td>Terrible</td></tr><tr><td>O(n!)</td><td>Factorial</td><td>Permutation generation, Traveling salesman (brute force)</td><td>Worst</td></tr></tbody></table>
+<h3 id="visual-comparison-n-100">Visual Comparison (n = 100)</h3>
+<pre class="language-csharp"><code class="language-csharp">O(1)      = 1 operation
+O(log n)  = ~7 operations
+O(n)      = 100 operations
+O(n log n)= ~700 operations
+O(n²)     = 10,000 operations
+O(2ⁿ)     = 1,267,650,600,228,229,401,496,703,205,376 operations</code></pre>
+<h2 id="complexity-analysis-rules">Complexity Analysis Rules</h2>
+<h3 id="1-drop-constants">1. Drop Constants</h3>
+<pre class="language-csharp"><code class="language-csharp">// O(2n) → O(n)
+for (int i = 0; i &lt; n; i++) { /* ... */ }
+for (int i = 0; i &lt; n; i++) { /* ... */ }</code></pre>
+<h3 id="2-drop-non-dominant-terms">2. Drop Non-Dominant Terms</h3>
+<pre class="language-csharp"><code class="language-csharp">// O(n² + n) → O(n²)
+// O(n + log n) → O(n)
+// O(5*2ⁿ + 1000n¹⁰⁰) → O(2ⁿ)</code></pre>
+<h3 id="3-consider-all-variables">3. Consider All Variables</h3>
+<pre class="language-csharp"><code class="language-csharp">// O(a + b) - two different inputs
+void Process(int[] array1, int[] array2)
+{
+    foreach (var item in array1) { /* ... */ }  // O(a)
+    foreach (var item in array2) { /* ... */ }  // O(b)
+}</code></pre>
+<h3 id="4-different-steps-add-or-multiply">4. Different Steps Add or Multiply</h3>
+<p><strong>Sequential Steps Add:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">DoStepA();  // O(a)
+DoStepB();  // O(b)
+// Total: O(a + b)</code></pre>
+<p><strong>Nested Steps Multiply:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">foreach (var a in arrayA)  // O(a)
+{
+    foreach (var b in arrayB)  // O(b)
+    {
+        // ...
+    }
+}
+// Total: O(a * b)</code></pre>
+<h2 id="best-average-and-worst-case">Best, Average, and Worst Case</h2>
+<h3 id="example-quick-sort">Example: Quick Sort</h3>
+<ul><li><strong>Best Case</strong>: O(n log n) - perfectly balanced partitions</li><li><strong>Average Case</strong>: O(n log n) - random pivot selection</li><li><strong>Worst Case</strong>: O(n²) - already sorted with bad pivot choice</li></ul>
+<h3 id="example-hash-table-lookup">Example: Hash Table Lookup</h3>
+<ul><li><strong>Best/Average Case</strong>: O(1) - good hash function, few collisions</li><li><strong>Worst Case</strong>: O(n) - all items hash to same bucket</li></ul>
+<h2 id="common-c-data-structure-complexities">Common C# Data Structure Complexities</h2>
+<h3 id="arrays-lists">Arrays / Lists</h3>
+<table><thead><tr><th>Operation</th><th>Array</th><th>List<T></th><th>Notes</th></tr></thead><tbody><tr><td>Access by index</td><td>O(1)</td><td>O(1)</td><td>Direct memory access</td></tr><tr><td>Search (unsorted)</td><td>O(n)</td><td>O(n)</td><td>Must check each element</td></tr><tr><td>Search (sorted)</td><td>O(log n)</td><td>O(log n)</td><td>Binary search possible</td></tr><tr><td>Insert at end</td><td>N/A</td><td>O(1) amortized</td><td>May need resize</td></tr><tr><td>Insert at position</td><td>N/A</td><td>O(n)</td><td>Must shift elements</td></tr><tr><td>Delete</td><td>N/A</td><td>O(n)</td><td>Must shift elements</td></tr></tbody></table>
+<h3 id="dictionarytkey-tvalue-hashsett">Dictionary<TKey, TValue> / HashSet<T></h3>
+<table><thead><tr><th>Operation</th><th>Time Complexity</th><th>Notes</th></tr></thead><tbody><tr><td>Add</td><td>O(1) average</td><td>O(n) worst case (rehash)</td></tr><tr><td>Remove</td><td>O(1) average</td><td>O(n) worst case (collisions)</td></tr><tr><td>Lookup</td><td>O(1) average</td><td>O(n) worst case (collisions)</td></tr><tr><td>Contains</td><td>O(1) average</td><td>O(n) worst case (collisions)</td></tr></tbody></table>
+<h3 id="sorteddictionarytkey-tvalue-sortedsett">SortedDictionary<TKey, TValue> / SortedSet<T></h3>
+<table><thead><tr><th>Operation</th><th>Time Complexity</th><th>Notes</th></tr></thead><tbody><tr><td>Add</td><td>O(log n)</td><td>Balanced tree structure</td></tr><tr><td>Remove</td><td>O(log n)</td><td>Rebalancing required</td></tr><tr><td>Lookup</td><td>O(log n)</td><td>Binary search in tree</td></tr><tr><td>Min/Max</td><td>O(log n)</td><td>Tree traversal</td></tr></tbody></table>
+<h3 id="stackt-queuet">Stack<T> / Queue<T></h3>
+<table><thead><tr><th>Operation</th><th>Stack<T></th><th>Queue<T></th><th>Notes</th></tr></thead><tbody><tr><td>Push/Enqueue</td><td>O(1)</td><td>O(1)</td><td>Add to end</td></tr><tr><td>Pop/Dequeue</td><td>O(1)</td><td>O(1)</td><td>Remove from end/front</td></tr><tr><td>Peek</td><td>O(1)</td><td>O(1)</td><td>View without removing</td></tr></tbody></table>
+<h3 id="linkedlistt">LinkedList<T></h3>
+<table><thead><tr><th>Operation</th><th>Time Complexity</th><th>Notes</th></tr></thead><tbody><tr><td>Add First/Last</td><td>O(1)</td><td>Direct pointer access</td></tr><tr><td>Remove First/Last</td><td>O(1)</td><td>Direct pointer access</td></tr><tr><td>Insert After Node</td><td>O(1)</td><td>If you have the node</td></tr><tr><td>Search</td><td>O(n)</td><td>Must traverse</td></tr><tr><td>Access by index</td><td>O(n)</td><td>Must traverse</td></tr></tbody></table>
+<h2 id="space-complexity">Space Complexity</h2>
+<p>Space complexity measures memory usage as input grows.</p>
+<h3 id="categories">Categories</h3>
+<ol><li><strong>O(1) - Constant Space</strong>: Fixed number of variables</li><li><strong>O(n) - Linear Space</strong>: Space grows with input (arrays, lists)</li><li><strong>O(log n) - Logarithmic Space</strong>: Recursion depth in divide-and-conquer</li><li><strong>O(n²) - Quadratic Space</strong>: 2D arrays, adjacency matrices</li></ol>
+<h3 id="example-analysis">Example Analysis</h3>
+<pre class="language-csharp"><code class="language-csharp">// Space: O(1) - only using a few variables
+int Sum(int[] arr)
+{
+    int total = 0;
+    foreach (int num in arr)
+        total += num;
+    return total;
+}
+
+// Space: O(n) - creating new array
+int[] Double(int[] arr)
+{
+    int[] result = new int[arr.Length];
+    for (int i = 0; i &lt; arr.Length; i++)
+        result[i] = arr[i] * 2;
+    return result;
+}
+
+// Space: O(log n) - recursion stack for binary search
+int BinarySearch(int[] arr, int target, int left, int right)
+{
+    if (left &gt; right) return -1;
+    int mid = left + (right - left) / 2;
+    if (arr[mid] == target) return mid;
+    if (arr[mid] &gt; target) return BinarySearch(arr, target, left, mid - 1);
+    return BinarySearch(arr, target, mid + 1, right);
+}</code></pre>
+<h2 id="amortized-analysis">Amortized Analysis</h2>
+<p>Some operations have different costs at different times. Amortized analysis looks at average cost over many operations.</p>
+<h3 id="example-dynamic-array-growth">Example: Dynamic Array Growth</h3>
+<pre class="language-csharp"><code class="language-csharp">// List&lt;T&gt;.Add() is O(1) amortized
+// - Most adds: O(1) - just insert
+// - Occasional resize: O(n) - copy all elements
+// - Over n operations: O(n) total → O(1) amortized per operation</code></pre>
+<h2 id="common-pitfalls-and-gotchas">Common Pitfalls and Gotchas</h2>
+<h3 id="1-hidden-complexity-in-linq">1. Hidden Complexity in LINQ</h3>
+<pre class="language-csharp"><code class="language-csharp">// Looks simple, but Count() on IEnumerable is O(n)
+if (collection.Count() &gt; 0)  // O(n)
+{
+    // ...
+}
+
+// Better: use Any() which is O(1) for most cases
+if (collection.Any())  // O(1) for collections, early exit for IEnumerable
+{
+    // ...
+}</code></pre>
+<h3 id="2-string-concatenation-in-loops">2. String Concatenation in Loops</h3>
+<pre class="language-csharp"><code class="language-csharp">// O(n²) - strings are immutable, each + creates new string
+string result = &quot;&quot;;
+for (int i = 0; i &lt; n; i++)
+{
+    result += arr[i];  // O(n) operation in O(n) loop
+}
+
+// O(n) - StringBuilder reuses buffer
+var sb = new StringBuilder();
+for (int i = 0; i &lt; n; i++)
+{
+    sb.Append(arr[i]);  // O(1) amortized
+}
+string result = sb.ToString();</code></pre>
+<h3 id="3-nested-collections-lookups">3. Nested Collections Lookups</h3>
+<pre class="language-csharp"><code class="language-csharp">// This is O(n * m), NOT O(n)
+foreach (var item1 in list1)  // O(n)
+{
+    if (list2.Contains(item1))  // O(m) for List, O(1) for HashSet
+    {
+        // ...
+    }
+}
+
+// Better: convert to HashSet first if doing multiple lookups
+var set2 = new HashSet&lt;T&gt;(list2);  // O(m)
+foreach (var item1 in list1)  // O(n)
+{
+    if (set2.Contains(item1))  // O(1)
+    {
+        // ...
+    }
+}
+// Total: O(m + n) instead of O(n * m)</code></pre>
+<h3 id="4-recursive-complexity">4. Recursive Complexity</h3>
+<pre class="language-csharp"><code class="language-csharp">// This is O(2ⁿ), NOT O(n)!
+int Fibonacci(int n)
+{
+    if (n &lt;= 1) return n;
+    return Fibonacci(n - 1) + Fibonacci(n - 2);  // Each call makes 2 more calls
+}
+
+// With memoization: O(n)
+Dictionary&lt;int, int&gt; memo = new Dictionary&lt;int, int&gt;();
+int FibonacciMemo(int n)
+{
+    if (n &lt;= 1) return n;
+    if (memo.ContainsKey(n)) return memo[n];
+    memo[n] = FibonacciMemo(n - 1) + FibonacciMemo(n - 2);
+    return memo[n];
+}</code></pre>
+<h2 id="interview-tips">Interview Tips</h2>
+<h3 id="1-always-state-your-assumptions">1. Always State Your Assumptions</h3>
+<pre class="language-csharp"><code class="language-csharp">&quot;I&#39;m assuming the input array is unsorted. If it were sorted,
+we could use binary search for O(log n) instead of O(n).&quot;</code></pre>
+<h3 id="2-discuss-trade-offs">2. Discuss Trade-offs</h3>
+<pre class="language-csharp"><code class="language-csharp">&quot;We could use a HashMap for O(1) lookup, which gives us O(n) time
+but O(n) space. Or we could sort and use binary search for
+O(n log n) time but O(1) space if we sort in-place.&quot;</code></pre>
+<h3 id="3-consider-all-cases">3. Consider All Cases</h3>
+<ul><li>Best case</li><li>Average case</li><li>Worst case</li><li>Time complexity</li><li>Space complexity</li></ul>
+<h3 id="4-optimize-step-by-step">4. Optimize Step by Step</h3>
+<ol><li>Get a working solution first</li><li>Analyze its complexity</li><li>Identify bottlenecks</li><li>Optimize (with trade-off discussion)</li></ol>
+<h2 id="practice-exercises-by-complexity">Practice Exercises by Complexity</h2>
+<h3 id="o1---constant-time">O(1) - Constant Time</h3>
+<p><a href="./O1-Constant-Time-Exercises.md">O1-Constant-Time-Exercises.md</a></p>
+<ul><li>Array access and updates</li><li>Dictionary operations</li><li>Stack/Queue operations</li><li>Mathematical formulas</li></ul>
+<h3 id="olog-n---logarithmic-time">O(log n) - Logarithmic Time</h3>
+<p><a href="./OLogN-Logarithmic-Time-Exercises.md">OLogN-Logarithmic-Time-Exercises.md</a></p>
+<ul><li>Binary search variations</li><li>Tree operations</li><li>Divide-and-conquer algorithms</li><li>SortedSet/SortedDictionary operations</li></ul>
+<h3 id="on---linear-time">O(n) - Linear Time</h3>
+<p><a href="./ON-Linear-Time-Exercises.md">ON-Linear-Time-Exercises.md</a></p>
+<ul><li>Array/List iteration</li><li>Linear search</li><li>Single-pass algorithms</li><li>String processing</li></ul>
+<h3 id="on-log-n---linearithmic-time">O(n log n) - Linearithmic Time</h3>
+<p><a href="./ONLogN-Linearithmic-Time-Exercises.md">ONLogN-Linearithmic-Time-Exercises.md</a></p>
+<ul><li>Merge sort</li><li>Quick sort</li><li>Heap sort</li><li>Efficient sorting scenarios</li></ul>
+<h3 id="on---quadratic-time">O(n²) - Quadratic Time</h3>
+<p><a href="./ON2-Quadratic-Time-Exercises.md">ON2-Quadratic-Time-Exercises.md</a></p>
+<ul><li>Nested loops</li><li>Simple sorting algorithms</li><li>Pairwise comparisons</li><li>Matrix operations</li></ul>
+<h3 id="space-complexity">Space Complexity</h3>
+<p><a href="./Space-Complexity-Exercises.md">Space-Complexity-Exercises.md</a></p>
+<ul><li>In-place vs. out-of-place algorithms</li><li>Recursive space analysis</li><li>Memory optimization</li><li>Time-space trade-offs</li></ul>
+<h2 id="additional-resources">Additional Resources</h2>
+<h3 id="books">Books</h3>
+<ul><li>"Introduction to Algorithms" (CLRS)</li><li>"Cracking the Coding Interview" by Gayle Laakmann McDowell</li><li>"Algorithm Design Manual" by Steven Skiena</li></ul>
+<h3 id="online-tools">Online Tools</h3>
+<ul><li><a href="https://www.bigocheatsheet.com/">Big-O Cheat Sheet</a></li><li><a href="https://visualgo.net/">VisuAlgo</a> - Algorithm visualizations</li><li><a href="https://leetcode.com/">LeetCode</a> - Practice problems</li></ul>
+<h3 id="common-interview-problem-patterns">Common Interview Problem Patterns</h3>
+<ol><li><strong>Two Pointers</strong>: Often O(n) time, O(1) space</li><li><strong>Sliding Window</strong>: O(n) time, O(1) or O(k) space</li><li><strong>Hash Maps</strong>: Trade space O(n) for time O(1) lookups</li><li><strong>Binary Search</strong>: O(log n) when data is sorted</li><li><strong>BFS/DFS</strong>: O(V + E) for graphs</li><li><strong>Dynamic Programming</strong>: Often O(n²) time, O(n) or O(n²) space</li><li><strong>Divide and Conquer</strong>: Often O(n log n)</li></ol>
+<h2 id="key-takeaways">Key Takeaways</h2>
+<ol><li><strong>Big-O describes growth rate</strong>, not exact runtime</li><li><strong>Drop constants and non-dominant terms</strong></li><li><strong>Consider both time and space</strong> complexity</li><li><strong>Best/Average/Worst cases</strong> can differ significantly</li><li><strong>Amortized analysis</strong> smooths out occasional expensive operations</li><li><strong>Real-world factors</strong> (cache locality, constants) matter too</li><li><strong>Trade-offs are everywhere</strong> - discuss them in interviews</li></ol>
+<h2 id="next-steps">Next Steps</h2>
+<p>Work through the exercises in order:</p>
+<ol><li>Start with O(1) operations to build intuition</li><li>Progress through O(log n), O(n), O(n log n)</li><li>Understand when O(n²) is necessary</li><li>Master space complexity analysis</li><li>Practice analyzing unfamiliar code</li></ol>
+<p>Remember: <strong>Understanding complexity helps you write better code and ace technical interviews!</strong></p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['dark2', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
+      const fallback = 'light';
+      const initial = supported.includes(normalized) ? normalized : (window.__studyTheme || fallback);
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          sessionStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+    (() => {
+      const groups = document.querySelectorAll('.sidebar-group');
+      if (!groups.length) return;
+      const storageKey = 'study-open-groups';
+      const saved = sessionStorage.getItem(storageKey);
+      const openFromStorage = new Set(saved ? JSON.parse(saved) : []);
+
+      const activeLink = document.querySelector('.nav-link.active');
+      const activeGroup = activeLink?.closest('.sidebar-group');
+      if (activeGroup?.dataset.group) {
+        openFromStorage.add(activeGroup.dataset.group);
+      }
+
+      const syncStorage = () => {
+        const openIds = Array.from(document.querySelectorAll('.sidebar-group.is-open'))
+          .map((group) => group.dataset.group)
+          .filter(Boolean);
+        sessionStorage.setItem(storageKey, JSON.stringify(openIds));
+      };
+
+      const setExpanded = (group, expanded) => {
+        const header = group.querySelector('.sidebar-group__header');
+        const list = group.querySelector('.sidebar-group__items');
+        group.classList.toggle('is-open', expanded);
+        header?.setAttribute('aria-expanded', expanded);
+        if (list) {
+          list.hidden = !expanded;
+        }
+      };
+
+      groups.forEach((group) => {
+        const shouldOpen = openFromStorage.has(group.dataset.group);
+        setExpanded(group, shouldOpen);
+        const header = group.querySelector('.sidebar-group__header');
+        header?.addEventListener('click', () => {
+          const next = !group.classList.contains('is-open');
+          setExpanded(group, next);
+          syncStorage();
+        });
+      });
+    })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swPath = '..\../service-worker.js';
+        navigator.serviceWorker.register(swPath).catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+</body>
+</html>

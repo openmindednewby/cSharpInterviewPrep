@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for ONLogN Linearithmic Time Exercises" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>ONLogN Linearithmic Time Exercises | C# Interview Prep Cheat Sheet</title>
+  <link rel="manifest" href="..\..\assets/manifest.webmanifest" />
+  <script>
+    (() => {
+      const supported = ['dark2', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
+      const fallback = 'light';
+      const initial = supported.includes(normalized) ? normalized : fallback;
+      document.documentElement.dataset.theme = initial;
+      window.__studyTheme = initial;
+    })();
+  </script>
+  <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="dark2">Dark 2</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group" data-group="notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="..\../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="..\../notes/logging.html">Logging</a></li><li><a class="nav-link" href="..\../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/O1-Constant-Time.html">O1 Constant Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/OLogN-Logarithmic-Time.html">OLogN Logarithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON-Linear-Time.html">ON Linear Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON2-Quadratic-Time.html">ON2 Quadratic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ONLogN-Linearithmic-Time.html">ONLogN Linearithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/Space-Complexity.html">Space Complexity</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/ICollection.html">ICollection</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IEnumerable.html">IEnumerable</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IList.html">IList</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IQueryable.html">IQueryable</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IReadOnly.html">IReadOnly</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a class="nav-link" href="..\../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a class="nav-link" href="..\../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a class="nav-link" href="..\../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a class="nav-link" href="..\../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a class="nav-link" href="..\../notes/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a class="nav-link" href="..\../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a class="nav-link" href="..\../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a class="nav-link" href="..\../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a class="nav-link" href="..\../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a class="nav-link" href="..\../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a class="nav-link" href="..\../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a class="nav-link" href="..\../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a class="nav-link" href="..\../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a class="nav-link" href="..\../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a class="nav-link" href="..\../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/01-async-patterns.html">01 Async Patterns</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/02-backpressure-rate-limiting.html">02 Backpressure Rate Limiting</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/03-caching-strategies.html">03 Caching Strategies</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/04-database-scaling.html">04 Database Scaling</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/05-message-queues.html">05 Message Queues</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/06-resilience-patterns.html">06 Resilience Patterns</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/07-observability.html">07 Observability</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/08-complete-example.html">08 Complete Example</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/answers.html">Answers</a></li><li><a class="nav-link" href="..\../practice/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="..\../practice/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="..\../practice/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="..\../practice/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="..\../practice/csharp-fundamentals.html">Csharp Fundamentals</a></li><li><a class="nav-link" href="..\../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="..\../practice/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="..\../practice/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="..\../practice/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="..\../practice/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="..\../practice/index.html">Practice</a></li><li><a class="nav-link" href="..\../practice/PRACTICE-STRUCTURE.html">PRACTICE STRUCTURE</a></li><li><a class="nav-link" href="..\../practice/questions.html">Questions</a></li><li><a class="nav-link" href="..\../practice/README.html">README</a></li><li><a class="nav-link" href="..\../practice/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="..\../practice/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="..\../practice/system-design.html">System Design</a></li><li><a class="nav-link" href="..\../practice/trading-domain.html">Trading Domain</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-advanced-topics">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Advanced Topics</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/advanced-topics/async-await-exercises.html">Async Await Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Automapper/index.html">Automapper</a></li></ul>
+    </div><div class="sidebar-group is-open" data-group="practice-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
+        <span>Practice / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="..\../practice/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/O1-Constant-Time-Exercises.html">O1 Constant Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/OLogN-Logarithmic-Time-Exercises.html">OLogN Logarithmic Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ON-Linear-Time-Exercises.html">ON Linear Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ON2-Quadratic-Time-Exercises.html">ON2 Quadratic Time Exercises</a></li><li><a class="nav-link active" href="..\../practice/Big-O-Complexity/ONLogN-Linearithmic-Time-Exercises.html">ONLogN Linearithmic Time Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Design-Patterns/Decorator-Pattern-Exercises.html">Decorator Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/index.html">Design Patterns</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Factory-Pattern-Exercises.html">Factory Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Mediator-Pattern-Exercises.html">Mediator Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Observer-Pattern-Exercises.html">Observer Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Strategy-Pattern-Exercises.html">Strategy Pattern Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/FluentValidation/index.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/SOLID/S-Single-Responsibility-Principle-Exercises.html">S Single Responsibility Principle Exercises</a></li><li><a class="nav-link" href="..\../practice/SOLID/index.html">SOLID</a></li></ul>
+    </div></div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">practice\Big-O-Complexity\ONLogN-Linearithmic-Time-Exercises.md</div>
+        <h2>ONLogN Linearithmic Time Exercises</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#on-log-n---linearithmic-time-complexity-exercises">O(n log n) - Linearithmic Time Complexity Exercises</a></li><li class="level-2"><a href="#overview">Overview</a></li><li class="level-2"><a href="#exercise-1-merge-sort">Exercise 1: Merge Sort</a></li><li class="level-2"><a href="#exercise-2-quick-sort">Exercise 2: Quick Sort</a></li><li class="level-2"><a href="#exercise-3-heap-sort">Exercise 3: Heap Sort</a></li><li class="level-2"><a href="#exercise-4-sort-array-by-frequency">Exercise 4: Sort Array by Frequency</a></li><li class="level-2"><a href="#exercise-5-merge-k-sorted-lists">Exercise 5: Merge K Sorted Lists</a></li><li class="level-2"><a href="#exercise-6-sort-colors-dutch-national-flag">Exercise 6: Sort Colors (Dutch National Flag)</a></li><li class="level-2"><a href="#exercise-7-meeting-rooms-ii">Exercise 7: Meeting Rooms II</a></li><li class="level-2"><a href="#exercise-8-top-k-frequent-elements">Exercise 8: Top K Frequent Elements</a></li><li class="level-2"><a href="#exercise-9-largest-number">Exercise 9: Largest Number</a></li><li class="level-2"><a href="#exercise-10-kth-largest-element">Exercise 10: Kth Largest Element</a></li><li class="level-2"><a href="#exercise-11-sort-list-linked-list">Exercise 11: Sort List (Linked List)</a></li><li class="level-2"><a href="#exercise-12-valid-anagram-using-sorting">Exercise 12: Valid Anagram Using Sorting</a></li><li class="level-2"><a href="#exercise-13-merge-intervals">Exercise 13: Merge Intervals</a></li><li class="level-2"><a href="#exercise-14-reorder-log-files">Exercise 14: Reorder Log Files</a></li><li class="level-2"><a href="#exercise-15-binary-search-on-sorted-array-then-sort-result">Exercise 15: Binary Search on Sorted Array then Sort Result</a></li><li class="level-2"><a href="#exercise-16-sort-characters-by-frequency">Exercise 16: Sort Characters by Frequency</a></li><li class="level-2"><a href="#exercise-17-custom-sort-string">Exercise 17: Custom Sort String</a></li><li class="level-2"><a href="#exercise-18-sort-array-by-parity">Exercise 18: Sort Array by Parity</a></li><li class="level-2"><a href="#exercise-19-insert-interval">Exercise 19: Insert Interval</a></li><li class="level-2"><a href="#exercise-20-closest-points-to-origin">Exercise 20: Closest Points to Origin</a></li><li class="level-2"><a href="#common-interview-questions">Common Interview Questions</a></li><li class="level-3"><a href="#q1-why-is-merge-sort-on-log-n-and-not-on">Q1: "Why is merge sort O(n log n) and not O(n²)?"</a></li><li class="level-3"><a href="#q2-which-sorting-algorithm-should-i-use-in-interviews">Q2: "Which sorting algorithm should I use in interviews?"</a></li><li class="level-3"><a href="#q3-is-quick-sort-always-better-than-merge-sort">Q3: "Is quick sort always better than merge sort?"</a></li><li class="level-3"><a href="#q4-can-we-sort-faster-than-on-log-n">Q4: "Can we sort faster than O(n log n)?"</a></li><li class="level-3"><a href="#q5-when-should-i-use-sorting-vs-a-heap-for-top-k-problems">Q5: "When should I use sorting vs. a heap for 'top k' problems?"</a></li><li class="level-2"><a href="#summary">Summary</a></li></ul></div>
+        <h1 id="on-log-n---linearithmic-time-complexity-exercises">O(n log n) - Linearithmic Time Complexity Exercises</h1>
+<h2 id="overview">Overview</h2>
+<p>O(n log n) means the algorithm's runtime grows at a rate of n × log n. This complexity is typical of efficient sorting algorithms and algorithms that combine linear work with logarithmic divisions.</p>
+<p><strong>Key Characteristics:</strong></p>
+<ul><li>More expensive than O(n) but much better than O(n²)</li><li>Best achievable for comparison-based sorting</li><li>Common in divide-and-conquer algorithms</li><li>Sweet spot for many practical algorithms</li></ul>
+<p><strong>Growth Comparison:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">n = 100       → n log n ≈ 664 operations
+n = 1,000     → n log n ≈ 9,966 operations
+n = 1,000,000 → n log n ≈ 19,931,569 operations
+
+Compare to:
+O(n) = 1,000,000
+O(n²) = 1,000,000,000,000</code></pre>
+<p><strong>Common Patterns:</strong></p>
+<ul><li>Sorting algorithms (Merge Sort, Quick Sort, Heap Sort)</li><li>Divide-and-conquer with linear merge</li><li>Building balanced trees</li></ul>
+<h2 id="exercise-1-merge-sort">Exercise 1: Merge Sort</h2>
+<p><strong>Problem</strong>: Sort an array using merge sort algorithm.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(n log n) - Divides log n times, merges n elements each level
+// Space: O(n) - Temporary arrays for merging
+public class MergeSort
+{
+    public void Sort(int[] arr)
+    {
+        if (arr.Length &lt;= 1)
+            return;
+
+        MergeSortHelper(arr, 0, arr.Length - 1);
+    }
+
+    private void MergeSortHelper(int[] arr, int left, int right)
+    {
+        if (left &gt;= right)
+            return;
+
+        int mid = left + (right - left) / 2;
+
+        // Divide: O(log n) levels
+        MergeSortHelper(arr, left, mid);
+        MergeSortHelper(arr, mid + 1, right);
+
+        // Conquer: O(n) work per level
+        Merge(arr, left, mid, right);
+    }
+
+    private void Merge(int[] arr, int left, int mid, int right)
+    {
+        int n1 = mid - left + 1;
+        int n2 = right - mid;
+
+        int[] leftArr = new int[n1];
+        int[] rightArr = new int[n2];
+
+        Array.Copy(arr, left, leftArr, 0, n1);
+        Array.Copy(arr, mid + 1, rightArr, 0, n2);
+
+        int i = 0, j = 0, k = left;
+
+        while (i &lt; n1 &amp;&amp; j &lt; n2)
+        {
+            if (leftArr[i] &lt;= rightArr[j])
+            {
+                arr[k] = leftArr[i];
+                i++;
+            }
+            else
+            {
+                arr[k] = rightArr[j];
+                j++;
+            }
+            k++;
+        }
+
+        while (i &lt; n1)
+        {
+            arr[k] = leftArr[i];
+            i++;
+            k++;
+        }
+
+        while (j &lt; n2)
+        {
+            arr[k] = rightArr[j];
+            j++;
+            k++;
+        }
+    }
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li><strong>Divide</strong>: log n levels (halving each time)</li><li><strong>Conquer</strong>: O(n) work at each level (merging)</li><li><strong>Total</strong>: O(n log n)</li><li><strong>Space</strong>: O(n) for temporary arrays</li><li><strong>Stable</strong>: Yes (preserves relative order of equal elements)</li><li><strong>Best/Average/Worst</strong>: All O(n log n) - consistent performance!</li></ul>
+<p><strong>Why O(n log n)?</strong></p>
+<pre class="language-csharp"><code class="language-csharp">Array size 8:
+Level 0: [8] → 8 elements to merge
+Level 1: [4][4] → 8 elements total to merge
+Level 2: [2][2][2][2] → 8 elements total to merge
+Level 3: [1][1][1][1][1][1][1][1] → base case
+
+Levels: log₂(8) = 3
+Work per level: 8 = n
+Total: 3 × 8 = 24 = n log n</code></pre>
+<p>---</p>
+<h2 id="exercise-2-quick-sort">Exercise 2: Quick Sort</h2>
+<p><strong>Problem</strong>: Sort an array using quick sort algorithm.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(n log n) average, O(n²) worst case
+// Space: O(log n) average for recursion stack
+public class QuickSort
+{
+    public void Sort(int[] arr)
+    {
+        QuickSortHelper(arr, 0, arr.Length - 1);
+    }
+
+    private void QuickSortHelper(int[] arr, int low, int high)
+    {
+        if (low &lt; high)
+        {
+            int pivotIndex = Partition(arr, low, high);
+
+            QuickSortHelper(arr, low, pivotIndex - 1);
+            QuickSortHelper(arr, pivotIndex + 1, high);
+        }
+    }
+
+    private int Partition(int[] arr, int low, int high)
+    {
+        int pivot = arr[high];
+        int i = low - 1;
+
+        for (int j = low; j &lt; high; j++)
+        {
+            if (arr[j] &lt;= pivot)
+            {
+                i++;
+                Swap(arr, i, j);
+            }
+        }
+
+        Swap(arr, i + 1, high);
+        return i + 1;
+    }
+
+    private void Swap(int[] arr, int i, int j)
+    {
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+}
+
+// Randomized Quick Sort (better average case)
+public class RandomizedQuickSort
+{
+    private Random random = new Random();
+
+    public void Sort(int[] arr)
+    {
+        QuickSortHelper(arr, 0, arr.Length - 1);
+    }
+
+    private void QuickSortHelper(int[] arr, int low, int high)
+    {
+        if (low &lt; high)
+        {
+            int pivotIndex = RandomizedPartition(arr, low, high);
+
+            QuickSortHelper(arr, low, pivotIndex - 1);
+            QuickSortHelper(arr, pivotIndex + 1, high);
+        }
+    }
+
+    private int RandomizedPartition(int[] arr, int low, int high)
+    {
+        int randomIndex = random.Next(low, high + 1);
+        Swap(arr, randomIndex, high);
+
+        return Partition(arr, low, high);
+    }
+
+    private int Partition(int[] arr, int low, int high)
+    {
+        int pivot = arr[high];
+        int i = low - 1;
+
+        for (int j = low; j &lt; high; j++)
+        {
+            if (arr[j] &lt;= pivot)
+            {
+                i++;
+                Swap(arr, i, j);
+            }
+        }
+
+        Swap(arr, i + 1, high);
+        return i + 1;
+    }
+
+    private void Swap(int[] arr, int i, int j)
+    {
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li><strong>Best Case</strong>: O(n log n) - balanced partitions</li><li><strong>Average Case</strong>: O(n log n) - random pivots</li><li><strong>Worst Case</strong>: O(n²) - already sorted with bad pivot choice</li><li><strong>Space</strong>: O(log n) recursion stack (average)</li><li><strong>Stable</strong>: No</li><li><strong>In-Place</strong>: Yes (unlike merge sort)</li></ul>
+<p><strong>Why Worst Case is O(n²)?</strong></p>
+<pre class="language-csharp"><code class="language-csharp">Sorted array [1, 2, 3, 4, 5] with last element as pivot:
+Partition 1: n comparisons, pivot at end
+Partition 2: n-1 comparisons, pivot at end
+...
+Total: n + (n-1) + (n-2) + ... + 1 = n(n+1)/2 = O(n²)</code></pre>
+<p>---</p>
+<h2 id="exercise-3-heap-sort">Exercise 3: Heap Sort</h2>
+<p><strong>Problem</strong>: Sort using a heap data structure.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(n log n) - Build heap + n deletions
+// Space: O(1) - In-place (if we don&#39;t count recursion stack)
+public class HeapSort
+{
+    public void Sort(int[] arr)
+    {
+        int n = arr.Length;
+
+        // Build max heap: O(n)
+        for (int i = n / 2 - 1; i &gt;= 0; i--)
+        {
+            Heapify(arr, n, i);
+        }
+
+        // Extract elements from heap: O(n log n)
+        for (int i = n - 1; i &gt; 0; i--)
+        {
+            // Move current root to end
+            Swap(arr, 0, i);
+
+            // Heapify reduced heap: O(log n)
+            Heapify(arr, i, 0);
+        }
+    }
+
+    private void Heapify(int[] arr, int n, int i)
+    {
+        int largest = i;
+        int left = 2 * i + 1;
+        int right = 2 * i + 2;
+
+        if (left &lt; n &amp;&amp; arr[left] &gt; arr[largest])
+            largest = left;
+
+        if (right &lt; n &amp;&amp; arr[right] &gt; arr[largest])
+            largest = right;
+
+        if (largest != i)
+        {
+            Swap(arr, i, largest);
+            Heapify(arr, n, largest);
+        }
+    }
+
+    private void Swap(int[] arr, int i, int j)
+    {
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li><strong>Build Heap</strong>: O(n) - surprisingly not O(n log n)!</li><li><strong>Extract Max n times</strong>: n × O(log n) = O(n log n)</li><li><strong>Total</strong>: O(n) + O(n log n) = O(n log n)</li><li><strong>Best/Average/Worst</strong>: All O(n log n) - consistent!</li><li><strong>Space</strong>: O(1) - in-place</li><li><strong>Stable</strong>: No</li></ul>
+<p>---</p>
+<h2 id="exercise-4-sort-array-by-frequency">Exercise 4: Sort Array by Frequency</h2>
+<p><strong>Problem</strong>: Sort elements by their frequency of occurrence.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(n log n) - Due to sorting
+// Space: O(n) - Dictionary and sorted list
+public int[] SortByFrequency(int[] nums)
+{
+    // Count frequencies: O(n)
+    var freqMap = new Dictionary&lt;int, int&gt;();
+    foreach (int num in nums)
+    {
+        if (freqMap.ContainsKey(num))
+            freqMap[num]++;
+        else
+            freqMap[num] = 1;
+    }
+
+    // Sort by frequency: O(n log n)
+    var sorted = nums.OrderBy(x =&gt; freqMap[x])
+                    .ThenBy(x =&gt; x)
+                    .ToArray();
+
+    return sorted;
+}
+
+// Alternative using custom comparator
+public int[] SortByFrequencyManual(int[] nums)
+{
+    var freqMap = new Dictionary&lt;int, int&gt;();
+    foreach (int num in nums)
+    {
+        if (freqMap.ContainsKey(num))
+            freqMap[num]++;
+        else
+            freqMap[num] = 1;
+    }
+
+    Array.Sort(nums, (a, b) =&gt;
+    {
+        int freqCompare = freqMap[a].CompareTo(freqMap[b]);
+        if (freqCompare != 0)
+            return freqCompare;
+        return a.CompareTo(b);
+    });
+
+    return nums;
+}</code></pre>
+<p><strong>Example:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">Input: [1, 1, 2, 2, 2, 3]
+Frequencies: 1→2, 2→3, 3→1
+Output: [3, 1, 1, 2, 2, 2]</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>Counting: O(n)</li><li>Sorting: O(n log n)</li><li>Total: O(n + n log n) = O(n log n)</li></ul>
+<p>---</p>
+<h2 id="exercise-5-merge-k-sorted-lists">Exercise 5: Merge K Sorted Lists</h2>
+<p><strong>Problem</strong>: Merge k sorted linked lists into one sorted list.</p>
+<pre class="language-csharp"><code class="language-csharp">public class ListNode
+{
+    public int val;
+    public ListNode next;
+    public ListNode(int val = 0) { this.val = val; }
+}
+
+// Time: O(n log k) where n = total nodes, k = number of lists
+// Space: O(k) - Priority queue size
+public class MergeKSortedLists
+{
+    public ListNode MergeKLists(ListNode[] lists)
+    {
+        if (lists == null || lists.Length == 0)
+            return null;
+
+        // Min heap (priority queue)
+        var pq = new SortedSet&lt;(int val, int listIndex, ListNode node)&gt;(
+            Comparer&lt;(int val, int listIndex, ListNode node)&gt;.Create((a, b) =&gt;
+            {
+                int valCompare = a.val.CompareTo(b.val);
+                if (valCompare != 0) return valCompare;
+                return a.listIndex.CompareTo(b.listIndex);
+            })
+        );
+
+        // Add first node from each list: O(k log k)
+        for (int i = 0; i &lt; lists.Length; i++)
+        {
+            if (lists[i] != null)
+            {
+                pq.Add((lists[i].val, i, lists[i]));
+            }
+        }
+
+        var dummy = new ListNode(0);
+        var current = dummy;
+
+        // Extract min and add next: O(n log k)
+        while (pq.Count &gt; 0)
+        {
+            var min = pq.Min;
+            pq.Remove(min);
+
+            current.next = min.node;
+            current = current.next;
+
+            if (min.node.next != null)
+            {
+                pq.Add((min.node.next.val, min.listIndex, min.node.next));
+            }
+        }
+
+        return dummy.next;
+    }
+}
+
+// Divide and Conquer approach
+public class MergeKSortedListsDivideConquer
+{
+    public ListNode MergeKLists(ListNode[] lists)
+    {
+        if (lists == null || lists.Length == 0)
+            return null;
+
+        return MergeListsHelper(lists, 0, lists.Length - 1);
+    }
+
+    private ListNode MergeListsHelper(ListNode[] lists, int left, int right)
+    {
+        if (left == right)
+            return lists[left];
+
+        if (left &gt; right)
+            return null;
+
+        int mid = left + (right - left) / 2;
+
+        ListNode leftList = MergeListsHelper(lists, left, mid);
+        ListNode rightList = MergeListsHelper(lists, mid + 1, right);
+
+        return MergeTwoLists(leftList, rightList);
+    }
+
+    private ListNode MergeTwoLists(ListNode l1, ListNode l2)
+    {
+        var dummy = new ListNode(0);
+        var current = dummy;
+
+        while (l1 != null &amp;&amp; l2 != null)
+        {
+            if (l1.val &lt;= l2.val)
+            {
+                current.next = l1;
+                l1 = l1.next;
+            }
+            else
+            {
+                current.next = l2;
+                l2 = l2.next;
+            }
+            current = current.next;
+        }
+
+        current.next = l1 ?? l2;
+
+        return dummy.next;
+    }
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li><strong>Priority Queue Approach</strong>: O(n log k) where n = total nodes</li><li>Each of n nodes: inserted/removed from heap of size k</li><li>Each operation: O(log k)</li><li><strong>Divide & Conquer</strong>: O(n log k)</li><li>log k levels of merging</li><li>O(n) work per level</li></ul>
+<p>---</p>
+<h2 id="exercise-6-sort-colors-dutch-national-flag">Exercise 6: Sort Colors (Dutch National Flag)</h2>
+<p><strong>Problem</strong>: Sort array with only 0s, 1s, and 2s.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(n) - Single pass (not O(n log n), but worth mentioning)
+// Space: O(1) - In-place
+public void SortColors(int[] nums)
+{
+    int low = 0, mid = 0, high = nums.Length - 1;
+
+    while (mid &lt;= high)
+    {
+        if (nums[mid] == 0)
+        {
+            Swap(nums, low, mid);
+            low++;
+            mid++;
+        }
+        else if (nums[mid] == 1)
+        {
+            mid++;
+        }
+        else  // nums[mid] == 2
+        {
+            Swap(nums, mid, high);
+            high--;
+        }
+    }
+}
+
+private void Swap(int[] nums, int i, int j)
+{
+    int temp = nums[i];
+    nums[i] = nums[j];
+    nums[j] = temp;
+}
+
+// Compare to sorting: O(n log n)
+public void SortColorsUsingSorting(int[] nums)
+{
+    Array.Sort(nums);  // O(n log n) - overkill for this problem!
+}</code></pre>
+<p><strong>Note</strong>: This is actually O(n), not O(n log n), but demonstrates when sorting is overkill. For limited value range, counting/bucketing can be better than general sorting.</p>
+<p>---</p>
+<h2 id="exercise-7-meeting-rooms-ii">Exercise 7: Meeting Rooms II</h2>
+<p><strong>Problem</strong>: Find minimum number of conference rooms needed.</p>
+<pre class="language-csharp"><code class="language-csharp">public class Interval
+{
+    public int start;
+    public int end;
+    public Interval(int s, int e) { start = s; end = e; }
+}
+
+// Time: O(n log n) - Sorting intervals
+// Space: O(n) - Priority queue
+public int MinMeetingRooms(Interval[] intervals)
+{
+    if (intervals.Length == 0)
+        return 0;
+
+    // Sort by start time: O(n log n)
+    Array.Sort(intervals, (a, b) =&gt; a.start.CompareTo(b.start));
+
+    // Min heap for end times
+    var endTimes = new SortedSet&lt;(int endTime, int id)&gt;();
+    int roomId = 0;
+
+    endTimes.Add((intervals[0].end, roomId++));
+
+    for (int i = 1; i &lt; intervals.Length; i++)
+    {
+        var earliest = endTimes.Min;
+
+        // If earliest meeting ends before current starts, reuse room
+        if (earliest.endTime &lt;= intervals[i].start)
+        {
+            endTimes.Remove(earliest);
+        }
+
+        endTimes.Add((intervals[i].end, roomId++));
+    }
+
+    return endTimes.Count;
+}
+
+// Alternative: Separate start/end arrays
+public int MinMeetingRoomsAlternative(Interval[] intervals)
+{
+    if (intervals.Length == 0)
+        return 0;
+
+    int[] starts = new int[intervals.Length];
+    int[] ends = new int[intervals.Length];
+
+    for (int i = 0; i &lt; intervals.Length; i++)
+    {
+        starts[i] = intervals[i].start;
+        ends[i] = intervals[i].end;
+    }
+
+    Array.Sort(starts);  // O(n log n)
+    Array.Sort(ends);    // O(n log n)
+
+    int rooms = 0;
+    int maxRooms = 0;
+    int endPtr = 0;
+
+    for (int i = 0; i &lt; starts.Length; i++)
+    {
+        if (starts[i] &lt; ends[endPtr])
+        {
+            rooms++;
+        }
+        else
+        {
+            endPtr++;
+        }
+        maxRooms = Math.Max(maxRooms, rooms);
+    }
+
+    return maxRooms;
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>Sorting: O(n log n)</li><li>Processing: O(n log n) with heap operations</li><li>Total: O(n log n)</li></ul>
+<p>---</p>
+<h2 id="exercise-8-top-k-frequent-elements">Exercise 8: Top K Frequent Elements</h2>
+<p><strong>Problem</strong>: Find k most frequent elements.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(n log k) - Heap of size k
+// Space: O(n) - Frequency map
+public int[] TopKFrequent(int[] nums, int k)
+{
+    // Count frequencies: O(n)
+    var freqMap = new Dictionary&lt;int, int&gt;();
+    foreach (int num in nums)
+    {
+        if (freqMap.ContainsKey(num))
+            freqMap[num]++;
+        else
+            freqMap[num] = 1;
+    }
+
+    // Min heap of size k: O(n log k)
+    var minHeap = new SortedSet&lt;(int freq, int num)&gt;();
+
+    foreach (var pair in freqMap)
+    {
+        minHeap.Add((pair.Value, pair.Key));
+
+        if (minHeap.Count &gt; k)
+        {
+            minHeap.Remove(minHeap.Min);
+        }
+    }
+
+    return minHeap.Select(x =&gt; x.num).ToArray();
+}
+
+// Using sorting: O(n log n)
+public int[] TopKFrequentSort(int[] nums, int k)
+{
+    var freqMap = new Dictionary&lt;int, int&gt;();
+    foreach (int num in nums)
+    {
+        if (freqMap.ContainsKey(num))
+            freqMap[num]++;
+        else
+            freqMap[num] = 1;
+    }
+
+    return freqMap.OrderByDescending(x =&gt; x.Value)
+                  .Take(k)
+                  .Select(x =&gt; x.Key)
+                  .ToArray();
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>Heap approach: O(n log k) - better when k is small</li><li>Sort approach: O(n log n) - simpler but slower</li><li>Bucket sort approach exists: O(n) - best but more complex</li></ul>
+<p>---</p>
+<h2 id="exercise-9-largest-number">Exercise 9: Largest Number</h2>
+<p><strong>Problem</strong>: Arrange numbers to form the largest number.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(n log n) - Custom sorting
+// Space: O(n) - String array
+public string LargestNumber(int[] nums)
+{
+    // Convert to strings
+    string[] strs = nums.Select(x =&gt; x.ToString()).ToArray();
+
+    // Custom sort: O(n log n)
+    Array.Sort(strs, (a, b) =&gt;
+    {
+        string order1 = a + b;
+        string order2 = b + a;
+        return order2.CompareTo(order1);  // Descending
+    });
+
+    // Handle all zeros case
+    if (strs[0] == &quot;0&quot;)
+        return &quot;0&quot;;
+
+    return string.Join(&quot;&quot;, strs);
+}</code></pre>
+<p><strong>Example:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">Input: [3, 30, 34, 5, 9]
+
+Comparisons:
+3 vs 30: &quot;330&quot; vs &quot;303&quot; → 3 &gt; 30
+9 vs 5: &quot;95&quot; vs &quot;59&quot; → 9 &gt; 5
+9 vs 34: &quot;934&quot; vs &quot;349&quot; → 9 &gt; 34
+
+Output: &quot;9534330&quot;</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>Custom comparator determines optimal order</li><li>Sorting: O(n log n)</li><li>Each comparison: O(k) where k = average number length</li><li>Total: O(n log n × k)</li></ul>
+<p>---</p>
+<h2 id="exercise-10-kth-largest-element">Exercise 10: Kth Largest Element</h2>
+<p><strong>Problem</strong>: Find kth largest element in unsorted array.</p>
+<pre class="language-csharp"><code class="language-csharp">// Using sorting: O(n log n)
+public int FindKthLargestSort(int[] nums, int k)
+{
+    Array.Sort(nums);
+    return nums[nums.Length - k];
+}
+
+// Using min heap: O(n log k) - Better!
+public int FindKthLargestHeap(int[] nums, int k)
+{
+    var minHeap = new SortedSet&lt;(int val, int index)&gt;();
+
+    for (int i = 0; i &lt; nums.Length; i++)
+    {
+        minHeap.Add((nums[i], i));
+
+        if (minHeap.Count &gt; k)
+        {
+            minHeap.Remove(minHeap.Min);
+        }
+    }
+
+    return minHeap.Min.val;
+}
+
+// Using QuickSelect: O(n) average, O(n²) worst - Best average case!
+public int FindKthLargestQuickSelect(int[] nums, int k)
+{
+    return QuickSelect(nums, 0, nums.Length - 1, nums.Length - k);
+}
+
+private int QuickSelect(int[] nums, int left, int right, int kSmallest)
+{
+    if (left == right)
+        return nums[left];
+
+    int pivotIndex = Partition(nums, left, right);
+
+    if (kSmallest == pivotIndex)
+        return nums[kSmallest];
+    else if (kSmallest &lt; pivotIndex)
+        return QuickSelect(nums, left, pivotIndex - 1, kSmallest);
+    else
+        return QuickSelect(nums, pivotIndex + 1, right, kSmallest);
+}
+
+private int Partition(int[] nums, int left, int right)
+{
+    int pivot = nums[right];
+    int i = left;
+
+    for (int j = left; j &lt; right; j++)
+    {
+        if (nums[j] &lt;= pivot)
+        {
+            Swap(nums, i, j);
+            i++;
+        }
+    }
+
+    Swap(nums, i, right);
+    return i;
+}
+
+private void Swap(int[] nums, int i, int j)
+{
+    int temp = nums[i];
+    nums[i] = nums[j];
+    nums[j] = temp;
+}</code></pre>
+<p><strong>Comparison:</strong></p>
+<ul><li><strong>Sorting</strong>: O(n log n) time, O(1) space</li><li><strong>Min Heap</strong>: O(n log k) time, O(k) space</li><li><strong>QuickSelect</strong>: O(n) average, O(n²) worst, O(1) space</li></ul>
+<p>---</p>
+<h2 id="exercise-11-sort-list-linked-list">Exercise 11: Sort List (Linked List)</h2>
+<p><strong>Problem</strong>: Sort a linked list using merge sort.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(n log n) - Merge sort for linked list
+// Space: O(log n) - Recursion stack
+public ListNode SortList(ListNode head)
+{
+    if (head == null || head.next == null)
+        return head;
+
+    // Find middle using slow/fast pointers
+    ListNode slow = head;
+    ListNode fast = head;
+    ListNode prev = null;
+
+    while (fast != null &amp;&amp; fast.next != null)
+    {
+        prev = slow;
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+
+    // Split into two halves
+    prev.next = null;
+
+    // Recursively sort both halves
+    ListNode left = SortList(head);
+    ListNode right = SortList(slow);
+
+    // Merge sorted halves
+    return Merge(left, right);
+}
+
+private ListNode Merge(ListNode l1, ListNode l2)
+{
+    var dummy = new ListNode(0);
+    var current = dummy;
+
+    while (l1 != null &amp;&amp; l2 != null)
+    {
+        if (l1.val &lt;= l2.val)
+        {
+            current.next = l1;
+            l1 = l1.next;
+        }
+        else
+        {
+            current.next = l2;
+            l2 = l2.next;
+        }
+        current = current.next;
+    }
+
+    current.next = l1 ?? l2;
+
+    return dummy.next;
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>Can't use random access (no indexing in linked list)</li><li>Merge sort is ideal for linked lists</li><li>O(n log n) time, O(log n) space (recursion)</li></ul>
+<p>---</p>
+<h2 id="exercise-12-valid-anagram-using-sorting">Exercise 12: Valid Anagram Using Sorting</h2>
+<p><strong>Problem</strong>: Check if two strings are anagrams using sorting.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(n log n) - Sorting both strings
+// Space: O(n) - Character arrays
+public bool IsAnagram(string s, string t)
+{
+    if (s.Length != t.Length)
+        return false;
+
+    char[] sArr = s.ToCharArray();
+    char[] tArr = t.ToCharArray();
+
+    Array.Sort(sArr);  // O(n log n)
+    Array.Sort(tArr);  // O(n log n)
+
+    return new string(sArr) == new string(tArr);
+}</code></pre>
+<p><strong>Note</strong>: This is O(n log n), but counting approach is O(n). Sometimes sorting is easier to implement even if not optimal.</p>
+<p>---</p>
+<h2 id="exercise-13-merge-intervals">Exercise 13: Merge Intervals</h2>
+<p><strong>Problem</strong>: Merge overlapping intervals.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(n log n) - Sorting intervals
+// Space: O(n) - Result list
+public int[][] Merge(int[][] intervals)
+{
+    if (intervals.Length &lt;= 1)
+        return intervals;
+
+    // Sort by start time: O(n log n)
+    Array.Sort(intervals, (a, b) =&gt; a[0].CompareTo(b[0]));
+
+    var merged = new List&lt;int[]&gt;();
+    int[] current = intervals[0];
+
+    for (int i = 1; i &lt; intervals.Length; i++)
+    {
+        if (intervals[i][0] &lt;= current[1])
+        {
+            // Overlapping, merge
+            current[1] = Math.Max(current[1], intervals[i][1]);
+        }
+        else
+        {
+            // No overlap, add current and start new
+            merged.Add(current);
+            current = intervals[i];
+        }
+    }
+
+    merged.Add(current);
+
+    return merged.ToArray();
+}</code></pre>
+<p><strong>Example:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">Input: [[1,3],[2,6],[8,10],[15,18]]
+After sort: same
+Merge [1,3] and [2,6] → [1,6]
+Output: [[1,6],[8,10],[15,18]]</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>Sorting: O(n log n)</li><li>Merging: O(n)</li><li>Total: O(n log n)</li></ul>
+<p>---</p>
+<h2 id="exercise-14-reorder-log-files">Exercise 14: Reorder Log Files</h2>
+<p><strong>Problem</strong>: Reorder logs with letter-logs before digit-logs.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(n log n) - Sorting with custom comparator
+// Space: O(n) - Storage for sorted result
+public string[] ReorderLogFiles(string[] logs)
+{
+    return logs.OrderBy(log =&gt;
+    {
+        var parts = log.Split(&#39; &#39;, 2);
+        return char.IsDigit(parts[1][0]) ? 1 : 0;  // Digit logs last
+    })
+    .ThenBy(log =&gt;
+    {
+        var parts = log.Split(&#39; &#39;, 2);
+        return char.IsDigit(parts[1][0]) ? &quot;&quot; : parts[1];  // Sort letter logs
+    })
+    .ThenBy(log =&gt;
+    {
+        var parts = log.Split(&#39; &#39;, 2);
+        return char.IsDigit(parts[1][0]) ? &quot;&quot; : parts[0];  // Then by identifier
+    })
+    .ToArray();
+}
+
+// Manual sorting approach
+public string[] ReorderLogFilesManual(string[] logs)
+{
+    Array.Sort(logs, (log1, log2) =&gt;
+    {
+        var parts1 = log1.Split(&#39; &#39;, 2);
+        var parts2 = log2.Split(&#39; &#39;, 2);
+
+        bool isDigit1 = char.IsDigit(parts1[1][0]);
+        bool isDigit2 = char.IsDigit(parts2[1][0]);
+
+        // Both letter logs
+        if (!isDigit1 &amp;&amp; !isDigit2)
+        {
+            int comp = parts1[1].CompareTo(parts2[1]);
+            if (comp != 0) return comp;
+            return parts1[0].CompareTo(parts2[0]);
+        }
+
+        // One digit, one letter
+        if (!isDigit1 &amp;&amp; isDigit2) return -1;
+        if (isDigit1 &amp;&amp; !isDigit2) return 1;
+
+        // Both digit logs (maintain original order)
+        return 0;
+    });
+
+    return logs;
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>Sorting with custom comparator: O(n log n)</li><li>Each comparison: O(m) where m = average log length</li><li>Total: O(n log n × m)</li></ul>
+<p>---</p>
+<h2 id="exercise-15-binary-search-on-sorted-array-then-sort-result">Exercise 15: Binary Search on Sorted Array then Sort Result</h2>
+<p><strong>Problem</strong>: Find all elements in range then sort them.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(log n + k log k) where k = elements in range
+// Space: O(k) - Result array
+public int[] FindAndSortInRange(int[] arr, int min, int max)
+{
+    // Binary search for range start: O(log n)
+    int start = BinarySearchLeft(arr, min);
+    int end = BinarySearchRight(arr, max);
+
+    if (start &gt; end)
+        return new int[0];
+
+    // Extract range: O(k)
+    int[] range = new int[end - start + 1];
+    Array.Copy(arr, start, range, 0, range.Length);
+
+    // Sort range: O(k log k)
+    Array.Sort(range);
+
+    return range;
+}
+
+private int BinarySearchLeft(int[] arr, int target)
+{
+    int left = 0, right = arr.Length - 1;
+    int result = arr.Length;
+
+    while (left &lt;= right)
+    {
+        int mid = left + (right - left) / 2;
+        if (arr[mid] &gt;= target)
+        {
+            result = mid;
+            right = mid - 1;
+        }
+        else
+        {
+            left = mid + 1;
+        }
+    }
+
+    return result;
+}
+
+private int BinarySearchRight(int[] arr, int target)
+{
+    int left = 0, right = arr.Length - 1;
+    int result = -1;
+
+    while (left &lt;= right)
+    {
+        int mid = left + (right - left) / 2;
+        if (arr[mid] &lt;= target)
+        {
+            result = mid;
+            left = mid + 1;
+        }
+        else
+        {
+            right = mid - 1;
+        }
+    }
+
+    return result;
+}</code></pre>
+<p>---</p>
+<h2 id="exercise-16-sort-characters-by-frequency">Exercise 16: Sort Characters by Frequency</h2>
+<p><strong>Problem</strong>: Sort characters by frequency of occurrence.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(n log n) - Sorting characters
+// Space: O(n) - Frequency map and result
+public string FrequencySort(string s)
+{
+    // Count frequencies: O(n)
+    var freqMap = new Dictionary&lt;char, int&gt;();
+    foreach (char c in s)
+    {
+        if (freqMap.ContainsKey(c))
+            freqMap[c]++;
+        else
+            freqMap[c] = 1;
+    }
+
+    // Sort by frequency: O(n log n)
+    var sorted = freqMap.OrderByDescending(x =&gt; x.Value)
+                       .ThenBy(x =&gt; x.Key);
+
+    // Build result: O(n)
+    var result = new StringBuilder();
+    foreach (var pair in sorted)
+    {
+        result.Append(pair.Key, pair.Value);
+    }
+
+    return result.ToString();
+}</code></pre>
+<p><strong>Example:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">Input: &quot;tree&quot;
+Frequencies: t→1, r→1, e→2
+Output: &quot;eert&quot; or &quot;eetr&quot;</code></pre>
+<p>---</p>
+<h2 id="exercise-17-custom-sort-string">Exercise 17: Custom Sort String</h2>
+<p><strong>Problem</strong>: Sort string based on custom order.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(n log n) - Sorting with custom comparator
+// Space: O(n) - Character array
+public string CustomSortString(string order, string s)
+{
+    // Create order map: O(m) where m = order.Length
+    var orderMap = new Dictionary&lt;char, int&gt;();
+    for (int i = 0; i &lt; order.Length; i++)
+    {
+        orderMap[order[i]] = i;
+    }
+
+    // Sort string: O(n log n)
+    var chars = s.ToCharArray();
+    Array.Sort(chars, (a, b) =&gt;
+    {
+        int orderA = orderMap.ContainsKey(a) ? orderMap[a] : int.MaxValue;
+        int orderB = orderMap.ContainsKey(b) ? orderMap[b] : int.MaxValue;
+        return orderA.CompareTo(orderB);
+    });
+
+    return new string(chars);
+}</code></pre>
+<p><strong>Example:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">order = &quot;cba&quot;
+s = &quot;abcd&quot;
+Output: &quot;cbad&quot;</code></pre>
+<p>---</p>
+<h2 id="exercise-18-sort-array-by-parity">Exercise 18: Sort Array by Parity</h2>
+<p><strong>Problem</strong>: Sort array so even numbers come before odd numbers.</p>
+<pre class="language-csharp"><code class="language-csharp">// Using sorting: O(n log n)
+public int[] SortArrayByParitySort(int[] nums)
+{
+    Array.Sort(nums, (a, b) =&gt;
+    {
+        return (a % 2).CompareTo(b % 2);
+    });
+    return nums;
+}
+
+// Two-pointer approach: O(n) - Better!
+public int[] SortArrayByParityTwoPointer(int[] nums)
+{
+    int left = 0, right = nums.Length - 1;
+
+    while (left &lt; right)
+    {
+        if (nums[left] % 2 &gt; nums[right] % 2)
+        {
+            int temp = nums[left];
+            nums[left] = nums[right];
+            nums[right] = temp;
+        }
+
+        if (nums[left] % 2 == 0) left++;
+        if (nums[right] % 2 == 1) right--;
+    }
+
+    return nums;
+}</code></pre>
+<p><strong>Note</strong>: Sorting is O(n log n) but two-pointer is O(n). Another case where sorting isn't optimal.</p>
+<p>---</p>
+<h2 id="exercise-19-insert-interval">Exercise 19: Insert Interval</h2>
+<p><strong>Problem</strong>: Insert new interval and merge if necessary.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(n log n) if we sort, O(n) if already sorted
+// Space: O(n) - Result list
+public int[][] Insert(int[][] intervals, int[] newInterval)
+{
+    var result = new List&lt;int[]&gt;();
+    int i = 0;
+    int n = intervals.Length;
+
+    // Add all intervals before newInterval
+    while (i &lt; n &amp;&amp; intervals[i][1] &lt; newInterval[0])
+    {
+        result.Add(intervals[i]);
+        i++;
+    }
+
+    // Merge overlapping intervals
+    while (i &lt; n &amp;&amp; intervals[i][0] &lt;= newInterval[1])
+    {
+        newInterval[0] = Math.Min(newInterval[0], intervals[i][0]);
+        newInterval[1] = Math.Max(newInterval[1], intervals[i][1]);
+        i++;
+    }
+    result.Add(newInterval);
+
+    // Add remaining intervals
+    while (i &lt; n)
+    {
+        result.Add(intervals[i]);
+        i++;
+    }
+
+    return result.ToArray();
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>If intervals are sorted: O(n)</li><li>If need to sort first: O(n log n)</li></ul>
+<p>---</p>
+<h2 id="exercise-20-closest-points-to-origin">Exercise 20: Closest Points to Origin</h2>
+<p><strong>Problem</strong>: Find k closest points to origin.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(n log n) - Sorting all points
+// Space: O(1) - Sort in place
+public int[][] KClosest(int[][] points, int k)
+{
+    Array.Sort(points, (a, b) =&gt;
+    {
+        int distA = a[0] * a[0] + a[1] * a[1];
+        int distB = b[0] * b[0] + b[1] * b[1];
+        return distA.CompareTo(distB);
+    });
+
+    int[][] result = new int[k][];
+    Array.Copy(points, result, k);
+    return result;
+}
+
+// Using max heap: O(n log k) - Better when k is small!
+public int[][] KClosestHeap(int[][] points, int k)
+{
+    var maxHeap = new SortedSet&lt;(int dist, int index)&gt;(
+        Comparer&lt;(int dist, int index)&gt;.Create((a, b) =&gt;
+        {
+            int distCompare = b.dist.CompareTo(a.dist);
+            if (distCompare != 0) return distCompare;
+            return b.index.CompareTo(a.index);
+        })
+    );
+
+    for (int i = 0; i &lt; points.Length; i++)
+    {
+        int dist = points[i][0] * points[i][0] + points[i][1] * points[i][1];
+        maxHeap.Add((dist, i));
+
+        if (maxHeap.Count &gt; k)
+        {
+            maxHeap.Remove(maxHeap.Min);
+        }
+    }
+
+    var result = new int[k][];
+    int idx = 0;
+    foreach (var item in maxHeap)
+    {
+        result[idx++] = points[item.index];
+    }
+
+    return result;
+}</code></pre>
+<p>---</p>
+<h2 id="common-interview-questions">Common Interview Questions</h2>
+<h3 id="q1-why-is-merge-sort-on-log-n-and-not-on">Q1: "Why is merge sort O(n log n) and not O(n²)?"</h3>
+<p><strong>Answer</strong>: Even though we have log n levels and do O(n) work per level, we're not doing n² comparisons. Each element is merged once per level. Total work = (log n levels) × (n work per level) = n log n.</p>
+<h3 id="q2-which-sorting-algorithm-should-i-use-in-interviews">Q2: "Which sorting algorithm should I use in interviews?"</h3>
+<p><strong>Answer</strong>:</p>
+<ul><li><strong>Default</strong>: Mention you'd use built-in sort (O(n log n))</li><li><strong>Stable sort needed</strong>: Merge Sort</li><li><strong>In-place required</strong>: Quick Sort or Heap Sort</li><li><strong>Nearly sorted data</strong>: Insertion Sort can be better</li><li><strong>Small arrays</strong>: Insertion Sort</li><li><strong>Linked List</strong>: Merge Sort</li></ul>
+<h3 id="q3-is-quick-sort-always-better-than-merge-sort">Q3: "Is quick sort always better than merge sort?"</h3>
+<p><strong>Answer</strong>: No. Quick sort has O(n²) worst case (already sorted array with bad pivot). Merge sort is always O(n log n). However, quick sort is often faster in practice due to better cache performance and in-place sorting. Use randomized quick sort to avoid worst case.</p>
+<h3 id="q4-can-we-sort-faster-than-on-log-n">Q4: "Can we sort faster than O(n log n)?"</h3>
+<p><strong>Answer</strong>: Not with comparison-based sorting. However, non-comparison sorts (Counting Sort, Radix Sort, Bucket Sort) can be O(n) for specific types of data.</p>
+<h3 id="q5-when-should-i-use-sorting-vs-a-heap-for-top-k-problems">Q5: "When should I use sorting vs. a heap for 'top k' problems?"</h3>
+<p><strong>Answer</strong>:</p>
+<ul><li><strong>Full sort</strong>: O(n log n) - simple, works when k ≈ n</li><li><strong>Min/Max heap</strong>: O(n log k) - better when k << n</li><li><strong>QuickSelect</strong>: O(n) average - best average case, but O(n²) worst case</li></ul>
+<p>---</p>
+<h2 id="summary">Summary</h2>
+<p>O(n log n) is the best we can do for comparison-based sorting. Key points:</p>
+<ul><li><strong>Main Pattern</strong>: Divide-and-conquer with linear merge</li><li><strong>Common Uses</strong>: Sorting, merging, divide-and-conquer algorithms</li><li><strong>Best Sorts</strong>: Merge Sort (stable, consistent), Quick Sort (in-place, fast average), Heap Sort (in-place, consistent)</li><li><strong>Optimal</strong>: For comparison-based sorting, O(n log n) is provably optimal</li></ul>
+<p><strong>Next</strong>: Move on to <a href="./ON2-Quadratic-Time-Exercises.md">ON2-Quadratic-Time-Exercises.md</a> to learn about O(n²) complexity!</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['dark2', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
+      const fallback = 'light';
+      const initial = supported.includes(normalized) ? normalized : (window.__studyTheme || fallback);
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          sessionStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+    (() => {
+      const groups = document.querySelectorAll('.sidebar-group');
+      if (!groups.length) return;
+      const storageKey = 'study-open-groups';
+      const saved = sessionStorage.getItem(storageKey);
+      const openFromStorage = new Set(saved ? JSON.parse(saved) : []);
+
+      const activeLink = document.querySelector('.nav-link.active');
+      const activeGroup = activeLink?.closest('.sidebar-group');
+      if (activeGroup?.dataset.group) {
+        openFromStorage.add(activeGroup.dataset.group);
+      }
+
+      const syncStorage = () => {
+        const openIds = Array.from(document.querySelectorAll('.sidebar-group.is-open'))
+          .map((group) => group.dataset.group)
+          .filter(Boolean);
+        sessionStorage.setItem(storageKey, JSON.stringify(openIds));
+      };
+
+      const setExpanded = (group, expanded) => {
+        const header = group.querySelector('.sidebar-group__header');
+        const list = group.querySelector('.sidebar-group__items');
+        group.classList.toggle('is-open', expanded);
+        header?.setAttribute('aria-expanded', expanded);
+        if (list) {
+          list.hidden = !expanded;
+        }
+      };
+
+      groups.forEach((group) => {
+        const shouldOpen = openFromStorage.has(group.dataset.group);
+        setExpanded(group, shouldOpen);
+        const header = group.querySelector('.sidebar-group__header');
+        header?.addEventListener('click', () => {
+          const next = !group.classList.contains('is-open');
+          setExpanded(group, next);
+          syncStorage();
+        });
+      });
+    })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swPath = '..\../service-worker.js';
+        navigator.serviceWorker.register(swPath).catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for O1 Constant Time Exercises" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>O1 Constant Time Exercises | C# Interview Prep Cheat Sheet</title>
+  <link rel="manifest" href="..\..\assets/manifest.webmanifest" />
+  <script>
+    (() => {
+      const supported = ['dark2', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
+      const fallback = 'light';
+      const initial = supported.includes(normalized) ? normalized : fallback;
+      document.documentElement.dataset.theme = initial;
+      window.__studyTheme = initial;
+    })();
+  </script>
+  <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="dark2">Dark 2</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group" data-group="notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="..\../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="..\../notes/logging.html">Logging</a></li><li><a class="nav-link" href="..\../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/O1-Constant-Time.html">O1 Constant Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/OLogN-Logarithmic-Time.html">OLogN Logarithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON-Linear-Time.html">ON Linear Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON2-Quadratic-Time.html">ON2 Quadratic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ONLogN-Linearithmic-Time.html">ONLogN Linearithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/Space-Complexity.html">Space Complexity</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/ICollection.html">ICollection</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IEnumerable.html">IEnumerable</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IList.html">IList</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IQueryable.html">IQueryable</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IReadOnly.html">IReadOnly</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a class="nav-link" href="..\../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a class="nav-link" href="..\../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a class="nav-link" href="..\../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a class="nav-link" href="..\../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a class="nav-link" href="..\../notes/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a class="nav-link" href="..\../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a class="nav-link" href="..\../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a class="nav-link" href="..\../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a class="nav-link" href="..\../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a class="nav-link" href="..\../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a class="nav-link" href="..\../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a class="nav-link" href="..\../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a class="nav-link" href="..\../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a class="nav-link" href="..\../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a class="nav-link" href="..\../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/01-async-patterns.html">01 Async Patterns</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/02-backpressure-rate-limiting.html">02 Backpressure Rate Limiting</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/03-caching-strategies.html">03 Caching Strategies</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/04-database-scaling.html">04 Database Scaling</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/05-message-queues.html">05 Message Queues</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/06-resilience-patterns.html">06 Resilience Patterns</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/07-observability.html">07 Observability</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/08-complete-example.html">08 Complete Example</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/answers.html">Answers</a></li><li><a class="nav-link" href="..\../practice/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="..\../practice/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="..\../practice/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="..\../practice/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="..\../practice/csharp-fundamentals.html">Csharp Fundamentals</a></li><li><a class="nav-link" href="..\../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="..\../practice/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="..\../practice/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="..\../practice/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="..\../practice/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="..\../practice/index.html">Practice</a></li><li><a class="nav-link" href="..\../practice/PRACTICE-STRUCTURE.html">PRACTICE STRUCTURE</a></li><li><a class="nav-link" href="..\../practice/questions.html">Questions</a></li><li><a class="nav-link" href="..\../practice/README.html">README</a></li><li><a class="nav-link" href="..\../practice/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="..\../practice/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="..\../practice/system-design.html">System Design</a></li><li><a class="nav-link" href="..\../practice/trading-domain.html">Trading Domain</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-advanced-topics">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Advanced Topics</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/advanced-topics/async-await-exercises.html">Async Await Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Automapper/index.html">Automapper</a></li></ul>
+    </div><div class="sidebar-group is-open" data-group="practice-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
+        <span>Practice / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="..\../practice/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link active" href="..\../practice/Big-O-Complexity/O1-Constant-Time-Exercises.html">O1 Constant Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/OLogN-Logarithmic-Time-Exercises.html">OLogN Logarithmic Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ON-Linear-Time-Exercises.html">ON Linear Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ON2-Quadratic-Time-Exercises.html">ON2 Quadratic Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ONLogN-Linearithmic-Time-Exercises.html">ONLogN Linearithmic Time Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Design-Patterns/Decorator-Pattern-Exercises.html">Decorator Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/index.html">Design Patterns</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Factory-Pattern-Exercises.html">Factory Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Mediator-Pattern-Exercises.html">Mediator Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Observer-Pattern-Exercises.html">Observer Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Strategy-Pattern-Exercises.html">Strategy Pattern Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/FluentValidation/index.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/SOLID/S-Single-Responsibility-Principle-Exercises.html">S Single Responsibility Principle Exercises</a></li><li><a class="nav-link" href="..\../practice/SOLID/index.html">SOLID</a></li></ul>
+    </div></div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">practice\Big-O-Complexity\O1-Constant-Time-Exercises.md</div>
+        <h2>O1 Constant Time Exercises</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#o1---constant-time-complexity-exercises">O(1) - Constant Time Complexity Exercises</a></li><li class="level-2"><a href="#overview">Overview</a></li><li class="level-2"><a href="#exercise-1-array-element-access">Exercise 1: Array Element Access</a></li><li class="level-2"><a href="#exercise-2-dictionary-lookup">Exercise 2: Dictionary Lookup</a></li><li class="level-2"><a href="#exercise-3-stack-push-and-pop">Exercise 3: Stack Push and Pop</a></li><li class="level-2"><a href="#exercise-4-queue-enqueue-and-dequeue">Exercise 4: Queue Enqueue and Dequeue</a></li><li class="level-2"><a href="#exercise-5-get-first-or-last-element">Exercise 5: Get First or Last Element</a></li><li class="level-2"><a href="#exercise-6-hashset-add-and-contains">Exercise 6: HashSet Add and Contains</a></li><li class="level-2"><a href="#exercise-7-linkedlist-add-firstlast">Exercise 7: LinkedList Add First/Last</a></li><li class="level-2"><a href="#exercise-8-mathematical-formula-calculation">Exercise 8: Mathematical Formula Calculation</a></li><li class="level-2"><a href="#exercise-9-swap-two-variables">Exercise 9: Swap Two Variables</a></li><li class="level-2"><a href="#exercise-10-check-if-number-is-power-of-two">Exercise 10: Check if Number is Power of Two</a></li><li class="level-2"><a href="#exercise-11-get-middle-element-with-two-pointers">Exercise 11: Get Middle Element with Two Pointers</a></li><li class="level-2"><a href="#exercise-12-insert-at-end-of-list-amortized">Exercise 12: Insert at End of List (Amortized)</a></li><li class="level-2"><a href="#exercise-13-dictionary-add-amortized">Exercise 13: Dictionary Add (Amortized)</a></li><li class="level-2"><a href="#exercise-14-set-bit-at-position">Exercise 14: Set Bit at Position</a></li><li class="level-2"><a href="#exercise-15-minmax-of-two-numbers">Exercise 15: Min/Max of Two Numbers</a></li><li class="level-2"><a href="#exercise-16-count-property-access">Exercise 16: Count Property Access</a></li><li class="level-2"><a href="#exercise-17-null-coalescing-and-null-check">Exercise 17: Null Coalescing and Null Check</a></li><li class="level-2"><a href="#exercise-18-stringbuilder-append-amortized">Exercise 18: StringBuilder Append (Amortized)</a></li><li class="level-2"><a href="#exercise-19-access-nested-object-property">Exercise 19: Access Nested Object Property</a></li><li class="level-2"><a href="#exercise-20-random-number-generation">Exercise 20: Random Number Generation</a></li><li class="level-2"><a href="#exercise-21-absolute-value">Exercise 21: Absolute Value</a></li><li class="level-2"><a href="#exercise-22-check-if-list-is-empty">Exercise 22: Check if List is Empty</a></li><li class="level-2"><a href="#exercise-23-update-array-element">Exercise 23: Update Array Element</a></li><li class="level-2"><a href="#exercise-24-circular-buffer-index-calculation">Exercise 24: Circular Buffer Index Calculation</a></li><li class="level-2"><a href="#exercise-25-when-o1-operations-arent-actually-o1">Exercise 25: When O(1) Operations Aren't Actually O(1)</a></li><li class="level-2"><a href="#common-interview-questions">Common Interview Questions</a></li><li class="level-3"><a href="#q1-is-accessing-a-c-listt-by-index-always-o1">Q1: "Is accessing a C# List<T> by index always O(1)?"</a></li><li class="level-3"><a href="#q2-why-is-dictionary-lookup-o1-average-but-on-worst-case">Q2: "Why is Dictionary lookup O(1) average but O(n) worst case?"</a></li><li class="level-3"><a href="#q3-is-stringbuilderappend-truly-o1">Q3: "Is StringBuilder.Append() truly O(1)?"</a></li><li class="level-3"><a href="#q4-can-mathematical-formulas-always-convert-on-to-o1">Q4: "Can mathematical formulas always convert O(n) to O(1)?"</a></li><li class="level-3"><a href="#q5-whats-the-difference-between-o1-and-constant-time">Q5: "What's the difference between O(1) and constant time?"</a></li><li class="level-2"><a href="#practice-tips">Practice Tips</a></li><li class="level-2"><a href="#summary">Summary</a></li></ul></div>
+        <h1 id="o1---constant-time-complexity-exercises">O(1) - Constant Time Complexity Exercises</h1>
+<h2 id="overview">Overview</h2>
+<p>O(1) means the operation takes the same amount of time regardless of input size. The algorithm accesses a fixed number of memory locations or performs a fixed number of operations.</p>
+<p><strong>Key Characteristics:</strong></p>
+<ul><li>Runtime doesn't depend on input size</li><li>May still have different constant factors (O(1) can be slower than another O(1))</li><li>Most efficient complexity class</li><li>Common in: array access, hash table operations, arithmetic</li></ul>
+<h2 id="exercise-1-array-element-access">Exercise 1: Array Element Access</h2>
+<p><strong>Problem</strong>: Access an element at a specific index in an array.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(1) - Direct memory address calculation
+// Space: O(1) - No additional space needed
+public int GetElementAtIndex(int[] arr, int index)
+{
+    return arr[index];
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>Arrays store elements in contiguous memory</li><li>Address = base_address + (index × element_size)</li><li>Single calculation, regardless of array size</li><li><strong>Best/Average/Worst</strong>: All O(1)</li></ul>
+<p><strong>Interview Insight</strong>: This is the foundation of why arrays are so fast for random access!</p>
+<p>---</p>
+<h2 id="exercise-2-dictionary-lookup">Exercise 2: Dictionary Lookup</h2>
+<p><strong>Problem</strong>: Retrieve a value from a dictionary by key.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(1) average case - Hash table lookup
+// Space: O(1) - No additional space needed
+public string GetValueByKey(Dictionary&lt;int, string&gt; dict, int key)
+{
+    if (dict.ContainsKey(key))
+        return dict[key];
+    return null;
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li><strong>Average Case</strong>: O(1) - Direct hash bucket access</li><li><strong>Worst Case</strong>: O(n) - All keys hash to same bucket (rare with good hash function)</li><li>Hash function computes bucket index in constant time</li><li>Most real-world scenarios: O(1)</li></ul>
+<p><strong>Complexity Breakdown:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">// Both operations are O(1) average:
+dict.ContainsKey(key);  // O(1) average
+dict[key];              // O(1) average
+dict.TryGetValue(key, out var value);  // O(1) average - preferred approach</code></pre>
+<p><strong>Gotcha</strong>: While average is O(1), worst case is O(n) due to hash collisions!</p>
+<p>---</p>
+<h2 id="exercise-3-stack-push-and-pop">Exercise 3: Stack Push and Pop</h2>
+<p><strong>Problem</strong>: Implement stack operations.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(1) for both operations
+// Space: O(1) per operation
+public class StackOperations
+{
+    private Stack&lt;int&gt; stack = new Stack&lt;int&gt;();
+
+    // O(1) - Add to top of stack
+    public void Push(int value)
+    {
+        stack.Push(value);
+    }
+
+    // O(1) - Remove from top of stack
+    public int Pop()
+    {
+        return stack.Pop();
+    }
+
+    // O(1) - View top without removing
+    public int Peek()
+    {
+        return stack.Peek();
+    }
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>Stack maintains pointer to top element</li><li>Push: increment pointer, store value</li><li>Pop: retrieve value, decrement pointer</li><li>No iteration needed</li><li><strong>Best/Average/Worst</strong>: All O(1)</li></ul>
+<p>---</p>
+<h2 id="exercise-4-queue-enqueue-and-dequeue">Exercise 4: Queue Enqueue and Dequeue</h2>
+<p><strong>Problem</strong>: Implement queue operations.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(1) for both operations
+// Space: O(1) per operation
+public class QueueOperations
+{
+    private Queue&lt;int&gt; queue = new Queue&lt;int&gt;();
+
+    // O(1) - Add to end of queue
+    public void Enqueue(int value)
+    {
+        queue.Enqueue(value);
+    }
+
+    // O(1) - Remove from front of queue
+    public int Dequeue()
+    {
+        return queue.Dequeue();
+    }
+
+    // O(1) - View front without removing
+    public int Peek()
+    {
+        return queue.Peek();
+    }
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>Queue maintains pointers to front and rear</li><li>Enqueue: add at rear, update rear pointer</li><li>Dequeue: remove from front, update front pointer</li><li><strong>Implementation Detail</strong>: C# Queue<T> uses circular buffer</li></ul>
+<p>---</p>
+<h2 id="exercise-5-get-first-or-last-element">Exercise 5: Get First or Last Element</h2>
+<p><strong>Problem</strong>: Retrieve first or last element from a list.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(1) - Direct access by index
+// Space: O(1) - No additional space
+public class FirstLastAccess
+{
+    public int GetFirst(List&lt;int&gt; list)
+    {
+        return list[0];  // O(1)
+    }
+
+    public int GetLast(List&lt;int&gt; list)
+    {
+        return list[list.Count - 1];  // O(1)
+    }
+
+    // LINQ alternatives (also O(1) for List&lt;T&gt;)
+    public int GetFirstLinq(List&lt;int&gt; list)
+    {
+        return list.First();  // O(1) for IList&lt;T&gt;
+    }
+
+    public int GetLastLinq(List&lt;int&gt; list)
+    {
+        return list.Last();  // O(1) for IList&lt;T&gt;
+    }
+}</code></pre>
+<p><strong>Gotcha</strong>: <code>First()</code> on <code>IEnumerable&lt;T&gt;</code> that's not a list could be O(n)!</p>
+<p>---</p>
+<h2 id="exercise-6-hashset-add-and-contains">Exercise 6: HashSet Add and Contains</h2>
+<p><strong>Problem</strong>: Add elements and check membership in a HashSet.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(1) average for both operations
+// Space: O(1) per operation
+public class HashSetOperations
+{
+    private HashSet&lt;int&gt; set = new HashSet&lt;int&gt;();
+
+    // O(1) average - Add element
+    public bool Add(int value)
+    {
+        return set.Add(value);
+    }
+
+    // O(1) average - Check if element exists
+    public bool Contains(int value)
+    {
+        return set.Contains(value);
+    }
+
+    // O(1) average - Remove element
+    public bool Remove(int value)
+    {
+        return set.Remove(value);
+    }
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>Hash-based storage like Dictionary</li><li><strong>Average</strong>: O(1) for add, contains, remove</li><li><strong>Worst</strong>: O(n) with many hash collisions</li></ul>
+<p>---</p>
+<h2 id="exercise-7-linkedlist-add-firstlast">Exercise 7: LinkedList Add First/Last</h2>
+<p><strong>Problem</strong>: Add elements to the beginning or end of a linked list.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(1) - Direct pointer manipulation
+// Space: O(1) per operation
+public class LinkedListOperations
+{
+    private LinkedList&lt;int&gt; list = new LinkedList&lt;int&gt;();
+
+    // O(1) - Add at beginning
+    public void AddFirst(int value)
+    {
+        list.AddFirst(value);
+    }
+
+    // O(1) - Add at end
+    public void AddLast(int value)
+    {
+        list.AddLast(value);
+    }
+
+    // O(1) - Remove first
+    public void RemoveFirst()
+    {
+        list.RemoveFirst();
+    }
+
+    // O(1) - Remove last
+    public void RemoveLast()
+    {
+        list.RemoveLast();
+    }
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>LinkedList maintains head and tail pointers</li><li>Only updates pointers, no shifting</li><li><strong>Compare to List<T></strong>: AddFirst would be O(n) for List<T> due to shifting</li></ul>
+<p>---</p>
+<h2 id="exercise-8-mathematical-formula-calculation">Exercise 8: Mathematical Formula Calculation</h2>
+<p><strong>Problem</strong>: Calculate sum of first n natural numbers.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(1) - Single formula calculation
+// Space: O(1) - Only result variable
+public long SumOfFirstN(int n)
+{
+    // Sum = n * (n + 1) / 2
+    return (long)n * (n + 1) / 2;
+}
+
+// WRONG APPROACH - O(n)
+public long SumOfFirstN_Slow(int n)
+{
+    long sum = 0;
+    for (int i = 1; i &lt;= n; i++)
+    {
+        sum += i;
+    }
+    return sum;
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>Formula approach: O(1) - just arithmetic operations</li><li>Loop approach: O(n) - must iterate through all numbers</li><li><strong>Interview Insight</strong>: Mathematical formulas can transform O(n) to O(1)!</li></ul>
+<p><strong>Other Constant Formula Examples:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">// Arithmetic series sum: O(1)
+public long ArithmeticSum(int first, int last, int count)
+{
+    return (long)count * (first + last) / 2;
+}
+
+// Circle area: O(1)
+public double CircleArea(double radius)
+{
+    return Math.PI * radius * radius;
+}
+
+// Even number check: O(1)
+public bool IsEven(int n)
+{
+    return n % 2 == 0;
+}</code></pre>
+<p>---</p>
+<h2 id="exercise-9-swap-two-variables">Exercise 9: Swap Two Variables</h2>
+<p><strong>Problem</strong>: Swap two variables without using a temporary variable.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(1) - Fixed number of operations
+// Space: O(1) - No additional space
+public void Swap(ref int a, ref int b)
+{
+    // Method 1: XOR swap (O(1) time, O(1) space)
+    a = a ^ b;
+    b = a ^ b;
+    a = a ^ b;
+}
+
+// More readable approach (also O(1))
+public void SwapWithTemp(ref int a, ref int b)
+{
+    int temp = a;
+    a = b;
+    b = temp;
+}
+
+// C# tuple deconstruction (O(1))
+public void SwapWithTuple(ref int a, ref int b)
+{
+    (a, b) = (b, a);
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>All approaches: fixed number of operations</li><li>No loops or recursion</li><li><strong>Best/Average/Worst</strong>: All O(1)</li></ul>
+<p>---</p>
+<h2 id="exercise-10-check-if-number-is-power-of-two">Exercise 10: Check if Number is Power of Two</h2>
+<p><strong>Problem</strong>: Determine if a number is a power of 2.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(1) - Single bitwise operation
+// Space: O(1) - No additional space
+public bool IsPowerOfTwo(int n)
+{
+    return n &gt; 0 &amp;&amp; (n &amp; (n - 1)) == 0;
+}
+
+// SLOW approach - O(log n)
+public bool IsPowerOfTwo_Slow(int n)
+{
+    if (n &lt;= 0) return false;
+    while (n &gt; 1)
+    {
+        if (n % 2 != 0) return false;
+        n /= 2;
+    }
+    return true;
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>Bitwise trick: power of 2 has only one bit set</li><li>n & (n-1) clears the lowest bit</li><li>If result is 0, only one bit was set</li><li><strong>Optimization</strong>: Bit manipulation often reduces complexity!</li></ul>
+<p><strong>How it works:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">8:    1000
+8-1:  0111
+&amp;:    0000  ✓ Power of 2
+
+6:    0110
+6-1:  0101
+&amp;:    0100  ✗ Not power of 2</code></pre>
+<p>---</p>
+<h2 id="exercise-11-get-middle-element-with-two-pointers">Exercise 11: Get Middle Element with Two Pointers</h2>
+<p><strong>Problem</strong>: When you already know the length, find the middle element.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(1) - Direct calculation and access
+// Space: O(1) - No additional space
+public int GetMiddleElement(int[] arr)
+{
+    int middleIndex = arr.Length / 2;
+    return arr[middleIndex];
+}
+
+// For LinkedList - NOT O(1), this is O(n)
+public int GetMiddleElement_LinkedList(LinkedList&lt;int&gt; list)
+{
+    // Must traverse - this is O(n)!
+    int count = list.Count;  // O(1) in C#, but conceptually O(n) operation
+    int middleIndex = count / 2;
+    var current = list.First;
+    for (int i = 0; i &lt; middleIndex; i++)
+    {
+        current = current.Next;
+    }
+    return current.Value;
+}</code></pre>
+<p><strong>Gotcha</strong>: LinkedList.Count is O(1) in C#, but getting the middle element is still O(n) because you must traverse!</p>
+<p>---</p>
+<h2 id="exercise-12-insert-at-end-of-list-amortized">Exercise 12: Insert at End of List (Amortized)</h2>
+<p><strong>Problem</strong>: Understand amortized O(1) complexity.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(1) amortized - Occasionally O(n) when resizing
+// Space: O(1) amortized
+public void AddToEndOfList(List&lt;int&gt; list, int value)
+{
+    list.Add(value);
+}</code></pre>
+<p><strong>Amortized Analysis:</strong></p>
+<ul><li><strong>Most operations</strong>: O(1) - just insert</li><li><strong>Occasional resize</strong>: O(n) - copy to new array (capacity doubles)</li><li><strong>Frequency</strong>: resize happens at 1, 2, 4, 8, 16, 32... elements</li><li><strong>Over n operations</strong>: Total work is O(n), so O(1) per operation</li></ul>
+<p><strong>Breakdown of First 9 Insertions:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">Insert 1: resize to cap 4    → 1 copy   (O(n) where n=1)
+Insert 2: no resize          → 0 copies (O(1))
+Insert 3: no resize          → 0 copies (O(1))
+Insert 4: no resize          → 0 copies (O(1))
+Insert 5: resize to cap 8    → 4 copies (O(n) where n=4)
+Insert 6: no resize          → 0 copies (O(1))
+Insert 7: no resize          → 0 copies (O(1))
+Insert 8: no resize          → 0 copies (O(1))
+Insert 9: resize to cap 16   → 8 copies (O(n) where n=8)
+
+Total copies: 1 + 4 + 8 = 13
+Total inserts: 9
+Average: ~1.4 copies per insert → O(1) amortized</code></pre>
+<p>---</p>
+<h2 id="exercise-13-dictionary-add-amortized">Exercise 13: Dictionary Add (Amortized)</h2>
+<p><strong>Problem</strong>: Understand dictionary insertion complexity.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(1) amortized - Occasionally O(n) during rehashing
+// Space: O(1) amortized per element
+public void AddToDictionary(Dictionary&lt;int, string&gt; dict, int key, string value)
+{
+    dict[key] = value;
+}</code></pre>
+<p><strong>Amortized Analysis:</strong></p>
+<ul><li><strong>Normal case</strong>: O(1) - hash, find bucket, insert</li><li><strong>Rare case</strong>: O(n) - rehash all elements when load factor exceeded</li><li><strong>Load factor</strong>: typically rehashes at 75% full</li><li><strong>Amortized</strong>: O(1) over many operations</li></ul>
+<p>---</p>
+<h2 id="exercise-14-set-bit-at-position">Exercise 14: Set Bit at Position</h2>
+<p><strong>Problem</strong>: Set a specific bit in an integer.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(1) - Single bitwise OR operation
+// Space: O(1) - No additional space
+public int SetBit(int number, int position)
+{
+    return number | (1 &lt;&lt; position);
+}
+
+// Clear bit at position: O(1)
+public int ClearBit(int number, int position)
+{
+    return number &amp; ~(1 &lt;&lt; position);
+}
+
+// Toggle bit at position: O(1)
+public int ToggleBit(int number, int position)
+{
+    return number ^ (1 &lt;&lt; position);
+}
+
+// Check if bit is set: O(1)
+public bool IsBitSet(int number, int position)
+{
+    return (number &amp; (1 &lt;&lt; position)) != 0;
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>All bit operations: constant time</li><li>No loops or recursion</li><li>Works on fixed-size integers (32 or 64 bits)</li></ul>
+<p>---</p>
+<h2 id="exercise-15-minmax-of-two-numbers">Exercise 15: Min/Max of Two Numbers</h2>
+<p><strong>Problem</strong>: Find minimum or maximum of two numbers.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(1) - Single comparison
+// Space: O(1) - No additional space
+public int Min(int a, int b)
+{
+    return a &lt; b ? a : b;
+}
+
+public int Max(int a, int b)
+{
+    return a &gt; b ? a : b;
+}
+
+// Bitwise trick without branching (also O(1))
+public int MinBitwise(int a, int b)
+{
+    return b ^ ((a ^ b) &amp; -(a &lt; b ? 1 : 0));
+}</code></pre>
+<p><strong>Note</strong>: <code>Math.Min()</code> and <code>Math.Max()</code> are also O(1)</p>
+<p>---</p>
+<h2 id="exercise-16-count-property-access">Exercise 16: Count Property Access</h2>
+<p><strong>Problem</strong>: Get the count of elements in a collection.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(1) for most C# collections
+// Space: O(1) - No additional space
+public class CountOperations
+{
+    // O(1) - Arrays have Length property
+    public int GetArrayLength(int[] arr)
+    {
+        return arr.Length;
+    }
+
+    // O(1) - List&lt;T&gt; maintains count
+    public int GetListCount(List&lt;int&gt; list)
+    {
+        return list.Count;
+    }
+
+    // O(1) - Dictionary maintains count
+    public int GetDictionaryCount(Dictionary&lt;int, string&gt; dict)
+    {
+        return dict.Count;
+    }
+
+    // O(1) - HashSet maintains count
+    public int GetHashSetCount(HashSet&lt;int&gt; set)
+    {
+        return set.Count;
+    }
+
+    // O(1) - LinkedList maintains count
+    public int GetLinkedListCount(LinkedList&lt;int&gt; list)
+    {
+        return list.Count;  // C# caches this!
+    }
+}</code></pre>
+<p><strong>Gotcha with IEnumerable:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">// O(n) - Must enumerate to count!
+public int GetEnumerableCount(IEnumerable&lt;int&gt; enumerable)
+{
+    return enumerable.Count();  // O(n) unless it&#39;s ICollection
+}
+
+// O(1) or early exit - check if any elements
+public bool HasElements(IEnumerable&lt;int&gt; enumerable)
+{
+    return enumerable.Any();  // O(1) for collections, can exit early for streams
+}</code></pre>
+<p>---</p>
+<h2 id="exercise-17-null-coalescing-and-null-check">Exercise 17: Null Coalescing and Null Check</h2>
+<p><strong>Problem</strong>: Check for null and provide default.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(1) - Single comparison
+// Space: O(1) - No additional space
+public string GetValueOrDefault(string input)
+{
+    // Null coalescing: O(1)
+    return input ?? &quot;default&quot;;
+}
+
+public string GetValueOrDefault2(string input, string defaultValue)
+{
+    // Ternary operator: O(1)
+    return input != null ? input : defaultValue;
+}
+
+// Null conditional: O(1)
+public int? GetLength(string input)
+{
+    return input?.Length;
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>All null checks: single comparison</li><li>No iteration or recursion</li><li><strong>Best/Average/Worst</strong>: All O(1)</li></ul>
+<p>---</p>
+<h2 id="exercise-18-stringbuilder-append-amortized">Exercise 18: StringBuilder Append (Amortized)</h2>
+<p><strong>Problem</strong>: Append to a StringBuilder.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(1) amortized - Occasionally O(n) when expanding
+// Space: O(1) amortized per character
+public void AppendToStringBuilder(StringBuilder sb, string value)
+{
+    sb.Append(value);
+}</code></pre>
+<p><strong>Why StringBuilder is Better than String Concatenation:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">// O(n²) - Each concatenation creates new string
+string result = &quot;&quot;;
+for (int i = 0; i &lt; n; i++)
+{
+    result += &quot;a&quot;;  // O(i) at iteration i, total O(n²)
+}
+
+// O(n) - StringBuilder reuses buffer
+var sb = new StringBuilder();
+for (int i = 0; i &lt; n; i++)
+{
+    sb.Append(&quot;a&quot;);  // O(1) amortized
+}
+string result = sb.ToString();  // O(n) final conversion</code></pre>
+<p><strong>Amortized Analysis:</strong></p>
+<ul><li>StringBuilder doubles capacity when full</li><li>Similar to List<T> growth pattern</li><li>Individual append: O(1) amortized</li></ul>
+<p>---</p>
+<h2 id="exercise-19-access-nested-object-property">Exercise 19: Access Nested Object Property</h2>
+<p><strong>Problem</strong>: Access a property of an object.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(1) - Direct memory access
+// Space: O(1) - No additional space
+public class Person
+{
+    public string Name { get; set; }
+    public int Age { get; set; }
+    public Address Address { get; set; }
+}
+
+public class Address
+{
+    public string Street { get; set; }
+    public string City { get; set; }
+}
+
+public string GetPersonCity(Person person)
+{
+    // Each property access is O(1)
+    return person?.Address?.City;  // O(1)
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>Property access: direct memory offset</li><li>Multiple property accesses: still O(1)</li><li>Chain length doesn't depend on data size</li></ul>
+<p>---</p>
+<h2 id="exercise-20-random-number-generation">Exercise 20: Random Number Generation</h2>
+<p><strong>Problem</strong>: Generate a random number.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(1) - Fixed number of operations
+// Space: O(1) - No additional space
+public int GenerateRandomNumber(Random random, int min, int max)
+{
+    return random.Next(min, max);
+}
+
+// Generate random from array: O(1)
+public T GetRandomElement&lt;T&gt;(T[] array, Random random)
+{
+    int index = random.Next(array.Length);
+    return array[index];
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>Random.Next(): constant time operation</li><li>Array access: O(1)</li><li>Combined: still O(1)</li></ul>
+<p>---</p>
+<h2 id="exercise-21-absolute-value">Exercise 21: Absolute Value</h2>
+<p><strong>Problem</strong>: Get absolute value of a number.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(1) - Single comparison and operation
+// Space: O(1) - No additional space
+public int Abs(int n)
+{
+    return n &lt; 0 ? -n : n;
+}
+
+// Using Math.Abs (also O(1))
+public int AbsMath(int n)
+{
+    return Math.Abs(n);
+}
+
+// Bitwise trick (O(1), no branching)
+public int AbsBitwise(int n)
+{
+    int mask = n &gt;&gt; 31;  // All 1s if negative, all 0s if positive
+    return (n + mask) ^ mask;
+}</code></pre>
+<p>---</p>
+<h2 id="exercise-22-check-if-list-is-empty">Exercise 22: Check if List is Empty</h2>
+<p><strong>Problem</strong>: Determine if a collection has no elements.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(1) - Check count property
+// Space: O(1) - No additional space
+public bool IsEmpty&lt;T&gt;(List&lt;T&gt; list)
+{
+    return list.Count == 0;
+}
+
+// For IEnumerable: prefer Any() for safety
+public bool IsEmptyEnumerable&lt;T&gt;(IEnumerable&lt;T&gt; enumerable)
+{
+    return !enumerable.Any();  // O(1) for collections, early exit for streams
+}
+
+// AVOID Count() on IEnumerable
+public bool IsEmptyWrong&lt;T&gt;(IEnumerable&lt;T&gt; enumerable)
+{
+    return enumerable.Count() == 0;  // Could be O(n) if not ICollection!
+}</code></pre>
+<p><strong>Best Practice:</strong></p>
+<ul><li>For known collections (List, Array): use <code>Count == 0</code> or <code>Length == 0</code></li><li>For IEnumerable: use <code>Any()</code> (with <code>!</code> for checking empty)</li></ul>
+<p>---</p>
+<h2 id="exercise-23-update-array-element">Exercise 23: Update Array Element</h2>
+<p><strong>Problem</strong>: Modify an array element at a specific index.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(1) - Direct memory write
+// Space: O(1) - No additional space
+public void UpdateElement(int[] arr, int index, int newValue)
+{
+    arr[index] = newValue;
+}
+
+// Update multiple known positions: still O(1)
+public void UpdateFirstAndLast(int[] arr, int firstValue, int lastValue)
+{
+    arr[0] = firstValue;              // O(1)
+    arr[arr.Length - 1] = lastValue;  // O(1)
+    // Total: O(1) - fixed number of operations
+}</code></pre>
+<p><strong>Interview Insight</strong>: "O(1) with 2 operations is still O(1) - we drop constants!"</p>
+<p>---</p>
+<h2 id="exercise-24-circular-buffer-index-calculation">Exercise 24: Circular Buffer Index Calculation</h2>
+<p><strong>Problem</strong>: Calculate next position in a circular buffer.</p>
+<pre class="language-csharp"><code class="language-csharp">// Time: O(1) - Modulo operation
+// Space: O(1) - No additional space
+public class CircularBuffer
+{
+    private int[] buffer;
+    private int head;
+    private int tail;
+    private int capacity;
+
+    public CircularBuffer(int size)
+    {
+        buffer = new int[size];
+        capacity = size;
+        head = 0;
+        tail = 0;
+    }
+
+    // O(1) - Calculate next position
+    private int NextPosition(int position)
+    {
+        return (position + 1) % capacity;
+    }
+
+    // O(1) - Add element
+    public void Enqueue(int value)
+    {
+        buffer[tail] = value;
+        tail = NextPosition(tail);
+    }
+
+    // O(1) - Remove element
+    public int Dequeue()
+    {
+        int value = buffer[head];
+        head = NextPosition(head);
+        return value;
+    }
+}</code></pre>
+<p><strong>Analysis:</strong></p>
+<ul><li>Modulo operation: O(1)</li><li>Index calculation: O(1)</li><li>No loops needed for wraparound</li></ul>
+<p>---</p>
+<h2 id="exercise-25-when-o1-operations-arent-actually-o1">Exercise 25: When O(1) Operations Aren't Actually O(1)</h2>
+<p><strong>Problem</strong>: Identify hidden complexity in seemingly constant operations.</p>
+<pre class="language-csharp"><code class="language-csharp">public class HiddenComplexity
+{
+    // Looks O(1), but string comparison is O(m) where m = string length
+    public bool CompareStrings(string a, string b)
+    {
+        return a == b;  // O(m) not O(1)!
+    }
+
+    // Looks O(1), but array copy is O(n)
+    public int[] CloneArray(int[] arr)
+    {
+        return (int[])arr.Clone();  // O(n) not O(1)!
+    }
+
+    // Dictionary lookup is O(1) average, but key comparison might not be
+    public bool DictionaryLookup(Dictionary&lt;string, int&gt; dict, string key)
+    {
+        return dict.ContainsKey(key);  // O(1) + O(m) for string hashing
+    }
+
+    // LINQ Count() on IEnumerable - could be O(n)!
+    public int CountEnumerable(IEnumerable&lt;int&gt; items)
+    {
+        return items.Count();  // O(n) if not ICollection!
+    }
+
+    // HashSet with custom object - O(1) assuming good GetHashCode
+    public class CustomObject
+    {
+        public string Name { get; set; }
+
+        // BAD: O(n) hash code calculation
+        public override int GetHashCode()
+        {
+            int hash = 0;
+            foreach (char c in Name)  // O(n) operation!
+            {
+                hash = hash * 31 + c;
+            }
+            return hash;
+        }
+
+        // BETTER: Use string&#39;s O(n) cached hash
+        public override int GetHashCodeBetter()
+        {
+            return Name?.GetHashCode() ?? 0;  // String caches hash
+        }
+    }
+}</code></pre>
+<p><strong>Key Takeaways:</strong></p>
+<ol><li><strong>String operations</strong>: Often O(m) where m = string length</li><li><strong>Collection copying</strong>: Always O(n) where n = collection size</li><li><strong>LINQ on IEnumerable</strong>: May enumerate entire sequence</li><li><strong>Custom hash codes</strong>: Should be truly O(1), not iterate over data</li><li><strong>Object comparison</strong>: Can be O(n) for complex objects</li></ol>
+<p>---</p>
+<h2 id="common-interview-questions">Common Interview Questions</h2>
+<h3 id="q1-is-accessing-a-c-listt-by-index-always-o1">Q1: "Is accessing a C# List<T> by index always O(1)?"</h3>
+<p><strong>Answer</strong>: Yes, List<T> is backed by an array, so index access is O(1). However, operations like Insert(0, item) or RemoveAt(0) are O(n) because elements must shift.</p>
+<h3 id="q2-why-is-dictionary-lookup-o1-average-but-on-worst-case">Q2: "Why is Dictionary lookup O(1) average but O(n) worst case?"</h3>
+<p><strong>Answer</strong>: Dictionaries use hash tables. With a good hash function, items distribute evenly across buckets (O(1) lookup). With hash collisions, all items might end up in one bucket, requiring linear search (O(n)). In practice, modern implementations use good hash functions making O(n) extremely rare.</p>
+<h3 id="q3-is-stringbuilderappend-truly-o1">Q3: "Is StringBuilder.Append() truly O(1)?"</h3>
+<p><strong>Answer</strong>: It's O(1) amortized. Most appends are O(1), but when the internal buffer is full, it must resize (O(n) to copy existing characters). Over many operations, the average is O(1) per append.</p>
+<h3 id="q4-can-mathematical-formulas-always-convert-on-to-o1">Q4: "Can mathematical formulas always convert O(n) to O(1)?"</h3>
+<p><strong>Answer</strong>: Only for specific problems with closed-form solutions. Sum of first n numbers has formula n*(n+1)/2 (O(1)), but finding the nth Fibonacci number doesn't have a simple O(1) integer formula.</p>
+<h3 id="q5-whats-the-difference-between-o1-and-constant-time">Q5: "What's the difference between O(1) and constant time?"</h3>
+<p><strong>Answer</strong>: They're the same. O(1) means constant time - the operation takes the same amount of time regardless of input size. However, one O(1) operation can still be slower than another O(1) operation (different constants).</p>
+<p>---</p>
+<h2 id="practice-tips">Practice Tips</h2>
+<ol><li><strong>Recognize True O(1)</strong>: Direct array access, hash table operations with good hash functions, arithmetic operations</li></ol>
+<ol><li><strong>Amortized O(1)</strong>: List.Add(), StringBuilder.Append(), Dictionary.Add()</li></ol>
+<ol><li><strong>Hidden Complexity</strong>: String operations, collection copying, LINQ on IEnumerable</li></ol>
+<ol><li><strong>Interview Strategy</strong>:</li></ol>
+<ul><li>Always clarify data structure (array vs linked list changes complexity)</li><li>State assumptions about hash function quality</li><li>Mention amortized vs worst-case when relevant</li></ul>
+<ol><li><strong>Optimization Mindset</strong>: Look for opportunities to use formulas, precomputation, or better data structures to achieve O(1)</li></ol>
+<p>---</p>
+<h2 id="summary">Summary</h2>
+<p>O(1) operations are the gold standard of efficiency. Key points:</p>
+<ul><li><strong>True O(1)</strong>: Array access, hash operations, arithmetic</li><li><strong>Amortized O(1)</strong>: Dynamic array growth, hash table resizing</li><li><strong>Gotchas</strong>: String operations, hidden iterations, LINQ</li><li><strong>In Interviews</strong>: Be precise about average vs worst case, identify hidden complexity</li></ul>
+<p><strong>Next</strong>: Move on to <a href="./OLogN-Logarithmic-Time-Exercises.md">OLogN-Logarithmic-Time-Exercises.md</a> to learn about O(log n) complexity!</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['dark2', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
+      const fallback = 'light';
+      const initial = supported.includes(normalized) ? normalized : (window.__studyTheme || fallback);
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          sessionStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+    (() => {
+      const groups = document.querySelectorAll('.sidebar-group');
+      if (!groups.length) return;
+      const storageKey = 'study-open-groups';
+      const saved = sessionStorage.getItem(storageKey);
+      const openFromStorage = new Set(saved ? JSON.parse(saved) : []);
+
+      const activeLink = document.querySelector('.nav-link.active');
+      const activeGroup = activeLink?.closest('.sidebar-group');
+      if (activeGroup?.dataset.group) {
+        openFromStorage.add(activeGroup.dataset.group);
+      }
+
+      const syncStorage = () => {
+        const openIds = Array.from(document.querySelectorAll('.sidebar-group.is-open'))
+          .map((group) => group.dataset.group)
+          .filter(Boolean);
+        sessionStorage.setItem(storageKey, JSON.stringify(openIds));
+      };
+
+      const setExpanded = (group, expanded) => {
+        const header = group.querySelector('.sidebar-group__header');
+        const list = group.querySelector('.sidebar-group__items');
+        group.classList.toggle('is-open', expanded);
+        header?.setAttribute('aria-expanded', expanded);
+        if (list) {
+          list.hidden = !expanded;
+        }
+      };
+
+      groups.forEach((group) => {
+        const shouldOpen = openFromStorage.has(group.dataset.group);
+        setExpanded(group, shouldOpen);
+        const header = group.querySelector('.sidebar-group__header');
+        header?.addEventListener('click', () => {
+          const next = !group.classList.contains('is-open');
+          setExpanded(group, next);
+          syncStorage();
+        });
+      });
+    })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swPath = '..\../service-worker.js';
+        navigator.serviceWorker.register(swPath).catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+</body>
+</html>

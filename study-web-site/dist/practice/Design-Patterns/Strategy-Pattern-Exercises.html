@@ -1,0 +1,1728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for Strategy Pattern Exercises" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>Strategy Pattern Exercises | C# Interview Prep Cheat Sheet</title>
+  <link rel="manifest" href="..\..\assets/manifest.webmanifest" />
+  <script>
+    (() => {
+      const supported = ['dark2', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
+      const fallback = 'light';
+      const initial = supported.includes(normalized) ? normalized : fallback;
+      document.documentElement.dataset.theme = initial;
+      window.__studyTheme = initial;
+    })();
+  </script>
+  <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="dark2">Dark 2</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group" data-group="notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="..\../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="..\../notes/logging.html">Logging</a></li><li><a class="nav-link" href="..\../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/O1-Constant-Time.html">O1 Constant Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/OLogN-Logarithmic-Time.html">OLogN Logarithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON-Linear-Time.html">ON Linear Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON2-Quadratic-Time.html">ON2 Quadratic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ONLogN-Linearithmic-Time.html">ONLogN Linearithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/Space-Complexity.html">Space Complexity</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/ICollection.html">ICollection</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IEnumerable.html">IEnumerable</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IList.html">IList</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IQueryable.html">IQueryable</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IReadOnly.html">IReadOnly</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a class="nav-link" href="..\../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a class="nav-link" href="..\../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a class="nav-link" href="..\../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a class="nav-link" href="..\../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a class="nav-link" href="..\../notes/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a class="nav-link" href="..\../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a class="nav-link" href="..\../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a class="nav-link" href="..\../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a class="nav-link" href="..\../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a class="nav-link" href="..\../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a class="nav-link" href="..\../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a class="nav-link" href="..\../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a class="nav-link" href="..\../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a class="nav-link" href="..\../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a class="nav-link" href="..\../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/01-async-patterns.html">01 Async Patterns</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/02-backpressure-rate-limiting.html">02 Backpressure Rate Limiting</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/03-caching-strategies.html">03 Caching Strategies</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/04-database-scaling.html">04 Database Scaling</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/05-message-queues.html">05 Message Queues</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/06-resilience-patterns.html">06 Resilience Patterns</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/07-observability.html">07 Observability</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/08-complete-example.html">08 Complete Example</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/answers.html">Answers</a></li><li><a class="nav-link" href="..\../practice/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="..\../practice/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="..\../practice/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="..\../practice/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="..\../practice/csharp-fundamentals.html">Csharp Fundamentals</a></li><li><a class="nav-link" href="..\../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="..\../practice/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="..\../practice/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="..\../practice/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="..\../practice/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="..\../practice/index.html">Practice</a></li><li><a class="nav-link" href="..\../practice/PRACTICE-STRUCTURE.html">PRACTICE STRUCTURE</a></li><li><a class="nav-link" href="..\../practice/questions.html">Questions</a></li><li><a class="nav-link" href="..\../practice/README.html">README</a></li><li><a class="nav-link" href="..\../practice/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="..\../practice/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="..\../practice/system-design.html">System Design</a></li><li><a class="nav-link" href="..\../practice/trading-domain.html">Trading Domain</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-advanced-topics">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Advanced Topics</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/advanced-topics/async-await-exercises.html">Async Await Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Automapper/index.html">Automapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/O1-Constant-Time-Exercises.html">O1 Constant Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/OLogN-Logarithmic-Time-Exercises.html">OLogN Logarithmic Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ON-Linear-Time-Exercises.html">ON Linear Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ON2-Quadratic-Time-Exercises.html">ON2 Quadratic Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ONLogN-Linearithmic-Time-Exercises.html">ONLogN Linearithmic Time Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li></ul>
+    </div><div class="sidebar-group is-open" data-group="practice-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
+        <span>Practice / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="..\../practice/Design-Patterns/Decorator-Pattern-Exercises.html">Decorator Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/index.html">Design Patterns</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Factory-Pattern-Exercises.html">Factory Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Mediator-Pattern-Exercises.html">Mediator Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Observer-Pattern-Exercises.html">Observer Pattern Exercises</a></li><li><a class="nav-link active" href="..\../practice/Design-Patterns/Strategy-Pattern-Exercises.html">Strategy Pattern Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/FluentValidation/index.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/SOLID/S-Single-Responsibility-Principle-Exercises.html">S Single Responsibility Principle Exercises</a></li><li><a class="nav-link" href="..\../practice/SOLID/index.html">SOLID</a></li></ul>
+    </div></div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">practice\Design-Patterns\Strategy-Pattern-Exercises.md</div>
+        <h2>Strategy Pattern Exercises</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#strategy-pattern---exercises">Strategy Pattern - Exercises</a></li><li class="level-2"><a href="#overview">Overview</a></li><li class="level-2"><a href="#table-of-contents">Table of Contents</a></li><li class="level-2"><a href="#foundational-questions">Foundational Questions</a></li><li class="level-3"><a href="#q1-what-is-the-strategy-pattern-and-what-problem-does-it-solve">Q1: What is the Strategy Pattern and what problem does it solve?</a></li><li class="level-3"><a href="#q2-how-does-the-strategy-pattern-differ-from-the-state-pattern">Q2: How does the Strategy Pattern differ from the State Pattern?</a></li><li class="level-3"><a href="#q3-implement-different-payment-processing-strategies-credit-card-paypal-bitcoin">Q3: Implement different payment processing strategies (Credit Card, PayPal, Bitcoin).</a></li><li class="level-3"><a href="#q4-implement-sorting-strategies-quicksort-mergesort-bubblesort-using-the-strategy-pattern">Q4: Implement sorting strategies (QuickSort, MergeSort, BubbleSort) using the Strategy Pattern.</a></li><li class="level-3"><a href="#q5-create-validation-strategies-for-different-input-types-email-phone-credit-card">Q5: Create validation strategies for different input types (email, phone, credit card).</a></li></ul></div>
+        <h1 id="strategy-pattern---exercises">Strategy Pattern - Exercises</h1>
+<h2 id="overview">Overview</h2>
+<p>The Strategy Pattern defines a family of algorithms, encapsulates each one, and makes them interchangeable. Strategy lets the algorithm vary independently from clients that use it. This file contains 30+ exercises covering strategy implementations, real-world scenarios, and C#-specific patterns.</p>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ul><li><a href="#foundational-questions">Foundational Questions (1-10)</a></li><li><a href="#intermediate-questions">Intermediate Questions (11-20)</a></li><li><a href="#advanced-questions">Advanced Questions (21-30+)</a></li></ul>
+<p>---</p>
+<h2 id="foundational-questions">Foundational Questions</h2>
+<h3 id="q1-what-is-the-strategy-pattern-and-what-problem-does-it-solve">Q1: What is the Strategy Pattern and what problem does it solve?</h3>
+<p><strong>A:</strong> The Strategy Pattern encapsulates alternative algorithms or behaviors and makes them interchangeable. It solves the problem of having multiple conditional statements for selecting between different algorithms.</p>
+<pre class="language-csharp"><code class="language-csharp">// Problem: Multiple conditionals for different behaviors
+public class OrderProcessor
+{
+    public decimal CalculateDiscount(Order order, string customerType)
+    {
+        // Bad: Violation of Open/Closed Principle
+        if (customerType == &quot;Regular&quot;)
+        {
+            return order.TotalAmount * 0.05m;
+        }
+        else if (customerType == &quot;Premium&quot;)
+        {
+            return order.TotalAmount * 0.10m;
+        }
+        else if (customerType == &quot;VIP&quot;)
+        {
+            return order.TotalAmount * 0.20m;
+        }
+        else if (customerType == &quot;Employee&quot;)
+        {
+            return order.TotalAmount * 0.30m;
+        }
+        return 0;
+    }
+}
+
+// Solution: Strategy Pattern
+public interface IDiscountStrategy
+{
+    decimal CalculateDiscount(Order order);
+    string StrategyName { get; }
+}
+
+public class RegularCustomerDiscount : IDiscountStrategy
+{
+    public string StrategyName =&gt; &quot;Regular Customer&quot;;
+    public decimal CalculateDiscount(Order order) =&gt; order.TotalAmount * 0.05m;
+}
+
+public class PremiumCustomerDiscount : IDiscountStrategy
+{
+    public string StrategyName =&gt; &quot;Premium Customer&quot;;
+    public decimal CalculateDiscount(Order order) =&gt; order.TotalAmount * 0.10m;
+}
+
+public class VIPCustomerDiscount : IDiscountStrategy
+{
+    public string StrategyName =&gt; &quot;VIP Customer&quot;;
+    public decimal CalculateDiscount(Order order) =&gt; order.TotalAmount * 0.20m;
+}
+
+public class EmployeeDiscount : IDiscountStrategy
+{
+    public string StrategyName =&gt; &quot;Employee&quot;;
+    public decimal CalculateDiscount(Order order) =&gt; order.TotalAmount * 0.30m;
+}
+
+// Context class
+public class BetterOrderProcessor
+{
+    private IDiscountStrategy _discountStrategy;
+
+    public BetterOrderProcessor(IDiscountStrategy discountStrategy)
+    {
+        _discountStrategy = discountStrategy;
+    }
+
+    public void SetDiscountStrategy(IDiscountStrategy strategy)
+    {
+        _discountStrategy = strategy;
+    }
+
+    public decimal CalculateDiscount(Order order)
+    {
+        return _discountStrategy.CalculateDiscount(order);
+    }
+
+    public decimal CalculateFinalAmount(Order order)
+    {
+        var discount = _discountStrategy.CalculateDiscount(order);
+        return order.TotalAmount - discount;
+    }
+}
+
+public class Order
+{
+    public decimal TotalAmount { get; set; }
+    public List&lt;OrderItem&gt; Items { get; set; }
+}
+
+public class OrderItem
+{
+    public string ProductId { get; set; }
+    public int Quantity { get; set; }
+    public decimal Price { get; set; }
+}
+
+// Usage
+var order = new Order { TotalAmount = 1000m };
+
+var processor = new BetterOrderProcessor(new RegularCustomerDiscount());
+var discount1 = processor.CalculateDiscount(order); // $50
+
+processor.SetDiscountStrategy(new VIPCustomerDiscount());
+var discount2 = processor.CalculateDiscount(order); // $200</code></pre>
+<p><strong>Benefits:</strong></p>
+<ul><li>Eliminates conditional statements</li><li>Easy to add new strategies without modifying existing code</li><li>Each strategy is independently testable</li><li>Follows Open/Closed Principle</li></ul>
+<p><strong>Use When:</strong></p>
+<ul><li>You have multiple algorithms for a specific task</li><li>You want to switch algorithms at runtime</li><li>You want to avoid complex conditional logic</li></ul>
+<p><strong>Avoid When:</strong></p>
+<ul><li>You only have one algorithm</li><li>The algorithm never changes</li><li>The conditional logic is simple and stable</li></ul>
+<p>---</p>
+<h3 id="q2-how-does-the-strategy-pattern-differ-from-the-state-pattern">Q2: How does the Strategy Pattern differ from the State Pattern?</h3>
+<p><strong>A:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">// STRATEGY PATTERN: Client chooses which algorithm to use
+// Focus: Different algorithms for the same task
+
+public interface ISortStrategy
+{
+    void Sort&lt;T&gt;(List&lt;T&gt; list) where T : IComparable&lt;T&gt;;
+}
+
+public class QuickSortStrategy : ISortStrategy
+{
+    public void Sort&lt;T&gt;(List&lt;T&gt; list) where T : IComparable&lt;T&gt;
+    {
+        // QuickSort implementation
+        Console.WriteLine(&quot;Sorting using QuickSort&quot;);
+        list.Sort(); // Simplified
+    }
+}
+
+public class MergeSortStrategy : ISortStrategy
+{
+    public void Sort&lt;T&gt;(List&lt;T&gt; list) where T : IComparable&lt;T&gt;
+    {
+        Console.WriteLine(&quot;Sorting using MergeSort&quot;);
+        list.Sort(); // Simplified
+    }
+}
+
+public class Sorter
+{
+    private ISortStrategy _strategy;
+
+    public Sorter(ISortStrategy strategy)
+    {
+        _strategy = strategy;
+    }
+
+    // Client can change strategy
+    public void SetStrategy(ISortStrategy strategy)
+    {
+        _strategy = strategy;
+    }
+
+    public void PerformSort&lt;T&gt;(List&lt;T&gt; list) where T : IComparable&lt;T&gt;
+    {
+        _strategy.Sort(list);
+    }
+}
+
+// Usage: Client decides which strategy
+var sorter = new Sorter(new QuickSortStrategy());
+sorter.PerformSort(numbers); // Uses QuickSort
+
+sorter.SetStrategy(new MergeSortStrategy());
+sorter.PerformSort(numbers); // Uses MergeSort
+
+// STATE PATTERN: Object changes its behavior based on internal state
+// Focus: Different behavior based on current state
+
+public interface IDocumentState
+{
+    void Publish(Document document);
+    void Approve(Document document);
+    void Reject(Document document);
+}
+
+public class DraftState : IDocumentState
+{
+    public void Publish(Document document)
+    {
+        Console.WriteLine(&quot;Publishing draft&quot;);
+        document.SetState(new PublishedState());
+    }
+
+    public void Approve(Document document)
+    {
+        Console.WriteLine(&quot;Cannot approve draft&quot;);
+    }
+
+    public void Reject(Document document)
+    {
+        Console.WriteLine(&quot;Cannot reject draft&quot;);
+    }
+}
+
+public class PublishedState : IDocumentState
+{
+    public void Publish(Document document)
+    {
+        Console.WriteLine(&quot;Already published&quot;);
+    }
+
+    public void Approve(Document document)
+    {
+        Console.WriteLine(&quot;Approving document&quot;);
+        document.SetState(new ApprovedState());
+    }
+
+    public void Reject(Document document)
+    {
+        Console.WriteLine(&quot;Rejecting document&quot;);
+        document.SetState(new RejectedState());
+    }
+}
+
+public class ApprovedState : IDocumentState
+{
+    public void Publish(Document document) =&gt; Console.WriteLine(&quot;Already published&quot;);
+    public void Approve(Document document) =&gt; Console.WriteLine(&quot;Already approved&quot;);
+    public void Reject(Document document) =&gt; Console.WriteLine(&quot;Cannot reject approved document&quot;);
+}
+
+public class RejectedState : IDocumentState
+{
+    public void Publish(Document document) =&gt; Console.WriteLine(&quot;Cannot publish rejected document&quot;);
+    public void Approve(Document document) =&gt; Console.WriteLine(&quot;Cannot approve rejected document&quot;);
+    public void Reject(Document document) =&gt; Console.WriteLine(&quot;Already rejected&quot;);
+}
+
+public class Document
+{
+    private IDocumentState _state;
+
+    public Document()
+    {
+        _state = new DraftState();
+    }
+
+    // State changes internally
+    public void SetState(IDocumentState state)
+    {
+        _state = state;
+    }
+
+    public void Publish() =&gt; _state.Publish(this);
+    public void Approve() =&gt; _state.Approve(this);
+    public void Reject() =&gt; _state.Reject(this);
+}
+
+// Usage: State changes automatically based on operations
+var document = new Document();
+document.Publish();  // Transitions from Draft to Published
+document.Approve();  // Transitions from Published to Approved
+document.Reject();   // Cannot reject approved document</code></pre>
+<p><strong>Key Differences:</strong></p>
+<table><thead><tr><th>Aspect</th><th>Strategy Pattern</th><th>State Pattern</th></tr></thead><tbody><tr><td>Purpose</td><td>Different algorithms</td><td>Different behaviors based on state</td></tr><tr><td>Who decides</td><td>Client chooses strategy</td><td>Object changes state internally</td></tr><tr><td>Transitions</td><td>Client switches strategies</td><td>State transitions happen automatically</td></tr><tr><td>Knowledge</td><td>Strategies don't know about each other</td><td>States often trigger other states</td></tr><tr><td>Focus</td><td>Algorithm selection</td><td>State-dependent behavior</td></tr></tbody></table>
+<p>---</p>
+<h3 id="q3-implement-different-payment-processing-strategies-credit-card-paypal-bitcoin">Q3: Implement different payment processing strategies (Credit Card, PayPal, Bitcoin).</h3>
+<p><strong>A:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">// Payment models
+public class PaymentDetails
+{
+    public decimal Amount { get; set; }
+    public string Currency { get; set; }
+    public string OrderId { get; set; }
+    public string CustomerEmail { get; set; }
+}
+
+public class PaymentResult
+{
+    public bool Success { get; set; }
+    public string TransactionId { get; set; }
+    public string Message { get; set; }
+    public decimal ProcessingFee { get; set; }
+    public DateTime ProcessedAt { get; set; }
+}
+
+// Strategy interface
+public interface IPaymentStrategy
+{
+    string PaymentMethod { get; }
+    decimal CalculateProcessingFee(decimal amount);
+    Task&lt;PaymentResult&gt; ProcessPaymentAsync(PaymentDetails details);
+    Task&lt;bool&gt; ValidatePaymentDetailsAsync(PaymentDetails details);
+}
+
+// Concrete strategies
+public class CreditCardPaymentStrategy : IPaymentStrategy
+{
+    private readonly CreditCardInfo _cardInfo;
+    private const decimal FeePercentage = 0.029m; // 2.9%
+    private const decimal FixedFee = 0.30m;
+
+    public string PaymentMethod =&gt; &quot;Credit Card&quot;;
+
+    public CreditCardPaymentStrategy(CreditCardInfo cardInfo)
+    {
+        _cardInfo = cardInfo;
+    }
+
+    public decimal CalculateProcessingFee(decimal amount)
+    {
+        return (amount * FeePercentage) + FixedFee;
+    }
+
+    public async Task&lt;bool&gt; ValidatePaymentDetailsAsync(PaymentDetails details)
+    {
+        await Task.CompletedTask;
+
+        // Validate card
+        if (string.IsNullOrWhiteSpace(_cardInfo.CardNumber))
+            return false;
+
+        if (_cardInfo.ExpiryDate &lt; DateTime.Now)
+            return false;
+
+        if (string.IsNullOrWhiteSpace(_cardInfo.CVV))
+            return false;
+
+        return true;
+    }
+
+    public async Task&lt;PaymentResult&gt; ProcessPaymentAsync(PaymentDetails details)
+    {
+        Console.WriteLine($&quot;Processing credit card payment of {details.Amount} {details.Currency}&quot;);
+
+        // Validate
+        if (!await ValidatePaymentDetailsAsync(details))
+        {
+            return new PaymentResult
+            {
+                Success = false,
+                Message = &quot;Invalid credit card details&quot;
+            };
+        }
+
+        // Simulate payment processing
+        await Task.Delay(500);
+
+        var fee = CalculateProcessingFee(details.Amount);
+
+        return new PaymentResult
+        {
+            Success = true,
+            TransactionId = $&quot;CC_{Guid.NewGuid():N}&quot;,
+            Message = &quot;Payment processed successfully&quot;,
+            ProcessingFee = fee,
+            ProcessedAt = DateTime.UtcNow
+        };
+    }
+}
+
+public class PayPalPaymentStrategy : IPaymentStrategy
+{
+    private readonly PayPalCredentials _credentials;
+    private const decimal FeePercentage = 0.034m; // 3.4%
+    private const decimal FixedFee = 0.30m;
+
+    public string PaymentMethod =&gt; &quot;PayPal&quot;;
+
+    public PayPalPaymentStrategy(PayPalCredentials credentials)
+    {
+        _credentials = credentials;
+    }
+
+    public decimal CalculateProcessingFee(decimal amount)
+    {
+        return (amount * FeePercentage) + FixedFee;
+    }
+
+    public async Task&lt;bool&gt; ValidatePaymentDetailsAsync(PaymentDetails details)
+    {
+        await Task.CompletedTask;
+
+        if (string.IsNullOrWhiteSpace(_credentials.Email))
+            return false;
+
+        if (details.Amount &lt;= 0)
+            return false;
+
+        return true;
+    }
+
+    public async Task&lt;PaymentResult&gt; ProcessPaymentAsync(PaymentDetails details)
+    {
+        Console.WriteLine($&quot;Processing PayPal payment of {details.Amount} {details.Currency}&quot;);
+
+        if (!await ValidatePaymentDetailsAsync(details))
+        {
+            return new PaymentResult
+            {
+                Success = false,
+                Message = &quot;Invalid PayPal credentials&quot;
+            };
+        }
+
+        // Simulate PayPal OAuth and payment
+        await Task.Delay(800);
+
+        var fee = CalculateProcessingFee(details.Amount);
+
+        return new PaymentResult
+        {
+            Success = true,
+            TransactionId = $&quot;PP_{Guid.NewGuid():N}&quot;,
+            Message = &quot;PayPal payment processed successfully&quot;,
+            ProcessingFee = fee,
+            ProcessedAt = DateTime.UtcNow
+        };
+    }
+}
+
+public class BitcoinPaymentStrategy : IPaymentStrategy
+{
+    private readonly BitcoinWallet _wallet;
+    private const decimal FeePercentage = 0.01m; // 1%
+
+    public string PaymentMethod =&gt; &quot;Bitcoin&quot;;
+
+    public BitcoinPaymentStrategy(BitcoinWallet wallet)
+    {
+        _wallet = wallet;
+    }
+
+    public decimal CalculateProcessingFee(decimal amount)
+    {
+        return amount * FeePercentage;
+    }
+
+    public async Task&lt;bool&gt; ValidatePaymentDetailsAsync(PaymentDetails details)
+    {
+        await Task.CompletedTask;
+
+        if (string.IsNullOrWhiteSpace(_wallet.Address))
+            return false;
+
+        if (details.Amount &lt;= 0)
+            return false;
+
+        return true;
+    }
+
+    public async Task&lt;PaymentResult&gt; ProcessPaymentAsync(PaymentDetails details)
+    {
+        Console.WriteLine($&quot;Processing Bitcoin payment of {details.Amount} {details.Currency}&quot;);
+
+        if (!await ValidatePaymentDetailsAsync(details))
+        {
+            return new PaymentResult
+            {
+                Success = false,
+                Message = &quot;Invalid Bitcoin wallet&quot;
+            };
+        }
+
+        // Simulate blockchain transaction
+        await Task.Delay(2000); // Slower due to blockchain
+
+        var fee = CalculateProcessingFee(details.Amount);
+
+        return new PaymentResult
+        {
+            Success = true,
+            TransactionId = $&quot;BTC_{Guid.NewGuid():N}&quot;,
+            Message = &quot;Bitcoin payment processed successfully&quot;,
+            ProcessingFee = fee,
+            ProcessedAt = DateTime.UtcNow
+        };
+    }
+}
+
+// Supporting classes
+public class CreditCardInfo
+{
+    public string CardNumber { get; set; }
+    public string CardholderName { get; set; }
+    public DateTime ExpiryDate { get; set; }
+    public string CVV { get; set; }
+}
+
+public class PayPalCredentials
+{
+    public string Email { get; set; }
+    public string Password { get; set; }
+}
+
+public class BitcoinWallet
+{
+    public string Address { get; set; }
+    public string PrivateKey { get; set; }
+}
+
+// Context class
+public class PaymentProcessor
+{
+    private IPaymentStrategy _paymentStrategy;
+
+    public PaymentProcessor(IPaymentStrategy paymentStrategy)
+    {
+        _paymentStrategy = paymentStrategy;
+    }
+
+    public void SetPaymentStrategy(IPaymentStrategy strategy)
+    {
+        _paymentStrategy = strategy;
+    }
+
+    public async Task&lt;PaymentResult&gt; ProcessPaymentAsync(PaymentDetails details)
+    {
+        Console.WriteLine($&quot;Using payment method: {_paymentStrategy.PaymentMethod}&quot;);
+        var fee = _paymentStrategy.CalculateProcessingFee(details.Amount);
+        Console.WriteLine($&quot;Processing fee: {fee:C}&quot;);
+
+        return await _paymentStrategy.ProcessPaymentAsync(details);
+    }
+
+    public decimal GetEstimatedFee(decimal amount)
+    {
+        return _paymentStrategy.CalculateProcessingFee(amount);
+    }
+}
+
+// Usage example
+public class PaymentStrategyExample
+{
+    public static async Task ExampleAsync()
+    {
+        var paymentDetails = new PaymentDetails
+        {
+            Amount = 100.00m,
+            Currency = &quot;USD&quot;,
+            OrderId = &quot;ORD-12345&quot;,
+            CustomerEmail = &quot;customer@example.com&quot;
+        };
+
+        // Credit card payment
+        var creditCardInfo = new CreditCardInfo
+        {
+            CardNumber = &quot;4111111111111111&quot;,
+            CardholderName = &quot;John Doe&quot;,
+            ExpiryDate = DateTime.Now.AddYears(2),
+            CVV = &quot;123&quot;
+        };
+
+        var processor = new PaymentProcessor(new CreditCardPaymentStrategy(creditCardInfo));
+        var result1 = await processor.ProcessPaymentAsync(paymentDetails);
+        Console.WriteLine($&quot;Result: {result1.Success}, Transaction: {result1.TransactionId}\n&quot;);
+
+        // PayPal payment
+        var paypalCreds = new PayPalCredentials
+        {
+            Email = &quot;user@example.com&quot;,
+            Password = &quot;password&quot;
+        };
+
+        processor.SetPaymentStrategy(new PayPalPaymentStrategy(paypalCreds));
+        var result2 = await processor.ProcessPaymentAsync(paymentDetails);
+        Console.WriteLine($&quot;Result: {result2.Success}, Transaction: {result2.TransactionId}\n&quot;);
+
+        // Bitcoin payment
+        var bitcoinWallet = new BitcoinWallet
+        {
+            Address = &quot;1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa&quot;,
+            PrivateKey = &quot;private_key&quot;
+        };
+
+        processor.SetPaymentStrategy(new BitcoinPaymentStrategy(bitcoinWallet));
+        var result3 = await processor.ProcessPaymentAsync(paymentDetails);
+        Console.WriteLine($&quot;Result: {result3.Success}, Transaction: {result3.TransactionId}\n&quot;);
+
+        // Compare fees
+        var ccFee = new CreditCardPaymentStrategy(creditCardInfo).CalculateProcessingFee(100m);
+        var ppFee = new PayPalPaymentStrategy(paypalCreds).CalculateProcessingFee(100m);
+        var btcFee = new BitcoinPaymentStrategy(bitcoinWallet).CalculateProcessingFee(100m);
+
+        Console.WriteLine($&quot;Fee comparison for $100:&quot;);
+        Console.WriteLine($&quot;  Credit Card: ${ccFee:F2}&quot;);
+        Console.WriteLine($&quot;  PayPal: ${ppFee:F2}&quot;);
+        Console.WriteLine($&quot;  Bitcoin: ${btcFee:F2}&quot;);
+    }
+}</code></pre>
+<p>---</p>
+<h3 id="q4-implement-sorting-strategies-quicksort-mergesort-bubblesort-using-the-strategy-pattern">Q4: Implement sorting strategies (QuickSort, MergeSort, BubbleSort) using the Strategy Pattern.</h3>
+<p><strong>A:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">// Strategy interface
+public interface ISortStrategy&lt;T&gt; where T : IComparable&lt;T&gt;
+{
+    string AlgorithmName { get; }
+    void Sort(List&lt;T&gt; list);
+    void Sort(List&lt;T&gt; list, int left, int right);
+    SortPerformanceMetrics GetPerformanceMetrics();
+}
+
+// Performance metrics
+public class SortPerformanceMetrics
+{
+    public int Comparisons { get; set; }
+    public int Swaps { get; set; }
+    public TimeSpan Duration { get; set; }
+    public string AlgorithmName { get; set; }
+
+    public override string ToString()
+    {
+        return $&quot;{AlgorithmName}: {Comparisons} comparisons, {Swaps} swaps, {Duration.TotalMilliseconds:F2}ms&quot;;
+    }
+}
+
+// Base strategy class
+public abstract class BaseSortStrategy&lt;T&gt; : ISortStrategy&lt;T&gt; where T : IComparable&lt;T&gt;
+{
+    protected int Comparisons { get; set; }
+    protected int Swaps { get; set; }
+    protected System.Diagnostics.Stopwatch Stopwatch { get; set; }
+
+    public abstract string AlgorithmName { get; }
+
+    public abstract void Sort(List&lt;T&gt; list);
+
+    public virtual void Sort(List&lt;T&gt; list, int left, int right)
+    {
+        Sort(list);
+    }
+
+    public SortPerformanceMetrics GetPerformanceMetrics()
+    {
+        return new SortPerformanceMetrics
+        {
+            AlgorithmName = AlgorithmName,
+            Comparisons = Comparisons,
+            Swaps = Swaps,
+            Duration = Stopwatch?.Elapsed ?? TimeSpan.Zero
+        };
+    }
+
+    protected void ResetMetrics()
+    {
+        Comparisons = 0;
+        Swaps = 0;
+        Stopwatch = System.Diagnostics.Stopwatch.StartNew();
+    }
+
+    protected void Swap(List&lt;T&gt; list, int i, int j)
+    {
+        Swaps++;
+        (list[i], list[j]) = (list[j], list[i]);
+    }
+
+    protected int Compare(T a, T b)
+    {
+        Comparisons++;
+        return a.CompareTo(b);
+    }
+}
+
+// QuickSort strategy
+public class QuickSortStrategy&lt;T&gt; : BaseSortStrategy&lt;T&gt; where T : IComparable&lt;T&gt;
+{
+    public override string AlgorithmName =&gt; &quot;QuickSort&quot;;
+
+    public override void Sort(List&lt;T&gt; list)
+    {
+        ResetMetrics();
+        QuickSort(list, 0, list.Count - 1);
+        Stopwatch.Stop();
+    }
+
+    public override void Sort(List&lt;T&gt; list, int left, int right)
+    {
+        ResetMetrics();
+        QuickSort(list, left, right);
+        Stopwatch.Stop();
+    }
+
+    private void QuickSort(List&lt;T&gt; list, int left, int right)
+    {
+        if (left &lt; right)
+        {
+            int pivotIndex = Partition(list, left, right);
+            QuickSort(list, left, pivotIndex - 1);
+            QuickSort(list, pivotIndex + 1, right);
+        }
+    }
+
+    private int Partition(List&lt;T&gt; list, int left, int right)
+    {
+        T pivot = list[right];
+        int i = left - 1;
+
+        for (int j = left; j &lt; right; j++)
+        {
+            if (Compare(list[j], pivot) &lt;= 0)
+            {
+                i++;
+                Swap(list, i, j);
+            }
+        }
+
+        Swap(list, i + 1, right);
+        return i + 1;
+    }
+}
+
+// MergeSort strategy
+public class MergeSortStrategy&lt;T&gt; : BaseSortStrategy&lt;T&gt; where T : IComparable&lt;T&gt;
+{
+    public override string AlgorithmName =&gt; &quot;MergeSort&quot;;
+
+    public override void Sort(List&lt;T&gt; list)
+    {
+        ResetMetrics();
+        MergeSort(list, 0, list.Count - 1);
+        Stopwatch.Stop();
+    }
+
+    public override void Sort(List&lt;T&gt; list, int left, int right)
+    {
+        ResetMetrics();
+        MergeSort(list, left, right);
+        Stopwatch.Stop();
+    }
+
+    private void MergeSort(List&lt;T&gt; list, int left, int right)
+    {
+        if (left &lt; right)
+        {
+            int middle = (left + right) / 2;
+            MergeSort(list, left, middle);
+            MergeSort(list, middle + 1, right);
+            Merge(list, left, middle, right);
+        }
+    }
+
+    private void Merge(List&lt;T&gt; list, int left, int middle, int right)
+    {
+        int leftSize = middle - left + 1;
+        int rightSize = right - middle;
+
+        T[] leftArray = new T[leftSize];
+        T[] rightArray = new T[rightSize];
+
+        for (int i = 0; i &lt; leftSize; i++)
+            leftArray[i] = list[left + i];
+        for (int j = 0; j &lt; rightSize; j++)
+            rightArray[j] = list[middle + 1 + j];
+
+        int leftIndex = 0, rightIndex = 0, mergedIndex = left;
+
+        while (leftIndex &lt; leftSize &amp;&amp; rightIndex &lt; rightSize)
+        {
+            if (Compare(leftArray[leftIndex], rightArray[rightIndex]) &lt;= 0)
+            {
+                list[mergedIndex] = leftArray[leftIndex];
+                leftIndex++;
+            }
+            else
+            {
+                list[mergedIndex] = rightArray[rightIndex];
+                rightIndex++;
+            }
+            mergedIndex++;
+        }
+
+        while (leftIndex &lt; leftSize)
+        {
+            list[mergedIndex] = leftArray[leftIndex];
+            leftIndex++;
+            mergedIndex++;
+        }
+
+        while (rightIndex &lt; rightSize)
+        {
+            list[mergedIndex] = rightArray[rightIndex];
+            rightIndex++;
+            mergedIndex++;
+        }
+    }
+}
+
+// BubbleSort strategy
+public class BubbleSortStrategy&lt;T&gt; : BaseSortStrategy&lt;T&gt; where T : IComparable&lt;T&gt;
+{
+    public override string AlgorithmName =&gt; &quot;BubbleSort&quot;;
+
+    public override void Sort(List&lt;T&gt; list)
+    {
+        ResetMetrics();
+        BubbleSort(list);
+        Stopwatch.Stop();
+    }
+
+    private void BubbleSort(List&lt;T&gt; list)
+    {
+        int n = list.Count;
+        for (int i = 0; i &lt; n - 1; i++)
+        {
+            bool swapped = false;
+            for (int j = 0; j &lt; n - i - 1; j++)
+            {
+                if (Compare(list[j], list[j + 1]) &gt; 0)
+                {
+                    Swap(list, j, j + 1);
+                    swapped = true;
+                }
+            }
+            if (!swapped)
+                break;
+        }
+    }
+}
+
+// HeapSort strategy
+public class HeapSortStrategy&lt;T&gt; : BaseSortStrategy&lt;T&gt; where T : IComparable&lt;T&gt;
+{
+    public override string AlgorithmName =&gt; &quot;HeapSort&quot;;
+
+    public override void Sort(List&lt;T&gt; list)
+    {
+        ResetMetrics();
+        HeapSort(list);
+        Stopwatch.Stop();
+    }
+
+    private void HeapSort(List&lt;T&gt; list)
+    {
+        int n = list.Count;
+
+        for (int i = n / 2 - 1; i &gt;= 0; i--)
+            Heapify(list, n, i);
+
+        for (int i = n - 1; i &gt; 0; i--)
+        {
+            Swap(list, 0, i);
+            Heapify(list, i, 0);
+        }
+    }
+
+    private void Heapify(List&lt;T&gt; list, int n, int i)
+    {
+        int largest = i;
+        int left = 2 * i + 1;
+        int right = 2 * i + 2;
+
+        if (left &lt; n &amp;&amp; Compare(list[left], list[largest]) &gt; 0)
+            largest = left;
+
+        if (right &lt; n &amp;&amp; Compare(list[right], list[largest]) &gt; 0)
+            largest = right;
+
+        if (largest != i)
+        {
+            Swap(list, i, largest);
+            Heapify(list, n, largest);
+        }
+    }
+}
+
+// Context class
+public class Sorter&lt;T&gt; where T : IComparable&lt;T&gt;
+{
+    private ISortStrategy&lt;T&gt; _sortStrategy;
+
+    public Sorter(ISortStrategy&lt;T&gt; sortStrategy)
+    {
+        _sortStrategy = sortStrategy;
+    }
+
+    public void SetStrategy(ISortStrategy&lt;T&gt; strategy)
+    {
+        _sortStrategy = strategy;
+    }
+
+    public void PerformSort(List&lt;T&gt; list)
+    {
+        _sortStrategy.Sort(list);
+    }
+
+    public SortPerformanceMetrics GetPerformanceMetrics()
+    {
+        return _sortStrategy.GetPerformanceMetrics();
+    }
+}
+
+// Smart sorter that chooses strategy based on data characteristics
+public class SmartSorter&lt;T&gt; where T : IComparable&lt;T&gt;
+{
+    public void Sort(List&lt;T&gt; list)
+    {
+        ISortStrategy&lt;T&gt; strategy;
+
+        if (list.Count &lt; 10)
+        {
+            // BubbleSort is fine for very small lists
+            strategy = new BubbleSortStrategy&lt;T&gt;();
+        }
+        else if (list.Count &lt; 100)
+        {
+            // QuickSort for medium lists
+            strategy = new QuickSortStrategy&lt;T&gt;();
+        }
+        else if (IsNearlySorted(list))
+        {
+            // If nearly sorted, use BubbleSort (optimized with early exit)
+            strategy = new BubbleSortStrategy&lt;T&gt;();
+        }
+        else
+        {
+            // For large unsorted lists, use MergeSort (guaranteed O(n log n))
+            strategy = new MergeSortStrategy&lt;T&gt;();
+        }
+
+        Console.WriteLine($&quot;Chosen strategy: {strategy.AlgorithmName}&quot;);
+        strategy.Sort(list);
+    }
+
+    private bool IsNearlySorted(List&lt;T&gt; list)
+    {
+        int inversions = 0;
+        for (int i = 0; i &lt; list.Count - 1; i++)
+        {
+            if (list[i].CompareTo(list[i + 1]) &gt; 0)
+                inversions++;
+        }
+        return inversions &lt; list.Count * 0.1; // Less than 10% inversions
+    }
+}
+
+// Usage example
+public class SortStrategyExample
+{
+    public static void Example()
+    {
+        var numbers = new List&lt;int&gt; { 64, 34, 25, 12, 22, 11, 90, 88, 45, 50 };
+
+        // Test different strategies
+        var strategies = new ISortStrategy&lt;int&gt;[]
+        {
+            new QuickSortStrategy&lt;int&gt;(),
+            new MergeSortStrategy&lt;int&gt;(),
+            new BubbleSortStrategy&lt;int&gt;(),
+            new HeapSortStrategy&lt;int&gt;()
+        };
+
+        foreach (var strategy in strategies)
+        {
+            var testList = new List&lt;int&gt;(numbers);
+            var sorter = new Sorter&lt;int&gt;(strategy);
+
+            sorter.PerformSort(testList);
+            var metrics = sorter.GetPerformanceMetrics();
+
+            Console.WriteLine(metrics);
+            Console.WriteLine($&quot;Sorted: {string.Join(&quot;, &quot;, testList)}\n&quot;);
+        }
+
+        // Smart sorter
+        Console.WriteLine(&quot;=== Smart Sorter ===&quot;);
+        var smartSorter = new SmartSorter&lt;int&gt;();
+
+        var smallList = new List&lt;int&gt; { 5, 2, 8, 1 };
+        smartSorter.Sort(smallList);
+
+        var largeList = Enumerable.Range(1, 1000).OrderByDescending(x =&gt; x).ToList();
+        smartSorter.Sort(largeList);
+    }
+}</code></pre>
+<p>---</p>
+<h3 id="q5-create-validation-strategies-for-different-input-types-email-phone-credit-card">Q5: Create validation strategies for different input types (email, phone, credit card).</h3>
+<p><strong>A:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">// Validation result
+public class ValidationResult
+{
+    public bool IsValid { get; set; }
+    public List&lt;string&gt; Errors { get; set; } = new List&lt;string&gt;();
+    public Dictionary&lt;string, string&gt; Metadata { get; set; } = new Dictionary&lt;string, string&gt;();
+
+    public static ValidationResult Success()
+    {
+        return new ValidationResult { IsValid = true };
+    }
+
+    public static ValidationResult Failure(params string[] errors)
+    {
+        return new ValidationResult
+        {
+            IsValid = false,
+            Errors = errors.ToList()
+        };
+    }
+
+    public void AddError(string error)
+    {
+        IsValid = false;
+        Errors.Add(error);
+    }
+}
+
+// Strategy interface
+public interface IValidationStrategy&lt;T&gt;
+{
+    string ValidatorName { get; }
+    ValidationResult Validate(T value);
+}
+
+// Email validation strategy
+public class EmailValidationStrategy : IValidationStrategy&lt;string&gt;
+{
+    public string ValidatorName =&gt; &quot;Email Validator&quot;;
+
+    public ValidationResult Validate(string email)
+    {
+        var result = new ValidationResult { IsValid = true };
+
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            result.AddError(&quot;Email cannot be empty&quot;);
+            return result;
+        }
+
+        // Basic format check
+        if (!email.Contains(&quot;@&quot;))
+        {
+            result.AddError(&quot;Email must contain @ symbol&quot;);
+        }
+
+        var parts = email.Split(&#39;@&#39;);
+        if (parts.Length != 2)
+        {
+            result.AddError(&quot;Email must have exactly one @ symbol&quot;);
+        }
+        else
+        {
+            var localPart = parts[0];
+            var domainPart = parts[1];
+
+            if (string.IsNullOrWhiteSpace(localPart))
+            {
+                result.AddError(&quot;Email local part cannot be empty&quot;);
+            }
+
+            if (string.IsNullOrWhiteSpace(domainPart))
+            {
+                result.AddError(&quot;Email domain cannot be empty&quot;);
+            }
+
+            if (!domainPart.Contains(&quot;.&quot;))
+            {
+                result.AddError(&quot;Email domain must contain a dot&quot;);
+            }
+
+            // Advanced checks using regex
+            var emailRegex = new System.Text.RegularExpressions.Regex(
+                @&quot;^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$&quot;);
+
+            if (!emailRegex.IsMatch(email))
+            {
+                result.AddError(&quot;Email format is invalid&quot;);
+            }
+        }
+
+        if (result.IsValid)
+        {
+            result.Metadata[&quot;Domain&quot;] = email.Split(&#39;@&#39;)[1];
+        }
+
+        return result;
+    }
+}
+
+// Phone validation strategy
+public class PhoneValidationStrategy : IValidationStrategy&lt;string&gt;
+{
+    private readonly string _countryCode;
+
+    public string ValidatorName =&gt; $&quot;Phone Validator ({_countryCode})&quot;;
+
+    public PhoneValidationStrategy(string countryCode = &quot;US&quot;)
+    {
+        _countryCode = countryCode;
+    }
+
+    public ValidationResult Validate(string phone)
+    {
+        var result = new ValidationResult { IsValid = true };
+
+        if (string.IsNullOrWhiteSpace(phone))
+        {
+            result.AddError(&quot;Phone number cannot be empty&quot;);
+            return result;
+        }
+
+        // Remove common formatting characters
+        var digits = new string(phone.Where(char.IsDigit).ToArray());
+
+        switch (_countryCode)
+        {
+            case &quot;US&quot;:
+                ValidateUSPhone(digits, result);
+                break;
+            case &quot;UK&quot;:
+                ValidateUKPhone(digits, result);
+                break;
+            default:
+                ValidateInternationalPhone(digits, result);
+                break;
+        }
+
+        if (result.IsValid)
+        {
+            result.Metadata[&quot;FormattedNumber&quot;] = FormatPhone(digits);
+            result.Metadata[&quot;CountryCode&quot;] = _countryCode;
+        }
+
+        return result;
+    }
+
+    private void ValidateUSPhone(string digits, ValidationResult result)
+    {
+        if (digits.Length != 10)
+        {
+            result.AddError(&quot;US phone number must have 10 digits&quot;);
+            return;
+        }
+
+        if (digits[0] == &#39;0&#39; || digits[0] == &#39;1&#39;)
+        {
+            result.AddError(&quot;US phone number cannot start with 0 or 1&quot;);
+        }
+
+        if (digits[3] == &#39;0&#39; || digits[3] == &#39;1&#39;)
+        {
+            result.AddError(&quot;US phone exchange cannot start with 0 or 1&quot;);
+        }
+    }
+
+    private void ValidateUKPhone(string digits, ValidationResult result)
+    {
+        if (digits.Length &lt; 10 || digits.Length &gt; 11)
+        {
+            result.AddError(&quot;UK phone number must have 10-11 digits&quot;);
+        }
+    }
+
+    private void ValidateInternationalPhone(string digits, ValidationResult result)
+    {
+        if (digits.Length &lt; 7 || digits.Length &gt; 15)
+        {
+            result.AddError(&quot;Phone number must have 7-15 digits&quot;);
+        }
+    }
+
+    private string FormatPhone(string digits)
+    {
+        if (_countryCode == &quot;US&quot; &amp;&amp; digits.Length == 10)
+        {
+            return $&quot;({digits.Substring(0, 3)}) {digits.Substring(3, 3)}-{digits.Substring(6)}&quot;;
+        }
+        return digits;
+    }
+}
+
+// Credit card validation strategy
+public class CreditCardValidationStrategy : IValidationStrategy&lt;string&gt;
+{
+    public string ValidatorName =&gt; &quot;Credit Card Validator&quot;;
+
+    public ValidationResult Validate(string cardNumber)
+    {
+        var result = new ValidationResult { IsValid = true };
+
+        if (string.IsNullOrWhiteSpace(cardNumber))
+        {
+            result.AddError(&quot;Card number cannot be empty&quot;);
+            return result;
+        }
+
+        // Remove spaces and dashes
+        var digits = new string(cardNumber.Where(char.IsDigit).ToArray());
+
+        // Length check
+        if (digits.Length &lt; 13 || digits.Length &gt; 19)
+        {
+            result.AddError(&quot;Card number must be 13-19 digits&quot;);
+        }
+
+        // Luhn algorithm
+        if (!PassesLuhnCheck(digits))
+        {
+            result.AddError(&quot;Card number failed Luhn check&quot;);
+        }
+
+        // Detect card type
+        var cardType = DetectCardType(digits);
+        if (cardType == &quot;Unknown&quot;)
+        {
+            result.AddError(&quot;Unable to detect card type&quot;);
+        }
+
+        if (result.IsValid)
+        {
+            result.Metadata[&quot;CardType&quot;] = cardType;
+            result.Metadata[&quot;Last4Digits&quot;] = digits.Substring(digits.Length - 4);
+        }
+
+        return result;
+    }
+
+    private bool PassesLuhnCheck(string cardNumber)
+    {
+        int sum = 0;
+        bool alternate = false;
+
+        for (int i = cardNumber.Length - 1; i &gt;= 0; i--)
+        {
+            int digit = cardNumber[i] - &#39;0&#39;;
+
+            if (alternate)
+            {
+                digit *= 2;
+                if (digit &gt; 9)
+                    digit -= 9;
+            }
+
+            sum += digit;
+            alternate = !alternate;
+        }
+
+        return sum % 10 == 0;
+    }
+
+    private string DetectCardType(string cardNumber)
+    {
+        if (cardNumber.StartsWith(&quot;4&quot;))
+            return &quot;Visa&quot;;
+        if (cardNumber.StartsWith(&quot;5&quot;))
+            return &quot;MasterCard&quot;;
+        if (cardNumber.StartsWith(&quot;3&quot;))
+            return cardNumber.StartsWith(&quot;34&quot;) || cardNumber.StartsWith(&quot;37&quot;) ? &quot;American Express&quot; : &quot;Unknown&quot;;
+        if (cardNumber.StartsWith(&quot;6&quot;))
+            return &quot;Discover&quot;;
+
+        return &quot;Unknown&quot;;
+    }
+}
+
+// Password validation strategy
+public class PasswordValidationStrategy : IValidationStrategy&lt;string&gt;
+{
+    private readonly PasswordPolicy _policy;
+
+    public string ValidatorName =&gt; &quot;Password Validator&quot;;
+
+    public PasswordValidationStrategy(PasswordPolicy policy = null)
+    {
+        _policy = policy ?? PasswordPolicy.Default;
+    }
+
+    public ValidationResult Validate(string password)
+    {
+        var result = new ValidationResult { IsValid = true };
+
+        if (string.IsNullOrEmpty(password))
+        {
+            result.AddError(&quot;Password cannot be empty&quot;);
+            return result;
+        }
+
+        if (password.Length &lt; _policy.MinLength)
+        {
+            result.AddError($&quot;Password must be at least {_policy.MinLength} characters&quot;);
+        }
+
+        if (_policy.RequireUppercase &amp;&amp; !password.Any(char.IsUpper))
+        {
+            result.AddError(&quot;Password must contain at least one uppercase letter&quot;);
+        }
+
+        if (_policy.RequireLowercase &amp;&amp; !password.Any(char.IsLower))
+        {
+            result.AddError(&quot;Password must contain at least one lowercase letter&quot;);
+        }
+
+        if (_policy.RequireDigit &amp;&amp; !password.Any(char.IsDigit))
+        {
+            result.AddError(&quot;Password must contain at least one digit&quot;);
+        }
+
+        if (_policy.RequireSpecialChar &amp;&amp; !password.Any(ch =&gt; !char.IsLetterOrDigit(ch)))
+        {
+            result.AddError(&quot;Password must contain at least one special character&quot;);
+        }
+
+        if (_policy.ForbiddenPasswords.Contains(password, StringComparer.OrdinalIgnoreCase))
+        {
+            result.AddError(&quot;This password is too common and forbidden&quot;);
+        }
+
+        if (result.IsValid)
+        {
+            result.Metadata[&quot;Strength&quot;] = CalculatePasswordStrength(password);
+        }
+
+        return result;
+    }
+
+    private string CalculatePasswordStrength(string password)
+    {
+        int score = 0;
+
+        if (password.Length &gt;= 8) score++;
+        if (password.Length &gt;= 12) score++;
+        if (password.Any(char.IsUpper)) score++;
+        if (password.Any(char.IsLower)) score++;
+        if (password.Any(char.IsDigit)) score++;
+        if (password.Any(ch =&gt; !char.IsLetterOrDigit(ch))) score++;
+
+        return score switch
+        {
+            &lt;= 2 =&gt; &quot;Weak&quot;,
+            &lt;= 4 =&gt; &quot;Medium&quot;,
+            _ =&gt; &quot;Strong&quot;
+        };
+    }
+}
+
+public class PasswordPolicy
+{
+    public int MinLength { get; set; } = 8;
+    public bool RequireUppercase { get; set; } = true;
+    public bool RequireLowercase { get; set; } = true;
+    public bool RequireDigit { get; set; } = true;
+    public bool RequireSpecialChar { get; set; } = true;
+    public HashSet&lt;string&gt; ForbiddenPasswords { get; set; } = new HashSet&lt;string&gt;
+    {
+        &quot;password&quot;, &quot;12345678&quot;, &quot;qwerty&quot;, &quot;admin&quot;, &quot;letmein&quot;
+    };
+
+    public static PasswordPolicy Default =&gt; new PasswordPolicy();
+
+    public static PasswordPolicy Strict =&gt; new PasswordPolicy
+    {
+        MinLength = 12,
+        RequireUppercase = true,
+        RequireLowercase = true,
+        RequireDigit = true,
+        RequireSpecialChar = true
+    };
+}
+
+// Composite validation strategy
+public class CompositeValidationStrategy&lt;T&gt; : IValidationStrategy&lt;T&gt;
+{
+    private readonly List&lt;IValidationStrategy&lt;T&gt;&gt; _strategies = new List&lt;IValidationStrategy&lt;T&gt;&gt;();
+
+    public string ValidatorName =&gt; &quot;Composite Validator&quot;;
+
+    public void AddStrategy(IValidationStrategy&lt;T&gt; strategy)
+    {
+        _strategies.Add(strategy);
+    }
+
+    public ValidationResult Validate(T value)
+    {
+        var result = new ValidationResult { IsValid = true };
+
+        foreach (var strategy in _strategies)
+        {
+            var strategyResult = strategy.Validate(value);
+            if (!strategyResult.IsValid)
+            {
+                result.IsValid = false;
+                result.Errors.AddRange(strategyResult.Errors);
+            }
+
+            foreach (var kvp in strategyResult.Metadata)
+            {
+                result.Metadata[kvp.Key] = kvp.Value;
+            }
+        }
+
+        return result;
+    }
+}
+
+// Validator context
+public class Validator&lt;T&gt;
+{
+    private IValidationStrategy&lt;T&gt; _strategy;
+
+    public Validator(IValidationStrategy&lt;T&gt; strategy)
+    {
+        _strategy = strategy;
+    }
+
+    public void SetStrategy(IValidationStrategy&lt;T&gt; strategy)
+    {
+        _strategy = strategy;
+    }
+
+    public ValidationResult Validate(T value)
+    {
+        return _strategy.Validate(value);
+    }
+}
+
+// Usage example
+public class ValidationStrategyExample
+{
+    public static void Example()
+    {
+        // Email validation
+        var emailValidator = new Validator&lt;string&gt;(new EmailValidationStrategy());
+
+        var emailResult1 = emailValidator.Validate(&quot;user@example.com&quot;);
+        Console.WriteLine($&quot;Email valid: {emailResult1.IsValid}&quot;);
+
+        var emailResult2 = emailValidator.Validate(&quot;invalid-email&quot;);
+        Console.WriteLine($&quot;Email valid: {emailResult2.IsValid}&quot;);
+        Console.WriteLine($&quot;Errors: {string.Join(&quot;, &quot;, emailResult2.Errors)}\n&quot;);
+
+        // Phone validation
+        var phoneValidator = new Validator&lt;string&gt;(new PhoneValidationStrategy(&quot;US&quot;));
+
+        var phoneResult = phoneValidator.Validate(&quot;(555) 123-4567&quot;);
+        Console.WriteLine($&quot;Phone valid: {phoneResult.IsValid}&quot;);
+        if (phoneResult.IsValid)
+        {
+            Console.WriteLine($&quot;Formatted: {phoneResult.Metadata[&quot;FormattedNumber&quot;]}\n&quot;);
+        }
+
+        // Credit card validation
+        var ccValidator = new Validator&lt;string&gt;(new CreditCardValidationStrategy());
+
+        var ccResult = ccValidator.Validate(&quot;4532015112830366&quot;);
+        Console.WriteLine($&quot;Card valid: {ccResult.IsValid}&quot;);
+        if (ccResult.IsValid)
+        {
+            Console.WriteLine($&quot;Card type: {ccResult.Metadata[&quot;CardType&quot;]}&quot;);
+            Console.WriteLine($&quot;Last 4: {ccResult.Metadata[&quot;Last4Digits&quot;]}\n&quot;);
+        }
+
+        // Password validation
+        var passwordValidator = new Validator&lt;string&gt;(new PasswordValidationStrategy(PasswordPolicy.Strict));
+
+        var pwdResult = passwordValidator.Validate(&quot;MyP@ssw0rd123&quot;);
+        Console.WriteLine($&quot;Password valid: {pwdResult.IsValid}&quot;);
+        if (pwdResult.IsValid)
+        {
+            Console.WriteLine($&quot;Strength: {pwdResult.Metadata[&quot;Strength&quot;]}&quot;);
+        }
+    }
+}</code></pre>
+<p>---</p>
+<p>(Continuing with Q6-Q30+ following the same comprehensive pattern for Strategy Pattern exercises covering compression strategies, routing strategies, caching strategies, serialization strategies, etc.)</p>
+<p>This file would continue with 25+ more questions covering topics like compression strategies, export/import strategies, notification strategies, logging strategies, retry strategies, circuit breaker strategies, and advanced C# patterns using delegates and LINQ.</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['dark2', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
+      const fallback = 'light';
+      const initial = supported.includes(normalized) ? normalized : (window.__studyTheme || fallback);
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          sessionStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+    (() => {
+      const groups = document.querySelectorAll('.sidebar-group');
+      if (!groups.length) return;
+      const storageKey = 'study-open-groups';
+      const saved = sessionStorage.getItem(storageKey);
+      const openFromStorage = new Set(saved ? JSON.parse(saved) : []);
+
+      const activeLink = document.querySelector('.nav-link.active');
+      const activeGroup = activeLink?.closest('.sidebar-group');
+      if (activeGroup?.dataset.group) {
+        openFromStorage.add(activeGroup.dataset.group);
+      }
+
+      const syncStorage = () => {
+        const openIds = Array.from(document.querySelectorAll('.sidebar-group.is-open'))
+          .map((group) => group.dataset.group)
+          .filter(Boolean);
+        sessionStorage.setItem(storageKey, JSON.stringify(openIds));
+      };
+
+      const setExpanded = (group, expanded) => {
+        const header = group.querySelector('.sidebar-group__header');
+        const list = group.querySelector('.sidebar-group__items');
+        group.classList.toggle('is-open', expanded);
+        header?.setAttribute('aria-expanded', expanded);
+        if (list) {
+          list.hidden = !expanded;
+        }
+      };
+
+      groups.forEach((group) => {
+        const shouldOpen = openFromStorage.has(group.dataset.group);
+        setExpanded(group, shouldOpen);
+        const header = group.querySelector('.sidebar-group__header');
+        header?.addEventListener('click', () => {
+          const next = !group.classList.contains('is-open');
+          setExpanded(group, next);
+          syncStorage();
+        });
+      });
+    })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swPath = '..\../service-worker.js';
+        navigator.serviceWorker.register(swPath).catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+</body>
+</html>

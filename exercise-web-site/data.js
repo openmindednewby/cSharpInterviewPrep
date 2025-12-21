@@ -1,8 +1,388 @@
 // Auto-generated practice Q&A data from practice/ folder
-// Generated on: 2025-12-20T22:40:59.083Z
-// Total cards: 244 Q&A
+// Generated on: 2025-12-21T09:34:28.337Z
+// Total cards: 303 Q&A
 
 window.PRACTICE_DATA = [
+  {
+    "question": "Sketch code to call three REST endpoints concurrently, cancel if any take longer than 3 seconds, and aggregate results.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use Task.WhenAll with CancellationTokenSource + timeout. Ensure the HttpClient is a singleton to avoid socket exhaustion and that partial results are handled gracefully when cancellation occurs."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3));\nvar tasks = endpoints.Select(url => httpClient.GetStringAsync(url, cts.Token));\nstring[] responses = await Task.WhenAll(tasks);",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Async Await Exercises",
+    "topicId": "async-await-exercises",
+    "source": "practice/advanced-topics/async-await-exercises.md",
+    "id": "card-1"
+  },
+  {
+    "question": "Implement a resilient HTTP client with retry and circuit breaker policies using Polly.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Define policies and wrap HTTP calls."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var policy = Policy.WrapAsync(\n    Policy.Handle<HttpRequestException>()\n          .OrResult<HttpResponseMessage>(r => (int)r.StatusCode >= 500)\n          .WaitAndRetryAsync(3, attempt => TimeSpan.FromMilliseconds(200 * attempt)),\n    Policy.Handle<HttpRequestException>()\n          .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30))\n);\n\nvar response = await policy.ExecuteAsync(() => httpClient.SendAsync(request));",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Async Await Exercises",
+    "topicId": "async-await-exercises",
+    "source": "practice/advanced-topics/async-await-exercises.md",
+    "id": "card-2"
+  },
+  {
+    "question": "How would you handle backpressure when consuming a fast message queue with a slower downstream API?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use bounded channels, buffering, or throttling. Consider load shedding by dropping low-priority messages or scaling consumers horizontally when queue lengths grow."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var channel = Channel.CreateBounded<Message>(new BoundedChannelOptions(100)\n{\n    FullMode = BoundedChannelFullMode.Wait\n});\n\n// Producer\n_ = Task.Run(async () =>\n{\n    await foreach (var msg in source.ReadAllAsync())\n        await channel.Writer.WriteAsync(msg);\n});\n\n// Consumer\nawait foreach (var msg in channel.Reader.ReadAllAsync())\n{\n    await ProcessAsync(msg);\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Async Await Exercises",
+    "topicId": "async-await-exercises",
+    "source": "practice/advanced-topics/async-await-exercises.md",
+    "id": "card-3"
+  },
+  {
+    "question": "Explain why you might use SemaphoreSlim with async code over lock.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "SemaphoreSlim supports async waiting and throttling concurrency. It can represent both mutual exclusion (1 permit) and limited resource pools (>1 permits)."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "private readonly SemaphoreSlim _mutex = new(1, 1);\n\npublic async Task UseSharedAsync()\n{\n    await _mutex.WaitAsync();\n    try { await SharedAsyncOperation(); }\n    finally { _mutex.Release(); }\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Async Await Exercises",
+    "topicId": "async-await-exercises",
+    "source": "practice/advanced-topics/async-await-exercises.md",
+    "id": "card-4"
+  },
+  {
+    "question": "Implement an async method that times out after a specified duration and returns a default value.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use Task.WhenAny with a delay task or CancellationTokenSource."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public static async Task<T> WithTimeout<T>(\n    Task<T> task,\n    TimeSpan timeout,\n    T defaultValue = default)\n{\n    using var cts = new CancellationTokenSource(timeout);\n    try\n    {\n        return await task.WaitAsync(timeout);  // .NET 6+\n    }\n    catch (TimeoutException)\n    {\n        return defaultValue;\n    }\n}\n\n// Pre-.NET 6 approach\npublic static async Task<T> WithTimeoutClassic<T>(\n    Task<T> task,\n    TimeSpan timeout,\n    T defaultValue = default)\n{\n    var delayTask = Task.Delay(timeout);\n    var completedTask = await Task.WhenAny(task, delayTask);\n\n    if (completedTask == delayTask)\n        return defaultValue;\n\n    return await task;\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Async Await Exercises",
+    "topicId": "async-await-exercises",
+    "source": "practice/advanced-topics/async-await-exercises.md",
+    "id": "card-5"
+  },
+  {
+    "question": "Create a method that retries an operation with exponential backoff.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Implement retry logic with increasing delays."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public static async Task<T> RetryWithBackoff<T>(\n    Func<Task<T>> operation,\n    int maxRetries = 3,\n    int initialDelayMs = 100)\n{\n    for (int attempt = 0; attempt < maxRetries; attempt++)\n    {\n        try\n        {\n            return await operation();\n        }\n        catch (Exception ex) when (attempt < maxRetries - 1)\n        {\n            var delay = initialDelayMs * Math.Pow(2, attempt);\n            await Task.Delay((int)delay);\n        }\n    }\n\n    // Last attempt without catching\n    return await operation();\n}\n\n// Usage\nvar result = await RetryWithBackoff(\n    () => httpClient.GetStringAsync(\"https://api.example.com/data\"),\n    maxRetries: 5,\n    initialDelayMs: 200\n);",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Async Await Exercises",
+    "topicId": "async-await-exercises",
+    "source": "practice/advanced-topics/async-await-exercises.md",
+    "id": "card-6"
+  },
+  {
+    "question": "Implement a method that processes items in batches with a maximum degree of parallelism.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use SemaphoreSlim to limit concurrency or Parallel.ForEachAsync."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "// Using SemaphoreSlim\npublic static async Task ProcessInParallel<T>(\n    IEnumerable<T> items,\n    Func<T, Task> processor,\n    int maxDegreeOfParallelism)\n{\n    using var semaphore = new SemaphoreSlim(maxDegreeOfParallelism);\n    var tasks = items.Select(async item =>\n    {\n        await semaphore.WaitAsync();\n        try\n        {\n            await processor(item);\n        }\n        finally\n        {\n            semaphore.Release();\n        }\n    });\n\n    await Task.WhenAll(tasks);\n}\n\n// Using Parallel.ForEachAsync (.NET 6+)\npublic static async Task ProcessInParallelModern<T>(\n    IEnumerable<T> items,\n    Func<T, CancellationToken, ValueTask> processor,\n    int maxDegreeOfParallelism)\n{\n    var options = new ParallelOptions\n    {\n        MaxDegreeOfParallelism = maxDegreeOfParallelism\n    };\n\n    await Parallel.ForEachAsync(items, options, processor);\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Async Await Exercises",
+    "topicId": "async-await-exercises",
+    "source": "practice/advanced-topics/async-await-exercises.md",
+    "id": "card-7"
+  },
+  {
+    "question": "Create an async producer-consumer pattern using Channel<T>.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Implement coordinated producer and consumer tasks."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public class AsyncProducerConsumer<T>\n{\n    private readonly Channel<T> _channel;\n\n    public AsyncProducerConsumer(int capacity)\n    {\n        _channel = Channel.CreateBounded<T>(capacity);\n    }\n\n    public async Task ProduceAsync(IAsyncEnumerable<T> items)\n    {\n        await foreach (var item in items)\n        {\n            await _channel.Writer.WriteAsync(item);\n        }\n        _channel.Writer.Complete();\n    }\n\n    public async Task ConsumeAsync(\n        Func<T, Task> processor,\n        CancellationToken cancellationToken = default)\n    {\n        await foreach (var item in _channel.Reader.ReadAllAsync(cancellationToken))\n        {\n            await processor(item);\n        }\n    }\n\n    public async Task RunAsync(\n        IAsyncEnumerable<T> items,\n        Func<T, Task> processor,\n        CancellationToken cancellationToken = default)\n    {\n        var produceTask = ProduceAsync(items);\n        var consumeTask = ConsumeAsync(processor, cancellationToken);\n\n        await Task.WhenAll(produceTask, consumeTask);\n    }\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Async Await Exercises",
+    "topicId": "async-await-exercises",
+    "source": "practice/advanced-topics/async-await-exercises.md",
+    "id": "card-8"
+  },
+  {
+    "question": "Implement proper cancellation handling in an async method that makes multiple API calls.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Check cancellation token at strategic points and pass it through."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public async Task<OrderResult> ProcessOrderAsync(\n    Order order,\n    CancellationToken cancellationToken)\n{\n    cancellationToken.ThrowIfCancellationRequested();\n\n    // Step 1: Validate\n    var validation = await ValidateOrderAsync(order, cancellationToken);\n    if (!validation.IsValid)\n        return OrderResult.Failed(validation.Errors);\n\n    cancellationToken.ThrowIfCancellationRequested();\n\n    // Step 2: Reserve inventory\n    var reservation = await ReserveInventoryAsync(order, cancellationToken);\n\n    cancellationToken.ThrowIfCancellationRequested();\n\n    // Step 3: Process payment\n    try\n    {\n        var payment = await ProcessPaymentAsync(order, cancellationToken);\n        return OrderResult.Success(payment.TransactionId);\n    }\n    catch (OperationCanceledException)\n    {\n        // Rollback reservation\n        await ReleaseInventoryAsync(reservation, CancellationToken.None);\n        throw;\n    }\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Async Await Exercises",
+    "topicId": "async-await-exercises",
+    "source": "practice/advanced-topics/async-await-exercises.md",
+    "id": "card-9"
+  },
+  {
+    "question": "Implement an async lazy initialization pattern that ensures a resource is initialized only once.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use Lazy<Task<T>> or custom lazy initialization."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public class AsyncLazy<T>\n{\n    private readonly Lazy<Task<T>> _instance;\n\n    public AsyncLazy(Func<Task<T>> factory)\n    {\n        _instance = new Lazy<Task<T>>(factory);\n    }\n\n    public Task<T> Value => _instance.Value;\n}\n\n// Usage\nprivate readonly AsyncLazy<DatabaseConnection> _connection;\n\npublic MyService()\n{\n    _connection = new AsyncLazy<DatabaseConnection>(\n        async () => await DatabaseConnection.ConnectAsync());\n}\n\npublic async Task<Data> GetDataAsync()\n{\n    var conn = await _connection.Value;\n    return await conn.QueryAsync(\"SELECT * FROM Data\");\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Async Await Exercises",
+    "topicId": "async-await-exercises",
+    "source": "practice/advanced-topics/async-await-exercises.md",
+    "id": "card-10"
+  },
+  {
+    "question": "Create a rate limiter using SemaphoreSlim and Timer for token bucket algorithm.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Implement token bucket pattern with async semaphore."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public class RateLimiter : IDisposable\n{\n    private readonly SemaphoreSlim _semaphore;\n    private readonly Timer _timer;\n    private readonly int _maxTokens;\n    private readonly TimeSpan _refillInterval;\n\n    public RateLimiter(int maxTokens, TimeSpan refillInterval)\n    {\n        _maxTokens = maxTokens;\n        _refillInterval = refillInterval;\n        _semaphore = new SemaphoreSlim(maxTokens, maxTokens);\n        _timer = new Timer(RefillTokens, null, refillInterval, refillInterval);\n    }\n\n    private void RefillTokens(object state)\n    {\n        // Add tokens up to max\n        if (_semaphore.CurrentCount < _maxTokens)\n        {\n            _semaphore.Release();\n        }\n    }\n\n    public async Task<bool> TryAcquireAsync(\n        TimeSpan timeout,\n        CancellationToken cancellationToken = default)\n    {\n        return await _semaphore.WaitAsync(timeout, cancellationToken);\n    }\n\n    public void Dispose()\n    {\n        _timer?.Dispose();\n        _semaphore?.Dispose();\n    }\n}\n\n// Usage\nvar rateLimiter = new RateLimiter(maxTokens: 10, TimeSpan.FromSeconds(1));\nif (await rateLimiter.TryAcquireAsync(TimeSpan.FromMilliseconds(100)))\n{\n    await MakeApiCallAsync();\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Async Await Exercises",
+    "topicId": "async-await-exercises",
+    "source": "practice/advanced-topics/async-await-exercises.md",
+    "id": "card-11"
+  },
+  {
+    "question": "Implement async dispose pattern (IAsyncDisposable) for a resource that requires async cleanup.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Implement IAsyncDisposable interface."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public class AsyncResource : IAsyncDisposable\n{\n    private readonly HttpClient _httpClient;\n    private readonly Stream _stream;\n    private bool _disposed;\n\n    public AsyncResource()\n    {\n        _httpClient = new HttpClient();\n        _stream = new MemoryStream();\n    }\n\n    public async ValueTask DisposeAsync()\n    {\n        if (_disposed) return;\n\n        await DisposeAsyncCore();\n\n        Dispose(disposing: false);\n        GC.SuppressFinalize(this);\n\n        _disposed = true;\n    }\n\n    protected virtual async ValueTask DisposeAsyncCore()\n    {\n        // Async cleanup\n        if (_stream != null)\n        {\n            await _stream.FlushAsync();\n            await _stream.DisposeAsync();\n        }\n    }\n\n    protected virtual void Dispose(bool disposing)\n    {\n        if (disposing)\n        {\n            _httpClient?.Dispose();\n        }\n    }\n}\n\n// Usage\nawait using var resource = new AsyncResource();",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Async Await Exercises",
+    "topicId": "async-await-exercises",
+    "source": "practice/advanced-topics/async-await-exercises.md",
+    "id": "card-12"
+  },
+  {
+    "question": "Create a circuit breaker implementation from scratch.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Implement state machine for circuit breaker pattern."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public class CircuitBreaker\n{\n    private enum State { Closed, Open, HalfOpen }\n\n    private State _state = State.Closed;\n    private int _failureCount;\n    private DateTime _lastFailureTime;\n\n    private readonly int _failureThreshold;\n    private readonly TimeSpan _timeout;\n    private readonly SemaphoreSlim _lock = new(1, 1);\n\n    public CircuitBreaker(int failureThreshold, TimeSpan timeout)\n    {\n        _failureThreshold = failureThreshold;\n        _timeout = timeout;\n    }\n\n    public async Task<T> ExecuteAsync<T>(Func<Task<T>> operation)\n    {\n        await _lock.WaitAsync();\n        try\n        {\n            // Check if we should transition from Open to HalfOpen\n            if (_state == State.Open &&\n                DateTime.UtcNow - _lastFailureTime >= _timeout)\n            {\n                _state = State.HalfOpen;\n            }\n\n            if (_state == State.Open)\n            {\n                throw new CircuitBreakerOpenException(\n                    \"Circuit breaker is open\");\n            }\n        }\n        finally\n        {\n            _lock.Release();\n        }\n\n        try\n        {\n            var result = await operation();\n\n            // Success - reset if in HalfOpen\n            if (_state == State.HalfOpen)\n            {\n                await ResetAsync();\n            }\n\n            return result;\n        }\n        catch (Exception ex)\n        {\n            await RecordFailureAsync(ex);\n            throw;\n        }\n    }\n\n    private async Task RecordFailureAsync(Exception ex)\n    {\n        await _lock.WaitAsync();\n        try\n        {\n            _failureCount++;\n            _lastFailureTime = DateTime.UtcNow;\n\n            if (_failureCount >= _failureThreshold)\n            {\n                _state = State.Open;\n            }\n        }\n        finally\n        {\n            _lock.Release();\n        }\n    }\n\n    private async Task ResetAsync()\n    {\n        await _lock.WaitAsync();\n        try\n        {\n            _failureCount = 0;\n            _state = State.Closed;\n        }\n        finally\n        {\n            _lock.Release();\n        }\n    }\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Async Await Exercises",
+    "topicId": "async-await-exercises",
+    "source": "practice/advanced-topics/async-await-exercises.md",
+    "id": "card-13"
+  },
+  {
+    "question": "Implement a parallel batch processor that maintains order of results.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Process in parallel but preserve order."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public static async Task<List<TResult>> ProcessInOrderAsync<TSource, TResult>(\n    IEnumerable<TSource> items,\n    Func<TSource, Task<TResult>> processor,\n    int maxDegreeOfParallelism)\n{\n    var semaphore = new SemaphoreSlim(maxDegreeOfParallelism);\n    var tasks = items.Select(async (item, index) =>\n    {\n        await semaphore.WaitAsync();\n        try\n        {\n            var result = await processor(item);\n            return (Index: index, Result: result);\n        }\n        finally\n        {\n            semaphore.Release();\n        }\n    });\n\n    var results = await Task.WhenAll(tasks);\n\n    return results\n        .OrderBy(x => x.Index)\n        .Select(x => x.Result)\n        .ToList();\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Async Await Exercises",
+    "topicId": "async-await-exercises",
+    "source": "practice/advanced-topics/async-await-exercises.md",
+    "id": "card-14"
+  },
+  {
+    "question": "Implement a fan-out/fan-in pattern where multiple workers process items and results are aggregated.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Distribute work and collect results."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public async Task<Summary> FanOutFanIn<T>(\n    IEnumerable<T> items,\n    Func<T, Task<Result>> processor)\n{\n    var channel = Channel.CreateUnbounded<Result>();\n\n    // Fan-out: Start workers\n    var workers = Enumerable.Range(0, Environment.ProcessorCount)\n        .Select(i => Task.Run(async () =>\n        {\n            await foreach (var item in GetWorkItems(items, i))\n            {\n                var result = await processor(item);\n                await channel.Writer.WriteAsync(result);\n            }\n        }))\n        .ToArray();\n\n    // Signal completion\n    _ = Task.Run(async () =>\n    {\n        await Task.WhenAll(workers);\n        channel.Writer.Complete();\n    });\n\n    // Fan-in: Aggregate results\n    var summary = new Summary();\n    await foreach (var result in channel.Reader.ReadAllAsync())\n    {\n        summary.Add(result);\n    }\n\n    return summary;\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Async Await Exercises",
+    "topicId": "async-await-exercises",
+    "source": "practice/advanced-topics/async-await-exercises.md",
+    "id": "card-15"
+  },
+  {
+    "question": "Create a coordinated shutdown mechanism for multiple background tasks.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Implement graceful shutdown with cancellation."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public class BackgroundWorkerCoordinator : IDisposable\n{\n    private readonly List<Task> _workers = new();\n    private readonly CancellationTokenSource _cts = new();\n\n    public void Start(Func<CancellationToken, Task> workerFactory, int workerCount)\n    {\n        for (int i = 0; i < workerCount; i++)\n        {\n            var worker = Task.Run(() => workerFactory(_cts.Token));\n            _workers.Add(worker);\n        }\n    }\n\n    public async Task StopAsync(TimeSpan gracePeriod)\n    {\n        // Signal cancellation\n        _cts.Cancel();\n\n        // Wait for graceful shutdown\n        var shutdownTask = Task.WhenAll(_workers);\n        var timeoutTask = Task.Delay(gracePeriod);\n\n        var completedTask = await Task.WhenAny(shutdownTask, timeoutTask);\n\n        if (completedTask == timeoutTask)\n        {\n            // Forced shutdown after timeout\n            throw new TimeoutException(\"Workers did not complete in time\");\n        }\n\n        await shutdownTask;  // Propagate exceptions\n    }\n\n    public void Dispose()\n    {\n        _cts?.Cancel();\n        _cts?.Dispose();\n    }\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Async Await Exercises",
+    "topicId": "async-await-exercises",
+    "source": "practice/advanced-topics/async-await-exercises.md",
+    "id": "card-16"
+  },
+  {
+    "question": "Implement async event aggregation that batches events before processing.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Buffer events and process in batches."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public class EventBatcher<T>\n{\n    private readonly Channel<T> _channel;\n    private readonly int _batchSize;\n    private readonly TimeSpan _batchTimeout;\n\n    public EventBatcher(int batchSize, TimeSpan batchTimeout)\n    {\n        _channel = Channel.CreateUnbounded<T>();\n        _batchSize = batchSize;\n        _batchTimeout = batchTimeout;\n    }\n\n    public async Task AddAsync(T item)\n    {\n        await _channel.Writer.WriteAsync(item);\n    }\n\n    public async Task ProcessAsync(\n        Func<List<T>, Task> batchProcessor,\n        CancellationToken cancellationToken)\n    {\n        var batch = new List<T>(_batchSize);\n        using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);\n\n        while (!cancellationToken.IsCancellationRequested)\n        {\n            try\n            {\n                // Wait for first item or cancellation\n                var item = await _channel.Reader.ReadAsync(cancellationToken);\n                batch.Add(item);\n\n                // Collect more items until batch full or timeout\n                using var timeoutCts = new CancellationTokenSource(_batchTimeout);\n                while (batch.Count < _batchSize &&\n                       _channel.Reader.TryRead(out var nextItem))\n                {\n                    batch.Add(nextItem);\n                }\n\n                // Process batch\n                await batchProcessor(batch);\n                batch.Clear();\n            }\n            catch (OperationCanceledException)\n            {\n                break;\n            }\n        }\n\n        // Process remaining items\n        if (batch.Any())\n        {\n            await batchProcessor(batch);\n        }\n    }\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Async Await Exercises",
+    "topicId": "async-await-exercises",
+    "source": "practice/advanced-topics/async-await-exercises.md",
+    "id": "card-17"
+  },
+  {
+    "question": "Implement a bulkhead pattern to isolate failures.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Separate resource pools for different operations."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public class Bulkhead\n{\n    private readonly SemaphoreSlim _semaphore;\n    private readonly int _maxConcurrent;\n\n    public Bulkhead(int maxConcurrent)\n    {\n        _maxConcurrent = maxConcurrent;\n        _semaphore = new SemaphoreSlim(maxConcurrent);\n    }\n\n    public async Task<T> ExecuteAsync<T>(\n        Func<Task<T>> operation,\n        TimeSpan? timeout = null)\n    {\n        var acquired = await _semaphore.WaitAsync(timeout ?? Timeout.InfiniteTimeSpan);\n        if (!acquired)\n        {\n            throw new BulkheadRejectedException(\n                $\"Bulkhead full: {_maxConcurrent} concurrent executions\");\n        }\n\n        try\n        {\n            return await operation();\n        }\n        finally\n        {\n            _semaphore.Release();\n        }\n    }\n\n    public int AvailableSlots => _semaphore.CurrentCount;\n}\n\n// Usage: Separate bulkheads for different services\nvar criticalServiceBulkhead = new Bulkhead(10);\nvar nonCriticalServiceBulkhead = new Bulkhead(5);",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Async Await Exercises",
+    "topicId": "async-await-exercises",
+    "source": "practice/advanced-topics/async-await-exercises.md",
+    "id": "card-18"
+  },
+  {
+    "question": "Create a fallback mechanism that returns cached data when an API call fails.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Implement cache-aside pattern with fallback."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public class ResilientDataService\n{\n    private readonly HttpClient _httpClient;\n    private readonly IMemoryCache _cache;\n\n    public async Task<Data> GetDataAsync(string key)\n    {\n        // Try cache first\n        if (_cache.TryGetValue(key, out Data cachedData))\n        {\n            return cachedData;\n        }\n\n        try\n        {\n            // Try API\n            var data = await _httpClient.GetFromJsonAsync<Data>($\"/api/data/{key}\");\n\n            // Update cache\n            _cache.Set(key, data, TimeSpan.FromMinutes(5));\n\n            return data;\n        }\n        catch (HttpRequestException ex)\n        {\n            // Fallback to stale cache if available\n            if (_cache.TryGetValue($\"stale_{key}\", out Data staleData))\n            {\n                return staleData;\n            }\n\n            throw;\n        }\n    }\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Async Await Exercises",
+    "topicId": "async-await-exercises",
+    "source": "practice/advanced-topics/async-await-exercises.md",
+    "id": "card-19"
+  },
   {
     "question": "Describe the ASP.NET Core middleware pipeline for a request hitting an authenticated endpoint with custom exception handling.",
     "answer": [
@@ -21,7 +401,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/api-lifecycle.md",
-    "id": "card-1"
+    "id": "card-20"
   },
   {
     "question": "How do you implement API versioning and backward compatibility?",
@@ -41,7 +421,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/api-lifecycle.md",
-    "id": "card-2"
+    "id": "card-21"
   },
   {
     "question": "Discuss strategies for rate limiting and request throttling.",
@@ -61,7 +441,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/api-lifecycle.md",
-    "id": "card-3"
+    "id": "card-22"
   },
   {
     "question": "How would you log correlation IDs across services and propagate them to downstream dependencies?",
@@ -81,7 +461,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/api-lifecycle.md",
-    "id": "card-4"
+    "id": "card-23"
   },
   {
     "question": "Explain the difference between Transient, Scoped, and Singleton dependency injection lifetimes.",
@@ -101,7 +481,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/api-lifecycle.md",
-    "id": "card-5"
+    "id": "card-24"
   },
   {
     "question": "Create custom middleware that validates API keys from request headers.",
@@ -121,7 +501,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/api-lifecycle.md",
-    "id": "card-6"
+    "id": "card-25"
   },
   {
     "question": "Implement global exception handling middleware that returns consistent error responses.",
@@ -141,7 +521,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/api-lifecycle.md",
-    "id": "card-7"
+    "id": "card-26"
   },
   {
     "question": "Design a health check endpoint that verifies database connectivity, external API availability, and cache status.",
@@ -161,7 +541,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/api-lifecycle.md",
-    "id": "card-8"
+    "id": "card-27"
   },
   {
     "question": "Implement request/response logging middleware with performance tracking.",
@@ -181,7 +561,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/api-lifecycle.md",
-    "id": "card-9"
+    "id": "card-28"
   },
   {
     "question": "Create a minimal API health endpoint with dependency injection.",
@@ -201,7 +581,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/api-lifecycle.md",
-    "id": "card-10"
+    "id": "card-29"
   },
   {
     "question": "Implement middleware that enforces request size limits and prevents large payload attacks.",
@@ -221,7 +601,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/api-lifecycle.md",
-    "id": "card-11"
+    "id": "card-30"
   },
   {
     "question": "Design a dependency injection container configuration that uses factory patterns for complex object creation.",
@@ -241,7 +621,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/api-lifecycle.md",
-    "id": "card-12"
+    "id": "card-31"
   },
   {
     "question": "Implement multi-tenant support using scoped service provider per tenant.",
@@ -261,7 +641,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/api-lifecycle.md",
-    "id": "card-13"
+    "id": "card-32"
   },
   {
     "question": "Create request validation middleware using FluentValidation.",
@@ -281,7 +661,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/api-lifecycle.md",
-    "id": "card-14"
+    "id": "card-33"
   },
   {
     "question": "Implement authentication with multiple schemes (JWT + API Key).",
@@ -301,7 +681,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/api-lifecycle.md",
-    "id": "card-15"
+    "id": "card-34"
   },
   {
     "question": "Implement a custom rate limiting policy based on user subscription tier.",
@@ -321,7 +701,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/api-lifecycle.md",
-    "id": "card-16"
+    "id": "card-35"
   },
   {
     "question": "Create a distributed rate limiter using Redis.",
@@ -341,7 +721,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/api-lifecycle.md",
-    "id": "card-17"
+    "id": "card-36"
   },
   {
     "question": "Design an API gateway pattern that routes requests to different microservices based on path.",
@@ -361,7 +741,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/api-lifecycle.md",
-    "id": "card-18"
+    "id": "card-37"
   },
   {
     "question": "Implement request deduplication middleware using distributed cache.",
@@ -381,7 +761,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/api-lifecycle.md",
-    "id": "card-19"
+    "id": "card-38"
   },
   {
     "question": "Create a background service that performs periodic health checks on external dependencies.",
@@ -401,7 +781,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/api-lifecycle.md",
-    "id": "card-20"
+    "id": "card-39"
   },
   {
     "question": "Implement resource-based authorization for multi-tenant applications.",
@@ -421,7 +801,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/api-lifecycle.md",
-    "id": "card-21"
+    "id": "card-40"
   },
   {
     "question": "Implement CORS policy dynamically based on database configuration.",
@@ -441,7 +821,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/api-lifecycle.md",
-    "id": "card-22"
+    "id": "card-41"
   },
   {
     "question": "Implement ETag support for GET endpoints with conditional requests.",
@@ -461,7 +841,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/api-lifecycle.md",
-    "id": "card-23"
+    "id": "card-42"
   },
   {
     "question": "Enforce request body size limits for upload endpoints.",
@@ -481,7 +861,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/api-lifecycle.md",
-    "id": "card-24"
+    "id": "card-43"
   },
   {
     "question": "Create a readiness endpoint that checks dependencies.",
@@ -501,7 +881,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/api-lifecycle.md",
-    "id": "card-25"
+    "id": "card-44"
   },
   {
     "question": "Implement resource-based authorization with policies.",
@@ -521,7 +901,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/api-lifecycle.md",
-    "id": "card-26"
+    "id": "card-45"
   },
   {
     "question": "Apply per-tenant rate limits with a custom policy.",
@@ -541,7 +921,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/api-lifecycle.md",
-    "id": "card-27"
+    "id": "card-46"
   },
   {
     "question": "Sketch code to call three REST endpoints concurrently, cancel if any take longer than 3 seconds, and aggregate results.",
@@ -561,7 +941,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/async-resilience.md",
-    "id": "card-28"
+    "id": "card-47"
   },
   {
     "question": "Implement a resilient HTTP client with retry and circuit breaker policies using Polly.",
@@ -581,7 +961,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/async-resilience.md",
-    "id": "card-29"
+    "id": "card-48"
   },
   {
     "question": "How would you handle backpressure when consuming a fast message queue with a slower downstream API?",
@@ -601,7 +981,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/async-resilience.md",
-    "id": "card-30"
+    "id": "card-49"
   },
   {
     "question": "Explain why you might use SemaphoreSlim with async code over lock.",
@@ -621,7 +1001,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/async-resilience.md",
-    "id": "card-31"
+    "id": "card-50"
   },
   {
     "question": "Implement an async method that times out after a specified duration and returns a default value.",
@@ -641,7 +1021,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/async-resilience.md",
-    "id": "card-32"
+    "id": "card-51"
   },
   {
     "question": "Create a method that retries an operation with exponential backoff.",
@@ -661,7 +1041,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/async-resilience.md",
-    "id": "card-33"
+    "id": "card-52"
   },
   {
     "question": "Implement a method that processes items in batches with a maximum degree of parallelism.",
@@ -681,7 +1061,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/async-resilience.md",
-    "id": "card-34"
+    "id": "card-53"
   },
   {
     "question": "Create an async producer-consumer pattern using Channel<T>.",
@@ -701,7 +1081,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/async-resilience.md",
-    "id": "card-35"
+    "id": "card-54"
   },
   {
     "question": "Implement proper cancellation handling in an async method that makes multiple API calls.",
@@ -721,7 +1101,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/async-resilience.md",
-    "id": "card-36"
+    "id": "card-55"
   },
   {
     "question": "Implement an async lazy initialization pattern that ensures a resource is initialized only once.",
@@ -741,7 +1121,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/async-resilience.md",
-    "id": "card-37"
+    "id": "card-56"
   },
   {
     "question": "Create a rate limiter using SemaphoreSlim and Timer for token bucket algorithm.",
@@ -761,7 +1141,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/async-resilience.md",
-    "id": "card-38"
+    "id": "card-57"
   },
   {
     "question": "Implement async dispose pattern (IAsyncDisposable) for a resource that requires async cleanup.",
@@ -781,7 +1161,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/async-resilience.md",
-    "id": "card-39"
+    "id": "card-58"
   },
   {
     "question": "Create a circuit breaker implementation from scratch.",
@@ -801,7 +1181,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/async-resilience.md",
-    "id": "card-40"
+    "id": "card-59"
   },
   {
     "question": "Implement a parallel batch processor that maintains order of results.",
@@ -821,7 +1201,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/async-resilience.md",
-    "id": "card-41"
+    "id": "card-60"
   },
   {
     "question": "Implement a fan-out/fan-in pattern where multiple workers process items and results are aggregated.",
@@ -841,7 +1221,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/async-resilience.md",
-    "id": "card-42"
+    "id": "card-61"
   },
   {
     "question": "Create a coordinated shutdown mechanism for multiple background tasks.",
@@ -861,7 +1241,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/async-resilience.md",
-    "id": "card-43"
+    "id": "card-62"
   },
   {
     "question": "Implement async event aggregation that batches events before processing.",
@@ -881,7 +1261,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/async-resilience.md",
-    "id": "card-44"
+    "id": "card-63"
   },
   {
     "question": "Implement a bulkhead pattern to isolate failures.",
@@ -901,7 +1281,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/async-resilience.md",
-    "id": "card-45"
+    "id": "card-64"
   },
   {
     "question": "Create a fallback mechanism that returns cached data when an API call fails.",
@@ -921,7 +1301,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/async-resilience.md",
-    "id": "card-46"
+    "id": "card-65"
   },
   {
     "question": "Implement timeout policies for different types of operations (fast, medium, slow).",
@@ -941,7 +1321,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/async-resilience.md",
-    "id": "card-47"
+    "id": "card-66"
   },
   {
     "question": "Implement a download manager that downloads multiple files concurrently with progress reporting.",
@@ -961,7 +1341,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/async-resilience.md",
-    "id": "card-48"
+    "id": "card-67"
   },
   {
     "question": "How do you run tasks in parallel but keep partial results when some fail?",
@@ -981,7 +1361,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/async-resilience.md",
-    "id": "card-49"
+    "id": "card-68"
   },
   {
     "question": "Implement bounded parallelism using Parallel.ForEachAsync.",
@@ -1001,7 +1381,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/async-resilience.md",
-    "id": "card-50"
+    "id": "card-69"
   },
   {
     "question": "Add jitter to retry backoff to avoid thundering herds.",
@@ -1021,7 +1401,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/async-resilience.md",
-    "id": "card-51"
+    "id": "card-70"
   },
   {
     "question": "Stream results with IAsyncEnumerable and cancellation.",
@@ -1041,7 +1421,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/async-resilience.md",
-    "id": "card-52"
+    "id": "card-71"
   },
   {
     "question": "Design a simple circuit breaker state machine.",
@@ -1061,7 +1441,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/async-resilience.md",
-    "id": "card-53"
+    "id": "card-72"
   },
   {
     "question": "Tell me about a time you improved reliability under tight deadlines.",
@@ -1075,7 +1455,7 @@ window.PRACTICE_DATA = [
     "topic": "Behavioral Questions",
     "topicId": "behavioral-questions",
     "source": "practice/behavioral-questions.md",
-    "id": "card-54"
+    "id": "card-73"
   },
   {
     "question": "Describe a time you pushed back on a requirement.",
@@ -1089,7 +1469,7 @@ window.PRACTICE_DATA = [
     "topic": "Behavioral Questions",
     "topicId": "behavioral-questions",
     "source": "practice/behavioral-questions.md",
-    "id": "card-55"
+    "id": "card-74"
   },
   {
     "question": "Share a story where you mentored a teammate.",
@@ -1103,7 +1483,7 @@ window.PRACTICE_DATA = [
     "topic": "Behavioral Questions",
     "topicId": "behavioral-questions",
     "source": "practice/behavioral-questions.md",
-    "id": "card-56"
+    "id": "card-75"
   },
   {
     "question": "Describe a time you resolved a production incident.",
@@ -1117,7 +1497,7 @@ window.PRACTICE_DATA = [
     "topic": "Behavioral Questions",
     "topicId": "behavioral-questions",
     "source": "practice/behavioral-questions.md",
-    "id": "card-57"
+    "id": "card-76"
   },
   {
     "question": "Tell me about a technical decision that you later reconsidered.",
@@ -1131,7 +1511,7 @@ window.PRACTICE_DATA = [
     "topic": "Behavioral Questions",
     "topicId": "behavioral-questions",
     "source": "practice/behavioral-questions.md",
-    "id": "card-58"
+    "id": "card-77"
   },
   {
     "question": "Describe a time you influenced without authority.",
@@ -1145,7 +1525,7 @@ window.PRACTICE_DATA = [
     "topic": "Behavioral Questions",
     "topicId": "behavioral-questions",
     "source": "practice/behavioral-questions.md",
-    "id": "card-59"
+    "id": "card-78"
   },
   {
     "question": "How do you handle competing priorities?",
@@ -1159,7 +1539,7 @@ window.PRACTICE_DATA = [
     "topic": "Behavioral Questions",
     "topicId": "behavioral-questions",
     "source": "practice/behavioral-questions.md",
-    "id": "card-60"
+    "id": "card-79"
   },
   {
     "question": "Tell me about a time you improved a process.",
@@ -1173,7 +1553,7 @@ window.PRACTICE_DATA = [
     "topic": "Behavioral Questions",
     "topicId": "behavioral-questions",
     "source": "practice/behavioral-questions.md",
-    "id": "card-61"
+    "id": "card-80"
   },
   {
     "question": "Describe a conflict that you resolved successfully.",
@@ -1187,7 +1567,7 @@ window.PRACTICE_DATA = [
     "topic": "Behavioral Questions",
     "topicId": "behavioral-questions",
     "source": "practice/behavioral-questions.md",
-    "id": "card-62"
+    "id": "card-81"
   },
   {
     "question": "Share a time you handled ambiguous requirements.",
@@ -1201,7 +1581,7 @@ window.PRACTICE_DATA = [
     "topic": "Behavioral Questions",
     "topicId": "behavioral-questions",
     "source": "practice/behavioral-questions.md",
-    "id": "card-63"
+    "id": "card-82"
   },
   {
     "question": "Implement a token bucket rate limiter (single-threaded).",
@@ -1221,7 +1601,7 @@ window.PRACTICE_DATA = [
     "topic": "Code Assessment",
     "topicId": "code-assessment",
     "source": "practice/code-assessment.md",
-    "id": "card-64"
+    "id": "card-83"
   },
   {
     "question": "Build a bounded in-memory queue with backpressure signals.",
@@ -1241,7 +1621,7 @@ window.PRACTICE_DATA = [
     "topic": "Code Assessment",
     "topicId": "code-assessment",
     "source": "practice/code-assessment.md",
-    "id": "card-65"
+    "id": "card-84"
   },
   {
     "question": "Implement a simple TTL cache with expiration.",
@@ -1261,7 +1641,7 @@ window.PRACTICE_DATA = [
     "topic": "Code Assessment",
     "topicId": "code-assessment",
     "source": "practice/code-assessment.md",
-    "id": "card-66"
+    "id": "card-85"
   },
   {
     "question": "Parse a CSV stream into records without loading the full file.",
@@ -1281,7 +1661,7 @@ window.PRACTICE_DATA = [
     "topic": "Code Assessment",
     "topicId": "code-assessment",
     "source": "practice/code-assessment.md",
-    "id": "card-67"
+    "id": "card-86"
   },
   {
     "question": "Compute a rolling VWAP from a stream of trades.",
@@ -1301,7 +1681,667 @@ window.PRACTICE_DATA = [
     "topic": "Code Assessment",
     "topicId": "code-assessment",
     "source": "practice/code-assessment.md",
-    "id": "card-68"
+    "id": "card-87"
+  },
+  {
+    "question": "Given a list of trades with timestamps, return the latest trade per account using LINQ.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Sort or group by account and pick the trade with the max timestamp using GroupBy + OrderByDescending/MaxBy. This keeps the logic declarative and pushes the temporal ordering into the query rather than manual loops."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var latestTrades = trades\n    .GroupBy(t => t.AccountId)\n    .Select(g => g.OrderByDescending(t => t.Timestamp).First());",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Collections-And-Enumerables/index.md",
+    "id": "card-88"
+  },
+  {
+    "question": "Implement a method that flattens nested lists of instrument codes while preserving ordering.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use SelectMany to flatten while keeping inner order."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var flat = nestedCodes.SelectMany(list => list);",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Collections-And-Enumerables/index.md",
+    "id": "card-89"
+  },
+  {
+    "question": "Explain the difference between SelectMany and nested loops. When is each preferable?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "SelectMany projects each element to a sequence and flattens; nested loops make iteration explicit and allow more control over flow."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "// SelectMany\nvar pairs = accounts.SelectMany(a => a.Orders, (a, o) => new { a.Id, o.Id });\n\n// Nested loops\nforeach (var a in accounts)\n    foreach (var o in a.Orders)\n        yield return (a.Id, o.Id);",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Collections-And-Enumerables/index.md",
+    "id": "card-90"
+  },
+  {
+    "question": "How would you detect duplicate orders in a stream using GroupBy and produce a summary?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Group by unique order keys and filter groups with count > 1. Summaries can include counts, timestamps, and other aggregate metadata that drive remediation."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var duplicates = orders\n    .GroupBy(o => new { o.AccountId, o.ClientOrderId })\n    .Where(g => g.Count() > 1)\n    .Select(g => new {\n        g.Key.AccountId,\n        g.Key.ClientOrderId,\n        Count = g.Count(),\n        LatestTimestamp = g.Max(o => o.Timestamp)\n    });",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Collections-And-Enumerables/index.md",
+    "id": "card-91"
+  },
+  {
+    "question": "Find all customers who have placed orders in the last 30 days and calculate their total order value.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use Where to filter by date range, then GroupBy customer and Sum the order values."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var cutoffDate = DateTime.UtcNow.AddDays(-30);\nvar customerTotals = orders\n    .Where(o => o.OrderDate >= cutoffDate)\n    .GroupBy(o => o.CustomerId)\n    .Select(g => new {\n        CustomerId = g.Key,\n        TotalValue = g.Sum(o => o.TotalAmount),\n        OrderCount = g.Count()\n    });",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Collections-And-Enumerables/index.md",
+    "id": "card-92"
+  },
+  {
+    "question": "Given two lists (products and categories), perform a left join to get all products with their category names (null if no category).",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use GroupJoin or LeftJoin pattern with DefaultIfEmpty."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var result = products\n    .GroupJoin(\n        categories,\n        p => p.CategoryId,\n        c => c.Id,\n        (product, cats) => new { product, cats })\n    .SelectMany(\n        x => x.cats.DefaultIfEmpty(),\n        (x, category) => new {\n            x.product.Name,\n            CategoryName = category?.Name ?? \"Uncategorized\"\n        });",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Collections-And-Enumerables/index.md",
+    "id": "card-93"
+  },
+  {
+    "question": "Implement a LINQ query to find the top 5 most expensive products in each category.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Group by category, order by price descending, take 5."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var topProducts = products\n    .GroupBy(p => p.CategoryId)\n    .Select(g => new {\n        CategoryId = g.Key,\n        TopProducts = g.OrderByDescending(p => p.Price).Take(5).ToList()\n    });",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Collections-And-Enumerables/index.md",
+    "id": "card-94"
+  },
+  {
+    "question": "Find all pairs of employees who work in the same department (avoid duplicates like (A,B) and (B,A)).",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Self-join with condition to avoid duplicates."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var pairs = employees\n    .SelectMany(e1 => employees, (e1, e2) => new { e1, e2 })\n    .Where(p => p.e1.DepartmentId == p.e2.DepartmentId && p.e1.Id < p.e2.Id)\n    .Select(p => new { Employee1 = p.e1.Name, Employee2 = p.e2.Name });",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Collections-And-Enumerables/index.md",
+    "id": "card-95"
+  },
+  {
+    "question": "Calculate running totals for daily sales.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use Aggregate with accumulator or window function approach."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var runningTotal = sales\n    .OrderBy(s => s.Date)\n    .Select((sale, index) => new {\n        sale.Date,\n        sale.Amount,\n        RunningTotal = sales\n            .OrderBy(s => s.Date)\n            .Take(index + 1)\n            .Sum(s => s.Amount)\n    });\n\n// More efficient approach\ndecimal total = 0;\nvar runningTotals = sales\n    .OrderBy(s => s.Date)\n    .Select(s => new {\n        s.Date,\n        s.Amount,\n        RunningTotal = total += s.Amount\n    })\n    .ToList();",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Collections-And-Enumerables/index.md",
+    "id": "card-96"
+  },
+  {
+    "question": "Implement a custom LINQ extension method DistinctBy that takes a key selector.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Create an extension method that uses HashSet for tracking seen keys."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public static class LinqExtensions\n{\n    public static IEnumerable<TSource> DistinctBy<TSource, TKey>(\n        this IEnumerable<TSource> source,\n        Func<TSource, TKey> keySelector)\n    {\n        var seenKeys = new HashSet<TKey>();\n        foreach (var element in source)\n        {\n            if (seenKeys.Add(keySelector(element)))\n                yield return element;\n        }\n    }\n}\n\n// Usage\nvar uniqueProducts = products.DistinctBy(p => p.Name);",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Collections-And-Enumerables/index.md",
+    "id": "card-97"
+  },
+  {
+    "question": "Write a LINQ query to find all employees whose salary is above the average salary in their department.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use subquery or join with calculated averages."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var departmentAvgs = employees\n    .GroupBy(e => e.DepartmentId)\n    .Select(g => new { DeptId = g.Key, AvgSalary = g.Average(e => e.Salary) })\n    .ToDictionary(x => x.DeptId, x => x.AvgSalary);\n\nvar aboveAverage = employees\n    .Where(e => e.Salary > departmentAvgs[e.DepartmentId])\n    .Select(e => new {\n        e.Name,\n        e.Salary,\n        DeptAverage = departmentAvgs[e.DepartmentId]\n    });",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Collections-And-Enumerables/index.md",
+    "id": "card-98"
+  },
+  {
+    "question": "Implement pagination with LINQ (Skip/Take) and explain potential issues with IQueryable vs IEnumerable.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use Skip and Take for pagination."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public IEnumerable<Product> GetProductsPage(int pageNumber, int pageSize)\n{\n    return dbContext.Products\n        .OrderBy(p => p.Id)  // IMPORTANT: Must order for consistent pagination\n        .Skip((pageNumber - 1) * pageSize)\n        .Take(pageSize)\n        .ToList();  // Execute query here\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Collections-And-Enumerables/index.md",
+    "id": "card-99"
+  },
+  {
+    "question": "Write a LINQ query to pivot data (convert rows to columns).",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use GroupBy and dynamic property creation."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "// Input: Sales with Year, Quarter, Amount\n// Output: Year with Q1, Q2, Q3, Q4 columns\n\nvar pivoted = sales\n    .GroupBy(s => s.Year)\n    .Select(g => new {\n        Year = g.Key,\n        Q1 = g.Where(s => s.Quarter == 1).Sum(s => s.Amount),\n        Q2 = g.Where(s => s.Quarter == 2).Sum(s => s.Amount),\n        Q3 = g.Where(s => s.Quarter == 3).Sum(s => s.Amount),\n        Q4 = g.Where(s => s.Quarter == 4).Sum(s => s.Amount)\n    });",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Collections-And-Enumerables/index.md",
+    "id": "card-100"
+  },
+  {
+    "question": "Implement a LINQ query with multiple grouping levels (hierarchical grouping).",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Nest GroupBy operations."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var hierarchicalGroups = sales\n    .GroupBy(s => s.Year)\n    .Select(yearGroup => new {\n        Year = yearGroup.Key,\n        Quarters = yearGroup\n            .GroupBy(s => s.Quarter)\n            .Select(quarterGroup => new {\n                Quarter = quarterGroup.Key,\n                TotalSales = quarterGroup.Sum(s => s.Amount),\n                Transactions = quarterGroup.ToList()\n            })\n            .ToList()\n    });",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Collections-And-Enumerables/index.md",
+    "id": "card-101"
+  },
+  {
+    "question": "Find all consecutive sequences of at least 3 days where sales exceeded $10,000.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use windowing logic with LINQ."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var threshold = 10000m;\nvar consecutiveHighSales = sales\n    .OrderBy(s => s.Date)\n    .Select((sale, index) => new {\n        sale,\n        index,\n        IsHigh = sale.Amount > threshold\n    })\n    .Where(x => x.IsHigh)\n    .GroupBy(x => x.index - sales\n        .OrderBy(s => s.Date)\n        .TakeWhile((s, i) => i < x.index)\n        .Count(s => s.Amount > threshold))\n    .Where(g => g.Count() >= 3)\n    .Select(g => new {\n        StartDate = g.First().sale.Date,\n        EndDate = g.Last().sale.Date,\n        DayCount = g.Count()\n    });",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Collections-And-Enumerables/index.md",
+    "id": "card-102"
+  },
+  {
+    "question": "Explain deferred execution and when it can cause performance issues.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "LINQ queries using IEnumerable are not executed until enumerated. Multiple enumerations re-execute the query."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "// Bad: Query executes 3 times\nvar expensiveQuery = dbContext.Orders\n    .Where(o => ComplexCalculation(o));\n\nvar count = expensiveQuery.Count();          // Executes query\nvar first = expensiveQuery.FirstOrDefault(); // Executes query again\nvar list = expensiveQuery.ToList();          // Executes query again\n\n// Good: Materialize once\nvar results = dbContext.Orders\n    .Where(o => ComplexCalculation(o))\n    .ToList();  // Single execution\n\nvar count = results.Count;\nvar first = results.FirstOrDefault();",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Collections-And-Enumerables/index.md",
+    "id": "card-103"
+  },
+  {
+    "question": "Compare the performance implications of Count() vs Any() for checking if a collection has items.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Any() stops at first match; Count() must enumerate everything."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "// Bad: Counts all items\nif (orders.Count() > 0)\n{\n    // ...\n}\n\n// Good: Stops at first item\nif (orders.Any())\n{\n    // ...\n}\n\n// For checking specific count\nif (orders.Count() >= 100)  // Bad: counts all\nif (orders.Skip(99).Any())  // Better: stops at 100th",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Collections-And-Enumerables/index.md",
+    "id": "card-104"
+  },
+  {
+    "question": "Identify and fix performance issues in this query.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use eager loading with Include."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "// Good: Single query with joins\nvar orders = dbContext.Orders\n    .Include(o => o.Customer)\n    .Include(o => o.Items)\n    .ToList();",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Collections-And-Enumerables/index.md",
+    "id": "card-105"
+  },
+  {
+    "question": "Write a LINQ query that uses AsParallel appropriately for CPU-bound operations.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use PLINQ for computationally expensive operations."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "// CPU-bound operation\nvar results = largeDataset\n    .AsParallel()\n    .WithDegreeOfParallelism(Environment.ProcessorCount)\n    .Where(item => ExpensiveComputation(item))\n    .Select(item => TransformItem(item))\n    .ToList();\n\n// Don't use for I/O-bound operations or small datasets",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Collections-And-Enumerables/index.md",
+    "id": "card-106"
+  },
+  {
+    "question": "When should you use List<T> vs IEnumerable<T> as a return type?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Return IEnumerable<T> for flexibility; use List<T> when caller needs indexing/modification."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "// Good: Flexible, caller can decide materialization\npublic IEnumerable<Order> GetOrders()\n{\n    return dbContext.Orders.Where(o => o.IsActive);\n}\n\n// Use List<T> when:\n// 1. Multiple enumerations are expected\n// 2. Caller needs random access\n// 3. Caller needs to modify the collection\npublic List<Order> GetOrdersForProcessing()\n{\n    return dbContext.Orders.Where(o => o.Status == \"Pending\").ToList();\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Collections-And-Enumerables/index.md",
+    "id": "card-107"
+  },
+  {
+    "question": "Implement a LookupTable using ToLookup and explain when to use it vs GroupBy.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "ToLookup immediately executes and creates an immutable lookup structure."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "// ToLookup - immediate execution, multiple lookups\nvar ordersByCustomer = orders.ToLookup(o => o.CustomerId);\nvar customer1Orders = ordersByCustomer[customerId1];  // O(1) lookup\nvar customer2Orders = ordersByCustomer[customerId2];  // Another O(1) lookup\n\n// GroupBy - deferred execution, single enumeration\nvar grouped = orders.GroupBy(o => o.CustomerId);\nforeach (var customerOrders in grouped)  // Single pass\n{\n    ProcessOrders(customerOrders);\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Collections-And-Enumerables/index.md",
+    "id": "card-108"
+  },
+  {
+    "question": "Use Zip to combine two sequences and explain its behavior when sequences have different lengths.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Zip combines elements pairwise, stops at shortest sequence."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var numbers = new[] { 1, 2, 3, 4 };\nvar letters = new[] { \"A\", \"B\", \"C\" };\n\nvar zipped = numbers.Zip(letters, (n, l) => $\"{n}-{l}\");\n// Result: [\"1-A\", \"2-B\", \"3-C\"]  - 4 is ignored\n\n// C# 9+ Tuple syntax\nvar zipped2 = numbers.Zip(letters);\n// Result: [(1, \"A\"), (2, \"B\"), (3, \"C\")]",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Collections-And-Enumerables/index.md",
+    "id": "card-109"
+  },
+  {
+    "question": "Implement a method that chunks a collection into batches of N items.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use Chunk (C# 9+) or implement custom batching."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "// C# 9+\nvar batches = items.Chunk(100);\n\n// Custom implementation\npublic static IEnumerable<IEnumerable<T>> Batch<T>(\n    this IEnumerable<T> source, int batchSize)\n{\n    var batch = new List<T>(batchSize);\n    foreach (var item in source)\n    {\n        batch.Add(item);\n        if (batch.Count == batchSize)\n        {\n            yield return batch;\n            batch = new List<T>(batchSize);\n        }\n    }\n\n    if (batch.Any())\n        yield return batch;\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Collections-And-Enumerables/index.md",
+    "id": "card-110"
+  },
+  {
+    "question": "You need to merge data from multiple sources (database, API, cache) and remove duplicates. Implement this efficiently.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Combine sources and use DistinctBy or HashSet."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public async Task<List<Product>> GetMergedProducts()\n{\n    var dbProducts = await dbContext.Products.ToListAsync();\n    var apiProducts = await apiClient.GetProductsAsync();\n    var cachedProducts = cache.Get<List<Product>>(\"products\") ?? new List<Product>();\n\n    var allProducts = dbProducts\n        .Concat(apiProducts)\n        .Concat(cachedProducts)\n        .DistinctBy(p => p.Id)\n        .ToList();\n\n    return allProducts;\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Collections-And-Enumerables/index.md",
+    "id": "card-111"
+  },
+  {
+    "question": "Implement a search feature with multiple optional filters (name, category, price range, tags).",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Build query dynamically with conditional Where clauses."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public IEnumerable<Product> SearchProducts(\n    string name = null,\n    int? categoryId = null,\n    decimal? minPrice = null,\n    decimal? maxPrice = null,\n    string[] tags = null)\n{\n    IQueryable<Product> query = dbContext.Products;\n\n    if (!string.IsNullOrEmpty(name))\n        query = query.Where(p => p.Name.Contains(name));\n\n    if (categoryId.HasValue)\n        query = query.Where(p => p.CategoryId == categoryId.Value);\n\n    if (minPrice.HasValue)\n        query = query.Where(p => p.Price >= minPrice.Value);\n\n    if (maxPrice.HasValue)\n        query = query.Where(p => p.Price <= maxPrice.Value);\n\n    if (tags != null && tags.Any())\n        query = query.Where(p => p.Tags.Any(t => tags.Contains(t)));\n\n    return query.ToList();\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Collections-And-Enumerables/index.md",
+    "id": "card-112"
+  },
+  {
+    "question": "Calculate month-over-month growth percentage for sales data.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Join current month with previous month data."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var monthlySales = sales\n    .GroupBy(s => new { s.Year, s.Month })\n    .Select(g => new {\n        g.Key.Year,\n        g.Key.Month,\n        Total = g.Sum(s => s.Amount)\n    })\n    .OrderBy(m => m.Year).ThenBy(m => m.Month)\n    .ToList();\n\nvar growth = monthlySales\n    .Zip(monthlySales.Skip(1), (prev, curr) => new {\n        curr.Year,\n        curr.Month,\n        CurrentTotal = curr.Total,\n        PreviousTotal = prev.Total,\n        GrowthPercent = ((curr.Total - prev.Total) / prev.Total) * 100\n    });",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Collections-And-Enumerables/index.md",
+    "id": "card-113"
+  },
+  {
+    "question": "Implement an expression builder that allows dynamic LINQ query construction from user input.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use Expression trees to build dynamic queries."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public static class DynamicQueryBuilder\n{\n    public static IQueryable<T> ApplyFilter<T>(\n        IQueryable<T> query,\n        string propertyName,\n        string operation,\n        object value)\n    {\n        var parameter = Expression.Parameter(typeof(T), \"x\");\n        var property = Expression.Property(parameter, propertyName);\n        var constant = Expression.Constant(value);\n\n        Expression comparison = operation switch\n        {\n            \"=\" => Expression.Equal(property, constant),\n            \">\" => Expression.GreaterThan(property, constant),\n            \"<\" => Expression.LessThan(property, constant),\n            \"contains\" => Expression.Call(property, \"Contains\", null, constant),\n            _ => throw new ArgumentException(\"Invalid operation\")\n        };\n\n        var lambda = Expression.Lambda<Func<T, bool>>(comparison, parameter);\n        return query.Where(lambda);\n    }\n}\n\n// Usage\nvar query = dbContext.Products.AsQueryable();\nquery = DynamicQueryBuilder.ApplyFilter(query, \"Price\", \">\", 100m);\nquery = DynamicQueryBuilder.ApplyFilter(query, \"Name\", \"contains\", \"Widget\");",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Collections-And-Enumerables/index.md",
+    "id": "card-114"
+  },
+  {
+    "question": "Implement a method that finds all possible combinations of products that sum to a target price (subset sum problem).",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Recursive LINQ approach or dynamic programming."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public static IEnumerable<List<Product>> FindCombinations(\n    List<Product> products,\n    decimal targetPrice,\n    decimal tolerance = 0.01m)\n{\n    for (int i = 0; i < products.Count; i++)\n    {\n        var product = products[i];\n\n        if (Math.Abs(product.Price - targetPrice) <= tolerance)\n        {\n            yield return new List<Product> { product };\n        }\n\n        if (product.Price < targetPrice)\n        {\n            var remaining = products.Skip(i + 1).ToList();\n            var subCombos = FindCombinations(\n                remaining,\n                targetPrice - product.Price,\n                tolerance);\n\n            foreach (var combo in subCombos)\n            {\n                yield return new List<Product> { product }.Concat(combo).ToList();\n            }\n        }\n    }\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Collections-And-Enumerables/index.md",
+    "id": "card-115"
+  },
+  {
+    "question": "Use GroupJoin to build a customer summary with order counts and last order date.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "GroupJoin collects orders per customer without losing customers who have no orders."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var summaries = customers\n    .GroupJoin(\n        orders,\n        c => c.Id,\n        o => o.CustomerId,\n        (c, customerOrders) => new {\n            c.Id,\n            c.Name,\n            OrderCount = customerOrders.Count(),\n            LastOrderDate = customerOrders\n                .OrderByDescending(o => o.OrderDate)\n                .Select(o => (DateTime?)o.OrderDate)\n                .FirstOrDefault()\n        });",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Collections-And-Enumerables/index.md",
+    "id": "card-116"
+  },
+  {
+    "question": "Implement Distinct with a custom comparer for case-insensitive strings.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Provide an IEqualityComparer<T> to normalize comparisons."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var uniqueSymbols = symbols.Distinct(StringComparer.OrdinalIgnoreCase).ToList();",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Collections-And-Enumerables/index.md",
+    "id": "card-117"
+  },
+  {
+    "question": "Convert a list to a dictionary safely when keys can repeat.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Group by the key first, then choose a resolution strategy."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var map = products\n    .GroupBy(p => p.Sku)\n    .ToDictionary(g => g.Key, g => g.OrderByDescending(p => p.UpdatedAt).First());",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Collections-And-Enumerables/index.md",
+    "id": "card-118"
+  },
+  {
+    "question": "Use Select with index to assign ranks within a sorted sequence.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Sort once, then project with the index."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var ranked = trades\n    .OrderByDescending(t => t.Notional)\n    .Select((trade, index) => new { trade.Id, Rank = index + 1 });",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Collections-And-Enumerables/index.md",
+    "id": "card-119"
+  },
+  {
+    "question": "Split a sequence into a prefix and the remaining items using TakeWhile and SkipWhile.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Use a predicate to find the boundary."
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "var prefix = prices.TakeWhile(p => p.IsValid).ToList();\nvar rest = prices.SkipWhile(p => p.IsValid).ToList();",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Collections-And-Enumerables/index.md",
+    "id": "card-120"
   },
   {
     "question": "Explain the difference between value types and reference types with a simple example.",
@@ -1321,7 +2361,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/csharp-fundamentals.md",
-    "id": "card-69"
+    "id": "card-121"
   },
   {
     "question": "When should you choose a struct over a class?",
@@ -1341,7 +2381,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/csharp-fundamentals.md",
-    "id": "card-70"
+    "id": "card-122"
   },
   {
     "question": "Demonstrate how to reduce copying with in parameters.",
@@ -1361,7 +2401,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/csharp-fundamentals.md",
-    "id": "card-71"
+    "id": "card-123"
   },
   {
     "question": "Show how nullable reference types prevent null bugs.",
@@ -1381,7 +2421,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/csharp-fundamentals.md",
-    "id": "card-72"
+    "id": "card-124"
   },
   {
     "question": "Write a guard clause extension for argument validation.",
@@ -1401,7 +2441,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/csharp-fundamentals.md",
-    "id": "card-73"
+    "id": "card-125"
   },
   {
     "question": "Implement a generic method with a constraint for a parameterless constructor.",
@@ -1421,7 +2461,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/csharp-fundamentals.md",
-    "id": "card-74"
+    "id": "card-126"
   },
   {
     "question": "Write a repository interface with type constraints.",
@@ -1441,7 +2481,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/csharp-fundamentals.md",
-    "id": "card-75"
+    "id": "card-127"
   },
   {
     "question": "Show a simple event pattern with EventHandler<T>.",
@@ -1461,7 +2501,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/csharp-fundamentals.md",
-    "id": "card-76"
+    "id": "card-128"
   },
   {
     "question": "When would you prefer Func<T> over a custom delegate type?",
@@ -1481,7 +2521,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/csharp-fundamentals.md",
-    "id": "card-77"
+    "id": "card-129"
   },
   {
     "question": "Use pattern matching to categorize input.",
@@ -1501,7 +2541,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/csharp-fundamentals.md",
-    "id": "card-78"
+    "id": "card-130"
   },
   {
     "question": "Create a record and use with to clone it.",
@@ -1521,7 +2561,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/csharp-fundamentals.md",
-    "id": "card-79"
+    "id": "card-131"
   },
   {
     "question": "Show how to throw and wrap exceptions with context.",
@@ -1541,7 +2581,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/csharp-fundamentals.md",
-    "id": "card-80"
+    "id": "card-132"
   },
   {
     "question": "Summarize access modifiers and demonstrate a safe class design.",
@@ -1561,7 +2601,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/csharp-fundamentals.md",
-    "id": "card-81"
+    "id": "card-133"
   },
   {
     "question": "Show object and collection initialization with target-typed new.",
@@ -1581,7 +2621,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/csharp-fundamentals.md",
-    "id": "card-82"
+    "id": "card-134"
   },
   {
     "question": "Write a SQL query to calculate the rolling 7-day trade volume per instrument.",
@@ -1601,7 +2641,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/data-layer.md",
-    "id": "card-83"
+    "id": "card-135"
   },
   {
     "question": "Explain how you would choose between normalized schemas and denormalized tables for reporting.",
@@ -1615,7 +2655,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/data-layer.md",
-    "id": "card-84"
+    "id": "card-136"
   },
   {
     "question": "Describe the differences between clustered and non-clustered indexes and when to use covering indexes.",
@@ -1635,7 +2675,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/data-layer.md",
-    "id": "card-85"
+    "id": "card-137"
   },
   {
     "question": "Walk through handling a long-running report query that impacts OLTP performance.",
@@ -1649,7 +2689,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/data-layer.md",
-    "id": "card-86"
+    "id": "card-138"
   },
   {
     "question": "Configure a many-to-many relationship with a junction table containing additional properties.",
@@ -1669,7 +2709,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/data-layer.md",
-    "id": "card-87"
+    "id": "card-139"
   },
   {
     "question": "Implement soft delete with global query filters.",
@@ -1689,7 +2729,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/data-layer.md",
-    "id": "card-88"
+    "id": "card-140"
   },
   {
     "question": "Implement optimistic concurrency control using row versioning.",
@@ -1709,7 +2749,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/data-layer.md",
-    "id": "card-89"
+    "id": "card-141"
   },
   {
     "question": "Configure table splitting to map multiple entities to a single table.",
@@ -1729,7 +2769,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/data-layer.md",
-    "id": "card-90"
+    "id": "card-142"
   },
   {
     "question": "Implement audit trail using change tracking.",
@@ -1749,7 +2789,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/data-layer.md",
-    "id": "card-91"
+    "id": "card-143"
   },
   {
     "question": "Implement repository pattern with specification pattern for complex queries.",
@@ -1769,7 +2809,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/data-layer.md",
-    "id": "card-92"
+    "id": "card-144"
   },
   {
     "question": "Implement Unit of Work pattern for transaction management.",
@@ -1789,7 +2829,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/data-layer.md",
-    "id": "card-93"
+    "id": "card-145"
   },
   {
     "question": "Implement custom value converter for complex types.",
@@ -1809,7 +2849,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/data-layer.md",
-    "id": "card-94"
+    "id": "card-146"
   },
   {
     "question": "Optimize a query with multiple joins and aggregations.",
@@ -1829,7 +2869,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/data-layer.md",
-    "id": "card-95"
+    "id": "card-147"
   },
   {
     "question": "Implement pagination efficiently for large datasets.",
@@ -1849,7 +2889,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/data-layer.md",
-    "id": "card-96"
+    "id": "card-148"
   },
   {
     "question": "Optimize EXISTS vs IN vs JOIN.",
@@ -1869,7 +2909,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/data-layer.md",
-    "id": "card-97"
+    "id": "card-149"
   },
   {
     "question": "Use window functions for ranking and percentiles.",
@@ -1889,7 +2929,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/data-layer.md",
-    "id": "card-98"
+    "id": "card-150"
   },
   {
     "question": "Design composite index for a multi-column WHERE clause.",
@@ -1909,7 +2949,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/data-layer.md",
-    "id": "card-99"
+    "id": "card-151"
   },
   {
     "question": "Identify and remove unused or duplicate indexes.",
@@ -1929,7 +2969,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/data-layer.md",
-    "id": "card-100"
+    "id": "card-152"
   },
   {
     "question": "Implement filtered index for specific query patterns.",
@@ -1949,7 +2989,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/data-layer.md",
-    "id": "card-101"
+    "id": "card-153"
   },
   {
     "question": "Implement distributed transaction across multiple databases.",
@@ -1969,7 +3009,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/data-layer.md",
-    "id": "card-102"
+    "id": "card-154"
   },
   {
     "question": "Handle deadlocks with retry logic.",
@@ -1989,7 +3029,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/data-layer.md",
-    "id": "card-103"
+    "id": "card-155"
   },
   {
     "question": "Implement pessimistic locking for critical sections.",
@@ -2009,7 +3049,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/data-layer.md",
-    "id": "card-104"
+    "id": "card-156"
   },
   {
     "question": "Create a data migration to transform existing records.",
@@ -2029,7 +3069,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/data-layer.md",
-    "id": "card-105"
+    "id": "card-157"
   },
   {
     "question": "Implement zero-downtime deployment with backward-compatible migrations.",
@@ -2049,7 +3089,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/data-layer.md",
-    "id": "card-106"
+    "id": "card-158"
   },
   {
     "question": "Use Dapper for high-performance bulk operations.",
@@ -2069,7 +3109,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/data-layer.md",
-    "id": "card-107"
+    "id": "card-159"
   },
   {
     "question": "Combine EF Core and Dapper for optimal performance.",
@@ -2089,7 +3129,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/data-layer.md",
-    "id": "card-108"
+    "id": "card-160"
   },
   {
     "question": "Implement optimistic concurrency control with a row version column.",
@@ -2109,7 +3149,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/data-layer.md",
-    "id": "card-109"
+    "id": "card-161"
   },
   {
     "question": "Implement soft delete with a global query filter.",
@@ -2129,7 +3169,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/data-layer.md",
-    "id": "card-110"
+    "id": "card-162"
   },
   {
     "question": "Create efficient pagination for large datasets.",
@@ -2149,7 +3189,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/data-layer.md",
-    "id": "card-111"
+    "id": "card-163"
   },
   {
     "question": "Compare isolation levels for read/write workloads.",
@@ -2163,7 +3203,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/data-layer.md",
-    "id": "card-112"
+    "id": "card-164"
   },
   {
     "question": "Diagnose a slow query regression.",
@@ -2177,7 +3217,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/data-layer.md",
-    "id": "card-113"
+    "id": "card-165"
   },
   {
     "question": "Given a list of trades with timestamps, return the latest trade per account using LINQ.",
@@ -2197,7 +3237,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/linq-collections.md",
-    "id": "card-114"
+    "id": "card-166"
   },
   {
     "question": "Implement a method that flattens nested lists of instrument codes while preserving ordering.",
@@ -2217,7 +3257,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/linq-collections.md",
-    "id": "card-115"
+    "id": "card-167"
   },
   {
     "question": "Explain the difference between SelectMany and nested loops. When is each preferable?",
@@ -2237,7 +3277,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/linq-collections.md",
-    "id": "card-116"
+    "id": "card-168"
   },
   {
     "question": "How would you detect duplicate orders in a stream using GroupBy and produce a summary?",
@@ -2257,7 +3297,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/linq-collections.md",
-    "id": "card-117"
+    "id": "card-169"
   },
   {
     "question": "Find all customers who have placed orders in the last 30 days and calculate their total order value.",
@@ -2277,7 +3317,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/linq-collections.md",
-    "id": "card-118"
+    "id": "card-170"
   },
   {
     "question": "Given two lists (products and categories), perform a left join to get all products with their category names (null if no category).",
@@ -2297,7 +3337,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/linq-collections.md",
-    "id": "card-119"
+    "id": "card-171"
   },
   {
     "question": "Implement a LINQ query to find the top 5 most expensive products in each category.",
@@ -2317,7 +3357,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/linq-collections.md",
-    "id": "card-120"
+    "id": "card-172"
   },
   {
     "question": "Find all pairs of employees who work in the same department (avoid duplicates like (A,B) and (B,A)).",
@@ -2337,7 +3377,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/linq-collections.md",
-    "id": "card-121"
+    "id": "card-173"
   },
   {
     "question": "Calculate running totals for daily sales.",
@@ -2357,7 +3397,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/linq-collections.md",
-    "id": "card-122"
+    "id": "card-174"
   },
   {
     "question": "Implement a custom LINQ extension method DistinctBy that takes a key selector.",
@@ -2377,7 +3417,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/linq-collections.md",
-    "id": "card-123"
+    "id": "card-175"
   },
   {
     "question": "Write a LINQ query to find all employees whose salary is above the average salary in their department.",
@@ -2397,7 +3437,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/linq-collections.md",
-    "id": "card-124"
+    "id": "card-176"
   },
   {
     "question": "Implement pagination with LINQ (Skip/Take) and explain potential issues with IQueryable vs IEnumerable.",
@@ -2417,7 +3457,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/linq-collections.md",
-    "id": "card-125"
+    "id": "card-177"
   },
   {
     "question": "Write a LINQ query to pivot data (convert rows to columns).",
@@ -2437,7 +3477,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/linq-collections.md",
-    "id": "card-126"
+    "id": "card-178"
   },
   {
     "question": "Implement a LINQ query with multiple grouping levels (hierarchical grouping).",
@@ -2457,7 +3497,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/linq-collections.md",
-    "id": "card-127"
+    "id": "card-179"
   },
   {
     "question": "Find all consecutive sequences of at least 3 days where sales exceeded $10,000.",
@@ -2477,7 +3517,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/linq-collections.md",
-    "id": "card-128"
+    "id": "card-180"
   },
   {
     "question": "Explain deferred execution and when it can cause performance issues.",
@@ -2497,7 +3537,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/linq-collections.md",
-    "id": "card-129"
+    "id": "card-181"
   },
   {
     "question": "Compare the performance implications of Count() vs Any() for checking if a collection has items.",
@@ -2517,7 +3557,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/linq-collections.md",
-    "id": "card-130"
+    "id": "card-182"
   },
   {
     "question": "Identify and fix performance issues in this query.",
@@ -2537,7 +3577,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/linq-collections.md",
-    "id": "card-131"
+    "id": "card-183"
   },
   {
     "question": "Write a LINQ query that uses AsParallel appropriately for CPU-bound operations.",
@@ -2557,7 +3597,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/linq-collections.md",
-    "id": "card-132"
+    "id": "card-184"
   },
   {
     "question": "When should you use List<T> vs IEnumerable<T> as a return type?",
@@ -2577,7 +3617,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/linq-collections.md",
-    "id": "card-133"
+    "id": "card-185"
   },
   {
     "question": "Implement a LookupTable using ToLookup and explain when to use it vs GroupBy.",
@@ -2597,7 +3637,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/linq-collections.md",
-    "id": "card-134"
+    "id": "card-186"
   },
   {
     "question": "Use Zip to combine two sequences and explain its behavior when sequences have different lengths.",
@@ -2617,7 +3657,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/linq-collections.md",
-    "id": "card-135"
+    "id": "card-187"
   },
   {
     "question": "Implement a method that chunks a collection into batches of N items.",
@@ -2637,7 +3677,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/linq-collections.md",
-    "id": "card-136"
+    "id": "card-188"
   },
   {
     "question": "You need to merge data from multiple sources (database, API, cache) and remove duplicates. Implement this efficiently.",
@@ -2657,7 +3697,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/linq-collections.md",
-    "id": "card-137"
+    "id": "card-189"
   },
   {
     "question": "Implement a search feature with multiple optional filters (name, category, price range, tags).",
@@ -2677,7 +3717,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/linq-collections.md",
-    "id": "card-138"
+    "id": "card-190"
   },
   {
     "question": "Calculate month-over-month growth percentage for sales data.",
@@ -2697,7 +3737,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/linq-collections.md",
-    "id": "card-139"
+    "id": "card-191"
   },
   {
     "question": "Implement an expression builder that allows dynamic LINQ query construction from user input.",
@@ -2717,7 +3757,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/linq-collections.md",
-    "id": "card-140"
+    "id": "card-192"
   },
   {
     "question": "Implement a method that finds all possible combinations of products that sum to a target price (subset sum problem).",
@@ -2737,7 +3777,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/linq-collections.md",
-    "id": "card-141"
+    "id": "card-193"
   },
   {
     "question": "Use GroupJoin to build a customer summary with order counts and last order date.",
@@ -2757,7 +3797,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/linq-collections.md",
-    "id": "card-142"
+    "id": "card-194"
   },
   {
     "question": "Implement Distinct with a custom comparer for case-insensitive strings.",
@@ -2777,7 +3817,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/linq-collections.md",
-    "id": "card-143"
+    "id": "card-195"
   },
   {
     "question": "Convert a list to a dictionary safely when keys can repeat.",
@@ -2797,7 +3837,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/linq-collections.md",
-    "id": "card-144"
+    "id": "card-196"
   },
   {
     "question": "Use Select with index to assign ranks within a sorted sequence.",
@@ -2817,7 +3857,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/linq-collections.md",
-    "id": "card-145"
+    "id": "card-197"
   },
   {
     "question": "Split a sequence into a prefix and the remaining items using TakeWhile and SkipWhile.",
@@ -2837,7 +3877,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/linq-collections.md",
-    "id": "card-146"
+    "id": "card-198"
   },
   {
     "question": "Compare RabbitMQ and ZeroMQ for distributing price updates. When would you choose one over the other?",
@@ -2851,7 +3891,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/messaging-integration.md",
-    "id": "card-147"
+    "id": "card-199"
   },
   {
     "question": "Explain how to ensure at-least-once delivery with RabbitMQ while preventing duplicate processing.",
@@ -2871,7 +3911,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/messaging-integration.md",
-    "id": "card-148"
+    "id": "card-200"
   },
   {
     "question": "How would you design a saga pattern to coordinate account funding across multiple services?",
@@ -2891,7 +3931,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/messaging-integration.md",
-    "id": "card-149"
+    "id": "card-201"
   },
   {
     "question": "Discuss the outbox pattern and how it prevents message loss in event-driven systems.",
@@ -2911,7 +3951,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/messaging-integration.md",
-    "id": "card-150"
+    "id": "card-202"
   },
   {
     "question": "Implement a publisher with confirmation to ensure messages are persisted.",
@@ -2931,7 +3971,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/messaging-integration.md",
-    "id": "card-151"
+    "id": "card-203"
   },
   {
     "question": "Implement a resilient consumer with retry logic and dead letter queue.",
@@ -2951,7 +3991,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/messaging-integration.md",
-    "id": "card-152"
+    "id": "card-204"
   },
   {
     "question": "Implement priority queue pattern for urgent messages.",
@@ -2971,7 +4011,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/messaging-integration.md",
-    "id": "card-153"
+    "id": "card-205"
   },
   {
     "question": "Implement Kafka producer with idempotent writes and transactions.",
@@ -2991,7 +4031,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/messaging-integration.md",
-    "id": "card-154"
+    "id": "card-206"
   },
   {
     "question": "Implement Kafka consumer with manual offset management and exactly-once processing.",
@@ -3011,7 +4051,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/messaging-integration.md",
-    "id": "card-155"
+    "id": "card-207"
   },
   {
     "question": "Implement Kafka consumer group rebalancing with state management.",
@@ -3031,7 +4071,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/messaging-integration.md",
-    "id": "card-156"
+    "id": "card-208"
   },
   {
     "question": "Implement orchestration-based saga for order processing.",
@@ -3051,7 +4091,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/messaging-integration.md",
-    "id": "card-157"
+    "id": "card-209"
   },
   {
     "question": "Implement choreography-based saga using events.",
@@ -3071,7 +4111,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/messaging-integration.md",
-    "id": "card-158"
+    "id": "card-210"
   },
   {
     "question": "Implement transactional outbox pattern with background processor.",
@@ -3091,7 +4131,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/messaging-integration.md",
-    "id": "card-159"
+    "id": "card-211"
   },
   {
     "question": "Implement idempotency using distributed cache.",
@@ -3111,7 +4151,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/messaging-integration.md",
-    "id": "card-160"
+    "id": "card-212"
   },
   {
     "question": "Implement event store with snapshots for performance.",
@@ -3131,7 +4171,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/messaging-integration.md",
-    "id": "card-161"
+    "id": "card-213"
   },
   {
     "question": "How do you handle poison messages without blocking a queue?",
@@ -3151,7 +4191,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/messaging-integration.md",
-    "id": "card-162"
+    "id": "card-214"
   },
   {
     "question": "Describe an idempotency strategy for message consumers.",
@@ -3171,7 +4211,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/messaging-integration.md",
-    "id": "card-163"
+    "id": "card-215"
   },
   {
     "question": "How would you preserve ordering for a specific key in Kafka?",
@@ -3185,7 +4225,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/messaging-integration.md",
-    "id": "card-164"
+    "id": "card-216"
   },
   {
     "question": "How do you evolve a message schema safely?",
@@ -3199,7 +4239,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/messaging-integration.md",
-    "id": "card-165"
+    "id": "card-217"
   },
   {
     "question": "Implement a retry policy with exponential backoff and max delay.",
@@ -3219,7 +4259,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/messaging-integration.md",
-    "id": "card-166"
+    "id": "card-218"
   },
   {
     "question": "When should you use ArrayPool<T>?",
@@ -3239,7 +4279,7 @@ window.PRACTICE_DATA = [
     "topic": "Performance Memory",
     "topicId": "performance-memory",
     "source": "practice/performance-memory.md",
-    "id": "card-167"
+    "id": "card-219"
   },
   {
     "question": "Show how Span<T> can avoid allocations when parsing.",
@@ -3259,7 +4299,7 @@ window.PRACTICE_DATA = [
     "topic": "Performance Memory",
     "topicId": "performance-memory",
     "source": "practice/performance-memory.md",
-    "id": "card-168"
+    "id": "card-220"
   },
   {
     "question": "When would you use ValueTask instead of Task?",
@@ -3273,7 +4313,7 @@ window.PRACTICE_DATA = [
     "topic": "Performance Memory",
     "topicId": "performance-memory",
     "source": "practice/performance-memory.md",
-    "id": "card-169"
+    "id": "card-221"
   },
   {
     "question": "Why is string concatenation in a loop expensive, and how do you fix it?",
@@ -3293,7 +4333,7 @@ window.PRACTICE_DATA = [
     "topic": "Performance Memory",
     "topicId": "performance-memory",
     "source": "practice/performance-memory.md",
-    "id": "card-170"
+    "id": "card-222"
   },
   {
     "question": "How do closures create hidden allocations?",
@@ -3313,7 +4353,7 @@ window.PRACTICE_DATA = [
     "topic": "Performance Memory",
     "topicId": "performance-memory",
     "source": "practice/performance-memory.md",
-    "id": "card-171"
+    "id": "card-223"
   },
   {
     "question": "Given a list of trades with timestamps, return the latest trade per account using LINQ.",
@@ -3333,7 +4373,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-172"
+    "id": "card-224"
   },
   {
     "question": "Implement a method that flattens nested lists of instrument codes while preserving ordering.",
@@ -3353,7 +4393,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-173"
+    "id": "card-225"
   },
   {
     "question": "Explain the difference between SelectMany and nested loops. When is each preferable?",
@@ -3373,7 +4413,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-174"
+    "id": "card-226"
   },
   {
     "question": "How would you detect duplicate orders in a stream using GroupBy and produce a summary?",
@@ -3393,7 +4433,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-175"
+    "id": "card-227"
   },
   {
     "question": "Sketch code to call three REST endpoints concurrently, cancel if any take longer than 3 seconds, and aggregate results.",
@@ -3413,7 +4453,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-176"
+    "id": "card-228"
   },
   {
     "question": "Implement a resilient HTTP client with retry and circuit breaker policies using Polly.",
@@ -3433,7 +4473,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-177"
+    "id": "card-229"
   },
   {
     "question": "How would you handle backpressure when consuming a fast message queue with a slower downstream API?",
@@ -3453,7 +4493,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-178"
+    "id": "card-230"
   },
   {
     "question": "Explain why you might use SemaphoreSlim with async code over lock.",
@@ -3473,7 +4513,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-179"
+    "id": "card-231"
   },
   {
     "question": "Describe the ASP.NET Core middleware pipeline for a request hitting an authenticated endpoint with custom exception handling.",
@@ -3493,7 +4533,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-180"
+    "id": "card-232"
   },
   {
     "question": "How do you implement API versioning and backward compatibility?",
@@ -3513,7 +4553,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-181"
+    "id": "card-233"
   },
   {
     "question": "Discuss strategies for rate limiting and request throttling.",
@@ -3533,7 +4573,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-182"
+    "id": "card-234"
   },
   {
     "question": "How would you log correlation IDs across services and propagate them to downstream dependencies?",
@@ -3553,7 +4593,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-183"
+    "id": "card-235"
   },
   {
     "question": "Design a service that ingests MT5 tick data, normalizes it, caches latest prices, and exposes them via REST/WebSocket.",
@@ -3573,7 +4613,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-184"
+    "id": "card-236"
   },
   {
     "question": "Design an API that receives orders, validates, routes to MT4/MT5, and confirms execution. Include failure recovery.",
@@ -3593,7 +4633,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-185"
+    "id": "card-237"
   },
   {
     "question": "Architect a system to collect metrics from trading microservices and alert on anomalies.",
@@ -3613,7 +4653,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-186"
+    "id": "card-238"
   },
   {
     "question": "Discuss how you would integrate an external risk management engine into an existing microservices ecosystem.",
@@ -3633,7 +4673,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-187"
+    "id": "card-239"
   },
   {
     "question": "Compare RabbitMQ and ZeroMQ for distributing price updates. When would you choose one over the other?",
@@ -3647,7 +4687,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-188"
+    "id": "card-240"
   },
   {
     "question": "Explain how to ensure at-least-once delivery with RabbitMQ while preventing duplicate processing.",
@@ -3667,7 +4707,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-189"
+    "id": "card-241"
   },
   {
     "question": "How would you design a saga pattern to coordinate account funding across multiple services?",
@@ -3687,7 +4727,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-190"
+    "id": "card-242"
   },
   {
     "question": "Discuss the outbox pattern and how it prevents message loss in event-driven systems.",
@@ -3707,7 +4747,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-191"
+    "id": "card-243"
   },
   {
     "question": "Write a SQL query to calculate the rolling 7-day trade volume per instrument.",
@@ -3727,7 +4767,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-192"
+    "id": "card-244"
   },
   {
     "question": "Explain how you would choose between normalized schemas and denormalized tables for reporting.",
@@ -3741,7 +4781,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-193"
+    "id": "card-245"
   },
   {
     "question": "Describe the differences between clustered and non-clustered indexes and when to use covering indexes.",
@@ -3761,7 +4801,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-194"
+    "id": "card-246"
   },
   {
     "question": "Walk through handling a long-running report query that impacts OLTP performance.",
@@ -3775,7 +4815,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-195"
+    "id": "card-247"
   },
   {
     "question": "Describe the lifecycle of a forex trade from placement to settlement.",
@@ -3789,7 +4829,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-196"
+    "id": "card-248"
   },
   {
     "question": "How would you integrate with MT4/MT5 APIs for trade execution in C#? Mention authentication, session management, and error handling.",
@@ -3809,7 +4849,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-197"
+    "id": "card-249"
   },
   {
     "question": "What are common risk checks before executing a client order (e.g., margin, exposure limits)?",
@@ -3823,7 +4863,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-198"
+    "id": "card-250"
   },
   {
     "question": "Explain how you'd handle market data bursts without dropping updates.",
@@ -3837,7 +4877,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-199"
+    "id": "card-251"
   },
   {
     "question": "Tell me about a time you led a critical production fix under pressure.",
@@ -3851,7 +4891,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-200"
+    "id": "card-252"
   },
   {
     "question": "Describe a situation where you improved a process by automating manual work.",
@@ -3865,7 +4905,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-201"
+    "id": "card-253"
   },
   {
     "question": "Discuss a conflict within a team and how you resolved it.",
@@ -3879,7 +4919,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-202"
+    "id": "card-254"
   },
   {
     "question": "Share a story that demonstrates your commitment to documentation or knowledge sharing.",
@@ -3893,7 +4933,147 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-203"
+    "id": "card-255"
+  },
+  {
+    "question": "Identify the SRP violations in this User class and refactor it.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "The User class has multiple responsibilities: data storage, email sending, report generation, and validation. Refactor into separate classes:"
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "// Single responsibility: User data\npublic class User\n{\n    public int Id { get; set; }\n    public string Name { get; set; }\n    public string Email { get; set; }\n}\n\n// Single responsibility: Data persistence\npublic class UserRepository\n{\n    private readonly string _connectionString;\n\n    public UserRepository(string connectionString)\n    {\n        _connectionString = connectionString;\n    }\n\n    public void Save(User user)\n    {\n        using var connection = new SqlConnection(_connectionString);\n        // Save user\n    }\n}\n\n// Single responsibility: Email notifications\npublic class EmailService\n{\n    private readonly SmtpClient _smtpClient;\n\n    public EmailService(SmtpClient smtpClient)\n    {\n        _smtpClient = smtpClient;\n    }\n\n    public void SendWelcomeEmail(User user)\n    {\n        // Send email\n    }\n}\n\n// Single responsibility: Report generation\npublic class UserReportGenerator\n{\n    public string Generate(User user)\n    {\n        return $\"User Report: {user.Name}\";\n    }\n}\n\n// Single responsibility: Validation\npublic class EmailValidator\n{\n    public bool Validate(string email)\n    {\n        return !string.IsNullOrEmpty(email) && email.Contains(\"@\");\n    }\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "S Single Responsibility Principle Exercises",
+    "topicId": "s-single-responsibility-principle-exercises",
+    "source": "practice/SOLID/S-Single-Responsibility-Principle-Exercises.md",
+    "id": "card-256"
+  },
+  {
+    "question": "Refactor this OrderProcessor class to follow SRP.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Separate into distinct responsibilities:"
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "public class Order\n{\n    public int Id { get; set; }\n    public Customer Customer { get; set; }\n    public List<OrderItem> Items { get; set; } = new();\n    public decimal Total { get; set; }\n}\n\n// Responsibility: Order validation\npublic class OrderValidator\n{\n    public void Validate(Order order)\n    {\n        if (order.Items.Count == 0)\n            throw new InvalidOperationException(\"Order must have items\");\n\n        if (order.Customer == null)\n            throw new InvalidOperationException(\"Order must have a customer\");\n    }\n}\n\n// Responsibility: Price calculation\npublic class OrderPriceCalculator\n{\n    public decimal CalculateTotal(Order order)\n    {\n        return order.Items.Sum(item => item.Price * item.Quantity);\n    }\n}\n\n// Responsibility: Discount application\npublic class DiscountService\n{\n    public decimal ApplyDiscount(decimal amount, Customer customer)\n    {\n        return customer.IsPremium ? amount * 0.9m : amount;\n    }\n}\n\n// Responsibility: Data persistence\npublic class OrderRepository\n{\n    private readonly IDbConnection _connection;\n\n    public OrderRepository(IDbConnection connection)\n    {\n        _connection = connection;\n    }\n\n    public void Save(Order order)\n    {\n        // Save to database\n    }\n}\n\n// Responsibility: Email notifications\npublic class OrderNotificationService\n{\n    private readonly IEmailService _emailService;\n\n    public OrderNotificationService(IEmailService emailService)\n    {\n        _emailService = emailService;\n    }\n\n    public void SendConfirmation(Order order)\n    {\n        _emailService.Send(order.Customer.Email, \"Order Confirmation\", $\"Order {order.Id}\");\n    }\n}\n\n// Responsibility: Logging\npublic class OrderLogger\n{\n    private readonly ILogger _logger;\n\n    public OrderLogger(ILogger logger)\n    {\n        _logger = logger;\n    }\n\n    public void LogProcessed(Order order)\n    {\n        _logger.LogInformation($\"Order {order.Id} processed\");\n    }\n}\n\n// Orchestrator: Coordinates the workflow\npublic class OrderProcessor\n{\n    private readonly OrderValidator _validator;\n    private readonly OrderPriceCalculator _calculator;\n    private readonly DiscountService _discountService;\n    private readonly OrderRepository _repository;\n    private readonly OrderNotificationService _notificationService;\n    private readonly OrderLogger _logger;\n\n    public OrderProcessor(\n        OrderValidator validator,\n        OrderPriceCalculator calculator,\n        DiscountService discountService,\n        OrderRepository repository,\n        OrderNotificationService notificationService,\n        OrderLogger logger)\n    {\n        _validator = validator;\n        _calculator = calculator;\n        _discountService = discountService;\n        _repository = repository;\n        _notificationService = notificationService;\n        _logger = logger;\n    }\n\n    public void ProcessOrder(Order order)\n    {\n        _validator.Validate(order);\n\n        var subtotal = _calculator.CalculateTotal(order);\n        order.Total = _discountService.ApplyDiscount(subtotal, order.Customer);\n\n        _repository.Save(order);\n        _notificationService.SendConfirmation(order);\n        _logger.LogProcessed(order);\n    }\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "S Single Responsibility Principle Exercises",
+    "topicId": "s-single-responsibility-principle-exercises",
+    "source": "practice/SOLID/S-Single-Responsibility-Principle-Exercises.md",
+    "id": "card-257"
+  },
+  {
+    "question": "Identify SRP violations in this ReportGenerator class.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Separate into distinct responsibilities:"
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "// Responsibility: Data access\npublic class SalesRepository\n{\n    private readonly IDbConnection _connection;\n\n    public SalesRepository(IDbConnection connection)\n    {\n        _connection = connection;\n    }\n\n    public List<Sale> GetAll()\n    {\n        // Fetch from database\n        return new List<Sale>();\n    }\n}\n\n// Responsibility: Business calculations\npublic class SalesMetricsCalculator\n{\n    public SalesMetrics Calculate(List<Sale> sales)\n    {\n        return new SalesMetrics\n        {\n            TotalSales = sales.Sum(s => s.Amount),\n            AverageSale = sales.Average(s => s.Amount),\n            SaleCount = sales.Count\n        };\n    }\n}\n\n// Responsibility: Report formatting\npublic class ReportFormatter\n{\n    public string Format(SalesMetrics metrics)\n    {\n        var report = new StringBuilder();\n        report.AppendLine($\"Total Sales: {metrics.TotalSales:C}\");\n        report.AppendLine($\"Average Sale: {metrics.AverageSale:C}\");\n        report.AppendLine($\"Number of Sales: {metrics.SaleCount}\");\n        return report.ToString();\n    }\n}\n\n// Responsibility: File operations\npublic class ReportFileWriter\n{\n    public void WriteToFile(string content, string filePath)\n    {\n        File.WriteAllText(filePath, content);\n    }\n}\n\n// Responsibility: Email delivery\npublic class ReportEmailService\n{\n    private readonly IEmailService _emailService;\n\n    public ReportEmailService(IEmailService emailService)\n    {\n        _emailService = emailService;\n    }\n\n    public void SendReport(string report, string recipient)\n    {\n        _emailService.Send(recipient, \"Sales Report\", report);\n    }\n}\n\n// Orchestrator\npublic class ReportGenerator\n{\n    private readonly SalesRepository _repository;\n    private readonly SalesMetricsCalculator _calculator;\n    private readonly ReportFormatter _formatter;\n    private readonly ReportFileWriter _fileWriter;\n    private readonly ReportEmailService _emailService;\n\n    public ReportGenerator(\n        SalesRepository repository,\n        SalesMetricsCalculator calculator,\n        ReportFormatter formatter,\n        ReportFileWriter fileWriter,\n        ReportEmailService emailService)\n    {\n        _repository = repository;\n        _calculator = calculator;\n        _formatter = formatter;\n        _fileWriter = fileWriter;\n        _emailService = emailService;\n    }\n\n    public string GenerateAndDistributeReport(string recipient, string filePath)\n    {\n        var sales = _repository.GetAll();\n        var metrics = _calculator.Calculate(sales);\n        var report = _formatter.Format(metrics);\n\n        _fileWriter.WriteToFile(report, filePath);\n        _emailService.SendReport(report, recipient);\n\n        return report;\n    }\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "S Single Responsibility Principle Exercises",
+    "topicId": "s-single-responsibility-principle-exercises",
+    "source": "practice/SOLID/S-Single-Responsibility-Principle-Exercises.md",
+    "id": "card-258"
+  },
+  {
+    "question": "Refactor this Employee class that handles both employee data and payroll calculations.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Separate into focused classes:"
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "// Responsibility: Employee data\npublic class Employee\n{\n    public int Id { get; set; }\n    public string Name { get; set; }\n    public decimal HourlyRate { get; set; }\n    public int HoursWorked { get; set; }\n}\n\n// Responsibility: Payroll calculations\npublic class PayrollCalculator\n{\n    private const int StandardHours = 40;\n    private const decimal OvertimeMultiplier = 1.5m;\n\n    public decimal CalculatePayment(Employee employee)\n    {\n        var regularHours = Math.Min(employee.HoursWorked, StandardHours);\n        var overtimeHours = Math.Max(employee.HoursWorked - StandardHours, 0);\n\n        var regularPay = regularHours * employee.HourlyRate;\n        var overtimePay = overtimeHours * employee.HourlyRate * OvertimeMultiplier;\n\n        return regularPay + overtimePay;\n    }\n}\n\n// Responsibility: Tax calculations\npublic class TaxCalculator\n{\n    public decimal CalculateTax(decimal payment)\n    {\n        if (payment < 1000) return payment * 0.1m;\n        if (payment < 5000) return payment * 0.2m;\n        return payment * 0.3m;\n    }\n}\n\n// Responsibility: Data persistence\npublic class EmployeeRepository\n{\n    private readonly IDbConnection _connection;\n\n    public EmployeeRepository(IDbConnection connection)\n    {\n        _connection = connection;\n    }\n\n    public void Save(Employee employee)\n    {\n        // Save to database\n    }\n\n    public Employee GetById(int id)\n    {\n        // Retrieve from database\n        return null;\n    }\n}\n\n// Responsibility: Document generation\npublic class PayslipGenerator\n{\n    private readonly PayrollCalculator _payrollCalculator;\n    private readonly TaxCalculator _taxCalculator;\n\n    public PayslipGenerator(PayrollCalculator payrollCalculator, TaxCalculator taxCalculator)\n    {\n        _payrollCalculator = payrollCalculator;\n        _taxCalculator = taxCalculator;\n    }\n\n    public string Generate(Employee employee)\n    {\n        var payment = _payrollCalculator.CalculatePayment(employee);\n        var tax = _taxCalculator.CalculateTax(payment);\n\n        return $\"Employee: {employee.Name}\\n\" +\n               $\"Payment: {payment:C}\\n\" +\n               $\"Tax: {tax:C}\\n\" +\n               $\"Net Pay: {payment - tax:C}\";\n    }\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "S Single Responsibility Principle Exercises",
+    "topicId": "s-single-responsibility-principle-exercises",
+    "source": "practice/SOLID/S-Single-Responsibility-Principle-Exercises.md",
+    "id": "card-259"
+  },
+  {
+    "question": "Design a logging system that follows SRP. It should support multiple log levels, formats, and destinations.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Create separate classes for each responsibility:"
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "// Responsibility: Log entry data\npublic class LogEntry\n{\n    public DateTime Timestamp { get; set; }\n    public LogLevel Level { get; set; }\n    public string Message { get; set; }\n    public string Category { get; set; }\n    public Exception Exception { get; set; }\n}\n\npublic enum LogLevel\n{\n    Debug, Info, Warning, Error, Critical\n}\n\n// Responsibility: Log formatting\npublic interface ILogFormatter\n{\n    string Format(LogEntry entry);\n}\n\npublic class JsonLogFormatter : ILogFormatter\n{\n    public string Format(LogEntry entry)\n    {\n        return JsonSerializer.Serialize(entry);\n    }\n}\n\npublic class PlainTextLogFormatter : ILogFormatter\n{\n    public string Format(LogEntry entry)\n    {\n        return $\"[{entry.Timestamp:yyyy-MM-dd HH:mm:ss}] [{entry.Level}] {entry.Message}\";\n    }\n}\n\n// Responsibility: Log destination\npublic interface ILogDestination\n{\n    void Write(string formattedLog);\n}\n\npublic class FileLogDestination : ILogDestination\n{\n    private readonly string _filePath;\n\n    public FileLogDestination(string filePath)\n    {\n        _filePath = filePath;\n    }\n\n    public void Write(string formattedLog)\n    {\n        File.AppendAllText(_filePath, formattedLog + Environment.NewLine);\n    }\n}\n\npublic class ConsoleLogDestination : ILogDestination\n{\n    public void Write(string formattedLog)\n    {\n        Console.WriteLine(formattedLog);\n    }\n}\n\npublic class DatabaseLogDestination : ILogDestination\n{\n    private readonly IDbConnection _connection;\n\n    public DatabaseLogDestination(IDbConnection connection)\n    {\n        _connection = connection;\n    }\n\n    public void Write(string formattedLog)\n    {\n        // Write to database\n    }\n}\n\n// Responsibility: Log filtering\npublic interface ILogFilter\n{\n    bool ShouldLog(LogEntry entry);\n}\n\npublic class LogLevelFilter : ILogFilter\n{\n    private readonly LogLevel _minLevel;\n\n    public LogLevelFilter(LogLevel minLevel)\n    {\n        _minLevel = minLevel;\n    }\n\n    public bool ShouldLog(LogEntry entry)\n    {\n        return entry.Level >= _minLevel;\n    }\n}\n\n// Responsibility: Orchestrating logging\npublic class Logger\n{\n    private readonly List<ILogDestination> _destinations;\n    private readonly ILogFormatter _formatter;\n    private readonly ILogFilter _filter;\n\n    public Logger(\n        ILogFormatter formatter,\n        ILogFilter filter,\n        params ILogDestination[] destinations)\n    {\n        _formatter = formatter;\n        _filter = filter;\n        _destinations = new List<ILogDestination>(destinations);\n    }\n\n    public void Log(LogLevel level, string message, string category = null, Exception exception = null)\n    {\n        var entry = new LogEntry\n        {\n            Timestamp = DateTime.UtcNow,\n            Level = level,\n            Message = message,\n            Category = category,\n            Exception = exception\n        };\n\n        if (!_filter.ShouldLog(entry))\n            return;\n\n        var formattedLog = _formatter.Format(entry);\n\n        foreach (var destination in _destinations)\n        {\n            destination.Write(formattedLog);\n        }\n    }\n\n    public void Debug(string message) => Log(LogLevel.Debug, message);\n    public void Info(string message) => Log(LogLevel.Info, message);\n    public void Warning(string message) => Log(LogLevel.Warning, message);\n    public void Error(string message, Exception ex = null) => Log(LogLevel.Error, message, exception: ex);\n}\n\n// Usage\nvar logger = new Logger(\n    new JsonLogFormatter(),\n    new LogLevelFilter(LogLevel.Info),\n    new FileLogDestination(\"app.log\"),\n    new ConsoleLogDestination()\n);\n\nlogger.Info(\"Application started\");\nlogger.Error(\"An error occurred\", new Exception(\"Test exception\"));",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "S Single Responsibility Principle Exercises",
+    "topicId": "s-single-responsibility-principle-exercises",
+    "source": "practice/SOLID/S-Single-Responsibility-Principle-Exercises.md",
+    "id": "card-260"
+  },
+  {
+    "question": "Create a file processing system that reads, validates, transforms, and stores data while following SRP.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Separate each step into its own class:"
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "// Responsibility: File reading\npublic interface IFileReader\n{\n    Task<string> ReadAsync(string filePath);\n}\n\npublic class TextFileReader : IFileReader\n{\n    public async Task<string> ReadAsync(string filePath)\n    {\n        return await File.ReadAllTextAsync(filePath);\n    }\n}\n\n// Responsibility: Data parsing\npublic interface IDataParser<T>\n{\n    T Parse(string content);\n}\n\npublic class CsvParser : IDataParser<List<Dictionary<string, string>>>\n{\n    public List<Dictionary<string, string>> Parse(string content)\n    {\n        var lines = content.Split('\\n');\n        var headers = lines[0].Split(',');\n\n        return lines.Skip(1)\n            .Select(line =>\n            {\n                var values = line.Split(',');\n                return headers.Zip(values, (h, v) => new { h, v })\n                    .ToDictionary(x => x.h, x => x.v);\n            })\n            .ToList();\n    }\n}\n\n// Responsibility: Data validation\npublic interface IDataValidator<T>\n{\n    ValidationResult Validate(T data);\n}\n\npublic class ValidationResult\n{\n    public bool IsValid { get; set; }\n    public List<string> Errors { get; set; } = new();\n}\n\npublic class OrderDataValidator : IDataValidator<List<Dictionary<string, string>>>\n{\n    public ValidationResult Validate(List<Dictionary<string, string>> data)\n    {\n        var result = new ValidationResult { IsValid = true };\n\n        foreach (var row in data)\n        {\n            if (!row.ContainsKey(\"OrderId\") || string.IsNullOrEmpty(row[\"OrderId\"]))\n            {\n                result.IsValid = false;\n                result.Errors.Add(\"OrderId is required\");\n            }\n\n            if (row.ContainsKey(\"Amount\") && !decimal.TryParse(row[\"Amount\"], out _))\n            {\n                result.IsValid = false;\n                result.Errors.Add($\"Invalid amount in order {row.GetValueOrDefault(\"OrderId\")}\");\n            }\n        }\n\n        return result;\n    }\n}\n\n// Responsibility: Data transformation\npublic interface IDataTransformer<TInput, TOutput>\n{\n    TOutput Transform(TInput data);\n}\n\npublic class OrderTransformer : IDataTransformer<List<Dictionary<string, string>>, List<Order>>\n{\n    public List<Order> Transform(List<Dictionary<string, string>> data)\n    {\n        return data.Select(row => new Order\n        {\n            Id = row[\"OrderId\"],\n            Amount = decimal.Parse(row[\"Amount\"]),\n            CustomerId = row.GetValueOrDefault(\"CustomerId\")\n        }).ToList();\n    }\n}\n\n// Responsibility: Data storage\npublic interface IDataRepository<T>\n{\n    Task SaveAsync(T data);\n}\n\npublic class OrderRepository : IDataRepository<List<Order>>\n{\n    private readonly IDbConnection _connection;\n\n    public OrderRepository(IDbConnection connection)\n    {\n        _connection = connection;\n    }\n\n    public async Task SaveAsync(List<Order> orders)\n    {\n        // Save to database\n        await Task.CompletedTask;\n    }\n}\n\n// Responsibility: Error handling and logging\npublic interface IProcessingLogger\n{\n    void LogStart(string filePath);\n    void LogValidationErrors(ValidationResult result);\n    void LogSuccess(int recordCount);\n    void LogError(Exception ex);\n}\n\npublic class ProcessingLogger : IProcessingLogger\n{\n    private readonly ILogger _logger;\n\n    public ProcessingLogger(ILogger logger)\n    {\n        _logger = logger;\n    }\n\n    public void LogStart(string filePath)\n    {\n        _logger.LogInformation($\"Starting to process file: {filePath}\");\n    }\n\n    public void LogValidationErrors(ValidationResult result)\n    {\n        foreach (var error in result.Errors)\n        {\n            _logger.LogWarning($\"Validation error: {error}\");\n        }\n    }\n\n    public void LogSuccess(int recordCount)\n    {\n        _logger.LogInformation($\"Successfully processed {recordCount} records\");\n    }\n\n    public void LogError(Exception ex)\n    {\n        _logger.LogError(ex, \"Error processing file\");\n    }\n}\n\n// Orchestrator: Coordinates the workflow\npublic class FileProcessingService\n{\n    private readonly IFileReader _fileReader;\n    private readonly IDataParser<List<Dictionary<string, string>>> _parser;\n    private readonly IDataValidator<List<Dictionary<string, string>>> _validator;\n    private readonly IDataTransformer<List<Dictionary<string, string>>, List<Order>> _transformer;\n    private readonly IDataRepository<List<Order>> _repository;\n    private readonly IProcessingLogger _logger;\n\n    public FileProcessingService(\n        IFileReader fileReader,\n        IDataParser<List<Dictionary<string, string>>> parser,\n        IDataValidator<List<Dictionary<string, string>>> validator,\n        IDataTransformer<List<Dictionary<string, string>>, List<Order>> transformer,\n        IDataRepository<List<Order>> repository,\n        IProcessingLogger logger)\n    {\n        _fileReader = fileReader;\n        _parser = parser;\n        _validator = validator;\n        _transformer = transformer;\n        _repository = repository;\n        _logger = logger;\n    }\n\n    public async Task ProcessFileAsync(string filePath)\n    {\n        try\n        {\n            _logger.LogStart(filePath);\n\n            // Read\n            var content = await _fileReader.ReadAsync(filePath);\n\n            // Parse\n            var rawData = _parser.Parse(content);\n\n            // Validate\n            var validationResult = _validator.Validate(rawData);\n            if (!validationResult.IsValid)\n            {\n                _logger.LogValidationErrors(validationResult);\n                return;\n            }\n\n            // Transform\n            var orders = _transformer.Transform(rawData);\n\n            // Store\n            await _repository.SaveAsync(orders);\n\n            _logger.LogSuccess(orders.Count);\n        }\n        catch (Exception ex)\n        {\n            _logger.LogError(ex);\n            throw;\n        }\n    }\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "S Single Responsibility Principle Exercises",
+    "topicId": "s-single-responsibility-principle-exercises",
+    "source": "practice/SOLID/S-Single-Responsibility-Principle-Exercises.md",
+    "id": "card-261"
+  },
+  {
+    "question": "Design an e-commerce checkout system following SRP. Include inventory checking, payment processing, order creation, and notifications.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Create focused services for each responsibility:"
+      },
+      {
+        "type": "code",
+        "language": "csharp",
+        "code": "// Domain entities\npublic class Cart\n{\n    public string CustomerId { get; set; }\n    public List<CartItem> Items { get; set; } = new();\n}\n\npublic class CartItem\n{\n    public string ProductId { get; set; }\n    public int Quantity { get; set; }\n    public decimal Price { get; set; }\n}\n\npublic class Order\n{\n    public string Id { get; set; }\n    public string CustomerId { get; set; }\n    public List<OrderItem> Items { get; set; } = new();\n    public decimal Total { get; set; }\n    public string Status { get; set; }\n    public DateTime CreatedAt { get; set; }\n}\n\n// Responsibility: Inventory management\npublic interface IInventoryService\n{\n    Task<bool> CheckAvailabilityAsync(string productId, int quantity);\n    Task ReserveAsync(string productId, int quantity);\n    Task ReleaseAsync(string productId, int quantity);\n}\n\npublic class InventoryService : IInventoryService\n{\n    private readonly IInventoryRepository _repository;\n\n    public InventoryService(IInventoryRepository repository)\n    {\n        _repository = repository;\n    }\n\n    public async Task<bool> CheckAvailabilityAsync(string productId, int quantity)\n    {\n        var stock = await _repository.GetStockAsync(productId);\n        return stock >= quantity;\n    }\n\n    public async Task ReserveAsync(string productId, int quantity)\n    {\n        await _repository.DecrementStockAsync(productId, quantity);\n    }\n\n    public async Task ReleaseAsync(string productId, int quantity)\n    {\n        await _repository.IncrementStockAsync(productId, quantity);\n    }\n}\n\n// Responsibility: Payment processing\npublic interface IPaymentService\n{\n    Task<PaymentResult> ProcessPaymentAsync(string customerId, decimal amount, string paymentMethod);\n}\n\npublic class PaymentResult\n{\n    public bool Success { get; set; }\n    public string TransactionId { get; set; }\n    public string ErrorMessage { get; set; }\n}\n\npublic class PaymentService : IPaymentService\n{\n    private readonly IPaymentGateway _gateway;\n\n    public PaymentService(IPaymentGateway gateway)\n    {\n        _gateway = gateway;\n    }\n\n    public async Task<PaymentResult> ProcessPaymentAsync(string customerId, decimal amount, string paymentMethod)\n    {\n        return await _gateway.ChargeAsync(customerId, amount, paymentMethod);\n    }\n}\n\n// Responsibility: Order creation\npublic interface IOrderFactory\n{\n    Order CreateOrder(Cart cart);\n}\n\npublic class OrderFactory : IOrderFactory\n{\n    public Order CreateOrder(Cart cart)\n    {\n        return new Order\n        {\n            Id = Guid.NewGuid().ToString(),\n            CustomerId = cart.CustomerId,\n            Items = cart.Items.Select(ci => new OrderItem\n            {\n                ProductId = ci.ProductId,\n                Quantity = ci.Quantity,\n                Price = ci.Price\n            }).ToList(),\n            Total = cart.Items.Sum(ci => ci.Price * ci.Quantity),\n            Status = \"Pending\",\n            CreatedAt = DateTime.UtcNow\n        };\n    }\n}\n\n// Responsibility: Order persistence\npublic interface IOrderRepository\n{\n    Task SaveAsync(Order order);\n    Task UpdateStatusAsync(string orderId, string status);\n}\n\n// Responsibility: Customer notifications\npublic interface INotificationService\n{\n    Task SendOrderConfirmationAsync(Order order);\n    Task SendPaymentFailureAsync(string customerId, string reason);\n}\n\npublic class NotificationService : INotificationService\n{\n    private readonly IEmailService _emailService;\n    private readonly ISmsService _smsService;\n\n    public NotificationService(IEmailService emailService, ISmsService smsService)\n    {\n        _emailService = emailService;\n        _smsService = smsService;\n    }\n\n    public async Task SendOrderConfirmationAsync(Order order)\n    {\n        await _emailService.SendAsync(order.CustomerId, \"Order Confirmation\", $\"Order {order.Id} confirmed\");\n    }\n\n    public async Task SendPaymentFailureAsync(string customerId, string reason)\n    {\n        await _emailService.SendAsync(customerId, \"Payment Failed\", reason);\n    }\n}\n\n// Orchestrator: Checkout process\npublic class CheckoutService\n{\n    private readonly IInventoryService _inventoryService;\n    private readonly IPaymentService _paymentService;\n    private readonly IOrderFactory _orderFactory;\n    private readonly IOrderRepository _orderRepository;\n    private readonly INotificationService _notificationService;\n    private readonly ILogger<CheckoutService> _logger;\n\n    public CheckoutService(\n        IInventoryService inventoryService,\n        IPaymentService paymentService,\n        IOrderFactory orderFactory,\n        IOrderRepository orderRepository,\n        INotificationService notificationService,\n        ILogger<CheckoutService> logger)\n    {\n        _inventoryService = inventoryService;\n        _paymentService = paymentService;\n        _orderFactory = orderFactory;\n        _orderRepository = orderRepository;\n        _notificationService = notificationService;\n        _logger = logger;\n    }\n\n    public async Task<CheckoutResult> CheckoutAsync(Cart cart, string paymentMethod)\n    {\n        try\n        {\n            // Step 1: Check inventory\n            foreach (var item in cart.Items)\n            {\n                var available = await _inventoryService.CheckAvailabilityAsync(item.ProductId, item.Quantity);\n                if (!available)\n                {\n                    return CheckoutResult.Failed($\"Product {item.ProductId} is out of stock\");\n                }\n            }\n\n            // Step 2: Reserve inventory\n            foreach (var item in cart.Items)\n            {\n                await _inventoryService.ReserveAsync(item.ProductId, item.Quantity);\n            }\n\n            // Step 3: Create order\n            var order = _orderFactory.CreateOrder(cart);\n            await _orderRepository.SaveAsync(order);\n\n            // Step 4: Process payment\n            var paymentResult = await _paymentService.ProcessPaymentAsync(\n                cart.CustomerId,\n                order.Total,\n                paymentMethod);\n\n            if (!paymentResult.Success)\n            {\n                // Rollback inventory\n                foreach (var item in cart.Items)\n                {\n                    await _inventoryService.ReleaseAsync(item.ProductId, item.Quantity);\n                }\n\n                await _orderRepository.UpdateStatusAsync(order.Id, \"PaymentFailed\");\n                await _notificationService.SendPaymentFailureAsync(cart.CustomerId, paymentResult.ErrorMessage);\n\n                return CheckoutResult.Failed(paymentResult.ErrorMessage);\n            }\n\n            // Step 5: Confirm order\n            await _orderRepository.UpdateStatusAsync(order.Id, \"Confirmed\");\n            await _notificationService.SendOrderConfirmationAsync(order);\n\n            _logger.LogInformation($\"Checkout completed for order {order.Id}\");\n\n            return CheckoutResult.Success(order.Id);\n        }\n        catch (Exception ex)\n        {\n            _logger.LogError(ex, \"Checkout failed\");\n            throw;\n        }\n    }\n}\n\npublic class CheckoutResult\n{\n    public bool Success { get; set; }\n    public string OrderId { get; set; }\n    public string ErrorMessage { get; set; }\n\n    public static CheckoutResult Success(string orderId) =>\n        new() { Success = true, OrderId = orderId };\n\n    public static CheckoutResult Failed(string message) =>\n        new() { Success = false, ErrorMessage = message };\n}",
+        "codeType": "neutral"
+      }
+    ],
+    "category": "practice",
+    "topic": "S Single Responsibility Principle Exercises",
+    "topicId": "s-single-responsibility-principle-exercises",
+    "source": "practice/SOLID/S-Single-Responsibility-Principle-Exercises.md",
+    "id": "card-262"
   },
   {
     "question": "Design a service that ingests MT5 tick data, normalizes it, caches latest prices, and exposes them via REST/WebSocket.",
@@ -3913,7 +5093,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/system-design.md",
-    "id": "card-204"
+    "id": "card-263"
   },
   {
     "question": "Design an API that receives orders, validates, routes to MT4/MT5, and confirms execution. Include failure recovery.",
@@ -3933,7 +5113,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/system-design.md",
-    "id": "card-205"
+    "id": "card-264"
   },
   {
     "question": "Architect a system to collect metrics from trading microservices and alert on anomalies.",
@@ -3953,7 +5133,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/system-design.md",
-    "id": "card-206"
+    "id": "card-265"
   },
   {
     "question": "Discuss how you would integrate an external risk management engine into an existing microservices ecosystem.",
@@ -3973,7 +5153,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/system-design.md",
-    "id": "card-207"
+    "id": "card-266"
   },
   {
     "question": "Design a microservices architecture for an e-commerce platform with orders, inventory, payments, and shipping.",
@@ -3999,7 +5179,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/system-design.md",
-    "id": "card-208"
+    "id": "card-267"
   },
   {
     "question": "Design service-to-service communication strategy: when to use sync vs async?",
@@ -4019,7 +5199,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/system-design.md",
-    "id": "card-209"
+    "id": "card-268"
   },
   {
     "question": "Implement service discovery pattern for dynamic service registration.",
@@ -4039,7 +5219,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/system-design.md",
-    "id": "card-210"
+    "id": "card-269"
   },
   {
     "question": "Implement CQRS pattern for an order management system.",
@@ -4059,7 +5239,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/system-design.md",
-    "id": "card-211"
+    "id": "card-270"
   },
   {
     "question": "Design event sourcing system for account transactions.",
@@ -4079,7 +5259,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/system-design.md",
-    "id": "card-212"
+    "id": "card-271"
   },
   {
     "question": "Design a multi-layer caching strategy (L1: in-memory, L2: Redis, L3: database).",
@@ -4099,7 +5279,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/system-design.md",
-    "id": "card-213"
+    "id": "card-272"
   },
   {
     "question": "Implement cache invalidation strategy for distributed systems.",
@@ -4119,7 +5299,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/system-design.md",
-    "id": "card-214"
+    "id": "card-273"
   },
   {
     "question": "Design read replica strategy for handling high read traffic.",
@@ -4139,7 +5319,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/system-design.md",
-    "id": "card-215"
+    "id": "card-274"
   },
   {
     "question": "Design database sharding strategy for multi-tenant application.",
@@ -4159,7 +5339,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/system-design.md",
-    "id": "card-216"
+    "id": "card-275"
   },
   {
     "question": "Design circuit breaker pattern for external API calls.",
@@ -4179,7 +5359,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/system-design.md",
-    "id": "card-217"
+    "id": "card-276"
   },
   {
     "question": "Implement health check aggregator for microservices.",
@@ -4199,7 +5379,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/system-design.md",
-    "id": "card-218"
+    "id": "card-277"
   },
   {
     "question": "Design distributed tracing system using OpenTelemetry.",
@@ -4219,7 +5399,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/system-design.md",
-    "id": "card-219"
+    "id": "card-278"
   },
   {
     "question": "Implement centralized logging with correlation IDs.",
@@ -4239,77 +5419,77 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/system-design.md",
-    "id": "card-220"
+    "id": "card-279"
   },
   {
     "question": "Design a multi-region failover strategy for a trading platform.",
     "answer": [
       {
         "type": "text",
-        "content": "Use active-active for read-heavy services, active-passive for write-heavy, with DNS failover, replicated data stores, and idempotent writes."
+        "content": "Use active-active for read-heavy services, active-passive for write-heavy, with DNS failover, replicated data stores, and idempotent writes. Reads (market data, reporting) can be served locally for low latency, while writes go to a single primary region to avoid conflicts. Failover is handled via health checks and traffic rerouting, with idempotency preventing duplicate orders during retries."
       }
     ],
     "category": "practice",
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/system-design.md",
-    "id": "card-221"
+    "id": "card-280"
   },
   {
     "question": "How would you shard a multi-tenant database for scale?",
     "answer": [
       {
         "type": "text",
-        "content": "Choose a shard key (tenant id), use consistent hashing, route via a shard map, and ensure cross-shard queries are minimized or handled via read models."
+        "content": "Choose a shard key (tenant id), use consistent hashing, route via a shard map, and ensure cross-shard queries are minimized or handled via read models. A shard map allows moving or isolating large tenants without code changes. Global queries are usually served from aggregated read models instead of live cross-shard joins."
       }
     ],
     "category": "practice",
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/system-design.md",
-    "id": "card-222"
+    "id": "card-281"
   },
   {
     "question": "Describe a cache invalidation strategy for price snapshots.",
     "answer": [
       {
         "type": "text",
-        "content": "Use short TTLs, write-through cache for authoritative updates, and a pub/sub channel to invalidate per-symbol keys on updates."
+        "content": "Use short TTLs, write-through cache for authoritative updates, and a pub/sub channel to invalidate per-symbol keys on updates. Short TTLs (Time-To-Live) limit staleness, while pub/sub (Publish–Subscribe) ensures fast propagation of price changes. Versioning or timestamps help prevent out-of-order updates from overwriting newer prices."
       }
     ],
     "category": "practice",
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/system-design.md",
-    "id": "card-223"
+    "id": "card-282"
   },
   {
     "question": "When would you use event sourcing versus state storage?",
     "answer": [
       {
         "type": "text",
-        "content": "Event sourcing is useful for auditability and replay; state storage is simpler for CRUD-heavy systems. Consider storage costs, query complexity, and regulatory requirements."
+        "content": "Event sourcing is useful for auditability and replay; state storage is simpler for CRUD-heavy systems. Consider storage costs, query complexity, and regulatory requirements. Event sourcing fits domains like orders and trades where history and traceability matter. State storage is preferred when simplicity, performance, and direct querying are more important."
       }
     ],
     "category": "practice",
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/system-design.md",
-    "id": "card-224"
+    "id": "card-283"
   },
   {
     "question": "How do you handle backpressure in a streaming system?",
     "answer": [
       {
         "type": "text",
-        "content": "Apply bounded queues, adaptive batching, and consumer-side flow control. Drop or coalesce low-priority updates when queues exceed thresholds. Total Exercises: 30+ Master these patterns to design scalable, resilient distributed systems!"
+        "content": "Apply bounded queues, adaptive batching, and consumer-side flow control. Drop or coalesce low-priority updates when queues exceed thresholds. Market data streams often coalesce updates per symbol to keep only the latest value. Critical messages are prioritized so correctness is preserved under load. Total Exercises: 30+ Master these patterns to design scalable, resilient distributed systems!"
       }
     ],
     "category": "practice",
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/system-design.md",
-    "id": "card-225"
+    "id": "card-284"
   },
   {
     "question": "Describe the lifecycle of a forex trade from placement to settlement.",
@@ -4323,7 +5503,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/trading-domain.md",
-    "id": "card-226"
+    "id": "card-285"
   },
   {
     "question": "How would you integrate with MT4/MT5 APIs for trade execution in C#? Mention authentication, session management, and error handling.",
@@ -4343,7 +5523,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/trading-domain.md",
-    "id": "card-227"
+    "id": "card-286"
   },
   {
     "question": "What are common risk checks before executing a client order (e.g., margin, exposure limits)?",
@@ -4357,7 +5537,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/trading-domain.md",
-    "id": "card-228"
+    "id": "card-287"
   },
   {
     "question": "Explain how you'd handle market data bursts without dropping updates.",
@@ -4371,7 +5551,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/trading-domain.md",
-    "id": "card-229"
+    "id": "card-288"
   },
   {
     "question": "Implement order validation pipeline with multiple risk checks.",
@@ -4391,7 +5571,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/trading-domain.md",
-    "id": "card-230"
+    "id": "card-289"
   },
   {
     "question": "Design state machine for order lifecycle tracking.",
@@ -4411,7 +5591,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/trading-domain.md",
-    "id": "card-231"
+    "id": "card-290"
   },
   {
     "question": "Implement order reconciliation to detect missing confirmations.",
@@ -4431,7 +5611,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/trading-domain.md",
-    "id": "card-232"
+    "id": "card-291"
   },
   {
     "question": "Implement MT5 Gateway with connection pooling and failover.",
@@ -4451,7 +5631,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/trading-domain.md",
-    "id": "card-233"
+    "id": "card-292"
   },
   {
     "question": "Handle MT5 error codes and map to domain exceptions.",
@@ -4471,7 +5651,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/trading-domain.md",
-    "id": "card-234"
+    "id": "card-293"
   },
   {
     "question": "Implement high-frequency tick data processor with conflation.",
@@ -4491,7 +5671,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/trading-domain.md",
-    "id": "card-235"
+    "id": "card-294"
   },
   {
     "question": "Implement VWAP (Volume-Weighted Average Price) calculator.",
@@ -4511,7 +5691,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/trading-domain.md",
-    "id": "card-236"
+    "id": "card-295"
   },
   {
     "question": "Implement real-time P&L calculator for open positions.",
@@ -4531,7 +5711,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/trading-domain.md",
-    "id": "card-237"
+    "id": "card-296"
   },
   {
     "question": "Implement margin calculator with different leverage levels.",
@@ -4551,7 +5731,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/trading-domain.md",
-    "id": "card-238"
+    "id": "card-297"
   },
   {
     "question": "Implement automatic stop-out mechanism.",
@@ -4571,7 +5751,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/trading-domain.md",
-    "id": "card-239"
+    "id": "card-298"
   },
   {
     "question": "Explain slippage and how you would measure it.",
@@ -4585,7 +5765,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/trading-domain.md",
-    "id": "card-240"
+    "id": "card-299"
   },
   {
     "question": "How do you handle market data bursts without dropping critical updates?",
@@ -4599,7 +5779,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/trading-domain.md",
-    "id": "card-241"
+    "id": "card-300"
   },
   {
     "question": "Design an order book snapshot + delta model.",
@@ -4613,7 +5793,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/trading-domain.md",
-    "id": "card-242"
+    "id": "card-301"
   },
   {
     "question": "Implement a real-time PnL calculation at the account level.",
@@ -4627,7 +5807,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/trading-domain.md",
-    "id": "card-243"
+    "id": "card-302"
   },
   {
     "question": "Describe a reconciliation workflow for executed trades.",
@@ -4641,6 +5821,6 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/trading-domain.md",
-    "id": "card-244"
+    "id": "card-303"
   }
 ];

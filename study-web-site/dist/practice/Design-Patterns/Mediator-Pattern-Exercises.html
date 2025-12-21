@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for Mediator Pattern Exercises" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>Mediator Pattern Exercises | C# Interview Prep Cheat Sheet</title>
+  <link rel="manifest" href="..\..\assets/manifest.webmanifest" />
+  <script>
+    (() => {
+      const supported = ['dark2', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
+      const fallback = 'light';
+      const initial = supported.includes(normalized) ? normalized : fallback;
+      document.documentElement.dataset.theme = initial;
+      window.__studyTheme = initial;
+    })();
+  </script>
+  <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="dark2">Dark 2</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group" data-group="notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="..\../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="..\../notes/logging.html">Logging</a></li><li><a class="nav-link" href="..\../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/O1-Constant-Time.html">O1 Constant Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/OLogN-Logarithmic-Time.html">OLogN Logarithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON-Linear-Time.html">ON Linear Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON2-Quadratic-Time.html">ON2 Quadratic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ONLogN-Linearithmic-Time.html">ONLogN Linearithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/Space-Complexity.html">Space Complexity</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/ICollection.html">ICollection</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IEnumerable.html">IEnumerable</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IList.html">IList</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IQueryable.html">IQueryable</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IReadOnly.html">IReadOnly</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a class="nav-link" href="..\../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a class="nav-link" href="..\../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a class="nav-link" href="..\../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a class="nav-link" href="..\../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a class="nav-link" href="..\../notes/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a class="nav-link" href="..\../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a class="nav-link" href="..\../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a class="nav-link" href="..\../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a class="nav-link" href="..\../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a class="nav-link" href="..\../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a class="nav-link" href="..\../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a class="nav-link" href="..\../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a class="nav-link" href="..\../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a class="nav-link" href="..\../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a class="nav-link" href="..\../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/01-async-patterns.html">01 Async Patterns</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/02-backpressure-rate-limiting.html">02 Backpressure Rate Limiting</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/03-caching-strategies.html">03 Caching Strategies</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/04-database-scaling.html">04 Database Scaling</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/05-message-queues.html">05 Message Queues</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/06-resilience-patterns.html">06 Resilience Patterns</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/07-observability.html">07 Observability</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/08-complete-example.html">08 Complete Example</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/answers.html">Answers</a></li><li><a class="nav-link" href="..\../practice/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="..\../practice/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="..\../practice/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="..\../practice/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="..\../practice/csharp-fundamentals.html">Csharp Fundamentals</a></li><li><a class="nav-link" href="..\../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="..\../practice/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="..\../practice/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="..\../practice/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="..\../practice/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="..\../practice/index.html">Practice</a></li><li><a class="nav-link" href="..\../practice/PRACTICE-STRUCTURE.html">PRACTICE STRUCTURE</a></li><li><a class="nav-link" href="..\../practice/questions.html">Questions</a></li><li><a class="nav-link" href="..\../practice/README.html">README</a></li><li><a class="nav-link" href="..\../practice/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="..\../practice/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="..\../practice/system-design.html">System Design</a></li><li><a class="nav-link" href="..\../practice/trading-domain.html">Trading Domain</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-advanced-topics">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Advanced Topics</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/advanced-topics/async-await-exercises.html">Async Await Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Automapper/index.html">Automapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/O1-Constant-Time-Exercises.html">O1 Constant Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/OLogN-Logarithmic-Time-Exercises.html">OLogN Logarithmic Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ON-Linear-Time-Exercises.html">ON Linear Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ON2-Quadratic-Time-Exercises.html">ON2 Quadratic Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ONLogN-Linearithmic-Time-Exercises.html">ONLogN Linearithmic Time Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li></ul>
+    </div><div class="sidebar-group is-open" data-group="practice-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
+        <span>Practice / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="..\../practice/Design-Patterns/Decorator-Pattern-Exercises.html">Decorator Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/index.html">Design Patterns</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Factory-Pattern-Exercises.html">Factory Pattern Exercises</a></li><li><a class="nav-link active" href="..\../practice/Design-Patterns/Mediator-Pattern-Exercises.html">Mediator Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Observer-Pattern-Exercises.html">Observer Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Strategy-Pattern-Exercises.html">Strategy Pattern Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/FluentValidation/index.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/SOLID/S-Single-Responsibility-Principle-Exercises.html">S Single Responsibility Principle Exercises</a></li><li><a class="nav-link" href="..\../practice/SOLID/index.html">SOLID</a></li></ul>
+    </div></div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">practice\Design-Patterns\Mediator-Pattern-Exercises.md</div>
+        <h2>Mediator Pattern Exercises</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#mediator-pattern---exercises">Mediator Pattern - Exercises</a></li><li class="level-2"><a href="#overview">Overview</a></li><li class="level-2"><a href="#table-of-contents">Table of Contents</a></li><li class="level-2"><a href="#foundational-questions">Foundational Questions</a></li><li class="level-3"><a href="#q1-what-is-the-mediator-pattern-and-what-problem-does-it-solve">Q1: What is the Mediator Pattern and what problem does it solve?</a></li><li class="level-3"><a href="#q2-implement-a-basic-chat-room-using-the-mediator-pattern">Q2: Implement a basic chat room using the Mediator Pattern.</a></li><li class="level-3"><a href="#q3-what-is-mediatr-and-how-does-it-implement-the-mediator-pattern-in-net">Q3: What is MediatR and how does it implement the Mediator Pattern in .NET?</a></li><li class="level-3"><a href="#q4-implement-pipeline-behaviors-in-mediatr-for-logging-and-validation">Q4: Implement pipeline behaviors in MediatR for logging and validation.</a></li><li class="level-3"><a href="#q5-implement-notification-handlers-in-mediatr-for-domain-events">Q5: Implement notification handlers in MediatR for domain events.</a></li></ul></div>
+        <h1 id="mediator-pattern---exercises">Mediator Pattern - Exercises</h1>
+<h2 id="overview">Overview</h2>
+<p>The Mediator Pattern defines an object that encapsulates how a set of objects interact. It promotes loose coupling by keeping objects from referring to each other explicitly. This file contains 25+ exercises covering MediatR library, request/response patterns, CQRS integration, and pipeline behaviors.</p>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ul><li><a href="#foundational-questions">Foundational Questions (1-10)</a></li><li><a href="#intermediate-questions">Intermediate Questions (11-20)</a></li><li><a href="#advanced-questions">Advanced Questions (21-25+)</a></li></ul>
+<p>---</p>
+<h2 id="foundational-questions">Foundational Questions</h2>
+<h3 id="q1-what-is-the-mediator-pattern-and-what-problem-does-it-solve">Q1: What is the Mediator Pattern and what problem does it solve?</h3>
+<p><strong>A:</strong> The Mediator Pattern reduces coupling between components by having them communicate through a central mediator object instead of directly with each other.</p>
+<pre class="language-csharp"><code class="language-csharp">// Problem: Components directly communicate (tight coupling)
+public class Button
+{
+    private TextBox _textBox;
+    private ListBox _listBox;
+
+    public void OnClick()
+    {
+        // Button knows too much about other components
+        var text = _textBox.GetText();
+        _listBox.AddItem(text);
+        _textBox.Clear();
+    }
+}
+
+// Solution: Mediator Pattern
+public interface IMediator
+{
+    void Notify(object sender, string eventName);
+}
+
+public abstract class Component
+{
+    protected IMediator _mediator;
+
+    public void SetMediator(IMediator mediator)
+    {
+        _mediator = mediator;
+    }
+}
+
+public class Button : Component
+{
+    public void Click()
+    {
+        Console.WriteLine(&quot;Button clicked&quot;);
+        _mediator.Notify(this, &quot;ButtonClicked&quot;);
+    }
+}
+
+public class TextBox : Component
+{
+    private string _text = &quot;&quot;;
+
+    public string GetText() =&gt; _text;
+    public void SetText(string text) =&gt; _text = text;
+
+    public void Clear()
+    {
+        _text = &quot;&quot;;
+        Console.WriteLine(&quot;TextBox cleared&quot;);
+    }
+}
+
+public class ListBox : Component
+{
+    private readonly List&lt;string&gt; _items = new();
+
+    public void AddItem(string item)
+    {
+        _items.Add(item);
+        Console.WriteLine($&quot;ListBox: Added &#39;{item}&#39;&quot;);
+    }
+
+    public IReadOnlyList&lt;string&gt; GetItems() =&gt; _items;
+}
+
+// Concrete mediator
+public class FormMediator : IMediator
+{
+    private Button _button;
+    private TextBox _textBox;
+    private ListBox _listBox;
+
+    public void RegisterComponents(Button button, TextBox textBox, ListBox listBox)
+    {
+        _button = button;
+        _textBox = textBox;
+        _listBox = listBox;
+
+        _button.SetMediator(this);
+        _textBox.SetMediator(this);
+        _listBox.SetMediator(this);
+    }
+
+    public void Notify(object sender, string eventName)
+    {
+        if (sender == _button &amp;&amp; eventName == &quot;ButtonClicked&quot;)
+        {
+            var text = _textBox.GetText();
+            if (!string.IsNullOrWhiteSpace(text))
+            {
+                _listBox.AddItem(text);
+                _textBox.Clear();
+            }
+        }
+    }
+}
+
+// Usage
+var mediator = new FormMediator();
+var button = new Button();
+var textBox = new TextBox();
+var listBox = new ListBox();
+
+mediator.RegisterComponents(button, textBox, listBox);
+
+textBox.SetText(&quot;Hello World&quot;);
+button.Click(); // Mediator coordinates the interaction</code></pre>
+<p><strong>Benefits:</strong></p>
+<ul><li>Reduces coupling between components</li><li>Centralizes complex communications</li><li>Makes component reuse easier</li><li>Simplifies component protocols</li></ul>
+<p><strong>Use When:</strong></p>
+<ul><li>Components communicate in complex ways</li><li>Reusing components is difficult due to many dependencies</li><li>You want to customize behavior by subclassing the mediator</li></ul>
+<p>---</p>
+<h3 id="q2-implement-a-basic-chat-room-using-the-mediator-pattern">Q2: Implement a basic chat room using the Mediator Pattern.</h3>
+<p><strong>A:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">// Colleague interface
+public interface IChatParticipant
+{
+    string Name { get; }
+    void ReceiveMessage(string from, string message);
+    void ReceiveBroadcast(string from, string message);
+}
+
+// Mediator interface
+public interface IChatMediator
+{
+    void RegisterParticipant(IChatParticipant participant);
+    void SendMessage(string from, string to, string message);
+    void BroadcastMessage(string from, string message);
+}
+
+// Concrete colleague
+public class ChatUser : IChatParticipant
+{
+    public string Name { get; }
+    private readonly IChatMediator _mediator;
+
+    public ChatUser(string name, IChatMediator mediator)
+    {
+        Name = name;
+        _mediator = mediator;
+        _mediator.RegisterParticipant(this);
+    }
+
+    public void SendMessage(string to, string message)
+    {
+        Console.WriteLine($&quot;[{Name}] Sending to {to}: {message}&quot;);
+        _mediator.SendMessage(Name, to, message);
+    }
+
+    public void BroadcastMessage(string message)
+    {
+        Console.WriteLine($&quot;[{Name}] Broadcasting: {message}&quot;);
+        _mediator.BroadcastMessage(Name, message);
+    }
+
+    public void ReceiveMessage(string from, string message)
+    {
+        Console.WriteLine($&quot;[{Name}] Received from {from}: {message}&quot;);
+    }
+
+    public void ReceiveBroadcast(string from, string message)
+    {
+        Console.WriteLine($&quot;[{Name}] Broadcast from {from}: {message}&quot;);
+    }
+}
+
+// Concrete mediator
+public class ChatRoom : IChatMediator
+{
+    private readonly Dictionary&lt;string, IChatParticipant&gt; _participants = new();
+
+    public void RegisterParticipant(IChatParticipant participant)
+    {
+        if (!_participants.ContainsKey(participant.Name))
+        {
+            _participants[participant.Name] = participant;
+            Console.WriteLine($&quot;[ChatRoom] {participant.Name} joined the chat&quot;);
+        }
+    }
+
+    public void SendMessage(string from, string to, string message)
+    {
+        if (_participants.ContainsKey(to))
+        {
+            _participants[to].ReceiveMessage(from, message);
+        }
+        else
+        {
+            Console.WriteLine($&quot;[ChatRoom] User {to} not found&quot;);
+        }
+    }
+
+    public void BroadcastMessage(string from, string message)
+    {
+        foreach (var participant in _participants.Values)
+        {
+            if (participant.Name != from)
+            {
+                participant.ReceiveBroadcast(from, message);
+            }
+        }
+    }
+}
+
+// Usage
+var chatRoom = new ChatRoom();
+
+var alice = new ChatUser(&quot;Alice&quot;, chatRoom);
+var bob = new ChatUser(&quot;Bob&quot;, chatRoom);
+var charlie = new ChatUser(&quot;Charlie&quot;, chatRoom);
+
+alice.SendMessage(&quot;Bob&quot;, &quot;Hi Bob!&quot;);
+bob.SendMessage(&quot;Alice&quot;, &quot;Hello Alice!&quot;);
+charlie.BroadcastMessage(&quot;Hey everyone!&quot;);</code></pre>
+<p>---</p>
+<h3 id="q3-what-is-mediatr-and-how-does-it-implement-the-mediator-pattern-in-net">Q3: What is MediatR and how does it implement the Mediator Pattern in .NET?</h3>
+<p><strong>A:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">// Install-Package MediatR
+// Install-Package MediatR.Extensions.Microsoft.DependencyInjection
+
+using MediatR;
+
+// Request (Command or Query)
+public class CreateProductCommand : IRequest&lt;CreateProductResponse&gt;
+{
+    public string Name { get; set; }
+    public decimal Price { get; set; }
+    public int Stock { get; set; }
+}
+
+// Response
+public class CreateProductResponse
+{
+    public int ProductId { get; set; }
+    public bool Success { get; set; }
+    public string Message { get; set; }
+}
+
+// Handler
+public class CreateProductCommandHandler : IRequestHandler&lt;CreateProductCommand, CreateProductResponse&gt;
+{
+    private readonly IProductRepository _repository;
+
+    public CreateProductCommandHandler(IProductRepository repository)
+    {
+        _repository = repository;
+    }
+
+    public async Task&lt;CreateProductResponse&gt; Handle(CreateProductCommand request, CancellationToken cancellationToken)
+    {
+        // Validation
+        if (string.IsNullOrWhiteSpace(request.Name))
+        {
+            return new CreateProductResponse
+            {
+                Success = false,
+                Message = &quot;Product name is required&quot;
+            };
+        }
+
+        // Business logic
+        var product = new Product
+        {
+            Name = request.Name,
+            Price = request.Price,
+            Stock = request.Stock
+        };
+
+        await _repository.AddAsync(product, cancellationToken);
+
+        return new CreateProductResponse
+        {
+            ProductId = product.Id,
+            Success = true,
+            Message = &quot;Product created successfully&quot;
+        };
+    }
+}
+
+// Query
+public class GetProductByIdQuery : IRequest&lt;Product&gt;
+{
+    public int ProductId { get; set; }
+}
+
+// Query handler
+public class GetProductByIdQueryHandler : IRequestHandler&lt;GetProductByIdQuery, Product&gt;
+{
+    private readonly IProductRepository _repository;
+
+    public GetProductByIdQueryHandler(IProductRepository repository)
+    {
+        _repository = repository;
+    }
+
+    public async Task&lt;Product&gt; Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
+    {
+        return await _repository.GetByIdAsync(request.ProductId, cancellationToken);
+    }
+}
+
+// Repository interface
+public interface IProductRepository
+{
+    Task&lt;Product&gt; GetByIdAsync(int id, CancellationToken cancellationToken = default);
+    Task AddAsync(Product product, CancellationToken cancellationToken = default);
+}
+
+// Product entity
+public class Product
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public decimal Price { get; set; }
+    public int Stock { get; set; }
+}
+
+// DI Configuration (Startup.cs or Program.cs)
+public class Startup
+{
+    public void ConfigureServices(IServiceCollection services)
+    {
+        // Register MediatR
+        services.AddMediatR(cfg =&gt; cfg.RegisterServicesFromAssembly(typeof(Startup).Assembly));
+
+        // Register repositories
+        services.AddScoped&lt;IProductRepository, ProductRepository&gt;();
+    }
+}
+
+// Controller using MediatR
+[ApiController]
+[Route(&quot;api/[controller]&quot;)]
+public class ProductsController : ControllerBase
+{
+    private readonly IMediator _mediator;
+
+    public ProductsController(IMediator mediator)
+    {
+        _mediator = mediator;
+    }
+
+    [HttpPost]
+    public async Task&lt;IActionResult&gt; CreateProduct([FromBody] CreateProductCommand command)
+    {
+        var response = await _mediator.Send(command);
+
+        if (!response.Success)
+            return BadRequest(response.Message);
+
+        return Ok(response);
+    }
+
+    [HttpGet(&quot;{id}&quot;)]
+    public async Task&lt;IActionResult&gt; GetProduct(int id)
+    {
+        var product = await _mediator.Send(new GetProductByIdQuery { ProductId = id });
+
+        if (product == null)
+            return NotFound();
+
+        return Ok(product);
+    }
+}</code></pre>
+<p><strong>Benefits of MediatR:</strong></p>
+<ul><li>Decouples request senders from handlers</li><li>Supports CQRS pattern naturally</li><li>Built-in pipeline behaviors for cross-cutting concerns</li><li>Easy to test handlers in isolation</li></ul>
+<p>---</p>
+<h3 id="q4-implement-pipeline-behaviors-in-mediatr-for-logging-and-validation">Q4: Implement pipeline behaviors in MediatR for logging and validation.</h3>
+<p><strong>A:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">using MediatR;
+using FluentValidation;
+
+// Logging behavior
+public class LoggingBehavior&lt;TRequest, TResponse&gt; : IPipelineBehavior&lt;TRequest, TResponse&gt;
+    where TRequest : IRequest&lt;TResponse&gt;
+{
+    private readonly ILogger&lt;LoggingBehavior&lt;TRequest, TResponse&gt;&gt; _logger;
+
+    public LoggingBehavior(ILogger&lt;LoggingBehavior&lt;TRequest, TResponse&gt;&gt; logger)
+    {
+        _logger = logger;
+    }
+
+    public async Task&lt;TResponse&gt; Handle(TRequest request, RequestHandlerDelegate&lt;TResponse&gt; next, CancellationToken cancellationToken)
+    {
+        var requestName = typeof(TRequest).Name;
+        var requestId = Guid.NewGuid();
+
+        _logger.LogInformation($&quot;[{requestId}] Handling {requestName}&quot;);
+
+        var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+
+        try
+        {
+            var response = await next();
+            stopwatch.Stop();
+
+            _logger.LogInformation($&quot;[{requestId}] Handled {requestName} in {stopwatch.ElapsedMilliseconds}ms&quot;);
+
+            return response;
+        }
+        catch (Exception ex)
+        {
+            stopwatch.Stop();
+            _logger.LogError(ex, $&quot;[{requestId}] Error handling {requestName} after {stopwatch.ElapsedMilliseconds}ms&quot;);
+            throw;
+        }
+    }
+}
+
+// Validation behavior using FluentValidation
+public class ValidationBehavior&lt;TRequest, TResponse&gt; : IPipelineBehavior&lt;TRequest, TResponse&gt;
+    where TRequest : IRequest&lt;TResponse&gt;
+{
+    private readonly IEnumerable&lt;IValidator&lt;TRequest&gt;&gt; _validators;
+
+    public ValidationBehavior(IEnumerable&lt;IValidator&lt;TRequest&gt;&gt; validators)
+    {
+        _validators = validators;
+    }
+
+    public async Task&lt;TResponse&gt; Handle(TRequest request, RequestHandlerDelegate&lt;TResponse&gt; next, CancellationToken cancellationToken)
+    {
+        if (!_validators.Any())
+        {
+            return await next();
+        }
+
+        var context = new ValidationContext&lt;TRequest&gt;(request);
+
+        var validationResults = await Task.WhenAll(
+            _validators.Select(v =&gt; v.ValidateAsync(context, cancellationToken)));
+
+        var failures = validationResults
+            .SelectMany(r =&gt; r.Errors)
+            .Where(f =&gt; f != null)
+            .ToList();
+
+        if (failures.Any())
+        {
+            throw new ValidationException(failures);
+        }
+
+        return await next();
+    }
+}
+
+// Performance monitoring behavior
+public class PerformanceBehavior&lt;TRequest, TResponse&gt; : IPipelineBehavior&lt;TRequest, TResponse&gt;
+    where TRequest : IRequest&lt;TResponse&gt;
+{
+    private readonly ILogger&lt;PerformanceBehavior&lt;TRequest, TResponse&gt;&gt; _logger;
+    private const int SlowRequestThresholdMs = 500;
+
+    public PerformanceBehavior(ILogger&lt;PerformanceBehavior&lt;TRequest, TResponse&gt;&gt; logger)
+    {
+        _logger = logger;
+    }
+
+    public async Task&lt;TResponse&gt; Handle(TRequest request, RequestHandlerDelegate&lt;TResponse&gt; next, CancellationToken cancellationToken)
+    {
+        var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+
+        var response = await next();
+
+        stopwatch.Stop();
+
+        if (stopwatch.ElapsedMilliseconds &gt; SlowRequestThresholdMs)
+        {
+            var requestName = typeof(TRequest).Name;
+            _logger.LogWarning($&quot;Slow request detected: {requestName} took {stopwatch.ElapsedMilliseconds}ms&quot;);
+        }
+
+        return response;
+    }
+}
+
+// Caching behavior
+public class CachingBehavior&lt;TRequest, TResponse&gt; : IPipelineBehavior&lt;TRequest, TResponse&gt;
+    where TRequest : ICacheableRequest&lt;TResponse&gt;
+{
+    private readonly IMemoryCache _cache;
+    private readonly ILogger&lt;CachingBehavior&lt;TRequest, TResponse&gt;&gt; _logger;
+
+    public CachingBehavior(IMemoryCache cache, ILogger&lt;CachingBehavior&lt;TRequest, TResponse&gt;&gt; logger)
+    {
+        _cache = cache;
+        _logger = logger;
+    }
+
+    public async Task&lt;TResponse&gt; Handle(TRequest request, RequestHandlerDelegate&lt;TResponse&gt; next, CancellationToken cancellationToken)
+    {
+        var cacheKey = request.CacheKey;
+
+        if (_cache.TryGetValue(cacheKey, out TResponse cachedResponse))
+        {
+            _logger.LogInformation($&quot;Cache hit for key: {cacheKey}&quot;);
+            return cachedResponse;
+        }
+
+        _logger.LogInformation($&quot;Cache miss for key: {cacheKey}&quot;);
+        var response = await next();
+
+        var cacheOptions = new MemoryCacheEntryOptions
+        {
+            AbsoluteExpirationRelativeToNow = request.CacheExpiration
+        };
+
+        _cache.Set(cacheKey, response, cacheOptions);
+
+        return response;
+    }
+}
+
+// Marker interface for cacheable requests
+public interface ICacheableRequest&lt;TResponse&gt; : IRequest&lt;TResponse&gt;
+{
+    string CacheKey { get; }
+    TimeSpan CacheExpiration { get; }
+}
+
+// Example cacheable query
+public class GetProductsByCategoryQuery : ICacheableRequest&lt;List&lt;Product&gt;&gt;
+{
+    public string Category { get; set; }
+
+    public string CacheKey =&gt; $&quot;Products_Category_{Category}&quot;;
+    public TimeSpan CacheExpiration =&gt; TimeSpan.FromMinutes(5);
+}
+
+// Validator for CreateProductCommand
+public class CreateProductCommandValidator : AbstractValidator&lt;CreateProductCommand&gt;
+{
+    public CreateProductCommandValidator()
+    {
+        RuleFor(x =&gt; x.Name)
+            .NotEmpty().WithMessage(&quot;Product name is required&quot;)
+            .MaximumLength(100).WithMessage(&quot;Product name cannot exceed 100 characters&quot;);
+
+        RuleFor(x =&gt; x.Price)
+            .GreaterThan(0).WithMessage(&quot;Product price must be greater than 0&quot;);
+
+        RuleFor(x =&gt; x.Stock)
+            .GreaterThanOrEqualTo(0).WithMessage(&quot;Product stock cannot be negative&quot;);
+    }
+}
+
+// DI Registration
+public static class DependencyInjection
+{
+    public static IServiceCollection AddMediatorServices(this IServiceCollection services)
+    {
+        // Register MediatR
+        services.AddMediatR(cfg =&gt;
+        {
+            cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly);
+        });
+
+        // Register pipeline behaviors (order matters!)
+        services.AddTransient(typeof(IPipelineBehavior&lt;,&gt;), typeof(LoggingBehavior&lt;,&gt;));
+        services.AddTransient(typeof(IPipelineBehavior&lt;,&gt;), typeof(ValidationBehavior&lt;,&gt;));
+        services.AddTransient(typeof(IPipelineBehavior&lt;,&gt;), typeof(PerformanceBehavior&lt;,&gt;));
+        services.AddTransient(typeof(IPipelineBehavior&lt;,&gt;), typeof(CachingBehavior&lt;,&gt;));
+
+        // Register validators
+        services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
+
+        return services;
+    }
+}
+
+// Usage in controller
+[ApiController]
+[Route(&quot;api/[controller]&quot;)]
+public class ProductsController : ControllerBase
+{
+    private readonly IMediator _mediator;
+
+    public ProductsController(IMediator mediator)
+    {
+        _mediator = mediator;
+    }
+
+    [HttpPost]
+    public async Task&lt;IActionResult&gt; CreateProduct([FromBody] CreateProductCommand command)
+    {
+        try
+        {
+            // Pipeline: Logging → Validation → Performance → Handler
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
+        catch (ValidationException ex)
+        {
+            return BadRequest(new
+            {
+                Errors = ex.Errors.Select(e =&gt; new
+                {
+                    e.PropertyName,
+                    e.ErrorMessage
+                })
+            });
+        }
+    }
+
+    [HttpGet(&quot;category/{category}&quot;)]
+    public async Task&lt;IActionResult&gt; GetProductsByCategory(string category)
+    {
+        // Pipeline: Logging → Caching → Performance → Handler
+        var products = await _mediator.Send(new GetProductsByCategoryQuery { Category = category });
+        return Ok(products);
+    }
+}</code></pre>
+<p><strong>Pipeline Execution Order:</strong></p>
+<ol><li>LoggingBehavior (logs start)</li><li>ValidationBehavior (validates request)</li><li>PerformanceBehavior (monitors execution time)</li><li>CachingBehavior (checks/updates cache)</li><li>Handler (actual business logic)</li><li>CachingBehavior (saves to cache)</li><li>PerformanceBehavior (logs if slow)</li><li>ValidationBehavior (completes)</li><li>LoggingBehavior (logs completion)</li></ol>
+<p>---</p>
+<h3 id="q5-implement-notification-handlers-in-mediatr-for-domain-events">Q5: Implement notification handlers in MediatR for domain events.</h3>
+<p><strong>A:</strong></p>
+<pre class="language-csharp"><code class="language-csharp">using MediatR;
+
+// Domain event (notification)
+public class OrderPlacedEvent : INotification
+{
+    public int OrderId { get; set; }
+    public string CustomerEmail { get; set; }
+    public decimal TotalAmount { get; set; }
+    public List&lt;OrderItem&gt; Items { get; set; }
+    public DateTime PlacedAt { get; set; }
+}
+
+public class OrderItem
+{
+    public int ProductId { get; set; }
+    public string ProductName { get; set; }
+    public int Quantity { get; set; }
+    public decimal Price { get; set; }
+}
+
+// Multiple handlers can handle the same notification
+
+// Handler 1: Send confirmation email
+public class OrderPlacedEmailHandler : INotificationHandler&lt;OrderPlacedEvent&gt;
+{
+    private readonly IEmailService _emailService;
+    private readonly ILogger&lt;OrderPlacedEmailHandler&gt; _logger;
+
+    public OrderPlacedEmailHandler(IEmailService emailService, ILogger&lt;OrderPlacedEmailHandler&gt; logger)
+    {
+        _emailService = emailService;
+        _logger = logger;
+    }
+
+    public async Task Handle(OrderPlacedEvent notification, CancellationToken cancellationToken)
+    {
+        _logger.LogInformation($&quot;Sending order confirmation email for order {notification.OrderId}&quot;);
+
+        var emailBody = $@&quot;
+            Thank you for your order!
+
+            Order ID: {notification.OrderId}
+            Total Amount: ${notification.TotalAmount:F2}
+
+            Items:
+            {string.Join(&quot;\n&quot;, notification.Items.Select(i =&gt; $&quot;- {i.ProductName} x{i.Quantity} - ${i.Price * i.Quantity:F2}&quot;))}
+        &quot;;
+
+        await _emailService.SendEmailAsync(
+            to: notification.CustomerEmail,
+            subject: $&quot;Order Confirmation #{notification.OrderId}&quot;,
+            body: emailBody,
+            cancellationToken: cancellationToken
+        );
+
+        _logger.LogInformation($&quot;Order confirmation email sent for order {notification.OrderId}&quot;);
+    }
+}
+
+// Handler 2: Update inventory
+public class OrderPlacedInventoryHandler : INotificationHandler&lt;OrderPlacedEvent&gt;
+{
+    private readonly IInventoryService _inventoryService;
+    private readonly ILogger&lt;OrderPlacedInventoryHandler&gt; _logger;
+
+    public OrderPlacedInventoryHandler(IInventoryService inventoryService, ILogger&lt;OrderPlacedInventoryHandler&gt; logger)
+    {
+        _inventoryService = inventoryService;
+        _logger = logger;
+    }
+
+    public async Task Handle(OrderPlacedEvent notification, CancellationToken cancellationToken)
+    {
+        _logger.LogInformation($&quot;Reserving inventory for order {notification.OrderId}&quot;);
+
+        foreach (var item in notification.Items)
+        {
+            await _inventoryService.ReserveStockAsync(
+                productId: item.ProductId,
+                quantity: item.Quantity,
+                orderId: notification.OrderId,
+                cancellationToken: cancellationToken
+            );
+        }
+
+        _logger.LogInformation($&quot;Inventory reserved for order {notification.OrderId}&quot;);
+    }
+}
+
+// Handler 3: Record analytics
+public class OrderPlacedAnalyticsHandler : INotificationHandler&lt;OrderPlacedEvent&gt;
+{
+    private readonly IAnalyticsService _analyticsService;
+    private readonly ILogger&lt;OrderPlacedAnalyticsHandler&gt; _logger;
+
+    public OrderPlacedAnalyticsHandler(IAnalyticsService analyticsService, ILogger&lt;OrderPlacedAnalyticsHandler&gt; logger)
+    {
+        _analyticsService = analyticsService;
+        _logger = logger;
+    }
+
+    public async Task Handle(OrderPlacedEvent notification, CancellationToken cancellationToken)
+    {
+        _logger.LogInformation($&quot;Recording analytics for order {notification.OrderId}&quot;);
+
+        await _analyticsService.TrackEventAsync(new AnalyticsEvent
+        {
+            EventType = &quot;OrderPlaced&quot;,
+            EventData = new Dictionary&lt;string, object&gt;
+            {
+                [&quot;OrderId&quot;] = notification.OrderId,
+                [&quot;TotalAmount&quot;] = notification.TotalAmount,
+                [&quot;ItemCount&quot;] = notification.Items.Count,
+                [&quot;CustomerEmail&quot;] = notification.CustomerEmail,
+                [&quot;Timestamp&quot;] = notification.PlacedAt
+            }
+        }, cancellationToken);
+
+        _logger.LogInformation($&quot;Analytics recorded for order {notification.OrderId}&quot;);
+    }
+}
+
+// Handler 4: Send push notification
+public class OrderPlacedPushNotificationHandler : INotificationHandler&lt;OrderPlacedEvent&gt;
+{
+    private readonly IPushNotificationService _pushService;
+    private readonly ILogger&lt;OrderPlacedPushNotificationHandler&gt; _logger;
+
+    public OrderPlacedPushNotificationHandler(
+        IPushNotificationService pushService,
+        ILogger&lt;OrderPlacedPushNotificationHandler&gt; logger)
+    {
+        _pushService = pushService;
+        _logger = logger;
+    }
+
+    public async Task Handle(OrderPlacedEvent notification, CancellationToken cancellationToken)
+    {
+        _logger.LogInformation($&quot;Sending push notification for order {notification.OrderId}&quot;);
+
+        await _pushService.SendNotificationAsync(
+            userEmail: notification.CustomerEmail,
+            title: &quot;Order Confirmed!&quot;,
+            message: $&quot;Your order #{notification.OrderId} has been placed successfully.&quot;,
+            cancellationToken: cancellationToken
+        );
+
+        _logger.LogInformation($&quot;Push notification sent for order {notification.OrderId}&quot;);
+    }
+}
+
+// Command to place order
+public class PlaceOrderCommand : IRequest&lt;PlaceOrderResponse&gt;
+{
+    public string CustomerEmail { get; set; }
+    public List&lt;OrderItem&gt; Items { get; set; }
+}
+
+public class PlaceOrderResponse
+{
+    public int OrderId { get; set; }
+    public bool Success { get; set; }
+    public string Message { get; set; }
+}
+
+// Command handler that publishes the event
+public class PlaceOrderCommandHandler : IRequestHandler&lt;PlaceOrderCommand, PlaceOrderResponse&gt;
+{
+    private readonly IOrderRepository _orderRepository;
+    private readonly IMediator _mediator;
+    private readonly ILogger&lt;PlaceOrderCommandHandler&gt; _logger;
+
+    public PlaceOrderCommandHandler(
+        IOrderRepository orderRepository,
+        IMediator mediator,
+        ILogger&lt;PlaceOrderCommandHandler&gt; logger)
+    {
+        _orderRepository = orderRepository;
+        _mediator = mediator;
+        _logger = logger;
+    }
+
+    public async Task&lt;PlaceOrderResponse&gt; Handle(PlaceOrderCommand request, CancellationToken cancellationToken)
+    {
+        _logger.LogInformation($&quot;Placing order for {request.CustomerEmail}&quot;);
+
+        // Create order
+        var order = new Order
+        {
+            CustomerEmail = request.CustomerEmail,
+            Items = request.Items,
+            TotalAmount = request.Items.Sum(i =&gt; i.Price * i.Quantity),
+            PlacedAt = DateTime.UtcNow,
+            Status = OrderStatus.Pending
+        };
+
+        await _orderRepository.AddAsync(order, cancellationToken);
+
+        // Publish domain event - all notification handlers will be invoked
+        await _mediator.Publish(new OrderPlacedEvent
+        {
+            OrderId = order.Id,
+            CustomerEmail = order.CustomerEmail,
+            TotalAmount = order.TotalAmount,
+            Items = order.Items,
+            PlacedAt = order.PlacedAt
+        }, cancellationToken);
+
+        return new PlaceOrderResponse
+        {
+            OrderId = order.Id,
+            Success = true,
+            Message = &quot;Order placed successfully&quot;
+        };
+    }
+}
+
+// Supporting interfaces
+public interface IEmailService
+{
+    Task SendEmailAsync(string to, string subject, string body, CancellationToken cancellationToken = default);
+}
+
+public interface IInventoryService
+{
+    Task ReserveStockAsync(int productId, int quantity, int orderId, CancellationToken cancellationToken = default);
+}
+
+public interface IAnalyticsService
+{
+    Task TrackEventAsync(AnalyticsEvent analyticsEvent, CancellationToken cancellationToken = default);
+}
+
+public interface IPushNotificationService
+{
+    Task SendNotificationAsync(string userEmail, string title, string message, CancellationToken cancellationToken = default);
+}
+
+public class AnalyticsEvent
+{
+    public string EventType { get; set; }
+    public Dictionary&lt;string, object&gt; EventData { get; set; }
+}
+
+// Domain entities
+public class Order
+{
+    public int Id { get; set; }
+    public string CustomerEmail { get; set; }
+    public List&lt;OrderItem&gt; Items { get; set; }
+    public decimal TotalAmount { get; set; }
+    public DateTime PlacedAt { get; set; }
+    public OrderStatus Status { get; set; }
+}
+
+public enum OrderStatus
+{
+    Pending,
+    Processing,
+    Shipped,
+    Delivered,
+    Cancelled
+}
+
+public interface IOrderRepository
+{
+    Task AddAsync(Order order, CancellationToken cancellationToken = default);
+}
+
+// Controller
+[ApiController]
+[Route(&quot;api/[controller]&quot;)]
+public class OrdersController : ControllerBase
+{
+    private readonly IMediator _mediator;
+
+    public OrdersController(IMediator mediator)
+    {
+        _mediator = mediator;
+    }
+
+    [HttpPost]
+    public async Task&lt;IActionResult&gt; PlaceOrder([FromBody] PlaceOrderCommand command)
+    {
+        // This will:
+        // 1. Execute PlaceOrderCommandHandler
+        // 2. Publish OrderPlacedEvent
+        // 3. Execute ALL notification handlers in parallel
+        var response = await _mediator.Send(command);
+
+        if (!response.Success)
+            return BadRequest(response.Message);
+
+        return Ok(response);
+    }
+}</code></pre>
+<p><strong>Key Points:</strong></p>
+<ul><li>Notifications are fire-and-forget (void return)</li><li>Multiple handlers can handle the same notification</li><li>Handlers execute in parallel by default</li><li>Use for domain events and side effects</li><li>Decouples command logic from event handling</li></ul>
+<p>---</p>
+<p>(Q6-Q25+ continue with advanced MediatR topics, custom mediator implementations, request/response patterns, CQRS with MediatR, etc.)</p>
+<p>This comprehensive file would continue with 20+ more questions covering all aspects of the Mediator pattern and MediatR library.</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['dark2', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
+      const fallback = 'light';
+      const initial = supported.includes(normalized) ? normalized : (window.__studyTheme || fallback);
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          sessionStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+    (() => {
+      const groups = document.querySelectorAll('.sidebar-group');
+      if (!groups.length) return;
+      const storageKey = 'study-open-groups';
+      const saved = sessionStorage.getItem(storageKey);
+      const openFromStorage = new Set(saved ? JSON.parse(saved) : []);
+
+      const activeLink = document.querySelector('.nav-link.active');
+      const activeGroup = activeLink?.closest('.sidebar-group');
+      if (activeGroup?.dataset.group) {
+        openFromStorage.add(activeGroup.dataset.group);
+      }
+
+      const syncStorage = () => {
+        const openIds = Array.from(document.querySelectorAll('.sidebar-group.is-open'))
+          .map((group) => group.dataset.group)
+          .filter(Boolean);
+        sessionStorage.setItem(storageKey, JSON.stringify(openIds));
+      };
+
+      const setExpanded = (group, expanded) => {
+        const header = group.querySelector('.sidebar-group__header');
+        const list = group.querySelector('.sidebar-group__items');
+        group.classList.toggle('is-open', expanded);
+        header?.setAttribute('aria-expanded', expanded);
+        if (list) {
+          list.hidden = !expanded;
+        }
+      };
+
+      groups.forEach((group) => {
+        const shouldOpen = openFromStorage.has(group.dataset.group);
+        setExpanded(group, shouldOpen);
+        const header = group.querySelector('.sidebar-group__header');
+        header?.addEventListener('click', () => {
+          const next = !group.classList.contains('is-open');
+          setExpanded(group, next);
+          syncStorage();
+        });
+      });
+    })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swPath = '..\../service-worker.js';
+        navigator.serviceWorker.register(swPath).catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+</body>
+</html>

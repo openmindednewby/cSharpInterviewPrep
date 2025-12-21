@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for Design Patterns" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>Design Patterns | C# Interview Prep Cheat Sheet</title>
+  <link rel="manifest" href="..\..\assets/manifest.webmanifest" />
+  <script>
+    (() => {
+      const supported = ['dark2', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
+      const fallback = 'light';
+      const initial = supported.includes(normalized) ? normalized : fallback;
+      document.documentElement.dataset.theme = initial;
+      window.__studyTheme = initial;
+    })();
+  </script>
+  <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="dark2">Dark 2</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group" data-group="notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="..\../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="..\../notes/logging.html">Logging</a></li><li><a class="nav-link" href="..\../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/O1-Constant-Time.html">O1 Constant Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/OLogN-Logarithmic-Time.html">OLogN Logarithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON-Linear-Time.html">ON Linear Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON2-Quadratic-Time.html">ON2 Quadratic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ONLogN-Linearithmic-Time.html">ONLogN Linearithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/Space-Complexity.html">Space Complexity</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/ICollection.html">ICollection</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IEnumerable.html">IEnumerable</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IList.html">IList</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IQueryable.html">IQueryable</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IReadOnly.html">IReadOnly</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a class="nav-link" href="..\../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a class="nav-link" href="..\../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a class="nav-link" href="..\../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a class="nav-link" href="..\../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a class="nav-link" href="..\../notes/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a class="nav-link" href="..\../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a class="nav-link" href="..\../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a class="nav-link" href="..\../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a class="nav-link" href="..\../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a class="nav-link" href="..\../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a class="nav-link" href="..\../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a class="nav-link" href="..\../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a class="nav-link" href="..\../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a class="nav-link" href="..\../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a class="nav-link" href="..\../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/01-async-patterns.html">01 Async Patterns</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/02-backpressure-rate-limiting.html">02 Backpressure Rate Limiting</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/03-caching-strategies.html">03 Caching Strategies</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/04-database-scaling.html">04 Database Scaling</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/05-message-queues.html">05 Message Queues</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/06-resilience-patterns.html">06 Resilience Patterns</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/07-observability.html">07 Observability</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/08-complete-example.html">08 Complete Example</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/answers.html">Answers</a></li><li><a class="nav-link" href="..\../practice/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="..\../practice/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="..\../practice/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="..\../practice/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="..\../practice/csharp-fundamentals.html">Csharp Fundamentals</a></li><li><a class="nav-link" href="..\../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="..\../practice/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="..\../practice/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="..\../practice/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="..\../practice/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="..\../practice/index.html">Practice</a></li><li><a class="nav-link" href="..\../practice/PRACTICE-STRUCTURE.html">PRACTICE STRUCTURE</a></li><li><a class="nav-link" href="..\../practice/questions.html">Questions</a></li><li><a class="nav-link" href="..\../practice/README.html">README</a></li><li><a class="nav-link" href="..\../practice/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="..\../practice/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="..\../practice/system-design.html">System Design</a></li><li><a class="nav-link" href="..\../practice/trading-domain.html">Trading Domain</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-advanced-topics">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Advanced Topics</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/advanced-topics/async-await-exercises.html">Async Await Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Automapper/index.html">Automapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/O1-Constant-Time-Exercises.html">O1 Constant Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/OLogN-Logarithmic-Time-Exercises.html">OLogN Logarithmic Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ON-Linear-Time-Exercises.html">ON Linear Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ON2-Quadratic-Time-Exercises.html">ON2 Quadratic Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ONLogN-Linearithmic-Time-Exercises.html">ONLogN Linearithmic Time Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li></ul>
+    </div><div class="sidebar-group is-open" data-group="practice-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
+        <span>Practice / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="..\../practice/Design-Patterns/Decorator-Pattern-Exercises.html">Decorator Pattern Exercises</a></li><li><a class="nav-link active" href="..\../practice/Design-Patterns/index.html">Design Patterns</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Factory-Pattern-Exercises.html">Factory Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Mediator-Pattern-Exercises.html">Mediator Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Observer-Pattern-Exercises.html">Observer Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Strategy-Pattern-Exercises.html">Strategy Pattern Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/FluentValidation/index.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/SOLID/S-Single-Responsibility-Principle-Exercises.html">S Single Responsibility Principle Exercises</a></li><li><a class="nav-link" href="..\../practice/SOLID/index.html">SOLID</a></li></ul>
+    </div></div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">practice\Design-Patterns\index.md</div>
+        <h2>Design Patterns</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#design-patterns---quick-reference-guide">Design Patterns - Quick Reference Guide</a></li><li class="level-2"><a href="#overview">Overview</a></li><li class="level-2"><a href="#pattern-categories">Pattern Categories</a></li><li class="level-3"><a href="#creational-patterns">Creational Patterns</a></li><li class="level-4"><a href="#factory-pattern">Factory Pattern</a></li><li class="level-3"><a href="#behavioral-patterns">Behavioral Patterns</a></li><li class="level-4"><a href="#strategy-pattern">Strategy Pattern</a></li><li class="level-4"><a href="#observer-pattern">Observer Pattern</a></li><li class="level-4"><a href="#mediator-pattern">Mediator Pattern</a></li><li class="level-3"><a href="#structural-patterns">Structural Patterns</a></li><li class="level-4"><a href="#decorator-pattern">Decorator Pattern</a></li><li class="level-3"><a href="#architectural-patterns">Architectural Patterns</a></li><li class="level-4"><a href="#cqrs-pattern">CQRS Pattern</a></li><li class="level-2"><a href="#pattern-comparison-matrix">Pattern Comparison Matrix</a></li><li class="level-2"><a href="#quick-decision-guide">Quick Decision Guide</a></li><li class="level-3"><a href="#choose-factory-when">Choose Factory When:</a></li><li class="level-3"><a href="#choose-strategy-when">Choose Strategy When:</a></li><li class="level-3"><a href="#choose-observer-when">Choose Observer When:</a></li><li class="level-3"><a href="#choose-decorator-when">Choose Decorator When:</a></li><li class="level-3"><a href="#choose-mediator-when">Choose Mediator When:</a></li><li class="level-3"><a href="#choose-cqrs-when">Choose CQRS When:</a></li><li class="level-2"><a href="#common-anti-patterns-to-avoid">Common Anti-Patterns to Avoid</a></li><li class="level-3"><a href="#factory-anti-patterns">Factory Anti-Patterns</a></li><li class="level-3"><a href="#strategy-anti-patterns">Strategy Anti-Patterns</a></li><li class="level-3"><a href="#observer-anti-patterns">Observer Anti-Patterns</a></li><li class="level-3"><a href="#decorator-anti-patterns">Decorator Anti-Patterns</a></li><li class="level-3"><a href="#mediator-anti-patterns">Mediator Anti-Patterns</a></li><li class="level-3"><a href="#cqrs-anti-patterns">CQRS Anti-Patterns</a></li><li class="level-2"><a href="#learning-path">Learning Path</a></li><li class="level-3"><a href="#beginner-start-here">Beginner (Start Here)</a></li><li class="level-3"><a href="#intermediate">Intermediate</a></li><li class="level-3"><a href="#advanced">Advanced</a></li><li class="level-2"><a href="#real-world-net-examples">Real-World .NET Examples</a></li><li class="level-3"><a href="#factory-pattern">Factory Pattern</a></li><li class="level-3"><a href="#strategy-pattern">Strategy Pattern</a></li><li class="level-3"><a href="#observer-pattern">Observer Pattern</a></li><li class="level-3"><a href="#decorator-pattern">Decorator Pattern</a></li><li class="level-3"><a href="#mediator-pattern">Mediator Pattern</a></li><li class="level-3"><a href="#cqrs-pattern">CQRS Pattern</a></li><li class="level-2"><a href="#testing-considerations">Testing Considerations</a></li><li class="level-3"><a href="#factory-pattern-testing">Factory Pattern Testing</a></li><li class="level-3"><a href="#strategy-pattern-testing">Strategy Pattern Testing</a></li><li class="level-3"><a href="#observer-pattern-testing">Observer Pattern Testing</a></li><li class="level-3"><a href="#decorator-pattern-testing">Decorator Pattern Testing</a></li><li class="level-3"><a href="#mediator-pattern-testing">Mediator Pattern Testing</a></li><li class="level-3"><a href="#cqrs-pattern-testing">CQRS Pattern Testing</a></li><li class="level-2"><a href="#performance-considerations">Performance Considerations</a></li><li class="level-2"><a href="#additional-resources">Additional Resources</a></li><li class="level-3"><a href="#books">Books</a></li><li class="level-3"><a href="#online-resources">Online Resources</a></li><li class="level-3"><a href="#libraries">Libraries</a></li><li class="level-2"><a href="#contributing">Contributing</a></li><li class="level-2"><a href="#exercise-format">Exercise Format</a></li></ul></div>
+        <h1 id="design-patterns---quick-reference-guide">Design Patterns - Quick Reference Guide</h1>
+<h2 id="overview">Overview</h2>
+<p>This directory contains comprehensive exercises for common design patterns used in C# development. Each pattern includes 25-30+ exercises organized by difficulty level.</p>
+<h2 id="pattern-categories">Pattern Categories</h2>
+<h3 id="creational-patterns">Creational Patterns</h3>
+<p>Patterns that deal with object creation mechanisms.</p>
+<h4 id="factory-pattern">Factory Pattern</h4>
+<ul><li><strong>Purpose</strong>: Create objects without specifying the exact class</li><li><strong>Variants</strong>: Simple Factory, Factory Method, Abstract Factory</li><li><strong>Use When</strong>: Object creation logic is complex or needs to be centralized</li><li><strong>File</strong>: <a href="./Factory-Pattern-Exercises.md">Factory-Pattern-Exercises.md</a></li></ul>
+<h3 id="behavioral-patterns">Behavioral Patterns</h3>
+<p>Patterns concerned with algorithms and the assignment of responsibilities between objects.</p>
+<h4 id="strategy-pattern">Strategy Pattern</h4>
+<ul><li><strong>Purpose</strong>: Define a family of algorithms, encapsulate each one, and make them interchangeable</li><li><strong>Use When</strong>: You need different variants of an algorithm, or when you have multiple related classes that differ only in behavior</li><li><strong>File</strong>: <a href="./Strategy-Pattern-Exercises.md">Strategy-Pattern-Exercises.md</a></li></ul>
+<h4 id="observer-pattern">Observer Pattern</h4>
+<ul><li><strong>Purpose</strong>: Define a one-to-many dependency between objects so when one object changes state, all dependents are notified</li><li><strong>Use When</strong>: Changes to one object require changing others, and you don't know how many objects need to be changed</li><li><strong>File</strong>: <a href="./Observer-Pattern-Exercises.md">Observer-Pattern-Exercises.md</a></li></ul>
+<h4 id="mediator-pattern">Mediator Pattern</h4>
+<ul><li><strong>Purpose</strong>: Define an object that encapsulates how a set of objects interact</li><li><strong>Use When</strong>: You want to reduce coupling between components that communicate with each other</li><li><strong>File</strong>: <a href="./Mediator-Pattern-Exercises.md">Mediator-Pattern-Exercises.md</a></li></ul>
+<h3 id="structural-patterns">Structural Patterns</h3>
+<p>Patterns concerned with how classes and objects are composed to form larger structures.</p>
+<h4 id="decorator-pattern">Decorator Pattern</h4>
+<ul><li><strong>Purpose</strong>: Attach additional responsibilities to an object dynamically</li><li><strong>Use When</strong>: You need to add responsibilities to individual objects dynamically and transparently, without affecting other objects</li><li><strong>File</strong>: <a href="./Decorator-Pattern-Exercises.md">Decorator-Pattern-Exercises.md</a></li></ul>
+<h3 id="architectural-patterns">Architectural Patterns</h3>
+<h4 id="cqrs-pattern">CQRS Pattern</h4>
+<ul><li><strong>Purpose</strong>: Segregate read and write operations for a data store</li><li><strong>Use When</strong>: Read and write workloads are asymmetrical, or you need different optimization strategies for reads vs writes</li><li><strong>File</strong>: <a href="./CQRS-Pattern-Exercises.md">CQRS-Pattern-Exercises.md</a></li></ul>
+<h2 id="pattern-comparison-matrix">Pattern Comparison Matrix</h2>
+<table><thead><tr><th>Pattern</th><th>Primary Purpose</th><th>Complexity</th><th>.NET Integration</th><th>Common Use Cases</th></tr></thead><tbody><tr><td><strong>Factory</strong></td><td>Object Creation</td><td>Low-Medium</td><td>DI Container</td><td>Database providers, loggers, plugins</td></tr><tr><td><strong>Strategy</strong></td><td>Algorithm Selection</td><td>Low</td><td>Func<T>, delegates</td><td>Payment processing, validation, sorting</td></tr><tr><td><strong>Observer</strong></td><td>Event Notification</td><td>Medium</td><td>Events, IObservable</td><td>UI updates, pub-sub systems</td></tr><tr><td><strong>Decorator</strong></td><td>Dynamic Behavior Addition</td><td>Medium</td><td>Stream classes</td><td>Logging, caching, authorization</td></tr><tr><td><strong>Mediator</strong></td><td>Reduce Coupling</td><td>Medium-High</td><td>MediatR library</td><td>CQRS, message passing</td></tr><tr><td><strong>CQRS</strong></td><td>Read/Write Separation</td><td>High</td><td>MediatR, EF Core</td><td>High-performance apps, event sourcing</td></tr></tbody></table>
+<h2 id="quick-decision-guide">Quick Decision Guide</h2>
+<h3 id="choose-factory-when">Choose Factory When:</h3>
+<ul><li>Object creation logic is complex</li><li>You need to create different objects based on configuration</li><li>You want to centralize object creation logic</li><li>You're implementing dependency injection</li></ul>
+<h3 id="choose-strategy-when">Choose Strategy When:</h3>
+<ul><li>You have multiple algorithms for a specific task</li><li>You want to switch algorithms at runtime</li><li>You want to avoid complex conditional statements</li><li>Different clients need different algorithm variants</li></ul>
+<h3 id="choose-observer-when">Choose Observer When:</h3>
+<ul><li>One object changes and others need to be notified</li><li>You need loose coupling between subject and observers</li><li>You're implementing event-driven systems</li><li>You need publish-subscribe functionality</li></ul>
+<h3 id="choose-decorator-when">Choose Decorator When:</h3>
+<ul><li>You need to add responsibilities to objects dynamically</li><li>Extension by subclassing is impractical</li><li>You want to add features to individual objects, not entire classes</li><li>You need to combine multiple behaviors</li></ul>
+<h3 id="choose-mediator-when">Choose Mediator When:</h3>
+<ul><li>You have many objects communicating in complex ways</li><li>Reusing objects is difficult due to many dependencies</li><li>You want to centralize complex communications and control</li><li>You're implementing CQRS or message-based architecture</li></ul>
+<h3 id="choose-cqrs-when">Choose CQRS When:</h3>
+<ul><li>Read and write workloads differ significantly</li><li>You need different data models for reading vs writing</li><li>You're building high-performance or scalable systems</li><li>You need to implement event sourcing</li><li>You want to optimize queries separately from commands</li></ul>
+<h2 id="common-anti-patterns-to-avoid">Common Anti-Patterns to Avoid</h2>
+<h3 id="factory-anti-patterns">Factory Anti-Patterns</h3>
+<ul><li>Creating factories for simple object construction</li><li>Not using dependency injection with factories</li><li>Creating too many factory variants for similar objects</li></ul>
+<h3 id="strategy-anti-patterns">Strategy Anti-Patterns</h3>
+<ul><li>Using strategy for a single algorithm</li><li>Not considering simple delegates/lambdas first</li><li>Creating strategies that depend on each other</li></ul>
+<h3 id="observer-anti-patterns">Observer Anti-Patterns</h3>
+<ul><li>Creating memory leaks with strong event references</li><li>Not unsubscribing from events</li><li>Making observers depend on notification order</li></ul>
+<h3 id="decorator-anti-patterns">Decorator Anti-Patterns</h3>
+<ul><li>Creating too many decorator layers (complexity)</li><li>Using decorators when simple inheritance would work</li><li>Not maintaining the component interface properly</li></ul>
+<h3 id="mediator-anti-patterns">Mediator Anti-Patterns</h3>
+<ul><li>Creating a "god object" mediator that does too much</li><li>Using mediator for simple object communication</li><li>Not leveraging MediatR library in .NET applications</li></ul>
+<h3 id="cqrs-anti-patterns">CQRS Anti-Patterns</h3>
+<ul><li>Using CQRS for simple CRUD applications</li><li>Not considering eventual consistency implications</li><li>Duplicating logic between command and query sides</li><li>Over-engineering simple scenarios</li></ul>
+<h2 id="learning-path">Learning Path</h2>
+<h3 id="beginner-start-here">Beginner (Start Here)</h3>
+<ol><li><strong>Strategy Pattern</strong> - Easiest to understand and implement</li><li><strong>Factory Pattern</strong> - Common in .NET, good DI integration</li><li><strong>Observer Pattern</strong> - Familiar if you've used .NET events</li></ol>
+<h3 id="intermediate">Intermediate</h3>
+<ol><li><strong>Decorator Pattern</strong> - More complex composition</li><li><strong>Mediator Pattern</strong> - Introduction to message-based architecture</li></ol>
+<h3 id="advanced">Advanced</h3>
+<ol><li><strong>CQRS Pattern</strong> - Architectural pattern, complex but powerful</li></ol>
+<h2 id="real-world-net-examples">Real-World .NET Examples</h2>
+<h3 id="factory-pattern">Factory Pattern</h3>
+<ul><li><code>DbProviderFactory</code> for database providers</li><li><code>LoggerFactory</code> in Microsoft.Extensions.Logging</li><li><code>HttpClientFactory</code> in ASP.NET Core</li></ul>
+<h3 id="strategy-pattern">Strategy Pattern</h3>
+<ul><li><code>IComparer&lt;T&gt;</code> for sorting strategies</li><li>Validation attributes in ASP.NET</li><li>Routing strategies in ASP.NET Core</li></ul>
+<h3 id="observer-pattern">Observer Pattern</h3>
+<ul><li>.NET Events and EventHandler</li><li><code>IObservable&lt;T&gt;</code> and <code>IObserver&lt;T&gt;</code> (Reactive Extensions)</li><li>Change tracking in Entity Framework</li></ul>
+<h3 id="decorator-pattern">Decorator Pattern</h3>
+<ul><li>Stream classes (<code>FileStream</code>, <code>BufferedStream</code>, <code>CryptoStream</code>)</li><li>Middleware in ASP.NET Core</li><li><code>ActionFilterAttribute</code> in MVC</li></ul>
+<h3 id="mediator-pattern">Mediator Pattern</h3>
+<ul><li>MediatR library for CQRS</li><li>ASP.NET Core middleware pipeline</li><li>WPF command pattern</li></ul>
+<h3 id="cqrs-pattern">CQRS Pattern</h3>
+<ul><li>Event-sourced systems with MediatR</li><li>Microservices with separate read/write databases</li><li>High-traffic applications with query optimization</li></ul>
+<h2 id="testing-considerations">Testing Considerations</h2>
+<h3 id="factory-pattern-testing">Factory Pattern Testing</h3>
+<ul><li>Mock the factory to return test objects</li><li>Test factory logic independently</li><li>Verify correct object types are created</li></ul>
+<h3 id="strategy-pattern-testing">Strategy Pattern Testing</h3>
+<ul><li>Test each strategy independently</li><li>Test strategy selection logic</li><li>Mock strategies for context testing</li></ul>
+<h3 id="observer-pattern-testing">Observer Pattern Testing</h3>
+<ul><li>Test notification delivery</li><li>Test subscription/unsubscription</li><li>Verify observer state changes</li></ul>
+<h3 id="decorator-pattern-testing">Decorator Pattern Testing</h3>
+<ul><li>Test each decorator independently</li><li>Test decorator chains</li><li>Verify core component behavior preserved</li></ul>
+<h3 id="mediator-pattern-testing">Mediator Pattern Testing</h3>
+<ul><li>Test handlers independently (unit tests)</li><li>Test pipeline behaviors separately</li><li>Use in-memory mediator for integration tests</li></ul>
+<h3 id="cqrs-pattern-testing">CQRS Pattern Testing</h3>
+<ul><li>Test commands and queries independently</li><li>Test validation separately</li><li>Use in-memory databases for integration tests</li><li>Test eventual consistency scenarios</li></ul>
+<h2 id="performance-considerations">Performance Considerations</h2>
+<table><thead><tr><th>Pattern</th><th>Performance Impact</th><th>Memory Impact</th><th>Scalability</th></tr></thead><tbody><tr><td>Factory</td><td>Minimal</td><td>Minimal</td><td>Excellent</td></tr><tr><td>Strategy</td><td>Minimal</td><td>Low</td><td>Excellent</td></tr><tr><td>Observer</td><td>Low-Medium</td><td>Medium</td><td>Good (watch for memory leaks)</td></tr><tr><td>Decorator</td><td>Low</td><td>Medium</td><td>Good (avoid deep nesting)</td></tr><tr><td>Mediator</td><td>Low-Medium</td><td>Medium</td><td>Excellent</td></tr><tr><td>CQRS</td><td>Variable</td><td>Higher</td><td>Excellent (with proper design)</td></tr></tbody></table>
+<h2 id="additional-resources">Additional Resources</h2>
+<h3 id="books">Books</h3>
+<ul><li>"Design Patterns: Elements of Reusable Object-Oriented Software" (Gang of Four)</li><li>"Head First Design Patterns"</li><li>"C# Design Patterns" by Vaskaran Sarcar</li></ul>
+<h3 id="online-resources">Online Resources</h3>
+<ul><li>Microsoft Docs: Design Patterns</li><li>Refactoring Guru: Design Patterns</li><li>Source Making: Design Patterns</li></ul>
+<h3 id="libraries">Libraries</h3>
+<ul><li><strong>MediatR</strong>: Mediator pattern implementation for .NET</li><li><strong>Autofac/Microsoft.Extensions.DependencyInjection</strong>: Dependency injection containers</li><li><strong>Rx.NET</strong>: Reactive Extensions for Observer pattern</li><li><strong>Scrutor</strong>: Assembly scanning for decorator registration</li></ul>
+<h2 id="contributing">Contributing</h2>
+<p>When adding new exercises:</p>
+<ol><li>Follow the Q&A format</li><li>Include code examples</li><li>Provide real-world scenarios</li><li>Note common mistakes</li><li>Organize by difficulty level</li></ol>
+<h2 id="exercise-format">Exercise Format</h2>
+<p>Each exercise file follows this structure:</p>
+<ul><li><strong>Foundational Questions</strong> - Basic understanding and simple implementations</li><li><strong>Intermediate Questions</strong> - Real-world scenarios and integrations</li><li><strong>Advanced Questions</strong> - Complex scenarios, optimizations, and best practices</li></ul>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['dark2', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
+      const fallback = 'light';
+      const initial = supported.includes(normalized) ? normalized : (window.__studyTheme || fallback);
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          sessionStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+    (() => {
+      const groups = document.querySelectorAll('.sidebar-group');
+      if (!groups.length) return;
+      const storageKey = 'study-open-groups';
+      const saved = sessionStorage.getItem(storageKey);
+      const openFromStorage = new Set(saved ? JSON.parse(saved) : []);
+
+      const activeLink = document.querySelector('.nav-link.active');
+      const activeGroup = activeLink?.closest('.sidebar-group');
+      if (activeGroup?.dataset.group) {
+        openFromStorage.add(activeGroup.dataset.group);
+      }
+
+      const syncStorage = () => {
+        const openIds = Array.from(document.querySelectorAll('.sidebar-group.is-open'))
+          .map((group) => group.dataset.group)
+          .filter(Boolean);
+        sessionStorage.setItem(storageKey, JSON.stringify(openIds));
+      };
+
+      const setExpanded = (group, expanded) => {
+        const header = group.querySelector('.sidebar-group__header');
+        const list = group.querySelector('.sidebar-group__items');
+        group.classList.toggle('is-open', expanded);
+        header?.setAttribute('aria-expanded', expanded);
+        if (list) {
+          list.hidden = !expanded;
+        }
+      };
+
+      groups.forEach((group) => {
+        const shouldOpen = openFromStorage.has(group.dataset.group);
+        setExpanded(group, shouldOpen);
+        const header = group.querySelector('.sidebar-group__header');
+        header?.addEventListener('click', () => {
+          const next = !group.classList.contains('is-open');
+          setExpanded(group, next);
+          syncStorage();
+        });
+      });
+    })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swPath = '..\../service-worker.js';
+        navigator.serviceWorker.register(swPath).catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+</body>
+</html>

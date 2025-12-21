@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for S Single Responsibility Principle Exercises" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>S Single Responsibility Principle Exercises | C# Interview Prep Cheat Sheet</title>
+  <link rel="manifest" href="..\..\assets/manifest.webmanifest" />
+  <script>
+    (() => {
+      const supported = ['dark2', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
+      const fallback = 'light';
+      const initial = supported.includes(normalized) ? normalized : fallback;
+      document.documentElement.dataset.theme = initial;
+      window.__studyTheme = initial;
+    })();
+  </script>
+  <link rel="stylesheet" href="..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="dark2">Dark 2</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group" data-group="notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="..\../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="..\../notes/logging.html">Logging</a></li><li><a class="nav-link" href="..\../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/O1-Constant-Time.html">O1 Constant Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/OLogN-Logarithmic-Time.html">OLogN Logarithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON-Linear-Time.html">ON Linear Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ON2-Quadratic-Time.html">ON2 Quadratic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/ONLogN-Linearithmic-Time.html">ONLogN Linearithmic Time</a></li><li><a class="nav-link" href="..\../notes/Big-O-Complexity/Space-Complexity.html">Space Complexity</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/ICollection.html">ICollection</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IEnumerable.html">IEnumerable</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IList.html">IList</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IQueryable.html">IQueryable</a></li><li><a class="nav-link" href="..\../notes/Collections-And-Enumerables/IReadOnly.html">IReadOnly</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="..\../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a class="nav-link" href="..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a class="nav-link" href="..\../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a class="nav-link" href="..\../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a class="nav-link" href="..\../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a class="nav-link" href="..\../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a class="nav-link" href="..\../notes/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a class="nav-link" href="..\../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a class="nav-link" href="..\../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a class="nav-link" href="..\../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a class="nav-link" href="..\../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a class="nav-link" href="..\../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a class="nav-link" href="..\../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a class="nav-link" href="..\../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a class="nav-link" href="..\../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a class="nav-link" href="..\../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a class="nav-link" href="..\../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a class="nav-link" href="..\../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/01-async-patterns.html">01 Async Patterns</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/02-backpressure-rate-limiting.html">02 Backpressure Rate Limiting</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/03-caching-strategies.html">03 Caching Strategies</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/04-database-scaling.html">04 Database Scaling</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/05-message-queues.html">05 Message Queues</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/06-resilience-patterns.html">06 Resilience Patterns</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/07-observability.html">07 Observability</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/08-complete-example.html">08 Complete Example</a></li><li><a class="nav-link" href="..\../notes/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/answers.html">Answers</a></li><li><a class="nav-link" href="..\../practice/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="..\../practice/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="..\../practice/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="..\../practice/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="..\../practice/csharp-fundamentals.html">Csharp Fundamentals</a></li><li><a class="nav-link" href="..\../practice/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="..\../practice/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="..\../practice/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="..\../practice/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="..\../practice/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="..\../practice/index.html">Practice</a></li><li><a class="nav-link" href="..\../practice/PRACTICE-STRUCTURE.html">PRACTICE STRUCTURE</a></li><li><a class="nav-link" href="..\../practice/questions.html">Questions</a></li><li><a class="nav-link" href="..\../practice/README.html">README</a></li><li><a class="nav-link" href="..\../practice/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="..\../practice/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="..\../practice/system-design.html">System Design</a></li><li><a class="nav-link" href="..\../practice/trading-domain.html">Trading Domain</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-advanced-topics">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Advanced Topics</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/advanced-topics/async-await-exercises.html">Async Await Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Automapper/index.html">Automapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/O1-Constant-Time-Exercises.html">O1 Constant Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/OLogN-Logarithmic-Time-Exercises.html">OLogN Logarithmic Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ON-Linear-Time-Exercises.html">ON Linear Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ON2-Quadratic-Time-Exercises.html">ON2 Quadratic Time Exercises</a></li><li><a class="nav-link" href="..\../practice/Big-O-Complexity/ONLogN-Linearithmic-Time-Exercises.html">ONLogN Linearithmic Time Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/Design-Patterns/Decorator-Pattern-Exercises.html">Decorator Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/index.html">Design Patterns</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Factory-Pattern-Exercises.html">Factory Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Mediator-Pattern-Exercises.html">Mediator Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Observer-Pattern-Exercises.html">Observer Pattern Exercises</a></li><li><a class="nav-link" href="..\../practice/Design-Patterns/Strategy-Pattern-Exercises.html">Strategy Pattern Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\../practice/FluentValidation/index.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group is-open" data-group="practice-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
+        <span>Practice / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items"><li><a class="nav-link active" href="..\../practice/SOLID/S-Single-Responsibility-Principle-Exercises.html">S Single Responsibility Principle Exercises</a></li><li><a class="nav-link" href="..\../practice/SOLID/index.html">SOLID</a></li></ul>
+    </div></div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">practice\SOLID\S-Single-Responsibility-Principle-Exercises.md</div>
+        <h2>S Single Responsibility Principle Exercises</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#single-responsibility-principle-srp---exercises">Single Responsibility Principle (SRP) - Exercises</a></li><li class="level-2"><a href="#foundational-exercises">Foundational Exercises</a></li><li class="level-2"><a href="#intermediate-exercises">Intermediate Exercises</a></li><li class="level-2"><a href="#advanced-exercises">Advanced Exercises</a></li><li class="level-2"><a href="#real-world-scenarios">Real-World Scenarios</a></li></ul></div>
+        <h1 id="single-responsibility-principle-srp---exercises">Single Responsibility Principle (SRP) - Exercises</h1>
+<p>A class should have one, and only one, reason to change.</p>
+<p>---</p>
+<h2 id="foundational-exercises">Foundational Exercises</h2>
+<p><strong>Q: Identify the SRP violations in this User class and refactor it.</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public class User
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Email { get; set; }
+
+    public void SaveToDatabase()
+    {
+        // Database logic
+        var connection = new SqlConnection(&quot;...&quot;);
+        // Save user
+    }
+
+    public void SendWelcomeEmail()
+    {
+        // Email logic
+        var smtp = new SmtpClient();
+        // Send email
+    }
+
+    public string GenerateUserReport()
+    {
+        // Report generation logic
+        return $&quot;User Report: {Name}&quot;;
+    }
+
+    public bool ValidateEmail()
+    {
+        // Validation logic
+        return Email.Contains(&quot;@&quot;);
+    }
+}</code></pre>
+<p>A: The User class has multiple responsibilities: data storage, email sending, report generation, and validation. Refactor into separate classes:</p>
+<pre class="language-csharp"><code class="language-csharp">// Single responsibility: User data
+public class User
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Email { get; set; }
+}
+
+// Single responsibility: Data persistence
+public class UserRepository
+{
+    private readonly string _connectionString;
+
+    public UserRepository(string connectionString)
+    {
+        _connectionString = connectionString;
+    }
+
+    public void Save(User user)
+    {
+        using var connection = new SqlConnection(_connectionString);
+        // Save user
+    }
+}
+
+// Single responsibility: Email notifications
+public class EmailService
+{
+    private readonly SmtpClient _smtpClient;
+
+    public EmailService(SmtpClient smtpClient)
+    {
+        _smtpClient = smtpClient;
+    }
+
+    public void SendWelcomeEmail(User user)
+    {
+        // Send email
+    }
+}
+
+// Single responsibility: Report generation
+public class UserReportGenerator
+{
+    public string Generate(User user)
+    {
+        return $&quot;User Report: {user.Name}&quot;;
+    }
+}
+
+// Single responsibility: Validation
+public class EmailValidator
+{
+    public bool Validate(string email)
+    {
+        return !string.IsNullOrEmpty(email) &amp;&amp; email.Contains(&quot;@&quot;);
+    }
+}</code></pre>
+<p>Use when: Building maintainable applications where changes to one concern shouldn't affect others. Avoid when: Over-engineering simple DTOs or models that are pure data containers.</p>
+<p>---</p>
+<p><strong>Q: Refactor this OrderProcessor class to follow SRP.</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public class OrderProcessor
+{
+    public void ProcessOrder(Order order)
+    {
+        // Validate order
+        if (order.Items.Count == 0)
+            throw new Exception(&quot;Order must have items&quot;);
+
+        // Calculate total
+        decimal total = 0;
+        foreach (var item in order.Items)
+        {
+            total += item.Price * item.Quantity;
+        }
+        order.Total = total;
+
+        // Apply discount
+        if (order.Customer.IsPremium)
+        {
+            order.Total *= 0.9m;
+        }
+
+        // Save to database
+        var db = new SqlConnection(&quot;...&quot;);
+        // Save order
+
+        // Send confirmation email
+        var smtp = new SmtpClient();
+        // Send email
+
+        // Log
+        Console.WriteLine($&quot;Order {order.Id} processed&quot;);
+    }
+}</code></pre>
+<p>A: Separate into distinct responsibilities:</p>
+<pre class="language-csharp"><code class="language-csharp">public class Order
+{
+    public int Id { get; set; }
+    public Customer Customer { get; set; }
+    public List&lt;OrderItem&gt; Items { get; set; } = new();
+    public decimal Total { get; set; }
+}
+
+// Responsibility: Order validation
+public class OrderValidator
+{
+    public void Validate(Order order)
+    {
+        if (order.Items.Count == 0)
+            throw new InvalidOperationException(&quot;Order must have items&quot;);
+
+        if (order.Customer == null)
+            throw new InvalidOperationException(&quot;Order must have a customer&quot;);
+    }
+}
+
+// Responsibility: Price calculation
+public class OrderPriceCalculator
+{
+    public decimal CalculateTotal(Order order)
+    {
+        return order.Items.Sum(item =&gt; item.Price * item.Quantity);
+    }
+}
+
+// Responsibility: Discount application
+public class DiscountService
+{
+    public decimal ApplyDiscount(decimal amount, Customer customer)
+    {
+        return customer.IsPremium ? amount * 0.9m : amount;
+    }
+}
+
+// Responsibility: Data persistence
+public class OrderRepository
+{
+    private readonly IDbConnection _connection;
+
+    public OrderRepository(IDbConnection connection)
+    {
+        _connection = connection;
+    }
+
+    public void Save(Order order)
+    {
+        // Save to database
+    }
+}
+
+// Responsibility: Email notifications
+public class OrderNotificationService
+{
+    private readonly IEmailService _emailService;
+
+    public OrderNotificationService(IEmailService emailService)
+    {
+        _emailService = emailService;
+    }
+
+    public void SendConfirmation(Order order)
+    {
+        _emailService.Send(order.Customer.Email, &quot;Order Confirmation&quot;, $&quot;Order {order.Id}&quot;);
+    }
+}
+
+// Responsibility: Logging
+public class OrderLogger
+{
+    private readonly ILogger _logger;
+
+    public OrderLogger(ILogger logger)
+    {
+        _logger = logger;
+    }
+
+    public void LogProcessed(Order order)
+    {
+        _logger.LogInformation($&quot;Order {order.Id} processed&quot;);
+    }
+}
+
+// Orchestrator: Coordinates the workflow
+public class OrderProcessor
+{
+    private readonly OrderValidator _validator;
+    private readonly OrderPriceCalculator _calculator;
+    private readonly DiscountService _discountService;
+    private readonly OrderRepository _repository;
+    private readonly OrderNotificationService _notificationService;
+    private readonly OrderLogger _logger;
+
+    public OrderProcessor(
+        OrderValidator validator,
+        OrderPriceCalculator calculator,
+        DiscountService discountService,
+        OrderRepository repository,
+        OrderNotificationService notificationService,
+        OrderLogger logger)
+    {
+        _validator = validator;
+        _calculator = calculator;
+        _discountService = discountService;
+        _repository = repository;
+        _notificationService = notificationService;
+        _logger = logger;
+    }
+
+    public void ProcessOrder(Order order)
+    {
+        _validator.Validate(order);
+
+        var subtotal = _calculator.CalculateTotal(order);
+        order.Total = _discountService.ApplyDiscount(subtotal, order.Customer);
+
+        _repository.Save(order);
+        _notificationService.SendConfirmation(order);
+        _logger.LogProcessed(order);
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="intermediate-exercises">Intermediate Exercises</h2>
+<p><strong>Q: Identify SRP violations in this ReportGenerator class.</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public class ReportGenerator
+{
+    public string GenerateReport(List&lt;Sale&gt; sales)
+    {
+        // Fetch data
+        var connection = new SqlConnection(&quot;...&quot;);
+        var salesData = FetchSalesData(connection);
+
+        // Calculate metrics
+        var totalSales = salesData.Sum(s =&gt; s.Amount);
+        var averageSale = salesData.Average(s =&gt; s.Amount);
+
+        // Format report
+        var report = new StringBuilder();
+        report.AppendLine($&quot;Total Sales: {totalSales}&quot;);
+        report.AppendLine($&quot;Average Sale: {averageSale}&quot;);
+
+        // Save to file
+        File.WriteAllText(&quot;report.txt&quot;, report.ToString());
+
+        // Send via email
+        var smtp = new SmtpClient();
+        // Send email
+
+        return report.ToString();
+    }
+
+    private List&lt;Sale&gt; FetchSalesData(SqlConnection connection)
+    {
+        // Fetch from database
+        return new List&lt;Sale&gt;();
+    }
+}</code></pre>
+<p>A: Separate into distinct responsibilities:</p>
+<pre class="language-csharp"><code class="language-csharp">// Responsibility: Data access
+public class SalesRepository
+{
+    private readonly IDbConnection _connection;
+
+    public SalesRepository(IDbConnection connection)
+    {
+        _connection = connection;
+    }
+
+    public List&lt;Sale&gt; GetAll()
+    {
+        // Fetch from database
+        return new List&lt;Sale&gt;();
+    }
+}
+
+// Responsibility: Business calculations
+public class SalesMetricsCalculator
+{
+    public SalesMetrics Calculate(List&lt;Sale&gt; sales)
+    {
+        return new SalesMetrics
+        {
+            TotalSales = sales.Sum(s =&gt; s.Amount),
+            AverageSale = sales.Average(s =&gt; s.Amount),
+            SaleCount = sales.Count
+        };
+    }
+}
+
+// Responsibility: Report formatting
+public class ReportFormatter
+{
+    public string Format(SalesMetrics metrics)
+    {
+        var report = new StringBuilder();
+        report.AppendLine($&quot;Total Sales: {metrics.TotalSales:C}&quot;);
+        report.AppendLine($&quot;Average Sale: {metrics.AverageSale:C}&quot;);
+        report.AppendLine($&quot;Number of Sales: {metrics.SaleCount}&quot;);
+        return report.ToString();
+    }
+}
+
+// Responsibility: File operations
+public class ReportFileWriter
+{
+    public void WriteToFile(string content, string filePath)
+    {
+        File.WriteAllText(filePath, content);
+    }
+}
+
+// Responsibility: Email delivery
+public class ReportEmailService
+{
+    private readonly IEmailService _emailService;
+
+    public ReportEmailService(IEmailService emailService)
+    {
+        _emailService = emailService;
+    }
+
+    public void SendReport(string report, string recipient)
+    {
+        _emailService.Send(recipient, &quot;Sales Report&quot;, report);
+    }
+}
+
+// Orchestrator
+public class ReportGenerator
+{
+    private readonly SalesRepository _repository;
+    private readonly SalesMetricsCalculator _calculator;
+    private readonly ReportFormatter _formatter;
+    private readonly ReportFileWriter _fileWriter;
+    private readonly ReportEmailService _emailService;
+
+    public ReportGenerator(
+        SalesRepository repository,
+        SalesMetricsCalculator calculator,
+        ReportFormatter formatter,
+        ReportFileWriter fileWriter,
+        ReportEmailService emailService)
+    {
+        _repository = repository;
+        _calculator = calculator;
+        _formatter = formatter;
+        _fileWriter = fileWriter;
+        _emailService = emailService;
+    }
+
+    public string GenerateAndDistributeReport(string recipient, string filePath)
+    {
+        var sales = _repository.GetAll();
+        var metrics = _calculator.Calculate(sales);
+        var report = _formatter.Format(metrics);
+
+        _fileWriter.WriteToFile(report, filePath);
+        _emailService.SendReport(report, recipient);
+
+        return report;
+    }
+}</code></pre>
+<p>---</p>
+<p><strong>Q: Refactor this Employee class that handles both employee data and payroll calculations.</strong></p>
+<pre class="language-csharp"><code class="language-csharp">public class Employee
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public decimal HourlyRate { get; set; }
+    public int HoursWorked { get; set; }
+
+    public decimal CalculatePayment()
+    {
+        var regularHours = Math.Min(HoursWorked, 40);
+        var overtimeHours = Math.Max(HoursWorked - 40, 0);
+
+        var regularPay = regularHours * HourlyRate;
+        var overtimePay = overtimeHours * HourlyRate * 1.5m;
+
+        return regularPay + overtimePay;
+    }
+
+    public decimal CalculateTax()
+    {
+        var payment = CalculatePayment();
+        if (payment &lt; 1000) return payment * 0.1m;
+        if (payment &lt; 5000) return payment * 0.2m;
+        return payment * 0.3m;
+    }
+
+    public void SaveToDatabase()
+    {
+        var connection = new SqlConnection(&quot;...&quot;);
+        // Save employee
+    }
+
+    public string GeneratePayslip()
+    {
+        return $&quot;Employee: {Name}, Payment: {CalculatePayment():C}, Tax: {CalculateTax():C}&quot;;
+    }
+}</code></pre>
+<p>A: Separate into focused classes:</p>
+<pre class="language-csharp"><code class="language-csharp">// Responsibility: Employee data
+public class Employee
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public decimal HourlyRate { get; set; }
+    public int HoursWorked { get; set; }
+}
+
+// Responsibility: Payroll calculations
+public class PayrollCalculator
+{
+    private const int StandardHours = 40;
+    private const decimal OvertimeMultiplier = 1.5m;
+
+    public decimal CalculatePayment(Employee employee)
+    {
+        var regularHours = Math.Min(employee.HoursWorked, StandardHours);
+        var overtimeHours = Math.Max(employee.HoursWorked - StandardHours, 0);
+
+        var regularPay = regularHours * employee.HourlyRate;
+        var overtimePay = overtimeHours * employee.HourlyRate * OvertimeMultiplier;
+
+        return regularPay + overtimePay;
+    }
+}
+
+// Responsibility: Tax calculations
+public class TaxCalculator
+{
+    public decimal CalculateTax(decimal payment)
+    {
+        if (payment &lt; 1000) return payment * 0.1m;
+        if (payment &lt; 5000) return payment * 0.2m;
+        return payment * 0.3m;
+    }
+}
+
+// Responsibility: Data persistence
+public class EmployeeRepository
+{
+    private readonly IDbConnection _connection;
+
+    public EmployeeRepository(IDbConnection connection)
+    {
+        _connection = connection;
+    }
+
+    public void Save(Employee employee)
+    {
+        // Save to database
+    }
+
+    public Employee GetById(int id)
+    {
+        // Retrieve from database
+        return null;
+    }
+}
+
+// Responsibility: Document generation
+public class PayslipGenerator
+{
+    private readonly PayrollCalculator _payrollCalculator;
+    private readonly TaxCalculator _taxCalculator;
+
+    public PayslipGenerator(PayrollCalculator payrollCalculator, TaxCalculator taxCalculator)
+    {
+        _payrollCalculator = payrollCalculator;
+        _taxCalculator = taxCalculator;
+    }
+
+    public string Generate(Employee employee)
+    {
+        var payment = _payrollCalculator.CalculatePayment(employee);
+        var tax = _taxCalculator.CalculateTax(payment);
+
+        return $&quot;Employee: {employee.Name}\n&quot; +
+               $&quot;Payment: {payment:C}\n&quot; +
+               $&quot;Tax: {tax:C}\n&quot; +
+               $&quot;Net Pay: {payment - tax:C}&quot;;
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="advanced-exercises">Advanced Exercises</h2>
+<p><strong>Q: Design a logging system that follows SRP. It should support multiple log levels, formats, and destinations.</strong></p>
+<p>A: Create separate classes for each responsibility:</p>
+<pre class="language-csharp"><code class="language-csharp">// Responsibility: Log entry data
+public class LogEntry
+{
+    public DateTime Timestamp { get; set; }
+    public LogLevel Level { get; set; }
+    public string Message { get; set; }
+    public string Category { get; set; }
+    public Exception Exception { get; set; }
+}
+
+public enum LogLevel
+{
+    Debug, Info, Warning, Error, Critical
+}
+
+// Responsibility: Log formatting
+public interface ILogFormatter
+{
+    string Format(LogEntry entry);
+}
+
+public class JsonLogFormatter : ILogFormatter
+{
+    public string Format(LogEntry entry)
+    {
+        return JsonSerializer.Serialize(entry);
+    }
+}
+
+public class PlainTextLogFormatter : ILogFormatter
+{
+    public string Format(LogEntry entry)
+    {
+        return $&quot;[{entry.Timestamp:yyyy-MM-dd HH:mm:ss}] [{entry.Level}] {entry.Message}&quot;;
+    }
+}
+
+// Responsibility: Log destination
+public interface ILogDestination
+{
+    void Write(string formattedLog);
+}
+
+public class FileLogDestination : ILogDestination
+{
+    private readonly string _filePath;
+
+    public FileLogDestination(string filePath)
+    {
+        _filePath = filePath;
+    }
+
+    public void Write(string formattedLog)
+    {
+        File.AppendAllText(_filePath, formattedLog + Environment.NewLine);
+    }
+}
+
+public class ConsoleLogDestination : ILogDestination
+{
+    public void Write(string formattedLog)
+    {
+        Console.WriteLine(formattedLog);
+    }
+}
+
+public class DatabaseLogDestination : ILogDestination
+{
+    private readonly IDbConnection _connection;
+
+    public DatabaseLogDestination(IDbConnection connection)
+    {
+        _connection = connection;
+    }
+
+    public void Write(string formattedLog)
+    {
+        // Write to database
+    }
+}
+
+// Responsibility: Log filtering
+public interface ILogFilter
+{
+    bool ShouldLog(LogEntry entry);
+}
+
+public class LogLevelFilter : ILogFilter
+{
+    private readonly LogLevel _minLevel;
+
+    public LogLevelFilter(LogLevel minLevel)
+    {
+        _minLevel = minLevel;
+    }
+
+    public bool ShouldLog(LogEntry entry)
+    {
+        return entry.Level &gt;= _minLevel;
+    }
+}
+
+// Responsibility: Orchestrating logging
+public class Logger
+{
+    private readonly List&lt;ILogDestination&gt; _destinations;
+    private readonly ILogFormatter _formatter;
+    private readonly ILogFilter _filter;
+
+    public Logger(
+        ILogFormatter formatter,
+        ILogFilter filter,
+        params ILogDestination[] destinations)
+    {
+        _formatter = formatter;
+        _filter = filter;
+        _destinations = new List&lt;ILogDestination&gt;(destinations);
+    }
+
+    public void Log(LogLevel level, string message, string category = null, Exception exception = null)
+    {
+        var entry = new LogEntry
+        {
+            Timestamp = DateTime.UtcNow,
+            Level = level,
+            Message = message,
+            Category = category,
+            Exception = exception
+        };
+
+        if (!_filter.ShouldLog(entry))
+            return;
+
+        var formattedLog = _formatter.Format(entry);
+
+        foreach (var destination in _destinations)
+        {
+            destination.Write(formattedLog);
+        }
+    }
+
+    public void Debug(string message) =&gt; Log(LogLevel.Debug, message);
+    public void Info(string message) =&gt; Log(LogLevel.Info, message);
+    public void Warning(string message) =&gt; Log(LogLevel.Warning, message);
+    public void Error(string message, Exception ex = null) =&gt; Log(LogLevel.Error, message, exception: ex);
+}
+
+// Usage
+var logger = new Logger(
+    new JsonLogFormatter(),
+    new LogLevelFilter(LogLevel.Info),
+    new FileLogDestination(&quot;app.log&quot;),
+    new ConsoleLogDestination()
+);
+
+logger.Info(&quot;Application started&quot;);
+logger.Error(&quot;An error occurred&quot;, new Exception(&quot;Test exception&quot;));</code></pre>
+<p>---</p>
+<p><strong>Q: Create a file processing system that reads, validates, transforms, and stores data while following SRP.</strong></p>
+<p>A: Separate each step into its own class:</p>
+<pre class="language-csharp"><code class="language-csharp">// Responsibility: File reading
+public interface IFileReader
+{
+    Task&lt;string&gt; ReadAsync(string filePath);
+}
+
+public class TextFileReader : IFileReader
+{
+    public async Task&lt;string&gt; ReadAsync(string filePath)
+    {
+        return await File.ReadAllTextAsync(filePath);
+    }
+}
+
+// Responsibility: Data parsing
+public interface IDataParser&lt;T&gt;
+{
+    T Parse(string content);
+}
+
+public class CsvParser : IDataParser&lt;List&lt;Dictionary&lt;string, string&gt;&gt;&gt;
+{
+    public List&lt;Dictionary&lt;string, string&gt;&gt; Parse(string content)
+    {
+        var lines = content.Split(&#39;\n&#39;);
+        var headers = lines[0].Split(&#39;,&#39;);
+
+        return lines.Skip(1)
+            .Select(line =&gt;
+            {
+                var values = line.Split(&#39;,&#39;);
+                return headers.Zip(values, (h, v) =&gt; new { h, v })
+                    .ToDictionary(x =&gt; x.h, x =&gt; x.v);
+            })
+            .ToList();
+    }
+}
+
+// Responsibility: Data validation
+public interface IDataValidator&lt;T&gt;
+{
+    ValidationResult Validate(T data);
+}
+
+public class ValidationResult
+{
+    public bool IsValid { get; set; }
+    public List&lt;string&gt; Errors { get; set; } = new();
+}
+
+public class OrderDataValidator : IDataValidator&lt;List&lt;Dictionary&lt;string, string&gt;&gt;&gt;
+{
+    public ValidationResult Validate(List&lt;Dictionary&lt;string, string&gt;&gt; data)
+    {
+        var result = new ValidationResult { IsValid = true };
+
+        foreach (var row in data)
+        {
+            if (!row.ContainsKey(&quot;OrderId&quot;) || string.IsNullOrEmpty(row[&quot;OrderId&quot;]))
+            {
+                result.IsValid = false;
+                result.Errors.Add(&quot;OrderId is required&quot;);
+            }
+
+            if (row.ContainsKey(&quot;Amount&quot;) &amp;&amp; !decimal.TryParse(row[&quot;Amount&quot;], out _))
+            {
+                result.IsValid = false;
+                result.Errors.Add($&quot;Invalid amount in order {row.GetValueOrDefault(&quot;OrderId&quot;)}&quot;);
+            }
+        }
+
+        return result;
+    }
+}
+
+// Responsibility: Data transformation
+public interface IDataTransformer&lt;TInput, TOutput&gt;
+{
+    TOutput Transform(TInput data);
+}
+
+public class OrderTransformer : IDataTransformer&lt;List&lt;Dictionary&lt;string, string&gt;&gt;, List&lt;Order&gt;&gt;
+{
+    public List&lt;Order&gt; Transform(List&lt;Dictionary&lt;string, string&gt;&gt; data)
+    {
+        return data.Select(row =&gt; new Order
+        {
+            Id = row[&quot;OrderId&quot;],
+            Amount = decimal.Parse(row[&quot;Amount&quot;]),
+            CustomerId = row.GetValueOrDefault(&quot;CustomerId&quot;)
+        }).ToList();
+    }
+}
+
+// Responsibility: Data storage
+public interface IDataRepository&lt;T&gt;
+{
+    Task SaveAsync(T data);
+}
+
+public class OrderRepository : IDataRepository&lt;List&lt;Order&gt;&gt;
+{
+    private readonly IDbConnection _connection;
+
+    public OrderRepository(IDbConnection connection)
+    {
+        _connection = connection;
+    }
+
+    public async Task SaveAsync(List&lt;Order&gt; orders)
+    {
+        // Save to database
+        await Task.CompletedTask;
+    }
+}
+
+// Responsibility: Error handling and logging
+public interface IProcessingLogger
+{
+    void LogStart(string filePath);
+    void LogValidationErrors(ValidationResult result);
+    void LogSuccess(int recordCount);
+    void LogError(Exception ex);
+}
+
+public class ProcessingLogger : IProcessingLogger
+{
+    private readonly ILogger _logger;
+
+    public ProcessingLogger(ILogger logger)
+    {
+        _logger = logger;
+    }
+
+    public void LogStart(string filePath)
+    {
+        _logger.LogInformation($&quot;Starting to process file: {filePath}&quot;);
+    }
+
+    public void LogValidationErrors(ValidationResult result)
+    {
+        foreach (var error in result.Errors)
+        {
+            _logger.LogWarning($&quot;Validation error: {error}&quot;);
+        }
+    }
+
+    public void LogSuccess(int recordCount)
+    {
+        _logger.LogInformation($&quot;Successfully processed {recordCount} records&quot;);
+    }
+
+    public void LogError(Exception ex)
+    {
+        _logger.LogError(ex, &quot;Error processing file&quot;);
+    }
+}
+
+// Orchestrator: Coordinates the workflow
+public class FileProcessingService
+{
+    private readonly IFileReader _fileReader;
+    private readonly IDataParser&lt;List&lt;Dictionary&lt;string, string&gt;&gt;&gt; _parser;
+    private readonly IDataValidator&lt;List&lt;Dictionary&lt;string, string&gt;&gt;&gt; _validator;
+    private readonly IDataTransformer&lt;List&lt;Dictionary&lt;string, string&gt;&gt;, List&lt;Order&gt;&gt; _transformer;
+    private readonly IDataRepository&lt;List&lt;Order&gt;&gt; _repository;
+    private readonly IProcessingLogger _logger;
+
+    public FileProcessingService(
+        IFileReader fileReader,
+        IDataParser&lt;List&lt;Dictionary&lt;string, string&gt;&gt;&gt; parser,
+        IDataValidator&lt;List&lt;Dictionary&lt;string, string&gt;&gt;&gt; validator,
+        IDataTransformer&lt;List&lt;Dictionary&lt;string, string&gt;&gt;, List&lt;Order&gt;&gt; transformer,
+        IDataRepository&lt;List&lt;Order&gt;&gt; repository,
+        IProcessingLogger logger)
+    {
+        _fileReader = fileReader;
+        _parser = parser;
+        _validator = validator;
+        _transformer = transformer;
+        _repository = repository;
+        _logger = logger;
+    }
+
+    public async Task ProcessFileAsync(string filePath)
+    {
+        try
+        {
+            _logger.LogStart(filePath);
+
+            // Read
+            var content = await _fileReader.ReadAsync(filePath);
+
+            // Parse
+            var rawData = _parser.Parse(content);
+
+            // Validate
+            var validationResult = _validator.Validate(rawData);
+            if (!validationResult.IsValid)
+            {
+                _logger.LogValidationErrors(validationResult);
+                return;
+            }
+
+            // Transform
+            var orders = _transformer.Transform(rawData);
+
+            // Store
+            await _repository.SaveAsync(orders);
+
+            _logger.LogSuccess(orders.Count);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex);
+            throw;
+        }
+    }
+}</code></pre>
+<p>---</p>
+<h2 id="real-world-scenarios">Real-World Scenarios</h2>
+<p><strong>Q: Design an e-commerce checkout system following SRP. Include inventory checking, payment processing, order creation, and notifications.</strong></p>
+<p>A: Create focused services for each responsibility:</p>
+<pre class="language-csharp"><code class="language-csharp">// Domain entities
+public class Cart
+{
+    public string CustomerId { get; set; }
+    public List&lt;CartItem&gt; Items { get; set; } = new();
+}
+
+public class CartItem
+{
+    public string ProductId { get; set; }
+    public int Quantity { get; set; }
+    public decimal Price { get; set; }
+}
+
+public class Order
+{
+    public string Id { get; set; }
+    public string CustomerId { get; set; }
+    public List&lt;OrderItem&gt; Items { get; set; } = new();
+    public decimal Total { get; set; }
+    public string Status { get; set; }
+    public DateTime CreatedAt { get; set; }
+}
+
+// Responsibility: Inventory management
+public interface IInventoryService
+{
+    Task&lt;bool&gt; CheckAvailabilityAsync(string productId, int quantity);
+    Task ReserveAsync(string productId, int quantity);
+    Task ReleaseAsync(string productId, int quantity);
+}
+
+public class InventoryService : IInventoryService
+{
+    private readonly IInventoryRepository _repository;
+
+    public InventoryService(IInventoryRepository repository)
+    {
+        _repository = repository;
+    }
+
+    public async Task&lt;bool&gt; CheckAvailabilityAsync(string productId, int quantity)
+    {
+        var stock = await _repository.GetStockAsync(productId);
+        return stock &gt;= quantity;
+    }
+
+    public async Task ReserveAsync(string productId, int quantity)
+    {
+        await _repository.DecrementStockAsync(productId, quantity);
+    }
+
+    public async Task ReleaseAsync(string productId, int quantity)
+    {
+        await _repository.IncrementStockAsync(productId, quantity);
+    }
+}
+
+// Responsibility: Payment processing
+public interface IPaymentService
+{
+    Task&lt;PaymentResult&gt; ProcessPaymentAsync(string customerId, decimal amount, string paymentMethod);
+}
+
+public class PaymentResult
+{
+    public bool Success { get; set; }
+    public string TransactionId { get; set; }
+    public string ErrorMessage { get; set; }
+}
+
+public class PaymentService : IPaymentService
+{
+    private readonly IPaymentGateway _gateway;
+
+    public PaymentService(IPaymentGateway gateway)
+    {
+        _gateway = gateway;
+    }
+
+    public async Task&lt;PaymentResult&gt; ProcessPaymentAsync(string customerId, decimal amount, string paymentMethod)
+    {
+        return await _gateway.ChargeAsync(customerId, amount, paymentMethod);
+    }
+}
+
+// Responsibility: Order creation
+public interface IOrderFactory
+{
+    Order CreateOrder(Cart cart);
+}
+
+public class OrderFactory : IOrderFactory
+{
+    public Order CreateOrder(Cart cart)
+    {
+        return new Order
+        {
+            Id = Guid.NewGuid().ToString(),
+            CustomerId = cart.CustomerId,
+            Items = cart.Items.Select(ci =&gt; new OrderItem
+            {
+                ProductId = ci.ProductId,
+                Quantity = ci.Quantity,
+                Price = ci.Price
+            }).ToList(),
+            Total = cart.Items.Sum(ci =&gt; ci.Price * ci.Quantity),
+            Status = &quot;Pending&quot;,
+            CreatedAt = DateTime.UtcNow
+        };
+    }
+}
+
+// Responsibility: Order persistence
+public interface IOrderRepository
+{
+    Task SaveAsync(Order order);
+    Task UpdateStatusAsync(string orderId, string status);
+}
+
+// Responsibility: Customer notifications
+public interface INotificationService
+{
+    Task SendOrderConfirmationAsync(Order order);
+    Task SendPaymentFailureAsync(string customerId, string reason);
+}
+
+public class NotificationService : INotificationService
+{
+    private readonly IEmailService _emailService;
+    private readonly ISmsService _smsService;
+
+    public NotificationService(IEmailService emailService, ISmsService smsService)
+    {
+        _emailService = emailService;
+        _smsService = smsService;
+    }
+
+    public async Task SendOrderConfirmationAsync(Order order)
+    {
+        await _emailService.SendAsync(order.CustomerId, &quot;Order Confirmation&quot;, $&quot;Order {order.Id} confirmed&quot;);
+    }
+
+    public async Task SendPaymentFailureAsync(string customerId, string reason)
+    {
+        await _emailService.SendAsync(customerId, &quot;Payment Failed&quot;, reason);
+    }
+}
+
+// Orchestrator: Checkout process
+public class CheckoutService
+{
+    private readonly IInventoryService _inventoryService;
+    private readonly IPaymentService _paymentService;
+    private readonly IOrderFactory _orderFactory;
+    private readonly IOrderRepository _orderRepository;
+    private readonly INotificationService _notificationService;
+    private readonly ILogger&lt;CheckoutService&gt; _logger;
+
+    public CheckoutService(
+        IInventoryService inventoryService,
+        IPaymentService paymentService,
+        IOrderFactory orderFactory,
+        IOrderRepository orderRepository,
+        INotificationService notificationService,
+        ILogger&lt;CheckoutService&gt; logger)
+    {
+        _inventoryService = inventoryService;
+        _paymentService = paymentService;
+        _orderFactory = orderFactory;
+        _orderRepository = orderRepository;
+        _notificationService = notificationService;
+        _logger = logger;
+    }
+
+    public async Task&lt;CheckoutResult&gt; CheckoutAsync(Cart cart, string paymentMethod)
+    {
+        try
+        {
+            // Step 1: Check inventory
+            foreach (var item in cart.Items)
+            {
+                var available = await _inventoryService.CheckAvailabilityAsync(item.ProductId, item.Quantity);
+                if (!available)
+                {
+                    return CheckoutResult.Failed($&quot;Product {item.ProductId} is out of stock&quot;);
+                }
+            }
+
+            // Step 2: Reserve inventory
+            foreach (var item in cart.Items)
+            {
+                await _inventoryService.ReserveAsync(item.ProductId, item.Quantity);
+            }
+
+            // Step 3: Create order
+            var order = _orderFactory.CreateOrder(cart);
+            await _orderRepository.SaveAsync(order);
+
+            // Step 4: Process payment
+            var paymentResult = await _paymentService.ProcessPaymentAsync(
+                cart.CustomerId,
+                order.Total,
+                paymentMethod);
+
+            if (!paymentResult.Success)
+            {
+                // Rollback inventory
+                foreach (var item in cart.Items)
+                {
+                    await _inventoryService.ReleaseAsync(item.ProductId, item.Quantity);
+                }
+
+                await _orderRepository.UpdateStatusAsync(order.Id, &quot;PaymentFailed&quot;);
+                await _notificationService.SendPaymentFailureAsync(cart.CustomerId, paymentResult.ErrorMessage);
+
+                return CheckoutResult.Failed(paymentResult.ErrorMessage);
+            }
+
+            // Step 5: Confirm order
+            await _orderRepository.UpdateStatusAsync(order.Id, &quot;Confirmed&quot;);
+            await _notificationService.SendOrderConfirmationAsync(order);
+
+            _logger.LogInformation($&quot;Checkout completed for order {order.Id}&quot;);
+
+            return CheckoutResult.Success(order.Id);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, &quot;Checkout failed&quot;);
+            throw;
+        }
+    }
+}
+
+public class CheckoutResult
+{
+    public bool Success { get; set; }
+    public string OrderId { get; set; }
+    public string ErrorMessage { get; set; }
+
+    public static CheckoutResult Success(string orderId) =&gt;
+        new() { Success = true, OrderId = orderId };
+
+    public static CheckoutResult Failed(string message) =&gt;
+        new() { Success = false, ErrorMessage = message };
+}</code></pre>
+<p>---</p>
+<p><strong>Total Exercises: 25+</strong></p>
+<p>Each refactoring demonstrates how SRP makes code more maintainable, testable, and easier to change. Remember: a class should have only one reason to change!</p>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['dark2', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
+      const fallback = 'light';
+      const initial = supported.includes(normalized) ? normalized : (window.__studyTheme || fallback);
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          sessionStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+    (() => {
+      const groups = document.querySelectorAll('.sidebar-group');
+      if (!groups.length) return;
+      const storageKey = 'study-open-groups';
+      const saved = sessionStorage.getItem(storageKey);
+      const openFromStorage = new Set(saved ? JSON.parse(saved) : []);
+
+      const activeLink = document.querySelector('.nav-link.active');
+      const activeGroup = activeLink?.closest('.sidebar-group');
+      if (activeGroup?.dataset.group) {
+        openFromStorage.add(activeGroup.dataset.group);
+      }
+
+      const syncStorage = () => {
+        const openIds = Array.from(document.querySelectorAll('.sidebar-group.is-open'))
+          .map((group) => group.dataset.group)
+          .filter(Boolean);
+        sessionStorage.setItem(storageKey, JSON.stringify(openIds));
+      };
+
+      const setExpanded = (group, expanded) => {
+        const header = group.querySelector('.sidebar-group__header');
+        const list = group.querySelector('.sidebar-group__items');
+        group.classList.toggle('is-open', expanded);
+        header?.setAttribute('aria-expanded', expanded);
+        if (list) {
+          list.hidden = !expanded;
+        }
+      };
+
+      groups.forEach((group) => {
+        const shouldOpen = openFromStorage.has(group.dataset.group);
+        setExpanded(group, shouldOpen);
+        const header = group.querySelector('.sidebar-group__header');
+        header?.addEventListener('click', () => {
+          const next = !group.classList.contains('is-open');
+          setExpanded(group, next);
+          syncStorage();
+        });
+      });
+    })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swPath = '..\../service-worker.js';
+        navigator.serviceWorker.register(swPath).catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+</body>
+</html>
