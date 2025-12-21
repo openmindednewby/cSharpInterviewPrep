@@ -9,6 +9,7 @@ const answerCheckEl = document.getElementById('answerCheck');
 const answerInputEl = document.getElementById('answerInput');
 const toggleAnswerSectionBtn = document.getElementById('toggleAnswerSectionBtn');
 const toggleQuestionBtn = document.getElementById('toggleQuestionBtn');
+const toggleAnswerBtn = document.getElementById('toggleAnswerBtn');
 const toggleCodeInputBtn = document.getElementById('toggleCodeInputBtn');
 const answerCodeBlockEl = document.getElementById('answerCodeBlock');
 const answerCodeInputEl = document.getElementById('answerCodeInput');
@@ -69,6 +70,9 @@ function wireActions() {
   }
   if (toggleQuestionBtn) {
     toggleQuestionBtn.addEventListener('click', toggleQuestionVisibility);
+  }
+  if (toggleAnswerBtn) {
+    toggleAnswerBtn.addEventListener('click', toggleAnswerVisibility);
   }
   if (answerCodeInputEl && answerCodePreviewEl) {
     answerCodeInputEl.addEventListener('input', updateAnswerCodePreview);
@@ -326,15 +330,28 @@ function renderAnswer(card) {
   }
 }
 
+function setAnswerVisibility(isVisible) {
+  if (!cardAnswerEl || !revealAnswerBtn) {
+    return;
+  }
+
+  cardAnswerEl.classList.toggle('is-hidden', !isVisible);
+  revealAnswerBtn.textContent = isVisible ? 'Hide Answer' : 'Reveal Answer';
+  setAnswerToggleState(!isVisible);
+  updateScrollableLayout();
+}
+
 function hideAnswer() {
-  cardAnswerEl.classList.add('is-hidden');
-  revealAnswerBtn.textContent = 'Reveal Answer';
+  setAnswerVisibility(false);
 }
 
 function handleRevealAnswer() {
-  cardAnswerEl.classList.remove('is-hidden');
-  revealAnswerBtn.textContent = 'Answer Revealed';
-  updateScrollableLayout();
+  if (!cardAnswerEl) {
+    return;
+  }
+
+  const isHidden = cardAnswerEl.classList.contains('is-hidden');
+  setAnswerVisibility(isHidden);
 }
 
 function handleCheckAnswer() {
@@ -507,6 +524,14 @@ function toggleQuestionVisibility() {
   updateScrollableLayout();
 }
 
+function toggleAnswerVisibility() {
+  if (!cardAnswerEl) {
+    return;
+  }
+
+  handleRevealAnswer();
+}
+
 function toggleCodePreview() {
   if (!answerCodePreviewBlockEl || !toggleCodePreviewBtn) {
     return;
@@ -586,4 +611,13 @@ function resetAnswerSection() {
   answerCheckEl.classList.remove('is-collapsed');
   toggleAnswerSectionBtn.setAttribute('aria-expanded', 'true');
   toggleAnswerSectionBtn.setAttribute('aria-label', 'Collapse answer section');
+}
+
+function setAnswerToggleState(isHidden) {
+  if (!toggleAnswerBtn) {
+    return;
+  }
+
+  toggleAnswerBtn.textContent = isHidden ? 'Show Answer' : 'Hide Answer';
+  toggleAnswerBtn.setAttribute('aria-pressed', String(!isHidden));
 }
