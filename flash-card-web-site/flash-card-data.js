@@ -1,5 +1,5 @@
 // Auto-generated flash card data from notes/ and practice/ folders
-// Generated on: 2025-12-21T19:42:17.479Z
+// Generated on: 2025-12-22T06:25:42.786Z
 // Total cards: 2226 (845 Q&A, 1316 sections, 65 concepts)
 
 window.FLASH_CARD_DATA = [
@@ -46760,7 +46760,7 @@ window.FLASH_CARD_DATA = [
     "answer": [
       {
         "type": "text",
-        "content": "Use where T : new() when the type must be created."
+        "content": "Use where T : new() when the type must be created. This allows instantiation inside the method (tells the compiler “T must be a type that has a public parameterless constructor.”)"
       },
       {
         "type": "code",
@@ -47148,7 +47148,7 @@ window.FLASH_CARD_DATA = [
     "answer": [
       {
         "type": "text",
-        "content": "A: Use where T : new() when the type must be created."
+        "content": "A: Use where T : new() when the type must be created. This allows instantiation inside the method (tells the compiler “T must be a type that has a public parameterless constructor.”)"
       },
       {
         "type": "code",

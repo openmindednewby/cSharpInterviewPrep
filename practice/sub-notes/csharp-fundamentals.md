@@ -140,7 +140,7 @@ public static class Guard
 
 **Q: Implement a generic method with a constraint for a parameterless constructor.**
 
-A: Use `where T : new()` when the type must be created.
+A: Use `where T : new()` when the type must be created. This allows instantiation inside the method (tells the compiler “T must be a type that has a public parameterless constructor.”)
 
 ```csharp
 public static T Create<T>() where T : new()

@@ -1,5 +1,5 @@
 // Auto-generated practice Q&A data from practice/ folder
-// Generated on: 2025-12-21T19:42:18.417Z
+// Generated on: 2025-12-22T06:25:42.521Z
 // Total cards: 348 Q&A
 
 window.PRACTICE_DATA = [
@@ -4113,7 +4113,7 @@ window.PRACTICE_DATA = [
     "answer": [
       {
         "type": "text",
-        "content": "Use where T : new() when the type must be created."
+        "content": "Use where T : new() when the type must be created. This allows instantiation inside the method (tells the compiler “T must be a type that has a public parameterless constructor.”)"
       },
       {
         "type": "code",

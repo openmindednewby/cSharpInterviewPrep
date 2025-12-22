@@ -281,7 +281,7 @@ public string FormatName(string? name)
 <p>---</p>
 <h2 id="generics-and-constraints">Generics and Constraints</h2>
 <p><strong>Q: Implement a generic method with a constraint for a parameterless constructor.</strong></p>
-<p>A: Use <code>where T : new()</code> when the type must be created.</p>
+<p>A: Use <code>where T : new()</code> when the type must be created. This allows instantiation inside the method (tells the compiler “T must be a type that has a public parameterless constructor.”)</p>
 <pre class="language-csharp"><code class="language-csharp">public static T Create&lt;T&gt;() where T : new()
 {
     return new T();
