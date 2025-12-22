@@ -203,7 +203,7 @@
         <div class="toc"><ul class="toc-list"><li class="level-2"><a href="#l-liskov-substitution-principle-lsp">**L — Liskov Substitution Principle (LSP)**</a></li><li class="level-3"><a href="#bad-example">❌ Bad example:</a></li><li class="level-3"><a href="#good-example">✅ Good example:</a></li><li class="level-2"><a href="#questions-answers">Questions & Answers</a></li></ul></div>
         <h2 id="l-liskov-substitution-principle-lsp"><strong>L — Liskov Substitution Principle (LSP)</strong></h2>
 <blockquote><p>“Derived classes should be substitutable for their base classes.”</p></blockquote>
-<p>Derived classes must behave consistently with their base abstraction.</p>
+<p>Derived classes must behave consistently with their base abstraction. If code works with a base type, it must also work with any derived type, without extra checks, exceptions, or special cases. Inheritance is a promise of behavior, not just shared code.</p>
 <h3 id="bad-example">❌ Bad example:</h3>
 <pre class="language-csharp"><code class="language-csharp">public abstract class Order
 {

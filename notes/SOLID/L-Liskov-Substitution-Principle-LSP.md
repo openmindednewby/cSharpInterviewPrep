@@ -2,7 +2,7 @@
 
 > “Derived classes should be substitutable for their base classes.”
 
-Derived classes must behave consistently with their base abstraction.
+Derived classes must behave consistently with their base abstraction. If code works with a base type, it must also work with any derived type, without extra checks, exceptions, or special cases. Inheritance is a promise of behavior, not just shared code.
 
 ### ❌ Bad example:
 
