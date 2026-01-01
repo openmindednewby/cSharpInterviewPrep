@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Senior .NET study guide for React" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>React | C# Interview Prep Cheat Sheet</title>
+  <link rel="manifest" href="..\..\..\assets/manifest.webmanifest" />
+  <script>
+    (() => {
+      const supported = ['dark2', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
+      const fallback = 'light';
+      const initial = supported.includes(normalized) ? normalized : fallback;
+      document.documentElement.dataset.theme = initial;
+      window.__studyTheme = initial;
+    })();
+  </script>
+  <link rel="stylesheet" href="..\..\..\assets/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">C# Interview Prep</p>
+      <h1>Senior .NET Study Portal</h1>
+      <p class="subtitle">Ultimate cheat sheets, patterns, and interview-ready scenarios in one place.</p>
+    </div>
+    <div class="header-actions">
+      <div class="theme-switcher" aria-label="Theme selector">
+        <label for="theme-select" class="theme-label">Theme</label>
+        <select id="theme-select" class="theme-select">
+          <option value="dark2">Dark 2</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="badge">Fast recall</div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <h2>Navigation</h2>
+        <div class="search-hint">Use Ctrl/Cmd + F for quick lookup</div>
+        <div class="sidebar-scroll"><div class="nav-groups"><div class="sidebar-group" data-group="notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="..\..\../notes/defensive-programming-vs-fail-fast.html">Defensive Programming Vs Fail Fast</a></li><li><a class="nav-link" href="..\..\../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="..\..\../notes/logging.html">Logging</a></li><li><a class="nav-link" href="..\..\../notes/solution-architecture.html">Solution Architecture</a></li><li><a class="nav-link" href="..\..\../notes/sse-vs-websockets.html">Sse Vs Websockets</a></li><li><a class="nav-link" href="..\..\../notes/system-architecture.html">System Architecture</a></li><li><a class="nav-link" href="..\..\../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Automapper/AutoMapper.html">AutoMapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="..\..\../notes/Big-O-Complexity/O1-Constant-Time.html">O1 Constant Time</a></li><li><a class="nav-link" href="..\..\../notes/Big-O-Complexity/OLogN-Logarithmic-Time.html">OLogN Logarithmic Time</a></li><li><a class="nav-link" href="..\..\../notes/Big-O-Complexity/ON-Linear-Time.html">ON Linear Time</a></li><li><a class="nav-link" href="..\..\../notes/Big-O-Complexity/ON2-Quadratic-Time.html">ON2 Quadratic Time</a></li><li><a class="nav-link" href="..\..\../notes/Big-O-Complexity/ONLogN-Linearithmic-Time.html">ONLogN Linearithmic Time</a></li><li><a class="nav-link" href="..\..\../notes/Big-O-Complexity/Space-Complexity.html">Space Complexity</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li><li><a class="nav-link" href="..\..\../notes/Collections-And-Enumerables/ICollection.html">ICollection</a></li><li><a class="nav-link" href="..\..\../notes/Collections-And-Enumerables/IEnumerable.html">IEnumerable</a></li><li><a class="nav-link" href="..\..\../notes/Collections-And-Enumerables/IList.html">IList</a></li><li><a class="nav-link" href="..\..\../notes/Collections-And-Enumerables/IQueryable.html">IQueryable</a></li><li><a class="nav-link" href="..\..\../notes/Collections-And-Enumerables/IReadOnly.html">IReadOnly</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Design-Patterns/CQRS Pattern.html">CQRS Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Decorator Pattern.html">Decorator Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Factory Pattern.html">Factory Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Mediator Pattern.html">Mediator Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Observer Pattern.html">Observer Pattern</a></li><li><a class="nav-link" href="..\..\../notes/Design-Patterns/Strategy Pattern.html">Strategy Pattern</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/FluentValidation/FluentValidation.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li><li><a class="nav-link" href="..\..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example.html">Memory Allocation Discipline Example</a></li><li><a class="nav-link" href="..\..\../notes/Memory-Allocation-Discipline/Memory Allocation Discipline Example Async.html">Memory Allocation Discipline Example Async</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/SOLID/D-Dependency-Inversion-Principle-DIP.html">D Dependency Inversion Principle DIP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/I-Interface-Segregation-Principle-ISP.html">I Interface Segregation Principle ISP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/L-Liskov-Substitution-Principle-LSP.html">L Liskov Substitution Principle LSP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/O-Open-Closed-Principle-OCP.html">O Open Closed Principle OCP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/S-Single-Responsibility-Principle-SRP.html">S Single Responsibility Principle SRP</a></li><li><a class="nav-link" href="..\..\../notes/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/sub-notes/Async Await Deep Dive.html">Async Await Deep Dive</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/base-keyword.html">Base Keyword</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/CLR & Garbage Collector (GC).html">CLR & Garbage Collector (GC)</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/CLR & Garbage Collector (GC) Practical Example.html">CLR & Garbage Collector (GC) Practical Example</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Dependency Injection Lifetimes.html">Dependency Injection Lifetimes</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/FIFO Queues in .NET.html">FIFO Queues In .NET</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Forcing Garbage Collection.html">Forcing Garbage Collection</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/IDisposable Patterns.html">IDisposable Patterns</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/nameof-keyword.html">Nameof Keyword</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/NET Generational Garbage Collection (GC) Deep Dive.html">NET Generational Garbage Collection (GC) Deep Dive</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/RabbitMQ.html">RabbitMQ</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Reflection Overview.html">Reflection Overview</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Server vs Workstation GC.html">Server Vs Workstation GC</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Sorted Collections Interview Notes.html">Sorted Collections Interview Notes</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/Sorting Algorithms.html">Sorting Algorithms</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/struct vs class when to use which.html">Struct Vs Class When To Use Which</a></li><li><a class="nav-link" href="..\..\../notes/sub-notes/types.html">Types</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-tech-stacks">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Tech Stacks</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Tech-Stacks/index.html">Tech Stacks</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-tech-stacks-golang">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Tech Stacks / GoLang</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Tech-Stacks/GoLang/index.html">GoLang</a></li></ul>
+    </div><div class="sidebar-group is-open" data-group="notes-tech-stacks-react">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
+        <span>Notes / Tech Stacks / React</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items"><li><a class="nav-link active" href="..\..\../notes/Tech-Stacks/React/index.html">React</a></li></ul>
+    </div><div class="sidebar-group" data-group="notes-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Notes / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/01-async-patterns.html">01 Async Patterns</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/02-backpressure-rate-limiting.html">02 Backpressure Rate Limiting</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/03-caching-strategies.html">03 Caching Strategies</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/04-database-scaling.html">04 Database Scaling</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/05-message-queues.html">05 Message Queues</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/06-resilience-patterns.html">06 Resilience Patterns</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/07-observability.html">07 Observability</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/08-complete-example.html">08 Complete Example</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../practice/answers.html">Answers</a></li><li><a class="nav-link" href="..\..\../practice/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="..\..\../practice/defensive-programming-vs-fail-fast-exercises.html">Defensive Programming Vs Fail Fast Exercises</a></li><li><a class="nav-link" href="..\..\../practice/error-handling-exercises.html">Error Handling Exercises</a></li><li><a class="nav-link" href="..\..\../practice/logging-exercises.html">Logging Exercises</a></li><li><a class="nav-link" href="..\..\../practice/index.html">Practice</a></li><li><a class="nav-link" href="..\..\../practice/PRACTICE-STRUCTURE.html">PRACTICE STRUCTURE</a></li><li><a class="nav-link" href="..\..\../practice/questions.html">Questions</a></li><li><a class="nav-link" href="..\..\../practice/README.html">README</a></li><li><a class="nav-link" href="..\..\../practice/solution-architecture-exercises.html">Solution Architecture Exercises</a></li><li><a class="nav-link" href="..\..\../practice/sse-vs-websockets-exercises.html">Sse Vs Websockets Exercises</a></li><li><a class="nav-link" href="..\..\../practice/system-architecture-exercises.html">System Architecture Exercises</a></li><li><a class="nav-link" href="..\..\../practice/testing-strategies-exercises.html">Testing Strategies Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-automapper">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Automapper</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../practice/Automapper/index.html">Automapper</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-big-o-complexity">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Big O Complexity</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../practice/Big-O-Complexity/index.html">Big O Complexity</a></li><li><a class="nav-link" href="..\..\../practice/Big-O-Complexity/O1-Constant-Time-Exercises.html">O1 Constant Time Exercises</a></li><li><a class="nav-link" href="..\..\../practice/Big-O-Complexity/OLogN-Logarithmic-Time-Exercises.html">OLogN Logarithmic Time Exercises</a></li><li><a class="nav-link" href="..\..\../practice/Big-O-Complexity/ON-Linear-Time-Exercises.html">ON Linear Time Exercises</a></li><li><a class="nav-link" href="..\..\../practice/Big-O-Complexity/ON2-Quadratic-Time-Exercises.html">ON2 Quadratic Time Exercises</a></li><li><a class="nav-link" href="..\..\../practice/Big-O-Complexity/ONLogN-Linearithmic-Time-Exercises.html">ONLogN Linearithmic Time Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-clean-architecture">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Clean Architecture</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../practice/Clean-Architecture/index.html">Clean Architecture</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-collections-and-enumerables">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Collections And Enumerables</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../practice/Collections-And-Enumerables/index.html">Collections And Enumerables</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-design-patterns">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Design Patterns</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../practice/Design-Patterns/Decorator-Pattern-Exercises.html">Decorator Pattern Exercises</a></li><li><a class="nav-link" href="..\..\../practice/Design-Patterns/index.html">Design Patterns</a></li><li><a class="nav-link" href="..\..\../practice/Design-Patterns/Factory-Pattern-Exercises.html">Factory Pattern Exercises</a></li><li><a class="nav-link" href="..\..\../practice/Design-Patterns/Mediator-Pattern-Exercises.html">Mediator Pattern Exercises</a></li><li><a class="nav-link" href="..\..\../practice/Design-Patterns/Observer-Pattern-Exercises.html">Observer Pattern Exercises</a></li><li><a class="nav-link" href="..\..\../practice/Design-Patterns/Strategy-Pattern-Exercises.html">Strategy Pattern Exercises</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-dry">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / DRY</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../practice/DRY/index.html">DRY</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-fluentvalidation">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / FluentValidation</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../practice/FluentValidation/index.html">FluentValidation</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-memory-allocation-discipline">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Memory Allocation Discipline</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../practice/Memory-Allocation-Discipline/index.html">Memory Allocation Discipline</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-solid">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / SOLID</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../practice/SOLID/S-Single-Responsibility-Principle-Exercises.html">S Single Responsibility Principle Exercises</a></li><li><a class="nav-link" href="..\..\../practice/SOLID/index.html">SOLID</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-sub-notes">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Sub Notes</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../practice/sub-notes/api-lifecycle.html">Api Lifecycle</a></li><li><a class="nav-link" href="..\..\../practice/sub-notes/async-await-exercises.html">Async Await Exercises</a></li><li><a class="nav-link" href="..\..\../practice/sub-notes/async-resilience.html">Async Resilience</a></li><li><a class="nav-link" href="..\..\../practice/sub-notes/behavioral-questions.html">Behavioral Questions</a></li><li><a class="nav-link" href="..\..\../practice/sub-notes/code-assessment.html">Code Assessment</a></li><li><a class="nav-link" href="..\..\../practice/sub-notes/csharp-fundamentals.html">Csharp Fundamentals</a></li><li><a class="nav-link" href="..\..\../practice/sub-notes/csharp-system-design-questions.html">Csharp System Design Questions</a></li><li><a class="nav-link" href="..\..\../practice/sub-notes/data-layer.html">Data Layer</a></li><li><a class="nav-link" href="..\..\../practice/sub-notes/linq-collections.html">Linq Collections</a></li><li><a class="nav-link" href="..\..\../practice/sub-notes/messaging-integration.html">Messaging Integration</a></li><li><a class="nav-link" href="..\..\../practice/sub-notes/performance-memory.html">Performance Memory</a></li><li><a class="nav-link" href="..\..\../practice/sub-notes/replace int without variable.html">Replace Int Without Variable</a></li><li><a class="nav-link" href="..\..\../practice/sub-notes/struct vs class questions and answers.html">Struct Vs Class Questions And Answers</a></li><li><a class="nav-link" href="..\..\../practice/sub-notes/system-design.html">System Design</a></li><li><a class="nav-link" href="..\..\../practice/sub-notes/trading-domain.html">Trading Domain</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-tech-stacks">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Tech Stacks</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../practice/Tech-Stacks/index.html">Tech Stacks</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-tech-stacks-react">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Tech Stacks / React</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../practice/Tech-Stacks/React/index.html">React</a></li></ul>
+    </div><div class="sidebar-group" data-group="practice-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
+        <span>Practice / Use Cases / Massive Traffic</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../practice/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+    </div></div></div>
+      </div>
+    </nav>
+    <main class="content">
+      <article class="card">
+        <div class="breadcrumbs">notes\Tech-Stacks\React\index.md</div>
+        <h2>React</h2>
+        <div class="toc-label">Rapid overview</div>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#react">React</a></li><li class="level-2"><a href="#core-concepts">Core Concepts</a></li><li class="level-3"><a href="#components">Components</a></li><li class="level-3"><a href="#hooks">Hooks</a></li><li class="level-3"><a href="#virtual-dom">Virtual DOM</a></li><li class="level-2"><a href="#key-features">Key Features</a></li><li class="level-3"><a href="#jsx">JSX</a></li><li class="level-3"><a href="#component-lifecycle">Component Lifecycle</a></li><li class="level-3"><a href="#state-management">State Management</a></li><li class="level-2"><a href="#common-patterns">Common Patterns</a></li><li class="level-3"><a href="#controlled-components">Controlled Components</a></li><li class="level-3"><a href="#lifting-state-up">Lifting State Up</a></li><li class="level-3"><a href="#composition-vs-inheritance">Composition vs Inheritance</a></li><li class="level-3"><a href="#higher-order-components-hoc">Higher-Order Components (HOC)</a></li><li class="level-3"><a href="#render-props">Render Props</a></li><li class="level-2"><a href="#integration-with-c-backend">Integration with C# Backend</a></li><li class="level-3"><a href="#api-communication">API Communication</a></li><li class="level-3"><a href="#signalr-integration">SignalR Integration</a></li><li class="level-2"><a href="#interview-topics">Interview Topics</a></li><li class="level-3"><a href="#performance-optimization">Performance Optimization</a></li><li class="level-3"><a href="#common-questions">Common Questions</a></li><li class="level-2"><a href="#best-practices">Best Practices</a></li><li class="level-2"><a href="#resources">Resources</a></li><li class="level-2"><a href="#related-topics">Related Topics</a></li></ul></div>
+        <h1 id="react">React</h1>
+<p>React is a JavaScript library for building user interfaces, maintained by Meta (formerly Facebook). It's component-based and allows developers to create reusable UI components.</p>
+<h2 id="core-concepts">Core Concepts</h2>
+<h3 id="components">Components</h3>
+<ul><li><strong>Functional Components</strong>: Modern way to create components using functions</li><li><strong>Class Components</strong>: Traditional way using ES6 classes (legacy)</li><li><strong>Props</strong>: Read-only data passed from parent to child components</li><li><strong>State</strong>: Local component data that can change over time</li></ul>
+<h3 id="hooks">Hooks</h3>
+<ul><li><strong>useState</strong>: Manage local state in functional components</li><li><strong>useEffect</strong>: Handle side effects (API calls, subscriptions, etc.)</li><li><strong>useContext</strong>: Access context values without prop drilling</li><li><strong>useReducer</strong>: Manage complex state logic</li><li><strong>useMemo</strong>: Memoize expensive calculations</li><li><strong>useCallback</strong>: Memoize callback functions</li><li><strong>useRef</strong>: Access DOM elements or persist values across renders</li></ul>
+<h3 id="virtual-dom">Virtual DOM</h3>
+<ul><li>React maintains a virtual representation of the actual DOM</li><li>Updates are batched and optimized for performance</li><li>Only changed elements are updated in the real DOM</li></ul>
+<h2 id="key-features">Key Features</h2>
+<h3 id="jsx">JSX</h3>
+<p>JavaScript XML - syntax extension that looks like HTML but is JavaScript:</p>
+<pre class="language-jsx"><code class="language-jsx">const element = &lt;h1&gt;Hello, world!&lt;/h1&gt;;</code></pre>
+<h3 id="component-lifecycle">Component Lifecycle</h3>
+<ol><li><strong>Mounting</strong>: Component is created and inserted into DOM</li><li><strong>Updating</strong>: Component re-renders due to state/props changes</li><li><strong>Unmounting</strong>: Component is removed from DOM</li></ol>
+<h3 id="state-management">State Management</h3>
+<ul><li><strong>Local State</strong>: useState for simple component state</li><li><strong>Context API</strong>: Share state across component tree</li><li><strong>Redux</strong>: External state management library</li><li><strong>Zustand/Recoil</strong>: Modern lightweight alternatives</li></ul>
+<h2 id="common-patterns">Common Patterns</h2>
+<h3 id="controlled-components">Controlled Components</h3>
+<p>Form inputs controlled by React state:</p>
+<pre class="language-jsx"><code class="language-jsx">const [value, setValue] = useState(&#39;&#39;);
+&lt;input value={value} onChange={(e) =&gt; setValue(e.target.value)} /&gt;</code></pre>
+<h3 id="lifting-state-up">Lifting State Up</h3>
+<p>Moving state to common ancestor when multiple components need it</p>
+<h3 id="composition-vs-inheritance">Composition vs Inheritance</h3>
+<p>React recommends composition over inheritance for code reuse</p>
+<h3 id="higher-order-components-hoc">Higher-Order Components (HOC)</h3>
+<p>Functions that take a component and return a new component</p>
+<h3 id="render-props">Render Props</h3>
+<p>Technique for sharing code using props with function values</p>
+<h2 id="integration-with-c-backend">Integration with C# Backend</h2>
+<h3 id="api-communication">API Communication</h3>
+<pre class="language-jsx"><code class="language-jsx">useEffect(() =&gt; {
+  fetch(&#39;https://api.example.com/data&#39;)
+    .then(res =&gt; res.json())
+    .then(data =&gt; setData(data));
+}, []);</code></pre>
+<h3 id="signalr-integration">SignalR Integration</h3>
+<p>Real-time communication with ASP.NET Core:</p>
+<pre class="language-jsx"><code class="language-jsx">import * as signalR from &#39;@microsoft/signalr&#39;;
+
+const connection = new signalR.HubConnectionBuilder()
+  .withUrl(&#39;/chatHub&#39;)
+  .build();</code></pre>
+<h2 id="interview-topics">Interview Topics</h2>
+<h3 id="performance-optimization">Performance Optimization</h3>
+<ul><li>Memoization (React.memo, useMemo, useCallback)</li><li>Code splitting and lazy loading</li><li>Virtual scrolling for large lists</li><li>Debouncing and throttling</li></ul>
+<h3 id="common-questions">Common Questions</h3>
+<ol><li>What is the Virtual DOM and how does it work?</li><li>Explain the difference between state and props</li><li>What are React hooks and why were they introduced?</li><li>How do you handle forms in React?</li><li>What is prop drilling and how can you avoid it?</li><li>Explain the component lifecycle</li><li>What is the difference between controlled and uncontrolled components?</li><li>How do you optimize React performance?</li></ol>
+<h2 id="best-practices">Best Practices</h2>
+<ol><li><strong>Keep Components Small</strong>: Single responsibility principle</li><li><strong>Use Functional Components</strong>: Modern standard with hooks</li><li><strong>Avoid Inline Functions</strong>: In render methods (performance)</li><li><strong>Proper Key Props</strong>: When rendering lists</li><li><strong>Error Boundaries</strong>: Catch JavaScript errors in component tree</li><li><strong>Type Safety</strong>: Use TypeScript or PropTypes</li><li><strong>Code Splitting</strong>: Load code only when needed</li><li><strong>Accessibility</strong>: Use semantic HTML and ARIA attributes</li></ol>
+<h2 id="resources">Resources</h2>
+<ul><li><a href="https://react.dev/">Official React Documentation</a></li><li><a href="https://reactpatterns.com/">React Patterns</a></li><li><a href="https://react-typescript-cheatsheet.netlify.app/">React TypeScript Cheatsheet</a></li></ul>
+<h2 id="related-topics">Related Topics</h2>
+<ul><li><a href="../TypeScript/index.md">TypeScript</a></li><li><a href="../../testing-strategies.md">Testing Strategies</a></li><li><a href="../../Design-Patterns/">Design Patterns</a></li></ul>
+      </article>
+    </main>
+  </div>
+  <footer class="footer">Built for disciplined study & interview drills.</footer>
+  <script>
+    (() => {
+      const select = document.getElementById('theme-select');
+      const supported = ['dark2', 'light', 'dark'];
+      const saved = sessionStorage.getItem('study-theme');
+      const normalized = saved === 'midnight' ? 'dark2' : saved;
+      const fallback = 'light';
+      const initial = supported.includes(normalized) ? normalized : (window.__studyTheme || fallback);
+      document.documentElement.dataset.theme = initial;
+      if (select) {
+        select.value = initial;
+        select.addEventListener('change', (event) => {
+          const value = event.target.value;
+          const next = supported.includes(value) ? value : fallback;
+          document.documentElement.dataset.theme = next;
+          sessionStorage.setItem('study-theme', next);
+        });
+      }
+    })();
+    (() => {
+      const groups = document.querySelectorAll('.sidebar-group');
+      if (!groups.length) return;
+      const storageKey = 'study-open-groups';
+      const saved = sessionStorage.getItem(storageKey);
+      const openFromStorage = new Set(saved ? JSON.parse(saved) : []);
+
+      const activeLink = document.querySelector('.nav-link.active');
+      const activeGroup = activeLink?.closest('.sidebar-group');
+      if (activeGroup?.dataset.group) {
+        openFromStorage.add(activeGroup.dataset.group);
+      }
+
+      const syncStorage = () => {
+        const openIds = Array.from(document.querySelectorAll('.sidebar-group.is-open'))
+          .map((group) => group.dataset.group)
+          .filter(Boolean);
+        sessionStorage.setItem(storageKey, JSON.stringify(openIds));
+      };
+
+      const setExpanded = (group, expanded) => {
+        const header = group.querySelector('.sidebar-group__header');
+        const list = group.querySelector('.sidebar-group__items');
+        group.classList.toggle('is-open', expanded);
+        header?.setAttribute('aria-expanded', expanded);
+        if (list) {
+          list.hidden = !expanded;
+        }
+      };
+
+      groups.forEach((group) => {
+        const shouldOpen = openFromStorage.has(group.dataset.group);
+        setExpanded(group, shouldOpen);
+        const header = group.querySelector('.sidebar-group__header');
+        header?.addEventListener('click', () => {
+          const next = !group.classList.contains('is-open');
+          setExpanded(group, next);
+          syncStorage();
+        });
+      });
+    })();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swPath = '..\..\../service-worker.js';
+        navigator.serviceWorker.register(swPath).catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+</body>
+</html>
