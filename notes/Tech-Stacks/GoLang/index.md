@@ -288,5 +288,5 @@ response, err := client.MyMethod(context.Background(), request)
 ## Related Topics
 
 - [Microservices Architecture](../../system-architecture.md)
-- [gRPC](../gRPC/index.md)
+- [gRPC](https://grpc.io/docs/)
 - [Message Queues](../../sub-notes/RabbitMQ.md)

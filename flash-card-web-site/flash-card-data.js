@@ -1,6 +1,6 @@
 // Auto-generated flash card data from notes/ and practice/ folders
-// Generated on: 2026-01-01T18:20:13.701Z
-// Total cards: 2286 (845 Q&A, 1376 sections, 65 concepts)
+// Generated on: 2026-01-01T18:41:25.268Z
+// Total cards: 2295 (845 Q&A, 1385 sections, 65 concepts)
 
 window.FLASH_CARD_DATA = [
   {
@@ -54456,6 +54456,360 @@ window.FLASH_CARD_DATA = [
     "id": "card-2219"
   },
   {
+    "question": "Fundamentals",
+    "answer": [
+      {
+        "type": "list",
+        "items": [
+          "What is Go, and when would you choose it over C#?",
+          "Compiled, statically typed, fast startup",
+          "Strong standard library (net/http, context, encoding/json)",
+          "Great fit for small services, CLIs, networking, concurrency-heavy workloads",
+          "Trade-offs: fewer language features than C#, smaller ecosystem for some domains"
+        ]
+      },
+      {
+        "type": "list",
+        "items": [
+          "Explain packages vs modules (go.mod)",
+          "Package: unit of compilation and import path",
+          "Module: versioned set of packages (dependency boundary)",
+          "go.mod defines module path + required versions"
+        ]
+      },
+      {
+        "type": "list",
+        "items": [
+          "What are “zero values” and why do they matter?",
+          "Every type has a default value (0, \"\", false, nil)",
+          "Enables useful defaults but can hide “unset vs set” intent"
+        ]
+      },
+      {
+        "type": "list",
+        "items": [
+          "Arrays vs slices: what’s the difference?",
+          "Array has fixed length and value semantics ([3]int)",
+          "Slice is a descriptor over an underlying array ([]int) with len/cap",
+          "Appends can reallocate; copying slices can share backing storage"
+        ]
+      },
+      {
+        "type": "list",
+        "items": [
+          "Maps: what should you know for interviews?",
+          "Iteration order is intentionally randomized",
+          "Reads of missing keys return zero value",
+          "Not safe for concurrent writes (use sync.Map or locking)"
+        ]
+      },
+      {
+        "type": "list",
+        "items": [
+          "When do you use pointer receivers vs value receivers?",
+          "Pointer receiver when mutating, avoiding copies, or method set consistency",
+          "Value receiver for small immutable types"
+        ]
+      }
+    ],
+    "category": "practice",
+    "topic": "Tech-Stacks",
+    "source": "practice/Tech-Stacks/GoLang/index.md",
+    "isSection": true,
+    "id": "card-2220"
+  },
+  {
+    "question": "Interfaces, Errors, and Concurrency",
+    "answer": [
+      {
+        "type": "list",
+        "items": [
+          "How do interfaces work in Go (vs C#)?",
+          "Structural typing: “implements” is implicit",
+          "Small interfaces are idiomatic (io.Reader)",
+          "Common pitfall: var x *T = nil stored in an interface is not nil"
+        ]
+      },
+      {
+        "type": "list",
+        "items": [
+          "How do you handle and classify errors?",
+          "Return error explicitly (no exceptions for control flow)",
+          "Wrap with %w and use errors.Is/As",
+          "Prefer sentinel errors or typed errors for programmatic checks"
+        ]
+      },
+      {
+        "type": "list",
+        "items": [
+          "Goroutines vs OS threads: what’s the difference?",
+          "Goroutines are lightweight and scheduled by the Go runtime",
+          "Millions of goroutines are possible (within memory limits)",
+          "Blocking syscalls are handled via runtime integration"
+        ]
+      },
+      {
+        "type": "list",
+        "items": [
+          "Buffered vs unbuffered channels: when do you use each?",
+          "Unbuffered: synchronization/hand-off",
+          "Buffered: decouple producer/consumer up to capacity",
+          "Too much buffering can hide backpressure problems"
+        ]
+      },
+      {
+        "type": "list",
+        "items": [
+          "What happens when you close a channel?",
+          "Receives still work; they yield remaining buffered values, then zero value + ok=false",
+          "Only the sender should close",
+          "Sending on a closed channel panics"
+        ]
+      },
+      {
+        "type": "list",
+        "items": [
+          "How do you avoid goroutine leaks?",
+          "Use context.Context for cancellation",
+          "Ensure goroutines can exit (select on ctx.Done())",
+          "Don’t block forever on channel send/receive without a way out"
+        ]
+      },
+      {
+        "type": "list",
+        "items": [
+          "How do you prevent races when multiple goroutines share data?",
+          "Prefer immutable data or ownership via channels",
+          "Otherwise use sync.Mutex / sync.RWMutex / atomic",
+          "Validate with go test -race"
+        ]
+      }
+    ],
+    "category": "practice",
+    "topic": "Tech-Stacks",
+    "source": "practice/Tech-Stacks/GoLang/index.md",
+    "isSection": true,
+    "id": "card-2221"
+  },
+  {
+    "question": "Exercise 1: HTTP Client for a C# Web API (Context + Timeouts)",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Build a small client library in Go that calls a C# Web API and decodes JSON."
+      },
+      {
+        "type": "text",
+        "content": "Requirements:"
+      },
+      {
+        "type": "list",
+        "items": [
+          "GetUser(ctx, id) calls GET /api/users/{id}",
+          "Uses a request timeout and respects ctx cancellation",
+          "Validates HTTP status codes and returns meaningful errors",
+          "Decodes JSON into a struct"
+        ]
+      },
+      {
+        "type": "text",
+        "content": "<details>"
+      },
+      {
+        "type": "text",
+        "content": "<summary>Solution Outline</summary>"
+      },
+      {
+        "type": "code",
+        "language": "go",
+        "code": "package users\n\nimport (\n\t\"context\"\n\t\"encoding/json\"\n\t\"errors\"\n\t\"fmt\"\n\t\"net/http\"\n\t\"time\"\n)\n\ntype Client struct {\n\tbaseURL string\n\thttp    *http.Client\n}\n\nfunc NewClient(baseURL string) *Client {\n\treturn &Client{\n\t\tbaseURL: baseURL,\n\t\thttp: &http.Client{\n\t\t\tTimeout: 5 * time.Second,\n\t\t},\n\t}\n}\n\ntype User struct {\n\tID    int    `json:\"id\"`\n\tEmail string `json:\"email\"`\n}\n\nvar ErrNotFound = errors.New(\"user not found\")\n\nfunc (c *Client) GetUser(ctx context.Context, id int) (User, error) {\n\treq, err := http.NewRequestWithContext(ctx, http.MethodGet, fmt.Sprintf(\"%s/api/users/%d\", c.baseURL, id), nil)\n\tif err != nil {\n\t\treturn User{}, err\n\t}\n\n\tresp, err := c.http.Do(req)\n\tif err != nil {\n\t\treturn User{}, err\n\t}\n\tdefer resp.Body.Close()\n\n\tif resp.StatusCode == http.StatusNotFound {\n\t\treturn User{}, ErrNotFound\n\t}\n\tif resp.StatusCode < 200 || resp.StatusCode >= 300 {\n\t\treturn User{}, fmt.Errorf(\"unexpected status: %s\", resp.Status)\n\t}\n\n\tvar u User\n\tif err := json.NewDecoder(resp.Body).Decode(&u); err != nil {\n\t\treturn User{}, err\n\t}\n\treturn u, nil\n}",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "</details>"
+      }
+    ],
+    "category": "practice",
+    "topic": "Tech-Stacks",
+    "source": "practice/Tech-Stacks/GoLang/index.md",
+    "isSection": true,
+    "id": "card-2222"
+  },
+  {
+    "question": "Exercise 2: Worker Pool with Cancellation (Fan-Out / Fan-In)",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Implement a worker pool that processes jobs concurrently and returns results + errors."
+      },
+      {
+        "type": "text",
+        "content": "Requirements:"
+      },
+      {
+        "type": "list",
+        "items": [
+          "Start N workers",
+          "Stop early when ctx is cancelled",
+          "Ensure no goroutines leak",
+          "Collect results in input order (optional extension)"
+        ]
+      },
+      {
+        "type": "text",
+        "content": "<details>"
+      },
+      {
+        "type": "text",
+        "content": "<summary>Solution Outline</summary>"
+      },
+      {
+        "type": "code",
+        "language": "go",
+        "code": "type Job struct {\n\tID int\n}\n\ntype Result struct {\n\tID  int\n\tOut string\n}\n\nfunc RunPool(ctx context.Context, workers int, jobs []Job, do func(context.Context, Job) (Result, error)) ([]Result, error) {\n\tjobCh := make(chan Job)\n\tresCh := make(chan Result)\n\terrCh := make(chan error, 1)\n\n\tworker := func() {\n\t\tfor j := range jobCh {\n\t\t\tr, err := do(ctx, j)\n\t\t\tif err != nil {\n\t\t\t\tselect {\n\t\t\t\tcase errCh <- err:\n\t\t\t\tdefault:\n\t\t\t\t}\n\t\t\t\treturn\n\t\t\t}\n\t\t\tselect {\n\t\t\tcase resCh <- r:\n\t\t\tcase <-ctx.Done():\n\t\t\t\treturn\n\t\t\t}\n\t\t}\n\t}\n\n\tfor i := 0; i < workers; i++ {\n\t\tgo worker()\n\t}\n\n\tgo func() {\n\t\tdefer close(jobCh)\n\t\tfor _, j := range jobs {\n\t\t\tselect {\n\t\t\tcase jobCh <- j:\n\t\t\tcase <-ctx.Done():\n\t\t\t\treturn\n\t\t\t}\n\t\t}\n\t}()\n\n\tresults := make([]Result, 0, len(jobs))\n\tfor len(results) < len(jobs) {\n\t\tselect {\n\t\tcase r := <-resCh:\n\t\t\tresults = append(results, r)\n\t\tcase err := <-errCh:\n\t\t\treturn nil, err\n\t\tcase <-ctx.Done():\n\t\t\treturn nil, ctx.Err()\n\t\t}\n\t}\n\treturn results, nil\n}",
+        "codeType": "neutral"
+      },
+      {
+        "type": "text",
+        "content": "</details>"
+      }
+    ],
+    "category": "practice",
+    "topic": "Tech-Stacks",
+    "source": "practice/Tech-Stacks/GoLang/index.md",
+    "isSection": true,
+    "id": "card-2223"
+  },
+  {
+    "question": "Exercise 3: HTTP Server with Graceful Shutdown and Middleware",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Create a small Go service that exposes endpoints and shuts down cleanly."
+      },
+      {
+        "type": "text",
+        "content": "Requirements:"
+      },
+      {
+        "type": "list",
+        "items": [
+          "GET /healthz returns 200 OK",
+          "GET /users/{id} calls a downstream C# API and returns JSON",
+          "Adds a correlation ID header (X-Correlation-Id)",
+          "Gracefully shuts down on SIGINT/SIGTERM"
+        ]
+      }
+    ],
+    "category": "practice",
+    "topic": "Tech-Stacks",
+    "source": "practice/Tech-Stacks/GoLang/index.md",
+    "isSection": true,
+    "id": "card-2224"
+  },
+  {
+    "question": "Scenario 1: A goroutine leak in production",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Question: Requests occasionally hang and memory keeps increasing. What do you look for?"
+      },
+      {
+        "type": "text",
+        "content": "Answer:"
+      },
+      {
+        "type": "list",
+        "items": [
+          "Goroutines blocked on channel send/receive without cancellation path",
+          "context not respected downstream (HTTP calls without NewRequestWithContext)",
+          "Missing timeouts (http.Client without Timeout)",
+          "Unbounded buffering (channels, queues) hiding backpressure"
+        ]
+      }
+    ],
+    "category": "practice",
+    "topic": "Tech-Stacks",
+    "source": "practice/Tech-Stacks/GoLang/index.md",
+    "isSection": true,
+    "id": "card-2225"
+  },
+  {
+    "question": "Scenario 2: Integrating Go services with .NET",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Question: How do you keep contracts stable between a Go service and ASP.NET Core?"
+      },
+      {
+        "type": "text",
+        "content": "Answer:"
+      },
+      {
+        "type": "list",
+        "items": [
+          "Prefer OpenAPI for REST (generate clients), version endpoints",
+          "Use idempotency keys and explicit retry semantics",
+          "Share correlation IDs / trace context for observability",
+          "Use message queues for async integration when coupling must be reduced"
+        ]
+      }
+    ],
+    "category": "practice",
+    "topic": "Tech-Stacks",
+    "source": "practice/Tech-Stacks/GoLang/index.md",
+    "isSection": true,
+    "id": "card-2226"
+  },
+  {
+    "question": "Best Practices Questions",
+    "answer": [
+      {
+        "type": "list",
+        "items": [
+          "How do you structure a Go service repo?",
+          "cmd/<service> for entrypoints",
+          "internal/ for private application code",
+          "Small packages with clear boundaries"
+        ]
+      },
+      {
+        "type": "list",
+        "items": [
+          "How do you test Go code effectively?",
+          "Table-driven tests + subtests",
+          "Interfaces to mock external dependencies",
+          "Integration tests for HTTP handlers",
+          "Benchmarks for hot paths (go test -bench)"
+        ]
+      }
+    ],
+    "category": "practice",
+    "topic": "Tech-Stacks",
+    "source": "practice/Tech-Stacks/GoLang/index.md",
+    "isSection": true,
+    "id": "card-2227"
+  },
+  {
+    "question": "Resources",
+    "answer": [
+      {
+        "type": "text",
+        "content": "For notes and theory, see GoLang Notes."
+      },
+      {
+        "type": "text",
+        "content": "Official docs: https://go.dev/doc/"
+      }
+    ],
+    "category": "practice",
+    "topic": "Tech-Stacks",
+    "source": "practice/Tech-Stacks/GoLang/index.md",
+    "isSection": true,
+    "id": "card-2228"
+  },
+  {
     "question": "Available Tech Stacks",
     "answer": [
       {
@@ -54470,7 +54824,7 @@ window.FLASH_CARD_DATA = [
     "topic": "Tech-Stacks",
     "source": "practice/Tech-Stacks/index.md",
     "isSection": true,
-    "id": "card-2220"
+    "id": "card-2229"
   },
   {
     "question": "Theory Questions",
@@ -54488,7 +54842,7 @@ window.FLASH_CARD_DATA = [
     "topic": "Tech-Stacks",
     "source": "practice/Tech-Stacks/index.md",
     "isSection": true,
-    "id": "card-2221"
+    "id": "card-2230"
   },
   {
     "question": "Coding Exercises",
@@ -54506,7 +54860,7 @@ window.FLASH_CARD_DATA = [
     "topic": "Tech-Stacks",
     "source": "practice/Tech-Stacks/index.md",
     "isSection": true,
-    "id": "card-2222"
+    "id": "card-2231"
   },
   {
     "question": "System Design",
@@ -54524,7 +54878,7 @@ window.FLASH_CARD_DATA = [
     "topic": "Tech-Stacks",
     "source": "practice/Tech-Stacks/index.md",
     "isSection": true,
-    "id": "card-2223"
+    "id": "card-2232"
   },
   {
     "question": "How to Practice",
@@ -54544,7 +54898,7 @@ window.FLASH_CARD_DATA = [
     "topic": "Tech-Stacks",
     "source": "practice/Tech-Stacks/index.md",
     "isSection": true,
-    "id": "card-2224"
+    "id": "card-2233"
   },
   {
     "question": "Integration with C#",
@@ -54568,7 +54922,7 @@ window.FLASH_CARD_DATA = [
     "topic": "Tech-Stacks",
     "source": "practice/Tech-Stacks/index.md",
     "isSection": true,
-    "id": "card-2225"
+    "id": "card-2234"
   },
   {
     "question": "Tips",
@@ -54588,7 +54942,7 @@ window.FLASH_CARD_DATA = [
     "topic": "Tech-Stacks",
     "source": "practice/Tech-Stacks/index.md",
     "isSection": true,
-    "id": "card-2226"
+    "id": "card-2235"
   },
   {
     "question": "Fundamentals",
@@ -54647,7 +55001,7 @@ window.FLASH_CARD_DATA = [
     "topic": "Tech-Stacks",
     "source": "practice/Tech-Stacks/React/index.md",
     "isSection": true,
-    "id": "card-2227"
+    "id": "card-2236"
   },
   {
     "question": "Advanced Concepts",
@@ -54706,7 +55060,7 @@ window.FLASH_CARD_DATA = [
     "topic": "Tech-Stacks",
     "source": "practice/Tech-Stacks/React/index.md",
     "isSection": true,
-    "id": "card-2228"
+    "id": "card-2237"
   },
   {
     "question": "Exercise 1: Todo List with API Integration",
@@ -54777,7 +55131,7 @@ window.FLASH_CARD_DATA = [
     "topic": "Tech-Stacks",
     "source": "practice/Tech-Stacks/React/index.md",
     "isSection": true,
-    "id": "card-2229"
+    "id": "card-2238"
   },
   {
     "question": "Exercise 2: Real-Time Dashboard with SignalR",
@@ -54836,7 +55190,7 @@ window.FLASH_CARD_DATA = [
     "topic": "Tech-Stacks",
     "source": "practice/Tech-Stacks/React/index.md",
     "isSection": true,
-    "id": "card-2230"
+    "id": "card-2239"
   },
   {
     "question": "Exercise 3: Form with Validation",
@@ -54895,7 +55249,7 @@ window.FLASH_CARD_DATA = [
     "topic": "Tech-Stacks",
     "source": "practice/Tech-Stacks/React/index.md",
     "isSection": true,
-    "id": "card-2231"
+    "id": "card-2240"
   },
   {
     "question": "Scenario 1: Performance Optimization",
@@ -54924,7 +55278,7 @@ window.FLASH_CARD_DATA = [
     "topic": "Tech-Stacks",
     "source": "practice/Tech-Stacks/React/index.md",
     "isSection": true,
-    "id": "card-2232"
+    "id": "card-2241"
   },
   {
     "question": "Scenario 2: State Management",
@@ -54951,7 +55305,7 @@ window.FLASH_CARD_DATA = [
     "topic": "Tech-Stacks",
     "source": "practice/Tech-Stacks/React/index.md",
     "isSection": true,
-    "id": "card-2233"
+    "id": "card-2242"
   },
   {
     "question": "Scenario 3: API Integration",
@@ -54980,7 +55334,7 @@ window.FLASH_CARD_DATA = [
     "topic": "Tech-Stacks",
     "source": "practice/Tech-Stacks/React/index.md",
     "isSection": true,
-    "id": "card-2234"
+    "id": "card-2243"
   },
   {
     "question": "Best Practices Questions",
@@ -55023,7 +55377,7 @@ window.FLASH_CARD_DATA = [
     "topic": "Tech-Stacks",
     "source": "practice/Tech-Stacks/React/index.md",
     "isSection": true,
-    "id": "card-2235"
+    "id": "card-2244"
   },
   {
     "question": "Resources",
@@ -55037,7 +55391,7 @@ window.FLASH_CARD_DATA = [
     "topic": "Tech-Stacks",
     "source": "practice/Tech-Stacks/React/index.md",
     "isSection": true,
-    "id": "card-2236"
+    "id": "card-2245"
   },
   {
     "question": "Exercise 1: AAA Structure",
@@ -55051,7 +55405,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2237"
+    "id": "card-2246"
   },
   {
     "question": "Exercise 2: Pure Function Unit Test",
@@ -55065,7 +55419,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2238"
+    "id": "card-2247"
   },
   {
     "question": "Exercise 3: Mocking a Repository",
@@ -55085,7 +55439,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2239"
+    "id": "card-2248"
   },
   {
     "question": "Exercise 4: Exception Assertions",
@@ -55105,7 +55459,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2240"
+    "id": "card-2249"
   },
   {
     "question": "Exercise 5: Parameterized Tests",
@@ -55119,7 +55473,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2241"
+    "id": "card-2250"
   },
   {
     "question": "Exercise 6: Test Naming",
@@ -55133,7 +55487,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2242"
+    "id": "card-2251"
   },
   {
     "question": "Exercise 7: Test Data Builders",
@@ -55147,7 +55501,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2243"
+    "id": "card-2252"
   },
   {
     "question": "Exercise 8: Test Isolation",
@@ -55161,7 +55515,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2244"
+    "id": "card-2253"
   },
   {
     "question": "Exercise 9: Stub vs Mock",
@@ -55175,7 +55529,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2245"
+    "id": "card-2254"
   },
   {
     "question": "Exercise 10: Assertions with Shouldly",
@@ -55195,7 +55549,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2246"
+    "id": "card-2255"
   },
   {
     "question": "Exercise 11: Edge Case Coverage",
@@ -55209,7 +55563,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2247"
+    "id": "card-2256"
   },
   {
     "question": "Exercise 12: Avoid Over-Mocking",
@@ -55223,7 +55577,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2248"
+    "id": "card-2257"
   },
   {
     "question": "Exercise 13: Testcontainers for Databases",
@@ -55237,7 +55591,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2249"
+    "id": "card-2258"
   },
   {
     "question": "Exercise 14: WebApplicationFactory",
@@ -55251,7 +55605,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2250"
+    "id": "card-2259"
   },
   {
     "question": "Exercise 15: Middleware Tests",
@@ -55265,7 +55619,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2251"
+    "id": "card-2260"
   },
   {
     "question": "Exercise 16: Contract Tests for HTTP Clients",
@@ -55279,7 +55633,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2252"
+    "id": "card-2261"
   },
   {
     "question": "Exercise 17: Consumer-Driven Contracts",
@@ -55293,7 +55647,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2253"
+    "id": "card-2262"
   },
   {
     "question": "Exercise 18: SQLite In-Memory EF Core",
@@ -55307,7 +55661,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2254"
+    "id": "card-2263"
   },
   {
     "question": "Exercise 19: Transaction Rollback",
@@ -55321,7 +55675,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2255"
+    "id": "card-2264"
   },
   {
     "question": "Exercise 20: Background Service Integration Test",
@@ -55335,7 +55689,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2256"
+    "id": "card-2265"
   },
   {
     "question": "Exercise 21: Message Handler Testing",
@@ -55349,7 +55703,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2257"
+    "id": "card-2266"
   },
   {
     "question": "Exercise 22: Retry Policy Verification",
@@ -55363,7 +55717,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2258"
+    "id": "card-2267"
   },
   {
     "question": "Exercise 23: Snapshot Testing",
@@ -55377,7 +55731,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2259"
+    "id": "card-2268"
   },
   {
     "question": "Exercise 24: Integration Test Cleanup",
@@ -55391,7 +55745,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2260"
+    "id": "card-2269"
   },
   {
     "question": "Exercise 25: TDD Cycle",
@@ -55405,7 +55759,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2261"
+    "id": "card-2270"
   },
   {
     "question": "Exercise 26: Property-Based Testing",
@@ -55419,7 +55773,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2262"
+    "id": "card-2271"
   },
   {
     "question": "Exercise 27: Mutation Testing",
@@ -55433,7 +55787,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2263"
+    "id": "card-2272"
   },
   {
     "question": "Exercise 28: Idempotency Tests",
@@ -55447,7 +55801,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2264"
+    "id": "card-2273"
   },
   {
     "question": "Exercise 29: Concurrency Tests",
@@ -55461,7 +55815,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2265"
+    "id": "card-2274"
   },
   {
     "question": "Exercise 30: Timeout and Cancellation",
@@ -55475,7 +55829,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2266"
+    "id": "card-2275"
   },
   {
     "question": "Exercise 31: Fake Clock",
@@ -55489,7 +55843,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2267"
+    "id": "card-2276"
   },
   {
     "question": "Exercise 32: Cache Behavior",
@@ -55503,7 +55857,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2268"
+    "id": "card-2277"
   },
   {
     "question": "Exercise 33: Logging Assertions",
@@ -55517,7 +55871,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2269"
+    "id": "card-2278"
   },
   {
     "question": "Exercise 34: Allocation Tests",
@@ -55531,7 +55885,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2270"
+    "id": "card-2279"
   },
   {
     "question": "Exercise 35: Resilience Under Failure",
@@ -55545,7 +55899,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2271"
+    "id": "card-2280"
   },
   {
     "question": "Exercise 36: Order Placement Integration",
@@ -55559,7 +55913,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2272"
+    "id": "card-2281"
   },
   {
     "question": "Exercise 37: Market Data Ingestion",
@@ -55573,7 +55927,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2273"
+    "id": "card-2282"
   },
   {
     "question": "Exercise 38: API Versioning Test",
@@ -55587,7 +55941,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2274"
+    "id": "card-2283"
   },
   {
     "question": "Exercise 39: Auth and Role Tests",
@@ -55601,7 +55955,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2275"
+    "id": "card-2284"
   },
   {
     "question": "Exercise 40: Smoke Test Checklist",
@@ -55615,7 +55969,7 @@ window.FLASH_CARD_DATA = [
     "topic": "testing-strategies-exercises.md",
     "source": "practice/testing-strategies-exercises.md",
     "isSection": true,
-    "id": "card-2276"
+    "id": "card-2285"
   },
   {
     "question": "Exercise 1: Load Shedding Strategy",
@@ -55629,7 +55983,7 @@ window.FLASH_CARD_DATA = [
     "topic": "Use-Cases",
     "source": "practice/Use-Cases/massive-traffic/index.md",
     "isSection": true,
-    "id": "card-2277"
+    "id": "card-2286"
   },
   {
     "question": "Exercise 2: Rate Limiting Design",
@@ -55643,7 +55997,7 @@ window.FLASH_CARD_DATA = [
     "topic": "Use-Cases",
     "source": "practice/Use-Cases/massive-traffic/index.md",
     "isSection": true,
-    "id": "card-2278"
+    "id": "card-2287"
   },
   {
     "question": "Exercise 3: Backpressure with Channels",
@@ -55657,7 +56011,7 @@ window.FLASH_CARD_DATA = [
     "topic": "Use-Cases",
     "source": "practice/Use-Cases/massive-traffic/index.md",
     "isSection": true,
-    "id": "card-2279"
+    "id": "card-2288"
   },
   {
     "question": "Exercise 4: Cache-Aside for Hot Reads",
@@ -55671,7 +56025,7 @@ window.FLASH_CARD_DATA = [
     "topic": "Use-Cases",
     "source": "practice/Use-Cases/massive-traffic/index.md",
     "isSection": true,
-    "id": "card-2280"
+    "id": "card-2289"
   },
   {
     "question": "Exercise 5: Read Replica Routing",
@@ -55685,7 +56039,7 @@ window.FLASH_CARD_DATA = [
     "topic": "Use-Cases",
     "source": "practice/Use-Cases/massive-traffic/index.md",
     "isSection": true,
-    "id": "card-2281"
+    "id": "card-2290"
   },
   {
     "question": "Exercise 6: Idempotent Commands",
@@ -55699,7 +56053,7 @@ window.FLASH_CARD_DATA = [
     "topic": "Use-Cases",
     "source": "practice/Use-Cases/massive-traffic/index.md",
     "isSection": true,
-    "id": "card-2282"
+    "id": "card-2291"
   },
   {
     "question": "Exercise 7: Circuit Breakers",
@@ -55713,7 +56067,7 @@ window.FLASH_CARD_DATA = [
     "topic": "Use-Cases",
     "source": "practice/Use-Cases/massive-traffic/index.md",
     "isSection": true,
-    "id": "card-2283"
+    "id": "card-2292"
   },
   {
     "question": "Exercise 8: Queue Consumer Scaling",
@@ -55727,7 +56081,7 @@ window.FLASH_CARD_DATA = [
     "topic": "Use-Cases",
     "source": "practice/Use-Cases/massive-traffic/index.md",
     "isSection": true,
-    "id": "card-2284"
+    "id": "card-2293"
   },
   {
     "question": "Exercise 9: Observability Signals",
@@ -55741,7 +56095,7 @@ window.FLASH_CARD_DATA = [
     "topic": "Use-Cases",
     "source": "practice/Use-Cases/massive-traffic/index.md",
     "isSection": true,
-    "id": "card-2285"
+    "id": "card-2294"
   },
   {
     "question": "Exercise 10: Graceful Degradation",
@@ -55755,6 +56109,6 @@ window.FLASH_CARD_DATA = [
     "topic": "Use-Cases",
     "source": "practice/Use-Cases/massive-traffic/index.md",
     "isSection": true,
-    "id": "card-2286"
+    "id": "card-2295"
   }
 ];

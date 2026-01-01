@@ -124,6 +124,6 @@ const connection = new signalR.HubConnectionBuilder()
 
 ## Related Topics
 
-- [TypeScript](../TypeScript/index.md)
+- [TypeScript](https://www.typescriptlang.org/docs/)
 - [Testing Strategies](../../testing-strategies.md)
 - [Design Patterns](../../Design-Patterns/)

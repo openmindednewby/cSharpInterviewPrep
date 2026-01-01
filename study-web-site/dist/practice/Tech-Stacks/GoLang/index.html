@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Senior .NET study guide for 02 Backpressure Rate Limiting" />
+  <meta name="description" content="Senior .NET study guide for GoLang" />
   <meta name="theme-color" content="#0f172a" />
-  <title>02 Backpressure Rate Limiting | C# Interview Prep Cheat Sheet</title>
+  <title>GoLang | C# Interview Prep Cheat Sheet</title>
   <link rel="manifest" href="..\..\..\assets/manifest.webmanifest" />
   <script>
     (() => {
@@ -132,12 +132,12 @@
         <span class="chevron" aria-hidden="true"></span>
       </button>
       <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Tech-Stacks/React/index.html">React</a></li></ul>
-    </div><div class="sidebar-group is-open" data-group="notes-use-cases-massive-traffic">
-      <button class="sidebar-group__header" type="button" aria-expanded="true">
+    </div><div class="sidebar-group" data-group="notes-use-cases-massive-traffic">
+      <button class="sidebar-group__header" type="button" aria-expanded="false">
         <span>Notes / Use Cases / Massive Traffic</span>
         <span class="chevron" aria-hidden="true"></span>
       </button>
-      <ul class="sidebar-group__items"><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/01-async-patterns.html">01 Async Patterns</a></li><li><a class="nav-link active" href="..\..\../notes/Use-Cases/massive-traffic/02-backpressure-rate-limiting.html">02 Backpressure Rate Limiting</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/03-caching-strategies.html">03 Caching Strategies</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/04-database-scaling.html">04 Database Scaling</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/05-message-queues.html">05 Message Queues</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/06-resilience-patterns.html">06 Resilience Patterns</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/07-observability.html">07 Observability</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/08-complete-example.html">08 Complete Example</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
+      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/01-async-patterns.html">01 Async Patterns</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/02-backpressure-rate-limiting.html">02 Backpressure Rate Limiting</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/03-caching-strategies.html">03 Caching Strategies</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/04-database-scaling.html">04 Database Scaling</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/05-message-queues.html">05 Message Queues</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/06-resilience-patterns.html">06 Resilience Patterns</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/07-observability.html">07 Observability</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/08-complete-example.html">08 Complete Example</a></li><li><a class="nav-link" href="..\..\../notes/Use-Cases/massive-traffic/index.html">Massive Traffic</a></li></ul>
     </div><div class="sidebar-group" data-group="practice">
       <button class="sidebar-group__header" type="button" aria-expanded="false">
         <span>Practice</span>
@@ -210,12 +210,12 @@
         <span class="chevron" aria-hidden="true"></span>
       </button>
       <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../practice/Tech-Stacks/index.html">Tech Stacks</a></li></ul>
-    </div><div class="sidebar-group" data-group="practice-tech-stacks-golang">
-      <button class="sidebar-group__header" type="button" aria-expanded="false">
+    </div><div class="sidebar-group is-open" data-group="practice-tech-stacks-golang">
+      <button class="sidebar-group__header" type="button" aria-expanded="true">
         <span>Practice / Tech Stacks / GoLang</span>
         <span class="chevron" aria-hidden="true"></span>
       </button>
-      <ul class="sidebar-group__items" hidden><li><a class="nav-link" href="..\..\../practice/Tech-Stacks/GoLang/index.html">GoLang</a></li></ul>
+      <ul class="sidebar-group__items"><li><a class="nav-link active" href="..\..\../practice/Tech-Stacks/GoLang/index.html">GoLang</a></li></ul>
     </div><div class="sidebar-group" data-group="practice-tech-stacks-react">
       <button class="sidebar-group__header" type="button" aria-expanded="false">
         <span>Practice / Tech Stacks / React</span>
@@ -233,639 +233,191 @@
     </nav>
     <main class="content">
       <article class="card">
-        <div class="breadcrumbs">notes\Use-Cases\massive-traffic\02-backpressure-rate-limiting.md</div>
-        <h2>02 Backpressure Rate Limiting</h2>
+        <div class="breadcrumbs">practice\Tech-Stacks\GoLang\index.md</div>
+        <h2>GoLang</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#backpressure-rate-limiting-protecting-your-system-under-load">Backpressure & Rate Limiting: Protecting Your System Under Load</a></li><li class="level-2"><a href="#why-you-must-have-backpressure">Why You MUST Have Backpressure</a></li><li class="level-2"><a href="#1-aspnet-core-built-in-rate-limiting-net-7">1. ASP.NET Core Built-in Rate Limiting (.NET 7+)</a></li><li class="level-3"><a href="#basic-setup">Basic Setup</a></li><li class="level-3"><a href="#apply-to-specific-endpoints">Apply to Specific Endpoints</a></li><li class="level-2"><a href="#2-per-userper-ip-rate-limiting">2. Per-User/Per-IP Rate Limiting</a></li><li class="level-2"><a href="#3-concurrency-limiter-semaphore-pattern">3. Concurrency Limiter (Semaphore Pattern)</a></li><li class="level-3"><a href="#manual-semaphore-implementation">Manual Semaphore Implementation</a></li><li class="level-3"><a href="#middleware-for-global-concurrency-limit">Middleware for Global Concurrency Limit</a></li><li class="level-2"><a href="#4-bounded-queues-for-background-work">4. Bounded Queues for Background Work</a></li><li class="level-2"><a href="#5-distributed-rate-limiting-with-redis">5. Distributed Rate Limiting with Redis</a></li><li class="level-2"><a href="#summary-backpressure-checklist">Summary: Backpressure Checklist</a></li></ul></div>
-        <h1 id="backpressure-rate-limiting-protecting-your-system-under-load">Backpressure & Rate Limiting: Protecting Your System Under Load</h1>
-<h2 id="why-you-must-have-backpressure">Why You MUST Have Backpressure</h2>
-<p><strong>The Problem:</strong> When traffic spikes, accepting every request leads to:</p>
-<ul><li>Queue explosion (memory exhaustion)</li><li>Database connection pool exhaustion</li><li>Cascading failures to downstream services</li><li>Increased latency for ALL users (death spiral)</li></ul>
-<p><strong>The Solution:</strong> Reject requests early when you're at capacity. Better to serve 10,000 requests fast with 1,000 rejections than have all 11,000 requests time out.</p>
-<p><strong>Key Principle:</strong> Fail fast, fail explicitly, preserve capacity for requests you can handle.</p>
-<p>---</p>
-<h2 id="1-aspnet-core-built-in-rate-limiting-net-7">1. ASP.NET Core Built-in Rate Limiting (.NET 7+)</h2>
-<p>The framework includes rate limiting middleware. Use it.</p>
-<h3 id="basic-setup">Basic Setup</h3>
-<pre class="language-csharp"><code class="language-csharp">// Program.cs
-using System.Threading.RateLimiting;
-using Microsoft.AspNetCore.RateLimiting;
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#golang---practice-questions">GoLang - Practice Questions</a></li><li class="level-2"><a href="#theory-questions">Theory Questions</a></li><li class="level-3"><a href="#fundamentals">Fundamentals</a></li><li class="level-3"><a href="#interfaces-errors-and-concurrency">Interfaces, Errors, and Concurrency</a></li><li class="level-2"><a href="#coding-exercises">Coding Exercises</a></li><li class="level-3"><a href="#exercise-1-http-client-for-a-c-web-api-context-timeouts">Exercise 1: HTTP Client for a C# Web API (Context + Timeouts)</a></li><li class="level-3"><a href="#exercise-2-worker-pool-with-cancellation-fan-out-fan-in">Exercise 2: Worker Pool with Cancellation (Fan-Out / Fan-In)</a></li><li class="level-3"><a href="#exercise-3-http-server-with-graceful-shutdown-and-middleware">Exercise 3: HTTP Server with Graceful Shutdown and Middleware</a></li><li class="level-2"><a href="#interview-scenarios">Interview Scenarios</a></li><li class="level-3"><a href="#scenario-1-a-goroutine-leak-in-production">Scenario 1: A goroutine leak in production</a></li><li class="level-3"><a href="#scenario-2-integrating-go-services-with-net">Scenario 2: Integrating Go services with .NET</a></li><li class="level-2"><a href="#best-practices-questions">Best Practices Questions</a></li><li class="level-2"><a href="#resources">Resources</a></li></ul></div>
+        <h1 id="golang---practice-questions">GoLang - Practice Questions</h1>
+<p>Practice questions and exercises for Go development, with focus on building services that integrate with C#/.NET systems.</p>
+<h2 id="theory-questions">Theory Questions</h2>
+<h3 id="fundamentals">Fundamentals</h3>
+<ol><li><strong>What is Go, and when would you choose it over C#?</strong></li></ol>
+<ul><li>Compiled, statically typed, fast startup</li><li>Strong standard library (<code>net/http</code>, <code>context</code>, <code>encoding/json</code>)</li><li>Great fit for small services, CLIs, networking, concurrency-heavy workloads</li><li>Trade-offs: fewer language features than C#, smaller ecosystem for some domains</li></ul>
+<ol><li><strong>Explain packages vs modules (<code>go.mod</code>)</strong></li></ol>
+<ul><li>Package: unit of compilation and import path</li><li>Module: versioned set of packages (dependency boundary)</li><li><code>go.mod</code> defines module path + required versions</li></ul>
+<ol><li><strong>What are “zero values” and why do they matter?</strong></li></ol>
+<ul><li>Every type has a default value (<code>0</code>, <code>&quot;&quot;</code>, <code>false</code>, <code>nil</code>)</li><li>Enables useful defaults but can hide “unset vs set” intent</li></ul>
+<ol><li><strong>Arrays vs slices: what’s the difference?</strong></li></ol>
+<ul><li>Array has fixed length and value semantics (<code>[3]int</code>)</li><li>Slice is a descriptor over an underlying array (<code>[]int</code>) with <code>len</code>/<code>cap</code></li><li>Appends can reallocate; copying slices can share backing storage</li></ul>
+<ol><li><strong>Maps: what should you know for interviews?</strong></li></ol>
+<ul><li>Iteration order is intentionally randomized</li><li>Reads of missing keys return zero value</li><li>Not safe for concurrent writes (use <code>sync.Map</code> or locking)</li></ul>
+<ol><li><strong>When do you use pointer receivers vs value receivers?</strong></li></ol>
+<ul><li>Pointer receiver when mutating, avoiding copies, or method set consistency</li><li>Value receiver for small immutable types</li></ul>
+<h3 id="interfaces-errors-and-concurrency">Interfaces, Errors, and Concurrency</h3>
+<ol><li><strong>How do interfaces work in Go (vs C#)?</strong></li></ol>
+<ul><li>Structural typing: “implements” is implicit</li><li>Small interfaces are idiomatic (<code>io.Reader</code>)</li><li>Common pitfall: <code>var x *T = nil</code> stored in an interface is not <code>nil</code></li></ul>
+<ol><li><strong>How do you handle and classify errors?</strong></li></ol>
+<ul><li>Return <code>error</code> explicitly (no exceptions for control flow)</li><li>Wrap with <code>%w</code> and use <code>errors.Is/As</code></li><li>Prefer sentinel errors or typed errors for programmatic checks</li></ul>
+<ol><li><strong>Goroutines vs OS threads: what’s the difference?</strong></li></ol>
+<ul><li>Goroutines are lightweight and scheduled by the Go runtime</li><li>Millions of goroutines are possible (within memory limits)</li><li>Blocking syscalls are handled via runtime integration</li></ul>
+<ol><li><strong>Buffered vs unbuffered channels: when do you use each?</strong></li></ol>
+<ul><li>Unbuffered: synchronization/hand-off</li><li>Buffered: decouple producer/consumer up to capacity</li><li>Too much buffering can hide backpressure problems</li></ul>
+<ol><li><strong>What happens when you close a channel?</strong></li></ol>
+<ul><li>Receives still work; they yield remaining buffered values, then zero value + <code>ok=false</code></li><li>Only the sender should close</li><li>Sending on a closed channel panics</li></ul>
+<ol><li><strong>How do you avoid goroutine leaks?</strong></li></ol>
+<ul><li>Use <code>context.Context</code> for cancellation</li><li>Ensure goroutines can exit (select on <code>ctx.Done()</code>)</li><li>Don’t block forever on channel send/receive without a way out</li></ul>
+<ol><li><strong>How do you prevent races when multiple goroutines share data?</strong></li></ol>
+<ul><li>Prefer immutable data or ownership via channels</li><li>Otherwise use <code>sync.Mutex</code> / <code>sync.RWMutex</code> / <code>atomic</code></li><li>Validate with <code>go test -race</code></li></ul>
+<h2 id="coding-exercises">Coding Exercises</h2>
+<h3 id="exercise-1-http-client-for-a-c-web-api-context-timeouts">Exercise 1: HTTP Client for a C# Web API (Context + Timeouts)</h3>
+<p>Build a small client library in Go that calls a C# Web API and decodes JSON.</p>
+<p><strong>Requirements:</strong></p>
+<ul><li><code>GetUser(ctx, id)</code> calls <code>GET /api/users/{id}</code></li><li>Uses a request timeout and respects <code>ctx</code> cancellation</li><li>Validates HTTP status codes and returns meaningful errors</li><li>Decodes JSON into a struct</li></ul>
+<p><details> <summary>Solution Outline</summary></p>
+<pre class="language-go"><code class="language-go">package users
 
-var builder = WebApplication.CreateBuilder(args);
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;errors&quot;
+	&quot;fmt&quot;
+	&quot;net/http&quot;
+	&quot;time&quot;
+)
 
-builder.Services.AddRateLimiter(options =&gt;
-{
-    // Fixed window: X requests per time window
-    options.AddFixedWindowLimiter(&quot;fixed&quot;, opt =&gt;
-    {
-        opt.PermitLimit = 100;
-        opt.Window = TimeSpan.FromMinutes(1);
-        opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
-        opt.QueueLimit = 10; // How many can queue waiting for a slot
-    });
+type Client struct {
+	baseURL string
+	http    *http.Client
+}
 
-    // Sliding window: Smoother than fixed (prevents reset spike)
-    options.AddSlidingWindowLimiter(&quot;sliding&quot;, opt =&gt;
-    {
-        opt.PermitLimit = 100;
-        opt.Window = TimeSpan.FromMinutes(1);
-        opt.SegmentsPerWindow = 6; // 6 segments of 10 seconds each
-        opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
-        opt.QueueLimit = 0; // Reject immediately when full
-    });
+func NewClient(baseURL string) *Client {
+	return &amp;Client{
+		baseURL: baseURL,
+		http: &amp;http.Client{
+			Timeout: 5 * time.Second,
+		},
+	}
+}
 
-    // Token bucket: Allows bursts
-    options.AddTokenBucketLimiter(&quot;token&quot;, opt =&gt;
-    {
-        opt.TokenLimit = 100;
-        opt.ReplenishmentPeriod = TimeSpan.FromMinutes(1);
-        opt.TokensPerPeriod = 100;
-        opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
-        opt.QueueLimit = 0;
-    });
+type User struct {
+	ID    int    `json:&quot;id&quot;`
+	Email string `json:&quot;email&quot;`
+}
 
-    // Concurrency limiter: Max simultaneous requests
-    options.AddConcurrencyLimiter(&quot;concurrent&quot;, opt =&gt;
-    {
-        opt.PermitLimit = 50; // Only 50 requests executing at once
-        opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
-        opt.QueueLimit = 25; // 25 more can wait
-    });
+var ErrNotFound = errors.New(&quot;user not found&quot;)
 
-    // Default rejection response
-    options.OnRejected = async (context, ct) =&gt;
-    {
-        context.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
+func (c *Client) GetUser(ctx context.Context, id int) (User, error) {
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, fmt.Sprintf(&quot;%s/api/users/%d&quot;, c.baseURL, id), nil)
+	if err != nil {
+		return User{}, err
+	}
 
-        if (context.Lease.TryGetMetadata(MetadataName.RetryAfter, out var retryAfter))
-        {
-            context.HttpContext.Response.Headers.RetryAfter = retryAfter.TotalSeconds.ToString();
-        }
+	resp, err := c.http.Do(req)
+	if err != nil {
+		return User{}, err
+	}
+	defer resp.Body.Close()
 
-        await context.HttpContext.Response.WriteAsJsonAsync(new
-        {
-            error = &quot;Too many requests. Please retry later.&quot;,
-            retryAfter = retryAfter?.TotalSeconds
-        }, cancellationToken: ct);
-    };
-});
+	if resp.StatusCode == http.StatusNotFound {
+		return User{}, ErrNotFound
+	}
+	if resp.StatusCode &lt; 200 || resp.StatusCode &gt;= 300 {
+		return User{}, fmt.Errorf(&quot;unexpected status: %s&quot;, resp.Status)
+	}
 
-var app = builder.Build();
-
-// Apply globally
-app.UseRateLimiter();
-
-app.MapControllers();
-app.Run();</code></pre>
-<h3 id="apply-to-specific-endpoints">Apply to Specific Endpoints</h3>
-<pre class="language-csharp"><code class="language-csharp">[ApiController]
-[Route(&quot;api/[controller]&quot;)]
-public class OrdersController : ControllerBase
-{
-    // High-traffic endpoint: strict limit
-    [HttpPost]
-    [EnableRateLimiting(&quot;sliding&quot;)]
-    public async Task&lt;IActionResult&gt; CreateOrderAsync(
-        CreateOrderRequest request,
-        CancellationToken ct)
-    {
-        // Process order
-        return Ok();
-    }
-
-    // Read endpoint: more lenient
-    [HttpGet(&quot;{id}&quot;)]
-    [EnableRateLimiting(&quot;token&quot;)]
-    public async Task&lt;IActionResult&gt; GetOrderAsync(int id, CancellationToken ct)
-    {
-        // Fetch order
-        return Ok();
-    }
-
-    // Expensive report: concurrency limit
-    [HttpGet(&quot;reports/{id}&quot;)]
-    [EnableRateLimiting(&quot;concurrent&quot;)]
-    public async Task&lt;IActionResult&gt; GetReportAsync(int id, CancellationToken ct)
-    {
-        // Generate report (expensive)
-        return Ok();
-    }
+	var u User
+	if err := json.NewDecoder(resp.Body).Decode(&amp;u); err != nil {
+		return User{}, err
+	}
+	return u, nil
 }</code></pre>
-<p>---</p>
-<h2 id="2-per-userper-ip-rate-limiting">2. Per-User/Per-IP Rate Limiting</h2>
-<p>Prevent a single user from monopolizing resources.</p>
-<pre class="language-csharp"><code class="language-csharp">// Custom partition key resolver
-builder.Services.AddRateLimiter(options =&gt;
-{
-    options.AddSlidingWindowLimiter(&quot;per-user&quot;, opt =&gt;
-    {
-        opt.PermitLimit = 10;
-        opt.Window = TimeSpan.FromSeconds(10);
-        opt.SegmentsPerWindow = 2;
-        opt.QueueLimit = 0;
-    }).AddPolicy(&quot;per-user-policy&quot;, context =&gt;
-    {
-        // Get user ID from claims or API key
-        var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
-                     ?? context.Request.Headers[&quot;X-API-Key&quot;].ToString()
-                     ?? context.Connection.RemoteIpAddress?.ToString()
-                     ?? &quot;anonymous&quot;;
+<p></details></p>
+<h3 id="exercise-2-worker-pool-with-cancellation-fan-out-fan-in">Exercise 2: Worker Pool with Cancellation (Fan-Out / Fan-In)</h3>
+<p>Implement a worker pool that processes jobs concurrently and returns results + errors.</p>
+<p><strong>Requirements:</strong></p>
+<ul><li>Start <code>N</code> workers</li><li>Stop early when <code>ctx</code> is cancelled</li><li>Ensure no goroutines leak</li><li>Collect results in input order (optional extension)</li></ul>
+<p><details> <summary>Solution Outline</summary></p>
+<pre class="language-go"><code class="language-go">type Job struct {
+	ID int
+}
 
-        return RateLimitPartition.GetSlidingWindowLimiter(userId, _ =&gt; new SlidingWindowRateLimiterOptions
-        {
-            PermitLimit = 100,
-            Window = TimeSpan.FromMinutes(1),
-            SegmentsPerWindow = 6,
-            QueueLimit = 0
-        });
-    });
-});
+type Result struct {
+	ID  int
+	Out string
+}
 
-// Apply to controller
-[EnableRateLimiting(&quot;per-user-policy&quot;)]
-[ApiController]
-[Route(&quot;api/[controller]&quot;)]
-public class UserController : ControllerBase
-{
-    // Each user gets their own 100 req/min limit
+func RunPool(ctx context.Context, workers int, jobs []Job, do func(context.Context, Job) (Result, error)) ([]Result, error) {
+	jobCh := make(chan Job)
+	resCh := make(chan Result)
+	errCh := make(chan error, 1)
+
+	worker := func() {
+		for j := range jobCh {
+			r, err := do(ctx, j)
+			if err != nil {
+				select {
+				case errCh &lt;- err:
+				default:
+				}
+				return
+			}
+			select {
+			case resCh &lt;- r:
+			case &lt;-ctx.Done():
+				return
+			}
+		}
+	}
+
+	for i := 0; i &lt; workers; i++ {
+		go worker()
+	}
+
+	go func() {
+		defer close(jobCh)
+		for _, j := range jobs {
+			select {
+			case jobCh &lt;- j:
+			case &lt;-ctx.Done():
+				return
+			}
+		}
+	}()
+
+	results := make([]Result, 0, len(jobs))
+	for len(results) &lt; len(jobs) {
+		select {
+		case r := &lt;-resCh:
+			results = append(results, r)
+		case err := &lt;-errCh:
+			return nil, err
+		case &lt;-ctx.Done():
+			return nil, ctx.Err()
+		}
+	}
+	return results, nil
 }</code></pre>
-<p><strong>Why this matters:</strong></p>
-<ul><li>One abusive user doesn't affect others</li><li>Prevents scraping/abuse</li><li>Fair resource distribution</li></ul>
-<p>---</p>
-<h2 id="3-concurrency-limiter-semaphore-pattern">3. Concurrency Limiter (Semaphore Pattern)</h2>
-<p>When rate limiting by time isn't enough (e.g., expensive operations), limit <strong>how many run simultaneously</strong>.</p>
-<h3 id="manual-semaphore-implementation">Manual Semaphore Implementation</h3>
-<pre class="language-csharp"><code class="language-csharp">public interface IExpensiveService
-{
-    Task&lt;ReportData&gt; GenerateReportAsync(int userId, CancellationToken ct);
-}
-
-public class ExpensiveReportService : IExpensiveService
-{
-    private readonly SemaphoreSlim _concurrencyLimit;
-    private readonly IDbConnection _db;
-    private readonly ILogger&lt;ExpensiveReportService&gt; _logger;
-
-    public ExpensiveReportService(
-        IDbConnection db,
-        ILogger&lt;ExpensiveReportService&gt; logger)
-    {
-        _db = db;
-        _logger = logger;
-
-        // Only 20 reports generating at once
-        // Tune based on: CPU cores, memory, DB connection pool size
-        _concurrencyLimit = new SemaphoreSlim(
-            initialCount: 20,
-            maxCount: 20
-        );
-    }
-
-    public async Task&lt;ReportData&gt; GenerateReportAsync(
-        int userId,
-        CancellationToken ct)
-    {
-        // Try to acquire a slot, wait max 2 seconds
-        var acquired = await _concurrencyLimit.WaitAsync(
-            TimeSpan.FromSeconds(2),
-            ct
-        );
-
-        if (!acquired)
-        {
-            _logger.LogWarning(
-                &quot;Report generation rejected for user {UserId} - concurrency limit reached&quot;,
-                userId
-            );
-            throw new TooManyRequestsException(
-                &quot;System is under heavy load. Please retry in a moment.&quot;
-            );
-        }
-
-        try
-        {
-            _logger.LogInformation(
-                &quot;Starting report generation for user {UserId}. Current concurrency: {Current}/{Max}&quot;,
-                userId,
-                20 - _concurrencyLimit.CurrentCount,
-                20
-            );
-
-            // Expensive work here
-            var data = await _db.QueryAsync&lt;ReportData&gt;(
-                &quot;EXEC GenerateUserReport @UserId&quot;,
-                new { UserId = userId }
-            );
-
-            // Simulate heavy processing
-            await ProcessDataAsync(data, ct);
-
-            return new ReportData { /* ... */ };
-        }
-        finally
-        {
-            _concurrencyLimit.Release();
-
-            _logger.LogInformation(
-                &quot;Completed report for user {UserId}. Current concurrency: {Current}/{Max}&quot;,
-                userId,
-                20 - _concurrencyLimit.CurrentCount,
-                20
-            );
-        }
-    }
-
-    private async Task ProcessDataAsync(
-        IEnumerable&lt;ReportData&gt; data,
-        CancellationToken ct)
-    {
-        foreach (var item in data)
-        {
-            ct.ThrowIfCancellationRequested();
-            // Heavy CPU work
-            await Task.Delay(50, ct);
-        }
-    }
-}
-
-public class TooManyRequestsException : Exception
-{
-    public TooManyRequestsException(string message) : base(message) { }
-}</code></pre>
-<h3 id="middleware-for-global-concurrency-limit">Middleware for Global Concurrency Limit</h3>
-<pre class="language-csharp"><code class="language-csharp">public class ConcurrencyLimitMiddleware
-{
-    private readonly RequestDelegate _next;
-    private readonly SemaphoreSlim _semaphore;
-    private readonly ILogger&lt;ConcurrencyLimitMiddleware&gt; _logger;
-
-    public ConcurrencyLimitMiddleware(
-        RequestDelegate next,
-        ILogger&lt;ConcurrencyLimitMiddleware&gt; logger,
-        int maxConcurrency = 1000)
-    {
-        _next = next;
-        _logger = logger;
-        _semaphore = new SemaphoreSlim(maxConcurrency, maxConcurrency);
-    }
-
-    public async Task InvokeAsync(HttpContext context)
-    {
-        var acquired = await _semaphore.WaitAsync(TimeSpan.FromMilliseconds(100));
-
-        if (!acquired)
-        {
-            _logger.LogWarning(
-                &quot;Request rejected - global concurrency limit reached. Path: {Path}&quot;,
-                context.Request.Path
-            );
-
-            context.Response.StatusCode = StatusCodes.Status503ServiceUnavailable;
-            context.Response.Headers.RetryAfter = &quot;5&quot;;
-
-            await context.Response.WriteAsJsonAsync(new
-            {
-                error = &quot;Service temporarily overloaded. Please retry.&quot;,
-                retryAfter = 5
-            });
-
-            return;
-        }
-
-        try
-        {
-            await _next(context);
-        }
-        finally
-        {
-            _semaphore.Release();
-        }
-    }
-}
-
-// Register in Program.cs
-app.UseMiddleware&lt;ConcurrencyLimitMiddleware&gt;(maxConcurrency: 2000);</code></pre>
-<p><strong>When to use:</strong></p>
-<ul><li>CPU-intensive endpoints (reports, image processing)</li><li>Memory-intensive operations</li><li>Expensive database queries</li><li>Calls to rate-limited external APIs</li></ul>
-<p>---</p>
-<h2 id="4-bounded-queues-for-background-work">4. Bounded Queues for Background Work</h2>
-<p>Don't let background job queues grow unbounded.</p>
-<pre class="language-csharp"><code class="language-csharp">public interface IBackgroundJobQueue
-{
-    ValueTask&lt;bool&gt; QueueAsync(Func&lt;CancellationToken, Task&gt; workItem, CancellationToken ct);
-    ValueTask&lt;Func&lt;CancellationToken, Task&gt;?&gt; DequeueAsync(CancellationToken ct);
-}
-
-public class BoundedBackgroundJobQueue : IBackgroundJobQueue
-{
-    private readonly Channel&lt;Func&lt;CancellationToken, Task&gt;&gt; _queue;
-    private readonly ILogger&lt;BoundedBackgroundJobQueue&gt; _logger;
-
-    public BoundedBackgroundJobQueue(
-        int capacity,
-        ILogger&lt;BoundedBackgroundJobQueue&gt; logger)
-    {
-        _logger = logger;
-
-        // Bounded channel: reject writes when full
-        var options = new BoundedChannelOptions(capacity)
-        {
-            FullMode = BoundedChannelFullMode.DropWrite // Or DropOldest, Wait
-        };
-
-        _queue = Channel.CreateBounded&lt;Func&lt;CancellationToken, Task&gt;&gt;(options);
-    }
-
-    public async ValueTask&lt;bool&gt; QueueAsync(
-        Func&lt;CancellationToken, Task&gt; workItem,
-        CancellationToken ct)
-    {
-        var queued = await _queue.Writer.WaitToWriteAsync(ct);
-
-        if (!queued)
-        {
-            _logger.LogWarning(&quot;Background queue is full - job rejected&quot;);
-            return false;
-        }
-
-        if (!_queue.Writer.TryWrite(workItem))
-        {
-            _logger.LogWarning(&quot;Failed to write to background queue&quot;);
-            return false;
-        }
-
-        return true;
-    }
-
-    public async ValueTask&lt;Func&lt;CancellationToken, Task&gt;?&gt; DequeueAsync(
-        CancellationToken ct)
-    {
-        var workItem = await _queue.Reader.ReadAsync(ct);
-        return workItem;
-    }
-}
-
-// Background service processing the queue
-public class BackgroundJobProcessor : BackgroundService
-{
-    private readonly IBackgroundJobQueue _queue;
-    private readonly ILogger&lt;BackgroundJobProcessor&gt; _logger;
-
-    public BackgroundJobProcessor(
-        IBackgroundJobQueue queue,
-        ILogger&lt;BackgroundJobProcessor&gt; logger)
-    {
-        _queue = queue;
-        _logger = logger;
-    }
-
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-    {
-        _logger.LogInformation(&quot;Background job processor started&quot;);
-
-        while (!stoppingToken.IsCancellationRequested)
-        {
-            try
-            {
-                var workItem = await _queue.DequeueAsync(stoppingToken);
-
-                if (workItem != null)
-                {
-                    await workItem(stoppingToken);
-                }
-            }
-            catch (OperationCanceledException)
-            {
-                // Expected on shutdown
-                break;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, &quot;Error processing background job&quot;);
-            }
-        }
-
-        _logger.LogInformation(&quot;Background job processor stopped&quot;);
-    }
-}
-
-// Usage in controller
-[ApiController]
-[Route(&quot;api/[controller]&quot;)]
-public class NotificationController : ControllerBase
-{
-    private readonly IBackgroundJobQueue _jobQueue;
-
-    [HttpPost(&quot;send&quot;)]
-    public async Task&lt;IActionResult&gt; SendNotificationAsync(
-        NotificationRequest request,
-        CancellationToken ct)
-    {
-        var queued = await _jobQueue.QueueAsync(async token =&gt;
-        {
-            // Expensive work: send email, SMS, push notification
-            await SendEmailAsync(request.Email, token);
-            await SendSmsAsync(request.Phone, token);
-        }, ct);
-
-        if (!queued)
-        {
-            return StatusCode(
-                StatusCodes.Status503ServiceUnavailable,
-                &quot;System is overloaded. Please retry later.&quot;
-            );
-        }
-
-        return Accepted(new { message = &quot;Notification queued for processing&quot; });
-    }
-
-    private Task SendEmailAsync(string email, CancellationToken ct)
-    {
-        // Implementation
-        return Task.CompletedTask;
-    }
-
-    private Task SendSmsAsync(string phone, CancellationToken ct)
-    {
-        // Implementation
-        return Task.CompletedTask;
-    }
-}
-
-// Registration
-builder.Services.AddSingleton&lt;IBackgroundJobQueue&gt;(
-    sp =&gt; new BoundedBackgroundJobQueue(
-        capacity: 10000, // Tune based on memory
-        sp.GetRequiredService&lt;ILogger&lt;BoundedBackgroundJobQueue&gt;&gt;()
-    )
-);
-builder.Services.AddHostedService&lt;BackgroundJobProcessor&gt;();</code></pre>
-<p><strong>Why bounded queues:</strong></p>
-<ul><li>Prevents memory exhaustion</li><li>Fails fast when overloaded</li><li>Forces clients to retry (with backoff)</li><li>Preserves system stability</li></ul>
-<p>---</p>
-<h2 id="5-distributed-rate-limiting-with-redis">5. Distributed Rate Limiting with Redis</h2>
-<p>For multi-instance deployments, use Redis for shared rate limit state.</p>
-<pre class="language-csharp"><code class="language-csharp">public interface IDistributedRateLimiter
-{
-    Task&lt;bool&gt; AllowRequestAsync(string key, int limit, TimeSpan window, CancellationToken ct);
-}
-
-public class RedisRateLimiter : IDistributedRateLimiter
-{
-    private readonly IDatabase _redis;
-    private readonly ILogger&lt;RedisRateLimiter&gt; _logger;
-
-    public RedisRateLimiter(
-        IConnectionMultiplexer redis,
-        ILogger&lt;RedisRateLimiter&gt; logger)
-    {
-        _redis = redis.GetDatabase();
-        _logger = logger;
-    }
-
-    public async Task&lt;bool&gt; AllowRequestAsync(
-        string key,
-        int limit,
-        TimeSpan window,
-        CancellationToken ct)
-    {
-        var redisKey = $&quot;ratelimit:{key}&quot;;
-
-        try
-        {
-            // Sliding window log algorithm using Redis sorted set
-            var now = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-            var windowStart = now - (long)window.TotalMilliseconds;
-
-            // Remove old entries outside the window
-            await _redis.SortedSetRemoveRangeByScoreAsync(
-                redisKey,
-                double.NegativeInfinity,
-                windowStart
-            );
-
-            // Count current entries in window
-            var currentCount = await _redis.SortedSetLengthAsync(redisKey);
-
-            if (currentCount &gt;= limit)
-            {
-                _logger.LogWarning(
-                    &quot;Rate limit exceeded for key {Key}. Current: {Current}, Limit: {Limit}&quot;,
-                    key, currentCount, limit
-                );
-                return false;
-            }
-
-            // Add current request
-            await _redis.SortedSetAddAsync(redisKey, now, now);
-
-            // Set expiry to clean up old keys
-            await _redis.KeyExpireAsync(redisKey, window);
-
-            return true;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, &quot;Redis rate limiter error for key {Key}. Allowing request.&quot;, key);
-            // Fail open: allow request if Redis is down
-            return true;
-        }
-    }
-}
-
-// Lua script for atomic sliding window (more efficient)
-public class RedisRateLimiterOptimized : IDistributedRateLimiter
-{
-    private readonly IDatabase _redis;
-    private readonly ILogger&lt;RedisRateLimiterOptimized&gt; _logger;
-
-    private const string LuaScript = @&quot;
-        local key = KEYS[1]
-        local now = tonumber(ARGV[1])
-        local window = tonumber(ARGV[2])
-        local limit = tonumber(ARGV[3])
-
-        local clearBefore = now - window
-        redis.call(&#39;ZREMRANGEBYSCORE&#39;, key, 0, clearBefore)
-
-        local amount = redis.call(&#39;ZCARD&#39;, key)
-        if amount &lt; limit then
-            redis.call(&#39;ZADD&#39;, key, now, now)
-            redis.call(&#39;EXPIRE&#39;, key, window / 1000)
-            return 1
-        end
-        return 0
-    &quot;;
-
-    public async Task&lt;bool&gt; AllowRequestAsync(
-        string key,
-        int limit,
-        TimeSpan window,
-        CancellationToken ct)
-    {
-        var redisKey = $&quot;ratelimit:{key}&quot;;
-        var now = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-
-        try
-        {
-            var result = await _redis.ScriptEvaluateAsync(
-                LuaScript,
-                new RedisKey[] { redisKey },
-                new RedisValue[]
-                {
-                    now,
-                    (long)window.TotalMilliseconds,
-                    limit
-                }
-            );
-
-            return (int)result == 1;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, &quot;Redis rate limiter error. Allowing request.&quot;);
-            return true; // Fail open
-        }
-    }
-}
-
-// Usage in middleware
-public class DistributedRateLimitMiddleware
-{
-    private readonly RequestDelegate _next;
-    private readonly IDistributedRateLimiter _rateLimiter;
-
-    public async Task InvokeAsync(HttpContext context)
-    {
-        var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
-                     ?? context.Connection.RemoteIpAddress?.ToString()
-                     ?? &quot;anonymous&quot;;
-
-        var allowed = await _rateLimiter.AllowRequestAsync(
-            key: userId,
-            limit: 100,
-            window: TimeSpan.FromMinutes(1),
-            ct: context.RequestAborted
-        );
-
-        if (!allowed)
-        {
-            context.Response.StatusCode = StatusCodes.Status429TooManyRequests;
-            await context.Response.WriteAsJsonAsync(new
-            {
-                error = &quot;Rate limit exceeded&quot;
-            });
-            return;
-        }
-
-        await _next(context);
-    }
-}</code></pre>
-<p>---</p>
-<h2 id="summary-backpressure-checklist">Summary: Backpressure Checklist</h2>
-<p>✅ <strong>Built-in rate limiting</strong> configured for public endpoints ✅ <strong>Per-user/per-IP limits</strong> to prevent monopolization ✅ <strong>Concurrency limits</strong> on expensive operations (semaphore pattern) ✅ <strong>Bounded queues</strong> for background work ✅ <strong>Distributed rate limiting</strong> (Redis) for multi-instance deployments ✅ <strong>Fail fast</strong> with proper 429/503 responses and Retry-After headers ✅ <strong>Monitoring</strong> of rejection rates, queue depth, semaphore contention</p>
-<p><strong>Key Insight:</strong> Backpressure is not about blocking users — it's about <strong>preserving system health</strong> so you can serve the requests you accept with good latency. A 429 response in 10ms is better than a timeout after 30 seconds.</p>
-<p><strong>Next:</strong> <a href="./03-caching-strategies.md">Caching Strategies</a> - The fastest request is one you don't have to process.</p>
+<p></details></p>
+<h3 id="exercise-3-http-server-with-graceful-shutdown-and-middleware">Exercise 3: HTTP Server with Graceful Shutdown and Middleware</h3>
+<p>Create a small Go service that exposes endpoints and shuts down cleanly.</p>
+<p><strong>Requirements:</strong></p>
+<ul><li><code>GET /healthz</code> returns <code>200 OK</code></li><li><code>GET /users/{id}</code> calls a downstream C# API and returns JSON</li><li>Adds a correlation ID header (<code>X-Correlation-Id</code>)</li><li>Gracefully shuts down on SIGINT/SIGTERM</li></ul>
+<h2 id="interview-scenarios">Interview Scenarios</h2>
+<h3 id="scenario-1-a-goroutine-leak-in-production">Scenario 1: A goroutine leak in production</h3>
+<p><strong>Question:</strong> Requests occasionally hang and memory keeps increasing. What do you look for?</p>
+<p><strong>Answer:</strong></p>
+<ul><li>Goroutines blocked on channel send/receive without cancellation path</li><li><code>context</code> not respected downstream (HTTP calls without <code>NewRequestWithContext</code>)</li><li>Missing timeouts (<code>http.Client</code> without <code>Timeout</code>)</li><li>Unbounded buffering (channels, queues) hiding backpressure</li></ul>
+<h3 id="scenario-2-integrating-go-services-with-net">Scenario 2: Integrating Go services with .NET</h3>
+<p><strong>Question:</strong> How do you keep contracts stable between a Go service and ASP.NET Core?</p>
+<p><strong>Answer:</strong></p>
+<ul><li>Prefer OpenAPI for REST (generate clients), version endpoints</li><li>Use idempotency keys and explicit retry semantics</li><li>Share correlation IDs / trace context for observability</li><li>Use message queues for async integration when coupling must be reduced</li></ul>
+<h2 id="best-practices-questions">Best Practices Questions</h2>
+<ol><li><strong>How do you structure a Go service repo?</strong></li></ol>
+<ul><li><code>cmd/&lt;service&gt;</code> for entrypoints</li><li><code>internal/</code> for private application code</li><li>Small packages with clear boundaries</li></ul>
+<ol><li><strong>How do you test Go code effectively?</strong></li></ol>
+<ul><li>Table-driven tests + subtests</li><li>Interfaces to mock external dependencies</li><li>Integration tests for HTTP handlers</li><li>Benchmarks for hot paths (<code>go test -bench</code>)</li></ul>
+<h2 id="resources">Resources</h2>
+<p>For notes and theory, see <a href="../../../notes/Tech-Stacks/GoLang/index.md">GoLang Notes</a>. Official docs: https://go.dev/doc/</p>
       </article>
     </main>
   </div>
