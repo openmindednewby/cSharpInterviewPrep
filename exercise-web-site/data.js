@@ -1,6 +1,6 @@
 // Auto-generated practice Q&A data from practice/ folder
-// Generated on: 2026-01-01T18:41:26.588Z
-// Total cards: 348 Q&A
+// Generated on: 2026-01-05T22:57:42.471Z
+// Total cards: 365 Q&A
 
 window.PRACTICE_DATA = [
   {
@@ -7133,5 +7133,278 @@ window.PRACTICE_DATA = [
     "topicId": "system-architecture-exercises",
     "source": "practice/system-architecture-exercises.md",
     "id": "card-348"
+  },
+  {
+    "question": "Do some frontend + backend stacks pair naturally? Why?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Yes — not because of hard technical constraints, but because of ecosystem fit (tooling, conventions, hiring) and common architecture patterns. With clean API boundaries, the frontend becomes more interchangeable."
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Tech-Stacks/Stack-Pairings/index.md",
+    "id": "card-349"
+  },
+  {
+    "question": "What are the three main reasons “natural pairings” happen?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Ecosystem fit (libraries/tooling), architecture fit (SPA + API, BFF, real-time), and operational fit (deployment/observability defaults and team habits)."
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Tech-Stacks/Stack-Pairings/index.md",
+    "id": "card-350"
+  },
+  {
+    "question": "Give the ultra-short interview answer (10 seconds).",
+    "answer": [
+      {
+        "type": "text",
+        "content": "“Angular + .NET is common in enterprise, React + .NET in dashboards/fintech, and React + Go in high-concurrency systems.”"
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Tech-Stacks/Stack-Pairings/index.md",
+    "id": "card-351"
+  },
+  {
+    "question": "Why is Angular + .NET a common enterprise pairing?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Both are opinionated and structured, the TypeScript ↔ C# symmetry helps teams move faster, and it’s a common hiring/tooling match in large orgs."
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Tech-Stacks/Stack-Pairings/index.md",
+    "id": "card-352"
+  },
+  {
+    "question": "What’s a typical Angular + .NET stack?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Angular, ASP.NET Core Web API, EF Core, SQL Server/PostgreSQL, deployed on Azure/IIS/Docker."
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Tech-Stacks/Stack-Pairings/index.md",
+    "id": "card-353"
+  },
+  {
+    "question": "Give an “interview sentence” for Angular + .NET.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "“Angular and .NET fit well because both enforce structure and scale nicely in large teams.”"
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Tech-Stacks/Stack-Pairings/index.md",
+    "id": "card-354"
+  },
+  {
+    "question": "Why is React + .NET a common pairing today?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "React is UI-flexible and backend-agnostic, while .NET provides stable APIs and great real-time options (SignalR), making it a strong combo for dashboards and line-of-business apps."
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Tech-Stacks/Stack-Pairings/index.md",
+    "id": "card-355"
+  },
+  {
+    "question": "What’s a typical React + .NET stack?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "React, ASP.NET Core, REST/SignalR/WebSockets, Redis, and PostgreSQL/SQL Server."
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Tech-Stacks/Stack-Pairings/index.md",
+    "id": "card-356"
+  },
+  {
+    "question": "Why is React + Node.js such a common pairing?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "TypeScript end-to-end, fast iteration, huge ecosystem, and strong community patterns (Next.js, Express/Nest, etc.)."
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Tech-Stacks/Stack-Pairings/index.md",
+    "id": "card-357"
+  },
+  {
+    "question": "What’s the main trade-off you should mention for Node.js backends?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "For CPU-heavy or performance-critical services, .NET/Go/Java are often better fits; Node still works well for BFF/API gateway layers."
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Tech-Stacks/Stack-Pairings/index.md",
+    "id": "card-358"
+  },
+  {
+    "question": "Why do teams pair React with Go?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Go is excellent for high concurrency and throughput with simple operational characteristics; React handles UI complexity while Go serves clean APIs (often REST or gRPC)."
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Tech-Stacks/Stack-Pairings/index.md",
+    "id": "card-359"
+  },
+  {
+    "question": "What does “backend-first pairing” mean?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "The backend choice drives most constraints (performance, data consistency, integrations). If the backend exposes clean, versioned contracts, the frontend can be swapped with less risk."
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Tech-Stacks/Stack-Pairings/index.md",
+    "id": "card-360"
+  },
+  {
+    "question": "Fill in the table of common backend-first pairings.",
+    "answer": [
+      {
+        "type": "text",
+        "content": "A:"
+      },
+      {
+        "type": "table",
+        "headers": [
+          "Backend",
+          "Goes Well With",
+          "Why"
+        ],
+        "rows": [
+          [
+            ".NET",
+            "Angular / React",
+            "Enterprise, fintech"
+          ],
+          [
+            "Go",
+            "React / Svelte",
+            "Performance, simplicity"
+          ],
+          [
+            "Java",
+            "Angular / React",
+            "Large orgs"
+          ],
+          [
+            "Node",
+            "React / Vue",
+            "TypeScript everywhere"
+          ],
+          [
+            "Python",
+            "React",
+            "AI / data APIs"
+          ]
+        ]
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Tech-Stacks/Stack-Pairings/index.md",
+    "id": "card-361"
+  },
+  {
+    "question": "You’re building a real-time trading dashboard (live prices + execution updates). What pairing do you choose and why?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "React + .NET is a strong default (stable APIs + SignalR for real-time). React + Go is also strong if you need very high concurrency; choose based on team skill and operational maturity."
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Tech-Stacks/Stack-Pairings/index.md",
+    "id": "card-362"
+  },
+  {
+    "question": "You need to ship an internal CRUD tool fast with a small team. What pairing do you choose?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "React + Node or React + .NET can both work. Optimize for team familiarity and delivery speed, then protect the boundary with clear contracts and tests."
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Tech-Stacks/Stack-Pairings/index.md",
+    "id": "card-363"
+  },
+  {
+    "question": "You have CPU-heavy pricing/analytics logic. How do you describe your stack choice?",
+    "answer": [
+      {
+        "type": "text",
+        "content": "Put the CPU-heavy service in .NET/Go/Java, expose it via stable APIs, and use any frontend (React/Angular) as a consumer. Node can still be used as a BFF if it helps with aggregation."
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Tech-Stacks/Stack-Pairings/index.md",
+    "id": "card-364"
+  },
+  {
+    "question": "Give a 1-minute whiteboard answer to “Do some stacks work better together?”",
+    "answer": [
+      {
+        "type": "text",
+        "content": "“Yes — not because of technical limitations, but because of ecosystem fit. For example, Angular often pairs with .NET in enterprise due to typing and structure, while React pairs well with .NET or Go because it’s backend-agnostic. The important part is clean API boundaries — stable contracts, auth, versioning, and observability — so the frontend stays replaceable as requirements evolve.”"
+      }
+    ],
+    "category": "practice",
+    "topic": "Index",
+    "topicId": "index",
+    "source": "practice/Tech-Stacks/Stack-Pairings/index.md",
+    "id": "card-365"
   }
 ];

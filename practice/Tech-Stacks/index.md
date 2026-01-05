@@ -6,6 +6,7 @@ This section contains practice questions and exercises for various technology st
 
 - [React](React/index.md) - Frontend development exercises
 - [GoLang](GoLang/index.md) - Go programming exercises
+- [Stack Pairings](Stack-Pairings/index.md) - Recall drills and interview framing
 
 ## Practice Structure
 

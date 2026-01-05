@@ -6,6 +6,7 @@ This section contains notes and resources for various technology stacks commonly
 
 - [React](React/index.md) - Frontend JavaScript library for building user interfaces
 - [GoLang](GoLang/index.md) - Go programming language for backend development
+- [Stack Pairings](Stack-Pairings/index.md) - Common frontend ↔ backend pairings and interview framing
 
 ## Purpose
 

@@ -32,6 +32,12 @@ A structured map of practice materials that mirrors the notes folder layout.
 
 ---
 
+## Tech Stacks
+
+- [Tech Stacks](Tech-Stacks/index.md)
+
+---
+
 ## Performance
 
 - [Memory Allocation Discipline](Memory-Allocation-Discipline/index.md)
