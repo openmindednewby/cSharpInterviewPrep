@@ -51,6 +51,106 @@ function getTopicInfo(sourcePath) {
   };
 }
 
+function extractIndexOverview(markdown, sourcePath, options = {}) {
+  const lines = markdown.split(/\r?\n/);
+  const answer = [];
+  let question = options.question || null;
+  let paragraphLines = [];
+  let listItems = [];
+  let inCodeBlock = false;
+
+  const flushParagraph = () => {
+    if (paragraphLines.length > 0) {
+      answer.push({
+        type: 'text',
+        content: cleanMarkdown(paragraphLines.join(' '))
+      });
+      paragraphLines = [];
+    }
+  };
+
+  const flushList = () => {
+    if (listItems.length > 0) {
+      answer.push({
+        type: 'list',
+        items: listItems.map((item) => cleanMarkdown(item))
+      });
+      listItems = [];
+    }
+  };
+
+  for (const line of lines) {
+    const codeFenceMatch = line.match(/^```/);
+    if (codeFenceMatch) {
+      flushParagraph();
+      flushList();
+      inCodeBlock = !inCodeBlock;
+      continue;
+    }
+
+    if (inCodeBlock) {
+      continue;
+    }
+
+    if (line.match(/^---+$/)) {
+      flushParagraph();
+      flushList();
+      continue;
+    }
+
+    const headingMatch = line.match(/^#{1,6}\s+(.+)/);
+    if (headingMatch) {
+      flushParagraph();
+      flushList();
+      const headingText = cleanMarkdown(headingMatch[1]);
+      if (!question) {
+        question = headingText;
+      } else {
+        answer.push({ type: 'text', content: headingText });
+      }
+      continue;
+    }
+
+    const listMatch = line.match(/^\s*(?:[-*]|\d+\.)\s+(.+)/);
+    if (listMatch) {
+      flushParagraph();
+      listItems.push(listMatch[1]);
+      continue;
+    }
+
+    if (!line.trim()) {
+      flushParagraph();
+      flushList();
+      continue;
+    }
+
+    paragraphLines.push(line.trim());
+  }
+
+  flushParagraph();
+  flushList();
+
+  if (!question) {
+    question = options.fallbackQuestion || 'Practice Index';
+  }
+
+  if (answer.length === 0) {
+    return null;
+  }
+
+  const sourceFile = path.relative(repoRoot, sourcePath).replace(/\\/g, '/');
+
+  return {
+    question,
+    answer,
+    category: 'practice',
+    topic: options.topic || 'Practice Index',
+    topicId: options.topicId || 'practice-index',
+    source: sourceFile,
+    isIndex: true
+  };
+}
+
 /**
  * Extract Q&A pairs from markdown sections
  */
@@ -600,6 +700,14 @@ async function main() {
     const qaCards = extractQA(content, file.sourcePath);
     qaCount += qaCards.length;
     allCards.push(...qaCards);
+
+    const sourceFile = path.relative(repoRoot, file.sourcePath).replace(/\\/g, '/');
+    if (sourceFile.toLowerCase() === 'practice/index.md') {
+      const overviewCard = extractIndexOverview(content, file.sourcePath);
+      if (overviewCard) {
+        allCards.push(overviewCard);
+      }
+    }
   }
 
   // Add unique IDs

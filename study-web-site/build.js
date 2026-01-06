@@ -460,6 +460,15 @@ async function buildFile(file, navGroups) {
 }
 
 async function buildIndex(navGroups) {
+  const introCard = `<section class="card">
+      <h2>Start Here</h2>
+      <p class="subtitle">Jump straight to the numbered indexes.</p>
+      <ul class="pill-list">
+        <li><a href="notes/index.html">Notes Index</a></li>
+        <li><a href="practice/index.html">Practice Index</a></li>
+      </ul>
+    </section>`;
+
   const cards = navGroups.map((group) => {
     const links = group.items
       .slice()
@@ -518,6 +527,7 @@ async function buildIndex(navGroups) {
     </div>
   </header>
   <main class="content-grid">
+    ${introCard}
     ${cards}
   </main>
   <footer class="footer">Generate with <code>npm run build</code>. Content lives in the root Markdown files.</footer>

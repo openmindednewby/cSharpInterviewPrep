@@ -1,6 +1,6 @@
 // Auto-generated practice Q&A data from practice/ folder
-// Generated on: 2026-01-06T21:40:41.864Z
-// Total cards: 365 Q&A
+// Generated on: 2026-01-06T22:24:52.061Z
+// Total cards: 366 Q&A
 
 window.PRACTICE_DATA = [
   {
@@ -933,6 +933,119 @@ window.PRACTICE_DATA = [
     "id": "card-43"
   },
   {
+    "question": "Practice Exercises - Index",
+    "answer": [
+      {
+        "type": "text",
+        "content": "A structured map of practice materials that mirrors the notes folder layout. Numbered sections move from foundations to advanced drills."
+      },
+      {
+        "type": "text",
+        "content": "1. Start Here"
+      },
+      {
+        "type": "list",
+        "items": [
+          "Core Concepts Hub",
+          "SOLID Principles",
+          "Collections and LINQ",
+          "Error Handling Exercises",
+          "Logging Exercises",
+          "Testing Strategies Exercises"
+        ]
+      },
+      {
+        "type": "text",
+        "content": "2. Architecture and Design"
+      },
+      {
+        "type": "list",
+        "items": [
+          "Clean Architecture",
+          "Solution Architecture Exercises",
+          "System Architecture Exercises",
+          "Design Patterns",
+          "DRY Exercises"
+        ]
+      },
+      {
+        "type": "text",
+        "content": "3. Libraries and Tooling"
+      },
+      {
+        "type": "list",
+        "items": [
+          "AutoMapper",
+          "FluentValidation"
+        ]
+      },
+      {
+        "type": "text",
+        "content": "4. Tech Stacks"
+      },
+      {
+        "type": "list",
+        "items": [
+          "Tech Stacks"
+        ]
+      },
+      {
+        "type": "text",
+        "content": "5. Performance"
+      },
+      {
+        "type": "list",
+        "items": [
+          "Memory Allocation Discipline",
+          "Big-O Complexity"
+        ]
+      },
+      {
+        "type": "text",
+        "content": "6. Use Cases"
+      },
+      {
+        "type": "list",
+        "items": [
+          "Massive Traffic Scenarios"
+        ]
+      },
+      {
+        "type": "text",
+        "content": "7. Deep Dives (Advanced Sub-Notes)"
+      },
+      {
+        "type": "list",
+        "items": [
+          "Async/Await Exercises",
+          "API Lifecycle",
+          "System Design",
+          "Data Layer",
+          "Messaging and Integration",
+          "SSE vs WebSockets",
+          "Trading Domain"
+        ]
+      },
+      {
+        "type": "text",
+        "content": "8. All-in-One Lists"
+      },
+      {
+        "type": "list",
+        "items": [
+          "Practice Questions and Prompts",
+          "Practice Answers"
+        ]
+      }
+    ],
+    "category": "practice",
+    "topic": "Practice Index",
+    "topicId": "practice-index",
+    "source": "practice/index.md",
+    "isIndex": true,
+    "id": "card-44"
+  },
+  {
     "question": "When should you use ArrayPool<T>?",
     "answer": [
       {
@@ -950,7 +1063,7 @@ window.PRACTICE_DATA = [
     "topic": "Index",
     "topicId": "index",
     "source": "practice/Memory-Allocation-Discipline/index.md",
-    "id": "card-44"
+    "id": "card-45"
   },
   {
     "question": "Show how Span<T> can avoid allocations when parsing.",
@@ -970,7 +1083,7 @@ window.PRACTICE_DATA = [
     "topic": "Index",
     "topicId": "index",
     "source": "practice/Memory-Allocation-Discipline/index.md",
-    "id": "card-45"
+    "id": "card-46"
   },
   {
     "question": "When would you use ValueTask instead of Task?",
@@ -984,7 +1097,7 @@ window.PRACTICE_DATA = [
     "topic": "Index",
     "topicId": "index",
     "source": "practice/Memory-Allocation-Discipline/index.md",
-    "id": "card-46"
+    "id": "card-47"
   },
   {
     "question": "Why is string concatenation in a loop expensive, and how do you fix it?",
@@ -1004,7 +1117,7 @@ window.PRACTICE_DATA = [
     "topic": "Index",
     "topicId": "index",
     "source": "practice/Memory-Allocation-Discipline/index.md",
-    "id": "card-47"
+    "id": "card-48"
   },
   {
     "question": "How do closures create hidden allocations?",
@@ -1037,7 +1150,7 @@ window.PRACTICE_DATA = [
     "topic": "Index",
     "topicId": "index",
     "source": "practice/Memory-Allocation-Discipline/index.md",
-    "id": "card-48"
+    "id": "card-49"
   },
   {
     "question": "Given a list of trades with timestamps, return the latest trade per account using LINQ.",
@@ -1061,7 +1174,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-49"
+    "id": "card-50"
   },
   {
     "question": "Implement a method that flattens nested lists of instrument codes while preserving ordering.",
@@ -1085,7 +1198,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-50"
+    "id": "card-51"
   },
   {
     "question": "Explain the difference between SelectMany and nested loops. When is each preferable?",
@@ -1109,7 +1222,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-51"
+    "id": "card-52"
   },
   {
     "question": "How would you detect duplicate orders in a stream using GroupBy and produce a summary?",
@@ -1133,7 +1246,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-52"
+    "id": "card-53"
   },
   {
     "question": "Sketch code to call three REST endpoints concurrently, cancel if any take longer than 3 seconds, and aggregate results.",
@@ -1157,7 +1270,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-53"
+    "id": "card-54"
   },
   {
     "question": "Implement a resilient HTTP client with retry and circuit breaker policies using Polly.",
@@ -1181,7 +1294,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-54"
+    "id": "card-55"
   },
   {
     "question": "How would you handle backpressure when consuming a fast message queue with a slower downstream API?",
@@ -1205,7 +1318,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-55"
+    "id": "card-56"
   },
   {
     "question": "Explain why you might use SemaphoreSlim with async code over lock.",
@@ -1229,7 +1342,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-56"
+    "id": "card-57"
   },
   {
     "question": "Describe the ASP.NET Core middleware pipeline for a request hitting an authenticated endpoint with custom exception handling.",
@@ -1253,7 +1366,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-57"
+    "id": "card-58"
   },
   {
     "question": "How do you implement API versioning and backward compatibility?",
@@ -1277,7 +1390,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-58"
+    "id": "card-59"
   },
   {
     "question": "Discuss strategies for rate limiting and request throttling.",
@@ -1301,7 +1414,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-59"
+    "id": "card-60"
   },
   {
     "question": "How would you log correlation IDs across services and propagate them to downstream dependencies?",
@@ -1325,7 +1438,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-60"
+    "id": "card-61"
   },
   {
     "question": "Design a service that ingests MT5 tick data, normalizes it, caches latest prices, and exposes them via REST/WebSocket.",
@@ -1349,7 +1462,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-61"
+    "id": "card-62"
   },
   {
     "question": "Design an API that receives orders, validates, routes to MT4/MT5, and confirms execution. Include failure recovery.",
@@ -1373,7 +1486,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-62"
+    "id": "card-63"
   },
   {
     "question": "Architect a system to collect metrics from trading microservices and alert on anomalies.",
@@ -1397,7 +1510,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-63"
+    "id": "card-64"
   },
   {
     "question": "Discuss how you would integrate an external risk management engine into an existing microservices ecosystem.",
@@ -1421,7 +1534,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-64"
+    "id": "card-65"
   },
   {
     "question": "Compare RabbitMQ and ZeroMQ for distributing price updates. When would you choose one over the other?",
@@ -1435,7 +1548,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-65"
+    "id": "card-66"
   },
   {
     "question": "Explain how to ensure at-least-once delivery with RabbitMQ while preventing duplicate processing.",
@@ -1459,7 +1572,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-66"
+    "id": "card-67"
   },
   {
     "question": "How would you design a saga pattern to coordinate account funding across multiple services?",
@@ -1483,7 +1596,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-67"
+    "id": "card-68"
   },
   {
     "question": "Discuss the outbox pattern and how it prevents message loss in event-driven systems.",
@@ -1507,7 +1620,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-68"
+    "id": "card-69"
   },
   {
     "question": "Write a SQL query to calculate the rolling 7-day trade volume per instrument.",
@@ -1531,7 +1644,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-69"
+    "id": "card-70"
   },
   {
     "question": "Explain how you would choose between normalized schemas and denormalized tables for reporting.",
@@ -1545,7 +1658,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-70"
+    "id": "card-71"
   },
   {
     "question": "Describe the differences between clustered and non-clustered indexes and when to use covering indexes.",
@@ -1569,7 +1682,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-71"
+    "id": "card-72"
   },
   {
     "question": "Walk through handling a long-running report query that impacts OLTP performance.",
@@ -1583,7 +1696,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-72"
+    "id": "card-73"
   },
   {
     "question": "Describe the lifecycle of a forex trade from placement to settlement.",
@@ -1597,7 +1710,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-73"
+    "id": "card-74"
   },
   {
     "question": "How would you integrate with MT4/MT5 APIs for trade execution in C#? Mention authentication, session management, and error handling.",
@@ -1617,7 +1730,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-74"
+    "id": "card-75"
   },
   {
     "question": "What are common risk checks before executing a client order (e.g., margin, exposure limits)?",
@@ -1631,7 +1744,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-75"
+    "id": "card-76"
   },
   {
     "question": "Explain how you'd handle market data bursts without dropping updates.",
@@ -1645,7 +1758,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-76"
+    "id": "card-77"
   },
   {
     "question": "Tell me about a time you led a critical production fix under pressure.",
@@ -1659,7 +1772,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-77"
+    "id": "card-78"
   },
   {
     "question": "Describe a situation where you improved a process by automating manual work.",
@@ -1673,7 +1786,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-78"
+    "id": "card-79"
   },
   {
     "question": "Discuss a conflict within a team and how you resolved it.",
@@ -1687,7 +1800,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-79"
+    "id": "card-80"
   },
   {
     "question": "Share a story that demonstrates your commitment to documentation or knowledge sharing.",
@@ -1701,7 +1814,7 @@ window.PRACTICE_DATA = [
     "topic": "Questions",
     "topicId": "questions",
     "source": "practice/questions.md",
-    "id": "card-80"
+    "id": "card-81"
   },
   {
     "question": "Identify the SRP violations in this User class and refactor it.",
@@ -1731,7 +1844,7 @@ window.PRACTICE_DATA = [
     "topic": "S Single Responsibility Principle Exercises",
     "topicId": "s-single-responsibility-principle-exercises",
     "source": "practice/SOLID/S-Single-Responsibility-Principle-Exercises.md",
-    "id": "card-81"
+    "id": "card-82"
   },
   {
     "question": "Refactor this OrderProcessor class to follow SRP.",
@@ -1757,7 +1870,7 @@ window.PRACTICE_DATA = [
     "topic": "S Single Responsibility Principle Exercises",
     "topicId": "s-single-responsibility-principle-exercises",
     "source": "practice/SOLID/S-Single-Responsibility-Principle-Exercises.md",
-    "id": "card-82"
+    "id": "card-83"
   },
   {
     "question": "Identify SRP violations in this ReportGenerator class.",
@@ -1783,7 +1896,7 @@ window.PRACTICE_DATA = [
     "topic": "S Single Responsibility Principle Exercises",
     "topicId": "s-single-responsibility-principle-exercises",
     "source": "practice/SOLID/S-Single-Responsibility-Principle-Exercises.md",
-    "id": "card-83"
+    "id": "card-84"
   },
   {
     "question": "Refactor this Employee class that handles both employee data and payroll calculations.",
@@ -1809,7 +1922,7 @@ window.PRACTICE_DATA = [
     "topic": "S Single Responsibility Principle Exercises",
     "topicId": "s-single-responsibility-principle-exercises",
     "source": "practice/SOLID/S-Single-Responsibility-Principle-Exercises.md",
-    "id": "card-84"
+    "id": "card-85"
   },
   {
     "question": "Design a logging system that follows SRP. It should support multiple log levels, formats, and destinations.",
@@ -1829,7 +1942,7 @@ window.PRACTICE_DATA = [
     "topic": "S Single Responsibility Principle Exercises",
     "topicId": "s-single-responsibility-principle-exercises",
     "source": "practice/SOLID/S-Single-Responsibility-Principle-Exercises.md",
-    "id": "card-85"
+    "id": "card-86"
   },
   {
     "question": "Create a file processing system that reads, validates, transforms, and stores data while following SRP.",
@@ -1849,7 +1962,7 @@ window.PRACTICE_DATA = [
     "topic": "S Single Responsibility Principle Exercises",
     "topicId": "s-single-responsibility-principle-exercises",
     "source": "practice/SOLID/S-Single-Responsibility-Principle-Exercises.md",
-    "id": "card-86"
+    "id": "card-87"
   },
   {
     "question": "Design an e-commerce checkout system following SRP. Include inventory checking, payment processing, order creation, and notifications.",
@@ -1877,7 +1990,7 @@ window.PRACTICE_DATA = [
     "topic": "S Single Responsibility Principle Exercises",
     "topicId": "s-single-responsibility-principle-exercises",
     "source": "practice/SOLID/S-Single-Responsibility-Principle-Exercises.md",
-    "id": "card-87"
+    "id": "card-88"
   },
   {
     "question": "Compare Clean Architecture, DDD, and Vertical Slice architecture in one paragraph.",
@@ -1891,7 +2004,7 @@ window.PRACTICE_DATA = [
     "topic": "Solution Architecture Exercises",
     "topicId": "solution-architecture-exercises",
     "source": "practice/solution-architecture-exercises.md",
-    "id": "card-88"
+    "id": "card-89"
   },
   {
     "question": "You are building a trading order management API with evolving rules and multiple integrations. Which solution architecture would you choose and why?",
@@ -1905,7 +2018,7 @@ window.PRACTICE_DATA = [
     "topic": "Solution Architecture Exercises",
     "topicId": "solution-architecture-exercises",
     "source": "practice/solution-architecture-exercises.md",
-    "id": "card-89"
+    "id": "card-90"
   },
   {
     "question": "You are building a desktop trading terminal (WPF). Which pattern do you apply for the UI and why?",
@@ -1919,7 +2032,7 @@ window.PRACTICE_DATA = [
     "topic": "Solution Architecture Exercises",
     "topicId": "solution-architecture-exercises",
     "source": "practice/solution-architecture-exercises.md",
-    "id": "card-90"
+    "id": "card-91"
   },
   {
     "question": "Draft a vertical slice folder layout for a \"CancelOrder\" use case.",
@@ -1939,7 +2052,7 @@ window.PRACTICE_DATA = [
     "topic": "Solution Architecture Exercises",
     "topicId": "solution-architecture-exercises",
     "source": "practice/solution-architecture-exercises.md",
-    "id": "card-91"
+    "id": "card-92"
   },
   {
     "question": "Identify the bounded contexts for a trading platform and list one aggregate per context.",
@@ -1962,7 +2075,7 @@ window.PRACTICE_DATA = [
     "topic": "Solution Architecture Exercises",
     "topicId": "solution-architecture-exercises",
     "source": "practice/solution-architecture-exercises.md",
-    "id": "card-92"
+    "id": "card-93"
   },
   {
     "question": "Write a simple MVVM ViewModel for placing an order.",
@@ -1982,7 +2095,7 @@ window.PRACTICE_DATA = [
     "topic": "Solution Architecture Exercises",
     "topicId": "solution-architecture-exercises",
     "source": "practice/solution-architecture-exercises.md",
-    "id": "card-93"
+    "id": "card-94"
   },
   {
     "question": "What do you lose if you over-abstract Clean Architecture in a small app?",
@@ -1996,7 +2109,7 @@ window.PRACTICE_DATA = [
     "topic": "Solution Architecture Exercises",
     "topicId": "solution-architecture-exercises",
     "source": "practice/solution-architecture-exercises.md",
-    "id": "card-94"
+    "id": "card-95"
   },
   {
     "question": "How do you avoid a shared kernel becoming a dependency sink in DDD?",
@@ -2010,7 +2123,7 @@ window.PRACTICE_DATA = [
     "topic": "Solution Architecture Exercises",
     "topicId": "solution-architecture-exercises",
     "source": "practice/solution-architecture-exercises.md",
-    "id": "card-95"
+    "id": "card-96"
   },
   {
     "question": "Your team wants to add a new pricing rule without touching API controllers. Where should the change go in Clean Architecture?",
@@ -2028,7 +2141,7 @@ window.PRACTICE_DATA = [
     "topic": "Solution Architecture Exercises",
     "topicId": "solution-architecture-exercises",
     "source": "practice/solution-architecture-exercises.md",
-    "id": "card-96"
+    "id": "card-97"
   },
   {
     "question": "What is the core difference between SSE and WebSockets?",
@@ -2042,7 +2155,7 @@ window.PRACTICE_DATA = [
     "topic": "Sse Vs Websockets Exercises",
     "topicId": "sse-vs-websockets-exercises",
     "source": "practice/sse-vs-websockets-exercises.md",
-    "id": "card-97"
+    "id": "card-98"
   },
   {
     "question": "When is SSE a better choice than WebSockets?",
@@ -2056,7 +2169,7 @@ window.PRACTICE_DATA = [
     "topic": "Sse Vs Websockets Exercises",
     "topicId": "sse-vs-websockets-exercises",
     "source": "practice/sse-vs-websockets-exercises.md",
-    "id": "card-98"
+    "id": "card-99"
   },
   {
     "question": "Implement a simple SSE endpoint that streams prices every second.",
@@ -2076,7 +2189,7 @@ window.PRACTICE_DATA = [
     "topic": "Sse Vs Websockets Exercises",
     "topicId": "sse-vs-websockets-exercises",
     "source": "practice/sse-vs-websockets-exercises.md",
-    "id": "card-99"
+    "id": "card-100"
   },
   {
     "question": "Add a heartbeat to keep SSE connections alive.",
@@ -2096,7 +2209,7 @@ window.PRACTICE_DATA = [
     "topic": "Sse Vs Websockets Exercises",
     "topicId": "sse-vs-websockets-exercises",
     "source": "practice/sse-vs-websockets-exercises.md",
-    "id": "card-100"
+    "id": "card-101"
   },
   {
     "question": "You need a trading terminal where clients submit orders and receive execution updates in real time. Which transport do you choose?",
@@ -2110,7 +2223,7 @@ window.PRACTICE_DATA = [
     "topic": "Sse Vs Websockets Exercises",
     "topicId": "sse-vs-websockets-exercises",
     "source": "practice/sse-vs-websockets-exercises.md",
-    "id": "card-101"
+    "id": "card-102"
   },
   {
     "question": "How do you scale WebSockets behind a load balancer?",
@@ -2124,7 +2237,7 @@ window.PRACTICE_DATA = [
     "topic": "Sse Vs Websockets Exercises",
     "topicId": "sse-vs-websockets-exercises",
     "source": "practice/sse-vs-websockets-exercises.md",
-    "id": "card-102"
+    "id": "card-103"
   },
   {
     "question": "Your SSE stream stops after a few minutes in production. What do you check?",
@@ -2142,7 +2255,7 @@ window.PRACTICE_DATA = [
     "topic": "Sse Vs Websockets Exercises",
     "topicId": "sse-vs-websockets-exercises",
     "source": "practice/sse-vs-websockets-exercises.md",
-    "id": "card-103"
+    "id": "card-104"
   },
   {
     "question": "Describe the ASP.NET Core middleware pipeline for a request hitting an authenticated endpoint with custom exception handling.",
@@ -2166,7 +2279,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-104"
+    "id": "card-105"
   },
   {
     "question": "How do you implement API versioning and backward compatibility?",
@@ -2190,7 +2303,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-105"
+    "id": "card-106"
   },
   {
     "question": "Discuss strategies for rate limiting and request throttling.",
@@ -2214,7 +2327,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-106"
+    "id": "card-107"
   },
   {
     "question": "How would you log correlation IDs across services and propagate them to downstream dependencies?",
@@ -2238,7 +2351,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-107"
+    "id": "card-108"
   },
   {
     "question": "Explain the difference between Transient, Scoped, and Singleton dependency injection lifetimes.",
@@ -2279,7 +2392,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-108"
+    "id": "card-109"
   },
   {
     "question": "Create custom middleware that validates API keys from request headers.",
@@ -2299,7 +2412,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-109"
+    "id": "card-110"
   },
   {
     "question": "Implement global exception handling middleware that returns consistent error responses.",
@@ -2319,7 +2432,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-110"
+    "id": "card-111"
   },
   {
     "question": "Design a health check endpoint that verifies database connectivity, external API availability, and cache status.",
@@ -2339,7 +2452,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-111"
+    "id": "card-112"
   },
   {
     "question": "Implement request/response logging middleware with performance tracking.",
@@ -2359,7 +2472,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-112"
+    "id": "card-113"
   },
   {
     "question": "Create a minimal API health endpoint with dependency injection.",
@@ -2383,7 +2496,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-113"
+    "id": "card-114"
   },
   {
     "question": "Implement middleware that enforces request size limits and prevents large payload attacks.",
@@ -2403,7 +2516,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-114"
+    "id": "card-115"
   },
   {
     "question": "Design a dependency injection container configuration that uses factory patterns for complex object creation.",
@@ -2423,7 +2536,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-115"
+    "id": "card-116"
   },
   {
     "question": "Implement multi-tenant support using scoped service provider per tenant.",
@@ -2443,7 +2556,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-116"
+    "id": "card-117"
   },
   {
     "question": "Create request validation middleware using FluentValidation.",
@@ -2463,7 +2576,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-117"
+    "id": "card-118"
   },
   {
     "question": "Implement authentication with multiple schemes (JWT + API Key).",
@@ -2483,7 +2596,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-118"
+    "id": "card-119"
   },
   {
     "question": "Implement a custom rate limiting policy based on user subscription tier.",
@@ -2503,7 +2616,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-119"
+    "id": "card-120"
   },
   {
     "question": "Create a distributed rate limiter using Redis.",
@@ -2523,7 +2636,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-120"
+    "id": "card-121"
   },
   {
     "question": "Design an API gateway pattern that routes requests to different microservices based on path.",
@@ -2543,7 +2656,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-121"
+    "id": "card-122"
   },
   {
     "question": "Implement request deduplication middleware using distributed cache.",
@@ -2563,7 +2676,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-122"
+    "id": "card-123"
   },
   {
     "question": "Create a background service that performs periodic health checks on external dependencies.",
@@ -2583,7 +2696,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-123"
+    "id": "card-124"
   },
   {
     "question": "Implement resource-based authorization for multi-tenant applications.",
@@ -2603,7 +2716,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-124"
+    "id": "card-125"
   },
   {
     "question": "Implement CORS policy dynamically based on database configuration.",
@@ -2623,7 +2736,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-125"
+    "id": "card-126"
   },
   {
     "question": "Implement ETag support for GET endpoints with conditional requests.",
@@ -2643,7 +2756,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-126"
+    "id": "card-127"
   },
   {
     "question": "Enforce request body size limits for upload endpoints.",
@@ -2663,7 +2776,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-127"
+    "id": "card-128"
   },
   {
     "question": "Create a readiness endpoint that checks dependencies.",
@@ -2683,7 +2796,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-128"
+    "id": "card-129"
   },
   {
     "question": "Implement resource-based authorization with policies.",
@@ -2703,7 +2816,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-129"
+    "id": "card-130"
   },
   {
     "question": "Apply per-tenant rate limits with a custom policy.",
@@ -2731,7 +2844,7 @@ window.PRACTICE_DATA = [
     "topic": "Api Lifecycle",
     "topicId": "api-lifecycle",
     "source": "practice/sub-notes/api-lifecycle.md",
-    "id": "card-130"
+    "id": "card-131"
   },
   {
     "question": "Sketch code to call three REST endpoints concurrently, cancel if any take longer than 3 seconds, and aggregate results.",
@@ -2755,7 +2868,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-131"
+    "id": "card-132"
   },
   {
     "question": "Implement a resilient HTTP client with retry and circuit breaker policies using Polly.",
@@ -2779,7 +2892,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-132"
+    "id": "card-133"
   },
   {
     "question": "How would you handle backpressure when consuming a fast message queue with a slower downstream API?",
@@ -2803,7 +2916,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-133"
+    "id": "card-134"
   },
   {
     "question": "Explain why you might use SemaphoreSlim with async code over lock.",
@@ -2827,7 +2940,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-134"
+    "id": "card-135"
   },
   {
     "question": "Implement an async method that times out after a specified duration and returns a default value.",
@@ -2847,7 +2960,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-135"
+    "id": "card-136"
   },
   {
     "question": "Create a method that retries an operation with exponential backoff.",
@@ -2867,7 +2980,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-136"
+    "id": "card-137"
   },
   {
     "question": "Implement a method that processes items in batches with a maximum degree of parallelism.",
@@ -2887,7 +3000,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-137"
+    "id": "card-138"
   },
   {
     "question": "Create an async producer-consumer pattern using Channel<T>.",
@@ -2907,7 +3020,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-138"
+    "id": "card-139"
   },
   {
     "question": "Implement proper cancellation handling in an async method that makes multiple API calls.",
@@ -2927,7 +3040,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-139"
+    "id": "card-140"
   },
   {
     "question": "Implement an async lazy initialization pattern that ensures a resource is initialized only once.",
@@ -2947,7 +3060,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-140"
+    "id": "card-141"
   },
   {
     "question": "Create a rate limiter using SemaphoreSlim and Timer for token bucket algorithm.",
@@ -2967,7 +3080,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-141"
+    "id": "card-142"
   },
   {
     "question": "Implement async dispose pattern (IAsyncDisposable) for a resource that requires async cleanup.",
@@ -2987,7 +3100,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-142"
+    "id": "card-143"
   },
   {
     "question": "Create a circuit breaker implementation from scratch.",
@@ -3007,7 +3120,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-143"
+    "id": "card-144"
   },
   {
     "question": "Implement a parallel batch processor that maintains order of results.",
@@ -3027,7 +3140,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-144"
+    "id": "card-145"
   },
   {
     "question": "Implement a fan-out/fan-in pattern where multiple workers process items and results are aggregated.",
@@ -3047,7 +3160,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-145"
+    "id": "card-146"
   },
   {
     "question": "Create a coordinated shutdown mechanism for multiple background tasks.",
@@ -3067,7 +3180,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-146"
+    "id": "card-147"
   },
   {
     "question": "Implement async event aggregation that batches events before processing.",
@@ -3087,7 +3200,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-147"
+    "id": "card-148"
   },
   {
     "question": "Implement a bulkhead pattern to isolate failures.",
@@ -3107,7 +3220,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-148"
+    "id": "card-149"
   },
   {
     "question": "Create a fallback mechanism that returns cached data when an API call fails.",
@@ -3135,7 +3248,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Await Exercises",
     "topicId": "async-await-exercises",
     "source": "practice/sub-notes/async-await-exercises.md",
-    "id": "card-149"
+    "id": "card-150"
   },
   {
     "question": "Sketch code to call three REST endpoints concurrently, cancel if any take longer than 3 seconds, and aggregate results.",
@@ -3159,7 +3272,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-150"
+    "id": "card-151"
   },
   {
     "question": "Implement a resilient HTTP client with retry and circuit breaker policies using Polly.",
@@ -3183,7 +3296,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-151"
+    "id": "card-152"
   },
   {
     "question": "How would you handle backpressure when consuming a fast message queue with a slower downstream API?",
@@ -3207,7 +3320,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-152"
+    "id": "card-153"
   },
   {
     "question": "Explain why you might use SemaphoreSlim with async code over lock.",
@@ -3231,7 +3344,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-153"
+    "id": "card-154"
   },
   {
     "question": "Implement an async method that times out after a specified duration and returns a default value.",
@@ -3251,7 +3364,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-154"
+    "id": "card-155"
   },
   {
     "question": "Create a method that retries an operation with exponential backoff.",
@@ -3271,7 +3384,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-155"
+    "id": "card-156"
   },
   {
     "question": "Implement a method that processes items in batches with a maximum degree of parallelism.",
@@ -3291,7 +3404,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-156"
+    "id": "card-157"
   },
   {
     "question": "Create an async producer-consumer pattern using Channel<T>.",
@@ -3311,7 +3424,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-157"
+    "id": "card-158"
   },
   {
     "question": "Implement proper cancellation handling in an async method that makes multiple API calls.",
@@ -3331,7 +3444,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-158"
+    "id": "card-159"
   },
   {
     "question": "Implement an async lazy initialization pattern that ensures a resource is initialized only once.",
@@ -3351,7 +3464,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-159"
+    "id": "card-160"
   },
   {
     "question": "Create a rate limiter using SemaphoreSlim and Timer for token bucket algorithm.",
@@ -3371,7 +3484,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-160"
+    "id": "card-161"
   },
   {
     "question": "Implement async dispose pattern (IAsyncDisposable) for a resource that requires async cleanup.",
@@ -3391,7 +3504,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-161"
+    "id": "card-162"
   },
   {
     "question": "Create a circuit breaker implementation from scratch.",
@@ -3411,7 +3524,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-162"
+    "id": "card-163"
   },
   {
     "question": "Implement a parallel batch processor that maintains order of results.",
@@ -3431,7 +3544,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-163"
+    "id": "card-164"
   },
   {
     "question": "Implement a fan-out/fan-in pattern where multiple workers process items and results are aggregated.",
@@ -3451,7 +3564,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-164"
+    "id": "card-165"
   },
   {
     "question": "Create a coordinated shutdown mechanism for multiple background tasks.",
@@ -3471,7 +3584,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-165"
+    "id": "card-166"
   },
   {
     "question": "Implement async event aggregation that batches events before processing.",
@@ -3491,7 +3604,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-166"
+    "id": "card-167"
   },
   {
     "question": "Implement a bulkhead pattern to isolate failures.",
@@ -3511,7 +3624,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-167"
+    "id": "card-168"
   },
   {
     "question": "Create a fallback mechanism that returns cached data when an API call fails.",
@@ -3531,7 +3644,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-168"
+    "id": "card-169"
   },
   {
     "question": "Implement timeout policies for different types of operations (fast, medium, slow).",
@@ -3551,7 +3664,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-169"
+    "id": "card-170"
   },
   {
     "question": "Implement a download manager that downloads multiple files concurrently with progress reporting.",
@@ -3571,7 +3684,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-170"
+    "id": "card-171"
   },
   {
     "question": "How do you run tasks in parallel but keep partial results when some fail?",
@@ -3591,7 +3704,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-171"
+    "id": "card-172"
   },
   {
     "question": "Implement bounded parallelism using Parallel.ForEachAsync.",
@@ -3611,7 +3724,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-172"
+    "id": "card-173"
   },
   {
     "question": "Add jitter to retry backoff to avoid thundering herds.",
@@ -3631,7 +3744,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-173"
+    "id": "card-174"
   },
   {
     "question": "Stream results with IAsyncEnumerable and cancellation.",
@@ -3651,7 +3764,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-174"
+    "id": "card-175"
   },
   {
     "question": "Design a simple circuit breaker state machine.",
@@ -3679,7 +3792,7 @@ window.PRACTICE_DATA = [
     "topic": "Async Resilience",
     "topicId": "async-resilience",
     "source": "practice/sub-notes/async-resilience.md",
-    "id": "card-175"
+    "id": "card-176"
   },
   {
     "question": "Tell me about a time you improved reliability under tight deadlines.",
@@ -3693,7 +3806,7 @@ window.PRACTICE_DATA = [
     "topic": "Behavioral Questions",
     "topicId": "behavioral-questions",
     "source": "practice/sub-notes/behavioral-questions.md",
-    "id": "card-176"
+    "id": "card-177"
   },
   {
     "question": "Describe a time you pushed back on a requirement.",
@@ -3707,7 +3820,7 @@ window.PRACTICE_DATA = [
     "topic": "Behavioral Questions",
     "topicId": "behavioral-questions",
     "source": "practice/sub-notes/behavioral-questions.md",
-    "id": "card-177"
+    "id": "card-178"
   },
   {
     "question": "Share a story where you mentored a teammate.",
@@ -3721,7 +3834,7 @@ window.PRACTICE_DATA = [
     "topic": "Behavioral Questions",
     "topicId": "behavioral-questions",
     "source": "practice/sub-notes/behavioral-questions.md",
-    "id": "card-178"
+    "id": "card-179"
   },
   {
     "question": "Describe a time you resolved a production incident.",
@@ -3735,7 +3848,7 @@ window.PRACTICE_DATA = [
     "topic": "Behavioral Questions",
     "topicId": "behavioral-questions",
     "source": "practice/sub-notes/behavioral-questions.md",
-    "id": "card-179"
+    "id": "card-180"
   },
   {
     "question": "Tell me about a technical decision that you later reconsidered.",
@@ -3749,7 +3862,7 @@ window.PRACTICE_DATA = [
     "topic": "Behavioral Questions",
     "topicId": "behavioral-questions",
     "source": "practice/sub-notes/behavioral-questions.md",
-    "id": "card-180"
+    "id": "card-181"
   },
   {
     "question": "Describe a time you influenced without authority.",
@@ -3763,7 +3876,7 @@ window.PRACTICE_DATA = [
     "topic": "Behavioral Questions",
     "topicId": "behavioral-questions",
     "source": "practice/sub-notes/behavioral-questions.md",
-    "id": "card-181"
+    "id": "card-182"
   },
   {
     "question": "How do you handle competing priorities?",
@@ -3777,7 +3890,7 @@ window.PRACTICE_DATA = [
     "topic": "Behavioral Questions",
     "topicId": "behavioral-questions",
     "source": "practice/sub-notes/behavioral-questions.md",
-    "id": "card-182"
+    "id": "card-183"
   },
   {
     "question": "Tell me about a time you improved a process.",
@@ -3791,7 +3904,7 @@ window.PRACTICE_DATA = [
     "topic": "Behavioral Questions",
     "topicId": "behavioral-questions",
     "source": "practice/sub-notes/behavioral-questions.md",
-    "id": "card-183"
+    "id": "card-184"
   },
   {
     "question": "Describe a conflict that you resolved successfully.",
@@ -3805,7 +3918,7 @@ window.PRACTICE_DATA = [
     "topic": "Behavioral Questions",
     "topicId": "behavioral-questions",
     "source": "practice/sub-notes/behavioral-questions.md",
-    "id": "card-184"
+    "id": "card-185"
   },
   {
     "question": "Share a time you handled ambiguous requirements.",
@@ -3819,7 +3932,7 @@ window.PRACTICE_DATA = [
     "topic": "Behavioral Questions",
     "topicId": "behavioral-questions",
     "source": "practice/sub-notes/behavioral-questions.md",
-    "id": "card-185"
+    "id": "card-186"
   },
   {
     "question": "Implement a token bucket rate limiter (single-threaded).",
@@ -3839,7 +3952,7 @@ window.PRACTICE_DATA = [
     "topic": "Code Assessment",
     "topicId": "code-assessment",
     "source": "practice/sub-notes/code-assessment.md",
-    "id": "card-186"
+    "id": "card-187"
   },
   {
     "question": "Build a bounded in-memory queue with backpressure signals.",
@@ -3859,7 +3972,7 @@ window.PRACTICE_DATA = [
     "topic": "Code Assessment",
     "topicId": "code-assessment",
     "source": "practice/sub-notes/code-assessment.md",
-    "id": "card-187"
+    "id": "card-188"
   },
   {
     "question": "Implement a simple TTL cache with expiration.",
@@ -3879,7 +3992,7 @@ window.PRACTICE_DATA = [
     "topic": "Code Assessment",
     "topicId": "code-assessment",
     "source": "practice/sub-notes/code-assessment.md",
-    "id": "card-188"
+    "id": "card-189"
   },
   {
     "question": "Parse a CSV stream into records without loading the full file.",
@@ -3899,7 +4012,7 @@ window.PRACTICE_DATA = [
     "topic": "Code Assessment",
     "topicId": "code-assessment",
     "source": "practice/sub-notes/code-assessment.md",
-    "id": "card-189"
+    "id": "card-190"
   },
   {
     "question": "Compute a rolling VWAP from a stream of trades.",
@@ -3919,7 +4032,7 @@ window.PRACTICE_DATA = [
     "topic": "Code Assessment",
     "topicId": "code-assessment",
     "source": "practice/sub-notes/code-assessment.md",
-    "id": "card-190"
+    "id": "card-191"
   },
   {
     "question": "Explain the difference between value types and reference types with a simple example.",
@@ -3939,7 +4052,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-191"
+    "id": "card-192"
   },
   {
     "question": "When should you choose a struct over a class?",
@@ -3983,7 +4096,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-192"
+    "id": "card-193"
   },
   {
     "question": "Demonstrate how to reduce copying with in parameters.",
@@ -4027,7 +4140,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-193"
+    "id": "card-194"
   },
   {
     "question": "What is defensive programming?",
@@ -4054,7 +4167,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-194"
+    "id": "card-195"
   },
   {
     "question": "Show how nullable reference types prevent null bugs.",
@@ -4086,7 +4199,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-195"
+    "id": "card-196"
   },
   {
     "question": "Write a guard clause extension for argument validation.",
@@ -4106,7 +4219,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-196"
+    "id": "card-197"
   },
   {
     "question": "Implement a generic method with a constraint for a parameterless constructor.",
@@ -4126,7 +4239,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-197"
+    "id": "card-198"
   },
   {
     "question": "Write a repository interface with type constraints.",
@@ -4146,7 +4259,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-198"
+    "id": "card-199"
   },
   {
     "question": "Show a simple event pattern with EventHandler<T>.",
@@ -4166,7 +4279,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-199"
+    "id": "card-200"
   },
   {
     "question": "When would you prefer Func<T> over a custom delegate type?",
@@ -4186,7 +4299,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-200"
+    "id": "card-201"
   },
   {
     "question": "Use pattern matching to categorize input.",
@@ -4206,7 +4319,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-201"
+    "id": "card-202"
   },
   {
     "question": "Create a record and use with to clone it.",
@@ -4226,7 +4339,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-202"
+    "id": "card-203"
   },
   {
     "question": "Show how to throw and wrap exceptions with context.",
@@ -4246,7 +4359,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-203"
+    "id": "card-204"
   },
   {
     "question": "Summarize access modifiers and demonstrate a safe class design.",
@@ -4266,7 +4379,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-204"
+    "id": "card-205"
   },
   {
     "question": "Demonstrate inheritance with a base order type and a specialized derived type.",
@@ -4286,7 +4399,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-205"
+    "id": "card-206"
   },
   {
     "question": "Show polymorphism by swapping fee calculators via an interface.",
@@ -4306,7 +4419,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-206"
+    "id": "card-207"
   },
   {
     "question": "Use abstraction to define a minimal contract for a price feed.",
@@ -4326,7 +4439,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-207"
+    "id": "card-208"
   },
   {
     "question": "When should you prefer composition over inheritance?",
@@ -4340,7 +4453,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-208"
+    "id": "card-209"
   },
   {
     "question": "Show object and collection initialization with target-typed new.",
@@ -4368,7 +4481,7 @@ window.PRACTICE_DATA = [
     "topic": "Csharp Fundamentals",
     "topicId": "csharp-fundamentals",
     "source": "practice/sub-notes/csharp-fundamentals.md",
-    "id": "card-209"
+    "id": "card-210"
   },
   {
     "question": "Write a SQL query to calculate the rolling 7-day trade volume per instrument.",
@@ -4392,7 +4505,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-210"
+    "id": "card-211"
   },
   {
     "question": "Explain how you would choose between normalized schemas and denormalized tables for reporting.",
@@ -4406,7 +4519,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-211"
+    "id": "card-212"
   },
   {
     "question": "Describe the differences between clustered and non-clustered indexes and when to use covering indexes.",
@@ -4430,7 +4543,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-212"
+    "id": "card-213"
   },
   {
     "question": "Walk through handling a long-running report query that impacts OLTP performance.",
@@ -4444,7 +4557,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-213"
+    "id": "card-214"
   },
   {
     "question": "Configure a many-to-many relationship with a junction table containing additional properties.",
@@ -4464,7 +4577,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-214"
+    "id": "card-215"
   },
   {
     "question": "Implement soft delete with global query filters.",
@@ -4484,7 +4597,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-215"
+    "id": "card-216"
   },
   {
     "question": "Implement optimistic concurrency control using row versioning.",
@@ -4504,7 +4617,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-216"
+    "id": "card-217"
   },
   {
     "question": "Configure table splitting to map multiple entities to a single table.",
@@ -4524,7 +4637,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-217"
+    "id": "card-218"
   },
   {
     "question": "Implement audit trail using change tracking.",
@@ -4544,7 +4657,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-218"
+    "id": "card-219"
   },
   {
     "question": "Implement repository pattern with specification pattern for complex queries.",
@@ -4564,7 +4677,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-219"
+    "id": "card-220"
   },
   {
     "question": "Implement Unit of Work pattern for transaction management.",
@@ -4584,7 +4697,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-220"
+    "id": "card-221"
   },
   {
     "question": "Implement custom value converter for complex types.",
@@ -4604,7 +4717,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-221"
+    "id": "card-222"
   },
   {
     "question": "Optimize a query with multiple joins and aggregations.",
@@ -4624,7 +4737,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-222"
+    "id": "card-223"
   },
   {
     "question": "Implement pagination efficiently for large datasets.",
@@ -4644,7 +4757,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-223"
+    "id": "card-224"
   },
   {
     "question": "Optimize EXISTS vs IN vs JOIN.",
@@ -4664,7 +4777,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-224"
+    "id": "card-225"
   },
   {
     "question": "Use window functions for ranking and percentiles.",
@@ -4684,7 +4797,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-225"
+    "id": "card-226"
   },
   {
     "question": "Design composite index for a multi-column WHERE clause.",
@@ -4704,7 +4817,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-226"
+    "id": "card-227"
   },
   {
     "question": "Identify and remove unused or duplicate indexes.",
@@ -4724,7 +4837,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-227"
+    "id": "card-228"
   },
   {
     "question": "Implement filtered index for specific query patterns.",
@@ -4744,7 +4857,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-228"
+    "id": "card-229"
   },
   {
     "question": "Implement distributed transaction across multiple databases.",
@@ -4764,7 +4877,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-229"
+    "id": "card-230"
   },
   {
     "question": "Handle deadlocks with retry logic.",
@@ -4784,7 +4897,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-230"
+    "id": "card-231"
   },
   {
     "question": "Implement pessimistic locking for critical sections.",
@@ -4804,7 +4917,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-231"
+    "id": "card-232"
   },
   {
     "question": "Create a data migration to transform existing records.",
@@ -4824,7 +4937,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-232"
+    "id": "card-233"
   },
   {
     "question": "Implement zero-downtime deployment with backward-compatible migrations.",
@@ -4844,7 +4957,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-233"
+    "id": "card-234"
   },
   {
     "question": "Use Dapper for high-performance bulk operations.",
@@ -4864,7 +4977,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-234"
+    "id": "card-235"
   },
   {
     "question": "Combine EF Core and Dapper for optimal performance.",
@@ -4884,7 +4997,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-235"
+    "id": "card-236"
   },
   {
     "question": "Implement optimistic concurrency control with a row version column.",
@@ -4904,7 +5017,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-236"
+    "id": "card-237"
   },
   {
     "question": "Implement soft delete with a global query filter.",
@@ -4924,7 +5037,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-237"
+    "id": "card-238"
   },
   {
     "question": "Create efficient pagination for large datasets.",
@@ -4944,7 +5057,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-238"
+    "id": "card-239"
   },
   {
     "question": "Compare isolation levels for read/write workloads.",
@@ -4958,7 +5071,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-239"
+    "id": "card-240"
   },
   {
     "question": "Diagnose a slow query regression.",
@@ -4980,7 +5093,7 @@ window.PRACTICE_DATA = [
     "topic": "Data Layer",
     "topicId": "data-layer",
     "source": "practice/sub-notes/data-layer.md",
-    "id": "card-240"
+    "id": "card-241"
   },
   {
     "question": "Given a list of trades with timestamps, return the latest trade per account using LINQ.",
@@ -5004,7 +5117,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-241"
+    "id": "card-242"
   },
   {
     "question": "Implement a method that flattens nested lists of instrument codes while preserving ordering.",
@@ -5028,7 +5141,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-242"
+    "id": "card-243"
   },
   {
     "question": "Explain the difference between SelectMany and nested loops. When is each preferable?",
@@ -5052,7 +5165,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-243"
+    "id": "card-244"
   },
   {
     "question": "How would you detect duplicate orders in a stream using GroupBy and produce a summary?",
@@ -5076,7 +5189,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-244"
+    "id": "card-245"
   },
   {
     "question": "Find all customers who have placed orders in the last 30 days and calculate their total order value.",
@@ -5096,7 +5209,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-245"
+    "id": "card-246"
   },
   {
     "question": "Given two lists (products and categories), perform a left join to get all products with their category names (null if no category).",
@@ -5116,7 +5229,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-246"
+    "id": "card-247"
   },
   {
     "question": "Implement a LINQ query to find the top 5 most expensive products in each category.",
@@ -5136,7 +5249,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-247"
+    "id": "card-248"
   },
   {
     "question": "Find all pairs of employees who work in the same department (avoid duplicates like (A,B) and (B,A)).",
@@ -5156,7 +5269,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-248"
+    "id": "card-249"
   },
   {
     "question": "Calculate running totals for daily sales.",
@@ -5176,7 +5289,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-249"
+    "id": "card-250"
   },
   {
     "question": "Implement a custom LINQ extension method DistinctBy that takes a key selector.",
@@ -5196,7 +5309,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-250"
+    "id": "card-251"
   },
   {
     "question": "Write a LINQ query to find all employees whose salary is above the average salary in their department.",
@@ -5216,7 +5329,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-251"
+    "id": "card-252"
   },
   {
     "question": "Implement pagination with LINQ (Skip/Take) and explain potential issues with IQueryable vs IEnumerable.",
@@ -5249,7 +5362,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-252"
+    "id": "card-253"
   },
   {
     "question": "Write a LINQ query to pivot data (convert rows to columns).",
@@ -5269,7 +5382,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-253"
+    "id": "card-254"
   },
   {
     "question": "Implement a LINQ query with multiple grouping levels (hierarchical grouping).",
@@ -5289,7 +5402,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-254"
+    "id": "card-255"
   },
   {
     "question": "Find all consecutive sequences of at least 3 days where sales exceeded $10,000.",
@@ -5309,7 +5422,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-255"
+    "id": "card-256"
   },
   {
     "question": "Explain deferred execution and when it can cause performance issues.",
@@ -5329,7 +5442,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-256"
+    "id": "card-257"
   },
   {
     "question": "Compare the performance implications of Count() vs Any() for checking if a collection has items.",
@@ -5349,7 +5462,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-257"
+    "id": "card-258"
   },
   {
     "question": "Identify and fix performance issues in this query.",
@@ -5375,7 +5488,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-258"
+    "id": "card-259"
   },
   {
     "question": "Write a LINQ query that uses AsParallel appropriately for CPU-bound operations.",
@@ -5395,7 +5508,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-259"
+    "id": "card-260"
   },
   {
     "question": "When should you use List<T> vs IEnumerable<T> as a return type?",
@@ -5415,7 +5528,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-260"
+    "id": "card-261"
   },
   {
     "question": "Implement a LookupTable using ToLookup and explain when to use it vs GroupBy.",
@@ -5435,7 +5548,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-261"
+    "id": "card-262"
   },
   {
     "question": "Use Zip to combine two sequences and explain its behavior when sequences have different lengths.",
@@ -5455,7 +5568,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-262"
+    "id": "card-263"
   },
   {
     "question": "Implement a method that chunks a collection into batches of N items.",
@@ -5475,7 +5588,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-263"
+    "id": "card-264"
   },
   {
     "question": "You need to merge data from multiple sources (database, API, cache) and remove duplicates. Implement this efficiently.",
@@ -5495,7 +5608,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-264"
+    "id": "card-265"
   },
   {
     "question": "Implement a search feature with multiple optional filters (name, category, price range, tags).",
@@ -5515,7 +5628,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-265"
+    "id": "card-266"
   },
   {
     "question": "Calculate month-over-month growth percentage for sales data.",
@@ -5535,7 +5648,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-266"
+    "id": "card-267"
   },
   {
     "question": "Implement an expression builder that allows dynamic LINQ query construction from user input.",
@@ -5555,7 +5668,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-267"
+    "id": "card-268"
   },
   {
     "question": "Implement a method that finds all possible combinations of products that sum to a target price (subset sum problem).",
@@ -5575,7 +5688,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-268"
+    "id": "card-269"
   },
   {
     "question": "Use GroupJoin to build a customer summary with order counts and last order date.",
@@ -5595,7 +5708,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-269"
+    "id": "card-270"
   },
   {
     "question": "Implement Distinct with a custom comparer for case-insensitive strings.",
@@ -5615,7 +5728,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-270"
+    "id": "card-271"
   },
   {
     "question": "Convert a list to a dictionary safely when keys can repeat.",
@@ -5635,7 +5748,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-271"
+    "id": "card-272"
   },
   {
     "question": "Use Select with index to assign ranks within a sorted sequence.",
@@ -5655,7 +5768,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-272"
+    "id": "card-273"
   },
   {
     "question": "Split a sequence into a prefix and the remaining items using TakeWhile and SkipWhile.",
@@ -5683,7 +5796,7 @@ window.PRACTICE_DATA = [
     "topic": "Linq Collections",
     "topicId": "linq-collections",
     "source": "practice/sub-notes/linq-collections.md",
-    "id": "card-273"
+    "id": "card-274"
   },
   {
     "question": "Compare RabbitMQ and ZeroMQ for distributing price updates. When would you choose one over the other?",
@@ -5697,7 +5810,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-274"
+    "id": "card-275"
   },
   {
     "question": "Explain how to ensure at-least-once delivery with RabbitMQ while preventing duplicate processing.",
@@ -5721,7 +5834,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-275"
+    "id": "card-276"
   },
   {
     "question": "How would you design a saga pattern to coordinate account funding across multiple services?",
@@ -5745,7 +5858,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-276"
+    "id": "card-277"
   },
   {
     "question": "Discuss the outbox pattern and how it prevents message loss in event-driven systems.",
@@ -5769,7 +5882,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-277"
+    "id": "card-278"
   },
   {
     "question": "Implement a publisher with confirmation to ensure messages are persisted.",
@@ -5789,7 +5902,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-278"
+    "id": "card-279"
   },
   {
     "question": "Implement a resilient consumer with retry logic and dead letter queue.",
@@ -5809,7 +5922,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-279"
+    "id": "card-280"
   },
   {
     "question": "Implement priority queue pattern for urgent messages.",
@@ -5829,7 +5942,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-280"
+    "id": "card-281"
   },
   {
     "question": "Implement Kafka producer with idempotent writes and transactions.",
@@ -5849,7 +5962,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-281"
+    "id": "card-282"
   },
   {
     "question": "Implement Kafka consumer with manual offset management and exactly-once processing.",
@@ -5869,7 +5982,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-282"
+    "id": "card-283"
   },
   {
     "question": "Implement Kafka consumer group rebalancing with state management.",
@@ -5889,7 +6002,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-283"
+    "id": "card-284"
   },
   {
     "question": "Implement orchestration-based saga for order processing.",
@@ -5909,7 +6022,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-284"
+    "id": "card-285"
   },
   {
     "question": "Implement choreography-based saga using events.",
@@ -5929,7 +6042,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-285"
+    "id": "card-286"
   },
   {
     "question": "Implement transactional outbox pattern with background processor.",
@@ -5949,7 +6062,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-286"
+    "id": "card-287"
   },
   {
     "question": "Implement idempotency using distributed cache.",
@@ -5969,7 +6082,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-287"
+    "id": "card-288"
   },
   {
     "question": "Implement event store with snapshots for performance.",
@@ -5989,7 +6102,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-288"
+    "id": "card-289"
   },
   {
     "question": "How do you handle poison messages without blocking a queue?",
@@ -6009,7 +6122,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-289"
+    "id": "card-290"
   },
   {
     "question": "Describe an idempotency strategy for message consumers.",
@@ -6029,7 +6142,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-290"
+    "id": "card-291"
   },
   {
     "question": "How would you preserve ordering for a specific key in Kafka?",
@@ -6043,7 +6156,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-291"
+    "id": "card-292"
   },
   {
     "question": "How do you evolve a message schema safely?",
@@ -6057,7 +6170,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-292"
+    "id": "card-293"
   },
   {
     "question": "Implement a retry policy with exponential backoff and max delay.",
@@ -6085,7 +6198,7 @@ window.PRACTICE_DATA = [
     "topic": "Messaging Integration",
     "topicId": "messaging-integration",
     "source": "practice/sub-notes/messaging-integration.md",
-    "id": "card-293"
+    "id": "card-294"
   },
   {
     "question": "When should you use ArrayPool<T>?",
@@ -6105,7 +6218,7 @@ window.PRACTICE_DATA = [
     "topic": "Performance Memory",
     "topicId": "performance-memory",
     "source": "practice/sub-notes/performance-memory.md",
-    "id": "card-294"
+    "id": "card-295"
   },
   {
     "question": "Show how Span<T> can avoid allocations when parsing.",
@@ -6125,7 +6238,7 @@ window.PRACTICE_DATA = [
     "topic": "Performance Memory",
     "topicId": "performance-memory",
     "source": "practice/sub-notes/performance-memory.md",
-    "id": "card-295"
+    "id": "card-296"
   },
   {
     "question": "When would you use ValueTask instead of Task?",
@@ -6139,7 +6252,7 @@ window.PRACTICE_DATA = [
     "topic": "Performance Memory",
     "topicId": "performance-memory",
     "source": "practice/sub-notes/performance-memory.md",
-    "id": "card-296"
+    "id": "card-297"
   },
   {
     "question": "Why is string concatenation in a loop expensive, and how do you fix it?",
@@ -6159,7 +6272,7 @@ window.PRACTICE_DATA = [
     "topic": "Performance Memory",
     "topicId": "performance-memory",
     "source": "practice/sub-notes/performance-memory.md",
-    "id": "card-297"
+    "id": "card-298"
   },
   {
     "question": "How do closures create hidden allocations?",
@@ -6192,7 +6305,7 @@ window.PRACTICE_DATA = [
     "topic": "Performance Memory",
     "topicId": "performance-memory",
     "source": "practice/sub-notes/performance-memory.md",
-    "id": "card-298"
+    "id": "card-299"
   },
   {
     "question": "Design a service that ingests MT5 tick data, normalizes it, caches latest prices, and exposes them via REST/WebSocket.",
@@ -6216,7 +6329,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-299"
+    "id": "card-300"
   },
   {
     "question": "Design an API that receives orders, validates, routes to MT4/MT5, and confirms execution. Include failure recovery.",
@@ -6240,7 +6353,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-300"
+    "id": "card-301"
   },
   {
     "question": "Architect a system to collect metrics from trading microservices and alert on anomalies.",
@@ -6264,7 +6377,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-301"
+    "id": "card-302"
   },
   {
     "question": "Discuss how you would integrate an external risk management engine into an existing microservices ecosystem.",
@@ -6288,7 +6401,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-302"
+    "id": "card-303"
   },
   {
     "question": "Design a microservices architecture for an e-commerce platform with orders, inventory, payments, and shipping.",
@@ -6318,7 +6431,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-303"
+    "id": "card-304"
   },
   {
     "question": "Design service-to-service communication strategy: when to use sync vs async?",
@@ -6338,7 +6451,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-304"
+    "id": "card-305"
   },
   {
     "question": "Implement service discovery pattern for dynamic service registration.",
@@ -6358,7 +6471,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-305"
+    "id": "card-306"
   },
   {
     "question": "Implement CQRS pattern for an order management system.",
@@ -6378,7 +6491,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-306"
+    "id": "card-307"
   },
   {
     "question": "Design event sourcing system for account transactions.",
@@ -6398,7 +6511,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-307"
+    "id": "card-308"
   },
   {
     "question": "Design a multi-layer caching strategy (L1: in-memory, L2: Redis, L3: database).",
@@ -6418,7 +6531,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-308"
+    "id": "card-309"
   },
   {
     "question": "Implement cache invalidation strategy for distributed systems.",
@@ -6438,7 +6551,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-309"
+    "id": "card-310"
   },
   {
     "question": "Design read replica strategy for handling high read traffic.",
@@ -6458,7 +6571,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-310"
+    "id": "card-311"
   },
   {
     "question": "Design database sharding strategy for multi-tenant application.",
@@ -6478,7 +6591,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-311"
+    "id": "card-312"
   },
   {
     "question": "Design circuit breaker pattern for external API calls.",
@@ -6498,7 +6611,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-312"
+    "id": "card-313"
   },
   {
     "question": "Implement health check aggregator for microservices.",
@@ -6518,7 +6631,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-313"
+    "id": "card-314"
   },
   {
     "question": "Design distributed tracing system using OpenTelemetry.",
@@ -6538,7 +6651,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-314"
+    "id": "card-315"
   },
   {
     "question": "Implement centralized logging with correlation IDs.",
@@ -6558,7 +6671,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-315"
+    "id": "card-316"
   },
   {
     "question": "Design a multi-region failover strategy for a trading platform.",
@@ -6576,7 +6689,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-316"
+    "id": "card-317"
   },
   {
     "question": "How would you shard a multi-tenant database for scale?",
@@ -6594,7 +6707,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-317"
+    "id": "card-318"
   },
   {
     "question": "Describe a cache invalidation strategy for price snapshots.",
@@ -6612,7 +6725,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-318"
+    "id": "card-319"
   },
   {
     "question": "When would you use event sourcing versus state storage?",
@@ -6630,7 +6743,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-319"
+    "id": "card-320"
   },
   {
     "question": "How do you handle backpressure in a streaming system?",
@@ -6656,7 +6769,7 @@ window.PRACTICE_DATA = [
     "topic": "System Design",
     "topicId": "system-design",
     "source": "practice/sub-notes/system-design.md",
-    "id": "card-320"
+    "id": "card-321"
   },
   {
     "question": "Describe the lifecycle of a forex trade from placement to settlement.",
@@ -6670,7 +6783,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-321"
+    "id": "card-322"
   },
   {
     "question": "How would you integrate with MT4/MT5 APIs for trade execution in C#? Mention authentication, session management, and error handling.",
@@ -6690,7 +6803,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-322"
+    "id": "card-323"
   },
   {
     "question": "What are common risk checks before executing a client order (e.g., margin, exposure limits)?",
@@ -6704,7 +6817,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-323"
+    "id": "card-324"
   },
   {
     "question": "Explain how you'd handle market data bursts without dropping updates.",
@@ -6718,7 +6831,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-324"
+    "id": "card-325"
   },
   {
     "question": "Implement order validation pipeline with multiple risk checks.",
@@ -6738,7 +6851,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-325"
+    "id": "card-326"
   },
   {
     "question": "Design state machine for order lifecycle tracking.",
@@ -6758,7 +6871,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-326"
+    "id": "card-327"
   },
   {
     "question": "Implement order reconciliation to detect missing confirmations.",
@@ -6778,7 +6891,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-327"
+    "id": "card-328"
   },
   {
     "question": "Implement MT5 Gateway with connection pooling and failover.",
@@ -6798,7 +6911,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-328"
+    "id": "card-329"
   },
   {
     "question": "Handle MT5 error codes and map to domain exceptions.",
@@ -6818,7 +6931,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-329"
+    "id": "card-330"
   },
   {
     "question": "Implement high-frequency tick data processor with conflation.",
@@ -6838,7 +6951,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-330"
+    "id": "card-331"
   },
   {
     "question": "Implement VWAP (Volume-Weighted Average Price) calculator.",
@@ -6858,7 +6971,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-331"
+    "id": "card-332"
   },
   {
     "question": "Implement real-time P&L calculator for open positions.",
@@ -6878,7 +6991,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-332"
+    "id": "card-333"
   },
   {
     "question": "Implement margin calculator with different leverage levels.",
@@ -6898,7 +7011,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-333"
+    "id": "card-334"
   },
   {
     "question": "Implement automatic stop-out mechanism.",
@@ -6918,7 +7031,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-334"
+    "id": "card-335"
   },
   {
     "question": "Explain slippage and how you would measure it.",
@@ -6932,7 +7045,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-335"
+    "id": "card-336"
   },
   {
     "question": "How do you handle market data bursts without dropping critical updates?",
@@ -6946,7 +7059,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-336"
+    "id": "card-337"
   },
   {
     "question": "Design an order book snapshot + delta model.",
@@ -6960,7 +7073,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-337"
+    "id": "card-338"
   },
   {
     "question": "Implement a real-time PnL calculation at the account level.",
@@ -6974,7 +7087,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-338"
+    "id": "card-339"
   },
   {
     "question": "Describe a reconciliation workflow for executed trades.",
@@ -6996,7 +7109,7 @@ window.PRACTICE_DATA = [
     "topic": "Trading Domain",
     "topicId": "trading-domain",
     "source": "practice/sub-notes/trading-domain.md",
-    "id": "card-339"
+    "id": "card-340"
   },
   {
     "question": "Explain the difference between a modular monolith and microservices.",
@@ -7010,7 +7123,7 @@ window.PRACTICE_DATA = [
     "topic": "System Architecture Exercises",
     "topicId": "system-architecture-exercises",
     "source": "practice/system-architecture-exercises.md",
-    "id": "card-340"
+    "id": "card-341"
   },
   {
     "question": "You are a 6-person team building a trading platform MVP. Which architecture should you start with and why?",
@@ -7024,7 +7137,7 @@ window.PRACTICE_DATA = [
     "topic": "System Architecture Exercises",
     "topicId": "system-architecture-exercises",
     "source": "practice/system-architecture-exercises.md",
-    "id": "card-341"
+    "id": "card-342"
   },
   {
     "question": "You need to process millions of price ticks per second and fan out to multiple consumers. Which system style fits best?",
@@ -7038,7 +7151,7 @@ window.PRACTICE_DATA = [
     "topic": "System Architecture Exercises",
     "topicId": "system-architecture-exercises",
     "source": "practice/system-architecture-exercises.md",
-    "id": "card-342"
+    "id": "card-343"
   },
   {
     "question": "Sketch a high-level system architecture for an order execution system using microservices.",
@@ -7058,7 +7171,7 @@ window.PRACTICE_DATA = [
     "topic": "System Architecture Exercises",
     "topicId": "system-architecture-exercises",
     "source": "practice/system-architecture-exercises.md",
-    "id": "card-343"
+    "id": "card-344"
   },
   {
     "question": "Explain how you would enforce data ownership in microservices.",
@@ -7072,7 +7185,7 @@ window.PRACTICE_DATA = [
     "topic": "System Architecture Exercises",
     "topicId": "system-architecture-exercises",
     "source": "practice/system-architecture-exercises.md",
-    "id": "card-344"
+    "id": "card-345"
   },
   {
     "question": "Describe how you would implement an outbox pattern to keep DB and events consistent.",
@@ -7086,7 +7199,7 @@ window.PRACTICE_DATA = [
     "topic": "System Architecture Exercises",
     "topicId": "system-architecture-exercises",
     "source": "practice/system-architecture-exercises.md",
-    "id": "card-345"
+    "id": "card-346"
   },
   {
     "question": "What operational capabilities do you need before moving to microservices?",
@@ -7100,7 +7213,7 @@ window.PRACTICE_DATA = [
     "topic": "System Architecture Exercises",
     "topicId": "system-architecture-exercises",
     "source": "practice/system-architecture-exercises.md",
-    "id": "card-346"
+    "id": "card-347"
   },
   {
     "question": "Where does a micro-kernel architecture make sense in trading systems?",
@@ -7114,7 +7227,7 @@ window.PRACTICE_DATA = [
     "topic": "System Architecture Exercises",
     "topicId": "system-architecture-exercises",
     "source": "practice/system-architecture-exercises.md",
-    "id": "card-347"
+    "id": "card-348"
   },
   {
     "question": "You are asked to move a trading system to microservices but latency is critical. How do you respond?",
@@ -7132,7 +7245,7 @@ window.PRACTICE_DATA = [
     "topic": "System Architecture Exercises",
     "topicId": "system-architecture-exercises",
     "source": "practice/system-architecture-exercises.md",
-    "id": "card-348"
+    "id": "card-349"
   },
   {
     "question": "Do some frontend + backend stacks pair naturally? Why?",
@@ -7146,7 +7259,7 @@ window.PRACTICE_DATA = [
     "topic": "Index",
     "topicId": "index",
     "source": "practice/Tech-Stacks/Stack-Pairings/index.md",
-    "id": "card-349"
+    "id": "card-350"
   },
   {
     "question": "What are the three main reasons “natural pairings” happen?",
@@ -7160,7 +7273,7 @@ window.PRACTICE_DATA = [
     "topic": "Index",
     "topicId": "index",
     "source": "practice/Tech-Stacks/Stack-Pairings/index.md",
-    "id": "card-350"
+    "id": "card-351"
   },
   {
     "question": "Give the ultra-short interview answer (10 seconds).",
@@ -7174,7 +7287,7 @@ window.PRACTICE_DATA = [
     "topic": "Index",
     "topicId": "index",
     "source": "practice/Tech-Stacks/Stack-Pairings/index.md",
-    "id": "card-351"
+    "id": "card-352"
   },
   {
     "question": "Why is Angular + .NET a common enterprise pairing?",
@@ -7188,7 +7301,7 @@ window.PRACTICE_DATA = [
     "topic": "Index",
     "topicId": "index",
     "source": "practice/Tech-Stacks/Stack-Pairings/index.md",
-    "id": "card-352"
+    "id": "card-353"
   },
   {
     "question": "What’s a typical Angular + .NET stack?",
@@ -7202,7 +7315,7 @@ window.PRACTICE_DATA = [
     "topic": "Index",
     "topicId": "index",
     "source": "practice/Tech-Stacks/Stack-Pairings/index.md",
-    "id": "card-353"
+    "id": "card-354"
   },
   {
     "question": "Give an “interview sentence” for Angular + .NET.",
@@ -7216,7 +7329,7 @@ window.PRACTICE_DATA = [
     "topic": "Index",
     "topicId": "index",
     "source": "practice/Tech-Stacks/Stack-Pairings/index.md",
-    "id": "card-354"
+    "id": "card-355"
   },
   {
     "question": "Why is React + .NET a common pairing today?",
@@ -7230,7 +7343,7 @@ window.PRACTICE_DATA = [
     "topic": "Index",
     "topicId": "index",
     "source": "practice/Tech-Stacks/Stack-Pairings/index.md",
-    "id": "card-355"
+    "id": "card-356"
   },
   {
     "question": "What’s a typical React + .NET stack?",
@@ -7244,7 +7357,7 @@ window.PRACTICE_DATA = [
     "topic": "Index",
     "topicId": "index",
     "source": "practice/Tech-Stacks/Stack-Pairings/index.md",
-    "id": "card-356"
+    "id": "card-357"
   },
   {
     "question": "Why is React + Node.js such a common pairing?",
@@ -7258,7 +7371,7 @@ window.PRACTICE_DATA = [
     "topic": "Index",
     "topicId": "index",
     "source": "practice/Tech-Stacks/Stack-Pairings/index.md",
-    "id": "card-357"
+    "id": "card-358"
   },
   {
     "question": "What’s the main trade-off you should mention for Node.js backends?",
@@ -7272,7 +7385,7 @@ window.PRACTICE_DATA = [
     "topic": "Index",
     "topicId": "index",
     "source": "practice/Tech-Stacks/Stack-Pairings/index.md",
-    "id": "card-358"
+    "id": "card-359"
   },
   {
     "question": "Why do teams pair React with Go?",
@@ -7286,7 +7399,7 @@ window.PRACTICE_DATA = [
     "topic": "Index",
     "topicId": "index",
     "source": "practice/Tech-Stacks/Stack-Pairings/index.md",
-    "id": "card-359"
+    "id": "card-360"
   },
   {
     "question": "What does “backend-first pairing” mean?",
@@ -7300,7 +7413,7 @@ window.PRACTICE_DATA = [
     "topic": "Index",
     "topicId": "index",
     "source": "practice/Tech-Stacks/Stack-Pairings/index.md",
-    "id": "card-360"
+    "id": "card-361"
   },
   {
     "question": "Fill in the table of common backend-first pairings.",
@@ -7349,7 +7462,7 @@ window.PRACTICE_DATA = [
     "topic": "Index",
     "topicId": "index",
     "source": "practice/Tech-Stacks/Stack-Pairings/index.md",
-    "id": "card-361"
+    "id": "card-362"
   },
   {
     "question": "You’re building a real-time trading dashboard (live prices + execution updates). What pairing do you choose and why?",
@@ -7363,7 +7476,7 @@ window.PRACTICE_DATA = [
     "topic": "Index",
     "topicId": "index",
     "source": "practice/Tech-Stacks/Stack-Pairings/index.md",
-    "id": "card-362"
+    "id": "card-363"
   },
   {
     "question": "You need to ship an internal CRUD tool fast with a small team. What pairing do you choose?",
@@ -7377,7 +7490,7 @@ window.PRACTICE_DATA = [
     "topic": "Index",
     "topicId": "index",
     "source": "practice/Tech-Stacks/Stack-Pairings/index.md",
-    "id": "card-363"
+    "id": "card-364"
   },
   {
     "question": "You have CPU-heavy pricing/analytics logic. How do you describe your stack choice?",
@@ -7391,7 +7504,7 @@ window.PRACTICE_DATA = [
     "topic": "Index",
     "topicId": "index",
     "source": "practice/Tech-Stacks/Stack-Pairings/index.md",
-    "id": "card-364"
+    "id": "card-365"
   },
   {
     "question": "Give a 1-minute whiteboard answer to “Do some stacks work better together?”",
@@ -7405,6 +7518,6 @@ window.PRACTICE_DATA = [
     "topic": "Index",
     "topicId": "index",
     "source": "practice/Tech-Stacks/Stack-Pairings/index.md",
-    "id": "card-365"
+    "id": "card-366"
   }
 ];
