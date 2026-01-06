@@ -1,10 +1,11 @@
 # Practice Exercises - Index
 
 A structured map of practice materials that mirrors the notes folder layout.
+Numbered sections move from foundations to advanced drills.
 
 ---
 
-## Start Here
+## 1. Start Here
 
 - [Core Concepts Hub](core-concepts.md)
 - [SOLID Principles](SOLID/index.md)
@@ -15,7 +16,7 @@ A structured map of practice materials that mirrors the notes folder layout.
 
 ---
 
-## Architecture and Design
+## 2. Architecture and Design
 
 - [Clean Architecture](Clean-Architecture/index.md)
 - [Solution Architecture Exercises](solution-architecture-exercises.md)
@@ -25,33 +26,33 @@ A structured map of practice materials that mirrors the notes folder layout.
 
 ---
 
-## Libraries and Tooling
+## 3. Libraries and Tooling
 
 - [AutoMapper](Automapper/index.md)
 - [FluentValidation](FluentValidation/index.md)
 
 ---
 
-## Tech Stacks
+## 4. Tech Stacks
 
 - [Tech Stacks](Tech-Stacks/index.md)
 
 ---
 
-## Performance
+## 5. Performance
 
 - [Memory Allocation Discipline](Memory-Allocation-Discipline/index.md)
 - [Big-O Complexity](Big-O-Complexity/index.md)
 
 ---
 
-## Use Cases
+## 6. Use Cases
 
 - [Massive Traffic Scenarios](Use-Cases/massive-traffic/index.md)
 
 ---
 
-## Deep Dives (Sub-Notes)
+## 7. Deep Dives (Advanced Sub-Notes)
 
 - [Async/Await Exercises](sub-notes/async-await-exercises.md)
 - [API Lifecycle](sub-notes/api-lifecycle.md)
@@ -63,7 +64,7 @@ A structured map of practice materials that mirrors the notes folder layout.
 
 ---
 
-## All-in-One Lists
+## 8. All-in-One Lists
 
 - [Practice Questions and Prompts](questions.md)
 - [Practice Answers](answers.md)

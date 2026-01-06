@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Senior .NET study guide for Solution Architecture" />
+  <meta name="description" content="Senior .NET study guide for Notes" />
   <meta name="theme-color" content="#0f172a" />
-  <title>Solution Architecture | C# Interview Prep Cheat Sheet</title>
+  <title>Notes | C# Interview Prep Cheat Sheet</title>
   <link rel="manifest" href="..\assets/manifest.webmanifest" />
   <script>
     (() => {
@@ -53,7 +53,7 @@
         <span>Notes</span>
         <span class="chevron" aria-hidden="true"></span>
       </button>
-      <ul class="sidebar-group__items"><li><a class="nav-link" href="../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="../notes/defensive-programming-vs-fail-fast.html">Defensive Programming Vs Fail Fast</a></li><li><a class="nav-link" href="../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="../notes/logging.html">Logging</a></li><li><a class="nav-link" href="../notes/index.html">Notes</a></li><li><a class="nav-link active" href="../notes/solution-architecture.html">Solution Architecture</a></li><li><a class="nav-link" href="../notes/sse-vs-websockets.html">Sse Vs Websockets</a></li><li><a class="nav-link" href="../notes/system-architecture.html">System Architecture</a></li><li><a class="nav-link" href="../notes/testing-strategies.html">Testing Strategies</a></li></ul>
+      <ul class="sidebar-group__items"><li><a class="nav-link" href="../notes/core-concepts.html">Core Concepts</a></li><li><a class="nav-link" href="../notes/defensive-programming-vs-fail-fast.html">Defensive Programming Vs Fail Fast</a></li><li><a class="nav-link" href="../notes/error-handling.html">Error Handling</a></li><li><a class="nav-link" href="../notes/logging.html">Logging</a></li><li><a class="nav-link active" href="../notes/index.html">Notes</a></li><li><a class="nav-link" href="../notes/solution-architecture.html">Solution Architecture</a></li><li><a class="nav-link" href="../notes/sse-vs-websockets.html">Sse Vs Websockets</a></li><li><a class="nav-link" href="../notes/system-architecture.html">System Architecture</a></li><li><a class="nav-link" href="../notes/testing-strategies.html">Testing Strategies</a></li></ul>
     </div><div class="sidebar-group" data-group="notes-automapper">
       <button class="sidebar-group__header" type="button" aria-expanded="false">
         <span>Notes / Automapper</span>
@@ -245,96 +245,36 @@
     </nav>
     <main class="content">
       <article class="card">
-        <div class="breadcrumbs">notes\solution-architecture.md</div>
-        <h2>Solution Architecture</h2>
+        <div class="breadcrumbs">notes\index.md</div>
+        <h2>Notes</h2>
         <div class="toc-label">Rapid overview</div>
-        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#solution-architecture---structuring-code-and-use-cases">Solution Architecture - Structuring Code and Use Cases</a></li><li class="level-2"><a href="#quick-overview">Quick Overview</a></li><li class="level-2"><a href="#detailed-explanation">Detailed Explanation</a></li><li class="level-3"><a href="#clean-architecture-layered-dependencies-inward">Clean Architecture (Layered, Dependencies Inward)</a></li><li class="level-3"><a href="#domain-driven-design-ddd">Domain-Driven Design (DDD)</a></li><li class="level-3"><a href="#vertical-slice-architecture">Vertical Slice Architecture</a></li><li class="level-3"><a href="#mvvm-model-view-viewmodel">MVVM (Model-View-ViewModel)</a></li><li class="level-2"><a href="#example---vertical-slice-use-case">Example - Vertical Slice Use Case</a></li><li class="level-2"><a href="#choosing-the-right-approach">Choosing the Right Approach</a></li><li class="level-2"><a href="#why-it-matters-for-interviews">Why It Matters for Interviews</a></li><li class="level-2"><a href="#common-pitfalls">Common Pitfalls</a></li><li class="level-2"><a href="#quick-reference">Quick Reference</a></li><li class="level-2"><a href="#sample-interview-qa">Sample Interview Q&A</a></li></ul></div>
-        <h1 id="solution-architecture---structuring-code-and-use-cases">Solution Architecture - Structuring Code and Use Cases</h1>
-<blockquote><p>Organize code by business boundaries so change stays local, testable, and easy to reason about.</p></blockquote>
+        <div class="toc"><ul class="toc-list"><li class="level-1"><a href="#notes---index">Notes - Index</a></li><li class="level-2"><a href="#1-foundations">1. Foundations</a></li><li class="level-2"><a href="#2-architecture-and-design">2. Architecture and Design</a></li><li class="level-2"><a href="#3-reliability-and-testing">3. Reliability and Testing</a></li><li class="level-2"><a href="#4-performance-and-algorithms">4. Performance and Algorithms</a></li><li class="level-2"><a href="#5-libraries-and-tooling">5. Libraries and Tooling</a></li><li class="level-2"><a href="#6-communication-and-scalability">6. Communication and Scalability</a></li><li class="level-2"><a href="#7-tech-stacks">7. Tech Stacks</a></li><li class="level-2"><a href="#8-deep-dives-advanced">8. Deep Dives (Advanced)</a></li></ul></div>
+        <h1 id="notes---index">Notes - Index</h1>
+<p>A numbered map of study notes, grouped from foundations to advanced topics.</p>
 <p>---</p>
-<h2 id="quick-overview">Quick Overview</h2>
-<ul><li><strong>Clean Architecture:</strong> Layered design with dependencies pointing inward; stable core, replaceable outer layers.</li><li><strong>DDD (Domain-Driven Design):</strong> Model the business with bounded contexts, aggregates, and ubiquitous language.</li><li><strong>Vertical Slices:</strong> Organize by feature/use case instead of technical layers to minimize cross-cutting changes.</li><li><strong>MVVM:</strong> UI architecture for desktop/mobile apps (WPF/MAUI); separates view, state, and behavior.</li><li><strong>You can combine them:</strong> DDD inside Clean Architecture, vertical slices inside the Application layer, MVVM in the UI.</li></ul>
+<h2 id="1-foundations">1. Foundations</h2>
+<ul><li><a href="core-concepts.md">Core Concepts</a></li><li><a href="defensive-programming-vs-fail-fast.md">Defensive Programming vs Fail Fast</a></li><li><a href="SOLID/index.md">SOLID Principles</a></li><li><a href="DRY/index.md">DRY</a></li><li><a href="Collections-And-Enumerables/index.md">Collections and Enumerables</a></li></ul>
 <p>---</p>
-<h2 id="detailed-explanation">Detailed Explanation</h2>
-<h3 id="clean-architecture-layered-dependencies-inward">Clean Architecture (Layered, Dependencies Inward)</h3>
-<p><strong>What it is:</strong> A layered architecture where the Domain has zero dependencies. Application orchestrates use cases. Infrastructure and UI sit on the outside.</p>
-<pre class="language-csharp"><code class="language-csharp">+-------------------------------+
-|     Presentation / UI         |
-+-------------------------------+
-|       Application             |  Use cases, CQRS handlers
-+-------------------------------+
-|          Domain               |  Entities, Value Objects
-+-------------------------------+
-|       Infrastructure          |  DBs, brokers, APIs
-+-------------------------------+</code></pre>
-<p><strong>Use it when:</strong> You have long-lived business rules and want infrastructure swaps (SQL, Kafka, MT5 bridges) without touching domain logic.</p>
-<p><strong>Trade-offs:</strong> More projects and abstractions; can be overkill for tiny apps.</p>
+<h2 id="2-architecture-and-design">2. Architecture and Design</h2>
+<ul><li><a href="Clean-Architecture/index.md">Clean Architecture</a></li><li><a href="Design-Patterns/index.md">Design Patterns</a></li><li><a href="solution-architecture.md">Solution Architecture</a></li><li><a href="system-architecture.md">System Architecture</a></li></ul>
 <p>---</p>
-<h3 id="domain-driven-design-ddd">Domain-Driven Design (DDD)</h3>
-<p><strong>What it is:</strong> A modeling approach that focuses on the business language and boundaries.</p>
-<p><strong>Core elements:</strong></p>
-<ul><li><strong>Bounded Contexts:</strong> Clear ownership boundaries (e.g., Orders, Risk, Pricing).</li><li><strong>Aggregates:</strong> Consistency boundaries with invariants enforced in one place.</li><li><strong>Ubiquitous Language:</strong> Shared vocabulary with business + engineering.</li></ul>
-<p><strong>Use it when:</strong> The domain is complex and business rules change often (trading rules, risk limits, compliance).</p>
-<p><strong>Trade-offs:</strong> Requires strong collaboration and discipline; adds modeling overhead.</p>
+<h2 id="3-reliability-and-testing">3. Reliability and Testing</h2>
+<ul><li><a href="error-handling.md">Error Handling</a></li><li><a href="logging.md">Logging</a></li><li><a href="testing-strategies.md">Testing Strategies</a></li></ul>
 <p>---</p>
-<h3 id="vertical-slice-architecture">Vertical Slice Architecture</h3>
-<p><strong>What it is:</strong> Organize code by feature/use case so each slice includes its handler, validation, and DTOs.</p>
-<pre class="language-csharp"><code class="language-csharp">Application/
-  Orders/
-    PlaceOrder/
-      PlaceOrderCommand.cs
-      PlaceOrderHandler.cs
-      PlaceOrderValidator.cs
-      PlaceOrderDto.cs</code></pre>
-<p><strong>Benefits:</strong></p>
-<ul><li>Change stays in one folder (low cognitive load).</li><li>Tests and handlers stay close to their use case.</li><li>Avoids over-abstraction by feature.</li></ul>
-<p><strong>Trade-offs:</strong> Can duplicate infrastructure concerns if you skip shared abstractions.</p>
+<h2 id="4-performance-and-algorithms">4. Performance and Algorithms</h2>
+<ul><li><a href="Memory-Allocation-Discipline/index.md">Memory Allocation Discipline</a></li><li><a href="Big-O-Complexity/index.md">Big-O Complexity</a></li></ul>
 <p>---</p>
-<h3 id="mvvm-model-view-viewmodel">MVVM (Model-View-ViewModel)</h3>
-<p><strong>What it is:</strong> UI pattern for desktop/mobile apps where the View binds to a ViewModel (state + commands).</p>
-<pre class="language-csharp"><code class="language-csharp">View  &lt;-&gt;  ViewModel  &lt;-&gt;  Model
-XAML       C# state        Domain/DTOs</code></pre>
-<p><strong>Use it when:</strong> You need testable UI logic and clean separation in WPF/MAUI apps.</p>
-<p><strong>Trade-offs:</strong> Extra plumbing for bindings and property change notifications.</p>
+<h2 id="5-libraries-and-tooling">5. Libraries and Tooling</h2>
+<ul><li><a href="Automapper/AutoMapper.md">AutoMapper</a></li><li><a href="FluentValidation/FluentValidation.md">FluentValidation</a></li></ul>
 <p>---</p>
-<h2 id="example---vertical-slice-use-case">Example - Vertical Slice Use Case</h2>
-<pre class="language-csharp"><code class="language-csharp">// Application/Orders/PlaceOrder/PlaceOrderCommand.cs
-public sealed record PlaceOrderCommand(string Symbol, decimal Quantity) : IRequest&lt;Guid&gt;;
-
-// Application/Orders/PlaceOrder/PlaceOrderHandler.cs
-public sealed class PlaceOrderHandler : IRequestHandler&lt;PlaceOrderCommand, Guid&gt;
-{
-    private readonly IOrderRepository _orders;
-
-    public PlaceOrderHandler(IOrderRepository orders)
-    {
-        _orders = orders;
-    }
-
-    public async Task&lt;Guid&gt; Handle(PlaceOrderCommand request, CancellationToken ct)
-    {
-        var order = Order.Create(request.Symbol, request.Quantity);
-        await _orders.AddAsync(order, ct);
-        return order.Id;
-    }
-}</code></pre>
+<h2 id="6-communication-and-scalability">6. Communication and Scalability</h2>
+<ul><li><a href="sse-vs-websockets.md">SSE vs WebSockets</a></li><li><a href="Use-Cases/massive-traffic/index.md">Use Cases: Massive Traffic</a></li></ul>
 <p>---</p>
-<h2 id="choosing-the-right-approach">Choosing the Right Approach</h2>
-<ul><li><strong>Clean Architecture:</strong> Long-lived backend systems with multiple integrations.</li><li><strong>DDD:</strong> Complex domains that need strict language and boundaries.</li><li><strong>Vertical Slices:</strong> Fast-moving teams, feature-driven development.</li><li><strong>MVVM:</strong> Desktop/mobile UI with heavy interaction and binding.</li></ul>
+<h2 id="7-tech-stacks">7. Tech Stacks</h2>
+<ul><li><a href="Tech-Stacks/index.md">Tech Stacks Overview</a></li><li><a href="Tech-Stacks/GoLang/index.md">GoLang</a></li><li><a href="Tech-Stacks/React/index.md">React</a></li><li><a href="Tech-Stacks/Stack-Pairings/index.md">Stack Pairings</a></li></ul>
 <p>---</p>
-<h2 id="why-it-matters-for-interviews">Why It Matters for Interviews</h2>
-<ul><li>You can justify <strong>how you structure a solution</strong> and why it scales with team size.</li><li>You can explain <strong>trade-offs</strong> (complexity vs flexibility, speed vs rigor).</li><li>You can show how architecture supports <strong>testability and maintainability</strong>.</li></ul>
-<p>---</p>
-<h2 id="common-pitfalls">Common Pitfalls</h2>
-<ul><li>Treating Clean Architecture as a strict template instead of a guide.</li><li>Building a massive shared kernel that becomes a dependency sink.</li><li>Splitting into micro-layers too early without proven complexity.</li><li>Putting UI logic in Views instead of ViewModels (MVVM violations).</li></ul>
-<p>---</p>
-<h2 id="quick-reference">Quick Reference</h2>
-<ul><li><strong>Clean Architecture:</strong> Dependencies flow inward; domain has zero dependencies.</li><li><strong>DDD:</strong> Bounded contexts + aggregates + ubiquitous language.</li><li><strong>Vertical Slice:</strong> Organize by feature, not technical layer.</li><li><strong>MVVM:</strong> View binds to ViewModel; Model stays pure.</li></ul>
-<p>---</p>
-<h2 id="sample-interview-qa">Sample Interview Q&A</h2>
-<ul><li><strong>Q:</strong> Can Clean Architecture and DDD coexist?</li><li><strong>A:</strong> Yes. DDD provides the modeling approach inside the Domain layer, while Clean Architecture provides the dependency and layering rules around it.</li></ul>
-<ul><li><strong>Q:</strong> Why choose vertical slices over layered folders?</li><li><strong>A:</strong> Vertical slices keep related code together, reduce navigation overhead, and keep changes localized to a feature.</li></ul>
-<ul><li><strong>Q:</strong> When would MVVM be a bad fit?</li><li><strong>A:</strong> For simple screens with minimal state; MVVM overhead may outweigh benefits. For complex UI, it pays off quickly.</li></ul>
+<h2 id="8-deep-dives-advanced">8. Deep Dives (Advanced)</h2>
+<ul><li><a href="sub-notes/Async%20Await%20Deep%20Dive.md">Async/Await Deep Dive</a></li><li><a href="sub-notes/Dependency%20Injection%20Lifetimes.md">Dependency Injection Lifetimes</a></li><li><a href="sub-notes/Reflection%20Overview.md">Reflection Overview</a></li><li><a href="sub-notes/types.md">Types (class, record, struct, static)</a></li><li><a href="sub-notes/base-keyword.md">Base Keyword</a></li><li><a href="sub-notes/nameof-keyword.md">Nameof Keyword</a></li><li><a href="sub-notes/struct%20vs%20class%20when%20to%20use%20which.md">Struct vs Class (When to Use Which)</a></li><li><a href="sub-notes/IDisposable%20Patterns.md">IDisposable Patterns</a></li><li><a href="sub-notes/CLR%20&%20Garbage%20Collector%20(GC">CLR and Garbage Collector (GC)</a>.md)</li><li><a href="sub-notes/CLR%20&%20Garbage%20Collector%20(GC">CLR and GC Practical Example</a>%20Practical%20Example.md)</li><li><a href="sub-notes/NET%20Generational%20Garbage%20Collection%20(GC">NET GC Deep Dive</a>%20Deep%20Dive.md)</li><li><a href="sub-notes/Server%20vs%20Workstation%20GC.md">Server vs Workstation GC</a></li><li><a href="sub-notes/Forcing%20Garbage%20Collection.md">Forcing Garbage Collection</a></li><li><a href="sub-notes/FIFO%20Queues%20in%20.NET.md">FIFO Queues in .NET</a></li><li><a href="sub-notes/Sorted%20Collections%20Interview%20Notes.md">Sorted Collections Interview Notes</a></li><li><a href="sub-notes/Sorting%20Algorithms.md">Sorting Algorithms</a></li><li><a href="sub-notes/RabbitMQ.md">RabbitMQ</a></li></ul>
       </article>
     </main>
   </div>
